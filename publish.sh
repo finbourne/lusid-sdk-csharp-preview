@@ -26,6 +26,6 @@ sed -i 's/<Version>.*<\/Version>/<Version>'$sdk_version'<\/Version>/g' sdk/Lusid
 echo "sdk_version=$sdk_version"
 
 dotnet pack -c Release sdk/Lusid.Sdk/Lusid.Sdk.csproj
-dotnet nuget push sdk/Lusid.Sdk/bin/Release/Lusid.Sdk.${sdk_version}.nupkg \
+dotnet nuget push sdk/Lusid.Sdk/bin/Release/Lusid.Sdk.Preview.${sdk_version}.nupkg \
     --source $nuget_source \
     --api-key $nuget_api_key
