@@ -130,7 +130,7 @@ namespace Lusid.Sdk.Tests
                 ValueRequired = false,
                 DisplayName = "Fund Style",
                 LifeTime = CreatePropertyDefinitionRequest.LifeTimeEnum.Perpetual,               
-                DataTypeId = new ResourceId("default", "string")
+                DataTypeId = new ResourceId("system", "string")
             };
 
             //    create property definition
@@ -173,7 +173,7 @@ namespace Lusid.Sdk.Tests
                 ValueRequired = false,
                 DisplayName = "Trader Id",
                 LifeTime = CreatePropertyDefinitionRequest.LifeTimeEnum.Perpetual,
-                DataTypeId = new ResourceId("default", "string")
+                DataTypeId = new ResourceId("system", "string")
             };
 
             //    create property definition
