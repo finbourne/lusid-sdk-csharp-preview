@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using Lusid.Sdk.Api;
 using Lusid.Sdk.Model;
+using Lusid.Sdk.Tests.Utilities;
 using Lusid.Sdk.Utilities;
 using NUnit.Framework;
 
-namespace Lusid.Sdk.Tests.Tutorials
+namespace Lusid.Sdk.Tests.Tutorials.Ibor
 {
     [TestFixture]
     public class Valuations
@@ -29,7 +30,13 @@ namespace Lusid.Sdk.Tests.Tutorials
             _instrumentIds = _instrumentLoader.LoadInstruments();
             _testDataUtilities = new TestDataUtilities(_apiFactory.Api<ITransactionPortfoliosApi>());
         }
-        
+
+        [OneTimeTearDown]
+        public void TearDown()
+        {
+            _instrumentLoader.DeleteInstruments();
+        }
+
         [Test]
         public void Run_Valuation()
         {
