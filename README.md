@@ -8,7 +8,7 @@
 The NuGet package for the LUSID SDK can installed from https://www.nuget.org/packages/Lusid.Sdk using the following:
 
 ```
-$ dotnet add package Lusid.Sdk 
+$ dotnet add package Lusid.Sdk.Preview
 ```
 
 A pre-generated version of the latest SDK is included in the sdk folder based on the OpenAPI specification named lusid.json in the root folder. The most up to date version of the OpenAPI specification can be downloaded from https://api.lusid.com/swagger/v0/swagger.json
