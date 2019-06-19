@@ -23,112 +23,51 @@ using OpenAPIDateConverter = Lusid.Sdk.Client.OpenAPIDateConverter;
 namespace Lusid.Sdk.Model
 {
     /// <summary>
-    /// The combination of a library to use and a model in that library that defines which pricing code will evaluate instruments  having a particular type/class. This allows us to control the model type and library for a given instrument.
+    /// AnnulQuotesResponse
     /// </summary>
     [DataContract]
-    public partial class ModelSelection :  IEquatable<ModelSelection>
+    public partial class AnnulQuotesResponse :  IEquatable<AnnulQuotesResponse>
     {
         /// <summary>
-        /// Which library is used for pricing requests
+        /// Initializes a new instance of the <see cref="AnnulQuotesResponse" /> class.
         /// </summary>
-        /// <value>Which library is used for pricing requests</value>
-        [JsonConverter(typeof(StringEnumConverter))]
-        public enum LibraryEnum
+        /// <param name="href">href.</param>
+        /// <param name="values">The collection of quotes requested to be annulled with the asAt time   at which they were annulled.</param>
+        /// <param name="failed">If any quotes could not be annulled, they will be listed in &#39;Failed&#39;, along  with a reason why..</param>
+        /// <param name="links">links.</param>
+        public AnnulQuotesResponse(string href = default(string), Dictionary<string, DateTimeOffset?> values = default(Dictionary<string, DateTimeOffset?>), Dictionary<string, List<string>> failed = default(Dictionary<string, List<string>>), List<Link> links = default(List<Link>))
         {
-            /// <summary>
-            /// Enum Lusid for value: Lusid
-            /// </summary>
-            [EnumMember(Value = "Lusid")]
-            Lusid = 1,
-
-            /// <summary>
-            /// Enum ReutersEikon for value: ReutersEikon
-            /// </summary>
-            [EnumMember(Value = "ReutersEikon")]
-            ReutersEikon = 2,
-
-            /// <summary>
-            /// Enum ReutersTracsWeb for value: ReutersTracsWeb
-            /// </summary>
-            [EnumMember(Value = "ReutersTracsWeb")]
-            ReutersTracsWeb = 3
-
-        }
-
-        /// <summary>
-        /// Which library is used for pricing requests
-        /// </summary>
-        /// <value>Which library is used for pricing requests</value>
-        [DataMember(Name="library", EmitDefaultValue=false)]
-        public LibraryEnum Library { get; set; }
-        /// <summary>
-        /// Which model should be used for pricing requests
-        /// </summary>
-        /// <value>Which model should be used for pricing requests</value>
-        [JsonConverter(typeof(StringEnumConverter))]
-        public enum ModelEnum
-        {
-            /// <summary>
-            /// Enum SimpleStatic for value: SimpleStatic
-            /// </summary>
-            [EnumMember(Value = "SimpleStatic")]
-            SimpleStatic = 1,
-
-            /// <summary>
-            /// Enum Discounting for value: Discounting
-            /// </summary>
-            [EnumMember(Value = "Discounting")]
-            Discounting = 2,
-
-            /// <summary>
-            /// Enum VendorDefault for value: VendorDefault
-            /// </summary>
-            [EnumMember(Value = "VendorDefault")]
-            VendorDefault = 3
-
-        }
-
-        /// <summary>
-        /// Which model should be used for pricing requests
-        /// </summary>
-        /// <value>Which model should be used for pricing requests</value>
-        [DataMember(Name="model", EmitDefaultValue=false)]
-        public ModelEnum Model { get; set; }
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ModelSelection" /> class.
-        /// </summary>
-        [JsonConstructorAttribute]
-        protected ModelSelection() { }
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ModelSelection" /> class.
-        /// </summary>
-        /// <param name="library">Which library is used for pricing requests (required).</param>
-        /// <param name="model">Which model should be used for pricing requests (required).</param>
-        public ModelSelection(LibraryEnum library = default(LibraryEnum), ModelEnum model = default(ModelEnum))
-        {
-            // to ensure "library" is required (not null)
-            if (library == null)
-            {
-                throw new InvalidDataException("library is a required property for ModelSelection and cannot be null");
-            }
-            else
-            {
-                this.Library = library;
-            }
-            
-            // to ensure "model" is required (not null)
-            if (model == null)
-            {
-                throw new InvalidDataException("model is a required property for ModelSelection and cannot be null");
-            }
-            else
-            {
-                this.Model = model;
-            }
-            
+            this.Href = href;
+            this.Values = values;
+            this.Failed = failed;
+            this.Links = links;
         }
         
+        /// <summary>
+        /// Gets or Sets Href
+        /// </summary>
+        [DataMember(Name="href", EmitDefaultValue=false)]
+        public string Href { get; set; }
 
+        /// <summary>
+        /// The collection of quotes requested to be annulled with the asAt time   at which they were annulled
+        /// </summary>
+        /// <value>The collection of quotes requested to be annulled with the asAt time   at which they were annulled</value>
+        [DataMember(Name="values", EmitDefaultValue=false)]
+        public Dictionary<string, DateTimeOffset?> Values { get; set; }
+
+        /// <summary>
+        /// If any quotes could not be annulled, they will be listed in &#39;Failed&#39;, along  with a reason why.
+        /// </summary>
+        /// <value>If any quotes could not be annulled, they will be listed in &#39;Failed&#39;, along  with a reason why.</value>
+        [DataMember(Name="failed", EmitDefaultValue=false)]
+        public Dictionary<string, List<string>> Failed { get; set; }
+
+        /// <summary>
+        /// Gets or Sets Links
+        /// </summary>
+        [DataMember(Name="links", EmitDefaultValue=false)]
+        public List<Link> Links { get; set; }
 
         /// <summary>
         /// Returns the string presentation of the object
@@ -137,9 +76,11 @@ namespace Lusid.Sdk.Model
         public override string ToString()
         {
             var sb = new StringBuilder();
-            sb.Append("class ModelSelection {\n");
-            sb.Append("  Library: ").Append(Library).Append("\n");
-            sb.Append("  Model: ").Append(Model).Append("\n");
+            sb.Append("class AnnulQuotesResponse {\n");
+            sb.Append("  Href: ").Append(Href).Append("\n");
+            sb.Append("  Values: ").Append(Values).Append("\n");
+            sb.Append("  Failed: ").Append(Failed).Append("\n");
+            sb.Append("  Links: ").Append(Links).Append("\n");
             sb.Append("}\n");
             return sb.ToString();
         }
@@ -160,29 +101,42 @@ namespace Lusid.Sdk.Model
         /// <returns>Boolean</returns>
         public override bool Equals(object input)
         {
-            return this.Equals(input as ModelSelection);
+            return this.Equals(input as AnnulQuotesResponse);
         }
 
         /// <summary>
-        /// Returns true if ModelSelection instances are equal
+        /// Returns true if AnnulQuotesResponse instances are equal
         /// </summary>
-        /// <param name="input">Instance of ModelSelection to be compared</param>
+        /// <param name="input">Instance of AnnulQuotesResponse to be compared</param>
         /// <returns>Boolean</returns>
-        public bool Equals(ModelSelection input)
+        public bool Equals(AnnulQuotesResponse input)
         {
             if (input == null)
                 return false;
 
             return 
                 (
-                    this.Library == input.Library ||
-                    (this.Library != null &&
-                    this.Library.Equals(input.Library))
+                    this.Href == input.Href ||
+                    (this.Href != null &&
+                    this.Href.Equals(input.Href))
                 ) && 
                 (
-                    this.Model == input.Model ||
-                    (this.Model != null &&
-                    this.Model.Equals(input.Model))
+                    this.Values == input.Values ||
+                    this.Values != null &&
+                    input.Values != null &&
+                    this.Values.SequenceEqual(input.Values)
+                ) && 
+                (
+                    this.Failed == input.Failed ||
+                    this.Failed != null &&
+                    input.Failed != null &&
+                    this.Failed.SequenceEqual(input.Failed)
+                ) && 
+                (
+                    this.Links == input.Links ||
+                    this.Links != null &&
+                    input.Links != null &&
+                    this.Links.SequenceEqual(input.Links)
                 );
         }
 
@@ -195,10 +149,14 @@ namespace Lusid.Sdk.Model
             unchecked // Overflow is fine, just wrap
             {
                 int hashCode = 41;
-                if (this.Library != null)
-                    hashCode = hashCode * 59 + this.Library.GetHashCode();
-                if (this.Model != null)
-                    hashCode = hashCode * 59 + this.Model.GetHashCode();
+                if (this.Href != null)
+                    hashCode = hashCode * 59 + this.Href.GetHashCode();
+                if (this.Values != null)
+                    hashCode = hashCode * 59 + this.Values.GetHashCode();
+                if (this.Failed != null)
+                    hashCode = hashCode * 59 + this.Failed.GetHashCode();
+                if (this.Links != null)
+                    hashCode = hashCode * 59 + this.Links.GetHashCode();
                 return hashCode;
             }
         }

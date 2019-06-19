@@ -23,112 +23,194 @@ using OpenAPIDateConverter = Lusid.Sdk.Client.OpenAPIDateConverter;
 namespace Lusid.Sdk.Model
 {
     /// <summary>
-    /// The combination of a library to use and a model in that library that defines which pricing code will evaluate instruments  having a particular type/class. This allows us to control the model type and library for a given instrument.
+    /// This type should completely describe the &#39;kind&#39; of quote,  with the exception of the effective-date (which is included in the QuoteId).
     /// </summary>
     [DataContract]
-    public partial class ModelSelection :  IEquatable<ModelSelection>
+    public partial class QuoteSeriesId :  IEquatable<QuoteSeriesId>
     {
         /// <summary>
-        /// Which library is used for pricing requests
+        /// Defines InstrumentIdType
         /// </summary>
-        /// <value>Which library is used for pricing requests</value>
         [JsonConverter(typeof(StringEnumConverter))]
-        public enum LibraryEnum
+        public enum InstrumentIdTypeEnum
         {
             /// <summary>
-            /// Enum Lusid for value: Lusid
+            /// Enum LusidInstrumentId for value: LusidInstrumentId
             /// </summary>
-            [EnumMember(Value = "Lusid")]
-            Lusid = 1,
+            [EnumMember(Value = "LusidInstrumentId")]
+            LusidInstrumentId = 1,
 
             /// <summary>
-            /// Enum ReutersEikon for value: ReutersEikon
+            /// Enum Figi for value: Figi
             /// </summary>
-            [EnumMember(Value = "ReutersEikon")]
-            ReutersEikon = 2,
+            [EnumMember(Value = "Figi")]
+            Figi = 2,
 
             /// <summary>
-            /// Enum ReutersTracsWeb for value: ReutersTracsWeb
+            /// Enum RIC for value: RIC
             /// </summary>
-            [EnumMember(Value = "ReutersTracsWeb")]
-            ReutersTracsWeb = 3
+            [EnumMember(Value = "RIC")]
+            RIC = 3,
+
+            /// <summary>
+            /// Enum QuotePermId for value: QuotePermId
+            /// </summary>
+            [EnumMember(Value = "QuotePermId")]
+            QuotePermId = 4,
+
+            /// <summary>
+            /// Enum Isin for value: Isin
+            /// </summary>
+            [EnumMember(Value = "Isin")]
+            Isin = 5,
+
+            /// <summary>
+            /// Enum CurrencyPair for value: CurrencyPair
+            /// </summary>
+            [EnumMember(Value = "CurrencyPair")]
+            CurrencyPair = 6
 
         }
 
         /// <summary>
-        /// Which library is used for pricing requests
+        /// Gets or Sets InstrumentIdType
         /// </summary>
-        /// <value>Which library is used for pricing requests</value>
-        [DataMember(Name="library", EmitDefaultValue=false)]
-        public LibraryEnum Library { get; set; }
+        [DataMember(Name="instrumentIdType", EmitDefaultValue=false)]
+        public InstrumentIdTypeEnum InstrumentIdType { get; set; }
         /// <summary>
-        /// Which model should be used for pricing requests
+        /// Defines QuoteType
         /// </summary>
-        /// <value>Which model should be used for pricing requests</value>
         [JsonConverter(typeof(StringEnumConverter))]
-        public enum ModelEnum
+        public enum QuoteTypeEnum
         {
             /// <summary>
-            /// Enum SimpleStatic for value: SimpleStatic
+            /// Enum Price for value: Price
             /// </summary>
-            [EnumMember(Value = "SimpleStatic")]
-            SimpleStatic = 1,
+            [EnumMember(Value = "Price")]
+            Price = 1,
 
             /// <summary>
-            /// Enum Discounting for value: Discounting
+            /// Enum Spread for value: Spread
             /// </summary>
-            [EnumMember(Value = "Discounting")]
-            Discounting = 2,
+            [EnumMember(Value = "Spread")]
+            Spread = 2,
 
             /// <summary>
-            /// Enum VendorDefault for value: VendorDefault
+            /// Enum Rate for value: Rate
             /// </summary>
-            [EnumMember(Value = "VendorDefault")]
-            VendorDefault = 3
+            [EnumMember(Value = "Rate")]
+            Rate = 3
 
         }
 
         /// <summary>
-        /// Which model should be used for pricing requests
+        /// Gets or Sets QuoteType
         /// </summary>
-        /// <value>Which model should be used for pricing requests</value>
-        [DataMember(Name="model", EmitDefaultValue=false)]
-        public ModelEnum Model { get; set; }
+        [DataMember(Name="quoteType", EmitDefaultValue=false)]
+        public QuoteTypeEnum QuoteType { get; set; }
         /// <summary>
-        /// Initializes a new instance of the <see cref="ModelSelection" /> class.
+        /// Initializes a new instance of the <see cref="QuoteSeriesId" /> class.
         /// </summary>
         [JsonConstructorAttribute]
-        protected ModelSelection() { }
+        protected QuoteSeriesId() { }
         /// <summary>
-        /// Initializes a new instance of the <see cref="ModelSelection" /> class.
+        /// Initializes a new instance of the <see cref="QuoteSeriesId" /> class.
         /// </summary>
-        /// <param name="library">Which library is used for pricing requests (required).</param>
-        /// <param name="model">Which model should be used for pricing requests (required).</param>
-        public ModelSelection(LibraryEnum library = default(LibraryEnum), ModelEnum model = default(ModelEnum))
+        /// <param name="provider">provider (required).</param>
+        /// <param name="priceSource">priceSource (required).</param>
+        /// <param name="instrumentId">instrumentId (required).</param>
+        /// <param name="instrumentIdType">instrumentIdType (required).</param>
+        /// <param name="quoteType">quoteType (required).</param>
+        /// <param name="field">field (required).</param>
+        public QuoteSeriesId(string provider = default(string), string priceSource = default(string), string instrumentId = default(string), InstrumentIdTypeEnum instrumentIdType = default(InstrumentIdTypeEnum), QuoteTypeEnum quoteType = default(QuoteTypeEnum), string field = default(string))
         {
-            // to ensure "library" is required (not null)
-            if (library == null)
+            // to ensure "provider" is required (not null)
+            if (provider == null)
             {
-                throw new InvalidDataException("library is a required property for ModelSelection and cannot be null");
+                throw new InvalidDataException("provider is a required property for QuoteSeriesId and cannot be null");
             }
             else
             {
-                this.Library = library;
+                this.Provider = provider;
             }
             
-            // to ensure "model" is required (not null)
-            if (model == null)
+            // to ensure "priceSource" is required (not null)
+            if (priceSource == null)
             {
-                throw new InvalidDataException("model is a required property for ModelSelection and cannot be null");
+                throw new InvalidDataException("priceSource is a required property for QuoteSeriesId and cannot be null");
             }
             else
             {
-                this.Model = model;
+                this.PriceSource = priceSource;
+            }
+            
+            // to ensure "instrumentId" is required (not null)
+            if (instrumentId == null)
+            {
+                throw new InvalidDataException("instrumentId is a required property for QuoteSeriesId and cannot be null");
+            }
+            else
+            {
+                this.InstrumentId = instrumentId;
+            }
+            
+            // to ensure "instrumentIdType" is required (not null)
+            if (instrumentIdType == null)
+            {
+                throw new InvalidDataException("instrumentIdType is a required property for QuoteSeriesId and cannot be null");
+            }
+            else
+            {
+                this.InstrumentIdType = instrumentIdType;
+            }
+            
+            // to ensure "quoteType" is required (not null)
+            if (quoteType == null)
+            {
+                throw new InvalidDataException("quoteType is a required property for QuoteSeriesId and cannot be null");
+            }
+            else
+            {
+                this.QuoteType = quoteType;
+            }
+            
+            // to ensure "field" is required (not null)
+            if (field == null)
+            {
+                throw new InvalidDataException("field is a required property for QuoteSeriesId and cannot be null");
+            }
+            else
+            {
+                this.Field = field;
             }
             
         }
         
+        /// <summary>
+        /// Gets or Sets Provider
+        /// </summary>
+        [DataMember(Name="provider", EmitDefaultValue=false)]
+        public string Provider { get; set; }
 
+        /// <summary>
+        /// Gets or Sets PriceSource
+        /// </summary>
+        [DataMember(Name="priceSource", EmitDefaultValue=false)]
+        public string PriceSource { get; set; }
+
+        /// <summary>
+        /// Gets or Sets InstrumentId
+        /// </summary>
+        [DataMember(Name="instrumentId", EmitDefaultValue=false)]
+        public string InstrumentId { get; set; }
+
+
+
+        /// <summary>
+        /// Gets or Sets Field
+        /// </summary>
+        [DataMember(Name="field", EmitDefaultValue=false)]
+        public string Field { get; set; }
 
         /// <summary>
         /// Returns the string presentation of the object
@@ -137,9 +219,13 @@ namespace Lusid.Sdk.Model
         public override string ToString()
         {
             var sb = new StringBuilder();
-            sb.Append("class ModelSelection {\n");
-            sb.Append("  Library: ").Append(Library).Append("\n");
-            sb.Append("  Model: ").Append(Model).Append("\n");
+            sb.Append("class QuoteSeriesId {\n");
+            sb.Append("  Provider: ").Append(Provider).Append("\n");
+            sb.Append("  PriceSource: ").Append(PriceSource).Append("\n");
+            sb.Append("  InstrumentId: ").Append(InstrumentId).Append("\n");
+            sb.Append("  InstrumentIdType: ").Append(InstrumentIdType).Append("\n");
+            sb.Append("  QuoteType: ").Append(QuoteType).Append("\n");
+            sb.Append("  Field: ").Append(Field).Append("\n");
             sb.Append("}\n");
             return sb.ToString();
         }
@@ -160,29 +246,49 @@ namespace Lusid.Sdk.Model
         /// <returns>Boolean</returns>
         public override bool Equals(object input)
         {
-            return this.Equals(input as ModelSelection);
+            return this.Equals(input as QuoteSeriesId);
         }
 
         /// <summary>
-        /// Returns true if ModelSelection instances are equal
+        /// Returns true if QuoteSeriesId instances are equal
         /// </summary>
-        /// <param name="input">Instance of ModelSelection to be compared</param>
+        /// <param name="input">Instance of QuoteSeriesId to be compared</param>
         /// <returns>Boolean</returns>
-        public bool Equals(ModelSelection input)
+        public bool Equals(QuoteSeriesId input)
         {
             if (input == null)
                 return false;
 
             return 
                 (
-                    this.Library == input.Library ||
-                    (this.Library != null &&
-                    this.Library.Equals(input.Library))
+                    this.Provider == input.Provider ||
+                    (this.Provider != null &&
+                    this.Provider.Equals(input.Provider))
                 ) && 
                 (
-                    this.Model == input.Model ||
-                    (this.Model != null &&
-                    this.Model.Equals(input.Model))
+                    this.PriceSource == input.PriceSource ||
+                    (this.PriceSource != null &&
+                    this.PriceSource.Equals(input.PriceSource))
+                ) && 
+                (
+                    this.InstrumentId == input.InstrumentId ||
+                    (this.InstrumentId != null &&
+                    this.InstrumentId.Equals(input.InstrumentId))
+                ) && 
+                (
+                    this.InstrumentIdType == input.InstrumentIdType ||
+                    (this.InstrumentIdType != null &&
+                    this.InstrumentIdType.Equals(input.InstrumentIdType))
+                ) && 
+                (
+                    this.QuoteType == input.QuoteType ||
+                    (this.QuoteType != null &&
+                    this.QuoteType.Equals(input.QuoteType))
+                ) && 
+                (
+                    this.Field == input.Field ||
+                    (this.Field != null &&
+                    this.Field.Equals(input.Field))
                 );
         }
 
@@ -195,10 +301,18 @@ namespace Lusid.Sdk.Model
             unchecked // Overflow is fine, just wrap
             {
                 int hashCode = 41;
-                if (this.Library != null)
-                    hashCode = hashCode * 59 + this.Library.GetHashCode();
-                if (this.Model != null)
-                    hashCode = hashCode * 59 + this.Model.GetHashCode();
+                if (this.Provider != null)
+                    hashCode = hashCode * 59 + this.Provider.GetHashCode();
+                if (this.PriceSource != null)
+                    hashCode = hashCode * 59 + this.PriceSource.GetHashCode();
+                if (this.InstrumentId != null)
+                    hashCode = hashCode * 59 + this.InstrumentId.GetHashCode();
+                if (this.InstrumentIdType != null)
+                    hashCode = hashCode * 59 + this.InstrumentIdType.GetHashCode();
+                if (this.QuoteType != null)
+                    hashCode = hashCode * 59 + this.QuoteType.GetHashCode();
+                if (this.Field != null)
+                    hashCode = hashCode * 59 + this.Field.GetHashCode();
                 return hashCode;
             }
         }
