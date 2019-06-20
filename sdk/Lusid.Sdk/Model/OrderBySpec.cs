@@ -23,168 +23,75 @@ using OpenAPIDateConverter = Lusid.Sdk.Client.OpenAPIDateConverter;
 namespace Lusid.Sdk.Model
 {
     /// <summary>
-    /// A market data key rule describes a mapping for satisfying a particular market dependency. The supplier, scope, quote type and price side  information define the quote in the market and which Vendor for market data would be used to perform the lookup.  The market data key defines what dependency this satisfies. The key is a rule that describes the asset class, its identifier and any other  specifics required to uniquely describe a specific economic entity (e.g. an Fx currency pair, equity name or credit curve).
+    /// OrderBySpec
     /// </summary>
     [DataContract]
-    public partial class MarketDataKeyRule :  IEquatable<MarketDataKeyRule>
+    public partial class OrderBySpec :  IEquatable<OrderBySpec>
     {
         /// <summary>
-        /// The market data supplier (where the data comes from)
+        /// Defines SortOrder
         /// </summary>
-        /// <value>The market data supplier (where the data comes from)</value>
         [JsonConverter(typeof(StringEnumConverter))]
-        public enum SupplierEnum
+        public enum SortOrderEnum
         {
             /// <summary>
-            /// Enum DataScope for value: DataScope
+            /// Enum Ascending for value: Ascending
             /// </summary>
-            [EnumMember(Value = "DataScope")]
-            DataScope = 1,
+            [EnumMember(Value = "Ascending")]
+            Ascending = 1,
 
             /// <summary>
-            /// Enum Lusid for value: Lusid
+            /// Enum Descending for value: Descending
             /// </summary>
-            [EnumMember(Value = "Lusid")]
-            Lusid = 2
+            [EnumMember(Value = "Descending")]
+            Descending = 2
 
         }
 
         /// <summary>
-        /// The market data supplier (where the data comes from)
+        /// Gets or Sets SortOrder
         /// </summary>
-        /// <value>The market data supplier (where the data comes from)</value>
-        [DataMember(Name="supplier", EmitDefaultValue=false)]
-        public SupplierEnum Supplier { get; set; }
+        [DataMember(Name="sortOrder", EmitDefaultValue=false)]
+        public SortOrderEnum SortOrder { get; set; }
         /// <summary>
-        /// Is the quote to be looked for a price, yield etc.
-        /// </summary>
-        /// <value>Is the quote to be looked for a price, yield etc.</value>
-        [JsonConverter(typeof(StringEnumConverter))]
-        public enum QuoteTypeEnum
-        {
-            /// <summary>
-            /// Enum Price for value: Price
-            /// </summary>
-            [EnumMember(Value = "Price")]
-            Price = 1,
-
-            /// <summary>
-            /// Enum Spread for value: Spread
-            /// </summary>
-            [EnumMember(Value = "Spread")]
-            Spread = 2,
-
-            /// <summary>
-            /// Enum Rate for value: Rate
-            /// </summary>
-            [EnumMember(Value = "Rate")]
-            Rate = 3
-
-        }
-
-        /// <summary>
-        /// Is the quote to be looked for a price, yield etc.
-        /// </summary>
-        /// <value>Is the quote to be looked for a price, yield etc.</value>
-        [DataMember(Name="quoteType", EmitDefaultValue=false)]
-        public QuoteTypeEnum? QuoteType { get; set; }
-        /// <summary>
-        /// The conceptual qualification for the field. Something like Bid, Ask or Mid.
-        /// </summary>
-        /// <value>The conceptual qualification for the field. Something like Bid, Ask or Mid.</value>
-        [JsonConverter(typeof(StringEnumConverter))]
-        public enum PriceSideEnum
-        {
-            /// <summary>
-            /// Enum Bid for value: Bid
-            /// </summary>
-            [EnumMember(Value = "Bid")]
-            Bid = 1,
-
-            /// <summary>
-            /// Enum Mid for value: Mid
-            /// </summary>
-            [EnumMember(Value = "Mid")]
-            Mid = 2,
-
-            /// <summary>
-            /// Enum Ask for value: Ask
-            /// </summary>
-            [EnumMember(Value = "Ask")]
-            Ask = 3
-
-        }
-
-        /// <summary>
-        /// The conceptual qualification for the field. Something like Bid, Ask or Mid.
-        /// </summary>
-        /// <value>The conceptual qualification for the field. Something like Bid, Ask or Mid.</value>
-        [DataMember(Name="priceSide", EmitDefaultValue=false)]
-        public PriceSideEnum? PriceSide { get; set; }
-        /// <summary>
-        /// Initializes a new instance of the <see cref="MarketDataKeyRule" /> class.
+        /// Initializes a new instance of the <see cref="OrderBySpec" /> class.
         /// </summary>
         [JsonConstructorAttribute]
-        protected MarketDataKeyRule() { }
+        protected OrderBySpec() { }
         /// <summary>
-        /// Initializes a new instance of the <see cref="MarketDataKeyRule" /> class.
+        /// Initializes a new instance of the <see cref="OrderBySpec" /> class.
         /// </summary>
-        /// <param name="key">The market data key pattern which this is a rule for. A dot separated string (A.B.C.D.*) (required).</param>
-        /// <param name="supplier">The market data supplier (where the data comes from) (required).</param>
-        /// <param name="dataScope">The scope in which the data should be found when using this rule. (required).</param>
-        /// <param name="quoteType">Is the quote to be looked for a price, yield etc..</param>
-        /// <param name="priceSide">The conceptual qualification for the field. Something like Bid, Ask or Mid..</param>
-        public MarketDataKeyRule(string key = default(string), SupplierEnum supplier = default(SupplierEnum), string dataScope = default(string), QuoteTypeEnum? quoteType = default(QuoteTypeEnum?), PriceSideEnum? priceSide = default(PriceSideEnum?))
+        /// <param name="key">key (required).</param>
+        /// <param name="sortOrder">sortOrder (required).</param>
+        public OrderBySpec(string key = default(string), SortOrderEnum sortOrder = default(SortOrderEnum))
         {
             // to ensure "key" is required (not null)
             if (key == null)
             {
-                throw new InvalidDataException("key is a required property for MarketDataKeyRule and cannot be null");
+                throw new InvalidDataException("key is a required property for OrderBySpec and cannot be null");
             }
             else
             {
                 this.Key = key;
             }
             
-            // to ensure "supplier" is required (not null)
-            if (supplier == null)
+            // to ensure "sortOrder" is required (not null)
+            if (sortOrder == null)
             {
-                throw new InvalidDataException("supplier is a required property for MarketDataKeyRule and cannot be null");
+                throw new InvalidDataException("sortOrder is a required property for OrderBySpec and cannot be null");
             }
             else
             {
-                this.Supplier = supplier;
+                this.SortOrder = sortOrder;
             }
             
-            // to ensure "dataScope" is required (not null)
-            if (dataScope == null)
-            {
-                throw new InvalidDataException("dataScope is a required property for MarketDataKeyRule and cannot be null");
-            }
-            else
-            {
-                this.DataScope = dataScope;
-            }
-            
-            this.QuoteType = quoteType;
-            this.PriceSide = priceSide;
         }
         
         /// <summary>
-        /// The market data key pattern which this is a rule for. A dot separated string (A.B.C.D.*)
+        /// Gets or Sets Key
         /// </summary>
-        /// <value>The market data key pattern which this is a rule for. A dot separated string (A.B.C.D.*)</value>
         [DataMember(Name="key", EmitDefaultValue=false)]
         public string Key { get; set; }
-
-
-        /// <summary>
-        /// The scope in which the data should be found when using this rule.
-        /// </summary>
-        /// <value>The scope in which the data should be found when using this rule.</value>
-        [DataMember(Name="dataScope", EmitDefaultValue=false)]
-        public string DataScope { get; set; }
-
 
 
         /// <summary>
@@ -194,12 +101,9 @@ namespace Lusid.Sdk.Model
         public override string ToString()
         {
             var sb = new StringBuilder();
-            sb.Append("class MarketDataKeyRule {\n");
+            sb.Append("class OrderBySpec {\n");
             sb.Append("  Key: ").Append(Key).Append("\n");
-            sb.Append("  Supplier: ").Append(Supplier).Append("\n");
-            sb.Append("  DataScope: ").Append(DataScope).Append("\n");
-            sb.Append("  QuoteType: ").Append(QuoteType).Append("\n");
-            sb.Append("  PriceSide: ").Append(PriceSide).Append("\n");
+            sb.Append("  SortOrder: ").Append(SortOrder).Append("\n");
             sb.Append("}\n");
             return sb.ToString();
         }
@@ -220,15 +124,15 @@ namespace Lusid.Sdk.Model
         /// <returns>Boolean</returns>
         public override bool Equals(object input)
         {
-            return this.Equals(input as MarketDataKeyRule);
+            return this.Equals(input as OrderBySpec);
         }
 
         /// <summary>
-        /// Returns true if MarketDataKeyRule instances are equal
+        /// Returns true if OrderBySpec instances are equal
         /// </summary>
-        /// <param name="input">Instance of MarketDataKeyRule to be compared</param>
+        /// <param name="input">Instance of OrderBySpec to be compared</param>
         /// <returns>Boolean</returns>
-        public bool Equals(MarketDataKeyRule input)
+        public bool Equals(OrderBySpec input)
         {
             if (input == null)
                 return false;
@@ -240,24 +144,9 @@ namespace Lusid.Sdk.Model
                     this.Key.Equals(input.Key))
                 ) && 
                 (
-                    this.Supplier == input.Supplier ||
-                    (this.Supplier != null &&
-                    this.Supplier.Equals(input.Supplier))
-                ) && 
-                (
-                    this.DataScope == input.DataScope ||
-                    (this.DataScope != null &&
-                    this.DataScope.Equals(input.DataScope))
-                ) && 
-                (
-                    this.QuoteType == input.QuoteType ||
-                    (this.QuoteType != null &&
-                    this.QuoteType.Equals(input.QuoteType))
-                ) && 
-                (
-                    this.PriceSide == input.PriceSide ||
-                    (this.PriceSide != null &&
-                    this.PriceSide.Equals(input.PriceSide))
+                    this.SortOrder == input.SortOrder ||
+                    (this.SortOrder != null &&
+                    this.SortOrder.Equals(input.SortOrder))
                 );
         }
 
@@ -272,14 +161,8 @@ namespace Lusid.Sdk.Model
                 int hashCode = 41;
                 if (this.Key != null)
                     hashCode = hashCode * 59 + this.Key.GetHashCode();
-                if (this.Supplier != null)
-                    hashCode = hashCode * 59 + this.Supplier.GetHashCode();
-                if (this.DataScope != null)
-                    hashCode = hashCode * 59 + this.DataScope.GetHashCode();
-                if (this.QuoteType != null)
-                    hashCode = hashCode * 59 + this.QuoteType.GetHashCode();
-                if (this.PriceSide != null)
-                    hashCode = hashCode * 59 + this.PriceSide.GetHashCode();
+                if (this.SortOrder != null)
+                    hashCode = hashCode * 59 + this.SortOrder.GetHashCode();
                 return hashCode;
             }
         }
