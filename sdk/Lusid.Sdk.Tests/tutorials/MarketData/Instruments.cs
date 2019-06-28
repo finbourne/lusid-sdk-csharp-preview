@@ -198,7 +198,7 @@ namespace Lusid.Sdk.Tests.Tutorials.MarketData
             //    List the instruments restricting, the number that are returned
             var instruments = _instrumentsApi.ListInstruments(limit: pageSize);
             
-            Assert.That(instruments.Count, Is.LessThanOrEqualTo(pageSize));
+            Assert.That(instruments.Values.Count(), Is.LessThanOrEqualTo(pageSize));
         }
 
         [Test]
