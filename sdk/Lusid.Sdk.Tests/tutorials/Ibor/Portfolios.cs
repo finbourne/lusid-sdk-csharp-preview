@@ -60,63 +60,6 @@ namespace Lusid.Sdk.Tests.Tutorials.Ibor
         }
 
         [Test]
-        public void Create_Transaction_Portfolio_With_Property()
-        {
-            var uuid = Guid.NewGuid().ToString();
-            var propertyName = $"fund-style-{uuid}";
-            var effectiveDate = new DateTimeOffset(2018, 1, 1, 0, 0, 0, TimeSpan.Zero);
-            
-            //    Details of the property to be created
-            var propertyDefinition = new CreatePropertyDefinitionRequest(
-                
-                //    The domain the property is to be applied to
-                domain: CreatePropertyDefinitionRequest.DomainEnum.Portfolio,
-                
-                //    The scope the property will be created in
-                scope: TestDataUtilities.TutorialScope,
-                
-                //    When the property value is set it will be valid forever and cannot be changed.
-                //    Properties whose values can change over time should be created with LifeTimeEnum.TIMEVARIANT
-                lifeTime: CreatePropertyDefinitionRequest.LifeTimeEnum.Perpetual,
-                
-                code: propertyName,
-                valueRequired: false,
-                displayName: "Fund Style",
-                dataTypeId: new ResourceId("system", "string")
-            );
-            
-            //    Create the property definition
-            var propertyDefinitionResult = _apiFactory.Api<IPropertyDefinitionsApi>().CreatePropertyDefinition(propertyDefinition);
-            
-            //    Create the property value
-            var propertyValue = new PropertyValue(labelValue: "Active");
-            
-            //    Details of the new portfolio to be created, created here with the minimum set of mandatory fields 
-            var createPortfolioRequest = new CreateTransactionPortfolioRequest(
-                code: $"id-{uuid}",
-                displayName: $"Portfolio-{uuid}",
-                baseCurrency: "GBP",
-                created: effectiveDate,
-                
-                //    Set the property value when creating the portfolio
-                properties: new Dictionary<string, PropertyValue>
-                {
-                    [propertyDefinitionResult.Key] = propertyValue
-                }
-            );
-
-            //    Create the portfolio
-            var portfolioResult = _apiFactory.Api<ITransactionPortfoliosApi>().CreatePortfolio(TestDataUtilities.TutorialScope, createPortfolioRequest);
-            
-            Assert.That(portfolioResult.Id.Code, Is.EqualTo(createPortfolioRequest.Code));
-
-            var portfolioProperties = _apiFactory.Api<IPortfoliosApi>().GetPortfolioProperties(TestDataUtilities.TutorialScope, portfolioResult.Id.Code);
-
-            Assert.That(portfolioProperties.Properties, Has.Count.EqualTo(1));
-            Assert.That(portfolioProperties.Properties[propertyDefinitionResult.Key].Value, Is.EqualTo("Active"));
-        }
-
-        [Test]
         public void Add_Transactions_To_Portfolio()
         {
             //    Effective date of the trades. All dates/times must be supplied in UTC
