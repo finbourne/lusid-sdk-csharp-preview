@@ -14,11 +14,23 @@ namespace Lusid.Sdk.Utilities
     public class LusidApiFactory : ILusidApiFactory
     {
         private Dictionary<Type, IApiAccessor> _apis;
-            
+
         public LusidApiFactory(ApiConfiguration apiConfiguration)
         {
             if (apiConfiguration == null) throw new ArgumentNullException(nameof(apiConfiguration));
 
+            // Validate Uris
+            if (!Uri.TryCreate(apiConfiguration.TokenUrl, UriKind.Absolute, out var _))
+            {
+                throw new UriFormatException($"Invalid Token Uri: {apiConfiguration.TokenUrl}");
+            }
+
+            if (!Uri.TryCreate(apiConfiguration.ApiUrl, UriKind.Absolute, out var _))
+            {
+                throw new UriFormatException($"Invalid LUSID Uri: {apiConfiguration.ApiUrl}");
+            }
+
+            // Create configuration
             var tokenProvider = new ClientCredentialsFlowTokenProvider(apiConfiguration);
             var configuration = new TokenProviderConfiguration(tokenProvider)
             {
@@ -27,11 +39,11 @@ namespace Lusid.Sdk.Utilities
 
             Init(configuration);
         }
-                
+
         public LusidApiFactory(Configuration configuration)
         {
             if (configuration == null) throw new ArgumentNullException(nameof(configuration));
-            
+
             Init(configuration);
         }
 
