@@ -1,9 +1,9 @@
 {
 	"swagger": "2.0",
 	"info": {
-		"version": "0.10.358-jim",
+		"version": "0.10.400-jim",
 		"title": "LUSID API",
-		"description": "# Introduction\n\nThis page documents the [LUSID APIs](https://api.lusid.com/swagger), which allows authorised clients to query and update their data within the LUSID platform.\n\nSDKs to interact with the LUSID APIs are available in the following languages :\n\n* [C#](https://github.com/finbourne/lusid-sdk-csharp)\n* [Java](https://github.com/finbourne/lusid-sdk-java)\n* [JavaScript](https://github.com/finbourne/lusid-sdk-js)\n* [Python](https://github.com/finbourne/lusid-sdk-python)\n\n# Data Model\n\nThe LUSID API has a relatively lightweight but extremely powerful data model.   One of the goals of LUSID was not to enforce on clients a single rigid data model but rather to provide a flexible foundation onto which clients can streamline their data.   One of the primary tools to extend the data model is through using properties.  Properties can be associated with amongst others: -\n* Transactions\n* Instruments\n* Portfolios \n\nThe LUSID data model is exposed through the LUSID APIs.  The APIs provide access to both business objects and the meta data used to configure the systems behaviours.   The key business entities are: -\n* **Portfolios**\nA portfolio is the primary container for transactions and holdings. \n* **Derived Portfolios**\nDerived portfolios allow portfolios to be created based on other portfolios, by overriding or overlaying specific items\n* **Holdings**\nA holding is a position account for a instrument within a portfolio.  Holdings can only be adjusted via transactions.\n* **Transactions**\nA Transaction is a source of transactions used to manipulate holdings. \n* **Corporate Actions**\nA corporate action is a market event which occurs to a instrument, for example a stock split\n* **Instruments** \nA instrument represents a currency, tradable instrument or OTC contract that is attached to a transaction and a holding.\n* **Properties**\nSeveral entities allow additional user defined properties to be associated with them.   For example, a Portfolio manager may be associated with a portfolio\n\nMeta data includes: -\n* **Transaction Types**\nTransactions are booked with a specific transaction type.  The types are client defined and are used to map the Transaction to a series of movements which update the portfolio holdings. \n* **Properties Types**\nTypes of user defined properties used within the system.\n\nThis section describes the data model that LUSID exposes via the APIs.\n\n## Scope\n\nAll data in LUSID is segregated at the client level.  Entities in LUSID are identifiable by a unique code.  Every entity lives within a logical data partition known as a Scope.  Scope is an identity namespace allowing two entities with the same unique code to co-exist within individual address spaces.\n\nFor example, prices for equities from different vendors may be uploaded into different scopes such as `client/vendor1` and `client/vendor2`.  A portfolio may then be valued using either of the price sources by referencing the appropriate scope.\n\nLUSID Clients cannot access scopes of other clients.\n\n## Schema\n\nA detailed description of the entities used by the API and parameters for endpoints which take a JSON document can be retrieved via the `schema` endpoint.\n\n## Instruments\n\nLUSID has its own built-in instrument master which you can use to master your own instrument universe.\n\nEvery instrument must be created with one or more unique market identifiers, such as [FIGI](https://openfigi.com/). For any non-listed instruments (eg OTCs), you can upload an instrument against a custom ID of your choosing.\n\nIn addition, LUSID will allocate each instrument a unique 'LUSID instrument identifier'. The LUSID instrument identifier is what is used when uploading transactions, holdings, prices, etc. The API exposes an `instrument/lookup` endpoint which can be used to lookup these LUSID identifiers using their market identifiers.\n\nCash can be referenced using the ISO currency code prefixed with \"`CCY_`\" e.g. `CCY_GBP`\n\n## Instrument Prices (Analytics)\n\nInstrument prices are stored in LUSID's Analytics Store\n\n| Field|Type|Description |\r\n| ---|---|--- |\r\n| InstrumentUid|string|Unique instrument identifier |\r\n| Value|decimal|Value of the analytic, eg price |\r\n| Denomination|string|Underlying unit of the analytic, eg currency, EPS etc. |\r\n\n\n## Instrument Data\n\nInstrument data can be uploaded to the system using the [Instrument Properties](#tag/InstrumentProperties) endpoint.\n\n| Field|Type|Description |\r\n| ---|---|--- |\r\n\n\n## Portfolios\n\nPortfolios are the top-level entity containers within LUSID, containing transactions, corporate actions and holdings.    The transactions build up the portfolio holdings on which valuations, analytics profit & loss and risk can be calculated.    \nProperties can be associated with Portfolios to add in additional model data.  Portfolio properties can be changed over time as well.  For example, to allow a Portfolio Manager to be linked with a Portfolio.\n\nAdditionally, portfolios can be securitised and held by other portfolios, allowing LUSID to perform \"drill-through\" into underlying fund holdings\n\n### Reference Portfolios\nReference portfolios are portfolios that contain only weights, as opposed to transactions, and are designed to represent entities such as indices.\n\n### Derived Portfolios\n\nLUSID also allows for a portfolio to be composed of another portfolio via derived portfolios.  A derived portfolio can contain its own transactions and also inherits any transactions from its parent portfolio.  Any changes made to the parent portfolio are automatically reflected in derived portfolio.\n\nDerived portfolios in conjunction with scopes are a powerful construct.  For example, to do pre-trade what-if analysis, a derived portfolio could be created a new namespace linked to the underlying live (parent) portfolio.  Analysis can then be undertaken on the derived portfolio without affecting the live portfolio.\n\n### Portfolio Groups\nPortfolio groups allow the construction of a hierarchy from portfolios and groups.  Portfolio operations on the group are executed on an aggregated set of portfolios in the hierarchy. \n\nFor example:\n \n* Global Portfolios _(group)_\n  * APAC _(group)_\n    * Hong Kong _(portfolio)_\n    * Japan _(portfolio)_\n  * Europe _(group)_\n    * France _(portfolio)_\n    * Germany _(portfolio)_\n  * UK _(portfolio)_\n \nIn this example **Global Portfolios** is a group that consists of an aggregate of **Hong Kong**, **Japan**, **France**, **Germany** and **UK** portfolios.\n\n### Movements Engine\nThe Movements engine sits on top of the immutable event store and is used to manage the relationship between input trading actions and their associated portfolio holdings.   \n\nThe movements engine reads in the following entity types:-\n* Posting Transactions\n* Applying Corporate Actions \n* Holding Adjustments\n\nThese are converted to one or more movements and used by the movements engine to calculate holdings.  At the same time it also calculates running balances, and realised P&L.  The outputs from the movements engine are holdings and transactions.\n\n## Transactions\n\nA transaction represents an economic activity against a Portfolio.\n\nTransactions are processed according to a configuration. This will tell the LUSID engine how to interpret the transaction and correctly update the holdings. LUSID comes with a set of transaction types you can use out of the box, or you can configure your own set(s) of transactions.\n\nFor more details see the [LUSID Getting Started Guide for transaction configuration.](https://support.finbourne.com/hc/en-us/articles/360016737511-Configuring-Transaction-Types)\n\n| Field|Type|Description |\r\n| ---|---|--- |\r\n| TransactionId|string|Unique transaction identifier |\r\n| Type|string|LUSID transaction type code - Buy, Sell, StockIn, StockOut, etc |\r\n| InstrumentIdentifiers|map|Unique instrument identifiers |\r\n| InstrumentUid|string|LUSID's internal unique instrument identifier, resolved from the instrument identifiers |\r\n| TransactionDate|datetime|Transaction date |\r\n| SettlementDate|datetime|Settlement date |\r\n| Units|decimal|Quantity of trade in units of the instrument |\r\n| TransactionPrice|tradeprice|Execution price for the transaction |\r\n| TotalConsideration|currencyandamount|Total value of the transaction in settlement currency |\r\n| ExchangeRate|decimal|Rate between transaction and settlement currency |\r\n| TransactionCurrency|currency|Transaction currency |\r\n| CounterpartyId|string|Counterparty identifier |\r\n| Source|string|Where this transaction came from |\r\n| NettingSet|string|  |\r\n\n\nFrom these fields, the following values can be calculated\n * **Transaction value in Transaction currency**: TotalConsideration / ExchangeRate\n * **Transaction value in Portfolio currency**: Transaction value in Transaction currency * TradeToPortfolioRate\n\n### Example Transactions\n\n#### A Common Purchase Example\nThree example transactions are shown in the table below. \n\nThey represent a purchase of USD denominated IBM shares within a Sterling denominated portfolio.\n\n * The first two transactions are for separate buy and fx trades\n   * Buying 500 IBM shares for $71,480.00\n   * A foreign exchange conversion to fund the IBM purchase. (Buy $71,480.00 for &#163;54,846.60)\n * The third transaction is an alternate version of the above trades. Buying 500 IBM shares and settling directly in Sterling.\n\n| Column |  Buy Trade | Fx Trade | Buy Trade with foreign Settlement |\n| ----- | ----- | ----- | ----- |\n| TransactionId | FBN00001 | FBN00002 | FBN00003 |\n| Type | Buy | FxBuy | Buy |\n| InstrumentIdentifiers | { \"figi\", \"BBG000BLNNH6\" } | { \"CCY\", \"CCY_USD\" } | { \"figi\", \"BBG000BLNNH6\" } |\n| TransactionDate | 2018-08-02 | 2018-08-02 | 2018-08-02 |\n| SettlementDate | 2018-08-06 | 2018-08-06 | 2018-08-06 |\n| Units | 500 | 71480 | 500 |\n| TransactionPrice | 142.96 | 1 | 142.96 |\n| TradeCurrency | USD | USD | USD |\n| ExchangeRate | 1 | 0.7673 | 0.7673 |\n| TotalConsideration.Amount | 71480.00 | 54846.60 | 54846.60 |\n| TotalConsideration.Currency | USD | GBP | GBP |\n| Trade/default/TradeToPortfolioRate&ast; | 0.7673 | 0.7673 | 0.7673 |\n\n[&ast; This is a property field]\n\n#### A Forward FX Example\n\nLUSID has a flexible transaction modelling system, and there are a number of different ways of modelling forward fx trades.\n\nThe default LUSID transaction types are FwdFxBuy and FwdFxSell. Other types and behaviours can be configured as required.\n\nUsing these transaction types, the holdings query will report two forward positions. One in each currency. \n\nSince an FX trade is an exchange of one currency for another, the following two 6 month forward transactions are equivalent:\n\n| Column |  Forward 'Sell' Trade | Forward 'Buy' Trade |\n| ----- | ----- | ----- |\n| TransactionId | FBN00004 | FBN00005 |\n| Type | FwdFxSell | FwdFxBuy |\n| InstrumentIdentifiers | { \"CCY\", \"CCY_GBP\" } | { \"CCY\", \"CCY_USD\" } |\n| TransactionDate | 2018-08-02 | 2018-08-02 |\n| SettlementDate | 2019-02-06 | 2019-02-06 |\n| Units | 10000.00 | 13142.00 |\n| TransactionPrice |1 | 1 |\n| TradeCurrency | GBP | USD |\n| ExchangeRate | 1.3142 | 0.760919 |\n| TotalConsideration.Amount | 13142.00 | 10000.00 |\n| TotalConsideration.Currency | USD | GBP |\n| Trade/default/TradeToPortfolioRate | 1.0 | 0.760919 |\n\n## Holdings\n\nA holding represents a position in a instrument or cash on a given date.\n\n| Field|Type|Description |\r\n| ---|---|--- |\r\n| InstrumentUid|string|Unique instrument identifier |\r\n| HoldingType|string|Type of holding, eg Position, Balance, CashCommitment, Receivable, ForwardFX |\r\n| Units|decimal|Quantity of holding |\r\n| SettledUnits|decimal|Settled quantity of holding |\r\n| Cost|currencyandamount|Book cost of holding in transaction currency |\r\n| CostPortfolioCcy|currencyandamount|Book cost of holding in portfolio currency |\r\n| Transaction|Transaction|If this is commitment-type holding, the transaction behind it |\r\n\n\n## Corporate Actions\n\nCorporate actions are represented within LUSID in terms of a set of instrument-specific 'transitions'.  These transitions are used to specify the participants of the corporate action, and the effect that the corporate action will have on holdings in those participants.\n\n### Corporate Action\n\n| Field|Type|Description |\r\n| ---|---|--- |\r\n| CorporateActionCode|code|The unique identifier of this corporate action |\r\n| AnnouncementDate|datetime|The announcement date of the corporate action |\r\n| ExDate|datetime|The ex date of the corporate action |\r\n| RecordDate|datetime|The record date of the corporate action |\r\n| PaymentDate|datetime|The payment date of the corporate action |\r\n| Transitions|list|The transitions that result from this corporate action |\r\n\n\n### Transition\n\n| Field|Type|Description |\r\n| ---|---|--- |\r\n| InputTransition|transition|Indicating the basis of the corporate action - which security and how many units |\r\n| OutputTransitions|list|What will be generated relative to the input transition |\r\n\n\n### Example Corporate Action Transitions\n\n#### A Dividend Action Transition\n\nIn this example, for each share of IBM, 0.20 units (or 20 pence) of GBP are generated.\n\n| Column |  Input Transition | Output Transition |\n| ----- | ----- | ----- |\n| Instrument Identifiers | { \"figi\" : \"BBG000BLNNH6\" } | { \"ccy\" : \"CCY_GBP\" } |\n| Units Factor | 1 | 0.20 |\n| Cost Factor | 1 | 0 |\n\n#### A Split Action Transition\n\nIn this example, for each share of IBM, we end up with 2 units (2 shares) of IBM, with total value unchanged.\n\n| Column |  Input Transition | Output Transition |\n| ----- | ----- | ----- |\n| Instrument Identifiers | { \"figi\" : \"BBG000BLNNH6\" } | { \"figi\" : \"BBG000BLNNH6\" } |\n| Units Factor | 1 | 2 |\n| Cost Factor | 1 | 1 |\n\n#### A Spinoff Action Transition\n\nIn this example, for each share of IBM, we end up with 1 unit (1 share) of IBM and 3 units (3 shares) of Celestica, with 85% of the value remaining on the IBM share, and 5% in each Celestica share (15% total).\n\n| Column |  Input Transition | Output Transition 1 | Output Transition 2 |\n| ----- | ----- | ----- | ----- |\n| Instrument Identifiers | { \"figi\" : \"BBG000BLNNH6\" } | { \"figi\" : \"BBG000BLNNH6\" } | { \"figi\" : \"BBG000HBGRF3\" } |\n| Units Factor | 1 | 1 | 3 |\n| Cost Factor | 1 | 0.85 | 0.15 |\n\n## Property\n\nProperties are key-value pairs that can be applied to any entity within a domain (where a domain is `trade`, `portfolio`, `security` etc).  Properties must be defined before use with a `PropertyDefinition` and can then subsequently be added to entities.\n\n# Schemas\n\nThe following headers are returned on all responses from LUSID\n\n| Name | Purpose |\n| --- | --- |\n| lusid-meta-duration | Duration of the request |\n| lusid-meta-success | Whether or not LUSID considered the request to be successful |\n| lusid-meta-requestId | The unique identifier for the request |\n| lusid-schema-url | Url of the schema for the data being returned |\n| lusid-property-schema-url | Url of the schema for any properties |\n\n\n# Error Codes\n\n| Code|Name|Description |\r\n| ---|---|--- |\r\n| <a name=\"102\">102</a>|VersionNotFound|  |\r\n| <a name=\"104\">104</a>|InstrumentNotFound|  |\r\n| <a name=\"105\">105</a>|PropertyNotFound|  |\r\n| <a name=\"106\">106</a>|PortfolioRecursionDepth|  |\r\n| <a name=\"108\">108</a>|GroupNotFound|  |\r\n| <a name=\"109\">109</a>|PortfolioNotFound|  |\r\n| <a name=\"110\">110</a>|PropertySchemaNotFound|  |\r\n| <a name=\"111\">111</a>|PortfolioAncestryNotFound|  |\r\n| <a name=\"112\">112</a>|PortfolioWithIdAlreadyExists|  |\r\n| <a name=\"113\">113</a>|OrphanedPortfolio|  |\r\n| <a name=\"119\">119</a>|MissingBaseClaims|  |\r\n| <a name=\"121\">121</a>|PropertyNotDefined|  |\r\n| <a name=\"122\">122</a>|CannotDeleteSystemProperty|  |\r\n| <a name=\"123\">123</a>|CannotModifyImmutablePropertyField|  |\r\n| <a name=\"124\">124</a>|PropertyAlreadyExists|  |\r\n| <a name=\"125\">125</a>|InvalidPropertyLifeTime|  |\r\n| <a name=\"127\">127</a>|CannotModifyDefaultDataType|  |\r\n| <a name=\"128\">128</a>|GroupAlreadyExists|  |\r\n| <a name=\"129\">129</a>|NoSuchDataType|  |\r\n| <a name=\"132\">132</a>|ValidationError|  |\r\n| <a name=\"133\">133</a>|LoopDetectedInGroupHierarchy|  |\r\n| <a name=\"135\">135</a>|SubGroupAlreadyExists|  |\r\n| <a name=\"138\">138</a>|PriceSourceNotFound|  |\r\n| <a name=\"139\">139</a>|AnalyticStoreNotFound|  |\r\n| <a name=\"141\">141</a>|AnalyticStoreAlreadyExists|  |\r\n| <a name=\"143\">143</a>|ClientInstrumentAlreadyExists|  |\r\n| <a name=\"144\">144</a>|DuplicateInParameterSet|  |\r\n| <a name=\"147\">147</a>|ResultsNotFound|  |\r\n| <a name=\"148\">148</a>|OrderFieldNotInResultSet|  |\r\n| <a name=\"149\">149</a>|OperationFailed|  |\r\n| <a name=\"150\">150</a>|ElasticSearchError|  |\r\n| <a name=\"151\">151</a>|InvalidParameterValue|  |\r\n| <a name=\"153\">153</a>|CommandProcessingFailure|  |\r\n| <a name=\"154\">154</a>|EntityStateConstructionFailure|  |\r\n| <a name=\"155\">155</a>|EntityTimelineDoesNotExist|  |\r\n| <a name=\"156\">156</a>|EventPublishFailure|  |\r\n| <a name=\"157\">157</a>|InvalidRequestFailure|  |\r\n| <a name=\"158\">158</a>|EventPublishUnknown|  |\r\n| <a name=\"159\">159</a>|EventQueryFailure|  |\r\n| <a name=\"160\">160</a>|BlobDidNotExistFailure|  |\r\n| <a name=\"162\">162</a>|SubSystemRequestFailure|  |\r\n| <a name=\"163\">163</a>|SubSystemConfigurationFailure|  |\r\n| <a name=\"165\">165</a>|FailedToDelete|  |\r\n| <a name=\"166\">166</a>|UpsertClientInstrumentFailure|  |\r\n| <a name=\"167\">167</a>|IllegalAsAtInterval|  |\r\n| <a name=\"168\">168</a>|IllegalBitemporalQuery|  |\r\n| <a name=\"169\">169</a>|InvalidAlternateId|  |\r\n| <a name=\"170\">170</a>|CannotAddSourcePortfolioPropertyExplicitly|  |\r\n| <a name=\"171\">171</a>|EntityAlreadyExistsInGroup|  |\r\n| <a name=\"173\">173</a>|EntityWithIdAlreadyExists|  |\r\n| <a name=\"174\">174</a>|DerivedPortfolioDetailsDoNotExist|  |\r\n| <a name=\"176\">176</a>|PortfolioWithNameAlreadyExists|  |\r\n| <a name=\"177\">177</a>|InvalidTransactions|  |\r\n| <a name=\"178\">178</a>|ReferencePortfolioNotFound|  |\r\n| <a name=\"179\">179</a>|DuplicateIdFailure|  |\r\n| <a name=\"180\">180</a>|CommandRetrievalFailure|  |\r\n| <a name=\"181\">181</a>|DataFilterApplicationFailure|  |\r\n| <a name=\"182\">182</a>|SearchFailed|  |\r\n| <a name=\"183\">183</a>|MovementsEngineConfigurationKeyFailure|  |\r\n| <a name=\"184\">184</a>|FxRateSourceNotFound|  |\r\n| <a name=\"185\">185</a>|AccrualSourceNotFound|  |\r\n| <a name=\"186\">186</a>|AccessDenied|  |\r\n| <a name=\"187\">187</a>|InvalidIdentityToken|  |\r\n| <a name=\"188\">188</a>|InvalidRequestHeaders|  |\r\n| <a name=\"189\">189</a>|PriceNotFound|  |\r\n| <a name=\"190\">190</a>|InvalidSubHoldingKeysProvided|  |\r\n| <a name=\"191\">191</a>|DuplicateSubHoldingKeysProvided|  |\r\n| <a name=\"192\">192</a>|CutDefinitionNotFound|  |\r\n| <a name=\"193\">193</a>|CutDefinitionInvalid|  |\r\n| <a name=\"200\">200</a>|InvalidUnitForDataType|  |\r\n| <a name=\"201\">201</a>|InvalidTypeForDataType|  |\r\n| <a name=\"202\">202</a>|InvalidValueForDataType|  |\r\n| <a name=\"203\">203</a>|UnitNotDefinedForDataType|  |\r\n| <a name=\"204\">204</a>|UnitsNotSupportedOnDataType|  |\r\n| <a name=\"205\">205</a>|CannotSpecifyUnitsOnDataType|  |\r\n| <a name=\"206\">206</a>|UnitSchemaInconsistentWithDataType|  |\r\n| <a name=\"207\">207</a>|UnitDefinitionNotSpecified|  |\r\n| <a name=\"208\">208</a>|DuplicateUnitDefinitionsSpecified|  |\r\n| <a name=\"209\">209</a>|InvalidUnitsDefinition|  |\r\n| <a name=\"210\">210</a>|InvalidInstrumentIdentifierUnit|  |\r\n| <a name=\"211\">211</a>|HoldingsAdjustmentDoesNotExist|  |\r\n| <a name=\"212\">212</a>|CouldNotBuildExcelUrl|  |\r\n| <a name=\"213\">213</a>|CouldNotGetExcelVersion|  |\r\n| <a name=\"214\">214</a>|InstrumentByCodeNotFound|  |\r\n| <a name=\"215\">215</a>|EntitySchemaDoesNotExist|  |\r\n| <a name=\"216\">216</a>|FeatureNotSupportedOnPortfolioType|  |\r\n| <a name=\"217\">217</a>|QuoteNotFoundFailure|  |\r\n| <a name=\"219\">219</a>|InvalidInstrumentDefinition|  |\r\n| <a name=\"221\">221</a>|InstrumentUpsertFailure|  |\r\n| <a name=\"222\">222</a>|ReferencePortfolioRequestNotSupported|  |\r\n| <a name=\"223\">223</a>|TransactionPortfolioRequestNotSupported|  |\r\n| <a name=\"224\">224</a>|InvalidPropertyValueAssignment|  |\r\n| <a name=\"230\">230</a>|TransactionTypeNotFound|  |\r\n| <a name=\"231\">231</a>|TransactionTypeDuplication|  |\r\n| <a name=\"232\">232</a>|PortfolioDoesNotExistAtGivenDate|  |\r\n| <a name=\"233\">233</a>|QueryParserFailure|  |\r\n| <a name=\"234\">234</a>|DuplicateConstituentFailure|  |\r\n| <a name=\"235\">235</a>|UnresolvedInstrumentConstituentFailure|  |\r\n| <a name=\"236\">236</a>|UnresolvedInstrumentInTransitionFailure|  |\r\n| <a name=\"300\">300</a>|MissingRecipeFailure|  |\r\n| <a name=\"301\">301</a>|DependenciesFailure|  |\r\n| <a name=\"304\">304</a>|PortfolioPreprocessFailure|  |\r\n| <a name=\"310\">310</a>|ValuationEngineFailure|  |\r\n| <a name=\"311\">311</a>|TaskFactoryFailure|  |\r\n| <a name=\"312\">312</a>|TaskEvaluationFailure|  |\r\n| <a name=\"350\">350</a>|InstrumentFailure|  |\r\n| <a name=\"351\">351</a>|CashFlowsFailure|  |\r\n| <a name=\"360\">360</a>|AggregationFailure|  |\r\n| <a name=\"370\">370</a>|ResultRetrievalFailure|  |\r\n| <a name=\"371\">371</a>|VendorPricingFailure|  |\r\n| <a name=\"371\">371</a>|VendorPricingFailure|  |\r\n| <a name=\"372\">372</a>|VendorResultProcessingFailure|  |\r\n| <a name=\"373\">373</a>|VendorResultMappingFailure|  |\r\n| <a name=\"374\">374</a>|AttemptToUpsertDuplicateQuotes|  |\r\n| <a name=\"375\">375</a>|CorporateActionSourceDoesNotExist|  |\r\n| <a name=\"376\">376</a>|InstrumentIdentifierAlreadyInUse|  |\r\n| <a name=\"377\">377</a>|CorporateActionSourceAlreadyExists|  |\r\n| <a name=\"378\">378</a>|PropertiesNotFound|  |\r\n| <a name=\"379\">379</a>|BatchOperationAborted|  |\r\n| <a name=\"-10\">-10</a>|ServerConfigurationError|  |\r\n| <a name=\"-1\">-1</a>|Unknown error|  |\r\n",
+		"description": "# Introduction\n\nThis page documents the [LUSID APIs](https://api.lusid.com/swagger), which allows authorised clients to query and update their data within the LUSID platform.\n\nSDKs to interact with the LUSID APIs are available in the following languages :\n\n* [C#](https://github.com/finbourne/lusid-sdk-csharp)\n* [Java](https://github.com/finbourne/lusid-sdk-java)\n* [JavaScript](https://github.com/finbourne/lusid-sdk-js)\n* [Python](https://github.com/finbourne/lusid-sdk-python)\n\n# Data Model\n\nThe LUSID API has a relatively lightweight but extremely powerful data model.   One of the goals of LUSID was not to enforce on clients a single rigid data model but rather to provide a flexible foundation onto which clients can streamline their data.   One of the primary tools to extend the data model is through using properties.  Properties can be associated with amongst others: -\n* Transactions\n* Instruments\n* Portfolios \n\nThe LUSID data model is exposed through the LUSID APIs.  The APIs provide access to both business objects and the meta data used to configure the systems behaviours.   The key business entities are: -\n* **Portfolios**\nA portfolio is the primary container for transactions and holdings. \n* **Derived Portfolios**\nDerived portfolios allow portfolios to be created based on other portfolios, by overriding or overlaying specific items\n* **Holdings**\nA holding is a position account for a instrument within a portfolio.  Holdings can only be adjusted via transactions.\n* **Transactions**\nA Transaction is a source of transactions used to manipulate holdings. \n* **Corporate Actions**\nA corporate action is a market event which occurs to a instrument, for example a stock split\n* **Instruments** \nA instrument represents a currency, tradable instrument or OTC contract that is attached to a transaction and a holding.\n* **Properties**\nSeveral entities allow additional user defined properties to be associated with them.   For example, a Portfolio manager may be associated with a portfolio\n\nMeta data includes: -\n* **Transaction Types**\nTransactions are booked with a specific transaction type.  The types are client defined and are used to map the Transaction to a series of movements which update the portfolio holdings. \n* **Properties Types**\nTypes of user defined properties used within the system.\n\nThis section describes the data model that LUSID exposes via the APIs.\n\n## Scope\n\nAll data in LUSID is segregated at the client level.  Entities in LUSID are identifiable by a unique code.  Every entity lives within a logical data partition known as a Scope.  Scope is an identity namespace allowing two entities with the same unique code to co-exist within individual address spaces.\n\nFor example, prices for equities from different vendors may be uploaded into different scopes such as `client/vendor1` and `client/vendor2`.  A portfolio may then be valued using either of the price sources by referencing the appropriate scope.\n\nLUSID Clients cannot access scopes of other clients.\n\n## Schema\n\nA detailed description of the entities used by the API and parameters for endpoints which take a JSON document can be retrieved via the `schema` endpoint.\n\n## Instruments\n\nLUSID has its own built-in instrument master which you can use to master your own instrument universe.\n\nEvery instrument must be created with one or more unique market identifiers, such as [FIGI](https://openfigi.com/). For any non-listed instruments (eg OTCs), you can upload an instrument against a custom ID of your choosing.\n\nIn addition, LUSID will allocate each instrument a unique 'LUSID instrument identifier'. The LUSID instrument identifier is what is used when uploading transactions, holdings, prices, etc. The API exposes an `instrument/lookup` endpoint which can be used to lookup these LUSID identifiers using their market identifiers.\n\nCash can be referenced using the ISO currency code prefixed with \"`CCY_`\" e.g. `CCY_GBP`\n\n## Instrument Prices (Analytics)\n\nInstrument prices are stored in LUSID's Analytics Store\n\n| Field|Type|Description |\r\n| ---|---|--- |\r\n| InstrumentUid|string|Unique instrument identifier |\r\n| Value|decimal|Value of the analytic, eg price |\r\n| Denomination|string|Underlying unit of the analytic, eg currency, EPS etc. |\r\n\n\n## Instrument Data\n\nInstrument data can be uploaded to the system using the [Instrument Properties](#tag/InstrumentProperties) endpoint.\n\n| Field|Type|Description |\r\n| ---|---|--- |\r\n\n\n## Portfolios\n\nPortfolios are the top-level entity containers within LUSID, containing transactions, corporate actions and holdings.    The transactions build up the portfolio holdings on which valuations, analytics profit & loss and risk can be calculated.    \nProperties can be associated with Portfolios to add in additional model data.  Portfolio properties can be changed over time as well.  For example, to allow a Portfolio Manager to be linked with a Portfolio.\n\nAdditionally, portfolios can be securitised and held by other portfolios, allowing LUSID to perform \"drill-through\" into underlying fund holdings\n\n### Reference Portfolios\nReference portfolios are portfolios that contain only weights, as opposed to transactions, and are designed to represent entities such as indices.\n\n### Derived Portfolios\n\nLUSID also allows for a portfolio to be composed of another portfolio via derived portfolios.  A derived portfolio can contain its own transactions and also inherits any transactions from its parent portfolio.  Any changes made to the parent portfolio are automatically reflected in derived portfolio.\n\nDerived portfolios in conjunction with scopes are a powerful construct.  For example, to do pre-trade what-if analysis, a derived portfolio could be created a new namespace linked to the underlying live (parent) portfolio.  Analysis can then be undertaken on the derived portfolio without affecting the live portfolio.\n\n### Portfolio Groups\nPortfolio groups allow the construction of a hierarchy from portfolios and groups.  Portfolio operations on the group are executed on an aggregated set of portfolios in the hierarchy. \n\nFor example:\n \n* Global Portfolios _(group)_\n  * APAC _(group)_\n    * Hong Kong _(portfolio)_\n    * Japan _(portfolio)_\n  * Europe _(group)_\n    * France _(portfolio)_\n    * Germany _(portfolio)_\n  * UK _(portfolio)_\n \nIn this example **Global Portfolios** is a group that consists of an aggregate of **Hong Kong**, **Japan**, **France**, **Germany** and **UK** portfolios.\n\n### Movements Engine\nThe Movements engine sits on top of the immutable event store and is used to manage the relationship between input trading actions and their associated portfolio holdings.   \n\nThe movements engine reads in the following entity types:-\n* Posting Transactions\n* Applying Corporate Actions \n* Holding Adjustments\n\nThese are converted to one or more movements and used by the movements engine to calculate holdings.  At the same time it also calculates running balances, and realised P&L.  The outputs from the movements engine are holdings and transactions.\n\n## Transactions\n\nA transaction represents an economic activity against a Portfolio.\n\nTransactions are processed according to a configuration. This will tell the LUSID engine how to interpret the transaction and correctly update the holdings. LUSID comes with a set of transaction types you can use out of the box, or you can configure your own set(s) of transactions.\n\nFor more details see the [LUSID Getting Started Guide for transaction configuration.](https://support.finbourne.com/hc/en-us/articles/360016737511-Configuring-Transaction-Types)\n\n| Field|Type|Description |\r\n| ---|---|--- |\r\n| TransactionId|string|Unique transaction identifier |\r\n| Type|string|LUSID transaction type code - Buy, Sell, StockIn, StockOut, etc |\r\n| InstrumentIdentifiers|map|Unique instrument identifiers |\r\n| InstrumentUid|string|LUSID's internal unique instrument identifier, resolved from the instrument identifiers |\r\n| TransactionDate|datetime|Transaction date |\r\n| SettlementDate|datetime|Settlement date |\r\n| Units|decimal|Quantity of trade in units of the instrument |\r\n| TransactionPrice|tradeprice|Execution price for the transaction |\r\n| TotalConsideration|currencyandamount|Total value of the transaction in settlement currency |\r\n| ExchangeRate|decimal|Rate between transaction and settlement currency |\r\n| TransactionCurrency|currency|Transaction currency |\r\n| CounterpartyId|string|Counterparty identifier |\r\n| Source|string|Where this transaction came from |\r\n\n\nFrom these fields, the following values can be calculated\n * **Transaction value in Transaction currency**: TotalConsideration / ExchangeRate\n * **Transaction value in Portfolio currency**: Transaction value in Transaction currency * TradeToPortfolioRate\n\n### Example Transactions\n\n#### A Common Purchase Example\nThree example transactions are shown in the table below. \n\nThey represent a purchase of USD denominated IBM shares within a Sterling denominated portfolio.\n\n * The first two transactions are for separate buy and fx trades\n   * Buying 500 IBM shares for $71,480.00\n   * A foreign exchange conversion to fund the IBM purchase. (Buy $71,480.00 for &#163;54,846.60)\n * The third transaction is an alternate version of the above trades. Buying 500 IBM shares and settling directly in Sterling.\n\n| Column |  Buy Trade | Fx Trade | Buy Trade with foreign Settlement |\n| ----- | ----- | ----- | ----- |\n| TransactionId | FBN00001 | FBN00002 | FBN00003 |\n| Type | Buy | FxBuy | Buy |\n| InstrumentIdentifiers | { \"figi\", \"BBG000BLNNH6\" } | { \"CCY\", \"CCY_USD\" } | { \"figi\", \"BBG000BLNNH6\" } |\n| TransactionDate | 2018-08-02 | 2018-08-02 | 2018-08-02 |\n| SettlementDate | 2018-08-06 | 2018-08-06 | 2018-08-06 |\n| Units | 500 | 71480 | 500 |\n| TransactionPrice | 142.96 | 1 | 142.96 |\n| TradeCurrency | USD | USD | USD |\n| ExchangeRate | 1 | 0.7673 | 0.7673 |\n| TotalConsideration.Amount | 71480.00 | 54846.60 | 54846.60 |\n| TotalConsideration.Currency | USD | GBP | GBP |\n| Trade/default/TradeToPortfolioRate&ast; | 0.7673 | 0.7673 | 0.7673 |\n\n[&ast; This is a property field]\n\n#### A Forward FX Example\n\nLUSID has a flexible transaction modelling system, and there are a number of different ways of modelling forward fx trades.\n\nThe default LUSID transaction types are FwdFxBuy and FwdFxSell. Other types and behaviours can be configured as required.\n\nUsing these transaction types, the holdings query will report two forward positions. One in each currency. \n\nSince an FX trade is an exchange of one currency for another, the following two 6 month forward transactions are equivalent:\n\n| Column |  Forward 'Sell' Trade | Forward 'Buy' Trade |\n| ----- | ----- | ----- |\n| TransactionId | FBN00004 | FBN00005 |\n| Type | FwdFxSell | FwdFxBuy |\n| InstrumentIdentifiers | { \"CCY\", \"CCY_GBP\" } | { \"CCY\", \"CCY_USD\" } |\n| TransactionDate | 2018-08-02 | 2018-08-02 |\n| SettlementDate | 2019-02-06 | 2019-02-06 |\n| Units | 10000.00 | 13142.00 |\n| TransactionPrice |1 | 1 |\n| TradeCurrency | GBP | USD |\n| ExchangeRate | 1.3142 | 0.760919 |\n| TotalConsideration.Amount | 13142.00 | 10000.00 |\n| TotalConsideration.Currency | USD | GBP |\n| Trade/default/TradeToPortfolioRate | 1.0 | 0.760919 |\n\n## Holdings\n\nA holding represents a position in a instrument or cash on a given date.\n\n| Field|Type|Description |\r\n| ---|---|--- |\r\n| InstrumentUid|string|Unique instrument identifier |\r\n| HoldingType|string|Type of holding, eg Position, Balance, CashCommitment, Receivable, ForwardFX |\r\n| Units|decimal|Quantity of holding |\r\n| SettledUnits|decimal|Settled quantity of holding |\r\n| Cost|currencyandamount|Book cost of holding in transaction currency |\r\n| CostPortfolioCcy|currencyandamount|Book cost of holding in portfolio currency |\r\n| Transaction|Transaction|If this is commitment-type holding, the transaction behind it |\r\n\n\n## Corporate Actions\n\nCorporate actions are represented within LUSID in terms of a set of instrument-specific 'transitions'.  These transitions are used to specify the participants of the corporate action, and the effect that the corporate action will have on holdings in those participants.\n\n### Corporate Action\n\n| Field|Type|Description |\r\n| ---|---|--- |\r\n| CorporateActionCode|code|The unique identifier of this corporate action |\r\n| AnnouncementDate|datetime|The announcement date of the corporate action |\r\n| ExDate|datetime|The ex date of the corporate action |\r\n| RecordDate|datetime|The record date of the corporate action |\r\n| PaymentDate|datetime|The payment date of the corporate action |\r\n| Transitions|list|The transitions that result from this corporate action |\r\n\n\n### Transition\n\n| Field|Type|Description |\r\n| ---|---|--- |\r\n| InputTransition|transition|Indicating the basis of the corporate action - which security and how many units |\r\n| OutputTransitions|list|What will be generated relative to the input transition |\r\n\n\n### Example Corporate Action Transitions\n\n#### A Dividend Action Transition\n\nIn this example, for each share of IBM, 0.20 units (or 20 pence) of GBP are generated.\n\n| Column |  Input Transition | Output Transition |\n| ----- | ----- | ----- |\n| Instrument Identifiers | { \"figi\" : \"BBG000BLNNH6\" } | { \"ccy\" : \"CCY_GBP\" } |\n| Units Factor | 1 | 0.20 |\n| Cost Factor | 1 | 0 |\n\n#### A Split Action Transition\n\nIn this example, for each share of IBM, we end up with 2 units (2 shares) of IBM, with total value unchanged.\n\n| Column |  Input Transition | Output Transition |\n| ----- | ----- | ----- |\n| Instrument Identifiers | { \"figi\" : \"BBG000BLNNH6\" } | { \"figi\" : \"BBG000BLNNH6\" } |\n| Units Factor | 1 | 2 |\n| Cost Factor | 1 | 1 |\n\n#### A Spinoff Action Transition\n\nIn this example, for each share of IBM, we end up with 1 unit (1 share) of IBM and 3 units (3 shares) of Celestica, with 85% of the value remaining on the IBM share, and 5% in each Celestica share (15% total).\n\n| Column |  Input Transition | Output Transition 1 | Output Transition 2 |\n| ----- | ----- | ----- | ----- |\n| Instrument Identifiers | { \"figi\" : \"BBG000BLNNH6\" } | { \"figi\" : \"BBG000BLNNH6\" } | { \"figi\" : \"BBG000HBGRF3\" } |\n| Units Factor | 1 | 1 | 3 |\n| Cost Factor | 1 | 0.85 | 0.15 |\n\n## Property\n\nProperties are key-value pairs that can be applied to any entity within a domain (where a domain is `trade`, `portfolio`, `security` etc).  Properties must be defined before use with a `PropertyDefinition` and can then subsequently be added to entities.\n\n# Schemas\n\nThe following headers are returned on all responses from LUSID\n\n| Name | Purpose |\n| --- | --- |\n| lusid-meta-duration | Duration of the request |\n| lusid-meta-success | Whether or not LUSID considered the request to be successful |\n| lusid-meta-requestId | The unique identifier for the request |\n| lusid-schema-url | Url of the schema for the data being returned |\n| lusid-property-schema-url | Url of the schema for any properties |\n\n\n# Error Codes\n\n| Code|Name|Description |\r\n| ---|---|--- |\r\n| <a name=\"102\">102</a>|VersionNotFound|  |\r\n| <a name=\"104\">104</a>|InstrumentNotFound|  |\r\n| <a name=\"105\">105</a>|PropertyNotFound|  |\r\n| <a name=\"106\">106</a>|PortfolioRecursionDepth|  |\r\n| <a name=\"108\">108</a>|GroupNotFound|  |\r\n| <a name=\"109\">109</a>|PortfolioNotFound|  |\r\n| <a name=\"110\">110</a>|PropertySchemaNotFound|  |\r\n| <a name=\"111\">111</a>|PortfolioAncestryNotFound|  |\r\n| <a name=\"112\">112</a>|PortfolioWithIdAlreadyExists|  |\r\n| <a name=\"113\">113</a>|OrphanedPortfolio|  |\r\n| <a name=\"119\">119</a>|MissingBaseClaims|  |\r\n| <a name=\"121\">121</a>|PropertyNotDefined|  |\r\n| <a name=\"122\">122</a>|CannotDeleteSystemProperty|  |\r\n| <a name=\"123\">123</a>|CannotModifyImmutablePropertyField|  |\r\n| <a name=\"124\">124</a>|PropertyAlreadyExists|  |\r\n| <a name=\"125\">125</a>|InvalidPropertyLifeTime|  |\r\n| <a name=\"127\">127</a>|CannotModifyDefaultDataType|  |\r\n| <a name=\"128\">128</a>|GroupAlreadyExists|  |\r\n| <a name=\"129\">129</a>|NoSuchDataType|  |\r\n| <a name=\"132\">132</a>|ValidationError|  |\r\n| <a name=\"133\">133</a>|LoopDetectedInGroupHierarchy|  |\r\n| <a name=\"135\">135</a>|SubGroupAlreadyExists|  |\r\n| <a name=\"138\">138</a>|PriceSourceNotFound|  |\r\n| <a name=\"139\">139</a>|AnalyticStoreNotFound|  |\r\n| <a name=\"141\">141</a>|AnalyticStoreAlreadyExists|  |\r\n| <a name=\"143\">143</a>|ClientInstrumentAlreadyExists|  |\r\n| <a name=\"144\">144</a>|DuplicateInParameterSet|  |\r\n| <a name=\"147\">147</a>|ResultsNotFound|  |\r\n| <a name=\"148\">148</a>|OrderFieldNotInResultSet|  |\r\n| <a name=\"149\">149</a>|OperationFailed|  |\r\n| <a name=\"150\">150</a>|ElasticSearchError|  |\r\n| <a name=\"151\">151</a>|InvalidParameterValue|  |\r\n| <a name=\"153\">153</a>|CommandProcessingFailure|  |\r\n| <a name=\"154\">154</a>|EntityStateConstructionFailure|  |\r\n| <a name=\"155\">155</a>|EntityTimelineDoesNotExist|  |\r\n| <a name=\"156\">156</a>|EventPublishFailure|  |\r\n| <a name=\"157\">157</a>|InvalidRequestFailure|  |\r\n| <a name=\"158\">158</a>|EventPublishUnknown|  |\r\n| <a name=\"159\">159</a>|EventQueryFailure|  |\r\n| <a name=\"160\">160</a>|BlobDidNotExistFailure|  |\r\n| <a name=\"162\">162</a>|SubSystemRequestFailure|  |\r\n| <a name=\"163\">163</a>|SubSystemConfigurationFailure|  |\r\n| <a name=\"165\">165</a>|FailedToDelete|  |\r\n| <a name=\"166\">166</a>|UpsertClientInstrumentFailure|  |\r\n| <a name=\"167\">167</a>|IllegalAsAtInterval|  |\r\n| <a name=\"168\">168</a>|IllegalBitemporalQuery|  |\r\n| <a name=\"169\">169</a>|InvalidAlternateId|  |\r\n| <a name=\"170\">170</a>|CannotAddSourcePortfolioPropertyExplicitly|  |\r\n| <a name=\"171\">171</a>|EntityAlreadyExistsInGroup|  |\r\n| <a name=\"173\">173</a>|EntityWithIdAlreadyExists|  |\r\n| <a name=\"174\">174</a>|DerivedPortfolioDetailsDoNotExist|  |\r\n| <a name=\"176\">176</a>|PortfolioWithNameAlreadyExists|  |\r\n| <a name=\"177\">177</a>|InvalidTransactions|  |\r\n| <a name=\"178\">178</a>|ReferencePortfolioNotFound|  |\r\n| <a name=\"179\">179</a>|DuplicateIdFailure|  |\r\n| <a name=\"180\">180</a>|CommandRetrievalFailure|  |\r\n| <a name=\"181\">181</a>|DataFilterApplicationFailure|  |\r\n| <a name=\"182\">182</a>|SearchFailed|  |\r\n| <a name=\"183\">183</a>|MovementsEngineConfigurationKeyFailure|  |\r\n| <a name=\"184\">184</a>|FxRateSourceNotFound|  |\r\n| <a name=\"185\">185</a>|AccrualSourceNotFound|  |\r\n| <a name=\"186\">186</a>|AccessDenied|  |\r\n| <a name=\"187\">187</a>|InvalidIdentityToken|  |\r\n| <a name=\"188\">188</a>|InvalidRequestHeaders|  |\r\n| <a name=\"189\">189</a>|PriceNotFound|  |\r\n| <a name=\"190\">190</a>|InvalidSubHoldingKeysProvided|  |\r\n| <a name=\"191\">191</a>|DuplicateSubHoldingKeysProvided|  |\r\n| <a name=\"192\">192</a>|CutDefinitionNotFound|  |\r\n| <a name=\"193\">193</a>|CutDefinitionInvalid|  |\r\n| <a name=\"200\">200</a>|InvalidUnitForDataType|  |\r\n| <a name=\"201\">201</a>|InvalidTypeForDataType|  |\r\n| <a name=\"202\">202</a>|InvalidValueForDataType|  |\r\n| <a name=\"203\">203</a>|UnitNotDefinedForDataType|  |\r\n| <a name=\"204\">204</a>|UnitsNotSupportedOnDataType|  |\r\n| <a name=\"205\">205</a>|CannotSpecifyUnitsOnDataType|  |\r\n| <a name=\"206\">206</a>|UnitSchemaInconsistentWithDataType|  |\r\n| <a name=\"207\">207</a>|UnitDefinitionNotSpecified|  |\r\n| <a name=\"208\">208</a>|DuplicateUnitDefinitionsSpecified|  |\r\n| <a name=\"209\">209</a>|InvalidUnitsDefinition|  |\r\n| <a name=\"210\">210</a>|InvalidInstrumentIdentifierUnit|  |\r\n| <a name=\"211\">211</a>|HoldingsAdjustmentDoesNotExist|  |\r\n| <a name=\"212\">212</a>|CouldNotBuildExcelUrl|  |\r\n| <a name=\"213\">213</a>|CouldNotGetExcelVersion|  |\r\n| <a name=\"214\">214</a>|InstrumentByCodeNotFound|  |\r\n| <a name=\"215\">215</a>|EntitySchemaDoesNotExist|  |\r\n| <a name=\"216\">216</a>|FeatureNotSupportedOnPortfolioType|  |\r\n| <a name=\"217\">217</a>|QuoteNotFoundFailure|  |\r\n| <a name=\"219\">219</a>|InvalidInstrumentDefinition|  |\r\n| <a name=\"221\">221</a>|InstrumentUpsertFailure|  |\r\n| <a name=\"222\">222</a>|ReferencePortfolioRequestNotSupported|  |\r\n| <a name=\"223\">223</a>|TransactionPortfolioRequestNotSupported|  |\r\n| <a name=\"224\">224</a>|InvalidPropertyValueAssignment|  |\r\n| <a name=\"230\">230</a>|TransactionTypeNotFound|  |\r\n| <a name=\"231\">231</a>|TransactionTypeDuplication|  |\r\n| <a name=\"232\">232</a>|PortfolioDoesNotExistAtGivenDate|  |\r\n| <a name=\"233\">233</a>|QueryParserFailure|  |\r\n| <a name=\"234\">234</a>|DuplicateConstituentFailure|  |\r\n| <a name=\"235\">235</a>|UnresolvedInstrumentConstituentFailure|  |\r\n| <a name=\"236\">236</a>|UnresolvedInstrumentInTransitionFailure|  |\r\n| <a name=\"300\">300</a>|MissingRecipeFailure|  |\r\n| <a name=\"301\">301</a>|DependenciesFailure|  |\r\n| <a name=\"304\">304</a>|PortfolioPreprocessFailure|  |\r\n| <a name=\"310\">310</a>|ValuationEngineFailure|  |\r\n| <a name=\"311\">311</a>|TaskFactoryFailure|  |\r\n| <a name=\"312\">312</a>|TaskEvaluationFailure|  |\r\n| <a name=\"350\">350</a>|InstrumentFailure|  |\r\n| <a name=\"351\">351</a>|CashFlowsFailure|  |\r\n| <a name=\"360\">360</a>|AggregationFailure|  |\r\n| <a name=\"370\">370</a>|ResultRetrievalFailure|  |\r\n| <a name=\"371\">371</a>|VendorPricingFailure|  |\r\n| <a name=\"371\">371</a>|VendorPricingFailure|  |\r\n| <a name=\"372\">372</a>|VendorResultProcessingFailure|  |\r\n| <a name=\"373\">373</a>|VendorResultMappingFailure|  |\r\n| <a name=\"374\">374</a>|AttemptToUpsertDuplicateQuotes|  |\r\n| <a name=\"375\">375</a>|CorporateActionSourceDoesNotExist|  |\r\n| <a name=\"376\">376</a>|InstrumentIdentifierAlreadyInUse|  |\r\n| <a name=\"377\">377</a>|CorporateActionSourceAlreadyExists|  |\r\n| <a name=\"378\">378</a>|PropertiesNotFound|  |\r\n| <a name=\"379\">379</a>|BatchOperationAborted|  |\r\n| <a name=\"-10\">-10</a>|ServerConfigurationError|  |\r\n| <a name=\"-1\">-1</a>|Unknown error|  |\r\n",
 		"termsOfService": "Not to be used without explicit authorisation from FINBOURNE",
 		"contact": {
 			"name": "FINBOURNE Technology",
@@ -15,7 +15,6 @@
 			"backgroundColor": "#415464"
 		}
 	},
-	"basePath": "/",
 	"paths": {
 		"/api/analytics": {
 			"get": {
@@ -3276,14 +3275,14 @@
 										"value": 12345.5672,
 										"unit": "Unit"
 									},
-									"effectiveFrom": "2019-07-02T11:18:58.7972879+01:00"
+									"effectiveFrom": "2019-07-08T09:27:31.9332717+01:00"
 								},
 								"Portfolio/MyScope/MyPropertyName2": {
 									"metricValue": {
 										"value": 925.3,
 										"unit": "Unit"
 									},
-									"effectiveFrom": "2019-07-02T11:18:58.7972898+01:00"
+									"effectiveFrom": "2019-07-08T09:27:31.9332745+01:00"
 								}
 							}
 						}
@@ -3530,7 +3529,7 @@
 			"put": {
 				"tags": ["Property Definitions"],
 				"summary": "Update property definition",
-				"description": "Update the definition of the specified existing property. Not all elements within a property definition\r\nare modifiable due to the potential implications for data already stored against the property.",
+				"description": "Update display name of specified existing property.",
 				"operationId": "UpdatePropertyDefinition",
 				"consumes": [],
 				"produces": ["text/plain", "application/json", "text/json"],
@@ -3671,7 +3670,7 @@
 											"quoteType": "Price",
 											"field": "mid"
 										},
-										"effectiveAt": "2019-07-02T10:18:58.824Z"
+										"effectiveAt": "2019-07-08T08:27:31.979Z"
 									},
 									"metricValue": {
 										"value": 1460.0,
@@ -3687,7 +3686,7 @@
 											"quoteType": "Price",
 											"field": "bid"
 										},
-										"effectiveAt": "2019-07-02T10:18:58.824Z"
+										"effectiveAt": "2019-07-08T08:27:31.979Z"
 									},
 									"metricValue": {
 										"value": 1.367,
@@ -3756,7 +3755,7 @@
 										"quoteType": "Price",
 										"field": "mid"
 									},
-									"effectiveAt": "2019-07-02T10:18:58.827Z"
+									"effectiveAt": "2019-07-08T08:27:31.983Z"
 								}
 							]
 						}
@@ -5244,21 +5243,21 @@
 		"/api/transactionportfolios/{scope}": {
 			"post": {
 				"tags": ["Transaction Portfolios"],
-				"summary": "Create transaction portfolio",
-				"description": "Create a transaction portfolio in a specific scope",
+				"summary": "Create portfolio",
+				"description": "Create a transaction portfolio in a specific scope.",
 				"operationId": "CreatePortfolio",
 				"consumes": [],
 				"produces": ["text/plain", "application/json", "text/json"],
 				"parameters": [{
 						"name": "scope",
 						"in": "path",
-						"description": "The scope into which the transaction portfolio will be created",
+						"description": "The scope that the transaction portfolio will be created in.",
 						"required": true,
 						"type": "string"
 					}, {
 						"name": "createRequest",
 						"in": "body",
-						"description": "The transaction portfolio definition",
+						"description": "The definition and details of the transaction portfolio.",
 						"required": false,
 						"schema": {
 							"$ref": "#/definitions/CreateTransactionPortfolioRequest"
@@ -5291,34 +5290,34 @@
 		"/api/transactionportfolios/{scope}/{code}/details": {
 			"get": {
 				"tags": ["Transaction Portfolios"],
-				"summary": "Get portfolio details",
-				"description": "Get the details document associated with a transaction portfolio\r\n            \r\nWhen requesting details from a derived transaction portfolio, the returned set of details could come from a different transaction portfolio",
+				"summary": "Get details",
+				"description": "Get the details associated with a transaction portfolio.",
 				"operationId": "GetDetails",
 				"consumes": [],
 				"produces": ["text/plain", "application/json", "text/json"],
 				"parameters": [{
 						"name": "scope",
 						"in": "path",
-						"description": "The scope of the portfolio",
+						"description": "The scope of the transaction portfolio to retrieve the details for.",
 						"required": true,
 						"type": "string"
 					}, {
 						"name": "code",
 						"in": "path",
-						"description": "The code of the portfolio",
+						"description": "The code of the transaction portfolio to retrieve the details for. Together with the\r\n            scope this uniquely identifies the transaction portfolio.",
 						"required": true,
 						"type": "string"
 					}, {
 						"name": "effectiveAt",
 						"in": "query",
-						"description": "Optional. The effective date of the data",
+						"description": "The effectiveAt datetime at which to retrieve the details of the transaction\r\n            portfolio. Defaults to the current datetime if not specified.",
 						"required": false,
 						"type": "string",
 						"format": "dateorcutlabel"
 					}, {
 						"name": "asAt",
 						"in": "query",
-						"description": "Optional. The AsAt date of the data",
+						"description": "The asAt datetime at which to retrieve the details of the transaction portfolio. Defaults\r\n            to the current datetime if not specified.",
 						"required": false,
 						"type": "string",
 						"format": "date-time"
@@ -5361,27 +5360,27 @@
 			},
 			"post": {
 				"tags": ["Transaction Portfolios"],
-				"summary": "Upsert details",
-				"description": "Update the portfolio details for the specified transaction portfolios or add if it doesn't already exist (in the case of a derived transaction portfolio).",
+				"summary": "Upsert portfolio details",
+				"description": "Upsert details for the specified transaction portfolio.",
 				"operationId": "UpsertPortfolioDetails",
 				"consumes": [],
 				"produces": ["text/plain", "application/json", "text/json"],
 				"parameters": [{
 						"name": "scope",
 						"in": "path",
-						"description": "The scope of the portfolio",
+						"description": "The scope of the transaction portfolio to upsert details for.",
 						"required": true,
 						"type": "string"
 					}, {
 						"name": "code",
 						"in": "path",
-						"description": "The code of the portfolio",
+						"description": "The code of the transaction portfolio to upsert details for. Together with the\r\n            scope this uniquely identifies the transaction portfolio.",
 						"required": true,
 						"type": "string"
 					}, {
 						"name": "details",
 						"in": "body",
-						"description": "The set of details for the portfolio",
+						"description": "The details to upsert to the specified transaction portfolio.",
 						"required": false,
 						"schema": {
 							"$ref": "#/definitions/CreatePortfolioDetails"
@@ -5389,7 +5388,7 @@
 					}, {
 						"name": "effectiveAt",
 						"in": "query",
-						"description": "Optional. The effective date of the change",
+						"description": "The effectiveAt datetime at which the upserted details should take effect. Defaults\r\n            to the current datetime if not specified.",
 						"required": false,
 						"type": "string",
 						"format": "dateorcutlabel"
@@ -5422,26 +5421,26 @@
 			"post": {
 				"tags": ["Transaction Portfolios"],
 				"summary": "Upsert executions",
-				"description": "Inserts new executions, or updates those already present",
+				"description": "Upsert executions into the specified transaction portfolio.",
 				"operationId": "UpsertExecutions",
 				"consumes": [],
 				"produces": ["text/plain", "application/json", "text/json"],
 				"parameters": [{
 						"name": "scope",
 						"in": "path",
-						"description": "The scope of the portfolio",
+						"description": "The scope of the transaction portfolio.",
 						"required": true,
 						"type": "string"
 					}, {
 						"name": "code",
 						"in": "path",
-						"description": "The code of the portfolio",
+						"description": "The code of the transaction portfolio. Together with the scope this uniquely identifies\r\n            the transaction portfolio.",
 						"required": true,
 						"type": "string"
 					}, {
 						"name": "executions",
 						"in": "body",
-						"description": "The executions to be updated",
+						"description": "The executions to be upserted.",
 						"required": false,
 						"schema": {
 							"uniqueItems": false,
@@ -5477,27 +5476,27 @@
 			"delete": {
 				"tags": ["Transaction Portfolios"],
 				"summary": "Delete executions",
-				"description": "Delete one or more executions from a transaction portfolio",
+				"description": "Delete one or more executions from a transaction portfolio.",
 				"operationId": "DeleteExecutions",
 				"consumes": [],
 				"produces": ["text/plain", "application/json", "text/json"],
 				"parameters": [{
 						"name": "scope",
 						"in": "path",
-						"description": "The scope of the portfolio",
+						"description": "The scope of the transaction portfolio.",
 						"required": true,
 						"type": "string"
 					}, {
 						"name": "code",
 						"in": "path",
-						"description": "The code of the portfolio",
+						"description": "The code of the transaction portfolio. Together with the scope this uniquely identifies\r\n            the transaction portfolio.",
 						"required": true,
 						"type": "string"
 					}, {
 						"name": "executionIds",
 						"in": "query",
-						"description": "Ids of executions to delete",
-						"required": false,
+						"description": "The ids of the executions to delete.",
+						"required": true,
 						"type": "array",
 						"items": {
 							"type": "string"
@@ -5533,77 +5532,52 @@
 			"get": {
 				"tags": ["Transaction Portfolios"],
 				"summary": "Get holdings",
-				"description": "Get the aggregate holdings of a transaction portfolio.  If no effectiveAt or asAt\r\nare supplied then values will be defaulted to the latest system time.",
+				"description": "Get the holdings of the specified transaction portfolio.",
 				"operationId": "GetHoldings",
 				"consumes": [],
 				"produces": ["text/plain", "application/json", "text/json"],
 				"parameters": [{
 						"name": "scope",
 						"in": "path",
-						"description": "The scope of the portfolio",
+						"description": "The scope of the transaction portfolio.",
 						"required": true,
 						"type": "string"
 					}, {
 						"name": "code",
 						"in": "path",
-						"description": "The code of the portfolio",
+						"description": "The code of the transaction portfolio. Together with the scope this uniquely identifies\r\n            the transaction portfolio.",
 						"required": true,
 						"type": "string"
 					}, {
 						"name": "byTaxlots",
 						"in": "query",
-						"description": "Option to expand holdings to return the underlying tax-lots",
+						"description": "Whether or not to expand the holdings to return the underlying tax-lots. Defaults to\r\n            False.",
 						"required": false,
 						"type": "boolean"
 					}, {
 						"name": "effectiveAt",
 						"in": "query",
-						"description": "Optional. The effective date of the portfolio",
+						"description": "The effectiveAt datetime at which to retrieve the holdings of the transaction\r\n            portfolio. Defaults to the current datetime if not specified.",
 						"required": false,
 						"type": "string",
 						"format": "dateorcutlabel"
 					}, {
 						"name": "asAt",
 						"in": "query",
-						"description": "Optional. The AsAt date of the data",
+						"description": "The asAt datetime at which to retrieve the holdings of the transaction portfolio. Defaults\r\n            to the current datetime if not specified.",
 						"required": false,
 						"type": "string",
 						"format": "date-time"
 					}, {
-						"name": "sortBy",
-						"in": "query",
-						"description": "Optional. Order the results by these fields. Use use the '-' sign to denote descending order e.g. -MyFieldName",
-						"required": false,
-						"type": "array",
-						"items": {
-							"type": "string"
-						},
-						"collectionFormat": "multi",
-						"uniqueItems": false
-					}, {
-						"name": "start",
-						"in": "query",
-						"description": "Optional. When paginating, skip this number of results",
-						"required": false,
-						"type": "integer",
-						"format": "int32"
-					}, {
-						"name": "limit",
-						"in": "query",
-						"description": "Optional. When paginating, limit the number of returned results to this many.",
-						"required": false,
-						"type": "integer",
-						"format": "int32"
-					}, {
 						"name": "filter",
 						"in": "query",
-						"description": "Optional. Expression to filter the result set",
+						"description": "Expression to filter the result set. Read more about filtering results from LUSID here https://support.lusid.com/filtering-results-from-lusid.",
 						"required": false,
 						"type": "string"
 					}, {
 						"name": "propertyKeys",
 						"in": "query",
-						"description": "Optional. Keys for the Holding or instrument property values that will be decorated onto the transactions. No properties will be decorated if none are specified.",
+						"description": "A list of property keys from the \"Instrument\" or \"Holding\" domain to decorate onto\r\n            the holdings. These take the format {domain}/{scope}/{code} e.g. \"Instrument/system/Name\" or \"Holding/system/Cost\".",
 						"required": false,
 						"type": "array",
 						"items": {
@@ -5626,7 +5600,7 @@
 									"asAtDate": "2019-03-05T12:00:00+00:00"
 								},
 								"values": [{
-										"instrumentUid": "LUID_YUST0HPH",
+										"instrumentUid": "LUID_K2FIH2O0",
 										"holdingType": "P",
 										"units": 10.0,
 										"settledUnits": 10.0,
@@ -5662,34 +5636,34 @@
 		"/api/transactionportfolios/{scope}/{code}/holdings/{effectiveAt}": {
 			"put": {
 				"tags": ["Transaction Portfolios"],
-				"summary": "Set all holdings on a transaction portfolio",
-				"description": "Prompt the creation of transactions in a specific transaction portfolio to bring all holdings to the specified targets",
+				"summary": "Set holdings",
+				"description": "Set the holdings of the specified transaction portfolio to the provided targets. LUSID will automatically\r\nconstruct adjustment transactions to ensure that the entire set of holdings for the transaction portfolio\r\nare always set to the provided targets for the given effectiveAt datetime. Read more about the difference between\r\nadjusting and setting holdings here https://support.lusid.com/how-do-i-adjust-my-holdings.",
 				"operationId": "SetHoldings",
 				"consumes": [],
 				"produces": ["text/plain", "application/json", "text/json"],
 				"parameters": [{
 						"name": "scope",
 						"in": "path",
-						"description": "The scope of the transaction portfolio",
+						"description": "The scope of the transaction portfolio.",
 						"required": true,
 						"type": "string"
 					}, {
 						"name": "code",
 						"in": "path",
-						"description": "The code of the transaction portfolio",
+						"description": "The code of the transaction portfolio. Together with the scope this uniquely identifies\r\n            the transaction portfolio.",
 						"required": true,
 						"type": "string"
 					}, {
 						"name": "effectiveAt",
 						"in": "path",
-						"description": "The effective date of the change",
+						"description": "The effectiveAt datetime at which the holdings should be set to the provided targets.",
 						"required": true,
 						"type": "string",
 						"format": "dateorcutlabel"
 					}, {
 						"name": "holdingAdjustments",
 						"in": "body",
-						"description": "The complete set of holdings adjustments for the portfolio",
+						"description": "The complete set of target holdings for the transaction portfolio.",
 						"required": false,
 						"schema": {
 							"uniqueItems": false,
@@ -5725,7 +5699,7 @@
 			"post": {
 				"tags": ["Transaction Portfolios"],
 				"summary": "Adjust holdings",
-				"description": "Adjust one or more holdings in a transaction portfolio\r\n\r\nPrompt the creation of transactions in a specific transaction portfolio to bring selected holdings to the specified targets",
+				"description": "Adjust one or more holdings of the specified transaction portfolio to the provided targets. LUSID will\r\nautomatically construct adjustment transactions to ensure that the holdings which have been adjusted are\r\nalways set to the provided targets for the given effectiveAt datetime. Read more about the difference between\r\nadjusting and setting holdings here https://support.lusid.com/how-do-i-adjust-my-holdings.",
 				"operationId": "AdjustHoldings",
 				"consumes": [],
 				"produces": ["text/plain", "application/json", "text/json"],
@@ -5738,20 +5712,20 @@
 					}, {
 						"name": "code",
 						"in": "path",
-						"description": "The code of the portfolio",
+						"description": "The code of the transaction portfolio. Together with the scope this uniquely identifies\r\n            the transaction portfolio.",
 						"required": true,
 						"type": "string"
 					}, {
 						"name": "effectiveAt",
 						"in": "path",
-						"description": "The effective date of the change",
+						"description": "The effectiveAt datetime at which the holdings should be set to the provided targets.",
 						"required": true,
 						"type": "string",
 						"format": "dateorcutlabel"
 					}, {
 						"name": "holdingAdjustments",
 						"in": "body",
-						"description": "The selected set of holdings adjustments",
+						"description": "The selected set of holdings to adjust to the provided targets for the\r\n            transaction portfolio.",
 						"required": false,
 						"schema": {
 							"uniqueItems": false,
@@ -5786,27 +5760,27 @@
 			},
 			"delete": {
 				"tags": ["Transaction Portfolios"],
-				"summary": "Cancel holdings adjustments",
-				"description": "Cancel previous adjust-holdings for the portfolio for a specific date",
+				"summary": "Cancel adjust holdings",
+				"description": "Cancel all previous holding adjustments made on the specified transaction portfolio for a given effectiveAt\r\ndatetime. This should be used to undo holding adjustments made via set holdings or adjust holdings.",
 				"operationId": "CancelAdjustHoldings",
 				"consumes": [],
 				"produces": ["text/plain", "application/json", "text/json"],
 				"parameters": [{
 						"name": "scope",
 						"in": "path",
-						"description": "The scope of the portfolio",
+						"description": "The scope of the transaction portfolio.",
 						"required": true,
 						"type": "string"
 					}, {
 						"name": "code",
 						"in": "path",
-						"description": "The code of the portfolio",
+						"description": "The code of the transaction portfolio. Together with the scope this uniquely identifies\r\n            the transaction portfolio.",
 						"required": true,
 						"type": "string"
 					}, {
 						"name": "effectiveAt",
 						"in": "path",
-						"description": "The effective date of the change",
+						"description": "The effectiveAt datetime at which the holding adjustments should be undone.",
 						"required": true,
 						"type": "string",
 						"format": "dateorcutlabel"
@@ -5839,40 +5813,40 @@
 			"get": {
 				"tags": ["Transaction Portfolios"],
 				"summary": "List holdings adjustments",
-				"description": "Get holdings adjustments from a transaction portfolio in an interval of effective time.",
+				"description": "List the holdings adjustments made to a transaction portfolio over a given interval of effectiveAt time.",
 				"operationId": "ListHoldingsAdjustments",
 				"consumes": [],
 				"produces": ["text/plain", "application/json", "text/json"],
 				"parameters": [{
 						"name": "scope",
 						"in": "path",
-						"description": "The scope of the portfolio",
+						"description": "The scope of the transaction portfolio.",
 						"required": true,
 						"type": "string"
 					}, {
 						"name": "code",
 						"in": "path",
-						"description": "Code for the portfolio",
+						"description": "The code of the transaction portfolio. Together with the scope this uniquely identifies\r\n            the transaction portfolio.",
 						"required": true,
 						"type": "string"
 					}, {
 						"name": "fromEffectiveAt",
 						"in": "query",
-						"description": "Holdings adjustments between this time (inclusive) and the toEffectiveAt are returned.",
+						"description": "The lower bound effectiveAt datetime (inclusive) from which to retrieve the holdings\r\n            adjustments. There is no lower bound if this is not specified.",
 						"required": false,
 						"type": "string",
 						"format": "dateorcutlabel"
 					}, {
 						"name": "toEffectiveAt",
 						"in": "query",
-						"description": "Holdings adjustments between this time (inclusive) and the fromEffectiveAt are returned.",
+						"description": "The upper bound effectiveAt datetime (inclusive) from which to retrieve the holdings\r\n            adjustments. There is no upper bound if this is not specified.",
 						"required": false,
 						"type": "string",
 						"format": "dateorcutlabel"
 					}, {
 						"name": "asAt",
 						"in": "query",
-						"description": "Optional. The AsAt date of the data",
+						"description": "The asAt datetime at which to retrieve the holdings adjustments. Defaults to the\r\n            current datetime if not specified.",
 						"required": false,
 						"type": "string",
 						"format": "date-time"
@@ -5904,34 +5878,34 @@
 		"/api/transactionportfolios/{scope}/{code}/holdingsadjustments/{effectiveAt}": {
 			"get": {
 				"tags": ["Transaction Portfolios"],
-				"summary": "Get holding adjustment",
-				"description": "Get a holdings adjustment for a transaction portfolio at a specific effective time.\r\n\r\nA holdings adjustment definition will only be returned if one exists for the specified effective time",
+				"summary": "Get holdings adjustment",
+				"description": "Get a holdings adjustment made to a transaction portfolio at a specific effectiveAt datetime. Note that a\r\nholdings adjustment will only be returned if one exists for the specified effectiveAt datetime.",
 				"operationId": "GetHoldingsAdjustment",
 				"consumes": [],
 				"produces": ["text/plain", "application/json", "text/json"],
 				"parameters": [{
 						"name": "scope",
 						"in": "path",
-						"description": "The scope of the portfolio",
+						"description": "The scope of the transaction portfolio.",
 						"required": true,
 						"type": "string"
 					}, {
 						"name": "code",
 						"in": "path",
-						"description": "The code of the portfolio",
+						"description": "The code of the transaction portfolio. Together with the scope this uniquely identifies\r\n            the transaction portfolio.",
 						"required": true,
 						"type": "string"
 					}, {
 						"name": "effectiveAt",
 						"in": "path",
-						"description": "The effective time of the holdings adjustment",
+						"description": "The effectiveAt datetime of the holdings adjustment.",
 						"required": true,
 						"type": "string",
 						"format": "dateorcutlabel"
 					}, {
 						"name": "asAt",
 						"in": "query",
-						"description": "Optional. The AsAt date of the data",
+						"description": "The asAt datetime at which to retrieve the holdings adjustment. Defaults to the current\r\n            datetime if not specified.",
 						"required": false,
 						"type": "string",
 						"format": "date-time"
@@ -5956,7 +5930,7 @@
 											"instrumentIdentifiers": {
 												"Instrument/default/ClientInternal": "CLI-192836"
 											},
-											"instrumentUid": "LUID_AF2KSK1P",
+											"instrumentUid": "LUID_20H5RHHP",
 											"subHoldingKeys": [],
 											"taxLots": [{
 													"units": 10.0,
@@ -5970,7 +5944,7 @@
 											"instrumentIdentifiers": {
 												"Instrument/default/ClientInternal": "CLI-462810"
 											},
-											"instrumentUid": "LUID_9CDSZ3K1",
+											"instrumentUid": "LUID_JDQ86ZO6",
 											"subHoldingKeys": [],
 											"taxLots": [{
 													"units": 10.0,
@@ -6006,72 +5980,47 @@
 			"get": {
 				"tags": ["Transaction Portfolios"],
 				"summary": "Get transactions",
-				"description": "Get the transactions from a transaction portfolio\r\n\r\nWhen the requested portfolio is a derived transaction portfolio, the returned set of transactions is the union set of all transactions of the parent (and ancestors) and the specified portfolio.",
+				"description": "Get the transactions from the specified transaction portfolio over a given interval of effectiveAt time. \r\n\r\nWhen the specified portfolio is a derived transaction portfolio, the returned set of transactions is the\r\nunion set of all transactions of the parent (and ancestors) and the specified derived transaction portfolio.",
 				"operationId": "GetTransactions",
 				"consumes": [],
 				"produces": ["text/plain", "application/json", "text/json"],
 				"parameters": [{
 						"name": "scope",
 						"in": "path",
-						"description": "The scope of the portfolio",
+						"description": "The scope of the transaction portfolio.",
 						"required": true,
 						"type": "string"
 					}, {
 						"name": "code",
 						"in": "path",
-						"description": "The code of the portfolio",
+						"description": "The code of the transaction portfolio. Together with the scope this uniquely identifies\r\n            the transaction portfolio.",
 						"required": true,
 						"type": "string"
 					}, {
 						"name": "fromTransactionDate",
 						"in": "query",
-						"description": "Optional. Limit the returned transactions to those with a transaction date equal or later than this date",
+						"description": "The lower bound effectiveAt datetime (inclusive) from which to retrieve the transactions.\r\n            There is no lower bound if this is not specified.",
 						"required": false,
 						"type": "string",
 						"format": "dateorcutlabel"
 					}, {
 						"name": "toTransactionDate",
 						"in": "query",
-						"description": "Optional. Limit the returned transactions to those with a transaction date equal or before this date",
+						"description": "The upper bound effectiveAt datetime (inclusive) from which to retrieve transactions.\r\n            There is no upper bound if this is not specified.",
 						"required": false,
 						"type": "string",
 						"format": "dateorcutlabel"
 					}, {
 						"name": "asAt",
 						"in": "query",
-						"description": "Optional. The AsAt date of the data",
+						"description": "The asAt datetime at which to retrieve the transactions. Defaults to the current\r\n            datetime if not specified.",
 						"required": false,
 						"type": "string",
 						"format": "date-time"
 					}, {
-						"name": "sortBy",
-						"in": "query",
-						"description": "Optional. Order the results by these fields. Use use the '-' sign to denote descending order e.g. -MyFieldName",
-						"required": false,
-						"type": "array",
-						"items": {
-							"type": "string"
-						},
-						"collectionFormat": "multi",
-						"uniqueItems": false
-					}, {
-						"name": "start",
-						"in": "query",
-						"description": "Optional. When paginating, skip this number of results",
-						"required": false,
-						"type": "integer",
-						"format": "int32"
-					}, {
-						"name": "limit",
-						"in": "query",
-						"description": "Optional. When paginating, limit the number of returned results to this many.",
-						"required": false,
-						"type": "integer",
-						"format": "int32"
-					}, {
 						"name": "propertyKeys",
 						"in": "query",
-						"description": "Optional. Keys for the transaction or instrument property values that will be decorated onto the transactions. No properties will be decorated if none are specified.",
+						"description": "A list of property keys from the \"Instrument\" or \"Trade\" domain to decorate onto\r\n            the transactions. These take the format {domain}/{scope}/{code} e.g. \"Instrument/system/Name\" or\r\n            \"Trade/strategy/quantsignal\".",
 						"required": false,
 						"type": "array",
 						"items": {
@@ -6082,7 +6031,7 @@
 					}, {
 						"name": "filter",
 						"in": "query",
-						"description": "Optional. Expression to filter the result set",
+						"description": "Expression to filter the result set. Read more about filtering results from LUSID here https://support.lusid.com/filtering-results-from-lusid.",
 						"required": false,
 						"type": "string"
 					}
@@ -6096,8 +6045,8 @@
 						"examples": {
 							"application/json": {
 								"version": {
-									"effectiveFrom": "2019-07-02T11:18:58.9761005+01:00",
-									"asAtDate": "2019-07-02T11:08:58.9761006+01:00"
+									"effectiveFrom": "2019-07-08T09:27:32.1482063+01:00",
+									"asAtDate": "2019-07-08T09:17:32.1482065+01:00"
 								},
 								"values": [{
 										"transactionId": "TXN-00001",
@@ -6105,7 +6054,7 @@
 										"instrumentIdentifiers": {
 											"Instrument/default/RIC": "RIC.L"
 										},
-										"instrumentUid": "LUID_VN1CDR86",
+										"instrumentUid": "LUID_3BHEWDTP",
 										"transactionDate": "2018-08-04T01:00:00+01:00",
 										"settlementDate": "2018-08-06T01:00:00+01:00",
 										"units": 1000.0,
@@ -6128,8 +6077,7 @@
 												"value": "DEMO-SCOPE"
 											}
 										],
-										"source": "",
-										"nettingSet": "NettingSet"
+										"source": ""
 									}
 								],
 								"href": "http://example.com"
@@ -6153,27 +6101,27 @@
 			},
 			"post": {
 				"tags": ["Transaction Portfolios"],
-				"summary": "Upsert transactions into the specified transaction portfolio",
-				"description": "Upsert transactions",
+				"summary": "Upsert transactions",
+				"description": "Upsert transactions into the specified transaction portfolio.",
 				"operationId": "UpsertTransactions",
 				"consumes": [],
 				"produces": ["text/plain", "application/json", "text/json"],
 				"parameters": [{
 						"name": "scope",
 						"in": "path",
-						"description": "The scope of the portfolio",
+						"description": "The scope of the transaction portfolio.",
 						"required": true,
 						"type": "string"
 					}, {
 						"name": "code",
 						"in": "path",
-						"description": "The code for the portfolio",
+						"description": "The code of the transaction portfolio. Together with the scope this uniquely identifies\r\n            the transaction portfolio.",
 						"required": true,
 						"type": "string"
 					}, {
 						"name": "transactions",
 						"in": "body",
-						"description": "The transactions to be upserted",
+						"description": "The transactions to be upserted.",
 						"required": false,
 						"schema": {
 							"uniqueItems": false,
@@ -6209,27 +6157,27 @@
 			"delete": {
 				"tags": ["Transaction Portfolios"],
 				"summary": "Delete transactions",
-				"description": "Delete one or more transactions from a transaction portfolio",
+				"description": "Delete one or more transactions from the specified transaction portfolio.",
 				"operationId": "DeleteTransactions",
 				"consumes": [],
 				"produces": ["text/plain", "application/json", "text/json"],
 				"parameters": [{
 						"name": "scope",
 						"in": "path",
-						"description": "The scope of the portfolio",
+						"description": "The scope of the transaction portfolio.",
 						"required": true,
 						"type": "string"
 					}, {
 						"name": "code",
 						"in": "path",
-						"description": "The code of the portfolio",
+						"description": "The code of the transaction portfolio. Together with the scope this uniquely identifies\r\n            the transaction portfolio.",
 						"required": true,
 						"type": "string"
 					}, {
 						"name": "transactionIds",
 						"in": "query",
-						"description": "Ids of transactions to delete",
-						"required": false,
+						"description": "The ids of the transactions to delete.",
+						"required": true,
 						"type": "array",
 						"items": {
 							"type": "string"
@@ -6264,59 +6212,34 @@
 		"/api/transactionportfolios/{scope}/{code}/transactions/$build": {
 			"post": {
 				"tags": ["Transaction Portfolios"],
-				"summary": "Build output transactions",
-				"description": "Builds and returns the collection of all types of transactions that affect the holdings of a portfolio in to a set of output transactions",
+				"summary": "Build transactions",
+				"description": "Builds and returns all transactions that affect the holdings of a portfolio over a given interval of\r\neffectiveAt time into a set of output transactions. This includes transactions automatically generated by\r\nLUSID such as holding adjustments.",
 				"operationId": "BuildTransactions",
 				"consumes": [],
 				"produces": ["text/plain", "application/json", "text/json"],
 				"parameters": [{
 						"name": "scope",
 						"in": "path",
-						"description": "The scope of the portfolio",
+						"description": "The scope of the transaction portfolio.",
 						"required": true,
 						"type": "string"
 					}, {
 						"name": "code",
 						"in": "path",
-						"description": "The code of the portfolio",
+						"description": "The code of the transaction portfolio. Together with the scope this uniquely identifies\r\n            the transaction portfolio.",
 						"required": true,
 						"type": "string"
 					}, {
 						"name": "asAt",
 						"in": "query",
-						"description": "Optional. The AsAt date of the data",
+						"description": "The asAt datetime at which to build the transactions. Defaults to the current\r\n            datetime if not specified.",
 						"required": false,
 						"type": "string",
 						"format": "date-time"
 					}, {
-						"name": "sortBy",
-						"in": "query",
-						"description": "Optional. Order the results by these fields. Use use the '-' sign to denote descending order e.g. -MyFieldName",
-						"required": false,
-						"type": "array",
-						"items": {
-							"type": "string"
-						},
-						"collectionFormat": "multi",
-						"uniqueItems": false
-					}, {
-						"name": "start",
-						"in": "query",
-						"description": "Optional. When paginating, skip this number of results",
-						"required": false,
-						"type": "integer",
-						"format": "int32"
-					}, {
-						"name": "limit",
-						"in": "query",
-						"description": "Optional. When paginating, limit the number of returned results to this many.",
-						"required": false,
-						"type": "integer",
-						"format": "int32"
-					}, {
 						"name": "propertyKeys",
 						"in": "query",
-						"description": "Optional. Keys for the transaction or instrument property values that will be decorated onto the transactions. No properties will be decorated if none are specified.",
+						"description": "A list of property keys from the \"Instrument\" or \"Trade\" domain to decorate onto\r\n            the transactions. These take the format {domain}/{scope}/{code} e.g. \"Instrument/system/Name\" or\r\n            \"Trade/strategy/quantsignal\".",
 						"required": false,
 						"type": "array",
 						"items": {
@@ -6327,14 +6250,14 @@
 					}, {
 						"name": "filter",
 						"in": "query",
-						"description": "Optional. Expression to filter the result set",
+						"description": "Expression to filter the result set. Read more about filtering results from LUSID here https://support.lusid.com/filtering-results-from-lusid.",
 						"required": false,
 						"type": "string"
 					}, {
 						"name": "parameters",
 						"in": "body",
-						"description": "Optional. Transaction query parameters",
-						"required": false,
+						"description": "The query parameters which control how the output transactions are built.",
+						"required": true,
 						"schema": {
 							"$ref": "#/definitions/TransactionQueryParameters"
 						}
@@ -6349,8 +6272,8 @@
 						"examples": {
 							"application/json": {
 								"version": {
-									"effectiveFrom": "2019-07-02T11:18:59.0038947+01:00",
-									"asAtDate": "2019-07-02T11:08:59.0038948+01:00"
+									"effectiveFrom": "2019-07-08T09:27:32.1780584+01:00",
+									"asAtDate": "2019-07-08T09:17:32.1780586+01:00"
 								},
 								"values": [{
 										"transactionId": "TXN-00001",
@@ -6547,34 +6470,34 @@
 		"/api/transactionportfolios/{scope}/{code}/transactions/{transactionId}/properties": {
 			"post": {
 				"tags": ["Transaction Portfolios"],
-				"summary": "Add transaction properties",
-				"description": "Upsert one or more transaction properties to a single transaction in a portfolio",
+				"summary": "Add transaction property",
+				"description": "Upsert one or more transaction properties to a single transaction in a transaction portfolio.",
 				"operationId": "AddTransactionProperty",
 				"consumes": [],
 				"produces": ["text/plain", "application/json", "text/json"],
 				"parameters": [{
 						"name": "scope",
 						"in": "path",
-						"description": "The scope of the portfolio",
+						"description": "The scope of the transaction portfolio.",
 						"required": true,
 						"type": "string"
 					}, {
 						"name": "code",
 						"in": "path",
-						"description": "The code of the portfolio",
+						"description": "The code of the transaction portfolio. Together with the scope this uniquely identifies\r\n            the transaction portfolio.",
 						"required": true,
 						"type": "string"
 					}, {
 						"name": "transactionId",
 						"in": "path",
-						"description": "Id of transaction",
+						"description": "The unique id of the transaction to upsert properties against.",
 						"required": true,
 						"type": "string"
 					}, {
 						"name": "transactionProperties",
 						"in": "body",
-						"description": "Transaction properties values",
-						"required": false,
+						"description": "The properties with their associated values to upsert onto the\r\n            transaction.",
+						"required": true,
 						"schema": {
 							"type": "object",
 							"additionalProperties": {
@@ -6621,34 +6544,34 @@
 			},
 			"delete": {
 				"tags": ["Transaction Portfolios"],
-				"summary": "Delete transaction property",
-				"description": "Delete a property value from a single transaction in a portfolio",
+				"summary": "Delete property from transaction",
+				"description": "Delete a single property value from a single transaction in a transaction portfolio.",
 				"operationId": "DeletePropertyFromTransaction",
 				"consumes": [],
 				"produces": ["text/plain", "application/json", "text/json"],
 				"parameters": [{
 						"name": "scope",
 						"in": "path",
-						"description": "The scope of the portfolio",
+						"description": "The scope of the transaction portfolio.",
 						"required": true,
 						"type": "string"
 					}, {
 						"name": "code",
 						"in": "path",
-						"description": "Code for the portfolio",
+						"description": "The code of the transaction portfolio. Together with the scope this uniquely identifies\r\n            the transaction portfolio.",
 						"required": true,
 						"type": "string"
 					}, {
 						"name": "transactionId",
 						"in": "path",
-						"description": "Id of the transaction to delete the property from",
+						"description": "The unique id of the transaction to delete the property value from.",
 						"required": true,
 						"type": "string"
 					}, {
 						"name": "transactionPropertyKey",
 						"in": "query",
-						"description": "The key of the property to be deleted",
-						"required": false,
+						"description": "The property key of the property value to delete from the transaction.\r\n            This must be from the \"Trade\" domain and will have the format {domain}/{scope}/{code} e.g.\r\n            \"Trade/strategy/quantsignal\".",
+						"required": true,
 						"type": "string"
 					}
 				],
@@ -6691,7 +6614,7 @@
 			},
 			"example": {
 				"scope": "MyScope",
-				"date": "2019-07-02T11:18:58.5155609+01:00"
+				"date": "2019-07-08T09:27:31.606658+01:00"
 			}
 		},
 		"AnalyticStore": {
@@ -7566,7 +7489,7 @@
 					"scope": "MyParentPortfolioScope",
 					"code": "MyParentPortfolioCode"
 				},
-				"created": "2019-07-02T11:18:58.6142828+01:00",
+				"created": "2019-07-08T09:27:31.7221684+01:00",
 				"corporateActionSourceId": {
 					"scope": "MyScope",
 					"code": "MyCorporateActionSourceId"
@@ -7800,15 +7723,16 @@
 			}
 		},
 		"PropertyValue": {
+			"description": "The value of the property.",
 			"type": "object",
 			"properties": {
 				"labelValue": {
-					"description": "",
+					"description": "The value of a property defined as having the \"Label\" type.",
 					"type": "string"
 				},
 				"metricValue": {
 					"$ref": "#/definitions/MetricValue",
-					"description": ""
+					"description": "The value of a property defined as having the \"Metric\" type."
 				},
 				"effectiveFrom": {
 					"format": "date-time",
@@ -7822,6 +7746,7 @@
 			"properties": {
 				"value": {
 					"format": "double",
+					"description": "The numerical value of the property.",
 					"type": "number"
 				},
 				"unit": {
@@ -7996,7 +7921,7 @@
 						"key": "Instrument/MyScope/MyPropertyName",
 						"value": {
 							"labelValue": "MyValue",
-							"effectiveFrom": "2019-07-02T11:18:58.651961+01:00"
+							"effectiveFrom": "2019-07-08T09:27:31.7674671+01:00"
 						}
 					}
 				],
@@ -8575,8 +8500,8 @@
 					"scope": "MyScope",
 					"code": "default"
 				},
-				"asAt": "2019-07-02T11:18:58.8637651+01:00",
-				"effectiveAt": "2019-07-02T11:18:58.8637649+01:00",
+				"asAt": "2019-07-08T09:27:32.0238247+01:00",
+				"effectiveAt": "2019-07-08T09:27:32.0238244+01:00",
 				"metrics": [{
 						"key": "Holding/default/PV",
 						"op": "Proportion"
@@ -9184,16 +9109,16 @@
 						"scope": "MySourceScope",
 						"code": "MySourcePortfolioCode"
 					},
-					"effectiveAt": "2019-07-02T11:18:58.7747764+01:00",
-					"asAt": "2019-07-02T11:18:58.7747784+01:00"
+					"effectiveAt": "2019-07-08T09:27:31.910254+01:00",
+					"asAt": "2019-07-08T09:27:31.910256+01:00"
 				},
 				"right": {
 					"portfolioId": {
 						"scope": "MyTargetScope",
 						"code": "MyTargetPortfolioCode"
 					},
-					"effectiveAt": "2019-07-02T11:18:58.7747797+01:00",
-					"asAt": "2019-07-02T11:18:58.7747799+01:00"
+					"effectiveAt": "2019-07-08T09:27:31.9102568+01:00",
+					"asAt": "2019-07-08T09:27:31.9102569+01:00"
 				},
 				"instrumentPropertyKeys": ["Instrument/default/Name"]
 			}
@@ -9386,7 +9311,7 @@
 			"example": {
 				"displayName": "MyPortfolioName",
 				"description": "Long form description of portfolio",
-				"created": "2019-07-02T11:18:58.7887219+01:00"
+				"created": "2019-07-08T09:27:31.9223409+01:00"
 			}
 		},
 		"PortfolioProperties": {
@@ -9450,11 +9375,6 @@
 					"description": "Controls how the property's values can change over time.",
 					"enum": ["Perpetual", "TimeVariant"],
 					"type": "string"
-				},
-				"type": {
-					"description": "The type of the property.",
-					"enum": ["Label", "Metric", "Information"],
-					"type": "string"
 				}
 			},
 			"example": {
@@ -9467,8 +9387,7 @@
 					"scope": "system",
 					"code": "string"
 				},
-				"lifeTime": "Perpetual",
-				"type": "Label"
+				"lifeTime": "Perpetual"
 			}
 		},
 		"PropertyDefinition": {
@@ -9556,24 +9475,12 @@
 			"type": "object",
 			"properties": {
 				"displayName": {
-					"description": "The display name of the property.",
-					"type": "string"
-				},
-				"lifeTime": {
-					"description": "Controls how the property's values can change over time.",
-					"enum": ["Perpetual", "TimeVariant"],
-					"type": "string"
-				},
-				"type": {
-					"description": "The type of the property.",
-					"enum": ["Label", "Metric", "Information"],
+					"description": "",
 					"type": "string"
 				}
 			},
 			"example": {
-				"displayName": "MyPropertyName",
-				"lifeTime": "Perpetual",
-				"type": "Label"
+				"displayName": "MyPropertyName"
 			}
 		},
 		"UpsertQuoteRequest": {
@@ -9815,7 +9722,7 @@
 				"displayName": "MyPortfolioName",
 				"description": "Description of my portfolio",
 				"code": "MyPortfolioCode",
-				"created": "2019-07-02T11:18:58.8358937+01:00",
+				"created": "2019-07-08T09:27:31.9923695+01:00",
 				"properties": {}
 			}
 		},
@@ -9823,12 +9730,12 @@
 			"type": "object",
 			"properties": {
 				"labelValue": {
-					"description": "",
+					"description": "The value of a property with the type \"Label\".",
 					"type": "string"
 				},
 				"metricValue": {
 					"$ref": "#/definitions/MetricValue",
-					"description": ""
+					"description": "The numeric value of a property with the type \"Metric\"."
 				}
 			}
 		},
@@ -9866,7 +9773,7 @@
 				}
 			},
 			"example": {
-				"effectiveFrom": "2019-07-02T11:18:58.8437506+01:00",
+				"effectiveFrom": "2019-07-08T09:27:32.0016025+01:00",
 				"weightType": "Periodical",
 				"periodType": "Quarterly",
 				"periodCount": 2,
@@ -10107,7 +10014,7 @@
 				}
 			},
 			"example": {
-				"effectiveAt": "2019-07-02T11:18:58.8615181+01:00",
+				"effectiveAt": "2019-07-08T09:27:32.021376+01:00",
 				"entityScope": "MyEntityScope",
 				"entityCode": "MyEntityCode",
 				"calculationScope": "MyCalculationScope",
@@ -10771,37 +10678,37 @@
 			"type": "object",
 			"properties": {
 				"displayName": {
-					"description": "",
+					"description": "The name of the transaction portfolio.",
 					"type": "string"
 				},
 				"description": {
-					"description": "",
+					"description": "A long form description of the transaction portfolio.",
 					"type": "string"
 				},
 				"code": {
-					"description": "",
+					"description": "The code that the transaction portfolio will be created with. Together with the scope this uniquely identifies the transaction portfolio.",
 					"type": "string"
 				},
 				"created": {
 					"format": "date-time",
-					"description": "",
+					"description": "The effectiveAt datetime at which the transaction portfolio will be created. No transactions can be upserted to the transaction portfolio before this date. Defaults to the current datetime if not specified.",
 					"type": "string"
 				},
 				"baseCurrency": {
-					"description": "",
+					"description": "The base currency of the transaction portfolio.",
 					"type": "string"
 				},
 				"corporateActionSourceId": {
 					"$ref": "#/definitions/ResourceId",
-					"description": ""
+					"description": "The unique identifier of the corporate action source to attach to the transaction portfolio."
 				},
 				"accountingMethod": {
-					"description": "",
+					"description": "Determines the accounting treatment given to the transaction portfolio's tax lots.",
 					"enum": ["Default", "AverageCost", "FirstInFirstOut", "LastInFirstOut", "HighestCostFirst", "LowestCostFirst"],
 					"type": "string"
 				},
 				"subHoldingKeys": {
-					"description": "",
+					"description": "A set of unique transaction properties to group the transaction portfolio's holdings by. Each property must be from the 'Trade' domain and should be identified by its key which has the format {domain}/{scope}/{code}, e.g. 'Trade/strategies/quantsignal'.",
 					"uniqueItems": false,
 					"type": "array",
 					"items": {
@@ -10809,7 +10716,7 @@
 					}
 				},
 				"properties": {
-					"description": "Portfolio properties to add to the portfolio",
+					"description": "A set of unique portfolio properties to add to the transaction portfolio. Each property should be identified by its key which has the format {domain}/{scope}/{code}, e.g. 'Portfolio/Manager/Id'. These properties must be pre-defined.",
 					"type": "object",
 					"additionalProperties": {
 						"$ref": "#/definitions/PropertyValue"
@@ -10870,13 +10777,16 @@
 			}
 		},
 		"CreatePortfolioDetails": {
+			"required": ["baseCurrency"],
 			"type": "object",
 			"properties": {
 				"baseCurrency": {
+					"description": "The base currency of the transaction portfolio.",
 					"type": "string"
 				},
 				"corporateActionSourceId": {
-					"$ref": "#/definitions/ResourceId"
+					"$ref": "#/definitions/ResourceId",
+					"description": "Unique identifier for the corporate action source to attach to the transaction portfolio."
 				}
 			},
 			"example": {
@@ -10892,15 +10802,15 @@
 			"type": "object",
 			"properties": {
 				"executionId": {
-					"description": "FIX Field 17.  Unique execution identifier.",
+					"description": "The unique identifier of the Execution Report (8) message as assigned by sell-side. FIX field 17.",
 					"type": "string"
 				},
 				"side": {
-					"description": "FIX Field 54.",
+					"description": "The side of the order. FIX field 54.",
 					"type": "string"
 				},
 				"instrumentIdentifiers": {
-					"description": "Unique instrument identifiers",
+					"description": "A set of instrument identifiers to use to resolve the execution to a unique instrument.",
 					"type": "object",
 					"additionalProperties": {
 						"type": "string"
@@ -10908,21 +10818,21 @@
 				},
 				"transactionTime": {
 					"format": "date-time",
-					"description": "FIX field 60.  Time the transaction represented by this ExecutionReport occurred.",
+					"description": "Time of execution/order creation. FIX field 60.",
 					"type": "string"
 				},
 				"lastShares": {
 					"format": "double",
-					"description": "FIX field 32.",
+					"description": "Quantity (e.g. shares) bought/sold on this (last) fill. FIX field 32.",
 					"type": "number"
 				},
 				"lastPx": {
 					"format": "double",
-					"description": "FIX field 31.",
+					"description": "Price of this (last) fill. FIX field 31.",
 					"type": "number"
 				},
 				"currency": {
-					"description": "FIX field 15.",
+					"description": "The currency used for the price. FIX field 15.",
 					"type": "string"
 				}
 			},
@@ -11102,10 +11012,6 @@
 				"source": {
 					"description": "Where this transaction came from",
 					"type": "string"
-				},
-				"nettingSet": {
-					"description": "",
-					"type": "string"
 				}
 			}
 		},
@@ -11129,28 +11035,28 @@
 			"type": "object",
 			"properties": {
 				"instrumentIdentifiers": {
-					"description": "Unique instrument identifiers",
+					"description": "A set of instrument identifiers to use to resolve the holding adjustment to a unique instrument.",
 					"type": "object",
 					"additionalProperties": {
 						"type": "string"
 					}
 				},
 				"subHoldingKeys": {
-					"description": "Key fields to uniquely index the sub holdings of a instrument",
+					"description": "Set of unique transaction properties and associated values to associate with the holding adjustment transaction automatically created by LUSID. Each property must be from the 'Trade' domain.",
 					"type": "object",
 					"additionalProperties": {
 						"$ref": "#/definitions/PerpetualPropertyValue"
 					}
 				},
 				"properties": {
-					"description": "Arbitrary properties to store with the holding",
+					"description": "Set of unique holding properties and associated values to store with the target holding. Each property must be from the 'Holding' domain.",
 					"type": "object",
 					"additionalProperties": {
 						"$ref": "#/definitions/PerpetualPropertyValue"
 					}
 				},
 				"taxLots": {
-					"description": "1 or more quantity amounts",
+					"description": "The tax-lots that together make up the target holding.",
 					"uniqueItems": false,
 					"type": "array",
 					"items": {
@@ -11193,31 +11099,31 @@
 			"properties": {
 				"units": {
 					"format": "double",
-					"description": "Quantity of holding",
+					"description": "The number of units of the instrument in this tax-lot.",
 					"type": "number"
 				},
 				"cost": {
 					"$ref": "#/definitions/CurrencyAndAmount",
-					"description": "Book cost of holding in transaction currency"
+					"description": "The total cost of the tax-lot in the settlement currency."
 				},
 				"portfolioCost": {
 					"format": "double",
-					"description": "Book cost of holding in portfolio currency",
+					"description": "The total cost of the tax-lot in the transaction portfolio's base currency.",
 					"type": "number"
 				},
 				"price": {
 					"format": "double",
-					"description": "Purchase price. Part of the unique key required for multiple taxlots",
+					"description": "The purchase price of each unit of the instrument held in this tax-lot. This forms part of the unique key required for multiple tax-lots.",
 					"type": "number"
 				},
 				"purchaseDate": {
 					"format": "date-time",
-					"description": "Purchase Date. Part of the unique key required for multiple taxlots",
+					"description": "The purchase date of this tax-lot. This forms part of the unique key required for multiple tax-lots.",
 					"type": "string"
 				},
 				"settlementDate": {
 					"format": "date-time",
-					"description": "Original settlement date of the tax-lot's opening transaction.",
+					"description": "The settlement date of the tax-lot's opening transaction.",
 					"type": "string"
 				}
 			}
@@ -11371,31 +11277,31 @@
 			"properties": {
 				"units": {
 					"format": "double",
-					"description": "Quantity of holding",
+					"description": "The number of units of the instrument in this tax-lot.",
 					"type": "number"
 				},
 				"cost": {
 					"$ref": "#/definitions/CurrencyAndAmount",
-					"description": "Book cost of holding in transaction currency"
+					"description": "The total cost of the tax-lot in the settlement currency."
 				},
 				"portfolioCost": {
 					"format": "double",
-					"description": "Book cost of holding in portfolio currency",
+					"description": "The total cost of the tax-lot in the transaction portfolio's base currency.",
 					"type": "number"
 				},
 				"price": {
 					"format": "double",
-					"description": "Purchase price. Part of the unique key required for multiple taxlots",
+					"description": "The purchase price of each unit of the instrument held in this tax-lot. This forms part of the unique key required for multiple tax-lots.",
 					"type": "number"
 				},
 				"purchaseDate": {
 					"format": "date-time",
-					"description": "Purchase Date. Part of the unique key required for multiple taxlots",
+					"description": "The purchase date of this tax-lot. This forms part of the unique key required for multiple tax-lots.",
 					"type": "string"
 				},
 				"settlementDate": {
 					"format": "date-time",
-					"description": "Original settlement date of the tax-lot's opening transaction.",
+					"description": "The settlement date of the tax-lot's opening transaction.",
 					"type": "string"
 				}
 			}
@@ -11432,15 +11338,15 @@
 			"type": "object",
 			"properties": {
 				"transactionId": {
-					"description": "Unique transaction identifier",
+					"description": "The unique identifier for the transaction.",
 					"type": "string"
 				},
 				"type": {
-					"description": "LUSID transaction type code - Buy, Sell, StockIn, StockOut, etc",
+					"description": "The type of the transaction e.g. 'Buy', 'Sell'. The transaction type should have been pre-configured via the System Configuration API endpoint. If it hasn't been pre-configured the transaction will still be upserted however you will be unable to generate the resultant holdings for the portfolio that contains this transaction as LUSID does not know how to process it.",
 					"type": "string"
 				},
 				"instrumentIdentifiers": {
-					"description": "Unique instrument identifiers",
+					"description": "A set of instrument identifiers to use to resolve the transaction to a unique instrument.",
 					"type": "object",
 					"additionalProperties": {
 						"type": "string"
@@ -11448,52 +11354,49 @@
 				},
 				"transactionDate": {
 					"format": "dateorcutlabel",
-					"description": "Transaction date",
+					"description": "The date of the transaction.",
 					"type": "string"
 				},
 				"settlementDate": {
 					"format": "dateorcutlabel",
-					"description": "Settlement date",
+					"description": "The settlement date of the transaction.",
 					"type": "string"
 				},
 				"units": {
 					"format": "double",
-					"description": "Quantity of trade in units of the instrument",
+					"description": "The number of units transacted in the associated instrument.",
 					"type": "number"
 				},
 				"transactionPrice": {
 					"$ref": "#/definitions/TransactionPrice",
-					"description": "Execution price for the transaction"
+					"description": "The price for each unit of the transacted instrument in the transaction currency."
 				},
 				"totalConsideration": {
 					"$ref": "#/definitions/CurrencyAndAmount",
-					"description": "Total value of the transaction in settlement currency"
+					"description": "The total value of the transaction in the settlement currency."
 				},
 				"exchangeRate": {
 					"format": "double",
-					"description": "Rate between transaction and settlement currency",
+					"description": "The exchange rate between the transaction and settlement currency. For example if the transaction currency is in USD and the settlement currency is in GBP this this the USD/GBP rate.",
 					"type": "number"
 				},
 				"transactionCurrency": {
-					"description": "Transaction currency",
+					"description": "The transaction currency.",
 					"type": "string"
 				},
 				"properties": {
+					"description": "Set of unique transaction properties and associated values to store with the transaction. Each property must be from the 'Trade' domain.",
 					"type": "object",
 					"additionalProperties": {
 						"$ref": "#/definitions/PerpetualPropertyValue"
 					}
 				},
 				"counterpartyId": {
-					"description": "Counterparty identifier",
+					"description": "The source of the transaction. This is used to look up the appropriate transaction group set in the transaction type configuration.",
 					"type": "string"
 				},
 				"source": {
-					"description": "Where this transaction came from",
-					"type": "string"
-				},
-				"nettingSet": {
-					"description": "",
+					"description": "The source of the transaction. This is used to look up the appropriate transaction group set in the transaction type configuration.",
 					"type": "string"
 				}
 			},
@@ -11504,8 +11407,8 @@
 					"Instrument/default/Figi": "BBG000C6K6G9",
 					"Instrument/default/Isin": "GB00BH4HKS39"
 				},
-				"transactionDate": "2019-07-02T11:18:58.9850633+01:00",
-				"settlementDate": "2019-07-05T11:18:58.9850649+01:00",
+				"transactionDate": "2019-07-08T09:27:32.1582032+01:00",
+				"settlementDate": "2019-07-11T09:27:32.1582059+01:00",
 				"units": 1000.0,
 				"transactionPrice": {
 					"price": 123.0,
@@ -11522,8 +11425,7 @@
 					}
 				},
 				"counterpartyId": "CounterpartyId-118263",
-				"source": "",
-				"nettingSet": "NettingSet"
+				"source": ""
 			}
 		},
 		"UpsertPortfolioTransactionsResponse": {
@@ -11545,25 +11447,26 @@
 			}
 		},
 		"TransactionQueryParameters": {
+			"required": ["startDate", "endDate"],
 			"type": "object",
 			"properties": {
 				"startDate": {
 					"format": "dateorcutlabel",
-					"description": "The required set of transactions should begin from this date",
+					"description": "The lower bound effectiveAt datetime (inclusive) from which to build the transactions.",
 					"type": "string"
 				},
 				"endDate": {
 					"format": "dateorcutlabel",
-					"description": "The required set of transactions should end at this date",
+					"description": "The upper bound effectiveAt datetime (inclusive) from which to retrieve transactions.",
 					"type": "string"
 				},
 				"queryMode": {
-					"description": "The method for date selection. Trade date or Settlement date",
+					"description": "The date to compare against the upper and lower bounds for the effectiveAt datetime. Defaults to 'TradeDate' if not specified.",
 					"enum": ["None", "TradeDate", "SettleDate"],
 					"type": "string"
 				},
 				"showCancelledTransactions": {
-					"description": "Option to include cancelled transactions in the results",
+					"description": "Option to specify whether or not to include cancelled transactions in the output. Defaults to False if not specified.",
 					"type": "boolean"
 				}
 			},
@@ -11697,11 +11600,6 @@
 				},
 				"source": {
 					"description": "Where this transaction came from",
-					"type": "string",
-					"readOnly": true
-				},
-				"nettingSet": {
-					"description": "",
 					"type": "string",
 					"readOnly": true
 				},
@@ -11894,7 +11792,7 @@
 			"description": "Methods for updating system configuration with Portfolios"
 		}, {
 			"name": "Transaction Portfolios",
-			"description": "Methods for interacting with transaction portfolios"
+			"description": "Methods for interacting with transaction portfolios. Read more about transaction portfolios in the LUSID Knowledge Base here https://support.lusid.com/what-is-a-transaction-portfolio"
 		}
 	],
 	"x-tagGroups": [{
