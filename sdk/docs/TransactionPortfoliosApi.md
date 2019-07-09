@@ -8,10 +8,10 @@ Method | HTTP request | Description
 [**AdjustHoldings**](TransactionPortfoliosApi.md#adjustholdings) | **POST** /api/transactionportfolios/{scope}/{code}/holdings/{effectiveAt} | Adjust holdings
 [**BuildTransactions**](TransactionPortfoliosApi.md#buildtransactions) | **POST** /api/transactionportfolios/{scope}/{code}/transactions/$build | Build transactions
 [**CancelAdjustHoldings**](TransactionPortfoliosApi.md#canceladjustholdings) | **DELETE** /api/transactionportfolios/{scope}/{code}/holdings/{effectiveAt} | Cancel adjust holdings
+[**CancelExecutions**](TransactionPortfoliosApi.md#cancelexecutions) | **DELETE** /api/transactionportfolios/{scope}/{code}/executions | Cancel executions
+[**CancelTransactions**](TransactionPortfoliosApi.md#canceltransactions) | **DELETE** /api/transactionportfolios/{scope}/{code}/transactions | Cancel transactions
 [**CreatePortfolio**](TransactionPortfoliosApi.md#createportfolio) | **POST** /api/transactionportfolios/{scope} | Create portfolio
-[**DeleteExecutions**](TransactionPortfoliosApi.md#deleteexecutions) | **DELETE** /api/transactionportfolios/{scope}/{code}/executions | Delete executions
 [**DeletePropertyFromTransaction**](TransactionPortfoliosApi.md#deletepropertyfromtransaction) | **DELETE** /api/transactionportfolios/{scope}/{code}/transactions/{transactionId}/properties | Delete property from transaction
-[**DeleteTransactions**](TransactionPortfoliosApi.md#deletetransactions) | **DELETE** /api/transactionportfolios/{scope}/{code}/transactions | Delete transactions
 [**GetDetails**](TransactionPortfoliosApi.md#getdetails) | **GET** /api/transactionportfolios/{scope}/{code}/details | Get details
 [**GetHoldings**](TransactionPortfoliosApi.md#getholdings) | **GET** /api/transactionportfolios/{scope}/{code}/holdings | Get holdings
 [**GetHoldingsAdjustment**](TransactionPortfoliosApi.md#getholdingsadjustment) | **GET** /api/transactionportfolios/{scope}/{code}/holdingsadjustments/{effectiveAt} | Get holdings adjustment
@@ -334,9 +334,9 @@ Name | Type | Description  | Notes
 
 > DeletedEntityResponse CancelExecutions (string scope, string code, List<string> executionIds)
 
-Create portfolio
+Cancel executions
 
-Create a transaction portfolio in a specific scope.
+Cancel one or more executions from a transaction portfolio.
 
 ### Example
 
@@ -357,13 +357,14 @@ namespace Example
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
             var apiInstance = new TransactionPortfoliosApi();
-            var scope = scope_example;  // string | The scope that the transaction portfolio will be created in.
-            var createRequest = new CreateTransactionPortfolioRequest(); // CreateTransactionPortfolioRequest | The definition and details of the transaction portfolio. (optional) 
+            var scope = scope_example;  // string | The scope of the transaction portfolio.
+            var code = code_example;  // string | The code of the transaction portfolio. Together with the scope this uniquely identifies              the transaction portfolio.
+            var executionIds = new List<string>(); // List<string> | The ids of the executions to cancel.
 
             try
             {
-                // Create portfolio
-                Portfolio result = apiInstance.CreatePortfolio(scope, createRequest);
+                // Cancel executions
+                DeletedEntityResponse result = apiInstance.CancelExecutions(scope, code, executionIds);
                 Debug.WriteLine(result);
             }
             catch (Exception e)
@@ -380,8 +381,9 @@ namespace Example
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **scope** | **string**| The scope that the transaction portfolio will be created in. | 
- **createRequest** | [**CreateTransactionPortfolioRequest**](CreateTransactionPortfolioRequest.md)| The definition and details of the transaction portfolio. | [optional] 
+ **scope** | **string**| The scope of the transaction portfolio. | 
+ **code** | **string**| The code of the transaction portfolio. Together with the scope this uniquely identifies              the transaction portfolio. | 
+ **executionIds** | [**List&lt;string&gt;**](string.md)| The ids of the executions to cancel. | 
 
 ### Return type
 
@@ -404,11 +406,11 @@ Name | Type | Description  | Notes
 
 ## CancelTransactions
 
-> DeletedEntityResponse DeleteExecutions (string scope, string code, List<string> executionIds)
+> DeletedEntityResponse CancelTransactions (string scope, string code, List<string> transactionIds)
 
-[EARLY ACCESS] Cancel transactions
+Cancel transactions
 
-Delete one or more executions from a transaction portfolio.
+Cancel one or more transactions from the specified transaction portfolio.
 
 ### Example
 
@@ -431,11 +433,11 @@ namespace Example
             var apiInstance = new TransactionPortfoliosApi();
             var scope = scope_example;  // string | The scope of the transaction portfolio.
             var code = code_example;  // string | The code of the transaction portfolio. Together with the scope this uniquely identifies              the transaction portfolio.
-            var executionIds = new List<string>(); // List<string> | The ids of the executions to delete.
+            var transactionIds = new List<string>(); // List<string> | The ids of the transactions to cancel.
 
             try
             {
-                // [EARLY ACCESS] Cancel transactions
+                // Cancel transactions
                 DeletedEntityResponse result = apiInstance.CancelTransactions(scope, code, transactionIds);
                 Debug.WriteLine(result);
             }
@@ -455,7 +457,7 @@ Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **scope** | **string**| The scope of the transaction portfolio. | 
  **code** | **string**| The code of the transaction portfolio. Together with the scope this uniquely identifies              the transaction portfolio. | 
- **executionIds** | [**List&lt;string&gt;**](string.md)| The ids of the executions to delete. | 
+ **transactionIds** | [**List&lt;string&gt;**](string.md)| The ids of the transactions to cancel. | 
 
 ### Return type
 
@@ -478,11 +480,11 @@ Name | Type | Description  | Notes
 
 ## CreatePortfolio
 
-> DeletedEntityResponse DeletePropertyFromTransaction (string scope, string code, string transactionId, string transactionPropertyKey)
+> Portfolio CreatePortfolio (string scope, CreateTransactionPortfolioRequest createRequest = null)
 
-Delete property from transaction
+Create portfolio
 
-Delete a single property value from a single transaction in a transaction portfolio.
+Create a transaction portfolio in a specific scope.
 
 ### Example
 
@@ -503,15 +505,13 @@ namespace Example
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
             var apiInstance = new TransactionPortfoliosApi();
-            var scope = scope_example;  // string | The scope of the transaction portfolio.
-            var code = code_example;  // string | The code of the transaction portfolio. Together with the scope this uniquely identifies              the transaction portfolio.
-            var transactionId = transactionId_example;  // string | The unique id of the transaction to delete the property value from.
-            var transactionPropertyKey = transactionPropertyKey_example;  // string | The property key of the property value to delete from the transaction.              This must be from the \"Trade\" domain and will have the format {domain}/{scope}/{code} e.g.              \"Trade/strategy/quantsignal\".
+            var scope = scope_example;  // string | The scope that the transaction portfolio will be created in.
+            var createRequest = new CreateTransactionPortfolioRequest(); // CreateTransactionPortfolioRequest | The definition and details of the transaction portfolio. (optional) 
 
             try
             {
-                // Delete property from transaction
-                DeletedEntityResponse result = apiInstance.DeletePropertyFromTransaction(scope, code, transactionId, transactionPropertyKey);
+                // Create portfolio
+                Portfolio result = apiInstance.CreatePortfolio(scope, createRequest);
                 Debug.WriteLine(result);
             }
             catch (Exception e)
@@ -528,10 +528,8 @@ namespace Example
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **scope** | **string**| The scope of the transaction portfolio. | 
- **code** | **string**| The code of the transaction portfolio. Together with the scope this uniquely identifies              the transaction portfolio. | 
- **transactionId** | **string**| The unique id of the transaction to delete the property value from. | 
- **transactionPropertyKey** | **string**| The property key of the property value to delete from the transaction.              This must be from the \&quot;Trade\&quot; domain and will have the format {domain}/{scope}/{code} e.g.              \&quot;Trade/strategy/quantsignal\&quot;. | 
+ **scope** | **string**| The scope that the transaction portfolio will be created in. | 
+ **createRequest** | [**CreateTransactionPortfolioRequest**](CreateTransactionPortfolioRequest.md)| The definition and details of the transaction portfolio. | [optional] 
 
 ### Return type
 
@@ -554,11 +552,11 @@ Name | Type | Description  | Notes
 
 ## DeletePropertyFromTransaction
 
-> DeletedEntityResponse DeleteTransactions (string scope, string code, List<string> transactionIds)
+> DeletedEntityResponse DeletePropertyFromTransaction (string scope, string code, string transactionId, string transactionPropertyKey)
 
-[EARLY ACCESS] Delete property from transaction
+Delete property from transaction
 
-Delete one or more transactions from the specified transaction portfolio.
+Delete a single property value from a single transaction in a transaction portfolio.
 
 ### Example
 
@@ -581,11 +579,12 @@ namespace Example
             var apiInstance = new TransactionPortfoliosApi();
             var scope = scope_example;  // string | The scope of the transaction portfolio.
             var code = code_example;  // string | The code of the transaction portfolio. Together with the scope this uniquely identifies              the transaction portfolio.
-            var transactionIds = new List<string>(); // List<string> | The ids of the transactions to delete.
+            var transactionId = transactionId_example;  // string | The unique id of the transaction to delete the property value from.
+            var transactionPropertyKey = transactionPropertyKey_example;  // string | The property key of the property value to delete from the transaction.              This must be from the \"Trade\" domain and will have the format {domain}/{scope}/{code} e.g.              \"Trade/strategy/quantsignal\".
 
             try
             {
-                // [EARLY ACCESS] Delete property from transaction
+                // Delete property from transaction
                 DeletedEntityResponse result = apiInstance.DeletePropertyFromTransaction(scope, code, transactionId, transactionPropertyKey);
                 Debug.WriteLine(result);
             }
@@ -605,7 +604,8 @@ Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **scope** | **string**| The scope of the transaction portfolio. | 
  **code** | **string**| The code of the transaction portfolio. Together with the scope this uniquely identifies              the transaction portfolio. | 
- **transactionIds** | [**List&lt;string&gt;**](string.md)| The ids of the transactions to delete. | 
+ **transactionId** | **string**| The unique id of the transaction to delete the property value from. | 
+ **transactionPropertyKey** | **string**| The property key of the property value to delete from the transaction.              This must be from the \&quot;Trade\&quot; domain and will have the format {domain}/{scope}/{code} e.g.              \&quot;Trade/strategy/quantsignal\&quot;. | 
 
 ### Return type
 
