@@ -1,6 +1,6 @@
 # Lusid.Sdk.Api.ResultsApi
 
-All URIs are relative to *http://http:/api*
+All URIs are relative to *http://localhost*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
