@@ -4,11 +4,11 @@ All URIs are relative to *http://localhost*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
-[**CreateAnalyticStore**](AnalyticsStoresApi.md#createanalyticstore) | **POST** /api/analytics | Create analytic store
-[**DeleteAnalyticStore**](AnalyticsStoresApi.md#deleteanalyticstore) | **DELETE** /api/analytics/{scope}/{year}/{month}/{day} | Delete analytic store
-[**GetAnalyticStore**](AnalyticsStoresApi.md#getanalyticstore) | **GET** /api/analytics/{scope}/{year}/{month}/{day} | Get analytic store
-[**ListAnalyticStores**](AnalyticsStoresApi.md#listanalyticstores) | **GET** /api/analytics | List analytic stores
-[**SetAnalytics**](AnalyticsStoresApi.md#setanalytics) | **PUT** /api/analytics/{scope}/{year}/{month}/{day}/prices | Set analytic data
+[**CreateAnalyticStore**](AnalyticsStoresApi.md#createanalyticstore) | **POST** /api/analytics | [EXPERIMENTAL] Create analytic store
+[**DeleteAnalyticStore**](AnalyticsStoresApi.md#deleteanalyticstore) | **DELETE** /api/analytics/{scope}/{year}/{month}/{day} | [EXPERIMENTAL] Delete analytic store
+[**GetAnalyticStore**](AnalyticsStoresApi.md#getanalyticstore) | **GET** /api/analytics/{scope}/{year}/{month}/{day} | [EXPERIMENTAL] Get analytic store
+[**ListAnalyticStores**](AnalyticsStoresApi.md#listanalyticstores) | **GET** /api/analytics | [EXPERIMENTAL] List analytic stores
+[**SetAnalytics**](AnalyticsStoresApi.md#setanalytics) | **PUT** /api/analytics/{scope}/{year}/{month}/{day}/prices | [EXPERIMENTAL] Set analytic data
 
 
 
@@ -16,7 +16,7 @@ Method | HTTP request | Description
 
 > AnalyticStore CreateAnalyticStore (CreateAnalyticStoreRequest request = null)
 
-Create analytic store
+[EXPERIMENTAL] Create analytic store
 
 Create a new analytic store for the specified scope and date
 
@@ -43,7 +43,7 @@ namespace Example
 
             try
             {
-                // Create analytic store
+                // [EXPERIMENTAL] Create analytic store
                 AnalyticStore result = apiInstance.CreateAnalyticStore(request);
                 Debug.WriteLine(result);
             }
@@ -86,7 +86,7 @@ Name | Type | Description  | Notes
 
 > DeletedEntityResponse DeleteAnalyticStore (string scope, int? year, int? month, int? day)
 
-Delete analytic store
+[EXPERIMENTAL] Delete analytic store
 
 Delete stored analytic data in the specified scope for the specified date
 
@@ -116,7 +116,7 @@ namespace Example
 
             try
             {
-                // Delete analytic store
+                // [EXPERIMENTAL] Delete analytic store
                 DeletedEntityResponse result = apiInstance.DeleteAnalyticStore(scope, year, month, day);
                 Debug.WriteLine(result);
             }
@@ -162,7 +162,7 @@ Name | Type | Description  | Notes
 
 > AnalyticStore GetAnalyticStore (string scope, int? year, int? month, int? day, DateTimeOffset? asAt = null)
 
-Get analytic store
+[EXPERIMENTAL] Get analytic store
 
 Get the meta data associated with a specified scope and date combination (analytic store)
 
@@ -193,7 +193,7 @@ namespace Example
 
             try
             {
-                // Get analytic store
+                // [EXPERIMENTAL] Get analytic store
                 AnalyticStore result = apiInstance.GetAnalyticStore(scope, year, month, day, asAt);
                 Debug.WriteLine(result);
             }
@@ -240,7 +240,7 @@ Name | Type | Description  | Notes
 
 > ResourceListOfAnalyticStoreKey ListAnalyticStores (DateTimeOffset? asAt = null, List<string> sortBy = null, int? start = null, int? limit = null, string filter = null)
 
-List analytic stores
+[EXPERIMENTAL] List analytic stores
 
 List all defined analytic stores
 
@@ -271,7 +271,7 @@ namespace Example
 
             try
             {
-                // List analytic stores
+                // [EXPERIMENTAL] List analytic stores
                 ResourceListOfAnalyticStoreKey result = apiInstance.ListAnalyticStores(asAt, sortBy, start, limit, filter);
                 Debug.WriteLine(result);
             }
@@ -318,7 +318,7 @@ Name | Type | Description  | Notes
 
 > AnalyticStore SetAnalytics (string scope, int? year, int? month, int? day, List<InstrumentAnalytic> data = null)
 
-Set analytic data
+[EXPERIMENTAL] Set analytic data
 
 Store the complete set of analytics for an existing analytic store for the specified scope and date
 
@@ -349,7 +349,7 @@ namespace Example
 
             try
             {
-                // Set analytic data
+                // [EXPERIMENTAL] Set analytic data
                 AnalyticStore result = apiInstance.SetAnalytics(scope, year, month, day, data);
                 Debug.WriteLine(result);
             }

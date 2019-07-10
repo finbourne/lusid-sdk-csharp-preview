@@ -4,7 +4,7 @@ All URIs are relative to *http://localhost*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
-[**GetPortfolioChanges**](EntitiesApi.md#getportfoliochanges) | **GET** /api/entities/changes/portfolios | Get the next change to each portfolio in a scope.
+[**GetPortfolioChanges**](EntitiesApi.md#getportfoliochanges) | **GET** /api/entities/changes/portfolios | [BETA] Get the next change to each portfolio in a scope.
 
 
 
@@ -12,7 +12,7 @@ Method | HTTP request | Description
 
 > ResourceListOfChange GetPortfolioChanges (string scope, string effectiveAt, DateTimeOffset? asAt = null)
 
-Get the next change to each portfolio in a scope.
+[BETA] Get the next change to each portfolio in a scope.
 
 Gets the time of the next (earliest effective at) modification (correction and/or amendment) to each portfolio in a scope relative to a point in bitemporal time.  Includes changes from parent portfolios in different scopes.  Excludes changes from subcriptions (e.g corporate actions).
 
@@ -41,7 +41,7 @@ namespace Example
 
             try
             {
-                // Get the next change to each portfolio in a scope.
+                // [BETA] Get the next change to each portfolio in a scope.
                 ResourceListOfChange result = apiInstance.GetPortfolioChanges(scope, effectiveAt, asAt);
                 Debug.WriteLine(result);
             }

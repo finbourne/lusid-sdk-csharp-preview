@@ -4,11 +4,11 @@ All URIs are relative to *http://localhost*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
-[**BatchUpsertCorporateActions**](CorporateActionSourcesApi.md#batchupsertcorporateactions) | **POST** /api/corporateactionsources/{scope}/{code}/corporateactions | Upsert corporate actions
-[**CreateCorporateActionSource**](CorporateActionSourcesApi.md#createcorporateactionsource) | **POST** /api/corporateactionsources | Create Corporate Action Source
-[**DeleteCorporateActionSource**](CorporateActionSourcesApi.md#deletecorporateactionsource) | **DELETE** /api/corporateactionsources/{scope}/{code} | Delete a corporate action source
-[**GetCorporateActions**](CorporateActionSourcesApi.md#getcorporateactions) | **GET** /api/corporateactionsources/{scope}/{code}/corporateactions | Get corporate actions
-[**ListCorporateActionSources**](CorporateActionSourcesApi.md#listcorporateactionsources) | **GET** /api/corporateactionsources | Get corporate action sources
+[**BatchUpsertCorporateActions**](CorporateActionSourcesApi.md#batchupsertcorporateactions) | **POST** /api/corporateactionsources/{scope}/{code}/corporateactions | [BETA] Upsert corporate actions
+[**CreateCorporateActionSource**](CorporateActionSourcesApi.md#createcorporateactionsource) | **POST** /api/corporateactionsources | [BETA] Create Corporate Action Source
+[**DeleteCorporateActionSource**](CorporateActionSourcesApi.md#deletecorporateactionsource) | **DELETE** /api/corporateactionsources/{scope}/{code} | [BETA] Delete a corporate action source
+[**GetCorporateActions**](CorporateActionSourcesApi.md#getcorporateactions) | **GET** /api/corporateactionsources/{scope}/{code}/corporateactions | [BETA] Get corporate actions
+[**ListCorporateActionSources**](CorporateActionSourcesApi.md#listcorporateactionsources) | **GET** /api/corporateactionsources | [BETA] Get corporate action sources
 
 
 
@@ -16,7 +16,7 @@ Method | HTTP request | Description
 
 > UpsertCorporateActionsResponse BatchUpsertCorporateActions (string scope, string code, List<UpsertCorporateActionRequest> actions = null)
 
-Upsert corporate actions
+[BETA] Upsert corporate actions
 
 Attempt to create/update one or more corporate action in a specified corporate action source. Failed actions will be identified in the body of the response.
 
@@ -45,7 +45,7 @@ namespace Example
 
             try
             {
-                // Upsert corporate actions
+                // [BETA] Upsert corporate actions
                 UpsertCorporateActionsResponse result = apiInstance.BatchUpsertCorporateActions(scope, code, actions);
                 Debug.WriteLine(result);
             }
@@ -90,7 +90,7 @@ Name | Type | Description  | Notes
 
 > CorporateActionSource CreateCorporateActionSource (CreateCorporateActionSourceRequest request)
 
-Create Corporate Action Source
+[BETA] Create Corporate Action Source
 
 Attempt to create a corporate action source.
 
@@ -117,7 +117,7 @@ namespace Example
 
             try
             {
-                // Create Corporate Action Source
+                // [BETA] Create Corporate Action Source
                 CorporateActionSource result = apiInstance.CreateCorporateActionSource(request);
                 Debug.WriteLine(result);
             }
@@ -160,7 +160,7 @@ Name | Type | Description  | Notes
 
 > DeletedEntityResponse DeleteCorporateActionSource (string scope, string code)
 
-Delete a corporate action source
+[BETA] Delete a corporate action source
 
 Deletes a single corporate action source
 
@@ -188,7 +188,7 @@ namespace Example
 
             try
             {
-                // Delete a corporate action source
+                // [BETA] Delete a corporate action source
                 DeletedEntityResponse result = apiInstance.DeleteCorporateActionSource(scope, code);
                 Debug.WriteLine(result);
             }
@@ -232,7 +232,7 @@ Name | Type | Description  | Notes
 
 > ResourceListOfCorporateAction GetCorporateActions (string scope, string code, string fromEffectiveAt = null, string toEffectiveAt = null, DateTimeOffset? asAt = null, List<string> sortBy = null, int? start = null, int? limit = null, string filter = null)
 
-Get corporate actions
+[BETA] Get corporate actions
 
 Gets corporate actions from a specific corporate action source
 
@@ -267,7 +267,7 @@ namespace Example
 
             try
             {
-                // Get corporate actions
+                // [BETA] Get corporate actions
                 ResourceListOfCorporateAction result = apiInstance.GetCorporateActions(scope, code, fromEffectiveAt, toEffectiveAt, asAt, sortBy, start, limit, filter);
                 Debug.WriteLine(result);
             }
@@ -318,7 +318,7 @@ Name | Type | Description  | Notes
 
 > ResourceListOfCorporateActionSource ListCorporateActionSources (DateTimeOffset? asAt = null, List<string> sortBy = null, int? start = null, int? limit = null, string filter = null)
 
-Get corporate action sources
+[BETA] Get corporate action sources
 
 Gets a list of all corporate action sources
 
@@ -349,7 +349,7 @@ namespace Example
 
             try
             {
-                // Get corporate action sources
+                // [BETA] Get corporate action sources
                 ResourceListOfCorporateActionSource result = apiInstance.ListCorporateActionSources(asAt, sortBy, start, limit, filter);
                 Debug.WriteLine(result);
             }

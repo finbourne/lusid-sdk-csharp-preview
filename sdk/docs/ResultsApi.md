@@ -4,8 +4,8 @@ All URIs are relative to *http://localhost*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
-[**GetResults**](ResultsApi.md#getresults) | **GET** /api/results/{entityScope}/{entityCode}/{calculationScope}/{calculationCode}/{effectiveAt} | Retrieve a page of results all keyed by the provided parameters. The result store is not bi-temporal; a single date  addressed the market effectiveAt.
-[**UpsertResults**](ResultsApi.md#upsertresults) | **POST** /api/results | Upsert results
+[**GetResults**](ResultsApi.md#getresults) | **GET** /api/results/{entityScope}/{entityCode}/{calculationScope}/{calculationCode}/{effectiveAt} | [EXPERIMENTAL] Retrieve a page of results all keyed by the provided parameters. The result store is not bi-temporal; a single date  addressed the market effectiveAt.
+[**UpsertResults**](ResultsApi.md#upsertresults) | **POST** /api/results | [EXPERIMENTAL] Upsert results
 
 
 
@@ -13,7 +13,7 @@ Method | HTTP request | Description
 
 > Results GetResults (string entityScope, string entityCode, string calculationScope, string calculationCode, DateTimeOffset? effectiveAt)
 
-Retrieve a page of results all keyed by the provided parameters. The result store is not bi-temporal; a single date  addressed the market effectiveAt.
+[EXPERIMENTAL] Retrieve a page of results all keyed by the provided parameters. The result store is not bi-temporal; a single date  addressed the market effectiveAt.
 
 Retrieve pre-calculated results that have been stored in LUSID.
 
@@ -44,7 +44,7 @@ namespace Example
 
             try
             {
-                // Retrieve a page of results all keyed by the provided parameters. The result store is not bi-temporal; a single date  addressed the market effectiveAt.
+                // [EXPERIMENTAL] Retrieve a page of results all keyed by the provided parameters. The result store is not bi-temporal; a single date  addressed the market effectiveAt.
                 Results result = apiInstance.GetResults(entityScope, entityCode, calculationScope, calculationCode, effectiveAt);
                 Debug.WriteLine(result);
             }
@@ -91,7 +91,7 @@ Name | Type | Description  | Notes
 
 > Results UpsertResults (CreateResults request = null)
 
-Upsert results
+[EXPERIMENTAL] Upsert results
 
 Upsert pre-calculated results against a specified combination of key parameters defined in the CreateResults request.
 
@@ -118,7 +118,7 @@ namespace Example
 
             try
             {
-                // Upsert results
+                // [EXPERIMENTAL] Upsert results
                 Results result = apiInstance.UpsertResults(request);
                 Debug.WriteLine(result);
             }

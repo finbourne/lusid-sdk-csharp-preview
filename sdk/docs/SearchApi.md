@@ -4,10 +4,10 @@ All URIs are relative to *http://localhost*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
-[**InstrumentsSearch**](SearchApi.md#instrumentssearch) | **POST** /api/search/instruments | Search instruments
-[**PortfolioGroupsSearch**](SearchApi.md#portfoliogroupssearch) | **POST** /api/search/portfoliogroups | Search portfolio groups
-[**PortfoliosSearch**](SearchApi.md#portfoliossearch) | **POST** /api/search/portfolios | Search portfolios
-[**PropertiesSearch**](SearchApi.md#propertiessearch) | **POST** /api/search/propertydefinitions | Search property definitions
+[**InstrumentsSearch**](SearchApi.md#instrumentssearch) | **POST** /api/search/instruments | [EXPERIMENTAL] Search instruments
+[**PortfolioGroupsSearch**](SearchApi.md#portfoliogroupssearch) | **POST** /api/search/portfoliogroups | [EXPERIMENTAL] Search portfolio groups
+[**PortfoliosSearch**](SearchApi.md#portfoliossearch) | **POST** /api/search/portfolios | [EXPERIMENTAL] Search portfolios
+[**PropertiesSearch**](SearchApi.md#propertiessearch) | **POST** /api/search/propertydefinitions | [EXPERIMENTAL] Search property definitions
 
 
 
@@ -15,7 +15,7 @@ Method | HTTP request | Description
 
 > ICollection<InstrumentMatch> InstrumentsSearch (string masteredEffectiveAt = null, bool? masteredOnly = null, List<InstrumentSearchProperty> symbols = null)
 
-Search instruments
+[EXPERIMENTAL] Search instruments
 
 Search through instruments that have been mastered in LUSID, and optionally augment results with instruments from a symbology service
 
@@ -44,7 +44,7 @@ namespace Example
 
             try
             {
-                // Search instruments
+                // [EXPERIMENTAL] Search instruments
                 ICollection&lt;InstrumentMatch&gt; result = apiInstance.InstrumentsSearch(masteredEffectiveAt, masteredOnly, symbols);
                 Debug.WriteLine(result);
             }
@@ -89,7 +89,7 @@ Name | Type | Description  | Notes
 
 > ResourceListOfPortfolioGroup PortfolioGroupsSearch (List<string> sortBy = null, int? start = null, int? limit = null, string filter = null, Object request = null)
 
-Search portfolio groups
+[EXPERIMENTAL] Search portfolio groups
 
 Search through all portfolio groups
 
@@ -120,7 +120,7 @@ namespace Example
 
             try
             {
-                // Search portfolio groups
+                // [EXPERIMENTAL] Search portfolio groups
                 ResourceListOfPortfolioGroup result = apiInstance.PortfolioGroupsSearch(sortBy, start, limit, filter, request);
                 Debug.WriteLine(result);
             }
@@ -167,7 +167,7 @@ Name | Type | Description  | Notes
 
 > ResourceListOfPortfolioSearchResult PortfoliosSearch (List<string> sortBy = null, int? start = null, int? limit = null, string filter = null, Object request = null)
 
-Search portfolios
+[EXPERIMENTAL] Search portfolios
 
 Search through all portfolios
 
@@ -198,7 +198,7 @@ namespace Example
 
             try
             {
-                // Search portfolios
+                // [EXPERIMENTAL] Search portfolios
                 ResourceListOfPortfolioSearchResult result = apiInstance.PortfoliosSearch(sortBy, start, limit, filter, request);
                 Debug.WriteLine(result);
             }
@@ -245,7 +245,7 @@ Name | Type | Description  | Notes
 
 > ResourceListOfPropertyDefinition PropertiesSearch (List<string> sortBy = null, int? start = null, int? limit = null, string filter = null, Object request = null)
 
-Search property definitions
+[EXPERIMENTAL] Search property definitions
 
 Search through all property definitions
 
@@ -276,7 +276,7 @@ namespace Example
 
             try
             {
-                // Search property definitions
+                // [EXPERIMENTAL] Search property definitions
                 ResourceListOfPropertyDefinition result = apiInstance.PropertiesSearch(sortBy, start, limit, filter, request);
                 Debug.WriteLine(result);
             }

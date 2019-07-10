@@ -4,9 +4,9 @@ All URIs are relative to *http://localhost*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
-[**DeleteQuotes**](QuotesApi.md#deletequotes) | **POST** /api/quotes/{scope}/$delete | Delete a quote
-[**GetQuotes**](QuotesApi.md#getquotes) | **POST** /api/quotes/{scope}/$get | Get quotes
-[**UpsertQuotes**](QuotesApi.md#upsertquotes) | **POST** /api/quotes/{scope} | Upsert quotes
+[**DeleteQuotes**](QuotesApi.md#deletequotes) | **POST** /api/quotes/{scope}/$delete | [BETA] Delete a quote
+[**GetQuotes**](QuotesApi.md#getquotes) | **POST** /api/quotes/{scope}/$get | [BETA] Get quotes
+[**UpsertQuotes**](QuotesApi.md#upsertquotes) | **POST** /api/quotes/{scope} | [BETA] Upsert quotes
 
 
 
@@ -14,7 +14,7 @@ Method | HTTP request | Description
 
 > DeleteQuotesResponse DeleteQuotes (string scope, List<DeleteQuoteRequest> quotes = null)
 
-Delete a quote
+[BETA] Delete a quote
 
 Delete the specified quotes. In order for a quote to be deleted the id and effectiveFrom date must exactly match.
 
@@ -42,7 +42,7 @@ namespace Example
 
             try
             {
-                // Delete a quote
+                // [BETA] Delete a quote
                 DeleteQuotesResponse result = apiInstance.DeleteQuotes(scope, quotes);
                 Debug.WriteLine(result);
             }
@@ -86,7 +86,7 @@ Name | Type | Description  | Notes
 
 > GetQuotesResponse GetQuotes (string scope, DateTimeOffset? effectiveAt = null, DateTimeOffset? asAt = null, string maxAge = null, int? page = null, int? limit = null, List<QuoteId> quoteIds = null)
 
-Get quotes
+[BETA] Get quotes
 
 Get quotes effective at the specified date/time (if any). An optional maximum age of quotes can be specified, and is infinite by default.  Quotes which are older than this at the time of the effective date/time will not be returned.  MaxAge is a duration of time represented in an ISO8601 format, eg. P1Y2M3DT4H30M (1 year, 2 months, 3 days, 4 hours and 30 minutes).  The results are paged, and by default the 1st page of results is returned with a limit of 100 results per page
 
@@ -119,7 +119,7 @@ namespace Example
 
             try
             {
-                // Get quotes
+                // [BETA] Get quotes
                 GetQuotesResponse result = apiInstance.GetQuotes(scope, effectiveAt, asAt, maxAge, page, limit, quoteIds);
                 Debug.WriteLine(result);
             }
@@ -168,7 +168,7 @@ Name | Type | Description  | Notes
 
 > UpsertQuotesResponse UpsertQuotes (string scope, List<UpsertQuoteRequest> quotes = null)
 
-Upsert quotes
+[BETA] Upsert quotes
 
 Upsert quotes effective at the specified time. If a quote is added with the same id (and is effective at the same time) as an existing quote, then the more recently added quote will be returned when queried
 
@@ -196,7 +196,7 @@ namespace Example
 
             try
             {
-                // Upsert quotes
+                // [BETA] Upsert quotes
                 UpsertQuotesResponse result = apiInstance.UpsertQuotes(scope, quotes);
                 Debug.WriteLine(result);
             }

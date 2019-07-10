@@ -4,8 +4,8 @@ All URIs are relative to *http://localhost*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
-[**ReconcileHoldings**](ReconciliationsApi.md#reconcileholdings) | **POST** /api/portfolios/$reconcileholdings | Reconcile portfolio holdings
-[**ReconcileValuation**](ReconciliationsApi.md#reconcilevaluation) | **POST** /api/portfolios/$reconcileValuation | Reconcile valuations performed on one or two sets of holdings using one or two configuration recipes.
+[**ReconcileHoldings**](ReconciliationsApi.md#reconcileholdings) | **POST** /api/portfolios/$reconcileholdings | [EARLY ACCESS] Reconcile portfolio holdings
+[**ReconcileValuation**](ReconciliationsApi.md#reconcilevaluation) | **POST** /api/portfolios/$reconcileValuation | [EXPERIMENTAL] Reconcile valuations performed on one or two sets of holdings using one or two configuration recipes.
 
 
 
@@ -13,7 +13,7 @@ Method | HTTP request | Description
 
 > ResourceListOfReconciliationBreak ReconcileHoldings (List<string> sortBy = null, int? start = null, int? limit = null, string filter = null, PortfoliosReconciliationRequest request = null)
 
-Reconcile portfolio holdings
+[EARLY ACCESS] Reconcile portfolio holdings
 
 Reconcile the holdings of two portfolios.
 
@@ -44,7 +44,7 @@ namespace Example
 
             try
             {
-                // Reconcile portfolio holdings
+                // [EARLY ACCESS] Reconcile portfolio holdings
                 ResourceListOfReconciliationBreak result = apiInstance.ReconcileHoldings(sortBy, start, limit, filter, request);
                 Debug.WriteLine(result);
             }
@@ -91,7 +91,7 @@ Name | Type | Description  | Notes
 
 > ResourceListOfReconciliationBreak ReconcileValuation (List<string> sortBy = null, int? start = null, int? limit = null, string filter = null, ValuationsReconciliationRequest request = null)
 
-Reconcile valuations performed on one or two sets of holdings using one or two configuration recipes.
+[EXPERIMENTAL] Reconcile valuations performed on one or two sets of holdings using one or two configuration recipes.
 
 Perform valuation of one or two set of holdings using different one or two configuration recipes. Produce a breakdown of the resulting differences in valuation.
 
@@ -122,7 +122,7 @@ namespace Example
 
             try
             {
-                // Reconcile valuations performed on one or two sets of holdings using one or two configuration recipes.
+                // [EXPERIMENTAL] Reconcile valuations performed on one or two sets of holdings using one or two configuration recipes.
                 ResourceListOfReconciliationBreak result = apiInstance.ReconcileValuation(sortBy, start, limit, filter, request);
                 Debug.WriteLine(result);
             }

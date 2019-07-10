@@ -4,9 +4,9 @@ All URIs are relative to *http://localhost*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
-[**CreateConfigurationTransactionType**](SystemConfigurationApi.md#createconfigurationtransactiontype) | **POST** /api/systemconfiguration/transactiontypes | Create transaction type
-[**ListConfigurationTransactionTypes**](SystemConfigurationApi.md#listconfigurationtransactiontypes) | **GET** /api/systemconfiguration/transactiontypes | List transaction types
-[**SetConfigurationTransactionTypes**](SystemConfigurationApi.md#setconfigurationtransactiontypes) | **PUT** /api/systemconfiguration/transactiontypes | Set transaction types
+[**CreateConfigurationTransactionType**](SystemConfigurationApi.md#createconfigurationtransactiontype) | **POST** /api/systemconfiguration/transactiontypes | [EARLY ACCESS] Create transaction type
+[**ListConfigurationTransactionTypes**](SystemConfigurationApi.md#listconfigurationtransactiontypes) | **GET** /api/systemconfiguration/transactiontypes | [EARLY ACCESS] List transaction types
+[**SetConfigurationTransactionTypes**](SystemConfigurationApi.md#setconfigurationtransactiontypes) | **PUT** /api/systemconfiguration/transactiontypes | [EXPERIMENTAL] Set transaction types
 
 
 
@@ -14,7 +14,7 @@ Method | HTTP request | Description
 
 > ResourceListOfTransactionConfigurationData CreateConfigurationTransactionType (TransactionConfigurationDataRequest type = null)
 
-Create transaction type
+[EARLY ACCESS] Create transaction type
 
 Create a new transaction type by specifying a definition and the mappings to movements
 
@@ -41,7 +41,7 @@ namespace Example
 
             try
             {
-                // Create transaction type
+                // [EARLY ACCESS] Create transaction type
                 ResourceListOfTransactionConfigurationData result = apiInstance.CreateConfigurationTransactionType(type);
                 Debug.WriteLine(result);
             }
@@ -84,7 +84,7 @@ Name | Type | Description  | Notes
 
 > ResourceListOfTransactionConfigurationData ListConfigurationTransactionTypes ()
 
-List transaction types
+[EARLY ACCESS] List transaction types
 
 Get the list of persisted transaction types
 
@@ -110,7 +110,7 @@ namespace Example
 
             try
             {
-                // List transaction types
+                // [EARLY ACCESS] List transaction types
                 ResourceListOfTransactionConfigurationData result = apiInstance.ListConfigurationTransactionTypes();
                 Debug.WriteLine(result);
             }
@@ -150,7 +150,7 @@ This endpoint does not need any parameter.
 
 > ResourceListOfTransactionConfigurationData SetConfigurationTransactionTypes (List<TransactionConfigurationDataRequest> types = null)
 
-Set transaction types
+[EXPERIMENTAL] Set transaction types
 
 Set all transaction types to be used by the movements engine, for the organisation                WARNING! Changing these mappings will have a material impact on how data, new and old, is processed and aggregated by LUSID. This will affect your whole organisation. Only change if you are fully aware of the implications of the change.
 
@@ -177,7 +177,7 @@ namespace Example
 
             try
             {
-                // Set transaction types
+                // [EXPERIMENTAL] Set transaction types
                 ResourceListOfTransactionConfigurationData result = apiInstance.SetConfigurationTransactionTypes(types);
                 Debug.WriteLine(result);
             }

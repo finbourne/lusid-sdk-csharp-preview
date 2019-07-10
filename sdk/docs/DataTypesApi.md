@@ -4,11 +4,11 @@ All URIs are relative to *http://localhost*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
-[**CreateDataType**](DataTypesApi.md#createdatatype) | **POST** /api/datatypes | Create data type definition
-[**GetDataType**](DataTypesApi.md#getdatatype) | **GET** /api/datatypes/{scope}/{code} | Get data type definition
-[**GetUnitsFromDataType**](DataTypesApi.md#getunitsfromdatatype) | **GET** /api/datatypes/{scope}/{code}/units | Get units from data type
-[**ListDataTypes**](DataTypesApi.md#listdatatypes) | **GET** /api/datatypes/{scope} | List data types
-[**UpdateDataType**](DataTypesApi.md#updatedatatype) | **PUT** /api/datatypes/{scope}/{code} | Update data type definition
+[**CreateDataType**](DataTypesApi.md#createdatatype) | **POST** /api/datatypes | [BETA] Create data type definition
+[**GetDataType**](DataTypesApi.md#getdatatype) | **GET** /api/datatypes/{scope}/{code} | [EARLY ACCESS] Get data type definition
+[**GetUnitsFromDataType**](DataTypesApi.md#getunitsfromdatatype) | **GET** /api/datatypes/{scope}/{code}/units | [EARLY ACCESS] Get units from data type
+[**ListDataTypes**](DataTypesApi.md#listdatatypes) | **GET** /api/datatypes/{scope} | [EARLY ACCESS] List data types
+[**UpdateDataType**](DataTypesApi.md#updatedatatype) | **PUT** /api/datatypes/{scope}/{code} | [BETA] Update data type definition
 
 
 
@@ -16,7 +16,7 @@ Method | HTTP request | Description
 
 > DataType CreateDataType (CreateDataTypeRequest request = null)
 
-Create data type definition
+[BETA] Create data type definition
 
 Create a new data type definition    Data types cannot be created in either the \"default\" or \"system\" scopes.
 
@@ -43,7 +43,7 @@ namespace Example
 
             try
             {
-                // Create data type definition
+                // [BETA] Create data type definition
                 DataType result = apiInstance.CreateDataType(request);
                 Debug.WriteLine(result);
             }
@@ -86,7 +86,7 @@ Name | Type | Description  | Notes
 
 > DataType GetDataType (string scope, string code)
 
-Get data type definition
+[EARLY ACCESS] Get data type definition
 
 Get the definition of a specified data type
 
@@ -114,7 +114,7 @@ namespace Example
 
             try
             {
-                // Get data type definition
+                // [EARLY ACCESS] Get data type definition
                 DataType result = apiInstance.GetDataType(scope, code);
                 Debug.WriteLine(result);
             }
@@ -158,7 +158,7 @@ Name | Type | Description  | Notes
 
 > ResourceListOfIUnitDefinitionDto GetUnitsFromDataType (string scope, string code, List<string> units = null, string filter = null)
 
-Get units from data type
+[EARLY ACCESS] Get units from data type
 
 Get the definitions of the specified units associated bound to a specific data type
 
@@ -188,7 +188,7 @@ namespace Example
 
             try
             {
-                // Get units from data type
+                // [EARLY ACCESS] Get units from data type
                 ResourceListOfIUnitDefinitionDto result = apiInstance.GetUnitsFromDataType(scope, code, units, filter);
                 Debug.WriteLine(result);
             }
@@ -234,7 +234,7 @@ Name | Type | Description  | Notes
 
 > ResourceListOfDataType ListDataTypes (string scope, bool? includeSystem = null, List<string> sortBy = null, int? start = null, int? limit = null, string filter = null)
 
-List data types
+[EARLY ACCESS] List data types
 
 List all data types in a specified scope
 
@@ -266,7 +266,7 @@ namespace Example
 
             try
             {
-                // List data types
+                // [EARLY ACCESS] List data types
                 ResourceListOfDataType result = apiInstance.ListDataTypes(scope, includeSystem, sortBy, start, limit, filter);
                 Debug.WriteLine(result);
             }
@@ -314,7 +314,7 @@ Name | Type | Description  | Notes
 
 > DataType UpdateDataType (string scope, string code, UpdateDataTypeRequest request = null)
 
-Update data type definition
+[BETA] Update data type definition
 
 Update the definition of the specified existing data type    Not all elements within a data type definition are modifiable due to the potential implications for data  already stored against the types
 
@@ -343,7 +343,7 @@ namespace Example
 
             try
             {
-                // Update data type definition
+                // [BETA] Update data type definition
                 DataType result = apiInstance.UpdateDataType(scope, code, request);
                 Debug.WriteLine(result);
             }

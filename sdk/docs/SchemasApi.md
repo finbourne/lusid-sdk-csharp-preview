@@ -4,10 +4,10 @@ All URIs are relative to *http://localhost*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
-[**GetEntitySchema**](SchemasApi.md#getentityschema) | **GET** /api/schemas/entities/{entity} | Get schema
-[**GetPropertySchema**](SchemasApi.md#getpropertyschema) | **GET** /api/schemas/properties | Get property schema
-[**GetValueTypes**](SchemasApi.md#getvaluetypes) | **GET** /api/schemas/types | Get value types
-[**ListEntities**](SchemasApi.md#listentities) | **GET** /api/schemas/entities | List entities
+[**GetEntitySchema**](SchemasApi.md#getentityschema) | **GET** /api/schemas/entities/{entity} | [BETA] Get schema
+[**GetPropertySchema**](SchemasApi.md#getpropertyschema) | **GET** /api/schemas/properties | [BETA] Get property schema
+[**GetValueTypes**](SchemasApi.md#getvaluetypes) | **GET** /api/schemas/types | [BETA] Get value types
+[**ListEntities**](SchemasApi.md#listentities) | **GET** /api/schemas/entities | [BETA] List entities
 
 
 
@@ -15,7 +15,7 @@ Method | HTTP request | Description
 
 > Schema GetEntitySchema (string entity)
 
-Get schema
+[BETA] Get schema
 
 Gets the schema and meta-data for a given entity
 
@@ -42,7 +42,7 @@ namespace Example
 
             try
             {
-                // Get schema
+                // [BETA] Get schema
                 Schema result = apiInstance.GetEntitySchema(entity);
                 Debug.WriteLine(result);
             }
@@ -85,7 +85,7 @@ Name | Type | Description  | Notes
 
 > PropertySchema GetPropertySchema (List<string> propertyKeys = null, DateTimeOffset? asAt = null)
 
-Get property schema
+[BETA] Get property schema
 
 Get the schemas for the provided list of property keys.
 
@@ -113,7 +113,7 @@ namespace Example
 
             try
             {
-                // Get property schema
+                // [BETA] Get property schema
                 PropertySchema result = apiInstance.GetPropertySchema(propertyKeys, asAt);
                 Debug.WriteLine(result);
             }
@@ -157,7 +157,7 @@ Name | Type | Description  | Notes
 
 > ResourceListOfValueType GetValueTypes (List<string> sortBy = null, int? start = null, int? limit = null)
 
-Get value types
+[BETA] Get value types
 
 Gets the available value types for which a schema is available.
 
@@ -186,7 +186,7 @@ namespace Example
 
             try
             {
-                // Get value types
+                // [BETA] Get value types
                 ResourceListOfValueType result = apiInstance.GetValueTypes(sortBy, start, limit);
                 Debug.WriteLine(result);
             }
@@ -231,7 +231,7 @@ Name | Type | Description  | Notes
 
 > ResourceListOfString ListEntities ()
 
-List entities
+[BETA] List entities
 
 List all available entities for which schema information is available.
 
@@ -257,7 +257,7 @@ namespace Example
 
             try
             {
-                // List entities
+                // [BETA] List entities
                 ResourceListOfString result = apiInstance.ListEntities();
                 Debug.WriteLine(result);
             }

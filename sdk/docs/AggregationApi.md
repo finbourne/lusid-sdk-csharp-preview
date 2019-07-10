@@ -4,10 +4,10 @@ All URIs are relative to *http://localhost*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
-[**GetAggregationByGroup**](AggregationApi.md#getaggregationbygroup) | **POST** /api/portfoliogroups/{scope}/{code}/$aggregate | Aggregate data in a portfolio group
-[**GetAggregationByPortfolio**](AggregationApi.md#getaggregationbyportfolio) | **POST** /api/portfolios/{scope}/{code}/$aggregate | Aggregate data in a portfolio
-[**GetAggregationByResultSet**](AggregationApi.md#getaggregationbyresultset) | **POST** /api/results/{scope}/{resultsKey}/$aggregate | Aggregate using result data
-[**GetNestedAggregationByGroup**](AggregationApi.md#getnestedaggregationbygroup) | **POST** /api/portfoliogroups/{scope}/{code}/$aggregatenested | Aggregate data in a portfolio group, as nested
+[**GetAggregationByGroup**](AggregationApi.md#getaggregationbygroup) | **POST** /api/portfoliogroups/{scope}/{code}/$aggregate | [EXPERIMENTAL] Aggregate data in a portfolio group
+[**GetAggregationByPortfolio**](AggregationApi.md#getaggregationbyportfolio) | **POST** /api/portfolios/{scope}/{code}/$aggregate | [EXPERIMENTAL] Aggregate data in a portfolio
+[**GetAggregationByResultSet**](AggregationApi.md#getaggregationbyresultset) | **POST** /api/results/{scope}/{resultsKey}/$aggregate | [EXPERIMENTAL] Aggregate using result data
+[**GetNestedAggregationByGroup**](AggregationApi.md#getnestedaggregationbygroup) | **POST** /api/portfoliogroups/{scope}/{code}/$aggregatenested | [EXPERIMENTAL] Aggregate data in a portfolio group, as nested
 
 
 
@@ -15,7 +15,7 @@ Method | HTTP request | Description
 
 > ListAggregationResponse GetAggregationByGroup (string scope, string code, List<string> sortBy = null, int? start = null, int? limit = null, AggregationRequest request = null)
 
-Aggregate data in a portfolio group
+[EXPERIMENTAL] Aggregate data in a portfolio group
 
 Aggregate data sourced from the specified portfolio group
 
@@ -47,7 +47,7 @@ namespace Example
 
             try
             {
-                // Aggregate data in a portfolio group
+                // [EXPERIMENTAL] Aggregate data in a portfolio group
                 ListAggregationResponse result = apiInstance.GetAggregationByGroup(scope, code, sortBy, start, limit, request);
                 Debug.WriteLine(result);
             }
@@ -95,7 +95,7 @@ Name | Type | Description  | Notes
 
 > ListAggregationResponse GetAggregationByPortfolio (string scope, string code, List<string> sortBy = null, int? start = null, int? limit = null, AggregationRequest request = null)
 
-Aggregate data in a portfolio
+[EXPERIMENTAL] Aggregate data in a portfolio
 
 Aggregate data sourced from the specified portfolio
 
@@ -127,7 +127,7 @@ namespace Example
 
             try
             {
-                // Aggregate data in a portfolio
+                // [EXPERIMENTAL] Aggregate data in a portfolio
                 ListAggregationResponse result = apiInstance.GetAggregationByPortfolio(scope, code, sortBy, start, limit, request);
                 Debug.WriteLine(result);
             }
@@ -175,7 +175,7 @@ Name | Type | Description  | Notes
 
 > ListAggregationResponse GetAggregationByResultSet (string scope, string resultsKey, List<string> sortBy = null, int? start = null, int? limit = null, AggregationRequest request = null)
 
-Aggregate using result data
+[EXPERIMENTAL] Aggregate using result data
 
 Aggregate data from a previously-run Result data set into a flat row of results
 
@@ -207,7 +207,7 @@ namespace Example
 
             try
             {
-                // Aggregate using result data
+                // [EXPERIMENTAL] Aggregate using result data
                 ListAggregationResponse result = apiInstance.GetAggregationByResultSet(scope, resultsKey, sortBy, start, limit, request);
                 Debug.WriteLine(result);
             }
@@ -255,7 +255,7 @@ Name | Type | Description  | Notes
 
 > NestedAggregationResponse GetNestedAggregationByGroup (string scope, string code, AggregationRequest request = null)
 
-Aggregate data in a portfolio group, as nested
+[EXPERIMENTAL] Aggregate data in a portfolio group, as nested
 
 Obsolete - Aggregate data sourced from the specified portfolio group into a nested structure. Data is nested following the group-by specifications.
 
@@ -284,7 +284,7 @@ namespace Example
 
             try
             {
-                // Aggregate data in a portfolio group, as nested
+                // [EXPERIMENTAL] Aggregate data in a portfolio group, as nested
                 NestedAggregationResponse result = apiInstance.GetNestedAggregationByGroup(scope, code, request);
                 Debug.WriteLine(result);
             }
