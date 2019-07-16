@@ -4,11 +4,11 @@ All URIs are relative to *http://http:/api*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
-[**CreatePropertyDefinition**](PropertyDefinitionsApi.md#createpropertydefinition) | **POST** /api/propertydefinitions | [EARLY ACCESS] Create property definition
-[**DeletePropertyDefinition**](PropertyDefinitionsApi.md#deletepropertydefinition) | **DELETE** /api/propertydefinitions/{domain}/{scope}/{code} | [EARLY ACCESS] Delete property definition
-[**GetMultiplePropertyDefinitions**](PropertyDefinitionsApi.md#getmultiplepropertydefinitions) | **GET** /api/propertydefinitions | [EARLY ACCESS] Get multiple property definitions
-[**GetPropertyDefinition**](PropertyDefinitionsApi.md#getpropertydefinition) | **GET** /api/propertydefinitions/{domain}/{scope}/{code} | [EARLY ACCESS] Get property definition
-[**UpdatePropertyDefinition**](PropertyDefinitionsApi.md#updatepropertydefinition) | **PUT** /api/propertydefinitions/{domain}/{scope}/{code} | [EARLY ACCESS] Update property definition
+[**CreatePropertyDefinition**](PropertyDefinitionsApi.md#createpropertydefinition) | **POST** /api/propertydefinitions | Create property definition
+[**DeletePropertyDefinition**](PropertyDefinitionsApi.md#deletepropertydefinition) | **DELETE** /api/propertydefinitions/{domain}/{scope}/{code} | Delete property definition
+[**GetMultiplePropertyDefinitions**](PropertyDefinitionsApi.md#getmultiplepropertydefinitions) | **GET** /api/propertydefinitions | Get multiple property definitions
+[**GetPropertyDefinition**](PropertyDefinitionsApi.md#getpropertydefinition) | **GET** /api/propertydefinitions/{domain}/{scope}/{code} | Get property definition
+[**UpdatePropertyDefinition**](PropertyDefinitionsApi.md#updatepropertydefinition) | **PUT** /api/propertydefinitions/{domain}/{scope}/{code} | Update property definition
 
 
 
@@ -16,7 +16,7 @@ Method | HTTP request | Description
 
 > PropertyDefinition CreatePropertyDefinition (CreatePropertyDefinitionRequest definition)
 
-[EARLY ACCESS] Create property definition
+Create property definition
 
 Define a new property.
 
@@ -43,7 +43,7 @@ namespace Example
 
             try
             {
-                // [EARLY ACCESS] Create property definition
+                // Create property definition
                 PropertyDefinition result = apiInstance.CreatePropertyDefinition(definition);
                 Debug.WriteLine(result);
             }
@@ -189,7 +189,7 @@ namespace Example
 
             try
             {
-                // [EARLY ACCESS] Get multiple property definitions
+                // Get multiple property definitions
                 ResourceListOfPropertyDefinition result = apiInstance.GetMultiplePropertyDefinitions(propertyKeys, asAt, filter);
                 Debug.WriteLine(result);
             }
@@ -310,7 +310,7 @@ Name | Type | Description  | Notes
 
 > PropertyDefinition UpdatePropertyDefinition (string domain, string scope, string code, UpdatePropertyDefinitionRequest definition = null)
 
-[EARLY ACCESS] Update property definition
+Update property definition
 
 Update display name of specified existing property.
 
@@ -340,7 +340,7 @@ namespace Example
 
             try
             {
-                // [EARLY ACCESS] Update property definition
+                // Update property definition
                 PropertyDefinition result = apiInstance.UpdatePropertyDefinition(domain, scope, code, definition);
                 Debug.WriteLine(result);
             }

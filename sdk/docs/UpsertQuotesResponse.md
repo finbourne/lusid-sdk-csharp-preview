@@ -5,7 +5,9 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**AsAt** | **DateTimeOffset?** |  | 
+**Href** | **string** |  | [optional] 
+**Values** | [**Dictionary&lt;string, Quote&gt;**](Quote.md) | The collection of upserted quotes with their latest values | [optional] 
+**Failed** | **Dictionary&lt;string, List&lt;string&gt;&gt;** | If any quotes failed to be upserted, they will be listed in &#39;Failed&#39;, along  with a reason why. | [optional] 
 **Links** | [**List&lt;Link&gt;**](Link.md) |  | [optional] 
 
 [[Back to Model list]](../README.md#documentation-for-models)
