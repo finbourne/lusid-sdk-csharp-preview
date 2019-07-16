@@ -12,7 +12,7 @@ Method | HTTP request | Description
 
 ## DeleteQuotes
 
-> DeleteQuotesResponse DeleteQuotes (string scope, List<DeleteQuoteRequest> quotes = null)
+> AnnulQuotesResponse DeleteQuotes (string scope, List<QuoteId> quotes = null)
 
 [BETA] Delete a quote
 
@@ -38,12 +38,12 @@ namespace Example
 
             var apiInstance = new QuotesApi();
             var scope = scope_example;  // string | The scope of the quote
-            var quotes = new List<DeleteQuoteRequest>(); // List<DeleteQuoteRequest> | The quotes to delete (optional) 
+            var quotes = new List<QuoteId>(); // List<QuoteId> | The quotes to delete (optional) 
 
             try
             {
-                // [BETA] Delete a quote
-                DeleteQuotesResponse result = apiInstance.DeleteQuotes(scope, quotes);
+                // Delete a quote
+                AnnulQuotesResponse result = apiInstance.DeleteQuotes(scope, quotes);
                 Debug.WriteLine(result);
             }
             catch (Exception e)
@@ -61,11 +61,11 @@ namespace Example
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **scope** | **string**| The scope of the quote | 
- **quotes** | [**List&lt;DeleteQuoteRequest&gt;**](List.md)| The quotes to delete | [optional] 
+ **quotes** | [**List&lt;QuoteId&gt;**](List.md)| The quotes to delete | [optional] 
 
 ### Return type
 
-[**DeleteQuotesResponse**](DeleteQuotesResponse.md)
+[**AnnulQuotesResponse**](AnnulQuotesResponse.md)
 
 ### Authorization
 
@@ -84,11 +84,11 @@ Name | Type | Description  | Notes
 
 ## GetQuotes
 
-> GetQuotesResponse GetQuotes (string scope, DateTimeOffset? effectiveAt = null, DateTimeOffset? asAt = null, string maxAge = null, int? page = null, int? limit = null, List<QuoteId> quoteIds = null)
+> GetQuotesResponse GetQuotes (string scope, string effectiveAt = null, DateTimeOffset? asAt = null, string maxAge = null, List<QuoteSeriesId> quoteIds = null)
 
 [BETA] Get quotes
 
-Get quotes effective at the specified date/time (if any). An optional maximum age of quotes can be specified, and is infinite by default.  Quotes which are older than this at the time of the effective date/time will not be returned.  MaxAge is a duration of time represented in an ISO8601 format, eg. P1Y2M3DT4H30M (1 year, 2 months, 3 days, 4 hours and 30 minutes).  The results are paged, and by default the 1st page of results is returned with a limit of 100 results per page
+Get quotes effective at the specified date/time (if any). An optional maximum age of quotes can be specified, and is infinite by default.  Quotes which are older than this at the time of the effective date/time will not be returned.  MaxAge is a duration of time represented in an ISO8601 format, eg. P1Y2M3DT4H30M (1 year, 2 months, 3 days, 4 hours and 30 minutes).
 
 ### Example
 
@@ -110,17 +110,15 @@ namespace Example
 
             var apiInstance = new QuotesApi();
             var scope = scope_example;  // string | The scope of the quotes
-            var effectiveAt = 2013-10-20T19:20:30+01:00;  // DateTimeOffset? | Optional. The date/time from which the quotes are effective (optional) 
+            var effectiveAt = effectiveAt_example;  // string | Optional. The date/time from which the quotes are effective (optional) 
             var asAt = 2013-10-20T19:20:30+01:00;  // DateTimeOffset? | Optional. The 'AsAt' date/time (optional) 
             var maxAge = maxAge_example;  // string | Optional. The quote staleness tolerance (optional) 
-            var page = 56;  // int? | Optional. The page of results to return (optional) 
-            var limit = 56;  // int? | Optional. The number of results per page (optional) 
-            var quoteIds = new List<QuoteId>(); // List<QuoteId> | The ids of the quotes (optional) 
+            var quoteIds = new List<QuoteSeriesId>(); // List<QuoteSeriesId> | The ids of the quotes (optional) 
 
             try
             {
-                // [BETA] Get quotes
-                GetQuotesResponse result = apiInstance.GetQuotes(scope, effectiveAt, asAt, maxAge, page, limit, quoteIds);
+                // Get quotes
+                GetQuotesResponse result = apiInstance.GetQuotes(scope, effectiveAt, asAt, maxAge, quoteIds);
                 Debug.WriteLine(result);
             }
             catch (Exception e)
@@ -138,12 +136,10 @@ namespace Example
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **scope** | **string**| The scope of the quotes | 
- **effectiveAt** | **DateTimeOffset?**| Optional. The date/time from which the quotes are effective | [optional] 
+ **effectiveAt** | **string**| Optional. The date/time from which the quotes are effective | [optional] 
  **asAt** | **DateTimeOffset?**| Optional. The &#39;AsAt&#39; date/time | [optional] 
  **maxAge** | **string**| Optional. The quote staleness tolerance | [optional] 
- **page** | **int?**| Optional. The page of results to return | [optional] 
- **limit** | **int?**| Optional. The number of results per page | [optional] 
- **quoteIds** | [**List&lt;QuoteId&gt;**](List.md)| The ids of the quotes | [optional] 
+ **quoteIds** | [**List&lt;QuoteSeriesId&gt;**](List.md)| The ids of the quotes | [optional] 
 
 ### Return type
 

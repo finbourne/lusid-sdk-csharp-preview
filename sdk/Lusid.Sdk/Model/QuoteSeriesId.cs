@@ -23,56 +23,194 @@ using OpenAPIDateConverter = Lusid.Sdk.Client.OpenAPIDateConverter;
 namespace Lusid.Sdk.Model
 {
     /// <summary>
-    /// ResourceListOfProcessedCommand
+    /// This type should completely describe the &#39;kind&#39; of quote,  with the exception of the effective-date (which is included in the QuoteId).
     /// </summary>
     [DataContract]
-    public partial class ResourceListOfProcessedCommand :  IEquatable<ResourceListOfProcessedCommand>
+    public partial class QuoteSeriesId :  IEquatable<QuoteSeriesId>
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="ResourceListOfProcessedCommand" /> class.
+        /// Defines InstrumentIdType
+        /// </summary>
+        [JsonConverter(typeof(StringEnumConverter))]
+        public enum InstrumentIdTypeEnum
+        {
+            /// <summary>
+            /// Enum LusidInstrumentId for value: LusidInstrumentId
+            /// </summary>
+            [EnumMember(Value = "LusidInstrumentId")]
+            LusidInstrumentId = 1,
+
+            /// <summary>
+            /// Enum Figi for value: Figi
+            /// </summary>
+            [EnumMember(Value = "Figi")]
+            Figi = 2,
+
+            /// <summary>
+            /// Enum RIC for value: RIC
+            /// </summary>
+            [EnumMember(Value = "RIC")]
+            RIC = 3,
+
+            /// <summary>
+            /// Enum QuotePermId for value: QuotePermId
+            /// </summary>
+            [EnumMember(Value = "QuotePermId")]
+            QuotePermId = 4,
+
+            /// <summary>
+            /// Enum Isin for value: Isin
+            /// </summary>
+            [EnumMember(Value = "Isin")]
+            Isin = 5,
+
+            /// <summary>
+            /// Enum CurrencyPair for value: CurrencyPair
+            /// </summary>
+            [EnumMember(Value = "CurrencyPair")]
+            CurrencyPair = 6
+
+        }
+
+        /// <summary>
+        /// Gets or Sets InstrumentIdType
+        /// </summary>
+        [DataMember(Name="instrumentIdType", EmitDefaultValue=false)]
+        public InstrumentIdTypeEnum InstrumentIdType { get; set; }
+        /// <summary>
+        /// Defines QuoteType
+        /// </summary>
+        [JsonConverter(typeof(StringEnumConverter))]
+        public enum QuoteTypeEnum
+        {
+            /// <summary>
+            /// Enum Price for value: Price
+            /// </summary>
+            [EnumMember(Value = "Price")]
+            Price = 1,
+
+            /// <summary>
+            /// Enum Spread for value: Spread
+            /// </summary>
+            [EnumMember(Value = "Spread")]
+            Spread = 2,
+
+            /// <summary>
+            /// Enum Rate for value: Rate
+            /// </summary>
+            [EnumMember(Value = "Rate")]
+            Rate = 3
+
+        }
+
+        /// <summary>
+        /// Gets or Sets QuoteType
+        /// </summary>
+        [DataMember(Name="quoteType", EmitDefaultValue=false)]
+        public QuoteTypeEnum QuoteType { get; set; }
+        /// <summary>
+        /// Initializes a new instance of the <see cref="QuoteSeriesId" /> class.
         /// </summary>
         [JsonConstructorAttribute]
-        protected ResourceListOfProcessedCommand() { }
+        protected QuoteSeriesId() { }
         /// <summary>
-        /// Initializes a new instance of the <see cref="ResourceListOfProcessedCommand" /> class.
+        /// Initializes a new instance of the <see cref="QuoteSeriesId" /> class.
         /// </summary>
-        /// <param name="values">values (required).</param>
-        /// <param name="href">The Uri that returns the same result as the original request,  but may include resolved as at time(s)..</param>
-        /// <param name="links">links.</param>
-        public ResourceListOfProcessedCommand(List<ProcessedCommand> values = default(List<ProcessedCommand>), string href = default(string), List<Link> links = default(List<Link>))
+        /// <param name="provider">provider (required).</param>
+        /// <param name="priceSource">priceSource (required).</param>
+        /// <param name="instrumentId">instrumentId (required).</param>
+        /// <param name="instrumentIdType">instrumentIdType (required).</param>
+        /// <param name="quoteType">quoteType (required).</param>
+        /// <param name="field">field (required).</param>
+        public QuoteSeriesId(string provider = default(string), string priceSource = default(string), string instrumentId = default(string), InstrumentIdTypeEnum instrumentIdType = default(InstrumentIdTypeEnum), QuoteTypeEnum quoteType = default(QuoteTypeEnum), string field = default(string))
         {
-            // to ensure "values" is required (not null)
-            if (values == null)
+            // to ensure "provider" is required (not null)
+            if (provider == null)
             {
-                throw new InvalidDataException("values is a required property for ResourceListOfProcessedCommand and cannot be null");
+                throw new InvalidDataException("provider is a required property for QuoteSeriesId and cannot be null");
             }
             else
             {
-                this.Values = values;
+                this.Provider = provider;
             }
             
-            this.Href = href;
-            this.Links = links;
+            // to ensure "priceSource" is required (not null)
+            if (priceSource == null)
+            {
+                throw new InvalidDataException("priceSource is a required property for QuoteSeriesId and cannot be null");
+            }
+            else
+            {
+                this.PriceSource = priceSource;
+            }
+            
+            // to ensure "instrumentId" is required (not null)
+            if (instrumentId == null)
+            {
+                throw new InvalidDataException("instrumentId is a required property for QuoteSeriesId and cannot be null");
+            }
+            else
+            {
+                this.InstrumentId = instrumentId;
+            }
+            
+            // to ensure "instrumentIdType" is required (not null)
+            if (instrumentIdType == null)
+            {
+                throw new InvalidDataException("instrumentIdType is a required property for QuoteSeriesId and cannot be null");
+            }
+            else
+            {
+                this.InstrumentIdType = instrumentIdType;
+            }
+            
+            // to ensure "quoteType" is required (not null)
+            if (quoteType == null)
+            {
+                throw new InvalidDataException("quoteType is a required property for QuoteSeriesId and cannot be null");
+            }
+            else
+            {
+                this.QuoteType = quoteType;
+            }
+            
+            // to ensure "field" is required (not null)
+            if (field == null)
+            {
+                throw new InvalidDataException("field is a required property for QuoteSeriesId and cannot be null");
+            }
+            else
+            {
+                this.Field = field;
+            }
+            
         }
         
         /// <summary>
-        /// Gets or Sets Values
+        /// Gets or Sets Provider
         /// </summary>
-        [DataMember(Name="values", EmitDefaultValue=false)]
-        public List<ProcessedCommand> Values { get; set; }
+        [DataMember(Name="provider", EmitDefaultValue=false)]
+        public string Provider { get; set; }
 
         /// <summary>
-        /// The Uri that returns the same result as the original request,  but may include resolved as at time(s).
+        /// Gets or Sets PriceSource
         /// </summary>
-        /// <value>The Uri that returns the same result as the original request,  but may include resolved as at time(s).</value>
-        [DataMember(Name="href", EmitDefaultValue=false)]
-        public string Href { get; set; }
+        [DataMember(Name="priceSource", EmitDefaultValue=false)]
+        public string PriceSource { get; set; }
 
         /// <summary>
-        /// Gets or Sets Links
+        /// Gets or Sets InstrumentId
         /// </summary>
-        [DataMember(Name="links", EmitDefaultValue=false)]
-        public List<Link> Links { get; set; }
+        [DataMember(Name="instrumentId", EmitDefaultValue=false)]
+        public string InstrumentId { get; set; }
+
+
+
+        /// <summary>
+        /// Gets or Sets Field
+        /// </summary>
+        [DataMember(Name="field", EmitDefaultValue=false)]
+        public string Field { get; set; }
 
         /// <summary>
         /// Returns the string presentation of the object
@@ -81,10 +219,13 @@ namespace Lusid.Sdk.Model
         public override string ToString()
         {
             var sb = new StringBuilder();
-            sb.Append("class ResourceListOfProcessedCommand {\n");
-            sb.Append("  Values: ").Append(Values).Append("\n");
-            sb.Append("  Href: ").Append(Href).Append("\n");
-            sb.Append("  Links: ").Append(Links).Append("\n");
+            sb.Append("class QuoteSeriesId {\n");
+            sb.Append("  Provider: ").Append(Provider).Append("\n");
+            sb.Append("  PriceSource: ").Append(PriceSource).Append("\n");
+            sb.Append("  InstrumentId: ").Append(InstrumentId).Append("\n");
+            sb.Append("  InstrumentIdType: ").Append(InstrumentIdType).Append("\n");
+            sb.Append("  QuoteType: ").Append(QuoteType).Append("\n");
+            sb.Append("  Field: ").Append(Field).Append("\n");
             sb.Append("}\n");
             return sb.ToString();
         }
@@ -105,36 +246,49 @@ namespace Lusid.Sdk.Model
         /// <returns>Boolean</returns>
         public override bool Equals(object input)
         {
-            return this.Equals(input as ResourceListOfProcessedCommand);
+            return this.Equals(input as QuoteSeriesId);
         }
 
         /// <summary>
-        /// Returns true if ResourceListOfProcessedCommand instances are equal
+        /// Returns true if QuoteSeriesId instances are equal
         /// </summary>
-        /// <param name="input">Instance of ResourceListOfProcessedCommand to be compared</param>
+        /// <param name="input">Instance of QuoteSeriesId to be compared</param>
         /// <returns>Boolean</returns>
-        public bool Equals(ResourceListOfProcessedCommand input)
+        public bool Equals(QuoteSeriesId input)
         {
             if (input == null)
                 return false;
 
             return 
                 (
-                    this.Values == input.Values ||
-                    this.Values != null &&
-                    input.Values != null &&
-                    this.Values.SequenceEqual(input.Values)
+                    this.Provider == input.Provider ||
+                    (this.Provider != null &&
+                    this.Provider.Equals(input.Provider))
                 ) && 
                 (
-                    this.Href == input.Href ||
-                    (this.Href != null &&
-                    this.Href.Equals(input.Href))
+                    this.PriceSource == input.PriceSource ||
+                    (this.PriceSource != null &&
+                    this.PriceSource.Equals(input.PriceSource))
                 ) && 
                 (
-                    this.Links == input.Links ||
-                    this.Links != null &&
-                    input.Links != null &&
-                    this.Links.SequenceEqual(input.Links)
+                    this.InstrumentId == input.InstrumentId ||
+                    (this.InstrumentId != null &&
+                    this.InstrumentId.Equals(input.InstrumentId))
+                ) && 
+                (
+                    this.InstrumentIdType == input.InstrumentIdType ||
+                    (this.InstrumentIdType != null &&
+                    this.InstrumentIdType.Equals(input.InstrumentIdType))
+                ) && 
+                (
+                    this.QuoteType == input.QuoteType ||
+                    (this.QuoteType != null &&
+                    this.QuoteType.Equals(input.QuoteType))
+                ) && 
+                (
+                    this.Field == input.Field ||
+                    (this.Field != null &&
+                    this.Field.Equals(input.Field))
                 );
         }
 
@@ -147,12 +301,18 @@ namespace Lusid.Sdk.Model
             unchecked // Overflow is fine, just wrap
             {
                 int hashCode = 41;
-                if (this.Values != null)
-                    hashCode = hashCode * 59 + this.Values.GetHashCode();
-                if (this.Href != null)
-                    hashCode = hashCode * 59 + this.Href.GetHashCode();
-                if (this.Links != null)
-                    hashCode = hashCode * 59 + this.Links.GetHashCode();
+                if (this.Provider != null)
+                    hashCode = hashCode * 59 + this.Provider.GetHashCode();
+                if (this.PriceSource != null)
+                    hashCode = hashCode * 59 + this.PriceSource.GetHashCode();
+                if (this.InstrumentId != null)
+                    hashCode = hashCode * 59 + this.InstrumentId.GetHashCode();
+                if (this.InstrumentIdType != null)
+                    hashCode = hashCode * 59 + this.InstrumentIdType.GetHashCode();
+                if (this.QuoteType != null)
+                    hashCode = hashCode * 59 + this.QuoteType.GetHashCode();
+                if (this.Field != null)
+                    hashCode = hashCode * 59 + this.Field.GetHashCode();
                 return hashCode;
             }
         }
