@@ -48,64 +48,64 @@ namespace Lusid.Sdk.Model
             Traded = 2,
 
             /// <summary>
+            /// Enum StockMovement for value: StockMovement
+            /// </summary>
+            [EnumMember(Value = "StockMovement")]
+            StockMovement = 3,
+
+            /// <summary>
             /// Enum ForwardFx for value: ForwardFx
             /// </summary>
             [EnumMember(Value = "ForwardFx")]
-            ForwardFx = 3,
+            ForwardFx = 4,
 
             /// <summary>
             /// Enum Commitment for value: Commitment
             /// </summary>
             [EnumMember(Value = "Commitment")]
-            Commitment = 4,
+            Commitment = 5,
 
             /// <summary>
             /// Enum Receivable for value: Receivable
             /// </summary>
             [EnumMember(Value = "Receivable")]
-            Receivable = 5,
+            Receivable = 6,
 
             /// <summary>
             /// Enum CashSettlement for value: CashSettlement
             /// </summary>
             [EnumMember(Value = "CashSettlement")]
-            CashSettlement = 6,
-
-            /// <summary>
-            /// Enum Accrual for value: Accrual
-            /// </summary>
-            [EnumMember(Value = "Accrual")]
-            Accrual = 7,
-
-            /// <summary>
-            /// Enum UnsettledCashTypes for value: UnsettledCashTypes
-            /// </summary>
-            [EnumMember(Value = "UnsettledCashTypes")]
-            UnsettledCashTypes = 8,
-
-            /// <summary>
-            /// Enum StockMovement for value: StockMovement
-            /// </summary>
-            [EnumMember(Value = "StockMovement")]
-            StockMovement = 9,
-
-            /// <summary>
-            /// Enum CashCommitment for value: CashCommitment
-            /// </summary>
-            [EnumMember(Value = "CashCommitment")]
-            CashCommitment = 10,
-
-            /// <summary>
-            /// Enum CashReceivable for value: CashReceivable
-            /// </summary>
-            [EnumMember(Value = "CashReceivable")]
-            CashReceivable = 11,
+            CashSettlement = 7,
 
             /// <summary>
             /// Enum CashForward for value: CashForward
             /// </summary>
             [EnumMember(Value = "CashForward")]
-            CashForward = 12,
+            CashForward = 8,
+
+            /// <summary>
+            /// Enum CashCommitment for value: CashCommitment
+            /// </summary>
+            [EnumMember(Value = "CashCommitment")]
+            CashCommitment = 9,
+
+            /// <summary>
+            /// Enum CashReceivable for value: CashReceivable
+            /// </summary>
+            [EnumMember(Value = "CashReceivable")]
+            CashReceivable = 10,
+
+            /// <summary>
+            /// Enum Accrual for value: Accrual
+            /// </summary>
+            [EnumMember(Value = "Accrual")]
+            Accrual = 11,
+
+            /// <summary>
+            /// Enum UnsettledCashTypes for value: UnsettledCashTypes
+            /// </summary>
+            [EnumMember(Value = "UnsettledCashTypes")]
+            UnsettledCashTypes = 12,
 
             /// <summary>
             /// Enum CashAccrual for value: CashAccrual
