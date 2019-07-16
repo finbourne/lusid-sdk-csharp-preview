@@ -23,35 +23,47 @@ using OpenAPIDateConverter = Lusid.Sdk.Client.OpenAPIDateConverter;
 namespace Lusid.Sdk.Model
 {
     /// <summary>
-    /// A collection of instrument search results
+    /// The response given from the DeleteQuotes Api call
     /// </summary>
     [DataContract]
-    public partial class InstrumentMatch :  IEquatable<InstrumentMatch>
+    public partial class DeleteQuotesResponse :  IEquatable<DeleteQuotesResponse>
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="InstrumentMatch" /> class.
+        /// Initializes a new instance of the <see cref="DeleteQuotesResponse" /> class.
         /// </summary>
-        /// <param name="masteredInstruments">A collection of instruments that have met some criteria that have been previously  mastered within LUSID.</param>
-        /// <param name="externalInstruments">A collection of instruments that have met some criteria, but that have not been  mastered within LUSID..</param>
-        public InstrumentMatch(List<InstrumentDefinition> masteredInstruments = default(List<InstrumentDefinition>), List<InstrumentDefinition> externalInstruments = default(List<InstrumentDefinition>))
+        [JsonConstructorAttribute]
+        protected DeleteQuotesResponse() { }
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DeleteQuotesResponse" /> class.
+        /// </summary>
+        /// <param name="asAt">asAt (required).</param>
+        /// <param name="links">links.</param>
+        public DeleteQuotesResponse(DateTimeOffset? asAt = default(DateTimeOffset?), List<Link> links = default(List<Link>))
         {
-            this.MasteredInstruments = masteredInstruments;
-            this.ExternalInstruments = externalInstruments;
+            // to ensure "asAt" is required (not null)
+            if (asAt == null)
+            {
+                throw new InvalidDataException("asAt is a required property for DeleteQuotesResponse and cannot be null");
+            }
+            else
+            {
+                this.AsAt = asAt;
+            }
+            
+            this.Links = links;
         }
         
         /// <summary>
-        /// A collection of instruments that have met some criteria that have been previously  mastered within LUSID
+        /// Gets or Sets AsAt
         /// </summary>
-        /// <value>A collection of instruments that have met some criteria that have been previously  mastered within LUSID</value>
-        [DataMember(Name="masteredInstruments", EmitDefaultValue=false)]
-        public List<InstrumentDefinition> MasteredInstruments { get; set; }
+        [DataMember(Name="asAt", EmitDefaultValue=false)]
+        public DateTimeOffset? AsAt { get; set; }
 
         /// <summary>
-        /// A collection of instruments that have met some criteria, but that have not been  mastered within LUSID.
+        /// Gets or Sets Links
         /// </summary>
-        /// <value>A collection of instruments that have met some criteria, but that have not been  mastered within LUSID.</value>
-        [DataMember(Name="externalInstruments", EmitDefaultValue=false)]
-        public List<InstrumentDefinition> ExternalInstruments { get; set; }
+        [DataMember(Name="links", EmitDefaultValue=false)]
+        public List<Link> Links { get; set; }
 
         /// <summary>
         /// Returns the string presentation of the object
@@ -60,9 +72,9 @@ namespace Lusid.Sdk.Model
         public override string ToString()
         {
             var sb = new StringBuilder();
-            sb.Append("class InstrumentMatch {\n");
-            sb.Append("  MasteredInstruments: ").Append(MasteredInstruments).Append("\n");
-            sb.Append("  ExternalInstruments: ").Append(ExternalInstruments).Append("\n");
+            sb.Append("class DeleteQuotesResponse {\n");
+            sb.Append("  AsAt: ").Append(AsAt).Append("\n");
+            sb.Append("  Links: ").Append(Links).Append("\n");
             sb.Append("}\n");
             return sb.ToString();
         }
@@ -83,31 +95,30 @@ namespace Lusid.Sdk.Model
         /// <returns>Boolean</returns>
         public override bool Equals(object input)
         {
-            return this.Equals(input as InstrumentMatch);
+            return this.Equals(input as DeleteQuotesResponse);
         }
 
         /// <summary>
-        /// Returns true if InstrumentMatch instances are equal
+        /// Returns true if DeleteQuotesResponse instances are equal
         /// </summary>
-        /// <param name="input">Instance of InstrumentMatch to be compared</param>
+        /// <param name="input">Instance of DeleteQuotesResponse to be compared</param>
         /// <returns>Boolean</returns>
-        public bool Equals(InstrumentMatch input)
+        public bool Equals(DeleteQuotesResponse input)
         {
             if (input == null)
                 return false;
 
             return 
                 (
-                    this.MasteredInstruments == input.MasteredInstruments ||
-                    this.MasteredInstruments != null &&
-                    input.MasteredInstruments != null &&
-                    this.MasteredInstruments.SequenceEqual(input.MasteredInstruments)
+                    this.AsAt == input.AsAt ||
+                    (this.AsAt != null &&
+                    this.AsAt.Equals(input.AsAt))
                 ) && 
                 (
-                    this.ExternalInstruments == input.ExternalInstruments ||
-                    this.ExternalInstruments != null &&
-                    input.ExternalInstruments != null &&
-                    this.ExternalInstruments.SequenceEqual(input.ExternalInstruments)
+                    this.Links == input.Links ||
+                    this.Links != null &&
+                    input.Links != null &&
+                    this.Links.SequenceEqual(input.Links)
                 );
         }
 
@@ -120,10 +131,10 @@ namespace Lusid.Sdk.Model
             unchecked // Overflow is fine, just wrap
             {
                 int hashCode = 41;
-                if (this.MasteredInstruments != null)
-                    hashCode = hashCode * 59 + this.MasteredInstruments.GetHashCode();
-                if (this.ExternalInstruments != null)
-                    hashCode = hashCode * 59 + this.ExternalInstruments.GetHashCode();
+                if (this.AsAt != null)
+                    hashCode = hashCode * 59 + this.AsAt.GetHashCode();
+                if (this.Links != null)
+                    hashCode = hashCode * 59 + this.Links.GetHashCode();
                 return hashCode;
             }
         }

@@ -23,35 +23,56 @@ using OpenAPIDateConverter = Lusid.Sdk.Client.OpenAPIDateConverter;
 namespace Lusid.Sdk.Model
 {
     /// <summary>
-    /// A collection of instrument search results
+    /// DeleteQuoteRequest
     /// </summary>
     [DataContract]
-    public partial class InstrumentMatch :  IEquatable<InstrumentMatch>
+    public partial class DeleteQuoteRequest :  IEquatable<DeleteQuoteRequest>
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="InstrumentMatch" /> class.
+        /// Initializes a new instance of the <see cref="DeleteQuoteRequest" /> class.
         /// </summary>
-        /// <param name="masteredInstruments">A collection of instruments that have met some criteria that have been previously  mastered within LUSID.</param>
-        /// <param name="externalInstruments">A collection of instruments that have met some criteria, but that have not been  mastered within LUSID..</param>
-        public InstrumentMatch(List<InstrumentDefinition> masteredInstruments = default(List<InstrumentDefinition>), List<InstrumentDefinition> externalInstruments = default(List<InstrumentDefinition>))
+        [JsonConstructorAttribute]
+        protected DeleteQuoteRequest() { }
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DeleteQuoteRequest" /> class.
+        /// </summary>
+        /// <param name="quoteId">quoteId (required).</param>
+        /// <param name="effectiveAt">effectiveAt (required).</param>
+        public DeleteQuoteRequest(QuoteId quoteId = default(QuoteId), DateTimeOffset? effectiveAt = default(DateTimeOffset?))
         {
-            this.MasteredInstruments = masteredInstruments;
-            this.ExternalInstruments = externalInstruments;
+            // to ensure "quoteId" is required (not null)
+            if (quoteId == null)
+            {
+                throw new InvalidDataException("quoteId is a required property for DeleteQuoteRequest and cannot be null");
+            }
+            else
+            {
+                this.QuoteId = quoteId;
+            }
+            
+            // to ensure "effectiveAt" is required (not null)
+            if (effectiveAt == null)
+            {
+                throw new InvalidDataException("effectiveAt is a required property for DeleteQuoteRequest and cannot be null");
+            }
+            else
+            {
+                this.EffectiveAt = effectiveAt;
+            }
+            
         }
         
         /// <summary>
-        /// A collection of instruments that have met some criteria that have been previously  mastered within LUSID
+        /// Gets or Sets QuoteId
         /// </summary>
-        /// <value>A collection of instruments that have met some criteria that have been previously  mastered within LUSID</value>
-        [DataMember(Name="masteredInstruments", EmitDefaultValue=false)]
-        public List<InstrumentDefinition> MasteredInstruments { get; set; }
+        [DataMember(Name="quoteId", EmitDefaultValue=false)]
+        public QuoteId QuoteId { get; set; }
 
         /// <summary>
-        /// A collection of instruments that have met some criteria, but that have not been  mastered within LUSID.
+        /// Gets or Sets EffectiveAt
         /// </summary>
-        /// <value>A collection of instruments that have met some criteria, but that have not been  mastered within LUSID.</value>
-        [DataMember(Name="externalInstruments", EmitDefaultValue=false)]
-        public List<InstrumentDefinition> ExternalInstruments { get; set; }
+        [DataMember(Name="effectiveAt", EmitDefaultValue=false)]
+        public DateTimeOffset? EffectiveAt { get; set; }
 
         /// <summary>
         /// Returns the string presentation of the object
@@ -60,9 +81,9 @@ namespace Lusid.Sdk.Model
         public override string ToString()
         {
             var sb = new StringBuilder();
-            sb.Append("class InstrumentMatch {\n");
-            sb.Append("  MasteredInstruments: ").Append(MasteredInstruments).Append("\n");
-            sb.Append("  ExternalInstruments: ").Append(ExternalInstruments).Append("\n");
+            sb.Append("class DeleteQuoteRequest {\n");
+            sb.Append("  QuoteId: ").Append(QuoteId).Append("\n");
+            sb.Append("  EffectiveAt: ").Append(EffectiveAt).Append("\n");
             sb.Append("}\n");
             return sb.ToString();
         }
@@ -83,31 +104,29 @@ namespace Lusid.Sdk.Model
         /// <returns>Boolean</returns>
         public override bool Equals(object input)
         {
-            return this.Equals(input as InstrumentMatch);
+            return this.Equals(input as DeleteQuoteRequest);
         }
 
         /// <summary>
-        /// Returns true if InstrumentMatch instances are equal
+        /// Returns true if DeleteQuoteRequest instances are equal
         /// </summary>
-        /// <param name="input">Instance of InstrumentMatch to be compared</param>
+        /// <param name="input">Instance of DeleteQuoteRequest to be compared</param>
         /// <returns>Boolean</returns>
-        public bool Equals(InstrumentMatch input)
+        public bool Equals(DeleteQuoteRequest input)
         {
             if (input == null)
                 return false;
 
             return 
                 (
-                    this.MasteredInstruments == input.MasteredInstruments ||
-                    this.MasteredInstruments != null &&
-                    input.MasteredInstruments != null &&
-                    this.MasteredInstruments.SequenceEqual(input.MasteredInstruments)
+                    this.QuoteId == input.QuoteId ||
+                    (this.QuoteId != null &&
+                    this.QuoteId.Equals(input.QuoteId))
                 ) && 
                 (
-                    this.ExternalInstruments == input.ExternalInstruments ||
-                    this.ExternalInstruments != null &&
-                    input.ExternalInstruments != null &&
-                    this.ExternalInstruments.SequenceEqual(input.ExternalInstruments)
+                    this.EffectiveAt == input.EffectiveAt ||
+                    (this.EffectiveAt != null &&
+                    this.EffectiveAt.Equals(input.EffectiveAt))
                 );
         }
 
@@ -120,10 +139,10 @@ namespace Lusid.Sdk.Model
             unchecked // Overflow is fine, just wrap
             {
                 int hashCode = 41;
-                if (this.MasteredInstruments != null)
-                    hashCode = hashCode * 59 + this.MasteredInstruments.GetHashCode();
-                if (this.ExternalInstruments != null)
-                    hashCode = hashCode * 59 + this.ExternalInstruments.GetHashCode();
+                if (this.QuoteId != null)
+                    hashCode = hashCode * 59 + this.QuoteId.GetHashCode();
+                if (this.EffectiveAt != null)
+                    hashCode = hashCode * 59 + this.EffectiveAt.GetHashCode();
                 return hashCode;
             }
         }
