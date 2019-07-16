@@ -447,7 +447,7 @@ namespace Example
 
             try
             {
-                // [EARLY ACCESS] List portfolios
+                // List portfolios
                 ResourceListOfPortfolio result = apiInstance.ListPortfolios(effectiveAt, asAt, page, sortBy, start, limit, filter, query, portfolioPropertyKeys);
                 Debug.WriteLine(result);
             }
@@ -532,7 +532,7 @@ namespace Example
 
             try
             {
-                // [EARLY ACCESS] List portfolios for scope
+                // List portfolios for scope
                 ResourceListOfPortfolio result = apiInstance.ListPortfoliosForScope(scope, effectiveAt, asAt, sortBy, start, limit, filter, portfolioPropertyKeys);
                 Debug.WriteLine(result);
             }

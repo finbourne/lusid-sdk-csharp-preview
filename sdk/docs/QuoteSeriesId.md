@@ -1,15 +1,16 @@
 
-# Lusid.Sdk.Model.Quote
+# Lusid.Sdk.Model.QuoteSeriesId
 
 ## Properties
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**QuoteId** | [**QuoteId**](QuoteId.md) |  | 
-**MetricValue** | [**MetricValue**](MetricValue.md) |  | 
-**Lineage** | **string** |  | [optional] 
-**UploadedBy** | **string** |  | 
-**AsAt** | **DateTimeOffset?** |  | 
+**Provider** | **string** |  | 
+**PriceSource** | **string** |  | 
+**InstrumentId** | **string** |  | 
+**InstrumentIdType** | **string** |  | 
+**QuoteType** | **string** |  | 
+**Field** | **string** |  | 
 
 [[Back to Model list]](../README.md#documentation-for-models)
 [[Back to API list]](../README.md#documentation-for-api-endpoints)
