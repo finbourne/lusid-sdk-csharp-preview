@@ -26,18 +26,17 @@ namespace Lusid.Sdk.Tests.Tutorials.MarketData
         {
             var request = new UpsertQuoteRequest(
                 quoteId: new QuoteId(
-                    new QuoteSeriesId(
-                        provider: "DataScope",
-                        instrumentId: "BBG000B9XRY4",
-                        instrumentIdType: QuoteSeriesId.InstrumentIdTypeEnum.Figi,
-                        quoteType: QuoteSeriesId.QuoteTypeEnum.Price,
-                        field: "mid"),
-                    new DateTimeOffset(2019, 4, 15, 0, 0, 0, TimeSpan.Zero).ToString("o")
+                    provider: "DataScope",
+                    instrumentId: "BBG000B9XRY4",
+                    instrumentIdType: QuoteId.InstrumentIdTypeEnum.Figi,
+                    quoteType: QuoteId.QuoteTypeEnum.Price,
+                    priceSide: QuoteId.PriceSideEnum.Mid
                 ),
                 metricValue: new MetricValue(
                     value: 199.23,
                     unit: "USD"
                 ),
+                effectiveAt: new DateTimeOffset(2019, 4, 15, 0, 0, 0, TimeSpan.Zero),
                 lineage: "InternalSystem"
             );
 
@@ -47,24 +46,25 @@ namespace Lusid.Sdk.Tests.Tutorials.MarketData
         [Test]
         public void Get_Quote_For_Instrument_For_Single_Day()
         {
-            var quoteSeriesId = new QuoteSeriesId(
-                    provider: "DataScope",
-                    instrumentId: "BBG000B9XRY4",
-                    instrumentIdType: QuoteSeriesId.InstrumentIdTypeEnum.Figi,
-                    quoteType: QuoteSeriesId.QuoteTypeEnum.Price,
-                    field: "mid");
+            var quoteId = new QuoteId(
+                provider: "DataScope",
+                instrumentId: "BBG000B9XRY4",
+                instrumentIdType: QuoteId.InstrumentIdTypeEnum.Figi,
+                quoteType: QuoteId.QuoteTypeEnum.Price,
+                priceSide: QuoteId.PriceSideEnum.Mid
+            );
             var effectiveDate = new DateTimeOffset(2019, 4, 15, 0, 0, 0, TimeSpan.Zero);
             
             //  Get the close quote for AAPL on 15-Apr-19
             var quoteResponse = _quotesApi.GetQuotes(
                 TestDataUtilities.TutorialScope,
-                effectiveAt: effectiveDate.ToString("o"),
-                quoteIds: new List<QuoteSeriesId> {quoteSeriesId}
+                effectiveAt: effectiveDate,
+                quoteIds: new List<QuoteId> {quoteId}
             );
             
-            Assert.That(quoteResponse.Values.Count, Is.EqualTo(1));
+            Assert.That(quoteResponse.Found.Count, Is.EqualTo(1));
 
-            Quote quote = quoteResponse.Values.First().Value;
+            Quote quote = quoteResponse.Found[0];
             
             Assert.That(quote.MetricValue.Value, Is.EqualTo(199.23));
         }
@@ -75,27 +75,31 @@ namespace Lusid.Sdk.Tests.Tutorials.MarketData
             var startDate = new DateTimeOffset(2019, 4, 15, 0, 0, 0, TimeSpan.Zero);
             var dateRange = Enumerable.Range(0, 30).Select(offset => startDate.AddDays(offset));
             
-            var quoteSeriesId = new QuoteSeriesId(
+            var quoteId = new QuoteId(
                 provider: "DataScope",
                 instrumentId: "BBG000B9XRY4",
-                instrumentIdType: QuoteSeriesId.InstrumentIdTypeEnum.Figi,
-                quoteType: QuoteSeriesId.QuoteTypeEnum.Price,
-                field: "mid");
+                instrumentIdType: QuoteId.InstrumentIdTypeEnum.Figi,
+                quoteType: QuoteId.QuoteTypeEnum.Price,
+                priceSide: QuoteId.PriceSideEnum.Mid
+            );
 
             //    Get the quotes for each day in the date range
             var quoteResponses = dateRange
                 .Select(d =>
                     _quotesApi.GetQuotes(
                         TestDataUtilities.TutorialScope,
-                        effectiveAt: d.ToString("o"),
+                        effectiveAt: d,
                         quoteIds:
-                        new List<QuoteSeriesId> {quoteSeriesId}
+                        new List<QuoteId> {quoteId}
                     )
                 )
-                .SelectMany(q => q.Values)
+                .SelectMany(q => q.Found)
                 .ToList();
             
             Assert.That(quoteResponses, Has.Count.EqualTo(30));
         }
+
     }
 }
+
+
