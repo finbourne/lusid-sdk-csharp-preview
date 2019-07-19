@@ -5,12 +5,8 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**Provider** | **string** |  | 
-**PriceSource** | **string** |  | [optional] 
-**InstrumentId** | **string** |  | 
-**InstrumentIdType** | **string** |  | 
-**QuoteType** | **string** |  | 
-**PriceSide** | **string** |  | 
+**QuoteSeriesId** | [**QuoteSeriesId**](QuoteSeriesId.md) |  | 
+**EffectiveAt** | **string** |  | 
 
 [[Back to Model list]](../README.md#documentation-for-models)
 [[Back to API list]](../README.md#documentation-for-api-endpoints)

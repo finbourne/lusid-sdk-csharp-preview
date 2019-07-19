@@ -7,7 +7,6 @@ Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **QuoteId** | [**QuoteId**](QuoteId.md) |  | 
 **MetricValue** | [**MetricValue**](MetricValue.md) |  | 
-**EffectiveAt** | **DateTimeOffset?** |  | 
 **Lineage** | **string** |  | [optional] 
 
 [[Back to Model list]](../README.md#documentation-for-models)
