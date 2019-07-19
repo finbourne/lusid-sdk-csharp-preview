@@ -233,9 +233,9 @@ namespace Lusid.Sdk.Tests.Tutorials.MarketData
             {
                 new UpsertInstrumentPropertyRequest(
                     lusidInstrumentId: instrument.LusidInstrumentId,
-                    properties: new List<InstrumentProperty>
+                    properties: new List<Property>
                     {
-                        new InstrumentProperty(propertyKey, propertyValue)
+                        new Property(propertyKey, propertyValue)
                     }
                 )
             });

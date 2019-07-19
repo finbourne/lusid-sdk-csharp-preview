@@ -63,9 +63,12 @@ namespace Lusid.Sdk.Tests.tutorials.Ibor
                 created: effectiveDate,
                 
                 //    Set the property value when creating the portfolio
-                properties: new Dictionary<string, PropertyValue>
+                properties: new Dictionary<string, Property>
                 {
-                    [labelPropertyDefinitionResult.Key] = labelPropertyValueRequest
+                    [labelPropertyDefinitionResult.Key] =
+                        new Property(
+                            labelPropertyDefinitionResult.Key,
+                            labelPropertyValueRequest)
                 }
             );
 
@@ -79,7 +82,7 @@ namespace Lusid.Sdk.Tests.tutorials.Ibor
             Assert.That(portfolioProperties.Keys, Is.EquivalentTo(new [] { labelPropertyDefinitionResult.Key }));
 
             var labelProperty = portfolioProperties[labelPropertyDefinitionResult.Key];
-            Assert.That(labelProperty.Value, Is.EqualTo(labelPropertyValueRequest.LabelValue));
+            Assert.That(labelProperty.Value.LabelValue, Is.EqualTo(labelPropertyValueRequest.LabelValue));
         }
 
         [Test]
@@ -122,9 +125,12 @@ namespace Lusid.Sdk.Tests.tutorials.Ibor
                 created: effectiveDate,
                 
                 //    Set the property value when creating the portfolio
-                properties: new Dictionary<string, PropertyValue>
+                properties: new Dictionary<string, Property>
                 {
-                    [metricPropertyDefinitionResult.Key] = metricPropertyValueRequest
+                    [metricPropertyDefinitionResult.Key] = 
+                        new Property(
+                            metricPropertyDefinitionResult.Key, 
+                            metricPropertyValueRequest)
                 }
             );
 
@@ -140,7 +146,7 @@ namespace Lusid.Sdk.Tests.tutorials.Ibor
             // metricProperty.Value is just the value from the metric property, metricProperty.Unit is the units
             var metricProperty = portfolioProperties[metricPropertyDefinitionResult.Key];
             Assert.That(metricProperty.Value, Is.EqualTo(metricPropertyValueRequest.MetricValue.Value));
-            Assert.That(metricProperty.Unit, Is.EqualTo(metricPropertyValueRequest.MetricValue.Unit));
+            Assert.That(metricProperty.Value.MetricValue.Unit, Is.EqualTo(metricPropertyValueRequest.MetricValue.Unit));
         }
     }
 }
