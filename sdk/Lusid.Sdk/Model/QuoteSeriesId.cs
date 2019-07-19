@@ -23,92 +23,185 @@ using OpenAPIDateConverter = Lusid.Sdk.Client.OpenAPIDateConverter;
 namespace Lusid.Sdk.Model
 {
     /// <summary>
-    /// CorporateActionTransitionComponent
+    /// This type should completely describe the &#39;kind&#39; of quote,  with the exception of the effective-date (which is included in the QuoteId).
     /// </summary>
     [DataContract]
-    public partial class CorporateActionTransitionComponent :  IEquatable<CorporateActionTransitionComponent>
+    public partial class QuoteSeriesId :  IEquatable<QuoteSeriesId>
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="CorporateActionTransitionComponent" /> class.
+        /// Defines InstrumentIdType
+        /// </summary>
+        [JsonConverter(typeof(StringEnumConverter))]
+        public enum InstrumentIdTypeEnum
+        {
+            /// <summary>
+            /// Enum LusidInstrumentId for value: LusidInstrumentId
+            /// </summary>
+            [EnumMember(Value = "LusidInstrumentId")]
+            LusidInstrumentId = 1,
+
+            /// <summary>
+            /// Enum Figi for value: Figi
+            /// </summary>
+            [EnumMember(Value = "Figi")]
+            Figi = 2,
+
+            /// <summary>
+            /// Enum RIC for value: RIC
+            /// </summary>
+            [EnumMember(Value = "RIC")]
+            RIC = 3,
+
+            /// <summary>
+            /// Enum QuotePermId for value: QuotePermId
+            /// </summary>
+            [EnumMember(Value = "QuotePermId")]
+            QuotePermId = 4,
+
+            /// <summary>
+            /// Enum Isin for value: Isin
+            /// </summary>
+            [EnumMember(Value = "Isin")]
+            Isin = 5,
+
+            /// <summary>
+            /// Enum CurrencyPair for value: CurrencyPair
+            /// </summary>
+            [EnumMember(Value = "CurrencyPair")]
+            CurrencyPair = 6
+
+        }
+
+        /// <summary>
+        /// Gets or Sets InstrumentIdType
+        /// </summary>
+        [DataMember(Name="instrumentIdType", EmitDefaultValue=false)]
+        public InstrumentIdTypeEnum InstrumentIdType { get; set; }
+        /// <summary>
+        /// Defines QuoteType
+        /// </summary>
+        [JsonConverter(typeof(StringEnumConverter))]
+        public enum QuoteTypeEnum
+        {
+            /// <summary>
+            /// Enum Price for value: Price
+            /// </summary>
+            [EnumMember(Value = "Price")]
+            Price = 1,
+
+            /// <summary>
+            /// Enum Spread for value: Spread
+            /// </summary>
+            [EnumMember(Value = "Spread")]
+            Spread = 2,
+
+            /// <summary>
+            /// Enum Rate for value: Rate
+            /// </summary>
+            [EnumMember(Value = "Rate")]
+            Rate = 3
+
+        }
+
+        /// <summary>
+        /// Gets or Sets QuoteType
+        /// </summary>
+        [DataMember(Name="quoteType", EmitDefaultValue=false)]
+        public QuoteTypeEnum QuoteType { get; set; }
+        /// <summary>
+        /// Initializes a new instance of the <see cref="QuoteSeriesId" /> class.
         /// </summary>
         [JsonConstructorAttribute]
-        protected CorporateActionTransitionComponent() { }
+        protected QuoteSeriesId() { }
         /// <summary>
-        /// Initializes a new instance of the <see cref="CorporateActionTransitionComponent" /> class.
+        /// Initializes a new instance of the <see cref="QuoteSeriesId" /> class.
         /// </summary>
-        /// <param name="instrumentIdentifiers">Unique instrument identifiers (required).</param>
-        /// <param name="instrumentUid">LUSID&#39;s internal unique instrument identifier, resolved from the instrument identifiers (required).</param>
-        /// <param name="unitsFactor">unitsFactor (required).</param>
-        /// <param name="costFactor">costFactor (required).</param>
-        public CorporateActionTransitionComponent(Dictionary<string, string> instrumentIdentifiers = default(Dictionary<string, string>), string instrumentUid = default(string), double? unitsFactor = default(double?), double? costFactor = default(double?))
+        /// <param name="provider">provider (required).</param>
+        /// <param name="priceSource">priceSource.</param>
+        /// <param name="instrumentId">instrumentId (required).</param>
+        /// <param name="instrumentIdType">instrumentIdType (required).</param>
+        /// <param name="quoteType">quoteType (required).</param>
+        /// <param name="field">field (required).</param>
+        public QuoteSeriesId(string provider = default(string), string priceSource = default(string), string instrumentId = default(string), InstrumentIdTypeEnum instrumentIdType = default(InstrumentIdTypeEnum), QuoteTypeEnum quoteType = default(QuoteTypeEnum), string field = default(string))
         {
-            // to ensure "instrumentIdentifiers" is required (not null)
-            if (instrumentIdentifiers == null)
+            // to ensure "provider" is required (not null)
+            if (provider == null)
             {
-                throw new InvalidDataException("instrumentIdentifiers is a required property for CorporateActionTransitionComponent and cannot be null");
+                throw new InvalidDataException("provider is a required property for QuoteSeriesId and cannot be null");
             }
             else
             {
-                this.InstrumentIdentifiers = instrumentIdentifiers;
+                this.Provider = provider;
             }
             
-            // to ensure "instrumentUid" is required (not null)
-            if (instrumentUid == null)
+            // to ensure "instrumentId" is required (not null)
+            if (instrumentId == null)
             {
-                throw new InvalidDataException("instrumentUid is a required property for CorporateActionTransitionComponent and cannot be null");
+                throw new InvalidDataException("instrumentId is a required property for QuoteSeriesId and cannot be null");
             }
             else
             {
-                this.InstrumentUid = instrumentUid;
+                this.InstrumentId = instrumentId;
             }
             
-            // to ensure "unitsFactor" is required (not null)
-            if (unitsFactor == null)
+            // to ensure "instrumentIdType" is required (not null)
+            if (instrumentIdType == null)
             {
-                throw new InvalidDataException("unitsFactor is a required property for CorporateActionTransitionComponent and cannot be null");
+                throw new InvalidDataException("instrumentIdType is a required property for QuoteSeriesId and cannot be null");
             }
             else
             {
-                this.UnitsFactor = unitsFactor;
+                this.InstrumentIdType = instrumentIdType;
             }
             
-            // to ensure "costFactor" is required (not null)
-            if (costFactor == null)
+            // to ensure "quoteType" is required (not null)
+            if (quoteType == null)
             {
-                throw new InvalidDataException("costFactor is a required property for CorporateActionTransitionComponent and cannot be null");
+                throw new InvalidDataException("quoteType is a required property for QuoteSeriesId and cannot be null");
             }
             else
             {
-                this.CostFactor = costFactor;
+                this.QuoteType = quoteType;
             }
             
+            // to ensure "field" is required (not null)
+            if (field == null)
+            {
+                throw new InvalidDataException("field is a required property for QuoteSeriesId and cannot be null");
+            }
+            else
+            {
+                this.Field = field;
+            }
+            
+            this.PriceSource = priceSource;
         }
         
         /// <summary>
-        /// Unique instrument identifiers
+        /// Gets or Sets Provider
         /// </summary>
-        /// <value>Unique instrument identifiers</value>
-        [DataMember(Name="instrumentIdentifiers", EmitDefaultValue=false)]
-        public Dictionary<string, string> InstrumentIdentifiers { get; set; }
+        [DataMember(Name="provider", EmitDefaultValue=false)]
+        public string Provider { get; set; }
 
         /// <summary>
-        /// LUSID&#39;s internal unique instrument identifier, resolved from the instrument identifiers
+        /// Gets or Sets PriceSource
         /// </summary>
-        /// <value>LUSID&#39;s internal unique instrument identifier, resolved from the instrument identifiers</value>
-        [DataMember(Name="instrumentUid", EmitDefaultValue=false)]
-        public string InstrumentUid { get; set; }
+        [DataMember(Name="priceSource", EmitDefaultValue=false)]
+        public string PriceSource { get; set; }
 
         /// <summary>
-        /// Gets or Sets UnitsFactor
+        /// Gets or Sets InstrumentId
         /// </summary>
-        [DataMember(Name="unitsFactor", EmitDefaultValue=false)]
-        public double? UnitsFactor { get; set; }
+        [DataMember(Name="instrumentId", EmitDefaultValue=false)]
+        public string InstrumentId { get; set; }
+
+
 
         /// <summary>
-        /// Gets or Sets CostFactor
+        /// Gets or Sets Field
         /// </summary>
-        [DataMember(Name="costFactor", EmitDefaultValue=false)]
-        public double? CostFactor { get; set; }
+        [DataMember(Name="field", EmitDefaultValue=false)]
+        public string Field { get; set; }
 
         /// <summary>
         /// Returns the string presentation of the object
@@ -117,11 +210,13 @@ namespace Lusid.Sdk.Model
         public override string ToString()
         {
             var sb = new StringBuilder();
-            sb.Append("class CorporateActionTransitionComponent {\n");
-            sb.Append("  InstrumentIdentifiers: ").Append(InstrumentIdentifiers).Append("\n");
-            sb.Append("  InstrumentUid: ").Append(InstrumentUid).Append("\n");
-            sb.Append("  UnitsFactor: ").Append(UnitsFactor).Append("\n");
-            sb.Append("  CostFactor: ").Append(CostFactor).Append("\n");
+            sb.Append("class QuoteSeriesId {\n");
+            sb.Append("  Provider: ").Append(Provider).Append("\n");
+            sb.Append("  PriceSource: ").Append(PriceSource).Append("\n");
+            sb.Append("  InstrumentId: ").Append(InstrumentId).Append("\n");
+            sb.Append("  InstrumentIdType: ").Append(InstrumentIdType).Append("\n");
+            sb.Append("  QuoteType: ").Append(QuoteType).Append("\n");
+            sb.Append("  Field: ").Append(Field).Append("\n");
             sb.Append("}\n");
             return sb.ToString();
         }
@@ -142,40 +237,49 @@ namespace Lusid.Sdk.Model
         /// <returns>Boolean</returns>
         public override bool Equals(object input)
         {
-            return this.Equals(input as CorporateActionTransitionComponent);
+            return this.Equals(input as QuoteSeriesId);
         }
 
         /// <summary>
-        /// Returns true if CorporateActionTransitionComponent instances are equal
+        /// Returns true if QuoteSeriesId instances are equal
         /// </summary>
-        /// <param name="input">Instance of CorporateActionTransitionComponent to be compared</param>
+        /// <param name="input">Instance of QuoteSeriesId to be compared</param>
         /// <returns>Boolean</returns>
-        public bool Equals(CorporateActionTransitionComponent input)
+        public bool Equals(QuoteSeriesId input)
         {
             if (input == null)
                 return false;
 
             return 
                 (
-                    this.InstrumentIdentifiers == input.InstrumentIdentifiers ||
-                    this.InstrumentIdentifiers != null &&
-                    input.InstrumentIdentifiers != null &&
-                    this.InstrumentIdentifiers.SequenceEqual(input.InstrumentIdentifiers)
+                    this.Provider == input.Provider ||
+                    (this.Provider != null &&
+                    this.Provider.Equals(input.Provider))
                 ) && 
                 (
-                    this.InstrumentUid == input.InstrumentUid ||
-                    (this.InstrumentUid != null &&
-                    this.InstrumentUid.Equals(input.InstrumentUid))
+                    this.PriceSource == input.PriceSource ||
+                    (this.PriceSource != null &&
+                    this.PriceSource.Equals(input.PriceSource))
                 ) && 
                 (
-                    this.UnitsFactor == input.UnitsFactor ||
-                    (this.UnitsFactor != null &&
-                    this.UnitsFactor.Equals(input.UnitsFactor))
+                    this.InstrumentId == input.InstrumentId ||
+                    (this.InstrumentId != null &&
+                    this.InstrumentId.Equals(input.InstrumentId))
                 ) && 
                 (
-                    this.CostFactor == input.CostFactor ||
-                    (this.CostFactor != null &&
-                    this.CostFactor.Equals(input.CostFactor))
+                    this.InstrumentIdType == input.InstrumentIdType ||
+                    (this.InstrumentIdType != null &&
+                    this.InstrumentIdType.Equals(input.InstrumentIdType))
+                ) && 
+                (
+                    this.QuoteType == input.QuoteType ||
+                    (this.QuoteType != null &&
+                    this.QuoteType.Equals(input.QuoteType))
+                ) && 
+                (
+                    this.Field == input.Field ||
+                    (this.Field != null &&
+                    this.Field.Equals(input.Field))
                 );
         }
 
@@ -188,14 +292,18 @@ namespace Lusid.Sdk.Model
             unchecked // Overflow is fine, just wrap
             {
                 int hashCode = 41;
-                if (this.InstrumentIdentifiers != null)
-                    hashCode = hashCode * 59 + this.InstrumentIdentifiers.GetHashCode();
-                if (this.InstrumentUid != null)
-                    hashCode = hashCode * 59 + this.InstrumentUid.GetHashCode();
-                if (this.UnitsFactor != null)
-                    hashCode = hashCode * 59 + this.UnitsFactor.GetHashCode();
-                if (this.CostFactor != null)
-                    hashCode = hashCode * 59 + this.CostFactor.GetHashCode();
+                if (this.Provider != null)
+                    hashCode = hashCode * 59 + this.Provider.GetHashCode();
+                if (this.PriceSource != null)
+                    hashCode = hashCode * 59 + this.PriceSource.GetHashCode();
+                if (this.InstrumentId != null)
+                    hashCode = hashCode * 59 + this.InstrumentId.GetHashCode();
+                if (this.InstrumentIdType != null)
+                    hashCode = hashCode * 59 + this.InstrumentIdType.GetHashCode();
+                if (this.QuoteType != null)
+                    hashCode = hashCode * 59 + this.QuoteType.GetHashCode();
+                if (this.Field != null)
+                    hashCode = hashCode * 59 + this.Field.GetHashCode();
                 return hashCode;
             }
         }

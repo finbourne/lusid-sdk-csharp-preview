@@ -7,10 +7,9 @@ Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **QuoteId** | [**QuoteId**](QuoteId.md) |  | 
 **MetricValue** | [**MetricValue**](MetricValue.md) |  | 
-**EffectiveAt** | **DateTimeOffset?** |  | 
-**AsAt** | **DateTimeOffset?** |  | 
-**UploadedBy** | **string** |  | 
 **Lineage** | **string** |  | [optional] 
+**UploadedBy** | **string** |  | 
+**AsAt** | **DateTimeOffset?** |  | 
 
 [[Back to Model list]](../README.md#documentation-for-models)
 [[Back to API list]](../README.md#documentation-for-api-endpoints)

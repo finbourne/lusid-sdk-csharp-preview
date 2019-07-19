@@ -23,92 +23,51 @@ using OpenAPIDateConverter = Lusid.Sdk.Client.OpenAPIDateConverter;
 namespace Lusid.Sdk.Model
 {
     /// <summary>
-    /// CorporateActionTransitionComponent
+    /// AnnulQuotesResponse
     /// </summary>
     [DataContract]
-    public partial class CorporateActionTransitionComponent :  IEquatable<CorporateActionTransitionComponent>
+    public partial class AnnulQuotesResponse :  IEquatable<AnnulQuotesResponse>
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="CorporateActionTransitionComponent" /> class.
+        /// Initializes a new instance of the <see cref="AnnulQuotesResponse" /> class.
         /// </summary>
-        [JsonConstructorAttribute]
-        protected CorporateActionTransitionComponent() { }
-        /// <summary>
-        /// Initializes a new instance of the <see cref="CorporateActionTransitionComponent" /> class.
-        /// </summary>
-        /// <param name="instrumentIdentifiers">Unique instrument identifiers (required).</param>
-        /// <param name="instrumentUid">LUSID&#39;s internal unique instrument identifier, resolved from the instrument identifiers (required).</param>
-        /// <param name="unitsFactor">unitsFactor (required).</param>
-        /// <param name="costFactor">costFactor (required).</param>
-        public CorporateActionTransitionComponent(Dictionary<string, string> instrumentIdentifiers = default(Dictionary<string, string>), string instrumentUid = default(string), double? unitsFactor = default(double?), double? costFactor = default(double?))
+        /// <param name="href">href.</param>
+        /// <param name="values">The collection of quotes requested to be annulled with the asAt time   at which they were annulled.</param>
+        /// <param name="failed">If any quotes could not be annulled, they will be listed in &#39;Failed&#39;, along  with a reason why..</param>
+        /// <param name="links">links.</param>
+        public AnnulQuotesResponse(string href = default(string), Dictionary<string, DateTimeOffset?> values = default(Dictionary<string, DateTimeOffset?>), Dictionary<string, List<string>> failed = default(Dictionary<string, List<string>>), List<Link> links = default(List<Link>))
         {
-            // to ensure "instrumentIdentifiers" is required (not null)
-            if (instrumentIdentifiers == null)
-            {
-                throw new InvalidDataException("instrumentIdentifiers is a required property for CorporateActionTransitionComponent and cannot be null");
-            }
-            else
-            {
-                this.InstrumentIdentifiers = instrumentIdentifiers;
-            }
-            
-            // to ensure "instrumentUid" is required (not null)
-            if (instrumentUid == null)
-            {
-                throw new InvalidDataException("instrumentUid is a required property for CorporateActionTransitionComponent and cannot be null");
-            }
-            else
-            {
-                this.InstrumentUid = instrumentUid;
-            }
-            
-            // to ensure "unitsFactor" is required (not null)
-            if (unitsFactor == null)
-            {
-                throw new InvalidDataException("unitsFactor is a required property for CorporateActionTransitionComponent and cannot be null");
-            }
-            else
-            {
-                this.UnitsFactor = unitsFactor;
-            }
-            
-            // to ensure "costFactor" is required (not null)
-            if (costFactor == null)
-            {
-                throw new InvalidDataException("costFactor is a required property for CorporateActionTransitionComponent and cannot be null");
-            }
-            else
-            {
-                this.CostFactor = costFactor;
-            }
-            
+            this.Href = href;
+            this.Values = values;
+            this.Failed = failed;
+            this.Links = links;
         }
         
         /// <summary>
-        /// Unique instrument identifiers
+        /// Gets or Sets Href
         /// </summary>
-        /// <value>Unique instrument identifiers</value>
-        [DataMember(Name="instrumentIdentifiers", EmitDefaultValue=false)]
-        public Dictionary<string, string> InstrumentIdentifiers { get; set; }
+        [DataMember(Name="href", EmitDefaultValue=false)]
+        public string Href { get; set; }
 
         /// <summary>
-        /// LUSID&#39;s internal unique instrument identifier, resolved from the instrument identifiers
+        /// The collection of quotes requested to be annulled with the asAt time   at which they were annulled
         /// </summary>
-        /// <value>LUSID&#39;s internal unique instrument identifier, resolved from the instrument identifiers</value>
-        [DataMember(Name="instrumentUid", EmitDefaultValue=false)]
-        public string InstrumentUid { get; set; }
+        /// <value>The collection of quotes requested to be annulled with the asAt time   at which they were annulled</value>
+        [DataMember(Name="values", EmitDefaultValue=false)]
+        public Dictionary<string, DateTimeOffset?> Values { get; set; }
 
         /// <summary>
-        /// Gets or Sets UnitsFactor
+        /// If any quotes could not be annulled, they will be listed in &#39;Failed&#39;, along  with a reason why.
         /// </summary>
-        [DataMember(Name="unitsFactor", EmitDefaultValue=false)]
-        public double? UnitsFactor { get; set; }
+        /// <value>If any quotes could not be annulled, they will be listed in &#39;Failed&#39;, along  with a reason why.</value>
+        [DataMember(Name="failed", EmitDefaultValue=false)]
+        public Dictionary<string, List<string>> Failed { get; set; }
 
         /// <summary>
-        /// Gets or Sets CostFactor
+        /// Gets or Sets Links
         /// </summary>
-        [DataMember(Name="costFactor", EmitDefaultValue=false)]
-        public double? CostFactor { get; set; }
+        [DataMember(Name="links", EmitDefaultValue=false)]
+        public List<Link> Links { get; set; }
 
         /// <summary>
         /// Returns the string presentation of the object
@@ -117,11 +76,11 @@ namespace Lusid.Sdk.Model
         public override string ToString()
         {
             var sb = new StringBuilder();
-            sb.Append("class CorporateActionTransitionComponent {\n");
-            sb.Append("  InstrumentIdentifiers: ").Append(InstrumentIdentifiers).Append("\n");
-            sb.Append("  InstrumentUid: ").Append(InstrumentUid).Append("\n");
-            sb.Append("  UnitsFactor: ").Append(UnitsFactor).Append("\n");
-            sb.Append("  CostFactor: ").Append(CostFactor).Append("\n");
+            sb.Append("class AnnulQuotesResponse {\n");
+            sb.Append("  Href: ").Append(Href).Append("\n");
+            sb.Append("  Values: ").Append(Values).Append("\n");
+            sb.Append("  Failed: ").Append(Failed).Append("\n");
+            sb.Append("  Links: ").Append(Links).Append("\n");
             sb.Append("}\n");
             return sb.ToString();
         }
@@ -142,40 +101,42 @@ namespace Lusid.Sdk.Model
         /// <returns>Boolean</returns>
         public override bool Equals(object input)
         {
-            return this.Equals(input as CorporateActionTransitionComponent);
+            return this.Equals(input as AnnulQuotesResponse);
         }
 
         /// <summary>
-        /// Returns true if CorporateActionTransitionComponent instances are equal
+        /// Returns true if AnnulQuotesResponse instances are equal
         /// </summary>
-        /// <param name="input">Instance of CorporateActionTransitionComponent to be compared</param>
+        /// <param name="input">Instance of AnnulQuotesResponse to be compared</param>
         /// <returns>Boolean</returns>
-        public bool Equals(CorporateActionTransitionComponent input)
+        public bool Equals(AnnulQuotesResponse input)
         {
             if (input == null)
                 return false;
 
             return 
                 (
-                    this.InstrumentIdentifiers == input.InstrumentIdentifiers ||
-                    this.InstrumentIdentifiers != null &&
-                    input.InstrumentIdentifiers != null &&
-                    this.InstrumentIdentifiers.SequenceEqual(input.InstrumentIdentifiers)
+                    this.Href == input.Href ||
+                    (this.Href != null &&
+                    this.Href.Equals(input.Href))
                 ) && 
                 (
-                    this.InstrumentUid == input.InstrumentUid ||
-                    (this.InstrumentUid != null &&
-                    this.InstrumentUid.Equals(input.InstrumentUid))
+                    this.Values == input.Values ||
+                    this.Values != null &&
+                    input.Values != null &&
+                    this.Values.SequenceEqual(input.Values)
                 ) && 
                 (
-                    this.UnitsFactor == input.UnitsFactor ||
-                    (this.UnitsFactor != null &&
-                    this.UnitsFactor.Equals(input.UnitsFactor))
+                    this.Failed == input.Failed ||
+                    this.Failed != null &&
+                    input.Failed != null &&
+                    this.Failed.SequenceEqual(input.Failed)
                 ) && 
                 (
-                    this.CostFactor == input.CostFactor ||
-                    (this.CostFactor != null &&
-                    this.CostFactor.Equals(input.CostFactor))
+                    this.Links == input.Links ||
+                    this.Links != null &&
+                    input.Links != null &&
+                    this.Links.SequenceEqual(input.Links)
                 );
         }
 
@@ -188,14 +149,14 @@ namespace Lusid.Sdk.Model
             unchecked // Overflow is fine, just wrap
             {
                 int hashCode = 41;
-                if (this.InstrumentIdentifiers != null)
-                    hashCode = hashCode * 59 + this.InstrumentIdentifiers.GetHashCode();
-                if (this.InstrumentUid != null)
-                    hashCode = hashCode * 59 + this.InstrumentUid.GetHashCode();
-                if (this.UnitsFactor != null)
-                    hashCode = hashCode * 59 + this.UnitsFactor.GetHashCode();
-                if (this.CostFactor != null)
-                    hashCode = hashCode * 59 + this.CostFactor.GetHashCode();
+                if (this.Href != null)
+                    hashCode = hashCode * 59 + this.Href.GetHashCode();
+                if (this.Values != null)
+                    hashCode = hashCode * 59 + this.Values.GetHashCode();
+                if (this.Failed != null)
+                    hashCode = hashCode * 59 + this.Failed.GetHashCode();
+                if (this.Links != null)
+                    hashCode = hashCode * 59 + this.Links.GetHashCode();
                 return hashCode;
             }
         }
