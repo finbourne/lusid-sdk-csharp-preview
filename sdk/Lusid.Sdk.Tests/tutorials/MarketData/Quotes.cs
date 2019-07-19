@@ -32,16 +32,13 @@ namespace Lusid.Sdk.Tests.Tutorials.MarketData
                         instrumentIdType: QuoteSeriesId.InstrumentIdTypeEnum.Figi,
                         quoteType: QuoteSeriesId.QuoteTypeEnum.Price,
                         field: "mid"),
-                    new DateTimeOffset(2019, 4, 15, 0, 0, 0, TimeSpan.Zero).ToString("o")
-                ),
+                    new DateTimeOffset(2019, 4, 15, 0, 0, 0, TimeSpan.Zero).ToString("o")),
                 metricValue: new MetricValue(
                     value: 199.23,
-                    unit: "USD"
-                ),
-                lineage: "InternalSystem"
-            );
+                    unit: "USD"),
+                lineage: "InternalSystem");
 
-            _quotesApi.UpsertQuotes(TestDataUtilities.TutorialScope, new List<UpsertQuoteRequest> {request});
+            _quotesApi.UpsertQuotes(TestDataUtilities.TutorialScope, new Dictionary<string, UpsertQuoteRequest> { { "quote1", request} });
         }
 
         [Test]
@@ -59,8 +56,7 @@ namespace Lusid.Sdk.Tests.Tutorials.MarketData
             var quoteResponse = _quotesApi.GetQuotes(
                 TestDataUtilities.TutorialScope,
                 effectiveAt: effectiveDate.ToString("o"),
-                quoteIds: new List<QuoteSeriesId> {quoteSeriesId}
-            );
+                quoteIds: new Dictionary<string, QuoteSeriesId> {{"quote1", quoteSeriesId}});
             
             Assert.That(quoteResponse.Values.Count, Is.EqualTo(1));
 
@@ -89,9 +85,7 @@ namespace Lusid.Sdk.Tests.Tutorials.MarketData
                         TestDataUtilities.TutorialScope,
                         effectiveAt: d.ToString("o"),
                         quoteIds:
-                        new List<QuoteSeriesId> {quoteSeriesId}
-                    )
-                )
+                        new Dictionary<string, QuoteSeriesId> {{"quote1", quoteSeriesId}}))
                 .SelectMany(q => q.Values)
                 .ToList();
             

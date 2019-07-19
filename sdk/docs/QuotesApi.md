@@ -12,7 +12,7 @@ Method | HTTP request | Description
 
 ## DeleteQuotes
 
-> AnnulQuotesResponse DeleteQuotes (string scope, List<QuoteId> quotes = null)
+> AnnulQuotesResponse DeleteQuotes (string scope, Dictionary<string, QuoteId> quotes = null)
 
 [BETA] Delete a quote
 
@@ -38,7 +38,7 @@ namespace Example
 
             var apiInstance = new QuotesApi();
             var scope = scope_example;  // string | The scope of the quote
-            var quotes = new List<QuoteId>(); // List<QuoteId> | The quotes to delete (optional) 
+            var quotes = new Dictionary<string, QuoteId>(); // Dictionary<string, QuoteId> | The quotes to delete (optional) 
 
             try
             {
@@ -61,7 +61,7 @@ namespace Example
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **scope** | **string**| The scope of the quote | 
- **quotes** | [**List&lt;QuoteId&gt;**](List.md)| The quotes to delete | [optional] 
+ **quotes** | [**Dictionary&lt;string, QuoteId&gt;**](QuoteId.md)| The quotes to delete | [optional] 
 
 ### Return type
 
@@ -84,7 +84,7 @@ Name | Type | Description  | Notes
 
 ## GetQuotes
 
-> GetQuotesResponse GetQuotes (string scope, string effectiveAt = null, DateTimeOffset? asAt = null, string maxAge = null, List<QuoteSeriesId> quoteIds = null)
+> GetQuotesResponse GetQuotes (string scope, string effectiveAt = null, DateTimeOffset? asAt = null, string maxAge = null, Dictionary<string, QuoteSeriesId> quoteIds = null)
 
 [BETA] Get quotes
 
@@ -113,7 +113,7 @@ namespace Example
             var effectiveAt = effectiveAt_example;  // string | Optional. The date/time from which the quotes are effective (optional) 
             var asAt = 2013-10-20T19:20:30+01:00;  // DateTimeOffset? | Optional. The 'AsAt' date/time (optional) 
             var maxAge = maxAge_example;  // string | Optional. The quote staleness tolerance (optional) 
-            var quoteIds = new List<QuoteSeriesId>(); // List<QuoteSeriesId> | The ids of the quotes (optional) 
+            var quoteIds = new Dictionary<string, QuoteSeriesId>(); // Dictionary<string, QuoteSeriesId> | The ids of the quotes (optional) 
 
             try
             {
@@ -139,7 +139,7 @@ Name | Type | Description  | Notes
  **effectiveAt** | **string**| Optional. The date/time from which the quotes are effective | [optional] 
  **asAt** | **DateTimeOffset?**| Optional. The &#39;AsAt&#39; date/time | [optional] 
  **maxAge** | **string**| Optional. The quote staleness tolerance | [optional] 
- **quoteIds** | [**List&lt;QuoteSeriesId&gt;**](List.md)| The ids of the quotes | [optional] 
+ **quoteIds** | [**Dictionary&lt;string, QuoteSeriesId&gt;**](QuoteSeriesId.md)| The ids of the quotes | [optional] 
 
 ### Return type
 
@@ -162,7 +162,7 @@ Name | Type | Description  | Notes
 
 ## UpsertQuotes
 
-> UpsertQuotesResponse UpsertQuotes (string scope, List<UpsertQuoteRequest> quotes = null)
+> UpsertQuotesResponse UpsertQuotes (string scope, Dictionary<string, UpsertQuoteRequest> quotes = null)
 
 [BETA] Upsert quotes
 
@@ -188,7 +188,7 @@ namespace Example
 
             var apiInstance = new QuotesApi();
             var scope = scope_example;  // string | The scope of the quotes
-            var quotes = new List<UpsertQuoteRequest>(); // List<UpsertQuoteRequest> | The quotes to upsert (optional) 
+            var quotes = new Dictionary<string, UpsertQuoteRequest>(); // Dictionary<string, UpsertQuoteRequest> | The quotes to upsert (optional) 
 
             try
             {
@@ -211,7 +211,7 @@ namespace Example
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **scope** | **string**| The scope of the quotes | 
- **quotes** | [**List&lt;UpsertQuoteRequest&gt;**](List.md)| The quotes to upsert | [optional] 
+ **quotes** | [**Dictionary&lt;string, UpsertQuoteRequest&gt;**](UpsertQuoteRequest.md)| The quotes to upsert | [optional] 
 
 ### Return type
 
