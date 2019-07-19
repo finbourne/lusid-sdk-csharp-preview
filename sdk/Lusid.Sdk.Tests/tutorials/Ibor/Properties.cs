@@ -145,7 +145,7 @@ namespace Lusid.Sdk.Tests.tutorials.Ibor
 
             // metricProperty.Value is just the value from the metric property, metricProperty.Unit is the units
             var metricProperty = portfolioProperties[metricPropertyDefinitionResult.Key];
-            Assert.That(metricProperty.Value, Is.EqualTo(metricPropertyValueRequest.MetricValue.Value));
+            Assert.That(metricProperty.Value.MetricValue.Value, Is.EqualTo(metricPropertyValueRequest.MetricValue.Value));
             Assert.That(metricProperty.Value.MetricValue.Unit, Is.EqualTo(metricPropertyValueRequest.MetricValue.Unit));
         }
     }
