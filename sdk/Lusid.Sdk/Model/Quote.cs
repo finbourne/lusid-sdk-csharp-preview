@@ -23,7 +23,7 @@ using OpenAPIDateConverter = Lusid.Sdk.Client.OpenAPIDateConverter;
 namespace Lusid.Sdk.Model
 {
     /// <summary>
-    /// This type should completely describe the quote being returned.
+    /// Quote
     /// </summary>
     [DataContract]
     public partial class Quote :  IEquatable<Quote>
@@ -64,14 +64,14 @@ namespace Lusid.Sdk.Model
                 this.MetricValue = metricValue;
             }
             
-            // to ensure "uploadedBy" is required (not null)
-            if (uploadedBy == null)
+            // to ensure "effectiveAt" is required (not null)
+            if (effectiveAt == null)
             {
-                throw new InvalidDataException("uploadedBy is a required property for Quote and cannot be null");
+                throw new InvalidDataException("effectiveAt is a required property for Quote and cannot be null");
             }
             else
             {
-                this.UploadedBy = uploadedBy;
+                this.EffectiveAt = effectiveAt;
             }
             
             // to ensure "asAt" is required (not null)
@@ -82,6 +82,16 @@ namespace Lusid.Sdk.Model
             else
             {
                 this.AsAt = asAt;
+            }
+            
+            // to ensure "uploadedBy" is required (not null)
+            if (uploadedBy == null)
+            {
+                throw new InvalidDataException("uploadedBy is a required property for Quote and cannot be null");
+            }
+            else
+            {
+                this.UploadedBy = uploadedBy;
             }
             
             this.Lineage = lineage;
@@ -101,10 +111,16 @@ namespace Lusid.Sdk.Model
         public MetricValue MetricValue { get; set; }
 
         /// <summary>
-        /// Gets or Sets Lineage
+        /// Gets or Sets EffectiveAt
         /// </summary>
-        [DataMember(Name="lineage", EmitDefaultValue=false)]
-        public string Lineage { get; set; }
+        [DataMember(Name="effectiveAt", EmitDefaultValue=false)]
+        public DateTimeOffset? EffectiveAt { get; set; }
+
+        /// <summary>
+        /// Gets or Sets AsAt
+        /// </summary>
+        [DataMember(Name="asAt", EmitDefaultValue=false)]
+        public DateTimeOffset? AsAt { get; set; }
 
         /// <summary>
         /// Gets or Sets CutLabel
@@ -119,10 +135,10 @@ namespace Lusid.Sdk.Model
         public string UploadedBy { get; set; }
 
         /// <summary>
-        /// Gets or Sets AsAt
+        /// Gets or Sets Lineage
         /// </summary>
-        [DataMember(Name="asAt", EmitDefaultValue=false)]
-        public DateTimeOffset? AsAt { get; set; }
+        [DataMember(Name="lineage", EmitDefaultValue=false)]
+        public string Lineage { get; set; }
 
         /// <summary>
         /// Returns the string presentation of the object
@@ -138,6 +154,8 @@ namespace Lusid.Sdk.Model
             sb.Append("  CutLabel: ").Append(CutLabel).Append("\n");
             sb.Append("  UploadedBy: ").Append(UploadedBy).Append("\n");
             sb.Append("  AsAt: ").Append(AsAt).Append("\n");
+            sb.Append("  UploadedBy: ").Append(UploadedBy).Append("\n");
+            sb.Append("  Lineage: ").Append(Lineage).Append("\n");
             sb.Append("}\n");
             return sb.ToString();
         }
@@ -183,9 +201,14 @@ namespace Lusid.Sdk.Model
                     this.MetricValue.Equals(input.MetricValue))
                 ) && 
                 (
-                    this.Lineage == input.Lineage ||
-                    (this.Lineage != null &&
-                    this.Lineage.Equals(input.Lineage))
+                    this.EffectiveAt == input.EffectiveAt ||
+                    (this.EffectiveAt != null &&
+                    this.EffectiveAt.Equals(input.EffectiveAt))
+                ) && 
+                (
+                    this.AsAt == input.AsAt ||
+                    (this.AsAt != null &&
+                    this.AsAt.Equals(input.AsAt))
                 ) && 
                 (
                     this.CutLabel == input.CutLabel ||
@@ -198,9 +221,9 @@ namespace Lusid.Sdk.Model
                     this.UploadedBy.Equals(input.UploadedBy))
                 ) && 
                 (
-                    this.AsAt == input.AsAt ||
-                    (this.AsAt != null &&
-                    this.AsAt.Equals(input.AsAt))
+                    this.Lineage == input.Lineage ||
+                    (this.Lineage != null &&
+                    this.Lineage.Equals(input.Lineage))
                 );
         }
 
@@ -225,6 +248,10 @@ namespace Lusid.Sdk.Model
                     hashCode = hashCode * 59 + this.UploadedBy.GetHashCode();
                 if (this.AsAt != null)
                     hashCode = hashCode * 59 + this.AsAt.GetHashCode();
+                if (this.UploadedBy != null)
+                    hashCode = hashCode * 59 + this.UploadedBy.GetHashCode();
+                if (this.Lineage != null)
+                    hashCode = hashCode * 59 + this.Lineage.GetHashCode();
                 return hashCode;
             }
         }

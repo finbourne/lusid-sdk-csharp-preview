@@ -5,11 +5,8 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**Href** | **string** |  | [optional] 
-**Values** | [**Dictionary&lt;string, Quote&gt;**](Quote.md) | The collection of requested quote series with their latest values | [optional] 
-**NotFound** | **Dictionary&lt;string, List&lt;string&gt;&gt;** | If any quotes could not be retrieved, they will be listed in &#39;NotFound&#39;, along  with a reason why. | [optional] 
-**Failed** | **Dictionary&lt;string, List&lt;string&gt;&gt;** | If any quotes could not be requested, due to errors in the structure of the   QuoteSeriesId, they will be listed in &#39;Failed&#39;, along with the reason(s) why. | [optional] 
-**Links** | [**List&lt;Link&gt;**](Link.md) |  | [optional] 
+**Found** | [**List&lt;Quote&gt;**](Quote.md) |  | [optional] 
+**NotFound** | [**List&lt;QuoteId&gt;**](QuoteId.md) |  | [optional] 
 
 [[Back to Model list]](../README.md#documentation-for-models)
 [[Back to API list]](../README.md#documentation-for-api-endpoints)

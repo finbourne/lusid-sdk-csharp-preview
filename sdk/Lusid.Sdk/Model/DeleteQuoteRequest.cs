@@ -23,51 +23,56 @@ using OpenAPIDateConverter = Lusid.Sdk.Client.OpenAPIDateConverter;
 namespace Lusid.Sdk.Model
 {
     /// <summary>
-    /// AnnulQuotesResponse
+    /// DeleteQuoteRequest
     /// </summary>
     [DataContract]
-    public partial class AnnulQuotesResponse :  IEquatable<AnnulQuotesResponse>
+    public partial class DeleteQuoteRequest :  IEquatable<DeleteQuoteRequest>
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="AnnulQuotesResponse" /> class.
+        /// Initializes a new instance of the <see cref="DeleteQuoteRequest" /> class.
         /// </summary>
-        /// <param name="href">href.</param>
-        /// <param name="values">The collection of quotes requested to be annulled with the asAt time   at which they were annulled.</param>
-        /// <param name="failed">If any quotes could not be annulled, they will be listed in &#39;Failed&#39;, along  with a reason why..</param>
-        /// <param name="links">links.</param>
-        public AnnulQuotesResponse(string href = default(string), Dictionary<string, DateTimeOffset?> values = default(Dictionary<string, DateTimeOffset?>), Dictionary<string, List<string>> failed = default(Dictionary<string, List<string>>), List<Link> links = default(List<Link>))
+        [JsonConstructorAttribute]
+        protected DeleteQuoteRequest() { }
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DeleteQuoteRequest" /> class.
+        /// </summary>
+        /// <param name="quoteId">quoteId (required).</param>
+        /// <param name="effectiveAt">effectiveAt (required).</param>
+        public DeleteQuoteRequest(QuoteId quoteId = default(QuoteId), DateTimeOffset? effectiveAt = default(DateTimeOffset?))
         {
-            this.Href = href;
-            this.Values = values;
-            this.Failed = failed;
-            this.Links = links;
+            // to ensure "quoteId" is required (not null)
+            if (quoteId == null)
+            {
+                throw new InvalidDataException("quoteId is a required property for DeleteQuoteRequest and cannot be null");
+            }
+            else
+            {
+                this.QuoteId = quoteId;
+            }
+            
+            // to ensure "effectiveAt" is required (not null)
+            if (effectiveAt == null)
+            {
+                throw new InvalidDataException("effectiveAt is a required property for DeleteQuoteRequest and cannot be null");
+            }
+            else
+            {
+                this.EffectiveAt = effectiveAt;
+            }
+            
         }
         
         /// <summary>
-        /// Gets or Sets Href
+        /// Gets or Sets QuoteId
         /// </summary>
-        [DataMember(Name="href", EmitDefaultValue=false)]
-        public string Href { get; set; }
+        [DataMember(Name="quoteId", EmitDefaultValue=false)]
+        public QuoteId QuoteId { get; set; }
 
         /// <summary>
-        /// The collection of quotes requested to be annulled with the asAt time   at which they were annulled
+        /// Gets or Sets EffectiveAt
         /// </summary>
-        /// <value>The collection of quotes requested to be annulled with the asAt time   at which they were annulled</value>
-        [DataMember(Name="values", EmitDefaultValue=false)]
-        public Dictionary<string, DateTimeOffset?> Values { get; set; }
-
-        /// <summary>
-        /// If any quotes could not be annulled, they will be listed in &#39;Failed&#39;, along  with a reason why.
-        /// </summary>
-        /// <value>If any quotes could not be annulled, they will be listed in &#39;Failed&#39;, along  with a reason why.</value>
-        [DataMember(Name="failed", EmitDefaultValue=false)]
-        public Dictionary<string, List<string>> Failed { get; set; }
-
-        /// <summary>
-        /// Gets or Sets Links
-        /// </summary>
-        [DataMember(Name="links", EmitDefaultValue=false)]
-        public List<Link> Links { get; set; }
+        [DataMember(Name="effectiveAt", EmitDefaultValue=false)]
+        public DateTimeOffset? EffectiveAt { get; set; }
 
         /// <summary>
         /// Returns the string presentation of the object
@@ -76,11 +81,9 @@ namespace Lusid.Sdk.Model
         public override string ToString()
         {
             var sb = new StringBuilder();
-            sb.Append("class AnnulQuotesResponse {\n");
-            sb.Append("  Href: ").Append(Href).Append("\n");
-            sb.Append("  Values: ").Append(Values).Append("\n");
-            sb.Append("  Failed: ").Append(Failed).Append("\n");
-            sb.Append("  Links: ").Append(Links).Append("\n");
+            sb.Append("class DeleteQuoteRequest {\n");
+            sb.Append("  QuoteId: ").Append(QuoteId).Append("\n");
+            sb.Append("  EffectiveAt: ").Append(EffectiveAt).Append("\n");
             sb.Append("}\n");
             return sb.ToString();
         }
@@ -101,42 +104,29 @@ namespace Lusid.Sdk.Model
         /// <returns>Boolean</returns>
         public override bool Equals(object input)
         {
-            return this.Equals(input as AnnulQuotesResponse);
+            return this.Equals(input as DeleteQuoteRequest);
         }
 
         /// <summary>
-        /// Returns true if AnnulQuotesResponse instances are equal
+        /// Returns true if DeleteQuoteRequest instances are equal
         /// </summary>
-        /// <param name="input">Instance of AnnulQuotesResponse to be compared</param>
+        /// <param name="input">Instance of DeleteQuoteRequest to be compared</param>
         /// <returns>Boolean</returns>
-        public bool Equals(AnnulQuotesResponse input)
+        public bool Equals(DeleteQuoteRequest input)
         {
             if (input == null)
                 return false;
 
             return 
                 (
-                    this.Href == input.Href ||
-                    (this.Href != null &&
-                    this.Href.Equals(input.Href))
+                    this.QuoteId == input.QuoteId ||
+                    (this.QuoteId != null &&
+                    this.QuoteId.Equals(input.QuoteId))
                 ) && 
                 (
-                    this.Values == input.Values ||
-                    this.Values != null &&
-                    input.Values != null &&
-                    this.Values.SequenceEqual(input.Values)
-                ) && 
-                (
-                    this.Failed == input.Failed ||
-                    this.Failed != null &&
-                    input.Failed != null &&
-                    this.Failed.SequenceEqual(input.Failed)
-                ) && 
-                (
-                    this.Links == input.Links ||
-                    this.Links != null &&
-                    input.Links != null &&
-                    this.Links.SequenceEqual(input.Links)
+                    this.EffectiveAt == input.EffectiveAt ||
+                    (this.EffectiveAt != null &&
+                    this.EffectiveAt.Equals(input.EffectiveAt))
                 );
         }
 
@@ -149,14 +139,10 @@ namespace Lusid.Sdk.Model
             unchecked // Overflow is fine, just wrap
             {
                 int hashCode = 41;
-                if (this.Href != null)
-                    hashCode = hashCode * 59 + this.Href.GetHashCode();
-                if (this.Values != null)
-                    hashCode = hashCode * 59 + this.Values.GetHashCode();
-                if (this.Failed != null)
-                    hashCode = hashCode * 59 + this.Failed.GetHashCode();
-                if (this.Links != null)
-                    hashCode = hashCode * 59 + this.Links.GetHashCode();
+                if (this.QuoteId != null)
+                    hashCode = hashCode * 59 + this.QuoteId.GetHashCode();
+                if (this.EffectiveAt != null)
+                    hashCode = hashCode * 59 + this.EffectiveAt.GetHashCode();
                 return hashCode;
             }
         }

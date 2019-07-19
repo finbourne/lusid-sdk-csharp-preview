@@ -31,52 +31,25 @@ namespace Lusid.Sdk.Model
         /// <summary>
         /// Initializes a new instance of the <see cref="GetQuotesResponse" /> class.
         /// </summary>
-        /// <param name="href">href.</param>
-        /// <param name="values">The collection of requested quote series with their latest values.</param>
-        /// <param name="notFound">If any quotes could not be retrieved, they will be listed in &#39;NotFound&#39;, along  with a reason why..</param>
-        /// <param name="failed">If any quotes could not be requested, due to errors in the structure of the   QuoteSeriesId, they will be listed in &#39;Failed&#39;, along with the reason(s) why..</param>
-        /// <param name="links">links.</param>
-        public GetQuotesResponse(string href = default(string), Dictionary<string, Quote> values = default(Dictionary<string, Quote>), Dictionary<string, List<string>> notFound = default(Dictionary<string, List<string>>), Dictionary<string, List<string>> failed = default(Dictionary<string, List<string>>), List<Link> links = default(List<Link>))
+        /// <param name="found">found.</param>
+        /// <param name="notFound">notFound.</param>
+        public GetQuotesResponse(List<Quote> found = default(List<Quote>), List<QuoteId> notFound = default(List<QuoteId>))
         {
-            this.Href = href;
-            this.Values = values;
+            this.Found = found;
             this.NotFound = notFound;
-            this.Failed = failed;
-            this.Links = links;
         }
         
         /// <summary>
-        /// Gets or Sets Href
+        /// Gets or Sets Found
         /// </summary>
-        [DataMember(Name="href", EmitDefaultValue=false)]
-        public string Href { get; set; }
+        [DataMember(Name="found", EmitDefaultValue=false)]
+        public List<Quote> Found { get; set; }
 
         /// <summary>
-        /// The collection of requested quote series with their latest values
+        /// Gets or Sets NotFound
         /// </summary>
-        /// <value>The collection of requested quote series with their latest values</value>
-        [DataMember(Name="values", EmitDefaultValue=false)]
-        public Dictionary<string, Quote> Values { get; set; }
-
-        /// <summary>
-        /// If any quotes could not be retrieved, they will be listed in &#39;NotFound&#39;, along  with a reason why.
-        /// </summary>
-        /// <value>If any quotes could not be retrieved, they will be listed in &#39;NotFound&#39;, along  with a reason why.</value>
         [DataMember(Name="notFound", EmitDefaultValue=false)]
-        public Dictionary<string, List<string>> NotFound { get; set; }
-
-        /// <summary>
-        /// If any quotes could not be requested, due to errors in the structure of the   QuoteSeriesId, they will be listed in &#39;Failed&#39;, along with the reason(s) why.
-        /// </summary>
-        /// <value>If any quotes could not be requested, due to errors in the structure of the   QuoteSeriesId, they will be listed in &#39;Failed&#39;, along with the reason(s) why.</value>
-        [DataMember(Name="failed", EmitDefaultValue=false)]
-        public Dictionary<string, List<string>> Failed { get; set; }
-
-        /// <summary>
-        /// Gets or Sets Links
-        /// </summary>
-        [DataMember(Name="links", EmitDefaultValue=false)]
-        public List<Link> Links { get; set; }
+        public List<QuoteId> NotFound { get; set; }
 
         /// <summary>
         /// Returns the string presentation of the object
@@ -86,11 +59,8 @@ namespace Lusid.Sdk.Model
         {
             var sb = new StringBuilder();
             sb.Append("class GetQuotesResponse {\n");
-            sb.Append("  Href: ").Append(Href).Append("\n");
-            sb.Append("  Values: ").Append(Values).Append("\n");
+            sb.Append("  Found: ").Append(Found).Append("\n");
             sb.Append("  NotFound: ").Append(NotFound).Append("\n");
-            sb.Append("  Failed: ").Append(Failed).Append("\n");
-            sb.Append("  Links: ").Append(Links).Append("\n");
             sb.Append("}\n");
             return sb.ToString();
         }
@@ -126,33 +96,16 @@ namespace Lusid.Sdk.Model
 
             return 
                 (
-                    this.Href == input.Href ||
-                    (this.Href != null &&
-                    this.Href.Equals(input.Href))
-                ) && 
-                (
-                    this.Values == input.Values ||
-                    this.Values != null &&
-                    input.Values != null &&
-                    this.Values.SequenceEqual(input.Values)
+                    this.Found == input.Found ||
+                    this.Found != null &&
+                    input.Found != null &&
+                    this.Found.SequenceEqual(input.Found)
                 ) && 
                 (
                     this.NotFound == input.NotFound ||
                     this.NotFound != null &&
                     input.NotFound != null &&
                     this.NotFound.SequenceEqual(input.NotFound)
-                ) && 
-                (
-                    this.Failed == input.Failed ||
-                    this.Failed != null &&
-                    input.Failed != null &&
-                    this.Failed.SequenceEqual(input.Failed)
-                ) && 
-                (
-                    this.Links == input.Links ||
-                    this.Links != null &&
-                    input.Links != null &&
-                    this.Links.SequenceEqual(input.Links)
                 );
         }
 
@@ -165,16 +118,10 @@ namespace Lusid.Sdk.Model
             unchecked // Overflow is fine, just wrap
             {
                 int hashCode = 41;
-                if (this.Href != null)
-                    hashCode = hashCode * 59 + this.Href.GetHashCode();
-                if (this.Values != null)
-                    hashCode = hashCode * 59 + this.Values.GetHashCode();
+                if (this.Found != null)
+                    hashCode = hashCode * 59 + this.Found.GetHashCode();
                 if (this.NotFound != null)
                     hashCode = hashCode * 59 + this.NotFound.GetHashCode();
-                if (this.Failed != null)
-                    hashCode = hashCode * 59 + this.Failed.GetHashCode();
-                if (this.Links != null)
-                    hashCode = hashCode * 59 + this.Links.GetHashCode();
                 return hashCode;
             }
         }

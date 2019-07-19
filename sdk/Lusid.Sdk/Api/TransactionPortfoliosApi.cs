@@ -89,7 +89,7 @@ namespace Lusid.Sdk.Api
         /// <param name="code">The code of the transaction portfolio. Together with the scope this uniquely identifies              the transaction portfolio.</param>
         /// <param name="parameters">The query parameters which control how the output transactions are built.</param>
         /// <param name="asAt">The asAt datetime at which to build the transactions. Defaults to return the latest              version of each transaction if not specified. (optional)</param>
-        /// <param name="propertyKeys">A list of property keys from the \&quot;Instrument\&quot; or \&quot;Transaction\&quot; domain to decorate onto              the transactions. These take the format {domain}/{scope}/{code} e.g. \&quot;Instrument/system/Name\&quot; or              \&quot;Transaction/strategy/quantsignal\&quot;. (optional)</param>
+        /// <param name="propertyKeys">A list of property keys from the \&quot;Instrument\&quot; or \&quot;Trade\&quot; domain to decorate onto              the transactions. These take the format {domain}/{scope}/{code} e.g. \&quot;Instrument/system/Name\&quot; or              \&quot;Trade/strategy/quantsignal\&quot;. (optional)</param>
         /// <param name="filter">Expression to filter the result set. Read more about filtering results from LUSID here https://support.lusid.com/filtering-results-from-lusid. (optional)</param>
         /// <returns>VersionedResourceListOfOutputTransaction</returns>
         VersionedResourceListOfOutputTransaction BuildTransactions (string scope, string code, TransactionQueryParameters parameters, DateTimeOffset? asAt = null, List<string> propertyKeys = null, string filter = null);
@@ -105,7 +105,7 @@ namespace Lusid.Sdk.Api
         /// <param name="code">The code of the transaction portfolio. Together with the scope this uniquely identifies              the transaction portfolio.</param>
         /// <param name="parameters">The query parameters which control how the output transactions are built.</param>
         /// <param name="asAt">The asAt datetime at which to build the transactions. Defaults to return the latest              version of each transaction if not specified. (optional)</param>
-        /// <param name="propertyKeys">A list of property keys from the \&quot;Instrument\&quot; or \&quot;Transaction\&quot; domain to decorate onto              the transactions. These take the format {domain}/{scope}/{code} e.g. \&quot;Instrument/system/Name\&quot; or              \&quot;Transaction/strategy/quantsignal\&quot;. (optional)</param>
+        /// <param name="propertyKeys">A list of property keys from the \&quot;Instrument\&quot; or \&quot;Trade\&quot; domain to decorate onto              the transactions. These take the format {domain}/{scope}/{code} e.g. \&quot;Instrument/system/Name\&quot; or              \&quot;Trade/strategy/quantsignal\&quot;. (optional)</param>
         /// <param name="filter">Expression to filter the result set. Read more about filtering results from LUSID here https://support.lusid.com/filtering-results-from-lusid. (optional)</param>
         /// <returns>ApiResponse of VersionedResourceListOfOutputTransaction</returns>
         ApiResponse<VersionedResourceListOfOutputTransaction> BuildTransactionsWithHttpInfo (string scope, string code, TransactionQueryParameters parameters, DateTimeOffset? asAt = null, List<string> propertyKeys = null, string filter = null);
@@ -217,7 +217,7 @@ namespace Lusid.Sdk.Api
         /// <param name="scope">The scope of the transaction portfolio.</param>
         /// <param name="code">The code of the transaction portfolio. Together with the scope this uniquely identifies              the transaction portfolio.</param>
         /// <param name="transactionId">The unique id of the transaction to delete the property value from.</param>
-        /// <param name="transactionPropertyKey">The property key of the property value to delete from the transaction.              This must be from the \&quot;Transaction\&quot; domain and will have the format {domain}/{scope}/{code} e.g.              \&quot;Transaction/strategy/quantsignal\&quot;.</param>
+        /// <param name="transactionPropertyKey">The property key of the property value to delete from the transaction.              This must be from the \&quot;Trade\&quot; domain and will have the format {domain}/{scope}/{code} e.g.              \&quot;Trade/strategy/quantsignal\&quot;.</param>
         /// <returns>DeletedEntityResponse</returns>
         DeletedEntityResponse DeletePropertyFromTransaction (string scope, string code, string transactionId, string transactionPropertyKey);
 
@@ -231,7 +231,7 @@ namespace Lusid.Sdk.Api
         /// <param name="scope">The scope of the transaction portfolio.</param>
         /// <param name="code">The code of the transaction portfolio. Together with the scope this uniquely identifies              the transaction portfolio.</param>
         /// <param name="transactionId">The unique id of the transaction to delete the property value from.</param>
-        /// <param name="transactionPropertyKey">The property key of the property value to delete from the transaction.              This must be from the \&quot;Transaction\&quot; domain and will have the format {domain}/{scope}/{code} e.g.              \&quot;Transaction/strategy/quantsignal\&quot;.</param>
+        /// <param name="transactionPropertyKey">The property key of the property value to delete from the transaction.              This must be from the \&quot;Trade\&quot; domain and will have the format {domain}/{scope}/{code} e.g.              \&quot;Trade/strategy/quantsignal\&quot;.</param>
         /// <returns>ApiResponse of DeletedEntityResponse</returns>
         ApiResponse<DeletedEntityResponse> DeletePropertyFromTransactionWithHttpInfo (string scope, string code, string transactionId, string transactionPropertyKey);
         /// <summary>
@@ -333,7 +333,7 @@ namespace Lusid.Sdk.Api
         /// <param name="fromTransactionDate">The lower bound effective datetime (inclusive) from which to retrieve the transactions.              There is no lower bound if this is not specified. (optional)</param>
         /// <param name="toTransactionDate">The upper bound effective datetime (inclusive) from which to retrieve transactions.              There is no upper bound if this is not specified. (optional)</param>
         /// <param name="asAt">The asAt datetime at which to retrieve the transactions. Defaults to return the latest version              of each transaction if not specified. (optional)</param>
-        /// <param name="propertyKeys">A list of property keys from the \&quot;Instrument\&quot; or \&quot;Transaction\&quot; domain to decorate onto              the transactions. These take the format {domain}/{scope}/{code} e.g. \&quot;Instrument/system/Name\&quot; or              \&quot;Transaction/strategy/quantsignal\&quot;. (optional)</param>
+        /// <param name="propertyKeys">A list of property keys from the \&quot;Instrument\&quot; or \&quot;Trade\&quot; domain to decorate onto              the transactions. These take the format {domain}/{scope}/{code} e.g. \&quot;Instrument/system/Name\&quot; or              \&quot;Trade/strategy/quantsignal\&quot;. (optional)</param>
         /// <param name="filter">Expression to filter the result set. Read more about filtering results from LUSID here https://support.lusid.com/filtering-results-from-lusid. (optional)</param>
         /// <returns>VersionedResourceListOfTransaction</returns>
         VersionedResourceListOfTransaction GetTransactions (string scope, string code, string fromTransactionDate = null, string toTransactionDate = null, DateTimeOffset? asAt = null, List<string> propertyKeys = null, string filter = null);
@@ -350,7 +350,7 @@ namespace Lusid.Sdk.Api
         /// <param name="fromTransactionDate">The lower bound effective datetime (inclusive) from which to retrieve the transactions.              There is no lower bound if this is not specified. (optional)</param>
         /// <param name="toTransactionDate">The upper bound effective datetime (inclusive) from which to retrieve transactions.              There is no upper bound if this is not specified. (optional)</param>
         /// <param name="asAt">The asAt datetime at which to retrieve the transactions. Defaults to return the latest version              of each transaction if not specified. (optional)</param>
-        /// <param name="propertyKeys">A list of property keys from the \&quot;Instrument\&quot; or \&quot;Transaction\&quot; domain to decorate onto              the transactions. These take the format {domain}/{scope}/{code} e.g. \&quot;Instrument/system/Name\&quot; or              \&quot;Transaction/strategy/quantsignal\&quot;. (optional)</param>
+        /// <param name="propertyKeys">A list of property keys from the \&quot;Instrument\&quot; or \&quot;Trade\&quot; domain to decorate onto              the transactions. These take the format {domain}/{scope}/{code} e.g. \&quot;Instrument/system/Name\&quot; or              \&quot;Trade/strategy/quantsignal\&quot;. (optional)</param>
         /// <param name="filter">Expression to filter the result set. Read more about filtering results from LUSID here https://support.lusid.com/filtering-results-from-lusid. (optional)</param>
         /// <returns>ApiResponse of VersionedResourceListOfTransaction</returns>
         ApiResponse<VersionedResourceListOfTransaction> GetTransactionsWithHttpInfo (string scope, string code, string fromTransactionDate = null, string toTransactionDate = null, DateTimeOffset? asAt = null, List<string> propertyKeys = null, string filter = null);
@@ -554,7 +554,7 @@ namespace Lusid.Sdk.Api
         /// <param name="code">The code of the transaction portfolio. Together with the scope this uniquely identifies              the transaction portfolio.</param>
         /// <param name="parameters">The query parameters which control how the output transactions are built.</param>
         /// <param name="asAt">The asAt datetime at which to build the transactions. Defaults to return the latest              version of each transaction if not specified. (optional)</param>
-        /// <param name="propertyKeys">A list of property keys from the \&quot;Instrument\&quot; or \&quot;Transaction\&quot; domain to decorate onto              the transactions. These take the format {domain}/{scope}/{code} e.g. \&quot;Instrument/system/Name\&quot; or              \&quot;Transaction/strategy/quantsignal\&quot;. (optional)</param>
+        /// <param name="propertyKeys">A list of property keys from the \&quot;Instrument\&quot; or \&quot;Trade\&quot; domain to decorate onto              the transactions. These take the format {domain}/{scope}/{code} e.g. \&quot;Instrument/system/Name\&quot; or              \&quot;Trade/strategy/quantsignal\&quot;. (optional)</param>
         /// <param name="filter">Expression to filter the result set. Read more about filtering results from LUSID here https://support.lusid.com/filtering-results-from-lusid. (optional)</param>
         /// <returns>Task of VersionedResourceListOfOutputTransaction</returns>
         System.Threading.Tasks.Task<VersionedResourceListOfOutputTransaction> BuildTransactionsAsync (string scope, string code, TransactionQueryParameters parameters, DateTimeOffset? asAt = null, List<string> propertyKeys = null, string filter = null);
@@ -570,7 +570,7 @@ namespace Lusid.Sdk.Api
         /// <param name="code">The code of the transaction portfolio. Together with the scope this uniquely identifies              the transaction portfolio.</param>
         /// <param name="parameters">The query parameters which control how the output transactions are built.</param>
         /// <param name="asAt">The asAt datetime at which to build the transactions. Defaults to return the latest              version of each transaction if not specified. (optional)</param>
-        /// <param name="propertyKeys">A list of property keys from the \&quot;Instrument\&quot; or \&quot;Transaction\&quot; domain to decorate onto              the transactions. These take the format {domain}/{scope}/{code} e.g. \&quot;Instrument/system/Name\&quot; or              \&quot;Transaction/strategy/quantsignal\&quot;. (optional)</param>
+        /// <param name="propertyKeys">A list of property keys from the \&quot;Instrument\&quot; or \&quot;Trade\&quot; domain to decorate onto              the transactions. These take the format {domain}/{scope}/{code} e.g. \&quot;Instrument/system/Name\&quot; or              \&quot;Trade/strategy/quantsignal\&quot;. (optional)</param>
         /// <param name="filter">Expression to filter the result set. Read more about filtering results from LUSID here https://support.lusid.com/filtering-results-from-lusid. (optional)</param>
         /// <returns>Task of ApiResponse (VersionedResourceListOfOutputTransaction)</returns>
         System.Threading.Tasks.Task<ApiResponse<VersionedResourceListOfOutputTransaction>> BuildTransactionsAsyncWithHttpInfo (string scope, string code, TransactionQueryParameters parameters, DateTimeOffset? asAt = null, List<string> propertyKeys = null, string filter = null);
@@ -682,7 +682,7 @@ namespace Lusid.Sdk.Api
         /// <param name="scope">The scope of the transaction portfolio.</param>
         /// <param name="code">The code of the transaction portfolio. Together with the scope this uniquely identifies              the transaction portfolio.</param>
         /// <param name="transactionId">The unique id of the transaction to delete the property value from.</param>
-        /// <param name="transactionPropertyKey">The property key of the property value to delete from the transaction.              This must be from the \&quot;Transaction\&quot; domain and will have the format {domain}/{scope}/{code} e.g.              \&quot;Transaction/strategy/quantsignal\&quot;.</param>
+        /// <param name="transactionPropertyKey">The property key of the property value to delete from the transaction.              This must be from the \&quot;Trade\&quot; domain and will have the format {domain}/{scope}/{code} e.g.              \&quot;Trade/strategy/quantsignal\&quot;.</param>
         /// <returns>Task of DeletedEntityResponse</returns>
         System.Threading.Tasks.Task<DeletedEntityResponse> DeletePropertyFromTransactionAsync (string scope, string code, string transactionId, string transactionPropertyKey);
 
@@ -696,7 +696,7 @@ namespace Lusid.Sdk.Api
         /// <param name="scope">The scope of the transaction portfolio.</param>
         /// <param name="code">The code of the transaction portfolio. Together with the scope this uniquely identifies              the transaction portfolio.</param>
         /// <param name="transactionId">The unique id of the transaction to delete the property value from.</param>
-        /// <param name="transactionPropertyKey">The property key of the property value to delete from the transaction.              This must be from the \&quot;Transaction\&quot; domain and will have the format {domain}/{scope}/{code} e.g.              \&quot;Transaction/strategy/quantsignal\&quot;.</param>
+        /// <param name="transactionPropertyKey">The property key of the property value to delete from the transaction.              This must be from the \&quot;Trade\&quot; domain and will have the format {domain}/{scope}/{code} e.g.              \&quot;Trade/strategy/quantsignal\&quot;.</param>
         /// <returns>Task of ApiResponse (DeletedEntityResponse)</returns>
         System.Threading.Tasks.Task<ApiResponse<DeletedEntityResponse>> DeletePropertyFromTransactionAsyncWithHttpInfo (string scope, string code, string transactionId, string transactionPropertyKey);
         /// <summary>
@@ -798,7 +798,7 @@ namespace Lusid.Sdk.Api
         /// <param name="fromTransactionDate">The lower bound effective datetime (inclusive) from which to retrieve the transactions.              There is no lower bound if this is not specified. (optional)</param>
         /// <param name="toTransactionDate">The upper bound effective datetime (inclusive) from which to retrieve transactions.              There is no upper bound if this is not specified. (optional)</param>
         /// <param name="asAt">The asAt datetime at which to retrieve the transactions. Defaults to return the latest version              of each transaction if not specified. (optional)</param>
-        /// <param name="propertyKeys">A list of property keys from the \&quot;Instrument\&quot; or \&quot;Transaction\&quot; domain to decorate onto              the transactions. These take the format {domain}/{scope}/{code} e.g. \&quot;Instrument/system/Name\&quot; or              \&quot;Transaction/strategy/quantsignal\&quot;. (optional)</param>
+        /// <param name="propertyKeys">A list of property keys from the \&quot;Instrument\&quot; or \&quot;Trade\&quot; domain to decorate onto              the transactions. These take the format {domain}/{scope}/{code} e.g. \&quot;Instrument/system/Name\&quot; or              \&quot;Trade/strategy/quantsignal\&quot;. (optional)</param>
         /// <param name="filter">Expression to filter the result set. Read more about filtering results from LUSID here https://support.lusid.com/filtering-results-from-lusid. (optional)</param>
         /// <returns>Task of VersionedResourceListOfTransaction</returns>
         System.Threading.Tasks.Task<VersionedResourceListOfTransaction> GetTransactionsAsync (string scope, string code, string fromTransactionDate = null, string toTransactionDate = null, DateTimeOffset? asAt = null, List<string> propertyKeys = null, string filter = null);
@@ -815,7 +815,7 @@ namespace Lusid.Sdk.Api
         /// <param name="fromTransactionDate">The lower bound effective datetime (inclusive) from which to retrieve the transactions.              There is no lower bound if this is not specified. (optional)</param>
         /// <param name="toTransactionDate">The upper bound effective datetime (inclusive) from which to retrieve transactions.              There is no upper bound if this is not specified. (optional)</param>
         /// <param name="asAt">The asAt datetime at which to retrieve the transactions. Defaults to return the latest version              of each transaction if not specified. (optional)</param>
-        /// <param name="propertyKeys">A list of property keys from the \&quot;Instrument\&quot; or \&quot;Transaction\&quot; domain to decorate onto              the transactions. These take the format {domain}/{scope}/{code} e.g. \&quot;Instrument/system/Name\&quot; or              \&quot;Transaction/strategy/quantsignal\&quot;. (optional)</param>
+        /// <param name="propertyKeys">A list of property keys from the \&quot;Instrument\&quot; or \&quot;Trade\&quot; domain to decorate onto              the transactions. These take the format {domain}/{scope}/{code} e.g. \&quot;Instrument/system/Name\&quot; or              \&quot;Trade/strategy/quantsignal\&quot;. (optional)</param>
         /// <param name="filter">Expression to filter the result set. Read more about filtering results from LUSID here https://support.lusid.com/filtering-results-from-lusid. (optional)</param>
         /// <returns>Task of ApiResponse (VersionedResourceListOfTransaction)</returns>
         System.Threading.Tasks.Task<ApiResponse<VersionedResourceListOfTransaction>> GetTransactionsAsyncWithHttpInfo (string scope, string code, string fromTransactionDate = null, string toTransactionDate = null, DateTimeOffset? asAt = null, List<string> propertyKeys = null, string filter = null);
@@ -1479,7 +1479,7 @@ namespace Lusid.Sdk.Api
         /// <param name="code">The code of the transaction portfolio. Together with the scope this uniquely identifies              the transaction portfolio.</param>
         /// <param name="parameters">The query parameters which control how the output transactions are built.</param>
         /// <param name="asAt">The asAt datetime at which to build the transactions. Defaults to return the latest              version of each transaction if not specified. (optional)</param>
-        /// <param name="propertyKeys">A list of property keys from the \&quot;Instrument\&quot; or \&quot;Transaction\&quot; domain to decorate onto              the transactions. These take the format {domain}/{scope}/{code} e.g. \&quot;Instrument/system/Name\&quot; or              \&quot;Transaction/strategy/quantsignal\&quot;. (optional)</param>
+        /// <param name="propertyKeys">A list of property keys from the \&quot;Instrument\&quot; or \&quot;Trade\&quot; domain to decorate onto              the transactions. These take the format {domain}/{scope}/{code} e.g. \&quot;Instrument/system/Name\&quot; or              \&quot;Trade/strategy/quantsignal\&quot;. (optional)</param>
         /// <param name="filter">Expression to filter the result set. Read more about filtering results from LUSID here https://support.lusid.com/filtering-results-from-lusid. (optional)</param>
         /// <returns>VersionedResourceListOfOutputTransaction</returns>
         public VersionedResourceListOfOutputTransaction BuildTransactions (string scope, string code, TransactionQueryParameters parameters, DateTimeOffset? asAt = null, List<string> propertyKeys = null, string filter = null)
@@ -1496,7 +1496,7 @@ namespace Lusid.Sdk.Api
         /// <param name="code">The code of the transaction portfolio. Together with the scope this uniquely identifies              the transaction portfolio.</param>
         /// <param name="parameters">The query parameters which control how the output transactions are built.</param>
         /// <param name="asAt">The asAt datetime at which to build the transactions. Defaults to return the latest              version of each transaction if not specified. (optional)</param>
-        /// <param name="propertyKeys">A list of property keys from the \&quot;Instrument\&quot; or \&quot;Transaction\&quot; domain to decorate onto              the transactions. These take the format {domain}/{scope}/{code} e.g. \&quot;Instrument/system/Name\&quot; or              \&quot;Transaction/strategy/quantsignal\&quot;. (optional)</param>
+        /// <param name="propertyKeys">A list of property keys from the \&quot;Instrument\&quot; or \&quot;Trade\&quot; domain to decorate onto              the transactions. These take the format {domain}/{scope}/{code} e.g. \&quot;Instrument/system/Name\&quot; or              \&quot;Trade/strategy/quantsignal\&quot;. (optional)</param>
         /// <param name="filter">Expression to filter the result set. Read more about filtering results from LUSID here https://support.lusid.com/filtering-results-from-lusid. (optional)</param>
         /// <returns>ApiResponse of VersionedResourceListOfOutputTransaction</returns>
         public ApiResponse< VersionedResourceListOfOutputTransaction > BuildTransactionsWithHttpInfo (string scope, string code, TransactionQueryParameters parameters, DateTimeOffset? asAt = null, List<string> propertyKeys = null, string filter = null)
@@ -1585,7 +1585,7 @@ namespace Lusid.Sdk.Api
         /// <param name="code">The code of the transaction portfolio. Together with the scope this uniquely identifies              the transaction portfolio.</param>
         /// <param name="parameters">The query parameters which control how the output transactions are built.</param>
         /// <param name="asAt">The asAt datetime at which to build the transactions. Defaults to return the latest              version of each transaction if not specified. (optional)</param>
-        /// <param name="propertyKeys">A list of property keys from the \&quot;Instrument\&quot; or \&quot;Transaction\&quot; domain to decorate onto              the transactions. These take the format {domain}/{scope}/{code} e.g. \&quot;Instrument/system/Name\&quot; or              \&quot;Transaction/strategy/quantsignal\&quot;. (optional)</param>
+        /// <param name="propertyKeys">A list of property keys from the \&quot;Instrument\&quot; or \&quot;Trade\&quot; domain to decorate onto              the transactions. These take the format {domain}/{scope}/{code} e.g. \&quot;Instrument/system/Name\&quot; or              \&quot;Trade/strategy/quantsignal\&quot;. (optional)</param>
         /// <param name="filter">Expression to filter the result set. Read more about filtering results from LUSID here https://support.lusid.com/filtering-results-from-lusid. (optional)</param>
         /// <returns>Task of VersionedResourceListOfOutputTransaction</returns>
         public async System.Threading.Tasks.Task<VersionedResourceListOfOutputTransaction> BuildTransactionsAsync (string scope, string code, TransactionQueryParameters parameters, DateTimeOffset? asAt = null, List<string> propertyKeys = null, string filter = null)
@@ -1603,7 +1603,7 @@ namespace Lusid.Sdk.Api
         /// <param name="code">The code of the transaction portfolio. Together with the scope this uniquely identifies              the transaction portfolio.</param>
         /// <param name="parameters">The query parameters which control how the output transactions are built.</param>
         /// <param name="asAt">The asAt datetime at which to build the transactions. Defaults to return the latest              version of each transaction if not specified. (optional)</param>
-        /// <param name="propertyKeys">A list of property keys from the \&quot;Instrument\&quot; or \&quot;Transaction\&quot; domain to decorate onto              the transactions. These take the format {domain}/{scope}/{code} e.g. \&quot;Instrument/system/Name\&quot; or              \&quot;Transaction/strategy/quantsignal\&quot;. (optional)</param>
+        /// <param name="propertyKeys">A list of property keys from the \&quot;Instrument\&quot; or \&quot;Trade\&quot; domain to decorate onto              the transactions. These take the format {domain}/{scope}/{code} e.g. \&quot;Instrument/system/Name\&quot; or              \&quot;Trade/strategy/quantsignal\&quot;. (optional)</param>
         /// <param name="filter">Expression to filter the result set. Read more about filtering results from LUSID here https://support.lusid.com/filtering-results-from-lusid. (optional)</param>
         /// <returns>Task of ApiResponse (VersionedResourceListOfOutputTransaction)</returns>
         public async System.Threading.Tasks.Task<ApiResponse<VersionedResourceListOfOutputTransaction>> BuildTransactionsAsyncWithHttpInfo (string scope, string code, TransactionQueryParameters parameters, DateTimeOffset? asAt = null, List<string> propertyKeys = null, string filter = null)
@@ -2411,7 +2411,7 @@ namespace Lusid.Sdk.Api
         /// <param name="scope">The scope of the transaction portfolio.</param>
         /// <param name="code">The code of the transaction portfolio. Together with the scope this uniquely identifies              the transaction portfolio.</param>
         /// <param name="transactionId">The unique id of the transaction to delete the property value from.</param>
-        /// <param name="transactionPropertyKey">The property key of the property value to delete from the transaction.              This must be from the \&quot;Transaction\&quot; domain and will have the format {domain}/{scope}/{code} e.g.              \&quot;Transaction/strategy/quantsignal\&quot;.</param>
+        /// <param name="transactionPropertyKey">The property key of the property value to delete from the transaction.              This must be from the \&quot;Trade\&quot; domain and will have the format {domain}/{scope}/{code} e.g.              \&quot;Trade/strategy/quantsignal\&quot;.</param>
         /// <returns>DeletedEntityResponse</returns>
         public DeletedEntityResponse DeletePropertyFromTransaction (string scope, string code, string transactionId, string transactionPropertyKey)
         {
@@ -2426,7 +2426,7 @@ namespace Lusid.Sdk.Api
         /// <param name="scope">The scope of the transaction portfolio.</param>
         /// <param name="code">The code of the transaction portfolio. Together with the scope this uniquely identifies              the transaction portfolio.</param>
         /// <param name="transactionId">The unique id of the transaction to delete the property value from.</param>
-        /// <param name="transactionPropertyKey">The property key of the property value to delete from the transaction.              This must be from the \&quot;Transaction\&quot; domain and will have the format {domain}/{scope}/{code} e.g.              \&quot;Transaction/strategy/quantsignal\&quot;.</param>
+        /// <param name="transactionPropertyKey">The property key of the property value to delete from the transaction.              This must be from the \&quot;Trade\&quot; domain and will have the format {domain}/{scope}/{code} e.g.              \&quot;Trade/strategy/quantsignal\&quot;.</param>
         /// <returns>ApiResponse of DeletedEntityResponse</returns>
         public ApiResponse< DeletedEntityResponse > DeletePropertyFromTransactionWithHttpInfo (string scope, string code, string transactionId, string transactionPropertyKey)
         {
@@ -2507,7 +2507,7 @@ namespace Lusid.Sdk.Api
         /// <param name="scope">The scope of the transaction portfolio.</param>
         /// <param name="code">The code of the transaction portfolio. Together with the scope this uniquely identifies              the transaction portfolio.</param>
         /// <param name="transactionId">The unique id of the transaction to delete the property value from.</param>
-        /// <param name="transactionPropertyKey">The property key of the property value to delete from the transaction.              This must be from the \&quot;Transaction\&quot; domain and will have the format {domain}/{scope}/{code} e.g.              \&quot;Transaction/strategy/quantsignal\&quot;.</param>
+        /// <param name="transactionPropertyKey">The property key of the property value to delete from the transaction.              This must be from the \&quot;Trade\&quot; domain and will have the format {domain}/{scope}/{code} e.g.              \&quot;Trade/strategy/quantsignal\&quot;.</param>
         /// <returns>Task of DeletedEntityResponse</returns>
         public async System.Threading.Tasks.Task<DeletedEntityResponse> DeletePropertyFromTransactionAsync (string scope, string code, string transactionId, string transactionPropertyKey)
         {
@@ -2523,7 +2523,7 @@ namespace Lusid.Sdk.Api
         /// <param name="scope">The scope of the transaction portfolio.</param>
         /// <param name="code">The code of the transaction portfolio. Together with the scope this uniquely identifies              the transaction portfolio.</param>
         /// <param name="transactionId">The unique id of the transaction to delete the property value from.</param>
-        /// <param name="transactionPropertyKey">The property key of the property value to delete from the transaction.              This must be from the \&quot;Transaction\&quot; domain and will have the format {domain}/{scope}/{code} e.g.              \&quot;Transaction/strategy/quantsignal\&quot;.</param>
+        /// <param name="transactionPropertyKey">The property key of the property value to delete from the transaction.              This must be from the \&quot;Trade\&quot; domain and will have the format {domain}/{scope}/{code} e.g.              \&quot;Trade/strategy/quantsignal\&quot;.</param>
         /// <returns>Task of ApiResponse (DeletedEntityResponse)</returns>
         public async System.Threading.Tasks.Task<ApiResponse<DeletedEntityResponse>> DeletePropertyFromTransactionAsyncWithHttpInfo (string scope, string code, string transactionId, string transactionPropertyKey)
         {
@@ -3173,7 +3173,7 @@ namespace Lusid.Sdk.Api
         /// <param name="fromTransactionDate">The lower bound effective datetime (inclusive) from which to retrieve the transactions.              There is no lower bound if this is not specified. (optional)</param>
         /// <param name="toTransactionDate">The upper bound effective datetime (inclusive) from which to retrieve transactions.              There is no upper bound if this is not specified. (optional)</param>
         /// <param name="asAt">The asAt datetime at which to retrieve the transactions. Defaults to return the latest version              of each transaction if not specified. (optional)</param>
-        /// <param name="propertyKeys">A list of property keys from the \&quot;Instrument\&quot; or \&quot;Transaction\&quot; domain to decorate onto              the transactions. These take the format {domain}/{scope}/{code} e.g. \&quot;Instrument/system/Name\&quot; or              \&quot;Transaction/strategy/quantsignal\&quot;. (optional)</param>
+        /// <param name="propertyKeys">A list of property keys from the \&quot;Instrument\&quot; or \&quot;Trade\&quot; domain to decorate onto              the transactions. These take the format {domain}/{scope}/{code} e.g. \&quot;Instrument/system/Name\&quot; or              \&quot;Trade/strategy/quantsignal\&quot;. (optional)</param>
         /// <param name="filter">Expression to filter the result set. Read more about filtering results from LUSID here https://support.lusid.com/filtering-results-from-lusid. (optional)</param>
         /// <returns>VersionedResourceListOfTransaction</returns>
         public VersionedResourceListOfTransaction GetTransactions (string scope, string code, string fromTransactionDate = null, string toTransactionDate = null, DateTimeOffset? asAt = null, List<string> propertyKeys = null, string filter = null)
@@ -3191,7 +3191,7 @@ namespace Lusid.Sdk.Api
         /// <param name="fromTransactionDate">The lower bound effective datetime (inclusive) from which to retrieve the transactions.              There is no lower bound if this is not specified. (optional)</param>
         /// <param name="toTransactionDate">The upper bound effective datetime (inclusive) from which to retrieve transactions.              There is no upper bound if this is not specified. (optional)</param>
         /// <param name="asAt">The asAt datetime at which to retrieve the transactions. Defaults to return the latest version              of each transaction if not specified. (optional)</param>
-        /// <param name="propertyKeys">A list of property keys from the \&quot;Instrument\&quot; or \&quot;Transaction\&quot; domain to decorate onto              the transactions. These take the format {domain}/{scope}/{code} e.g. \&quot;Instrument/system/Name\&quot; or              \&quot;Transaction/strategy/quantsignal\&quot;. (optional)</param>
+        /// <param name="propertyKeys">A list of property keys from the \&quot;Instrument\&quot; or \&quot;Trade\&quot; domain to decorate onto              the transactions. These take the format {domain}/{scope}/{code} e.g. \&quot;Instrument/system/Name\&quot; or              \&quot;Trade/strategy/quantsignal\&quot;. (optional)</param>
         /// <param name="filter">Expression to filter the result set. Read more about filtering results from LUSID here https://support.lusid.com/filtering-results-from-lusid. (optional)</param>
         /// <returns>ApiResponse of VersionedResourceListOfTransaction</returns>
         public ApiResponse< VersionedResourceListOfTransaction > GetTransactionsWithHttpInfo (string scope, string code, string fromTransactionDate = null, string toTransactionDate = null, DateTimeOffset? asAt = null, List<string> propertyKeys = null, string filter = null)
@@ -3272,7 +3272,7 @@ namespace Lusid.Sdk.Api
         /// <param name="fromTransactionDate">The lower bound effective datetime (inclusive) from which to retrieve the transactions.              There is no lower bound if this is not specified. (optional)</param>
         /// <param name="toTransactionDate">The upper bound effective datetime (inclusive) from which to retrieve transactions.              There is no upper bound if this is not specified. (optional)</param>
         /// <param name="asAt">The asAt datetime at which to retrieve the transactions. Defaults to return the latest version              of each transaction if not specified. (optional)</param>
-        /// <param name="propertyKeys">A list of property keys from the \&quot;Instrument\&quot; or \&quot;Transaction\&quot; domain to decorate onto              the transactions. These take the format {domain}/{scope}/{code} e.g. \&quot;Instrument/system/Name\&quot; or              \&quot;Transaction/strategy/quantsignal\&quot;. (optional)</param>
+        /// <param name="propertyKeys">A list of property keys from the \&quot;Instrument\&quot; or \&quot;Trade\&quot; domain to decorate onto              the transactions. These take the format {domain}/{scope}/{code} e.g. \&quot;Instrument/system/Name\&quot; or              \&quot;Trade/strategy/quantsignal\&quot;. (optional)</param>
         /// <param name="filter">Expression to filter the result set. Read more about filtering results from LUSID here https://support.lusid.com/filtering-results-from-lusid. (optional)</param>
         /// <returns>Task of VersionedResourceListOfTransaction</returns>
         public async System.Threading.Tasks.Task<VersionedResourceListOfTransaction> GetTransactionsAsync (string scope, string code, string fromTransactionDate = null, string toTransactionDate = null, DateTimeOffset? asAt = null, List<string> propertyKeys = null, string filter = null)
@@ -3291,7 +3291,7 @@ namespace Lusid.Sdk.Api
         /// <param name="fromTransactionDate">The lower bound effective datetime (inclusive) from which to retrieve the transactions.              There is no lower bound if this is not specified. (optional)</param>
         /// <param name="toTransactionDate">The upper bound effective datetime (inclusive) from which to retrieve transactions.              There is no upper bound if this is not specified. (optional)</param>
         /// <param name="asAt">The asAt datetime at which to retrieve the transactions. Defaults to return the latest version              of each transaction if not specified. (optional)</param>
-        /// <param name="propertyKeys">A list of property keys from the \&quot;Instrument\&quot; or \&quot;Transaction\&quot; domain to decorate onto              the transactions. These take the format {domain}/{scope}/{code} e.g. \&quot;Instrument/system/Name\&quot; or              \&quot;Transaction/strategy/quantsignal\&quot;. (optional)</param>
+        /// <param name="propertyKeys">A list of property keys from the \&quot;Instrument\&quot; or \&quot;Trade\&quot; domain to decorate onto              the transactions. These take the format {domain}/{scope}/{code} e.g. \&quot;Instrument/system/Name\&quot; or              \&quot;Trade/strategy/quantsignal\&quot;. (optional)</param>
         /// <param name="filter">Expression to filter the result set. Read more about filtering results from LUSID here https://support.lusid.com/filtering-results-from-lusid. (optional)</param>
         /// <returns>Task of ApiResponse (VersionedResourceListOfTransaction)</returns>
         public async System.Threading.Tasks.Task<ApiResponse<VersionedResourceListOfTransaction>> GetTransactionsAsyncWithHttpInfo (string scope, string code, string fromTransactionDate = null, string toTransactionDate = null, DateTimeOffset? asAt = null, List<string> propertyKeys = null, string filter = null)

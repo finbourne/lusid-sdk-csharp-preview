@@ -11,6 +11,8 @@ Name | Type | Description | Notes
 **CutLabel** | **string** |  | [optional] 
 **UploadedBy** | **string** |  | 
 **AsAt** | **DateTimeOffset?** |  | 
+**UploadedBy** | **string** |  | 
+**Lineage** | **string** |  | [optional] 
 
 [[Back to Model list]](../README.md#documentation-for-models)
 [[Back to API list]](../README.md#documentation-for-api-endpoints)

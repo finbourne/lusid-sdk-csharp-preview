@@ -51,13 +51,15 @@ namespace Lusid.Sdk.Api
         /// [BETA] Get quotes
         /// </summary>
         /// <remarks>
-        /// Get quotes effective at the specified date/time (if any). An optional maximum age of quotes can be specified, and is infinite by default.  Quotes which are older than this at the time of the effective date/time will not be returned.  MaxAge is a duration of time represented in an ISO8601 format, eg. P1Y2M3DT4H30M (1 year, 2 months, 3 days, 4 hours and 30 minutes).
+        /// Get quotes effective at the specified date/time (if any). An optional maximum age of quotes can be specified, and is infinite by default.  Quotes which are older than this at the time of the effective date/time will not be returned.  MaxAge is a duration of time represented in an ISO8601 format, eg. P1Y2M3DT4H30M (1 year, 2 months, 3 days, 4 hours and 30 minutes).  The results are paged, and by default the 1st page of results is returned with a limit of 100 results per page
         /// </remarks>
         /// <exception cref="Lusid.Sdk.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="scope">The scope of the quotes</param>
         /// <param name="effectiveAt">Optional. The date/time from which the quotes are effective (optional)</param>
         /// <param name="asAt">Optional. The &#39;AsAt&#39; date/time (optional)</param>
         /// <param name="maxAge">Optional. The quote staleness tolerance (optional)</param>
+        /// <param name="page">Optional. The page of results to return (optional)</param>
+        /// <param name="limit">Optional. The number of results per page (optional)</param>
         /// <param name="quoteIds">The ids of the quotes (optional)</param>
         /// <returns>GetQuotesResponse</returns>
         GetQuotesResponse GetQuotes (string scope, string effectiveAt = null, DateTimeOffset? asAt = null, string maxAge = null, Dictionary<string, QuoteSeriesId> quoteIds = null);
@@ -66,13 +68,15 @@ namespace Lusid.Sdk.Api
         /// [BETA] Get quotes
         /// </summary>
         /// <remarks>
-        /// Get quotes effective at the specified date/time (if any). An optional maximum age of quotes can be specified, and is infinite by default.  Quotes which are older than this at the time of the effective date/time will not be returned.  MaxAge is a duration of time represented in an ISO8601 format, eg. P1Y2M3DT4H30M (1 year, 2 months, 3 days, 4 hours and 30 minutes).
+        /// Get quotes effective at the specified date/time (if any). An optional maximum age of quotes can be specified, and is infinite by default.  Quotes which are older than this at the time of the effective date/time will not be returned.  MaxAge is a duration of time represented in an ISO8601 format, eg. P1Y2M3DT4H30M (1 year, 2 months, 3 days, 4 hours and 30 minutes).  The results are paged, and by default the 1st page of results is returned with a limit of 100 results per page
         /// </remarks>
         /// <exception cref="Lusid.Sdk.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="scope">The scope of the quotes</param>
         /// <param name="effectiveAt">Optional. The date/time from which the quotes are effective (optional)</param>
         /// <param name="asAt">Optional. The &#39;AsAt&#39; date/time (optional)</param>
         /// <param name="maxAge">Optional. The quote staleness tolerance (optional)</param>
+        /// <param name="page">Optional. The page of results to return (optional)</param>
+        /// <param name="limit">Optional. The number of results per page (optional)</param>
         /// <param name="quoteIds">The ids of the quotes (optional)</param>
         /// <returns>ApiResponse of GetQuotesResponse</returns>
         ApiResponse<GetQuotesResponse> GetQuotesWithHttpInfo (string scope, string effectiveAt = null, DateTimeOffset? asAt = null, string maxAge = null, Dictionary<string, QuoteSeriesId> quoteIds = null);
@@ -128,13 +132,15 @@ namespace Lusid.Sdk.Api
         /// [BETA] Get quotes
         /// </summary>
         /// <remarks>
-        /// Get quotes effective at the specified date/time (if any). An optional maximum age of quotes can be specified, and is infinite by default.  Quotes which are older than this at the time of the effective date/time will not be returned.  MaxAge is a duration of time represented in an ISO8601 format, eg. P1Y2M3DT4H30M (1 year, 2 months, 3 days, 4 hours and 30 minutes).
+        /// Get quotes effective at the specified date/time (if any). An optional maximum age of quotes can be specified, and is infinite by default.  Quotes which are older than this at the time of the effective date/time will not be returned.  MaxAge is a duration of time represented in an ISO8601 format, eg. P1Y2M3DT4H30M (1 year, 2 months, 3 days, 4 hours and 30 minutes).  The results are paged, and by default the 1st page of results is returned with a limit of 100 results per page
         /// </remarks>
         /// <exception cref="Lusid.Sdk.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="scope">The scope of the quotes</param>
         /// <param name="effectiveAt">Optional. The date/time from which the quotes are effective (optional)</param>
         /// <param name="asAt">Optional. The &#39;AsAt&#39; date/time (optional)</param>
         /// <param name="maxAge">Optional. The quote staleness tolerance (optional)</param>
+        /// <param name="page">Optional. The page of results to return (optional)</param>
+        /// <param name="limit">Optional. The number of results per page (optional)</param>
         /// <param name="quoteIds">The ids of the quotes (optional)</param>
         /// <returns>Task of GetQuotesResponse</returns>
         System.Threading.Tasks.Task<GetQuotesResponse> GetQuotesAsync (string scope, string effectiveAt = null, DateTimeOffset? asAt = null, string maxAge = null, Dictionary<string, QuoteSeriesId> quoteIds = null);
@@ -143,13 +149,15 @@ namespace Lusid.Sdk.Api
         /// [BETA] Get quotes
         /// </summary>
         /// <remarks>
-        /// Get quotes effective at the specified date/time (if any). An optional maximum age of quotes can be specified, and is infinite by default.  Quotes which are older than this at the time of the effective date/time will not be returned.  MaxAge is a duration of time represented in an ISO8601 format, eg. P1Y2M3DT4H30M (1 year, 2 months, 3 days, 4 hours and 30 minutes).
+        /// Get quotes effective at the specified date/time (if any). An optional maximum age of quotes can be specified, and is infinite by default.  Quotes which are older than this at the time of the effective date/time will not be returned.  MaxAge is a duration of time represented in an ISO8601 format, eg. P1Y2M3DT4H30M (1 year, 2 months, 3 days, 4 hours and 30 minutes).  The results are paged, and by default the 1st page of results is returned with a limit of 100 results per page
         /// </remarks>
         /// <exception cref="Lusid.Sdk.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="scope">The scope of the quotes</param>
         /// <param name="effectiveAt">Optional. The date/time from which the quotes are effective (optional)</param>
         /// <param name="asAt">Optional. The &#39;AsAt&#39; date/time (optional)</param>
         /// <param name="maxAge">Optional. The quote staleness tolerance (optional)</param>
+        /// <param name="page">Optional. The page of results to return (optional)</param>
+        /// <param name="limit">Optional. The number of results per page (optional)</param>
         /// <param name="quoteIds">The ids of the quotes (optional)</param>
         /// <returns>Task of ApiResponse (GetQuotesResponse)</returns>
         System.Threading.Tasks.Task<ApiResponse<GetQuotesResponse>> GetQuotesAsyncWithHttpInfo (string scope, string effectiveAt = null, DateTimeOffset? asAt = null, string maxAge = null, Dictionary<string, QuoteSeriesId> quoteIds = null);
@@ -296,7 +304,7 @@ namespace Lusid.Sdk.Api
         /// <returns>AnnulQuotesResponse</returns>
         public AnnulQuotesResponse DeleteQuotes (string scope, Dictionary<string, QuoteId> quotes = null)
         {
-             ApiResponse<AnnulQuotesResponse> localVarResponse = DeleteQuotesWithHttpInfo(scope, quotes);
+             ApiResponse<DeleteQuotesResponse> localVarResponse = DeleteQuotesWithHttpInfo(scope, quotes);
              return localVarResponse.Data;
         }
 
@@ -370,9 +378,9 @@ namespace Lusid.Sdk.Api
                 if (exception != null) throw exception;
             }
 
-            return new ApiResponse<AnnulQuotesResponse>(localVarStatusCode,
+            return new ApiResponse<DeleteQuotesResponse>(localVarStatusCode,
                 localVarResponse.Headers.ToDictionary(x => x.Key, x => string.Join(",", x.Value)),
-                (AnnulQuotesResponse) this.Configuration.ApiClient.Deserialize(localVarResponse, typeof(AnnulQuotesResponse)));
+                (DeleteQuotesResponse) this.Configuration.ApiClient.Deserialize(localVarResponse, typeof(DeleteQuotesResponse)));
         }
 
         /// <summary>
@@ -384,7 +392,7 @@ namespace Lusid.Sdk.Api
         /// <returns>Task of AnnulQuotesResponse</returns>
         public async System.Threading.Tasks.Task<AnnulQuotesResponse> DeleteQuotesAsync (string scope, Dictionary<string, QuoteId> quotes = null)
         {
-             ApiResponse<AnnulQuotesResponse> localVarResponse = await DeleteQuotesAsyncWithHttpInfo(scope, quotes);
+             ApiResponse<DeleteQuotesResponse> localVarResponse = await DeleteQuotesAsyncWithHttpInfo(scope, quotes);
              return localVarResponse.Data;
 
         }
@@ -459,35 +467,39 @@ namespace Lusid.Sdk.Api
                 if (exception != null) throw exception;
             }
 
-            return new ApiResponse<AnnulQuotesResponse>(localVarStatusCode,
+            return new ApiResponse<DeleteQuotesResponse>(localVarStatusCode,
                 localVarResponse.Headers.ToDictionary(x => x.Key, x => string.Join(",", x.Value)),
-                (AnnulQuotesResponse) this.Configuration.ApiClient.Deserialize(localVarResponse, typeof(AnnulQuotesResponse)));
+                (DeleteQuotesResponse) this.Configuration.ApiClient.Deserialize(localVarResponse, typeof(DeleteQuotesResponse)));
         }
 
         /// <summary>
-        /// [BETA] Get quotes Get quotes effective at the specified date/time (if any). An optional maximum age of quotes can be specified, and is infinite by default.  Quotes which are older than this at the time of the effective date/time will not be returned.  MaxAge is a duration of time represented in an ISO8601 format, eg. P1Y2M3DT4H30M (1 year, 2 months, 3 days, 4 hours and 30 minutes).
+        /// [BETA] Get quotes Get quotes effective at the specified date/time (if any). An optional maximum age of quotes can be specified, and is infinite by default.  Quotes which are older than this at the time of the effective date/time will not be returned.  MaxAge is a duration of time represented in an ISO8601 format, eg. P1Y2M3DT4H30M (1 year, 2 months, 3 days, 4 hours and 30 minutes).  The results are paged, and by default the 1st page of results is returned with a limit of 100 results per page
         /// </summary>
         /// <exception cref="Lusid.Sdk.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="scope">The scope of the quotes</param>
         /// <param name="effectiveAt">Optional. The date/time from which the quotes are effective (optional)</param>
         /// <param name="asAt">Optional. The &#39;AsAt&#39; date/time (optional)</param>
         /// <param name="maxAge">Optional. The quote staleness tolerance (optional)</param>
+        /// <param name="page">Optional. The page of results to return (optional)</param>
+        /// <param name="limit">Optional. The number of results per page (optional)</param>
         /// <param name="quoteIds">The ids of the quotes (optional)</param>
         /// <returns>GetQuotesResponse</returns>
         public GetQuotesResponse GetQuotes (string scope, string effectiveAt = null, DateTimeOffset? asAt = null, string maxAge = null, Dictionary<string, QuoteSeriesId> quoteIds = null)
         {
-             ApiResponse<GetQuotesResponse> localVarResponse = GetQuotesWithHttpInfo(scope, effectiveAt, asAt, maxAge, quoteIds);
+             ApiResponse<GetQuotesResponse> localVarResponse = GetQuotesWithHttpInfo(scope, effectiveAt, asAt, maxAge, page, limit, quoteIds);
              return localVarResponse.Data;
         }
 
         /// <summary>
-        /// [BETA] Get quotes Get quotes effective at the specified date/time (if any). An optional maximum age of quotes can be specified, and is infinite by default.  Quotes which are older than this at the time of the effective date/time will not be returned.  MaxAge is a duration of time represented in an ISO8601 format, eg. P1Y2M3DT4H30M (1 year, 2 months, 3 days, 4 hours and 30 minutes).
+        /// [BETA] Get quotes Get quotes effective at the specified date/time (if any). An optional maximum age of quotes can be specified, and is infinite by default.  Quotes which are older than this at the time of the effective date/time will not be returned.  MaxAge is a duration of time represented in an ISO8601 format, eg. P1Y2M3DT4H30M (1 year, 2 months, 3 days, 4 hours and 30 minutes).  The results are paged, and by default the 1st page of results is returned with a limit of 100 results per page
         /// </summary>
         /// <exception cref="Lusid.Sdk.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="scope">The scope of the quotes</param>
         /// <param name="effectiveAt">Optional. The date/time from which the quotes are effective (optional)</param>
         /// <param name="asAt">Optional. The &#39;AsAt&#39; date/time (optional)</param>
         /// <param name="maxAge">Optional. The quote staleness tolerance (optional)</param>
+        /// <param name="page">Optional. The page of results to return (optional)</param>
+        /// <param name="limit">Optional. The number of results per page (optional)</param>
         /// <param name="quoteIds">The ids of the quotes (optional)</param>
         /// <returns>ApiResponse of GetQuotesResponse</returns>
         public ApiResponse< GetQuotesResponse > GetQuotesWithHttpInfo (string scope, string effectiveAt = null, DateTimeOffset? asAt = null, string maxAge = null, Dictionary<string, QuoteSeriesId> quoteIds = null)
@@ -523,6 +535,8 @@ namespace Lusid.Sdk.Api
             if (effectiveAt != null) localVarQueryParams.AddRange(this.Configuration.ApiClient.ParameterToKeyValuePairs("", "effectiveAt", effectiveAt)); // query parameter
             if (asAt != null) localVarQueryParams.AddRange(this.Configuration.ApiClient.ParameterToKeyValuePairs("", "asAt", asAt)); // query parameter
             if (maxAge != null) localVarQueryParams.AddRange(this.Configuration.ApiClient.ParameterToKeyValuePairs("", "maxAge", maxAge)); // query parameter
+            if (page != null) localVarQueryParams.AddRange(this.Configuration.ApiClient.ParameterToKeyValuePairs("", "page", page)); // query parameter
+            if (limit != null) localVarQueryParams.AddRange(this.Configuration.ApiClient.ParameterToKeyValuePairs("", "limit", limit)); // query parameter
             if (quoteIds != null && quoteIds.GetType() != typeof(byte[]))
             {
                 localVarPostBody = this.Configuration.ApiClient.Serialize(quoteIds); // http body (model) parameter
@@ -562,30 +576,34 @@ namespace Lusid.Sdk.Api
         }
 
         /// <summary>
-        /// [BETA] Get quotes Get quotes effective at the specified date/time (if any). An optional maximum age of quotes can be specified, and is infinite by default.  Quotes which are older than this at the time of the effective date/time will not be returned.  MaxAge is a duration of time represented in an ISO8601 format, eg. P1Y2M3DT4H30M (1 year, 2 months, 3 days, 4 hours and 30 minutes).
+        /// [BETA] Get quotes Get quotes effective at the specified date/time (if any). An optional maximum age of quotes can be specified, and is infinite by default.  Quotes which are older than this at the time of the effective date/time will not be returned.  MaxAge is a duration of time represented in an ISO8601 format, eg. P1Y2M3DT4H30M (1 year, 2 months, 3 days, 4 hours and 30 minutes).  The results are paged, and by default the 1st page of results is returned with a limit of 100 results per page
         /// </summary>
         /// <exception cref="Lusid.Sdk.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="scope">The scope of the quotes</param>
         /// <param name="effectiveAt">Optional. The date/time from which the quotes are effective (optional)</param>
         /// <param name="asAt">Optional. The &#39;AsAt&#39; date/time (optional)</param>
         /// <param name="maxAge">Optional. The quote staleness tolerance (optional)</param>
+        /// <param name="page">Optional. The page of results to return (optional)</param>
+        /// <param name="limit">Optional. The number of results per page (optional)</param>
         /// <param name="quoteIds">The ids of the quotes (optional)</param>
         /// <returns>Task of GetQuotesResponse</returns>
         public async System.Threading.Tasks.Task<GetQuotesResponse> GetQuotesAsync (string scope, string effectiveAt = null, DateTimeOffset? asAt = null, string maxAge = null, Dictionary<string, QuoteSeriesId> quoteIds = null)
         {
-             ApiResponse<GetQuotesResponse> localVarResponse = await GetQuotesAsyncWithHttpInfo(scope, effectiveAt, asAt, maxAge, quoteIds);
+             ApiResponse<GetQuotesResponse> localVarResponse = await GetQuotesAsyncWithHttpInfo(scope, effectiveAt, asAt, maxAge, page, limit, quoteIds);
              return localVarResponse.Data;
 
         }
 
         /// <summary>
-        /// [BETA] Get quotes Get quotes effective at the specified date/time (if any). An optional maximum age of quotes can be specified, and is infinite by default.  Quotes which are older than this at the time of the effective date/time will not be returned.  MaxAge is a duration of time represented in an ISO8601 format, eg. P1Y2M3DT4H30M (1 year, 2 months, 3 days, 4 hours and 30 minutes).
+        /// [BETA] Get quotes Get quotes effective at the specified date/time (if any). An optional maximum age of quotes can be specified, and is infinite by default.  Quotes which are older than this at the time of the effective date/time will not be returned.  MaxAge is a duration of time represented in an ISO8601 format, eg. P1Y2M3DT4H30M (1 year, 2 months, 3 days, 4 hours and 30 minutes).  The results are paged, and by default the 1st page of results is returned with a limit of 100 results per page
         /// </summary>
         /// <exception cref="Lusid.Sdk.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="scope">The scope of the quotes</param>
         /// <param name="effectiveAt">Optional. The date/time from which the quotes are effective (optional)</param>
         /// <param name="asAt">Optional. The &#39;AsAt&#39; date/time (optional)</param>
         /// <param name="maxAge">Optional. The quote staleness tolerance (optional)</param>
+        /// <param name="page">Optional. The page of results to return (optional)</param>
+        /// <param name="limit">Optional. The number of results per page (optional)</param>
         /// <param name="quoteIds">The ids of the quotes (optional)</param>
         /// <returns>Task of ApiResponse (GetQuotesResponse)</returns>
         public async System.Threading.Tasks.Task<ApiResponse<GetQuotesResponse>> GetQuotesAsyncWithHttpInfo (string scope, string effectiveAt = null, DateTimeOffset? asAt = null, string maxAge = null, Dictionary<string, QuoteSeriesId> quoteIds = null)
@@ -621,6 +639,8 @@ namespace Lusid.Sdk.Api
             if (effectiveAt != null) localVarQueryParams.AddRange(this.Configuration.ApiClient.ParameterToKeyValuePairs("", "effectiveAt", effectiveAt)); // query parameter
             if (asAt != null) localVarQueryParams.AddRange(this.Configuration.ApiClient.ParameterToKeyValuePairs("", "asAt", asAt)); // query parameter
             if (maxAge != null) localVarQueryParams.AddRange(this.Configuration.ApiClient.ParameterToKeyValuePairs("", "maxAge", maxAge)); // query parameter
+            if (page != null) localVarQueryParams.AddRange(this.Configuration.ApiClient.ParameterToKeyValuePairs("", "page", page)); // query parameter
+            if (limit != null) localVarQueryParams.AddRange(this.Configuration.ApiClient.ParameterToKeyValuePairs("", "limit", limit)); // query parameter
             if (quoteIds != null && quoteIds.GetType() != typeof(byte[]))
             {
                 localVarPostBody = this.Configuration.ApiClient.Serialize(quoteIds); // http body (model) parameter

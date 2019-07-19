@@ -94,7 +94,7 @@ namespace Lusid.Sdk.Model
         /// <param name="baseCurrency">The base currency of the transaction portfolio. (required).</param>
         /// <param name="corporateActionSourceId">corporateActionSourceId.</param>
         /// <param name="accountingMethod">Determines the accounting treatment given to the transaction portfolio&#39;s tax lots..</param>
-        /// <param name="subHoldingKeys">A set of unique transaction properties to group the transaction portfolio&#39;s holdings by. Each property must be from the &#39;Transaction&#39; domain and should be identified by its key which has the format {domain}/{scope}/{code}, e.g. &#39;Transaction/strategies/quantsignal&#39;..</param>
+        /// <param name="subHoldingKeys">A set of unique transaction properties to group the transaction portfolio&#39;s holdings by. Each property must be from the &#39;Trade&#39; domain and should be identified by its key which has the format {domain}/{scope}/{code}, e.g. &#39;Trade/strategies/quantsignal&#39;..</param>
         /// <param name="properties">A set of unique portfolio properties to add to the transaction portfolio. Each property must be from the &#39;Portfolio&#39; domain and should be identified by its key which has the format {domain}/{scope}/{code}, e.g. &#39;Portfolio/Manager/Id&#39;. These properties must be pre-defined..</param>
         public CreateTransactionPortfolioRequest(string displayName = default(string), string description = default(string), string code = default(string), DateTimeOffset? created = default(DateTimeOffset?), string baseCurrency = default(string), ResourceId corporateActionSourceId = default(ResourceId), AccountingMethodEnum? accountingMethod = default(AccountingMethodEnum?), List<string> subHoldingKeys = default(List<string>), Dictionary<string, Property> properties = default(Dictionary<string, Property>))
         {
@@ -179,9 +179,9 @@ namespace Lusid.Sdk.Model
 
 
         /// <summary>
-        /// A set of unique transaction properties to group the transaction portfolio&#39;s holdings by. Each property must be from the &#39;Transaction&#39; domain and should be identified by its key which has the format {domain}/{scope}/{code}, e.g. &#39;Transaction/strategies/quantsignal&#39;.
+        /// A set of unique transaction properties to group the transaction portfolio&#39;s holdings by. Each property must be from the &#39;Trade&#39; domain and should be identified by its key which has the format {domain}/{scope}/{code}, e.g. &#39;Trade/strategies/quantsignal&#39;.
         /// </summary>
-        /// <value>A set of unique transaction properties to group the transaction portfolio&#39;s holdings by. Each property must be from the &#39;Transaction&#39; domain and should be identified by its key which has the format {domain}/{scope}/{code}, e.g. &#39;Transaction/strategies/quantsignal&#39;.</value>
+        /// <value>A set of unique transaction properties to group the transaction portfolio&#39;s holdings by. Each property must be from the &#39;Trade&#39; domain and should be identified by its key which has the format {domain}/{scope}/{code}, e.g. &#39;Trade/strategies/quantsignal&#39;.</value>
         [DataMember(Name="subHoldingKeys", EmitDefaultValue=false)]
         public List<string> SubHoldingKeys { get; set; }
 

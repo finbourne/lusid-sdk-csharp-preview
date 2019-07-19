@@ -29,68 +29,6 @@ namespace Lusid.Sdk.Model
     public partial class MarketContextSuppliers :  IEquatable<MarketContextSuppliers>
     {
         /// <summary>
-        /// Defines Fx
-        /// </summary>
-        [JsonConverter(typeof(StringEnumConverter))]
-        public enum FxEnum
-        {
-            /// <summary>
-            /// Enum DataScope for value: DataScope
-            /// </summary>
-            [EnumMember(Value = "DataScope")]
-            DataScope = 1,
-
-            /// <summary>
-            /// Enum Lusid for value: Lusid
-            /// </summary>
-            [EnumMember(Value = "Lusid")]
-            Lusid = 2,
-
-            /// <summary>
-            /// Enum Isda for value: Isda
-            /// </summary>
-            [EnumMember(Value = "Isda")]
-            Isda = 3
-
-        }
-
-        /// <summary>
-        /// Gets or Sets Fx
-        /// </summary>
-        [DataMember(Name="Fx", EmitDefaultValue=false)]
-        public FxEnum? Fx { get; set; }
-        /// <summary>
-        /// Defines Rates
-        /// </summary>
-        [JsonConverter(typeof(StringEnumConverter))]
-        public enum RatesEnum
-        {
-            /// <summary>
-            /// Enum DataScope for value: DataScope
-            /// </summary>
-            [EnumMember(Value = "DataScope")]
-            DataScope = 1,
-
-            /// <summary>
-            /// Enum Lusid for value: Lusid
-            /// </summary>
-            [EnumMember(Value = "Lusid")]
-            Lusid = 2,
-
-            /// <summary>
-            /// Enum Isda for value: Isda
-            /// </summary>
-            [EnumMember(Value = "Isda")]
-            Isda = 3
-
-        }
-
-        /// <summary>
-        /// Gets or Sets Rates
-        /// </summary>
-        [DataMember(Name="Rates", EmitDefaultValue=false)]
-        public RatesEnum? Rates { get; set; }
-        /// <summary>
         /// Defines Commodity
         /// </summary>
         [JsonConverter(typeof(StringEnumConverter))]
@@ -184,20 +122,82 @@ namespace Lusid.Sdk.Model
         [DataMember(Name="Equity", EmitDefaultValue=false)]
         public EquityEnum? Equity { get; set; }
         /// <summary>
+        /// Defines Fx
+        /// </summary>
+        [JsonConverter(typeof(StringEnumConverter))]
+        public enum FxEnum
+        {
+            /// <summary>
+            /// Enum DataScope for value: DataScope
+            /// </summary>
+            [EnumMember(Value = "DataScope")]
+            DataScope = 1,
+
+            /// <summary>
+            /// Enum Lusid for value: Lusid
+            /// </summary>
+            [EnumMember(Value = "Lusid")]
+            Lusid = 2,
+
+            /// <summary>
+            /// Enum Isda for value: Isda
+            /// </summary>
+            [EnumMember(Value = "Isda")]
+            Isda = 3
+
+        }
+
+        /// <summary>
+        /// Gets or Sets Fx
+        /// </summary>
+        [DataMember(Name="Fx", EmitDefaultValue=false)]
+        public FxEnum? Fx { get; set; }
+        /// <summary>
+        /// Defines Rates
+        /// </summary>
+        [JsonConverter(typeof(StringEnumConverter))]
+        public enum RatesEnum
+        {
+            /// <summary>
+            /// Enum DataScope for value: DataScope
+            /// </summary>
+            [EnumMember(Value = "DataScope")]
+            DataScope = 1,
+
+            /// <summary>
+            /// Enum Lusid for value: Lusid
+            /// </summary>
+            [EnumMember(Value = "Lusid")]
+            Lusid = 2,
+
+            /// <summary>
+            /// Enum Isda for value: Isda
+            /// </summary>
+            [EnumMember(Value = "Isda")]
+            Isda = 3
+
+        }
+
+        /// <summary>
+        /// Gets or Sets Rates
+        /// </summary>
+        [DataMember(Name="Rates", EmitDefaultValue=false)]
+        public RatesEnum? Rates { get; set; }
+        /// <summary>
         /// Initializes a new instance of the <see cref="MarketContextSuppliers" /> class.
         /// </summary>
-        /// <param name="fx">fx.</param>
-        /// <param name="rates">rates.</param>
         /// <param name="commodity">commodity.</param>
         /// <param name="credit">credit.</param>
         /// <param name="equity">equity.</param>
-        public MarketContextSuppliers(FxEnum? fx = default(FxEnum?), RatesEnum? rates = default(RatesEnum?), CommodityEnum? commodity = default(CommodityEnum?), CreditEnum? credit = default(CreditEnum?), EquityEnum? equity = default(EquityEnum?))
+        /// <param name="fx">fx.</param>
+        /// <param name="rates">rates.</param>
+        public MarketContextSuppliers(CommodityEnum? commodity = default(CommodityEnum?), CreditEnum? credit = default(CreditEnum?), EquityEnum? equity = default(EquityEnum?), FxEnum? fx = default(FxEnum?), RatesEnum? rates = default(RatesEnum?))
         {
-            this.Fx = fx;
-            this.Rates = rates;
             this.Commodity = commodity;
             this.Credit = credit;
             this.Equity = equity;
+            this.Fx = fx;
+            this.Rates = rates;
         }
         
 
@@ -213,11 +213,11 @@ namespace Lusid.Sdk.Model
         {
             var sb = new StringBuilder();
             sb.Append("class MarketContextSuppliers {\n");
-            sb.Append("  Fx: ").Append(Fx).Append("\n");
-            sb.Append("  Rates: ").Append(Rates).Append("\n");
             sb.Append("  Commodity: ").Append(Commodity).Append("\n");
             sb.Append("  Credit: ").Append(Credit).Append("\n");
             sb.Append("  Equity: ").Append(Equity).Append("\n");
+            sb.Append("  Fx: ").Append(Fx).Append("\n");
+            sb.Append("  Rates: ").Append(Rates).Append("\n");
             sb.Append("}\n");
             return sb.ToString();
         }
@@ -253,16 +253,6 @@ namespace Lusid.Sdk.Model
 
             return 
                 (
-                    this.Fx == input.Fx ||
-                    (this.Fx != null &&
-                    this.Fx.Equals(input.Fx))
-                ) && 
-                (
-                    this.Rates == input.Rates ||
-                    (this.Rates != null &&
-                    this.Rates.Equals(input.Rates))
-                ) && 
-                (
                     this.Commodity == input.Commodity ||
                     (this.Commodity != null &&
                     this.Commodity.Equals(input.Commodity))
@@ -276,6 +266,16 @@ namespace Lusid.Sdk.Model
                     this.Equity == input.Equity ||
                     (this.Equity != null &&
                     this.Equity.Equals(input.Equity))
+                ) && 
+                (
+                    this.Fx == input.Fx ||
+                    (this.Fx != null &&
+                    this.Fx.Equals(input.Fx))
+                ) && 
+                (
+                    this.Rates == input.Rates ||
+                    (this.Rates != null &&
+                    this.Rates.Equals(input.Rates))
                 );
         }
 
@@ -288,16 +288,16 @@ namespace Lusid.Sdk.Model
             unchecked // Overflow is fine, just wrap
             {
                 int hashCode = 41;
-                if (this.Fx != null)
-                    hashCode = hashCode * 59 + this.Fx.GetHashCode();
-                if (this.Rates != null)
-                    hashCode = hashCode * 59 + this.Rates.GetHashCode();
                 if (this.Commodity != null)
                     hashCode = hashCode * 59 + this.Commodity.GetHashCode();
                 if (this.Credit != null)
                     hashCode = hashCode * 59 + this.Credit.GetHashCode();
                 if (this.Equity != null)
                     hashCode = hashCode * 59 + this.Equity.GetHashCode();
+                if (this.Fx != null)
+                    hashCode = hashCode * 59 + this.Fx.GetHashCode();
+                if (this.Rates != null)
+                    hashCode = hashCode * 59 + this.Rates.GetHashCode();
                 return hashCode;
             }
         }

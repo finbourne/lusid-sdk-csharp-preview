@@ -23,11 +23,122 @@ using OpenAPIDateConverter = Lusid.Sdk.Client.OpenAPIDateConverter;
 namespace Lusid.Sdk.Model
 {
     /// <summary>
-    /// This type should completely describe the unique portion of the quote.
+    /// QuoteId
     /// </summary>
     [DataContract]
     public partial class QuoteId :  IEquatable<QuoteId>
     {
+        /// <summary>
+        /// Defines InstrumentIdType
+        /// </summary>
+        [JsonConverter(typeof(StringEnumConverter))]
+        public enum InstrumentIdTypeEnum
+        {
+            /// <summary>
+            /// Enum LusidInstrumentId for value: LusidInstrumentId
+            /// </summary>
+            [EnumMember(Value = "LusidInstrumentId")]
+            LusidInstrumentId = 1,
+
+            /// <summary>
+            /// Enum Figi for value: Figi
+            /// </summary>
+            [EnumMember(Value = "Figi")]
+            Figi = 2,
+
+            /// <summary>
+            /// Enum RIC for value: RIC
+            /// </summary>
+            [EnumMember(Value = "RIC")]
+            RIC = 3,
+
+            /// <summary>
+            /// Enum QuotePermId for value: QuotePermId
+            /// </summary>
+            [EnumMember(Value = "QuotePermId")]
+            QuotePermId = 4,
+
+            /// <summary>
+            /// Enum Isin for value: Isin
+            /// </summary>
+            [EnumMember(Value = "Isin")]
+            Isin = 5,
+
+            /// <summary>
+            /// Enum CurrencyPair for value: CurrencyPair
+            /// </summary>
+            [EnumMember(Value = "CurrencyPair")]
+            CurrencyPair = 6
+
+        }
+
+        /// <summary>
+        /// Gets or Sets InstrumentIdType
+        /// </summary>
+        [DataMember(Name="instrumentIdType", EmitDefaultValue=false)]
+        public InstrumentIdTypeEnum InstrumentIdType { get; set; }
+        /// <summary>
+        /// Defines QuoteType
+        /// </summary>
+        [JsonConverter(typeof(StringEnumConverter))]
+        public enum QuoteTypeEnum
+        {
+            /// <summary>
+            /// Enum Price for value: Price
+            /// </summary>
+            [EnumMember(Value = "Price")]
+            Price = 1,
+
+            /// <summary>
+            /// Enum Spread for value: Spread
+            /// </summary>
+            [EnumMember(Value = "Spread")]
+            Spread = 2,
+
+            /// <summary>
+            /// Enum Rate for value: Rate
+            /// </summary>
+            [EnumMember(Value = "Rate")]
+            Rate = 3
+
+        }
+
+        /// <summary>
+        /// Gets or Sets QuoteType
+        /// </summary>
+        [DataMember(Name="quoteType", EmitDefaultValue=false)]
+        public QuoteTypeEnum QuoteType { get; set; }
+        /// <summary>
+        /// Defines PriceSide
+        /// </summary>
+        [JsonConverter(typeof(StringEnumConverter))]
+        public enum PriceSideEnum
+        {
+            /// <summary>
+            /// Enum Bid for value: Bid
+            /// </summary>
+            [EnumMember(Value = "Bid")]
+            Bid = 1,
+
+            /// <summary>
+            /// Enum Mid for value: Mid
+            /// </summary>
+            [EnumMember(Value = "Mid")]
+            Mid = 2,
+
+            /// <summary>
+            /// Enum Ask for value: Ask
+            /// </summary>
+            [EnumMember(Value = "Ask")]
+            Ask = 3
+
+        }
+
+        /// <summary>
+        /// Gets or Sets PriceSide
+        /// </summary>
+        [DataMember(Name="priceSide", EmitDefaultValue=false)]
+        public PriceSideEnum PriceSide { get; set; }
         /// <summary>
         /// Initializes a new instance of the <see cref="QuoteId" /> class.
         /// </summary>
@@ -36,43 +147,87 @@ namespace Lusid.Sdk.Model
         /// <summary>
         /// Initializes a new instance of the <see cref="QuoteId" /> class.
         /// </summary>
-        /// <param name="quoteSeriesId">quoteSeriesId (required).</param>
-        /// <param name="effectiveAt">effectiveAt (required).</param>
-        public QuoteId(QuoteSeriesId quoteSeriesId = default(QuoteSeriesId), string effectiveAt = default(string))
+        /// <param name="provider">provider (required).</param>
+        /// <param name="priceSource">priceSource.</param>
+        /// <param name="instrumentId">instrumentId (required).</param>
+        /// <param name="instrumentIdType">instrumentIdType (required).</param>
+        /// <param name="quoteType">quoteType (required).</param>
+        /// <param name="priceSide">priceSide (required).</param>
+        public QuoteId(string provider = default(string), string priceSource = default(string), string instrumentId = default(string), InstrumentIdTypeEnum instrumentIdType = default(InstrumentIdTypeEnum), QuoteTypeEnum quoteType = default(QuoteTypeEnum), PriceSideEnum priceSide = default(PriceSideEnum))
         {
-            // to ensure "quoteSeriesId" is required (not null)
-            if (quoteSeriesId == null)
+            // to ensure "provider" is required (not null)
+            if (provider == null)
             {
-                throw new InvalidDataException("quoteSeriesId is a required property for QuoteId and cannot be null");
+                throw new InvalidDataException("provider is a required property for QuoteId and cannot be null");
             }
             else
             {
-                this.QuoteSeriesId = quoteSeriesId;
+                this.Provider = provider;
             }
             
-            // to ensure "effectiveAt" is required (not null)
-            if (effectiveAt == null)
+            // to ensure "instrumentId" is required (not null)
+            if (instrumentId == null)
             {
-                throw new InvalidDataException("effectiveAt is a required property for QuoteId and cannot be null");
+                throw new InvalidDataException("instrumentId is a required property for QuoteId and cannot be null");
             }
             else
             {
-                this.EffectiveAt = effectiveAt;
+                this.InstrumentId = instrumentId;
             }
             
+            // to ensure "instrumentIdType" is required (not null)
+            if (instrumentIdType == null)
+            {
+                throw new InvalidDataException("instrumentIdType is a required property for QuoteId and cannot be null");
+            }
+            else
+            {
+                this.InstrumentIdType = instrumentIdType;
+            }
+            
+            // to ensure "quoteType" is required (not null)
+            if (quoteType == null)
+            {
+                throw new InvalidDataException("quoteType is a required property for QuoteId and cannot be null");
+            }
+            else
+            {
+                this.QuoteType = quoteType;
+            }
+            
+            // to ensure "priceSide" is required (not null)
+            if (priceSide == null)
+            {
+                throw new InvalidDataException("priceSide is a required property for QuoteId and cannot be null");
+            }
+            else
+            {
+                this.PriceSide = priceSide;
+            }
+            
+            this.PriceSource = priceSource;
         }
         
         /// <summary>
-        /// Gets or Sets QuoteSeriesId
+        /// Gets or Sets Provider
         /// </summary>
-        [DataMember(Name="quoteSeriesId", EmitDefaultValue=false)]
-        public QuoteSeriesId QuoteSeriesId { get; set; }
+        [DataMember(Name="provider", EmitDefaultValue=false)]
+        public string Provider { get; set; }
 
         /// <summary>
-        /// Gets or Sets EffectiveAt
+        /// Gets or Sets PriceSource
         /// </summary>
-        [DataMember(Name="effectiveAt", EmitDefaultValue=false)]
-        public string EffectiveAt { get; set; }
+        [DataMember(Name="priceSource", EmitDefaultValue=false)]
+        public string PriceSource { get; set; }
+
+        /// <summary>
+        /// Gets or Sets InstrumentId
+        /// </summary>
+        [DataMember(Name="instrumentId", EmitDefaultValue=false)]
+        public string InstrumentId { get; set; }
+
+
+
 
         /// <summary>
         /// Returns the string presentation of the object
@@ -82,8 +237,12 @@ namespace Lusid.Sdk.Model
         {
             var sb = new StringBuilder();
             sb.Append("class QuoteId {\n");
-            sb.Append("  QuoteSeriesId: ").Append(QuoteSeriesId).Append("\n");
-            sb.Append("  EffectiveAt: ").Append(EffectiveAt).Append("\n");
+            sb.Append("  Provider: ").Append(Provider).Append("\n");
+            sb.Append("  PriceSource: ").Append(PriceSource).Append("\n");
+            sb.Append("  InstrumentId: ").Append(InstrumentId).Append("\n");
+            sb.Append("  InstrumentIdType: ").Append(InstrumentIdType).Append("\n");
+            sb.Append("  QuoteType: ").Append(QuoteType).Append("\n");
+            sb.Append("  PriceSide: ").Append(PriceSide).Append("\n");
             sb.Append("}\n");
             return sb.ToString();
         }
@@ -119,14 +278,34 @@ namespace Lusid.Sdk.Model
 
             return 
                 (
-                    this.QuoteSeriesId == input.QuoteSeriesId ||
-                    (this.QuoteSeriesId != null &&
-                    this.QuoteSeriesId.Equals(input.QuoteSeriesId))
+                    this.Provider == input.Provider ||
+                    (this.Provider != null &&
+                    this.Provider.Equals(input.Provider))
                 ) && 
                 (
-                    this.EffectiveAt == input.EffectiveAt ||
-                    (this.EffectiveAt != null &&
-                    this.EffectiveAt.Equals(input.EffectiveAt))
+                    this.PriceSource == input.PriceSource ||
+                    (this.PriceSource != null &&
+                    this.PriceSource.Equals(input.PriceSource))
+                ) && 
+                (
+                    this.InstrumentId == input.InstrumentId ||
+                    (this.InstrumentId != null &&
+                    this.InstrumentId.Equals(input.InstrumentId))
+                ) && 
+                (
+                    this.InstrumentIdType == input.InstrumentIdType ||
+                    (this.InstrumentIdType != null &&
+                    this.InstrumentIdType.Equals(input.InstrumentIdType))
+                ) && 
+                (
+                    this.QuoteType == input.QuoteType ||
+                    (this.QuoteType != null &&
+                    this.QuoteType.Equals(input.QuoteType))
+                ) && 
+                (
+                    this.PriceSide == input.PriceSide ||
+                    (this.PriceSide != null &&
+                    this.PriceSide.Equals(input.PriceSide))
                 );
         }
 
@@ -139,10 +318,18 @@ namespace Lusid.Sdk.Model
             unchecked // Overflow is fine, just wrap
             {
                 int hashCode = 41;
-                if (this.QuoteSeriesId != null)
-                    hashCode = hashCode * 59 + this.QuoteSeriesId.GetHashCode();
-                if (this.EffectiveAt != null)
-                    hashCode = hashCode * 59 + this.EffectiveAt.GetHashCode();
+                if (this.Provider != null)
+                    hashCode = hashCode * 59 + this.Provider.GetHashCode();
+                if (this.PriceSource != null)
+                    hashCode = hashCode * 59 + this.PriceSource.GetHashCode();
+                if (this.InstrumentId != null)
+                    hashCode = hashCode * 59 + this.InstrumentId.GetHashCode();
+                if (this.InstrumentIdType != null)
+                    hashCode = hashCode * 59 + this.InstrumentIdType.GetHashCode();
+                if (this.QuoteType != null)
+                    hashCode = hashCode * 59 + this.QuoteType.GetHashCode();
+                if (this.PriceSide != null)
+                    hashCode = hashCode * 59 + this.PriceSide.GetHashCode();
                 return hashCode;
             }
         }

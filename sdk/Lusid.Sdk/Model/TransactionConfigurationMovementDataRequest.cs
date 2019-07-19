@@ -48,10 +48,10 @@ namespace Lusid.Sdk.Model
             Traded = 2,
 
             /// <summary>
-            /// Enum FutureCash for value: FutureCash
+            /// Enum ForwardFx for value: ForwardFx
             /// </summary>
-            [EnumMember(Value = "FutureCash")]
-            FutureCash = 3,
+            [EnumMember(Value = "ForwardFx")]
+            ForwardFx = 3,
 
             /// <summary>
             /// Enum Commitment for value: Commitment
@@ -78,52 +78,40 @@ namespace Lusid.Sdk.Model
             Accrual = 7,
 
             /// <summary>
-            /// Enum ForwardFx for value: ForwardFx
-            /// </summary>
-            [EnumMember(Value = "ForwardFx")]
-            ForwardFx = 8,
-
-            /// <summary>
             /// Enum UnsettledCashTypes for value: UnsettledCashTypes
             /// </summary>
             [EnumMember(Value = "UnsettledCashTypes")]
-            UnsettledCashTypes = 9,
+            UnsettledCashTypes = 8,
 
             /// <summary>
             /// Enum StockMovement for value: StockMovement
             /// </summary>
             [EnumMember(Value = "StockMovement")]
-            StockMovement = 10,
+            StockMovement = 9,
 
             /// <summary>
             /// Enum CashCommitment for value: CashCommitment
             /// </summary>
             [EnumMember(Value = "CashCommitment")]
-            CashCommitment = 11,
+            CashCommitment = 10,
 
             /// <summary>
             /// Enum CashReceivable for value: CashReceivable
             /// </summary>
             [EnumMember(Value = "CashReceivable")]
-            CashReceivable = 12,
+            CashReceivable = 11,
 
             /// <summary>
             /// Enum CashForward for value: CashForward
             /// </summary>
             [EnumMember(Value = "CashForward")]
-            CashForward = 13,
-
-            /// <summary>
-            /// Enum CashFxForward for value: CashFxForward
-            /// </summary>
-            [EnumMember(Value = "CashFxForward")]
-            CashFxForward = 14,
+            CashForward = 12,
 
             /// <summary>
             /// Enum CashAccrual for value: CashAccrual
             /// </summary>
             [EnumMember(Value = "CashAccrual")]
-            CashAccrual = 15
+            CashAccrual = 13
 
         }
 

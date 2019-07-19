@@ -23,7 +23,7 @@ using OpenAPIDateConverter = Lusid.Sdk.Client.OpenAPIDateConverter;
 namespace Lusid.Sdk.Model
 {
     /// <summary>
-    /// UpsertQuotesResponse
+    /// The response given from the UpsertQuotes Api call
     /// </summary>
     [DataContract]
     public partial class UpsertQuotesResponse :  IEquatable<UpsertQuotesResponse>
@@ -31,37 +31,33 @@ namespace Lusid.Sdk.Model
         /// <summary>
         /// Initializes a new instance of the <see cref="UpsertQuotesResponse" /> class.
         /// </summary>
-        /// <param name="href">href.</param>
-        /// <param name="values">The collection of upserted quotes with their latest values.</param>
-        /// <param name="failed">If any quotes failed to be upserted, they will be listed in &#39;Failed&#39;, along  with a reason why..</param>
+        [JsonConstructorAttribute]
+        protected UpsertQuotesResponse() { }
+        /// <summary>
+        /// Initializes a new instance of the <see cref="UpsertQuotesResponse" /> class.
+        /// </summary>
+        /// <param name="asAt">asAt (required).</param>
         /// <param name="links">links.</param>
-        public UpsertQuotesResponse(string href = default(string), Dictionary<string, Quote> values = default(Dictionary<string, Quote>), Dictionary<string, List<string>> failed = default(Dictionary<string, List<string>>), List<Link> links = default(List<Link>))
+        public UpsertQuotesResponse(DateTimeOffset? asAt = default(DateTimeOffset?), List<Link> links = default(List<Link>))
         {
-            this.Href = href;
-            this.Values = values;
-            this.Failed = failed;
+            // to ensure "asAt" is required (not null)
+            if (asAt == null)
+            {
+                throw new InvalidDataException("asAt is a required property for UpsertQuotesResponse and cannot be null");
+            }
+            else
+            {
+                this.AsAt = asAt;
+            }
+            
             this.Links = links;
         }
         
         /// <summary>
-        /// Gets or Sets Href
+        /// Gets or Sets AsAt
         /// </summary>
-        [DataMember(Name="href", EmitDefaultValue=false)]
-        public string Href { get; set; }
-
-        /// <summary>
-        /// The collection of upserted quotes with their latest values
-        /// </summary>
-        /// <value>The collection of upserted quotes with their latest values</value>
-        [DataMember(Name="values", EmitDefaultValue=false)]
-        public Dictionary<string, Quote> Values { get; set; }
-
-        /// <summary>
-        /// If any quotes failed to be upserted, they will be listed in &#39;Failed&#39;, along  with a reason why.
-        /// </summary>
-        /// <value>If any quotes failed to be upserted, they will be listed in &#39;Failed&#39;, along  with a reason why.</value>
-        [DataMember(Name="failed", EmitDefaultValue=false)]
-        public Dictionary<string, List<string>> Failed { get; set; }
+        [DataMember(Name="asAt", EmitDefaultValue=false)]
+        public DateTimeOffset? AsAt { get; set; }
 
         /// <summary>
         /// Gets or Sets Links
@@ -77,9 +73,7 @@ namespace Lusid.Sdk.Model
         {
             var sb = new StringBuilder();
             sb.Append("class UpsertQuotesResponse {\n");
-            sb.Append("  Href: ").Append(Href).Append("\n");
-            sb.Append("  Values: ").Append(Values).Append("\n");
-            sb.Append("  Failed: ").Append(Failed).Append("\n");
+            sb.Append("  AsAt: ").Append(AsAt).Append("\n");
             sb.Append("  Links: ").Append(Links).Append("\n");
             sb.Append("}\n");
             return sb.ToString();
@@ -116,21 +110,9 @@ namespace Lusid.Sdk.Model
 
             return 
                 (
-                    this.Href == input.Href ||
-                    (this.Href != null &&
-                    this.Href.Equals(input.Href))
-                ) && 
-                (
-                    this.Values == input.Values ||
-                    this.Values != null &&
-                    input.Values != null &&
-                    this.Values.SequenceEqual(input.Values)
-                ) && 
-                (
-                    this.Failed == input.Failed ||
-                    this.Failed != null &&
-                    input.Failed != null &&
-                    this.Failed.SequenceEqual(input.Failed)
+                    this.AsAt == input.AsAt ||
+                    (this.AsAt != null &&
+                    this.AsAt.Equals(input.AsAt))
                 ) && 
                 (
                     this.Links == input.Links ||
@@ -149,12 +131,8 @@ namespace Lusid.Sdk.Model
             unchecked // Overflow is fine, just wrap
             {
                 int hashCode = 41;
-                if (this.Href != null)
-                    hashCode = hashCode * 59 + this.Href.GetHashCode();
-                if (this.Values != null)
-                    hashCode = hashCode * 59 + this.Values.GetHashCode();
-                if (this.Failed != null)
-                    hashCode = hashCode * 59 + this.Failed.GetHashCode();
+                if (this.AsAt != null)
+                    hashCode = hashCode * 59 + this.AsAt.GetHashCode();
                 if (this.Links != null)
                     hashCode = hashCode * 59 + this.Links.GetHashCode();
                 return hashCode;

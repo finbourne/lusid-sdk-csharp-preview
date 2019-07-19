@@ -46,7 +46,7 @@ namespace Lusid.Sdk.Model
         /// <param name="totalConsideration">totalConsideration (required).</param>
         /// <param name="exchangeRate">The exchange rate between the transaction and settlement currency. For example if the transaction currency is in USD and the settlement currency is in GBP this this the USD/GBP rate..</param>
         /// <param name="transactionCurrency">The transaction currency..</param>
-        /// <param name="properties">Set of unique transaction properties and associated values to store with the transaction. Each property must be from the &#39;Transaction&#39; domain..</param>
+        /// <param name="properties">Set of unique transaction properties and associated values to store with the transaction. Each property must be from the &#39;Trade&#39; domain..</param>
         /// <param name="counterpartyId">The identifier for the counterparty of the transaction..</param>
         /// <param name="source">The source of the transaction. This is used to look up the appropriate transaction group set in the transaction type configuration..</param>
         public TransactionRequest(string transactionId = default(string), string type = default(string), Dictionary<string, string> instrumentIdentifiers = default(Dictionary<string, string>), string transactionDate = default(string), string settlementDate = default(string), double? units = default(double?), TransactionPrice transactionPrice = default(TransactionPrice), CurrencyAndAmount totalConsideration = default(CurrencyAndAmount), double? exchangeRate = default(double?), string transactionCurrency = default(string), Dictionary<string, PerpetualPropertyValue> properties = default(Dictionary<string, PerpetualPropertyValue>), string counterpartyId = default(string), string source = default(string))
@@ -207,9 +207,9 @@ namespace Lusid.Sdk.Model
         public string TransactionCurrency { get; set; }
 
         /// <summary>
-        /// Set of unique transaction properties and associated values to store with the transaction. Each property must be from the &#39;Transaction&#39; domain.
+        /// Set of unique transaction properties and associated values to store with the transaction. Each property must be from the &#39;Trade&#39; domain.
         /// </summary>
-        /// <value>Set of unique transaction properties and associated values to store with the transaction. Each property must be from the &#39;Transaction&#39; domain.</value>
+        /// <value>Set of unique transaction properties and associated values to store with the transaction. Each property must be from the &#39;Trade&#39; domain.</value>
         [DataMember(Name="properties", EmitDefaultValue=false)]
         public Dictionary<string, PerpetualPropertyValue> Properties { get; set; }
 

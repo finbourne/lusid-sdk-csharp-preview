@@ -37,11 +37,21 @@ namespace Lusid.Sdk.Model
         /// Initializes a new instance of the <see cref="DeletedEntityResponse" /> class.
         /// </summary>
         /// <param name="href">The specifc Uniform Resource Identifier (URI) for this resource at the requested effective and asAt datetime..</param>
-        /// <param name="effectiveFrom">The effective datetime at which this version became valid. Only applies when a single entity is being interacted with..</param>
+        /// <param name="effectiveFrom">The effective datetime at which this version became valid. Only applies when a single entity is being interacted with. (required).</param>
         /// <param name="asAt">The asAt datetime at which the data was committed to LUSID. (required).</param>
         /// <param name="links">links.</param>
         public DeletedEntityResponse(string href = default(string), DateTimeOffset? effectiveFrom = default(DateTimeOffset?), DateTimeOffset? asAt = default(DateTimeOffset?), List<Link> links = default(List<Link>))
         {
+            // to ensure "effectiveFrom" is required (not null)
+            if (effectiveFrom == null)
+            {
+                throw new InvalidDataException("effectiveFrom is a required property for DeletedEntityResponse and cannot be null");
+            }
+            else
+            {
+                this.EffectiveFrom = effectiveFrom;
+            }
+            
             // to ensure "asAt" is required (not null)
             if (asAt == null)
             {
@@ -53,7 +63,6 @@ namespace Lusid.Sdk.Model
             }
             
             this.Href = href;
-            this.EffectiveFrom = effectiveFrom;
             this.Links = links;
         }
         

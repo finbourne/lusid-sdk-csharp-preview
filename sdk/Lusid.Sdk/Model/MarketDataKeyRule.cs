@@ -95,6 +95,39 @@ namespace Lusid.Sdk.Model
         [DataMember(Name="quoteType", EmitDefaultValue=false)]
         public QuoteTypeEnum? QuoteType { get; set; }
         /// <summary>
+        /// The conceptual qualification for the field. Something like Bid, Ask or Mid.
+        /// </summary>
+        /// <value>The conceptual qualification for the field. Something like Bid, Ask or Mid.</value>
+        [JsonConverter(typeof(StringEnumConverter))]
+        public enum PriceSideEnum
+        {
+            /// <summary>
+            /// Enum Bid for value: Bid
+            /// </summary>
+            [EnumMember(Value = "Bid")]
+            Bid = 1,
+
+            /// <summary>
+            /// Enum Mid for value: Mid
+            /// </summary>
+            [EnumMember(Value = "Mid")]
+            Mid = 2,
+
+            /// <summary>
+            /// Enum Ask for value: Ask
+            /// </summary>
+            [EnumMember(Value = "Ask")]
+            Ask = 3
+
+        }
+
+        /// <summary>
+        /// The conceptual qualification for the field. Something like Bid, Ask or Mid.
+        /// </summary>
+        /// <value>The conceptual qualification for the field. Something like Bid, Ask or Mid.</value>
+        [DataMember(Name="priceSide", EmitDefaultValue=false)]
+        public PriceSideEnum? PriceSide { get; set; }
+        /// <summary>
         /// Initializes a new instance of the <see cref="MarketDataKeyRule" /> class.
         /// </summary>
         [JsonConstructorAttribute]
@@ -106,8 +139,8 @@ namespace Lusid.Sdk.Model
         /// <param name="supplier">The market data supplier (where the data comes from) (required).</param>
         /// <param name="dataScope">The scope in which the data should be found when using this rule. (required).</param>
         /// <param name="quoteType">Is the quote to be looked for a price, yield etc..</param>
-        /// <param name="field">The conceptual qualification for the field, such as bid, mid, or ask.   The field must be one of a defined set for the given supplier, in the same way as it  is for the Finbourne.WebApi.Interface.Dto.Quotes.QuoteSeriesId.</param>
-        public MarketDataKeyRule(string key = default(string), SupplierEnum supplier = default(SupplierEnum), string dataScope = default(string), QuoteTypeEnum? quoteType = default(QuoteTypeEnum?), string field = default(string))
+        /// <param name="priceSide">The conceptual qualification for the field. Something like Bid, Ask or Mid..</param>
+        public MarketDataKeyRule(string key = default(string), SupplierEnum supplier = default(SupplierEnum), string dataScope = default(string), QuoteTypeEnum? quoteType = default(QuoteTypeEnum?), PriceSideEnum? priceSide = default(PriceSideEnum?))
         {
             // to ensure "key" is required (not null)
             if (key == null)
@@ -140,7 +173,7 @@ namespace Lusid.Sdk.Model
             }
             
             this.QuoteType = quoteType;
-            this.Field = field;
+            this.PriceSide = priceSide;
         }
         
         /// <summary>
@@ -159,12 +192,6 @@ namespace Lusid.Sdk.Model
         public string DataScope { get; set; }
 
 
-        /// <summary>
-        /// The conceptual qualification for the field, such as bid, mid, or ask.   The field must be one of a defined set for the given supplier, in the same way as it  is for the Finbourne.WebApi.Interface.Dto.Quotes.QuoteSeriesId
-        /// </summary>
-        /// <value>The conceptual qualification for the field, such as bid, mid, or ask.   The field must be one of a defined set for the given supplier, in the same way as it  is for the Finbourne.WebApi.Interface.Dto.Quotes.QuoteSeriesId</value>
-        [DataMember(Name="field", EmitDefaultValue=false)]
-        public string Field { get; set; }
 
         /// <summary>
         /// Returns the string presentation of the object
@@ -178,7 +205,7 @@ namespace Lusid.Sdk.Model
             sb.Append("  Supplier: ").Append(Supplier).Append("\n");
             sb.Append("  DataScope: ").Append(DataScope).Append("\n");
             sb.Append("  QuoteType: ").Append(QuoteType).Append("\n");
-            sb.Append("  Field: ").Append(Field).Append("\n");
+            sb.Append("  PriceSide: ").Append(PriceSide).Append("\n");
             sb.Append("}\n");
             return sb.ToString();
         }
@@ -234,9 +261,9 @@ namespace Lusid.Sdk.Model
                     this.QuoteType.Equals(input.QuoteType))
                 ) && 
                 (
-                    this.Field == input.Field ||
-                    (this.Field != null &&
-                    this.Field.Equals(input.Field))
+                    this.PriceSide == input.PriceSide ||
+                    (this.PriceSide != null &&
+                    this.PriceSide.Equals(input.PriceSide))
                 );
         }
 
@@ -257,8 +284,8 @@ namespace Lusid.Sdk.Model
                     hashCode = hashCode * 59 + this.DataScope.GetHashCode();
                 if (this.QuoteType != null)
                     hashCode = hashCode * 59 + this.QuoteType.GetHashCode();
-                if (this.Field != null)
-                    hashCode = hashCode * 59 + this.Field.GetHashCode();
+                if (this.PriceSide != null)
+                    hashCode = hashCode * 59 + this.PriceSide.GetHashCode();
                 return hashCode;
             }
         }

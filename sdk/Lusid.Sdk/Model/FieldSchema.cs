@@ -185,10 +185,10 @@ namespace Lusid.Sdk.Model
             QuoteId = 25,
 
             /// <summary>
-            /// Enum QuoteSeriesId for value: QuoteSeriesId
+            /// Enum ArrayOfQuoteIds for value: ArrayOfQuoteIds
             /// </summary>
-            [EnumMember(Value = "QuoteSeriesId")]
-            QuoteSeriesId = 26,
+            [EnumMember(Value = "ArrayOfQuoteIds")]
+            ArrayOfQuoteIds = 26,
 
             /// <summary>
             /// Enum ResourceId for value: ResourceId

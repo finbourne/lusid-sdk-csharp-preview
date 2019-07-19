@@ -23,7 +23,7 @@ using OpenAPIDateConverter = Lusid.Sdk.Client.OpenAPIDateConverter;
 namespace Lusid.Sdk.Model
 {
     /// <summary>
-    /// This type should completely describe the quote.
+    /// UpsertQuoteRequest
     /// </summary>
     [DataContract]
     public partial class UpsertQuoteRequest :  IEquatable<UpsertQuoteRequest>
@@ -38,8 +38,9 @@ namespace Lusid.Sdk.Model
         /// </summary>
         /// <param name="quoteId">quoteId (required).</param>
         /// <param name="metricValue">metricValue (required).</param>
+        /// <param name="effectiveAt">effectiveAt (required).</param>
         /// <param name="lineage">lineage.</param>
-        public UpsertQuoteRequest(QuoteId quoteId = default(QuoteId), MetricValue metricValue = default(MetricValue), string lineage = default(string))
+        public UpsertQuoteRequest(QuoteId quoteId = default(QuoteId), MetricValue metricValue = default(MetricValue), DateTimeOffset? effectiveAt = default(DateTimeOffset?), string lineage = default(string))
         {
             // to ensure "quoteId" is required (not null)
             if (quoteId == null)
@@ -61,6 +62,16 @@ namespace Lusid.Sdk.Model
                 this.MetricValue = metricValue;
             }
             
+            // to ensure "effectiveAt" is required (not null)
+            if (effectiveAt == null)
+            {
+                throw new InvalidDataException("effectiveAt is a required property for UpsertQuoteRequest and cannot be null");
+            }
+            else
+            {
+                this.EffectiveAt = effectiveAt;
+            }
+            
             this.Lineage = lineage;
         }
         
@@ -75,6 +86,12 @@ namespace Lusid.Sdk.Model
         /// </summary>
         [DataMember(Name="metricValue", EmitDefaultValue=false)]
         public MetricValue MetricValue { get; set; }
+
+        /// <summary>
+        /// Gets or Sets EffectiveAt
+        /// </summary>
+        [DataMember(Name="effectiveAt", EmitDefaultValue=false)]
+        public DateTimeOffset? EffectiveAt { get; set; }
 
         /// <summary>
         /// Gets or Sets Lineage
@@ -92,6 +109,7 @@ namespace Lusid.Sdk.Model
             sb.Append("class UpsertQuoteRequest {\n");
             sb.Append("  QuoteId: ").Append(QuoteId).Append("\n");
             sb.Append("  MetricValue: ").Append(MetricValue).Append("\n");
+            sb.Append("  EffectiveAt: ").Append(EffectiveAt).Append("\n");
             sb.Append("  Lineage: ").Append(Lineage).Append("\n");
             sb.Append("}\n");
             return sb.ToString();
@@ -138,6 +156,11 @@ namespace Lusid.Sdk.Model
                     this.MetricValue.Equals(input.MetricValue))
                 ) && 
                 (
+                    this.EffectiveAt == input.EffectiveAt ||
+                    (this.EffectiveAt != null &&
+                    this.EffectiveAt.Equals(input.EffectiveAt))
+                ) && 
+                (
                     this.Lineage == input.Lineage ||
                     (this.Lineage != null &&
                     this.Lineage.Equals(input.Lineage))
@@ -157,6 +180,8 @@ namespace Lusid.Sdk.Model
                     hashCode = hashCode * 59 + this.QuoteId.GetHashCode();
                 if (this.MetricValue != null)
                     hashCode = hashCode * 59 + this.MetricValue.GetHashCode();
+                if (this.EffectiveAt != null)
+                    hashCode = hashCode * 59 + this.EffectiveAt.GetHashCode();
                 if (this.Lineage != null)
                     hashCode = hashCode * 59 + this.Lineage.GetHashCode();
                 return hashCode;

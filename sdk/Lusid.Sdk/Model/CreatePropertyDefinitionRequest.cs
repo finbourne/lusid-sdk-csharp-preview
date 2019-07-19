@@ -36,10 +36,10 @@ namespace Lusid.Sdk.Model
         public enum DomainEnum
         {
             /// <summary>
-            /// Enum Transaction for value: Transaction
+            /// Enum Trade for value: Trade
             /// </summary>
-            [EnumMember(Value = "Transaction")]
-            Transaction = 1,
+            [EnumMember(Value = "Trade")]
+            Trade = 1,
 
             /// <summary>
             /// Enum Portfolio for value: Portfolio

@@ -37,7 +37,7 @@ namespace Lusid.Sdk.Model
         /// Initializes a new instance of the <see cref="AdjustHoldingRequest" /> class.
         /// </summary>
         /// <param name="instrumentIdentifiers">A set of instrument identifiers to use to resolve the holding adjustment to a unique instrument. (required).</param>
-        /// <param name="subHoldingKeys">Set of unique transaction properties and associated values to store with the holding adjustment transaction automatically created by LUSID. Each property must be from the &#39;Transaction&#39; domain..</param>
+        /// <param name="subHoldingKeys">Set of unique transaction properties and associated values to store with the holding adjustment transaction automatically created by LUSID. Each property must be from the &#39;Trade&#39; domain..</param>
         /// <param name="properties">Set of unique holding properties and associated values to store with the target holding. Each property must be from the &#39;Holding&#39; domain..</param>
         /// <param name="taxLots">The tax-lots that together make up the target holding. (required).</param>
         public AdjustHoldingRequest(Dictionary<string, string> instrumentIdentifiers = default(Dictionary<string, string>), Dictionary<string, PerpetualPropertyValue> subHoldingKeys = default(Dictionary<string, PerpetualPropertyValue>), Dictionary<string, PerpetualPropertyValue> properties = default(Dictionary<string, PerpetualPropertyValue>), List<TargetTaxLotRequest> taxLots = default(List<TargetTaxLotRequest>))
@@ -74,9 +74,9 @@ namespace Lusid.Sdk.Model
         public Dictionary<string, string> InstrumentIdentifiers { get; set; }
 
         /// <summary>
-        /// Set of unique transaction properties and associated values to store with the holding adjustment transaction automatically created by LUSID. Each property must be from the &#39;Transaction&#39; domain.
+        /// Set of unique transaction properties and associated values to store with the holding adjustment transaction automatically created by LUSID. Each property must be from the &#39;Trade&#39; domain.
         /// </summary>
-        /// <value>Set of unique transaction properties and associated values to store with the holding adjustment transaction automatically created by LUSID. Each property must be from the &#39;Transaction&#39; domain.</value>
+        /// <value>Set of unique transaction properties and associated values to store with the holding adjustment transaction automatically created by LUSID. Each property must be from the &#39;Trade&#39; domain.</value>
         [DataMember(Name="subHoldingKeys", EmitDefaultValue=false)]
         public Dictionary<string, PerpetualPropertyValue> SubHoldingKeys { get; set; }
 
