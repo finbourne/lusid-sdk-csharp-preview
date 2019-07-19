@@ -8,6 +8,7 @@ Name | Type | Description | Notes
 **QuoteId** | [**QuoteId**](QuoteId.md) |  | 
 **MetricValue** | [**MetricValue**](MetricValue.md) |  | 
 **Lineage** | **string** |  | [optional] 
+**CutLabel** | **string** |  | [optional] 
 **UploadedBy** | **string** |  | 
 **AsAt** | **DateTimeOffset?** |  | 
 
