@@ -28,6 +28,7 @@ namespace Lusid.Sdk.Tests.Tutorials.MarketData
                 quoteId: new QuoteId(
                     new QuoteSeriesId(
                         provider: "DataScope",
+                        priceSource: "BankA",
                         instrumentId: "BBG000B9XRY4",
                         instrumentIdType: QuoteSeriesId.InstrumentIdTypeEnum.Figi,
                         quoteType: QuoteSeriesId.QuoteTypeEnum.Price,
@@ -38,7 +39,7 @@ namespace Lusid.Sdk.Tests.Tutorials.MarketData
                     unit: "USD"),
                 lineage: "InternalSystem");
 
-            _quotesApi.UpsertQuotes(TestDataUtilities.TutorialScope, new Dictionary<string, UpsertQuoteRequest> { { "quote1", request} });
+            _quotesApi.UpsertQuotes(TestDataUtilities.TutorialScope, new Dictionary<string, UpsertQuoteRequest> { { "correlationId", request} });
         }
 
         [Test]
@@ -46,6 +47,7 @@ namespace Lusid.Sdk.Tests.Tutorials.MarketData
         {
             var quoteSeriesId = new QuoteSeriesId(
                     provider: "DataScope",
+                    priceSource: "BankA",
                     instrumentId: "BBG000B9XRY4",
                     instrumentIdType: QuoteSeriesId.InstrumentIdTypeEnum.Figi,
                     quoteType: QuoteSeriesId.QuoteTypeEnum.Price,
@@ -56,7 +58,7 @@ namespace Lusid.Sdk.Tests.Tutorials.MarketData
             var quoteResponse = _quotesApi.GetQuotes(
                 TestDataUtilities.TutorialScope,
                 effectiveAt: effectiveDate.ToString("o"),
-                quoteIds: new Dictionary<string, QuoteSeriesId> {{"quote1", quoteSeriesId}});
+                quoteIds: new Dictionary<string, QuoteSeriesId> {{"correlationId", quoteSeriesId}});
             
             Assert.That(quoteResponse.Values.Count, Is.EqualTo(1));
 
@@ -73,7 +75,7 @@ namespace Lusid.Sdk.Tests.Tutorials.MarketData
             
             var quoteSeriesId = new QuoteSeriesId(
                 provider: "DataScope",
-                instrumentId: "BBG000B9XRY4",
+                instrumentId: "BBG000DMBXR2",
                 instrumentIdType: QuoteSeriesId.InstrumentIdTypeEnum.Figi,
                 quoteType: QuoteSeriesId.QuoteTypeEnum.Price,
                 field: "mid");
@@ -85,7 +87,7 @@ namespace Lusid.Sdk.Tests.Tutorials.MarketData
                         TestDataUtilities.TutorialScope,
                         effectiveAt: d.ToString("o"),
                         quoteIds:
-                        new Dictionary<string, QuoteSeriesId> {{"quote1", quoteSeriesId}}))
+                        new Dictionary<string, QuoteSeriesId> {{"correlationId", quoteSeriesId}}))
                 .SelectMany(q => q.Values)
                 .ToList();
             
