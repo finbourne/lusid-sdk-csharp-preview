@@ -75,6 +75,7 @@ namespace Lusid.Sdk.Tests.Tutorials.MarketData
             
             var quoteSeriesId = new QuoteSeriesId(
                 provider: "DataScope",
+                priceSource: "USDRC",
                 instrumentId: "BBG000DMBXR2",
                 instrumentIdType: QuoteSeriesId.InstrumentIdTypeEnum.Figi,
                 quoteType: QuoteSeriesId.QuoteTypeEnum.Price,
