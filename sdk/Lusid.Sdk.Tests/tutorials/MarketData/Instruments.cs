@@ -145,9 +145,9 @@ namespace Lusid.Sdk.Tests.Tutorials.MarketData
             var identifiers = instrument.Properties.OrderBy(i => i.Key).ToList();
             
             Assert.That(identifiers[0].Key, Is.EqualTo(IsinPropertyKey));
-            Assert.That(identifiers[0].Value, Is.EqualTo("GB00BH4HKS39"));
+            Assert.That(identifiers[0].Value.LabelValue, Is.EqualTo("GB00BH4HKS39"));
             Assert.That(identifiers[1].Key, Is.EqualTo(SedolPropertyKey));
-            Assert.That(identifiers[1].Value, Is.EqualTo("BH4HKS3"));
+            Assert.That(identifiers[1].Value.LabelValue, Is.EqualTo("BH4HKS3"));
         }
         
          private void EnsurePropertyDefinition(string code)
@@ -248,7 +248,7 @@ namespace Lusid.Sdk.Tests.Tutorials.MarketData
             );
 
             Assert.That(
-                instrument.Properties.FirstOrDefault(p => p.Key == propertyKey && p.Value.Equals("Telecoms")),
+                instrument.Properties.FirstOrDefault(p => p.Key == propertyKey && p.Value.LabelValue.Equals("Telecoms")),
                 Is.Not.Null, $"Cannot find property {propertyKey} with value {propertyValue.LabelValue}");
         }
 
