@@ -9,7 +9,6 @@ Name | Type | Description | Notes
 **DisplayName** | **string** |  | [optional] 
 **Description** | **string** |  | [optional] 
 **Type** | **string** |  | [optional] 
-**IsMetric** | **bool?** |  | [optional] 
 **DisplayOrder** | **int?** |  | [optional] 
 
 [[Back to Model list]](../README.md#documentation-for-models)
