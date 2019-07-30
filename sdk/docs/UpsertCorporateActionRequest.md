@@ -6,6 +6,7 @@
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **CorporateActionCode** | **string** |  | 
+**Description** | **string** |  | [optional] 
 **AnnouncementDate** | **DateTimeOffset?** |  | 
 **ExDate** | **DateTimeOffset?** |  | 
 **RecordDate** | **DateTimeOffset?** |  | 
