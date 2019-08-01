@@ -19,7 +19,7 @@ Gets the time of the next (earliest effective at) modification (correction and/o
 ### Example
 
 ```csharp
-using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using Lusid.Sdk.Api;
 using Lusid.Sdk.Client;
@@ -29,12 +29,13 @@ namespace Example
 {
     public class GetPortfolioChangesExample
     {
-        public void main()
+        public static void Main()
         {
+            Configuration.Default.BasePath = "http://localhost";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
-            var apiInstance = new EntitiesApi();
+            var apiInstance = new EntitiesApi(Configuration.Default);
             var scope = scope_example;  // string | The scope
             var effectiveAt = effectiveAt_example;  // string | The effective date of the origin.
             var asAt = 2013-10-20T19:20:30+01:00;  // DateTimeOffset? | The as-at date of the origin. (optional) 
@@ -45,9 +46,11 @@ namespace Example
                 ResourceListOfChange result = apiInstance.GetPortfolioChanges(scope, effectiveAt, asAt);
                 Debug.WriteLine(result);
             }
-            catch (Exception e)
+            catch (ApiException e)
             {
                 Debug.Print("Exception when calling EntitiesApi.GetPortfolioChanges: " + e.Message );
+                Debug.Print("Status Code: "+ e.ErrorCode);
+                Debug.Print(e.StackTrace);
             }
         }
     }
@@ -75,6 +78,13 @@ Name | Type | Description  | Notes
 
 - **Content-Type**: Not defined
 - **Accept**: text/plain, application/json, text/json
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+| **200** | A list of portfolio changes in the requested scope relative to the specified time. |  -  |
+| **400** | The details of the input related failure |  -  |
+| **0** | Error response |  -  |
 
 [[Back to top]](#)
 [[Back to API list]](../README.md#documentation-for-api-endpoints)
