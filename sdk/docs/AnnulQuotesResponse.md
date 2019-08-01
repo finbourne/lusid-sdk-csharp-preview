@@ -5,9 +5,9 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**Href** | **string** |  | [optional] 
-**Values** | **Dictionary&lt;string, DateTimeOffset?&gt;** | The collection of quotes requested to be annulled with the asAt time   at which they were annulled | [optional] 
-**Failed** | [**Dictionary&lt;string, ErrorDetail&gt;**](ErrorDetail.md) | If any quotes could not be annulled, they will be listed in &#39;Failed&#39;, along  with a reason why. | [optional] 
+**Href** | **string** | The specifc Uniform Resource Identifier (URI) for this resource at the requested effective and asAt datetime. | [optional] 
+**Values** | **Dictionary&lt;string, DateTimeOffset?&gt;** | The quotes which have been successfully deleted along with the asAt datetime at which the deletion was committed to LUSID. | [optional] 
+**Failed** | [**Dictionary&lt;string, ErrorDetail&gt;**](ErrorDetail.md) | The quotes that could not be deleted along with a reason for their failure. | [optional] 
 **Links** | [**List&lt;Link&gt;**](Link.md) |  | [optional] 
 
 [[Back to Model list]](../README.md#documentation-for-models)

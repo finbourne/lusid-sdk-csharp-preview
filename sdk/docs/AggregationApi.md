@@ -22,7 +22,7 @@ Aggregate data sourced from the specified portfolio group
 ### Example
 
 ```csharp
-using System.Collections.Generic;
+using System;
 using System.Diagnostics;
 using Lusid.Sdk.Api;
 using Lusid.Sdk.Client;
@@ -32,13 +32,12 @@ namespace Example
 {
     public class GetAggregationByGroupExample
     {
-        public static void Main()
+        public void main()
         {
-            Configuration.Default.BasePath = "http://localhost";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
-            var apiInstance = new AggregationApi(Configuration.Default);
+            var apiInstance = new AggregationApi();
             var scope = scope_example;  // string | The scope of the portfolio group
             var code = code_example;  // string | The code of the portfolio group
             var sortBy = new List<string>(); // List<string> | Optional. Order the results by these fields. Use use the '-' sign to denote descending order e.g. -MyFieldName (optional) 
@@ -52,11 +51,9 @@ namespace Example
                 ListAggregationResponse result = apiInstance.GetAggregationByGroup(scope, code, sortBy, start, limit, request);
                 Debug.WriteLine(result);
             }
-            catch (ApiException e)
+            catch (Exception e)
             {
                 Debug.Print("Exception when calling AggregationApi.GetAggregationByGroup: " + e.Message );
-                Debug.Print("Status Code: "+ e.ErrorCode);
-                Debug.Print(e.StackTrace);
             }
         }
     }
@@ -88,13 +85,6 @@ Name | Type | Description  | Notes
 - **Content-Type**: Not defined
 - **Accept**: text/plain, application/json, text/json
 
-### HTTP response details
-| Status code | Description | Response headers |
-|-------------|-------------|------------------|
-| **200** | Success |  -  |
-| **400** | The details of the input related failure |  -  |
-| **0** | Error response |  -  |
-
 [[Back to top]](#)
 [[Back to API list]](../README.md#documentation-for-api-endpoints)
 [[Back to Model list]](../README.md#documentation-for-models)
@@ -112,7 +102,7 @@ Aggregate data sourced from the specified portfolio
 ### Example
 
 ```csharp
-using System.Collections.Generic;
+using System;
 using System.Diagnostics;
 using Lusid.Sdk.Api;
 using Lusid.Sdk.Client;
@@ -122,13 +112,12 @@ namespace Example
 {
     public class GetAggregationByPortfolioExample
     {
-        public static void Main()
+        public void main()
         {
-            Configuration.Default.BasePath = "http://localhost";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
-            var apiInstance = new AggregationApi(Configuration.Default);
+            var apiInstance = new AggregationApi();
             var scope = scope_example;  // string | The scope of the portfolio
             var code = code_example;  // string | The code of the portfolio
             var sortBy = new List<string>(); // List<string> | Optional. Order the results by these fields. Use use the '-' sign to denote descending order e.g. -MyFieldName (optional) 
@@ -142,11 +131,9 @@ namespace Example
                 ListAggregationResponse result = apiInstance.GetAggregationByPortfolio(scope, code, sortBy, start, limit, request);
                 Debug.WriteLine(result);
             }
-            catch (ApiException e)
+            catch (Exception e)
             {
                 Debug.Print("Exception when calling AggregationApi.GetAggregationByPortfolio: " + e.Message );
-                Debug.Print("Status Code: "+ e.ErrorCode);
-                Debug.Print(e.StackTrace);
             }
         }
     }
@@ -178,13 +165,6 @@ Name | Type | Description  | Notes
 - **Content-Type**: Not defined
 - **Accept**: text/plain, application/json, text/json
 
-### HTTP response details
-| Status code | Description | Response headers |
-|-------------|-------------|------------------|
-| **200** | Success |  -  |
-| **400** | The details of the input related failure |  -  |
-| **0** | Error response |  -  |
-
 [[Back to top]](#)
 [[Back to API list]](../README.md#documentation-for-api-endpoints)
 [[Back to Model list]](../README.md#documentation-for-models)
@@ -202,7 +182,7 @@ Aggregate data from a previously-run Result data set into a flat row of results
 ### Example
 
 ```csharp
-using System.Collections.Generic;
+using System;
 using System.Diagnostics;
 using Lusid.Sdk.Api;
 using Lusid.Sdk.Client;
@@ -212,13 +192,12 @@ namespace Example
 {
     public class GetAggregationByResultSetExample
     {
-        public static void Main()
+        public void main()
         {
-            Configuration.Default.BasePath = "http://localhost";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
-            var apiInstance = new AggregationApi(Configuration.Default);
+            var apiInstance = new AggregationApi();
             var scope = scope_example;  // string | The scope of the Result data set
             var resultsKey = resultsKey_example;  // string | The key of the Result data set
             var sortBy = new List<string>(); // List<string> | Optional. Order the results by these fields. Use use the '-' sign to denote descending order e.g. -MyFieldName (optional) 
@@ -232,11 +211,9 @@ namespace Example
                 ListAggregationResponse result = apiInstance.GetAggregationByResultSet(scope, resultsKey, sortBy, start, limit, request);
                 Debug.WriteLine(result);
             }
-            catch (ApiException e)
+            catch (Exception e)
             {
                 Debug.Print("Exception when calling AggregationApi.GetAggregationByResultSet: " + e.Message );
-                Debug.Print("Status Code: "+ e.ErrorCode);
-                Debug.Print(e.StackTrace);
             }
         }
     }
@@ -268,13 +245,6 @@ Name | Type | Description  | Notes
 - **Content-Type**: Not defined
 - **Accept**: text/plain, application/json, text/json
 
-### HTTP response details
-| Status code | Description | Response headers |
-|-------------|-------------|------------------|
-| **200** | Success |  -  |
-| **400** | The details of the input related failure |  -  |
-| **0** | Error response |  -  |
-
 [[Back to top]](#)
 [[Back to API list]](../README.md#documentation-for-api-endpoints)
 [[Back to Model list]](../README.md#documentation-for-models)
@@ -292,7 +262,7 @@ Obsolete - Aggregate data sourced from the specified portfolio group into a nest
 ### Example
 
 ```csharp
-using System.Collections.Generic;
+using System;
 using System.Diagnostics;
 using Lusid.Sdk.Api;
 using Lusid.Sdk.Client;
@@ -302,13 +272,12 @@ namespace Example
 {
     public class GetNestedAggregationByGroupExample
     {
-        public static void Main()
+        public void main()
         {
-            Configuration.Default.BasePath = "http://localhost";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
-            var apiInstance = new AggregationApi(Configuration.Default);
+            var apiInstance = new AggregationApi();
             var scope = scope_example;  // string | The scope of the portfolio group
             var code = code_example;  // string | The code of the portfolio group
             var request = new AggregationRequest(); // AggregationRequest | The request specifying the parameters of the aggregation (optional) 
@@ -319,11 +288,9 @@ namespace Example
                 NestedAggregationResponse result = apiInstance.GetNestedAggregationByGroup(scope, code, request);
                 Debug.WriteLine(result);
             }
-            catch (ApiException e)
+            catch (Exception e)
             {
                 Debug.Print("Exception when calling AggregationApi.GetNestedAggregationByGroup: " + e.Message );
-                Debug.Print("Status Code: "+ e.ErrorCode);
-                Debug.Print(e.StackTrace);
             }
         }
     }
@@ -351,13 +318,6 @@ Name | Type | Description  | Notes
 
 - **Content-Type**: Not defined
 - **Accept**: text/plain, application/json, text/json
-
-### HTTP response details
-| Status code | Description | Response headers |
-|-------------|-------------|------------------|
-| **200** | Success |  -  |
-| **400** | The details of the input related failure |  -  |
-| **0** | Error response |  -  |
 
 [[Back to top]](#)
 [[Back to API list]](../README.md#documentation-for-api-endpoints)

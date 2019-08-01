@@ -19,7 +19,7 @@ List all the scopes that contain data.
 ### Example
 
 ```csharp
-using System.Collections.Generic;
+using System;
 using System.Diagnostics;
 using Lusid.Sdk.Api;
 using Lusid.Sdk.Client;
@@ -29,13 +29,12 @@ namespace Example
 {
     public class ListScopesExample
     {
-        public static void Main()
+        public void main()
         {
-            Configuration.Default.BasePath = "http://localhost";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
-            var apiInstance = new ScopesApi(Configuration.Default);
+            var apiInstance = new ScopesApi();
             var filter = filter_example;  // string | Expression to filter the result set. Read more about filtering results from LUSID here https://support.lusid.com/filtering-results-from-lusid. (optional) 
 
             try
@@ -44,11 +43,9 @@ namespace Example
                 ResourceListOfScopeDefinition result = apiInstance.ListScopes(filter);
                 Debug.WriteLine(result);
             }
-            catch (ApiException e)
+            catch (Exception e)
             {
                 Debug.Print("Exception when calling ScopesApi.ListScopes: " + e.Message );
-                Debug.Print("Status Code: "+ e.ErrorCode);
-                Debug.Print(e.StackTrace);
             }
         }
     }
@@ -74,13 +71,6 @@ Name | Type | Description  | Notes
 
 - **Content-Type**: Not defined
 - **Accept**: text/plain, application/json, text/json
-
-### HTTP response details
-| Status code | Description | Response headers |
-|-------------|-------------|------------------|
-| **200** | A list of scopes |  -  |
-| **400** | The details of the input related failure |  -  |
-| **0** | Error response |  -  |
 
 [[Back to top]](#)
 [[Back to API list]](../README.md#documentation-for-api-endpoints)

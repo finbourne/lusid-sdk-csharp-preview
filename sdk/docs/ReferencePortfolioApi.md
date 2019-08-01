@@ -22,7 +22,7 @@ Create a new reference portfolio.
 ### Example
 
 ```csharp
-using System.Collections.Generic;
+using System;
 using System.Diagnostics;
 using Lusid.Sdk.Api;
 using Lusid.Sdk.Client;
@@ -32,13 +32,12 @@ namespace Example
 {
     public class CreateReferencePortfolioExample
     {
-        public static void Main()
+        public void main()
         {
-            Configuration.Default.BasePath = "http://localhost";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
-            var apiInstance = new ReferencePortfolioApi(Configuration.Default);
+            var apiInstance = new ReferencePortfolioApi();
             var scope = scope_example;  // string | The intended scope of the portfolio
             var referencePortfolio = new CreateReferencePortfolioRequest(); // CreateReferencePortfolioRequest | The portfolio creation request object (optional) 
 
@@ -48,11 +47,9 @@ namespace Example
                 Portfolio result = apiInstance.CreateReferencePortfolio(scope, referencePortfolio);
                 Debug.WriteLine(result);
             }
-            catch (ApiException e)
+            catch (Exception e)
             {
                 Debug.Print("Exception when calling ReferencePortfolioApi.CreateReferencePortfolio: " + e.Message );
-                Debug.Print("Status Code: "+ e.ErrorCode);
-                Debug.Print(e.StackTrace);
             }
         }
     }
@@ -80,13 +77,6 @@ Name | Type | Description  | Notes
 - **Content-Type**: Not defined
 - **Accept**: text/plain, application/json, text/json
 
-### HTTP response details
-| Status code | Description | Response headers |
-|-------------|-------------|------------------|
-| **201** | The created reference portfolio, with populated id |  -  |
-| **400** | The details of the input related failure |  -  |
-| **0** | Error response |  -  |
-
 [[Back to top]](#)
 [[Back to API list]](../README.md#documentation-for-api-endpoints)
 [[Back to Model list]](../README.md#documentation-for-models)
@@ -104,7 +94,7 @@ Get constituents from the specified reference portfolio at an effective time.
 ### Example
 
 ```csharp
-using System.Collections.Generic;
+using System;
 using System.Diagnostics;
 using Lusid.Sdk.Api;
 using Lusid.Sdk.Client;
@@ -114,13 +104,12 @@ namespace Example
 {
     public class GetReferencePortfolioConstituentsExample
     {
-        public static void Main()
+        public void main()
         {
-            Configuration.Default.BasePath = "http://localhost";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
-            var apiInstance = new ReferencePortfolioApi(Configuration.Default);
+            var apiInstance = new ReferencePortfolioApi();
             var scope = scope_example;  // string | The scope of the reference portfolio.
             var code = code_example;  // string | The code of the reference portfolio. Together with the scope this uniquely identifies              the reference portfolio.
             var effectiveAt = effectiveAt_example;  // string | The effective date of the constituents to retrieve. Defaults to the current LUSID system datetime if not specified. (optional) 
@@ -133,11 +122,9 @@ namespace Example
                 GetReferencePortfolioConstituentsResponse result = apiInstance.GetReferencePortfolioConstituents(scope, code, effectiveAt, asAt, propertyKeys);
                 Debug.WriteLine(result);
             }
-            catch (ApiException e)
+            catch (Exception e)
             {
                 Debug.Print("Exception when calling ReferencePortfolioApi.GetReferencePortfolioConstituents: " + e.Message );
-                Debug.Print("Status Code: "+ e.ErrorCode);
-                Debug.Print(e.StackTrace);
             }
         }
     }
@@ -168,13 +155,6 @@ Name | Type | Description  | Notes
 - **Content-Type**: Not defined
 - **Accept**: text/plain, application/json, text/json
 
-### HTTP response details
-| Status code | Description | Response headers |
-|-------------|-------------|------------------|
-| **200** | The requested reference portfolio constituents |  -  |
-| **400** | The details of the input related failure |  -  |
-| **0** | Error response |  -  |
-
 [[Back to top]](#)
 [[Back to API list]](../README.md#documentation-for-api-endpoints)
 [[Back to Model list]](../README.md#documentation-for-models)
@@ -192,7 +172,7 @@ Specify a time period in which you'd like to see the list of times that adjustme
 ### Example
 
 ```csharp
-using System.Collections.Generic;
+using System;
 using System.Diagnostics;
 using Lusid.Sdk.Api;
 using Lusid.Sdk.Client;
@@ -202,13 +182,12 @@ namespace Example
 {
     public class ListConstituentsAdjustmentsExample
     {
-        public static void Main()
+        public void main()
         {
-            Configuration.Default.BasePath = "http://localhost";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
-            var apiInstance = new ReferencePortfolioApi(Configuration.Default);
+            var apiInstance = new ReferencePortfolioApi();
             var scope = scope_example;  // string | The scope of the portfolio
             var code = code_example;  // string | Code for the portfolio
             var fromEffectiveAt = fromEffectiveAt_example;  // string | Events between this time (inclusive) and the toEffectiveAt are returned. (optional) 
@@ -221,11 +200,9 @@ namespace Example
                 ResourceListOfConstituentsAdjustmentHeader result = apiInstance.ListConstituentsAdjustments(scope, code, fromEffectiveAt, toEffectiveAt, asAtTime);
                 Debug.WriteLine(result);
             }
-            catch (ApiException e)
+            catch (Exception e)
             {
                 Debug.Print("Exception when calling ReferencePortfolioApi.ListConstituentsAdjustments: " + e.Message );
-                Debug.Print("Status Code: "+ e.ErrorCode);
-                Debug.Print(e.StackTrace);
             }
         }
     }
@@ -256,13 +233,6 @@ Name | Type | Description  | Notes
 - **Content-Type**: Not defined
 - **Accept**: text/plain, application/json, text/json
 
-### HTTP response details
-| Status code | Description | Response headers |
-|-------------|-------------|------------------|
-| **200** | Success |  -  |
-| **400** | The details of the input related failure |  -  |
-| **0** | Error response |  -  |
-
 [[Back to top]](#)
 [[Back to API list]](../README.md#documentation-for-api-endpoints)
 [[Back to Model list]](../README.md#documentation-for-models)
@@ -280,7 +250,7 @@ Add constituents to the specified reference portfolio.
 ### Example
 
 ```csharp
-using System.Collections.Generic;
+using System;
 using System.Diagnostics;
 using Lusid.Sdk.Api;
 using Lusid.Sdk.Client;
@@ -290,13 +260,12 @@ namespace Example
 {
     public class UpsertReferencePortfolioConstituentsExample
     {
-        public static void Main()
+        public void main()
         {
-            Configuration.Default.BasePath = "http://localhost";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
-            var apiInstance = new ReferencePortfolioApi(Configuration.Default);
+            var apiInstance = new ReferencePortfolioApi();
             var scope = scope_example;  // string | The scope of the portfolio
             var code = code_example;  // string | The code of the portfolio
             var constituents = new UpsertReferencePortfolioConstituentsRequest(); // UpsertReferencePortfolioConstituentsRequest | The constituents to upload to the portfolio (optional) 
@@ -307,11 +276,9 @@ namespace Example
                 UpsertReferencePortfolioConstituentsResponse result = apiInstance.UpsertReferencePortfolioConstituents(scope, code, constituents);
                 Debug.WriteLine(result);
             }
-            catch (ApiException e)
+            catch (Exception e)
             {
                 Debug.Print("Exception when calling ReferencePortfolioApi.UpsertReferencePortfolioConstituents: " + e.Message );
-                Debug.Print("Status Code: "+ e.ErrorCode);
-                Debug.Print(e.StackTrace);
             }
         }
     }
@@ -339,13 +306,6 @@ Name | Type | Description  | Notes
 
 - **Content-Type**: Not defined
 - **Accept**: text/plain, application/json, text/json
-
-### HTTP response details
-| Status code | Description | Response headers |
-|-------------|-------------|------------------|
-| **200** | Success |  -  |
-| **400** | The details of the input related failure |  -  |
-| **0** | Error response |  -  |
 
 [[Back to top]](#)
 [[Back to API list]](../README.md#documentation-for-api-endpoints)

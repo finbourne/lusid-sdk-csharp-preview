@@ -20,7 +20,7 @@ Retrieve pre-calculated results that have been stored in LUSID.
 ### Example
 
 ```csharp
-using System.Collections.Generic;
+using System;
 using System.Diagnostics;
 using Lusid.Sdk.Api;
 using Lusid.Sdk.Client;
@@ -30,13 +30,12 @@ namespace Example
 {
     public class GetResultsExample
     {
-        public static void Main()
+        public void main()
         {
-            Configuration.Default.BasePath = "http://localhost";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
-            var apiInstance = new ResultsApi(Configuration.Default);
+            var apiInstance = new ResultsApi();
             var entityScope = entityScope_example;  // string | The scope of the data or entity being stored
             var entityCode = entityCode_example;  // string | The identifier for the data or results entity being stored
             var calculationScope = calculationScope_example;  // string | The identifying scope for the calculation that produced the result
@@ -49,11 +48,9 @@ namespace Example
                 Results result = apiInstance.GetResults(entityScope, entityCode, calculationScope, calculationCode, effectiveAt);
                 Debug.WriteLine(result);
             }
-            catch (ApiException e)
+            catch (Exception e)
             {
                 Debug.Print("Exception when calling ResultsApi.GetResults: " + e.Message );
-                Debug.Print("Status Code: "+ e.ErrorCode);
-                Debug.Print(e.StackTrace);
             }
         }
     }
@@ -84,13 +81,6 @@ Name | Type | Description  | Notes
 - **Content-Type**: Not defined
 - **Accept**: text/plain, application/json, text/json
 
-### HTTP response details
-| Status code | Description | Response headers |
-|-------------|-------------|------------------|
-| **200** | The requested set of results |  -  |
-| **400** | The details of the input related failure |  -  |
-| **0** | Error response |  -  |
-
 [[Back to top]](#)
 [[Back to API list]](../README.md#documentation-for-api-endpoints)
 [[Back to Model list]](../README.md#documentation-for-models)
@@ -108,7 +98,7 @@ Upsert pre-calculated results against a specified combination of key parameters 
 ### Example
 
 ```csharp
-using System.Collections.Generic;
+using System;
 using System.Diagnostics;
 using Lusid.Sdk.Api;
 using Lusid.Sdk.Client;
@@ -118,13 +108,12 @@ namespace Example
 {
     public class UpsertResultsExample
     {
-        public static void Main()
+        public void main()
         {
-            Configuration.Default.BasePath = "http://localhost";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
-            var apiInstance = new ResultsApi(Configuration.Default);
+            var apiInstance = new ResultsApi();
             var request = new CreateResults(); // CreateResults | The details of what to upsert (optional) 
 
             try
@@ -133,11 +122,9 @@ namespace Example
                 Results result = apiInstance.UpsertResults(request);
                 Debug.WriteLine(result);
             }
-            catch (ApiException e)
+            catch (Exception e)
             {
                 Debug.Print("Exception when calling ResultsApi.UpsertResults: " + e.Message );
-                Debug.Print("Status Code: "+ e.ErrorCode);
-                Debug.Print(e.StackTrace);
             }
         }
     }
@@ -163,13 +150,6 @@ Name | Type | Description  | Notes
 
 - **Content-Type**: Not defined
 - **Accept**: text/plain, application/json, text/json
-
-### HTTP response details
-| Status code | Description | Response headers |
-|-------------|-------------|------------------|
-| **200** | The results set uploaded |  -  |
-| **400** | The details of the input related failure |  -  |
-| **0** | Error response |  -  |
 
 [[Back to top]](#)
 [[Back to API list]](../README.md#documentation-for-api-endpoints)

@@ -22,7 +22,7 @@ Gets the schema and meta-data for a given entity
 ### Example
 
 ```csharp
-using System.Collections.Generic;
+using System;
 using System.Diagnostics;
 using Lusid.Sdk.Api;
 using Lusid.Sdk.Client;
@@ -32,13 +32,12 @@ namespace Example
 {
     public class GetEntitySchemaExample
     {
-        public static void Main()
+        public void main()
         {
-            Configuration.Default.BasePath = "http://localhost";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
-            var apiInstance = new SchemasApi(Configuration.Default);
+            var apiInstance = new SchemasApi();
             var entity = entity_example;  // string | The name of a valid entity
 
             try
@@ -47,11 +46,9 @@ namespace Example
                 Schema result = apiInstance.GetEntitySchema(entity);
                 Debug.WriteLine(result);
             }
-            catch (ApiException e)
+            catch (Exception e)
             {
                 Debug.Print("Exception when calling SchemasApi.GetEntitySchema: " + e.Message );
-                Debug.Print("Status Code: "+ e.ErrorCode);
-                Debug.Print(e.StackTrace);
             }
         }
     }
@@ -78,13 +75,6 @@ Name | Type | Description  | Notes
 - **Content-Type**: Not defined
 - **Accept**: text/plain, application/json, text/json
 
-### HTTP response details
-| Status code | Description | Response headers |
-|-------------|-------------|------------------|
-| **200** | Success |  -  |
-| **400** | The details of the input related failure |  -  |
-| **0** | Error response |  -  |
-
 [[Back to top]](#)
 [[Back to API list]](../README.md#documentation-for-api-endpoints)
 [[Back to Model list]](../README.md#documentation-for-models)
@@ -102,7 +92,7 @@ Get the schemas for the provided list of property keys.
 ### Example
 
 ```csharp
-using System.Collections.Generic;
+using System;
 using System.Diagnostics;
 using Lusid.Sdk.Api;
 using Lusid.Sdk.Client;
@@ -112,13 +102,12 @@ namespace Example
 {
     public class GetPropertySchemaExample
     {
-        public static void Main()
+        public void main()
         {
-            Configuration.Default.BasePath = "http://localhost";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
-            var apiInstance = new SchemasApi(Configuration.Default);
+            var apiInstance = new SchemasApi();
             var propertyKeys = new List<string>(); // List<string> | One or more property keys for which the schema is requested (optional) 
             var asAt = 2013-10-20T19:20:30+01:00;  // DateTimeOffset? | Optional. The AsAt date of the data (optional) 
 
@@ -128,11 +117,9 @@ namespace Example
                 PropertySchema result = apiInstance.GetPropertySchema(propertyKeys, asAt);
                 Debug.WriteLine(result);
             }
-            catch (ApiException e)
+            catch (Exception e)
             {
                 Debug.Print("Exception when calling SchemasApi.GetPropertySchema: " + e.Message );
-                Debug.Print("Status Code: "+ e.ErrorCode);
-                Debug.Print(e.StackTrace);
             }
         }
     }
@@ -160,13 +147,6 @@ Name | Type | Description  | Notes
 - **Content-Type**: Not defined
 - **Accept**: text/plain, application/json, text/json
 
-### HTTP response details
-| Status code | Description | Response headers |
-|-------------|-------------|------------------|
-| **200** | Success |  -  |
-| **400** | The details of the input related failure |  -  |
-| **0** | Error response |  -  |
-
 [[Back to top]](#)
 [[Back to API list]](../README.md#documentation-for-api-endpoints)
 [[Back to Model list]](../README.md#documentation-for-models)
@@ -184,7 +164,7 @@ Gets the available value types for which a schema is available.
 ### Example
 
 ```csharp
-using System.Collections.Generic;
+using System;
 using System.Diagnostics;
 using Lusid.Sdk.Api;
 using Lusid.Sdk.Client;
@@ -194,13 +174,12 @@ namespace Example
 {
     public class GetValueTypesExample
     {
-        public static void Main()
+        public void main()
         {
-            Configuration.Default.BasePath = "http://localhost";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
-            var apiInstance = new SchemasApi(Configuration.Default);
+            var apiInstance = new SchemasApi();
             var sortBy = new List<string>(); // List<string> | Optional. Order the results by these fields. Use use the '-' sign to denote descending order e.g. -MyFieldName (optional) 
             var start = 56;  // int? | Optional. When paginating, skip this number of results (optional) 
             var limit = 56;  // int? | Optional. When paginating, limit the number of returned results to this many. (optional) 
@@ -211,11 +190,9 @@ namespace Example
                 ResourceListOfValueType result = apiInstance.GetValueTypes(sortBy, start, limit);
                 Debug.WriteLine(result);
             }
-            catch (ApiException e)
+            catch (Exception e)
             {
                 Debug.Print("Exception when calling SchemasApi.GetValueTypes: " + e.Message );
-                Debug.Print("Status Code: "+ e.ErrorCode);
-                Debug.Print(e.StackTrace);
             }
         }
     }
@@ -244,13 +221,6 @@ Name | Type | Description  | Notes
 - **Content-Type**: Not defined
 - **Accept**: text/plain, application/json, text/json
 
-### HTTP response details
-| Status code | Description | Response headers |
-|-------------|-------------|------------------|
-| **200** | Success |  -  |
-| **400** | The details of the input related failure |  -  |
-| **0** | Error response |  -  |
-
 [[Back to top]](#)
 [[Back to API list]](../README.md#documentation-for-api-endpoints)
 [[Back to Model list]](../README.md#documentation-for-models)
@@ -268,7 +238,7 @@ List all available entities for which schema information is available.
 ### Example
 
 ```csharp
-using System.Collections.Generic;
+using System;
 using System.Diagnostics;
 using Lusid.Sdk.Api;
 using Lusid.Sdk.Client;
@@ -278,13 +248,12 @@ namespace Example
 {
     public class ListEntitiesExample
     {
-        public static void Main()
+        public void main()
         {
-            Configuration.Default.BasePath = "http://localhost";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
-            var apiInstance = new SchemasApi(Configuration.Default);
+            var apiInstance = new SchemasApi();
 
             try
             {
@@ -292,11 +261,9 @@ namespace Example
                 ResourceListOfString result = apiInstance.ListEntities();
                 Debug.WriteLine(result);
             }
-            catch (ApiException e)
+            catch (Exception e)
             {
                 Debug.Print("Exception when calling SchemasApi.ListEntities: " + e.Message );
-                Debug.Print("Status Code: "+ e.ErrorCode);
-                Debug.Print(e.StackTrace);
             }
         }
     }
@@ -319,12 +286,6 @@ This endpoint does not need any parameter.
 
 - **Content-Type**: Not defined
 - **Accept**: text/plain, application/json, text/json
-
-### HTTP response details
-| Status code | Description | Response headers |
-|-------------|-------------|------------------|
-| **200** | Success |  -  |
-| **0** | Error response |  -  |
 
 [[Back to top]](#)
 [[Back to API list]](../README.md#documentation-for-api-endpoints)
