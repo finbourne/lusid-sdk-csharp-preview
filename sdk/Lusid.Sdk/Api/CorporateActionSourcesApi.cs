@@ -110,7 +110,7 @@ namespace Lusid.Sdk.Api
         /// <param name="limit">Optional. When paginating, limit the number of returned results to this many (optional)</param>
         /// <param name="filter">Optional. Expression to filter the result set (optional)</param>
         /// <returns>ResourceListOfCorporateAction</returns>
-        ResourceListOfCorporateAction GetCorporateActions (string scope, string code, string fromEffectiveAt = null, string toEffectiveAt = null, DateTimeOffset? asAt = null, List<string> sortBy = null, int? start = null, int? limit = null, string filter = null);
+        ResourceListOfCorporateAction GetCorporateActions (string scope, string code, DateTimeOrCutLabel fromEffectiveAt = null, DateTimeOrCutLabel toEffectiveAt = null, DateTimeOffset? asAt = null, List<string> sortBy = null, int? start = null, int? limit = null, string filter = null);
 
         /// <summary>
         /// [BETA] Get corporate actions
@@ -129,7 +129,7 @@ namespace Lusid.Sdk.Api
         /// <param name="limit">Optional. When paginating, limit the number of returned results to this many (optional)</param>
         /// <param name="filter">Optional. Expression to filter the result set (optional)</param>
         /// <returns>ApiResponse of ResourceListOfCorporateAction</returns>
-        ApiResponse<ResourceListOfCorporateAction> GetCorporateActionsWithHttpInfo (string scope, string code, string fromEffectiveAt = null, string toEffectiveAt = null, DateTimeOffset? asAt = null, List<string> sortBy = null, int? start = null, int? limit = null, string filter = null);
+        ApiResponse<ResourceListOfCorporateAction> GetCorporateActionsWithHttpInfo (string scope, string code, DateTimeOrCutLabel fromEffectiveAt = null, DateTimeOrCutLabel toEffectiveAt = null, DateTimeOffset? asAt = null, List<string> sortBy = null, int? start = null, int? limit = null, string filter = null);
         /// <summary>
         /// [BETA] Get corporate action sources
         /// </summary>
@@ -247,7 +247,7 @@ namespace Lusid.Sdk.Api
         /// <param name="limit">Optional. When paginating, limit the number of returned results to this many (optional)</param>
         /// <param name="filter">Optional. Expression to filter the result set (optional)</param>
         /// <returns>Task of ResourceListOfCorporateAction</returns>
-        System.Threading.Tasks.Task<ResourceListOfCorporateAction> GetCorporateActionsAsync (string scope, string code, string fromEffectiveAt = null, string toEffectiveAt = null, DateTimeOffset? asAt = null, List<string> sortBy = null, int? start = null, int? limit = null, string filter = null);
+        System.Threading.Tasks.Task<ResourceListOfCorporateAction> GetCorporateActionsAsync (string scope, string code, DateTimeOrCutLabel fromEffectiveAt = null, DateTimeOrCutLabel toEffectiveAt = null, DateTimeOffset? asAt = null, List<string> sortBy = null, int? start = null, int? limit = null, string filter = null);
 
         /// <summary>
         /// [BETA] Get corporate actions
@@ -266,7 +266,7 @@ namespace Lusid.Sdk.Api
         /// <param name="limit">Optional. When paginating, limit the number of returned results to this many (optional)</param>
         /// <param name="filter">Optional. Expression to filter the result set (optional)</param>
         /// <returns>Task of ApiResponse (ResourceListOfCorporateAction)</returns>
-        System.Threading.Tasks.Task<ApiResponse<ResourceListOfCorporateAction>> GetCorporateActionsAsyncWithHttpInfo (string scope, string code, string fromEffectiveAt = null, string toEffectiveAt = null, DateTimeOffset? asAt = null, List<string> sortBy = null, int? start = null, int? limit = null, string filter = null);
+        System.Threading.Tasks.Task<ApiResponse<ResourceListOfCorporateAction>> GetCorporateActionsAsyncWithHttpInfo (string scope, string code, DateTimeOrCutLabel fromEffectiveAt = null, DateTimeOrCutLabel toEffectiveAt = null, DateTimeOffset? asAt = null, List<string> sortBy = null, int? start = null, int? limit = null, string filter = null);
         /// <summary>
         /// [BETA] Get corporate action sources
         /// </summary>
@@ -950,7 +950,7 @@ namespace Lusid.Sdk.Api
         /// <param name="limit">Optional. When paginating, limit the number of returned results to this many (optional)</param>
         /// <param name="filter">Optional. Expression to filter the result set (optional)</param>
         /// <returns>ResourceListOfCorporateAction</returns>
-        public ResourceListOfCorporateAction GetCorporateActions (string scope, string code, string fromEffectiveAt = null, string toEffectiveAt = null, DateTimeOffset? asAt = null, List<string> sortBy = null, int? start = null, int? limit = null, string filter = null)
+        public ResourceListOfCorporateAction GetCorporateActions (string scope, string code, DateTimeOrCutLabel fromEffectiveAt = null, DateTimeOrCutLabel toEffectiveAt = null, DateTimeOffset? asAt = null, List<string> sortBy = null, int? start = null, int? limit = null, string filter = null)
         {
              ApiResponse<ResourceListOfCorporateAction> localVarResponse = GetCorporateActionsWithHttpInfo(scope, code, fromEffectiveAt, toEffectiveAt, asAt, sortBy, start, limit, filter);
              return localVarResponse.Data;
@@ -970,7 +970,7 @@ namespace Lusid.Sdk.Api
         /// <param name="limit">Optional. When paginating, limit the number of returned results to this many (optional)</param>
         /// <param name="filter">Optional. Expression to filter the result set (optional)</param>
         /// <returns>ApiResponse of ResourceListOfCorporateAction</returns>
-        public ApiResponse< ResourceListOfCorporateAction > GetCorporateActionsWithHttpInfo (string scope, string code, string fromEffectiveAt = null, string toEffectiveAt = null, DateTimeOffset? asAt = null, List<string> sortBy = null, int? start = null, int? limit = null, string filter = null)
+        public ApiResponse< ResourceListOfCorporateAction > GetCorporateActionsWithHttpInfo (string scope, string code, DateTimeOrCutLabel fromEffectiveAt = null, DateTimeOrCutLabel toEffectiveAt = null, DateTimeOffset? asAt = null, List<string> sortBy = null, int? start = null, int? limit = null, string filter = null)
         {
             // verify the required parameter 'scope' is set
             if (scope == null)
@@ -1055,7 +1055,7 @@ namespace Lusid.Sdk.Api
         /// <param name="limit">Optional. When paginating, limit the number of returned results to this many (optional)</param>
         /// <param name="filter">Optional. Expression to filter the result set (optional)</param>
         /// <returns>Task of ResourceListOfCorporateAction</returns>
-        public async System.Threading.Tasks.Task<ResourceListOfCorporateAction> GetCorporateActionsAsync (string scope, string code, string fromEffectiveAt = null, string toEffectiveAt = null, DateTimeOffset? asAt = null, List<string> sortBy = null, int? start = null, int? limit = null, string filter = null)
+        public async System.Threading.Tasks.Task<ResourceListOfCorporateAction> GetCorporateActionsAsync (string scope, string code, DateTimeOrCutLabel fromEffectiveAt = null, DateTimeOrCutLabel toEffectiveAt = null, DateTimeOffset? asAt = null, List<string> sortBy = null, int? start = null, int? limit = null, string filter = null)
         {
              ApiResponse<ResourceListOfCorporateAction> localVarResponse = await GetCorporateActionsAsyncWithHttpInfo(scope, code, fromEffectiveAt, toEffectiveAt, asAt, sortBy, start, limit, filter);
              return localVarResponse.Data;
@@ -1076,7 +1076,7 @@ namespace Lusid.Sdk.Api
         /// <param name="limit">Optional. When paginating, limit the number of returned results to this many (optional)</param>
         /// <param name="filter">Optional. Expression to filter the result set (optional)</param>
         /// <returns>Task of ApiResponse (ResourceListOfCorporateAction)</returns>
-        public async System.Threading.Tasks.Task<ApiResponse<ResourceListOfCorporateAction>> GetCorporateActionsAsyncWithHttpInfo (string scope, string code, string fromEffectiveAt = null, string toEffectiveAt = null, DateTimeOffset? asAt = null, List<string> sortBy = null, int? start = null, int? limit = null, string filter = null)
+        public async System.Threading.Tasks.Task<ApiResponse<ResourceListOfCorporateAction>> GetCorporateActionsAsyncWithHttpInfo (string scope, string code, DateTimeOrCutLabel fromEffectiveAt = null, DateTimeOrCutLabel toEffectiveAt = null, DateTimeOffset? asAt = null, List<string> sortBy = null, int? start = null, int? limit = null, string filter = null)
         {
             // verify the required parameter 'scope' is set
             if (scope == null)
