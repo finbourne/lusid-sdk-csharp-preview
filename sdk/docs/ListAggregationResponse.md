@@ -5,6 +5,8 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
+**AggregationEffectiveAt** | **DateTimeOffset?** |  | [optional] 
+**AggregationAsAt** | **DateTimeOffset?** |  | [optional] 
 **Href** | **string** |  | [optional] 
 **Data** | **List&lt;Dictionary&lt;string, Object&gt;&gt;** |  | [optional] 
 **AggregationCurrency** | **string** |  | [optional] 

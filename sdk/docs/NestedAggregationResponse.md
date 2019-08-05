@@ -5,6 +5,8 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
+**AggregationEffectiveAt** | **DateTimeOffset?** |  | [optional] 
+**AggregationAsAt** | **DateTimeOffset?** |  | [optional] 
 **Href** | **string** |  | [optional] 
 **Data** | [**AggregationResponseNode**](AggregationResponseNode.md) |  | [optional] 
 **AggregationCurrency** | **string** |  | [optional] 
