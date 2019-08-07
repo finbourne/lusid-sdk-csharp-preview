@@ -60,7 +60,7 @@ namespace Lusid.Sdk.Api
         /// <param name="maxAge">The duration of the look back window in an ISO8601 time interval format e.g. P1Y2M3DT4H30M (1 year, 2 months, 3 days, 4 hours and 30 minutes).               This is subtracted from the provided effectiveAt datetime to generate a effective datetime window inside which a quote must exist to be retrieved. (optional)</param>
         /// <param name="quoteIds">The time invariant quote series ids of the quotes to retrieve. These need to be               keyed by a unique correlation id allowing the retrieved quote to be identified in the response. (optional)</param>
         /// <returns>GetQuotesResponse</returns>
-        GetQuotesResponse GetQuotes (string scope, DateTimeOrCutLabel effectiveAt = null, DateTimeOffset? asAt = null, string maxAge = null, Dictionary<string, QuoteSeriesId> quoteIds = null);
+        GetQuotesResponse GetQuotes (string scope, string effectiveAt = null, DateTimeOffset? asAt = null, string maxAge = null, Dictionary<string, QuoteSeriesId> quoteIds = null);
 
         /// <summary>
         /// [BETA] Get quotes
@@ -75,7 +75,7 @@ namespace Lusid.Sdk.Api
         /// <param name="maxAge">The duration of the look back window in an ISO8601 time interval format e.g. P1Y2M3DT4H30M (1 year, 2 months, 3 days, 4 hours and 30 minutes).               This is subtracted from the provided effectiveAt datetime to generate a effective datetime window inside which a quote must exist to be retrieved. (optional)</param>
         /// <param name="quoteIds">The time invariant quote series ids of the quotes to retrieve. These need to be               keyed by a unique correlation id allowing the retrieved quote to be identified in the response. (optional)</param>
         /// <returns>ApiResponse of GetQuotesResponse</returns>
-        ApiResponse<GetQuotesResponse> GetQuotesWithHttpInfo (string scope, DateTimeOrCutLabel effectiveAt = null, DateTimeOffset? asAt = null, string maxAge = null, Dictionary<string, QuoteSeriesId> quoteIds = null);
+        ApiResponse<GetQuotesResponse> GetQuotesWithHttpInfo (string scope, string effectiveAt = null, DateTimeOffset? asAt = null, string maxAge = null, Dictionary<string, QuoteSeriesId> quoteIds = null);
         /// <summary>
         /// [BETA] Upsert quotes
         /// </summary>
@@ -137,7 +137,7 @@ namespace Lusid.Sdk.Api
         /// <param name="maxAge">The duration of the look back window in an ISO8601 time interval format e.g. P1Y2M3DT4H30M (1 year, 2 months, 3 days, 4 hours and 30 minutes).               This is subtracted from the provided effectiveAt datetime to generate a effective datetime window inside which a quote must exist to be retrieved. (optional)</param>
         /// <param name="quoteIds">The time invariant quote series ids of the quotes to retrieve. These need to be               keyed by a unique correlation id allowing the retrieved quote to be identified in the response. (optional)</param>
         /// <returns>Task of GetQuotesResponse</returns>
-        System.Threading.Tasks.Task<GetQuotesResponse> GetQuotesAsync (string scope, DateTimeOrCutLabel effectiveAt = null, DateTimeOffset? asAt = null, string maxAge = null, Dictionary<string, QuoteSeriesId> quoteIds = null);
+        System.Threading.Tasks.Task<GetQuotesResponse> GetQuotesAsync (string scope, string effectiveAt = null, DateTimeOffset? asAt = null, string maxAge = null, Dictionary<string, QuoteSeriesId> quoteIds = null);
 
         /// <summary>
         /// [BETA] Get quotes
@@ -152,7 +152,7 @@ namespace Lusid.Sdk.Api
         /// <param name="maxAge">The duration of the look back window in an ISO8601 time interval format e.g. P1Y2M3DT4H30M (1 year, 2 months, 3 days, 4 hours and 30 minutes).               This is subtracted from the provided effectiveAt datetime to generate a effective datetime window inside which a quote must exist to be retrieved. (optional)</param>
         /// <param name="quoteIds">The time invariant quote series ids of the quotes to retrieve. These need to be               keyed by a unique correlation id allowing the retrieved quote to be identified in the response. (optional)</param>
         /// <returns>Task of ApiResponse (GetQuotesResponse)</returns>
-        System.Threading.Tasks.Task<ApiResponse<GetQuotesResponse>> GetQuotesAsyncWithHttpInfo (string scope, DateTimeOrCutLabel effectiveAt = null, DateTimeOffset? asAt = null, string maxAge = null, Dictionary<string, QuoteSeriesId> quoteIds = null);
+        System.Threading.Tasks.Task<ApiResponse<GetQuotesResponse>> GetQuotesAsyncWithHttpInfo (string scope, string effectiveAt = null, DateTimeOffset? asAt = null, string maxAge = null, Dictionary<string, QuoteSeriesId> quoteIds = null);
         /// <summary>
         /// [BETA] Upsert quotes
         /// </summary>
@@ -474,7 +474,7 @@ namespace Lusid.Sdk.Api
         /// <param name="maxAge">The duration of the look back window in an ISO8601 time interval format e.g. P1Y2M3DT4H30M (1 year, 2 months, 3 days, 4 hours and 30 minutes).               This is subtracted from the provided effectiveAt datetime to generate a effective datetime window inside which a quote must exist to be retrieved. (optional)</param>
         /// <param name="quoteIds">The time invariant quote series ids of the quotes to retrieve. These need to be               keyed by a unique correlation id allowing the retrieved quote to be identified in the response. (optional)</param>
         /// <returns>GetQuotesResponse</returns>
-        public GetQuotesResponse GetQuotes (string scope, DateTimeOrCutLabel effectiveAt = null, DateTimeOffset? asAt = null, string maxAge = null, Dictionary<string, QuoteSeriesId> quoteIds = null)
+        public GetQuotesResponse GetQuotes (string scope, string effectiveAt = null, DateTimeOffset? asAt = null, string maxAge = null, Dictionary<string, QuoteSeriesId> quoteIds = null)
         {
              ApiResponse<GetQuotesResponse> localVarResponse = GetQuotesWithHttpInfo(scope, effectiveAt, asAt, maxAge, quoteIds);
              return localVarResponse.Data;
@@ -490,7 +490,7 @@ namespace Lusid.Sdk.Api
         /// <param name="maxAge">The duration of the look back window in an ISO8601 time interval format e.g. P1Y2M3DT4H30M (1 year, 2 months, 3 days, 4 hours and 30 minutes).               This is subtracted from the provided effectiveAt datetime to generate a effective datetime window inside which a quote must exist to be retrieved. (optional)</param>
         /// <param name="quoteIds">The time invariant quote series ids of the quotes to retrieve. These need to be               keyed by a unique correlation id allowing the retrieved quote to be identified in the response. (optional)</param>
         /// <returns>ApiResponse of GetQuotesResponse</returns>
-        public ApiResponse< GetQuotesResponse > GetQuotesWithHttpInfo (string scope, DateTimeOrCutLabel effectiveAt = null, DateTimeOffset? asAt = null, string maxAge = null, Dictionary<string, QuoteSeriesId> quoteIds = null)
+        public ApiResponse< GetQuotesResponse > GetQuotesWithHttpInfo (string scope, string effectiveAt = null, DateTimeOffset? asAt = null, string maxAge = null, Dictionary<string, QuoteSeriesId> quoteIds = null)
         {
             // verify the required parameter 'scope' is set
             if (scope == null)
@@ -571,7 +571,7 @@ namespace Lusid.Sdk.Api
         /// <param name="maxAge">The duration of the look back window in an ISO8601 time interval format e.g. P1Y2M3DT4H30M (1 year, 2 months, 3 days, 4 hours and 30 minutes).               This is subtracted from the provided effectiveAt datetime to generate a effective datetime window inside which a quote must exist to be retrieved. (optional)</param>
         /// <param name="quoteIds">The time invariant quote series ids of the quotes to retrieve. These need to be               keyed by a unique correlation id allowing the retrieved quote to be identified in the response. (optional)</param>
         /// <returns>Task of GetQuotesResponse</returns>
-        public async System.Threading.Tasks.Task<GetQuotesResponse> GetQuotesAsync (string scope, DateTimeOrCutLabel effectiveAt = null, DateTimeOffset? asAt = null, string maxAge = null, Dictionary<string, QuoteSeriesId> quoteIds = null)
+        public async System.Threading.Tasks.Task<GetQuotesResponse> GetQuotesAsync (string scope, string effectiveAt = null, DateTimeOffset? asAt = null, string maxAge = null, Dictionary<string, QuoteSeriesId> quoteIds = null)
         {
              ApiResponse<GetQuotesResponse> localVarResponse = await GetQuotesAsyncWithHttpInfo(scope, effectiveAt, asAt, maxAge, quoteIds);
              return localVarResponse.Data;
@@ -588,7 +588,7 @@ namespace Lusid.Sdk.Api
         /// <param name="maxAge">The duration of the look back window in an ISO8601 time interval format e.g. P1Y2M3DT4H30M (1 year, 2 months, 3 days, 4 hours and 30 minutes).               This is subtracted from the provided effectiveAt datetime to generate a effective datetime window inside which a quote must exist to be retrieved. (optional)</param>
         /// <param name="quoteIds">The time invariant quote series ids of the quotes to retrieve. These need to be               keyed by a unique correlation id allowing the retrieved quote to be identified in the response. (optional)</param>
         /// <returns>Task of ApiResponse (GetQuotesResponse)</returns>
-        public async System.Threading.Tasks.Task<ApiResponse<GetQuotesResponse>> GetQuotesAsyncWithHttpInfo (string scope, DateTimeOrCutLabel effectiveAt = null, DateTimeOffset? asAt = null, string maxAge = null, Dictionary<string, QuoteSeriesId> quoteIds = null)
+        public async System.Threading.Tasks.Task<ApiResponse<GetQuotesResponse>> GetQuotesAsyncWithHttpInfo (string scope, string effectiveAt = null, DateTimeOffset? asAt = null, string maxAge = null, Dictionary<string, QuoteSeriesId> quoteIds = null)
         {
             // verify the required parameter 'scope' is set
             if (scope == null)

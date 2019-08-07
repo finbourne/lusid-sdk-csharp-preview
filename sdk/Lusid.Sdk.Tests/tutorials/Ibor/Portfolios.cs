@@ -83,8 +83,8 @@ namespace Lusid.Sdk.Tests.Tutorials.Ibor
                     ["Instrument/default/LusidInstrumentId"] = _instrumentIds.First()
                 },  
                 
-                transactionDate: effectiveDate,
-                settlementDate: effectiveDate,
+                transactionDate: effectiveDate.ToLUSIDDate(),
+                settlementDate: effectiveDate.ToLUSIDDate(),
                 units: 100,
                 transactionPrice: new TransactionPrice(12.3, TransactionPrice.TypeEnum.Price),
                 totalConsideration: new CurrencyAndAmount(1230, "GBP"),
@@ -160,8 +160,8 @@ namespace Lusid.Sdk.Tests.Tutorials.Ibor
                     [propertyDefinitionResult.Key] = propertyValue
                 },
                 
-                transactionDate: effectiveDate,
-                settlementDate: effectiveDate,
+                transactionDate: effectiveDate.ToLUSIDDate(),
+                settlementDate: effectiveDate.ToLUSIDDate(),
                 units: 100,
                 transactionPrice: new TransactionPrice(12.3, TransactionPrice.TypeEnum.Price),
                 totalConsideration: new CurrencyAndAmount(1230, "GBP"),

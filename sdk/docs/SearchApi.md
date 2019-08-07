@@ -13,7 +13,7 @@ Method | HTTP request | Description
 
 ## InstrumentsSearch
 
-> ICollection&lt;InstrumentMatch&gt; InstrumentsSearch (DateTimeOrCutLabel masteredEffectiveAt = null, bool? masteredOnly = null, List<InstrumentSearchProperty> symbols = null)
+> ICollection&lt;InstrumentMatch&gt; InstrumentsSearch (string masteredEffectiveAt = null, bool? masteredOnly = null, List<InstrumentSearchProperty> symbols = null)
 
 [EXPERIMENTAL] Search instruments
 
@@ -39,7 +39,7 @@ namespace Example
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
             var apiInstance = new SearchApi(Configuration.Default);
-            var masteredEffectiveAt = masteredEffectiveAt_example;  // DateTimeOrCutLabel | Optional. The effective date for searching mastered instruments. If this is not set, then the current date is taken.  This parameter has no effect on instruments that have not been mastered within LUSID. (optional) 
+            var masteredEffectiveAt = masteredEffectiveAt_example;  // string | Optional. The effective date for searching mastered instruments. If this is not set, then the current date is taken.  This parameter has no effect on instruments that have not been mastered within LUSID. (optional) 
             var masteredOnly = true;  // bool? | Optional. If set to true, only search over instruments that have been mastered within LUSID. Default to false (optional)  (default to false)
             var symbols = new List<InstrumentSearchProperty>(); // List<InstrumentSearchProperty> | A collection of instrument symbols to search for (optional) 
 
@@ -65,7 +65,7 @@ namespace Example
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **masteredEffectiveAt** | **DateTimeOrCutLabel**| Optional. The effective date for searching mastered instruments. If this is not set, then the current date is taken.  This parameter has no effect on instruments that have not been mastered within LUSID. | [optional] 
+ **masteredEffectiveAt** | **string**| Optional. The effective date for searching mastered instruments. If this is not set, then the current date is taken.  This parameter has no effect on instruments that have not been mastered within LUSID. | [optional] 
  **masteredOnly** | **bool?**| Optional. If set to true, only search over instruments that have been mastered within LUSID. Default to false | [optional] [default to false]
  **symbols** | [**List&lt;InstrumentSearchProperty&gt;**](InstrumentSearchProperty.md)| A collection of instrument symbols to search for | [optional] 
 

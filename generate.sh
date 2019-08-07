@@ -38,7 +38,7 @@ java -jar openapi-generator-cli.jar generate \
     -o $sdk_output_folder \
     -c $gen_root/config.json \
     -t $gen_root/templates \
-	--type-mappings dateorcutlabel=DateTimeOrCutLabel
+	--type-mappings cutlabel=CutLabel
 
 rm -rf $sdk_output_folder/.openapi-generator
 rm $sdk_output_folder/.openapi-generator-ignore
