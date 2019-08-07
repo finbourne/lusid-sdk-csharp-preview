@@ -35,7 +35,7 @@ namespace Lusid.Sdk.Api
         /// <param name="effectiveAt">The effective date of the origin.</param>
         /// <param name="asAt">The as-at date of the origin. (optional)</param>
         /// <returns>ResourceListOfChange</returns>
-        ResourceListOfChange GetPortfolioChanges (string scope, string effectiveAt, DateTimeOffset? asAt = null);
+        ResourceListOfChange GetPortfolioChanges (string scope, DateTimeOrCutLabel effectiveAt, DateTimeOffset? asAt = null);
 
         /// <summary>
         /// [BETA] Get the next change to each portfolio in a scope.
@@ -48,7 +48,7 @@ namespace Lusid.Sdk.Api
         /// <param name="effectiveAt">The effective date of the origin.</param>
         /// <param name="asAt">The as-at date of the origin. (optional)</param>
         /// <returns>ApiResponse of ResourceListOfChange</returns>
-        ApiResponse<ResourceListOfChange> GetPortfolioChangesWithHttpInfo (string scope, string effectiveAt, DateTimeOffset? asAt = null);
+        ApiResponse<ResourceListOfChange> GetPortfolioChangesWithHttpInfo (string scope, DateTimeOrCutLabel effectiveAt, DateTimeOffset? asAt = null);
         #endregion Synchronous Operations
         #region Asynchronous Operations
         /// <summary>
@@ -62,7 +62,7 @@ namespace Lusid.Sdk.Api
         /// <param name="effectiveAt">The effective date of the origin.</param>
         /// <param name="asAt">The as-at date of the origin. (optional)</param>
         /// <returns>Task of ResourceListOfChange</returns>
-        System.Threading.Tasks.Task<ResourceListOfChange> GetPortfolioChangesAsync (string scope, string effectiveAt, DateTimeOffset? asAt = null);
+        System.Threading.Tasks.Task<ResourceListOfChange> GetPortfolioChangesAsync (string scope, DateTimeOrCutLabel effectiveAt, DateTimeOffset? asAt = null);
 
         /// <summary>
         /// [BETA] Get the next change to each portfolio in a scope.
@@ -75,7 +75,7 @@ namespace Lusid.Sdk.Api
         /// <param name="effectiveAt">The effective date of the origin.</param>
         /// <param name="asAt">The as-at date of the origin. (optional)</param>
         /// <returns>Task of ApiResponse (ResourceListOfChange)</returns>
-        System.Threading.Tasks.Task<ApiResponse<ResourceListOfChange>> GetPortfolioChangesAsyncWithHttpInfo (string scope, string effectiveAt, DateTimeOffset? asAt = null);
+        System.Threading.Tasks.Task<ApiResponse<ResourceListOfChange>> GetPortfolioChangesAsyncWithHttpInfo (string scope, DateTimeOrCutLabel effectiveAt, DateTimeOffset? asAt = null);
         #endregion Asynchronous Operations
     }
 
@@ -195,7 +195,7 @@ namespace Lusid.Sdk.Api
         /// <param name="effectiveAt">The effective date of the origin.</param>
         /// <param name="asAt">The as-at date of the origin. (optional)</param>
         /// <returns>ResourceListOfChange</returns>
-        public ResourceListOfChange GetPortfolioChanges (string scope, string effectiveAt, DateTimeOffset? asAt = null)
+        public ResourceListOfChange GetPortfolioChanges (string scope, DateTimeOrCutLabel effectiveAt, DateTimeOffset? asAt = null)
         {
              ApiResponse<ResourceListOfChange> localVarResponse = GetPortfolioChangesWithHttpInfo(scope, effectiveAt, asAt);
              return localVarResponse.Data;
@@ -209,7 +209,7 @@ namespace Lusid.Sdk.Api
         /// <param name="effectiveAt">The effective date of the origin.</param>
         /// <param name="asAt">The as-at date of the origin. (optional)</param>
         /// <returns>ApiResponse of ResourceListOfChange</returns>
-        public ApiResponse< ResourceListOfChange > GetPortfolioChangesWithHttpInfo (string scope, string effectiveAt, DateTimeOffset? asAt = null)
+        public ApiResponse< ResourceListOfChange > GetPortfolioChangesWithHttpInfo (string scope, DateTimeOrCutLabel effectiveAt, DateTimeOffset? asAt = null)
         {
             // verify the required parameter 'scope' is set
             if (scope == null)
@@ -282,7 +282,7 @@ namespace Lusid.Sdk.Api
         /// <param name="effectiveAt">The effective date of the origin.</param>
         /// <param name="asAt">The as-at date of the origin. (optional)</param>
         /// <returns>Task of ResourceListOfChange</returns>
-        public async System.Threading.Tasks.Task<ResourceListOfChange> GetPortfolioChangesAsync (string scope, string effectiveAt, DateTimeOffset? asAt = null)
+        public async System.Threading.Tasks.Task<ResourceListOfChange> GetPortfolioChangesAsync (string scope, DateTimeOrCutLabel effectiveAt, DateTimeOffset? asAt = null)
         {
              ApiResponse<ResourceListOfChange> localVarResponse = await GetPortfolioChangesAsyncWithHttpInfo(scope, effectiveAt, asAt);
              return localVarResponse.Data;
@@ -297,7 +297,7 @@ namespace Lusid.Sdk.Api
         /// <param name="effectiveAt">The effective date of the origin.</param>
         /// <param name="asAt">The as-at date of the origin. (optional)</param>
         /// <returns>Task of ApiResponse (ResourceListOfChange)</returns>
-        public async System.Threading.Tasks.Task<ApiResponse<ResourceListOfChange>> GetPortfolioChangesAsyncWithHttpInfo (string scope, string effectiveAt, DateTimeOffset? asAt = null)
+        public async System.Threading.Tasks.Task<ApiResponse<ResourceListOfChange>> GetPortfolioChangesAsyncWithHttpInfo (string scope, DateTimeOrCutLabel effectiveAt, DateTimeOffset? asAt = null)
         {
             // verify the required parameter 'scope' is set
             if (scope == null)
