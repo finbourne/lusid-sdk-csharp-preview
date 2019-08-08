@@ -1,6 +1,6 @@
 # Lusid.Sdk.Api.AggregationApi
 
-All URIs are relative to *http://localhost*
+All URIs are relative to *http://localhost/api*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
@@ -34,7 +34,10 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://localhost";
+            Configuration.Default.BasePath = "http://localhost/api";
+            // Configure OAuth2 access token for authorization: oauth2
+            Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
+
             var apiInstance = new AggregationApi(Configuration.Default);
             var scope = scope_example;  // string | The scope of the portfolio group
             var code = code_example;  // string | The code of the portfolio group
@@ -78,7 +81,7 @@ Name | Type | Description  | Notes
 
 ### Authorization
 
-No authorization required
+[oauth2](../README.md#oauth2)
 
 ### HTTP request headers
 
@@ -121,7 +124,10 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://localhost";
+            Configuration.Default.BasePath = "http://localhost/api";
+            // Configure OAuth2 access token for authorization: oauth2
+            Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
+
             var apiInstance = new AggregationApi(Configuration.Default);
             var scope = scope_example;  // string | The scope of the portfolio
             var code = code_example;  // string | The code of the portfolio
@@ -165,7 +171,7 @@ Name | Type | Description  | Notes
 
 ### Authorization
 
-No authorization required
+[oauth2](../README.md#oauth2)
 
 ### HTTP request headers
 
@@ -208,7 +214,10 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://localhost";
+            Configuration.Default.BasePath = "http://localhost/api";
+            // Configure OAuth2 access token for authorization: oauth2
+            Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
+
             var apiInstance = new AggregationApi(Configuration.Default);
             var scope = scope_example;  // string | The scope of the Result data set
             var resultsKey = resultsKey_example;  // string | The key of the Result data set
@@ -252,7 +261,7 @@ Name | Type | Description  | Notes
 
 ### Authorization
 
-No authorization required
+[oauth2](../README.md#oauth2)
 
 ### HTTP request headers
 
@@ -295,7 +304,10 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://localhost";
+            Configuration.Default.BasePath = "http://localhost/api";
+            // Configure OAuth2 access token for authorization: oauth2
+            Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
+
             var apiInstance = new AggregationApi(Configuration.Default);
             var scope = scope_example;  // string | The scope of the portfolio group
             var code = code_example;  // string | The code of the portfolio group
@@ -333,7 +345,7 @@ Name | Type | Description  | Notes
 
 ### Authorization
 
-No authorization required
+[oauth2](../README.md#oauth2)
 
 ### HTTP request headers
 
