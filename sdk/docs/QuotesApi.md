@@ -34,9 +34,6 @@ namespace Example
         public static void Main()
         {
             Configuration.Default.BasePath = "http://localhost";
-            // Configure OAuth2 access token for authorization: oauth2
-            Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
-
             var apiInstance = new QuotesApi(Configuration.Default);
             var scope = scope_example;  // string | The scope of the quotes to delete.
             var quotes = new Dictionary<string, QuoteId>(); // Dictionary<string, QuoteId> | The quotes to delete keyed by a unique correlation id. (optional) 
@@ -72,7 +69,7 @@ Name | Type | Description  | Notes
 
 ### Authorization
 
-[oauth2](../README.md#oauth2)
+No authorization required
 
 ### HTTP request headers
 
@@ -116,9 +113,6 @@ namespace Example
         public static void Main()
         {
             Configuration.Default.BasePath = "http://localhost";
-            // Configure OAuth2 access token for authorization: oauth2
-            Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
-
             var apiInstance = new QuotesApi(Configuration.Default);
             var scope = scope_example;  // string | The scope of the quotes to retrieve.
             var effectiveAt = effectiveAt_example;  // string | The effective datetime at which to retrieve the quotes. Defaults to the current LUSID system datetime if not specified. (optional) 
@@ -160,7 +154,7 @@ Name | Type | Description  | Notes
 
 ### Authorization
 
-[oauth2](../README.md#oauth2)
+No authorization required
 
 ### HTTP request headers
 
@@ -204,9 +198,6 @@ namespace Example
         public static void Main()
         {
             Configuration.Default.BasePath = "http://localhost";
-            // Configure OAuth2 access token for authorization: oauth2
-            Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
-
             var apiInstance = new QuotesApi(Configuration.Default);
             var scope = scope_example;  // string | The scope to use when updating or inserting the quotes.
             var quotes = new Dictionary<string, UpsertQuoteRequest>(); // Dictionary<string, UpsertQuoteRequest> | The quotes to update or insert keyed by a unique correlation id. (optional) 
@@ -242,7 +233,7 @@ Name | Type | Description  | Notes
 
 ### Authorization
 
-[oauth2](../README.md#oauth2)
+No authorization required
 
 ### HTTP request headers
 

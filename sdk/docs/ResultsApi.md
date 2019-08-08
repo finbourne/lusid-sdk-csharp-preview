@@ -33,9 +33,6 @@ namespace Example
         public static void Main()
         {
             Configuration.Default.BasePath = "http://localhost";
-            // Configure OAuth2 access token for authorization: oauth2
-            Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
-
             var apiInstance = new ResultsApi(Configuration.Default);
             var entityScope = entityScope_example;  // string | The scope of the data or entity being stored
             var entityCode = entityCode_example;  // string | The identifier for the data or results entity being stored
@@ -77,7 +74,7 @@ Name | Type | Description  | Notes
 
 ### Authorization
 
-[oauth2](../README.md#oauth2)
+No authorization required
 
 ### HTTP request headers
 
@@ -121,9 +118,6 @@ namespace Example
         public static void Main()
         {
             Configuration.Default.BasePath = "http://localhost";
-            // Configure OAuth2 access token for authorization: oauth2
-            Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
-
             var apiInstance = new ResultsApi(Configuration.Default);
             var request = new CreateResults(); // CreateResults | The details of what to upsert (optional) 
 
@@ -157,7 +151,7 @@ Name | Type | Description  | Notes
 
 ### Authorization
 
-[oauth2](../README.md#oauth2)
+No authorization required
 
 ### HTTP request headers
 
