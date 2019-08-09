@@ -31,12 +31,6 @@ namespace Lusid.Sdk.Tests.Tutorials.Ibor
             _testDataUtilities = new TestDataUtilities(_apiFactory.Api<ITransactionPortfoliosApi>());
         }
 
-        [OneTimeTearDown]
-        public void TearDown()
-        {
-            _instrumentLoader.DeleteInstruments();
-        }
-
         [Test]
         public void Run_Valuation()
         {
