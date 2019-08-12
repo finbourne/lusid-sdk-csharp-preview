@@ -35,7 +35,7 @@ namespace Lusid.Sdk.Api
         /// <param name="masteredOnly">Optional. If set to true, only search over instruments that have been mastered within LUSID. Default to false (optional, default to false)</param>
         /// <param name="symbols">A collection of instrument symbols to search for (optional)</param>
         /// <returns>ICollection&lt;InstrumentMatch&gt;</returns>
-        ICollection<InstrumentMatch> InstrumentsSearch (string masteredEffectiveAt = null, bool? masteredOnly = null, List<InstrumentSearchProperty> symbols = null);
+        ICollection<InstrumentMatch> InstrumentsSearch (DateTimeOrCutLabel masteredEffectiveAt = null, bool? masteredOnly = null, List<InstrumentSearchProperty> symbols = null);
 
         /// <summary>
         /// [EXPERIMENTAL] Search instruments
@@ -48,7 +48,7 @@ namespace Lusid.Sdk.Api
         /// <param name="masteredOnly">Optional. If set to true, only search over instruments that have been mastered within LUSID. Default to false (optional, default to false)</param>
         /// <param name="symbols">A collection of instrument symbols to search for (optional)</param>
         /// <returns>ApiResponse of ICollection&lt;InstrumentMatch&gt;</returns>
-        ApiResponse<ICollection<InstrumentMatch>> InstrumentsSearchWithHttpInfo (string masteredEffectiveAt = null, bool? masteredOnly = null, List<InstrumentSearchProperty> symbols = null);
+        ApiResponse<ICollection<InstrumentMatch>> InstrumentsSearchWithHttpInfo (DateTimeOrCutLabel masteredEffectiveAt = null, bool? masteredOnly = null, List<InstrumentSearchProperty> symbols = null);
         /// <summary>
         /// [EXPERIMENTAL] Search portfolio groups
         /// </summary>
@@ -149,7 +149,7 @@ namespace Lusid.Sdk.Api
         /// <param name="masteredOnly">Optional. If set to true, only search over instruments that have been mastered within LUSID. Default to false (optional, default to false)</param>
         /// <param name="symbols">A collection of instrument symbols to search for (optional)</param>
         /// <returns>Task of ICollection&lt;InstrumentMatch&gt;</returns>
-        System.Threading.Tasks.Task<ICollection<InstrumentMatch>> InstrumentsSearchAsync (string masteredEffectiveAt = null, bool? masteredOnly = null, List<InstrumentSearchProperty> symbols = null);
+        System.Threading.Tasks.Task<ICollection<InstrumentMatch>> InstrumentsSearchAsync (DateTimeOrCutLabel masteredEffectiveAt = null, bool? masteredOnly = null, List<InstrumentSearchProperty> symbols = null);
 
         /// <summary>
         /// [EXPERIMENTAL] Search instruments
@@ -162,7 +162,7 @@ namespace Lusid.Sdk.Api
         /// <param name="masteredOnly">Optional. If set to true, only search over instruments that have been mastered within LUSID. Default to false (optional, default to false)</param>
         /// <param name="symbols">A collection of instrument symbols to search for (optional)</param>
         /// <returns>Task of ApiResponse (ICollection&lt;InstrumentMatch&gt;)</returns>
-        System.Threading.Tasks.Task<ApiResponse<ICollection<InstrumentMatch>>> InstrumentsSearchAsyncWithHttpInfo (string masteredEffectiveAt = null, bool? masteredOnly = null, List<InstrumentSearchProperty> symbols = null);
+        System.Threading.Tasks.Task<ApiResponse<ICollection<InstrumentMatch>>> InstrumentsSearchAsyncWithHttpInfo (DateTimeOrCutLabel masteredEffectiveAt = null, bool? masteredOnly = null, List<InstrumentSearchProperty> symbols = null);
         /// <summary>
         /// [EXPERIMENTAL] Search portfolio groups
         /// </summary>
@@ -369,7 +369,7 @@ namespace Lusid.Sdk.Api
         /// <param name="masteredOnly">Optional. If set to true, only search over instruments that have been mastered within LUSID. Default to false (optional, default to false)</param>
         /// <param name="symbols">A collection of instrument symbols to search for (optional)</param>
         /// <returns>ICollection&lt;InstrumentMatch&gt;</returns>
-        public ICollection<InstrumentMatch> InstrumentsSearch (string masteredEffectiveAt = null, bool? masteredOnly = null, List<InstrumentSearchProperty> symbols = null)
+        public ICollection<InstrumentMatch> InstrumentsSearch (DateTimeOrCutLabel masteredEffectiveAt = null, bool? masteredOnly = null, List<InstrumentSearchProperty> symbols = null)
         {
              ApiResponse<ICollection<InstrumentMatch>> localVarResponse = InstrumentsSearchWithHttpInfo(masteredEffectiveAt, masteredOnly, symbols);
              return localVarResponse.Data;
@@ -383,7 +383,7 @@ namespace Lusid.Sdk.Api
         /// <param name="masteredOnly">Optional. If set to true, only search over instruments that have been mastered within LUSID. Default to false (optional, default to false)</param>
         /// <param name="symbols">A collection of instrument symbols to search for (optional)</param>
         /// <returns>ApiResponse of ICollection&lt;InstrumentMatch&gt;</returns>
-        public ApiResponse< ICollection<InstrumentMatch> > InstrumentsSearchWithHttpInfo (string masteredEffectiveAt = null, bool? masteredOnly = null, List<InstrumentSearchProperty> symbols = null)
+        public ApiResponse< ICollection<InstrumentMatch> > InstrumentsSearchWithHttpInfo (DateTimeOrCutLabel masteredEffectiveAt = null, bool? masteredOnly = null, List<InstrumentSearchProperty> symbols = null)
         {
 
             var localVarPath = "./api/search/instruments";
@@ -457,7 +457,7 @@ namespace Lusid.Sdk.Api
         /// <param name="masteredOnly">Optional. If set to true, only search over instruments that have been mastered within LUSID. Default to false (optional, default to false)</param>
         /// <param name="symbols">A collection of instrument symbols to search for (optional)</param>
         /// <returns>Task of ICollection&lt;InstrumentMatch&gt;</returns>
-        public async System.Threading.Tasks.Task<ICollection<InstrumentMatch>> InstrumentsSearchAsync (string masteredEffectiveAt = null, bool? masteredOnly = null, List<InstrumentSearchProperty> symbols = null)
+        public async System.Threading.Tasks.Task<ICollection<InstrumentMatch>> InstrumentsSearchAsync (DateTimeOrCutLabel masteredEffectiveAt = null, bool? masteredOnly = null, List<InstrumentSearchProperty> symbols = null)
         {
              ApiResponse<ICollection<InstrumentMatch>> localVarResponse = await InstrumentsSearchAsyncWithHttpInfo(masteredEffectiveAt, masteredOnly, symbols);
              return localVarResponse.Data;
@@ -472,7 +472,7 @@ namespace Lusid.Sdk.Api
         /// <param name="masteredOnly">Optional. If set to true, only search over instruments that have been mastered within LUSID. Default to false (optional, default to false)</param>
         /// <param name="symbols">A collection of instrument symbols to search for (optional)</param>
         /// <returns>Task of ApiResponse (ICollection&lt;InstrumentMatch&gt;)</returns>
-        public async System.Threading.Tasks.Task<ApiResponse<ICollection<InstrumentMatch>>> InstrumentsSearchAsyncWithHttpInfo (string masteredEffectiveAt = null, bool? masteredOnly = null, List<InstrumentSearchProperty> symbols = null)
+        public async System.Threading.Tasks.Task<ApiResponse<ICollection<InstrumentMatch>>> InstrumentsSearchAsyncWithHttpInfo (DateTimeOrCutLabel masteredEffectiveAt = null, bool? masteredOnly = null, List<InstrumentSearchProperty> symbols = null)
         {
 
             var localVarPath = "./api/search/instruments";
