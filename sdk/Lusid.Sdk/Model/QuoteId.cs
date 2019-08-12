@@ -38,7 +38,7 @@ namespace Lusid.Sdk.Model
         /// </summary>
         /// <param name="quoteSeriesId">quoteSeriesId (required).</param>
         /// <param name="effectiveAt">The effective datetime or cut label at which the quote is valid from. (required).</param>
-        public QuoteId(QuoteSeriesId quoteSeriesId = default(QuoteSeriesId), string effectiveAt = default(string))
+        public QuoteId(QuoteSeriesId quoteSeriesId = default(QuoteSeriesId), DateTimeOrCutLabel effectiveAt = default(DateTimeOrCutLabel))
         {
             // to ensure "quoteSeriesId" is required (not null)
             if (quoteSeriesId == null)
@@ -73,7 +73,7 @@ namespace Lusid.Sdk.Model
         /// </summary>
         /// <value>The effective datetime or cut label at which the quote is valid from.</value>
         [DataMember(Name="effectiveAt", EmitDefaultValue=false)]
-        public string EffectiveAt { get; set; }
+        public DateTimeOrCutLabel EffectiveAt { get; set; }
 
         /// <summary>
         /// Returns the string presentation of the object
