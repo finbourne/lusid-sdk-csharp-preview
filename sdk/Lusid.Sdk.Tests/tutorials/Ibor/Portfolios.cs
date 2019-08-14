@@ -6,6 +6,7 @@ using Lusid.Sdk.Model;
 using Lusid.Sdk.Tests.Utilities;
 using Lusid.Sdk.Utilities;
 using NUnit.Framework;
+using NUnit.Framework.Constraints;
 
 namespace Lusid.Sdk.Tests.Tutorials.Ibor
 {
@@ -60,6 +61,68 @@ namespace Lusid.Sdk.Tests.Tutorials.Ibor
         }
 
         [Test]
+        public void Create_Transaction_Portfolio_With_Properties()
+        {
+            var uuid = Guid.NewGuid().ToString();
+            var propertyName = $"fund-style-{uuid}";
+            var dataTypeId = new ResourceId("system", "string");
+
+            //    Property definition
+            var propertyDefinition = new CreatePropertyDefinitionRequest(
+                domain: CreatePropertyDefinitionRequest.DomainEnum.Portfolio,
+                scope: TestDataUtilities.TutorialScope,
+                code: propertyName,
+                valueRequired: false,
+                displayName: "Fund Style",
+                dataTypeId: dataTypeId,
+                lifeTime: CreatePropertyDefinitionRequest.LifeTimeEnum.Perpetual);
+
+            //    Create the property definition
+            var propertyDefinitionResult =
+                _apiFactory.Api<IPropertyDefinitionsApi>().CreatePropertyDefinition(propertyDefinition);
+            
+            //    Property value
+            var propertyValue = "Active";
+            
+            var portfolioProperty = new Property(
+                key: propertyDefinitionResult.Key,
+                value: new PropertyValue(labelValue: propertyValue));
+            
+            //    Properties to add to portfolio on creation
+            var properties = new Dictionary<String, Property>
+            {
+                [propertyDefinitionResult.Key] = portfolioProperty
+            };
+            
+            //    Details of the portfolio to be created
+            var request = new CreateTransactionPortfolioRequest(
+                displayName: $"portfolio-{uuid}",
+                code: $"id-{uuid}",
+                baseCurrency: "GBP",
+                //    Set the property value when creating the portfolio
+                properties: properties
+                );
+
+            var portfolio = _apiFactory.Api<ITransactionPortfoliosApi>().CreatePortfolio(
+                scope: TestDataUtilities.TutorialScope,
+                createRequest: request);
+
+            var portfolioCode = portfolio.Id.Code;
+
+            Assert.That(portfolioCode, Is.EqualTo(request.Code));
+
+            var portfolioProperties = _apiFactory.Api<IPortfoliosApi>().GetPortfolioProperties(
+                scope: TestDataUtilities.TutorialScope,
+                code: portfolioCode);
+            
+            Assert.That(portfolioProperties.Properties.Count, Is.EqualTo(1));
+            Assert.That(portfolioProperties.Properties[propertyDefinitionResult.Key].Value.LabelValue, Is.EqualTo(propertyValue));
+            
+        }
+            
+            
+
+        [Test]
         public void Add_Transactions_To_Portfolio()
         {
             //    Effective date of the trades. All dates/times must be supplied in UTC
@@ -90,7 +153,6 @@ namespace Lusid.Sdk.Tests.Tutorials.Ibor
                 totalConsideration: new CurrencyAndAmount(1230, "GBP"),
                 source: "Broker"
             );
-
             //    Add the transaction to the portfolio
             _apiFactory.Api<ITransactionPortfoliosApi>().UpsertTransactions(TutorialScope, portfolioId, new List<TransactionRequest> {transaction});
             
