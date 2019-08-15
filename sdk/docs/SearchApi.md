@@ -7,7 +7,8 @@ Method | HTTP request | Description
 [**InstrumentsSearch**](SearchApi.md#instrumentssearch) | **POST** /api/search/instruments | [EXPERIMENTAL] Instruments search
 [**PortfolioGroupsSearch**](SearchApi.md#portfoliogroupssearch) | **POST** /api/search/portfoliogroups | [EXPERIMENTAL] Portfolio groups search
 [**PortfoliosSearch**](SearchApi.md#portfoliossearch) | **POST** /api/search/portfolios | [EXPERIMENTAL] Portfolios search
-[**PropertiesSearch**](SearchApi.md#propertiessearch) | **POST** /api/search/propertydefinitions | [EXPERIMENTAL] Properties search
+[**PropertiesSearch**](SearchApi.md#propertiessearch) | **POST** /api/search/propertydefinitions | [EXPERIMENTAL] Search property definitions
+[**SearchPortfolios**](SearchApi.md#searchportfolios) | **GET** /api/search/portfolios | [EXPERIMENTAL] Search Portfolios
 
 
 
@@ -263,7 +264,7 @@ Name | Type | Description  | Notes
 
 > ResourceListOfPropertyDefinition PropertiesSearch (Object request, string filter = null)
 
-[EXPERIMENTAL] Properties search
+[EXPERIMENTAL] Search property definitions
 
 Search across all user defined property definitions across all scopes.
 
@@ -292,7 +293,7 @@ namespace Example
 
             try
             {
-                // [EXPERIMENTAL] Properties search
+                // [EXPERIMENTAL] Search property definitions
                 ResourceListOfPropertyDefinition result = apiInstance.PropertiesSearch(request, filter);
                 Debug.WriteLine(result);
             }
@@ -332,6 +333,86 @@ Name | Type | Description  | Notes
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
 | **200** | The property definitions found by the search |  -  |
+| **400** | The details of the input related failure |  -  |
+| **0** | Error response |  -  |
+
+[[Back to top]](#)
+[[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
+
+
+## SearchPortfolios
+
+> ResourceListOfPortfolioSearchResult SearchPortfolios (string filter = null)
+
+[EXPERIMENTAL] Search Portfolios
+
+Search through all portfolios
+
+### Example
+
+```csharp
+using System.Collections.Generic;
+using System.Diagnostics;
+using Lusid.Sdk.Api;
+using Lusid.Sdk.Client;
+using Lusid.Sdk.Model;
+
+namespace Example
+{
+    public class SearchPortfoliosExample
+    {
+        public static void Main()
+        {
+            Configuration.Default.BasePath = "http://localhost";
+            // Configure OAuth2 access token for authorization: oauth2
+            Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
+
+            var apiInstance = new SearchApi(Configuration.Default);
+            var filter = filter_example;  // string | Expression to filter the result set. Read more about <see href=\"https://support.lusid.com/filtering-results-from-lusid\"> filtering results from LUSID</see>. (optional) 
+
+            try
+            {
+                // [EXPERIMENTAL] Search Portfolios
+                ResourceListOfPortfolioSearchResult result = apiInstance.SearchPortfolios(filter);
+                Debug.WriteLine(result);
+            }
+            catch (ApiException e)
+            {
+                Debug.Print("Exception when calling SearchApi.SearchPortfolios: " + e.Message );
+                Debug.Print("Status Code: "+ e.ErrorCode);
+                Debug.Print(e.StackTrace);
+            }
+        }
+    }
+}
+```
+
+### Parameters
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **filter** | **string**| Expression to filter the result set. Read more about &lt;see href&#x3D;\&quot;https://support.lusid.com/filtering-results-from-lusid\&quot;&gt; filtering results from LUSID&lt;/see&gt;. | [optional] 
+
+### Return type
+
+[**ResourceListOfPortfolioSearchResult**](ResourceListOfPortfolioSearchResult.md)
+
+### Authorization
+
+[oauth2](../README.md#oauth2)
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: text/plain, application/json, text/json
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+| **200** | Success |  -  |
 | **400** | The details of the input related failure |  -  |
 | **0** | Error response |  -  |
 
