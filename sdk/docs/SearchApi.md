@@ -4,20 +4,20 @@ All URIs are relative to *http://localhost*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
-[**InstrumentsSearch**](SearchApi.md#instrumentssearch) | **POST** /api/search/instruments | [EXPERIMENTAL] Search instruments
-[**PortfolioGroupsSearch**](SearchApi.md#portfoliogroupssearch) | **POST** /api/search/portfoliogroups | [EXPERIMENTAL] Search portfolio groups
-[**PortfoliosSearch**](SearchApi.md#portfoliossearch) | **POST** /api/search/portfolios | [EXPERIMENTAL] Search portfolios
-[**PropertiesSearch**](SearchApi.md#propertiessearch) | **POST** /api/search/propertydefinitions | [EXPERIMENTAL] Search property definitions
+[**InstrumentsSearch**](SearchApi.md#instrumentssearch) | **POST** /api/search/instruments | [EXPERIMENTAL] Instruments search
+[**PortfolioGroupsSearch**](SearchApi.md#portfoliogroupssearch) | **POST** /api/search/portfoliogroups | [EXPERIMENTAL] Portfolio groups search
+[**PortfoliosSearch**](SearchApi.md#portfoliossearch) | **POST** /api/search/portfolios | [EXPERIMENTAL] Portfolios search
+[**PropertiesSearch**](SearchApi.md#propertiessearch) | **POST** /api/search/propertydefinitions | [EXPERIMENTAL] Properties search
 
 
 
 ## InstrumentsSearch
 
-> ICollection&lt;InstrumentMatch&gt; InstrumentsSearch (DateTimeOrCutLabel masteredEffectiveAt = null, bool? masteredOnly = null, List<InstrumentSearchProperty> symbols = null)
+> ICollection&lt;InstrumentMatch&gt; InstrumentsSearch (List<InstrumentSearchProperty> symbols, DateTimeOrCutLabel masteredEffectiveAt = null, bool? masteredOnly = null)
 
-[EXPERIMENTAL] Search instruments
+[EXPERIMENTAL] Instruments search
 
-Search through instruments that have been mastered in LUSID, and optionally augment results with instruments from a symbology service
+Search across all instruments that have been mastered in LUSID. Optionally augment the results with instruments from an external symbology service,  currently OpenFIGI.
 
 ### Example
 
@@ -39,14 +39,14 @@ namespace Example
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
             var apiInstance = new SearchApi(Configuration.Default);
-            var masteredEffectiveAt = masteredEffectiveAt_example;  // DateTimeOrCutLabel | Optional. The effective date for searching mastered instruments. If this is not set, then the current date is taken.  This parameter has no effect on instruments that have not been mastered within LUSID. (optional) 
-            var masteredOnly = true;  // bool? | Optional. If set to true, only search over instruments that have been mastered within LUSID. Default to false (optional)  (default to false)
-            var symbols = new List<InstrumentSearchProperty>(); // List<InstrumentSearchProperty> | A collection of instrument symbols to search for (optional) 
+            var symbols = new List<InstrumentSearchProperty>(); // List<InstrumentSearchProperty> | A collection of instrument properties to search for. LUSID will return instruments for any matched              properties.
+            var masteredEffectiveAt = masteredEffectiveAt_example;  // DateTimeOrCutLabel | The effective datetime or cut label to use when searching mastered instruments. This parameter has no effect on instruments that  have not been mastered within LUSID. Defaults to the current LUSID system datetime if not specified. (optional) 
+            var masteredOnly = true;  // bool? | If set to true, only search over instruments that have been mastered within LUSID. Defaults to false. (optional)  (default to false)
 
             try
             {
-                // [EXPERIMENTAL] Search instruments
-                ICollection<InstrumentMatch> result = apiInstance.InstrumentsSearch(masteredEffectiveAt, masteredOnly, symbols);
+                // [EXPERIMENTAL] Instruments search
+                ICollection<InstrumentMatch> result = apiInstance.InstrumentsSearch(symbols, masteredEffectiveAt, masteredOnly);
                 Debug.WriteLine(result);
             }
             catch (ApiException e)
@@ -65,9 +65,9 @@ namespace Example
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **masteredEffectiveAt** | **DateTimeOrCutLabel**| Optional. The effective date for searching mastered instruments. If this is not set, then the current date is taken.  This parameter has no effect on instruments that have not been mastered within LUSID. | [optional] 
- **masteredOnly** | **bool?**| Optional. If set to true, only search over instruments that have been mastered within LUSID. Default to false | [optional] [default to false]
- **symbols** | [**List&lt;InstrumentSearchProperty&gt;**](InstrumentSearchProperty.md)| A collection of instrument symbols to search for | [optional] 
+ **symbols** | [**List&lt;InstrumentSearchProperty&gt;**](InstrumentSearchProperty.md)| A collection of instrument properties to search for. LUSID will return instruments for any matched              properties. | 
+ **masteredEffectiveAt** | **DateTimeOrCutLabel**| The effective datetime or cut label to use when searching mastered instruments. This parameter has no effect on instruments that  have not been mastered within LUSID. Defaults to the current LUSID system datetime if not specified. | [optional] 
+ **masteredOnly** | **bool?**| If set to true, only search over instruments that have been mastered within LUSID. Defaults to false. | [optional] [default to false]
 
 ### Return type
 
@@ -85,7 +85,7 @@ Name | Type | Description  | Notes
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
-| **200** | Success |  -  |
+| **200** | The instruments found by the search |  -  |
 | **400** | The details of the input related failure |  -  |
 | **0** | Error response |  -  |
 
@@ -97,11 +97,11 @@ Name | Type | Description  | Notes
 
 ## PortfolioGroupsSearch
 
-> ResourceListOfPortfolioGroup PortfolioGroupsSearch (List<string> sortBy = null, int? start = null, int? limit = null, string filter = null, Object request = null)
+> ResourceListOfPortfolioGroup PortfolioGroupsSearch (Object request, string filter = null)
 
-[EXPERIMENTAL] Search portfolio groups
+[EXPERIMENTAL] Portfolio groups search
 
-Search through all portfolio groups
+Search across all portfolio groups across all scopes.
 
 ### Example
 
@@ -123,16 +123,13 @@ namespace Example
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
             var apiInstance = new SearchApi(Configuration.Default);
-            var sortBy = new List<string>(); // List<string> | Optional. Order the results by these fields. Use use the '-' sign to denote descending order e.g. -MyFieldName (optional) 
-            var start = 56;  // int? | Optional. When paginating, skip this number of results (optional) 
-            var limit = 56;  // int? | Optional. When paginating, limit the number of returned results to this many. (optional) 
-            var filter = filter_example;  // string | Optional. Expression to filter the result set (optional) 
-            var request = ;  // Object | A valid Elasticsearch 5.x request (optional) 
+            var request = ;  // Object | The search query to use. Read more about search queries in LUSID here https://support.lusid.com/constructing-a-search-request.
+            var filter = filter_example;  // string | Expression to filter the result set. Read more about filtering results from LUSID here https://support.lusid.com/filtering-results-from-lusid. (optional) 
 
             try
             {
-                // [EXPERIMENTAL] Search portfolio groups
-                ResourceListOfPortfolioGroup result = apiInstance.PortfolioGroupsSearch(sortBy, start, limit, filter, request);
+                // [EXPERIMENTAL] Portfolio groups search
+                ResourceListOfPortfolioGroup result = apiInstance.PortfolioGroupsSearch(request, filter);
                 Debug.WriteLine(result);
             }
             catch (ApiException e)
@@ -151,11 +148,8 @@ namespace Example
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **sortBy** | [**List&lt;string&gt;**](string.md)| Optional. Order the results by these fields. Use use the &#39;-&#39; sign to denote descending order e.g. -MyFieldName | [optional] 
- **start** | **int?**| Optional. When paginating, skip this number of results | [optional] 
- **limit** | **int?**| Optional. When paginating, limit the number of returned results to this many. | [optional] 
- **filter** | **string**| Optional. Expression to filter the result set | [optional] 
- **request** | **Object**| A valid Elasticsearch 5.x request | [optional] 
+ **request** | **Object**| The search query to use. Read more about search queries in LUSID here https://support.lusid.com/constructing-a-search-request. | 
+ **filter** | **string**| Expression to filter the result set. Read more about filtering results from LUSID here https://support.lusid.com/filtering-results-from-lusid. | [optional] 
 
 ### Return type
 
@@ -173,7 +167,7 @@ Name | Type | Description  | Notes
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
-| **200** | Success |  -  |
+| **200** | The portfolio groups found by the search |  -  |
 | **400** | The details of the input related failure |  -  |
 | **0** | Error response |  -  |
 
@@ -185,11 +179,11 @@ Name | Type | Description  | Notes
 
 ## PortfoliosSearch
 
-> ResourceListOfPortfolioSearchResult PortfoliosSearch (List<string> sortBy = null, int? start = null, int? limit = null, string filter = null, Object request = null)
+> ResourceListOfPortfolioSearchResult PortfoliosSearch (Object request, string filter = null)
 
-[EXPERIMENTAL] Search portfolios
+[EXPERIMENTAL] Portfolios search
 
-Search through all portfolios
+Search across all portfolios across all scopes.
 
 ### Example
 
@@ -211,16 +205,13 @@ namespace Example
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
             var apiInstance = new SearchApi(Configuration.Default);
-            var sortBy = new List<string>(); // List<string> | Optional. Order the results by these fields. Use use the '-' sign to denote descending order e.g. -MyFieldName (optional) 
-            var start = 56;  // int? | Optional. When paginating, skip this number of results (optional) 
-            var limit = 56;  // int? | Optional. When paginating, limit the number of returned results to this many. (optional) 
-            var filter = filter_example;  // string | Optional. Expression to filter the result set (optional) 
-            var request = ;  // Object | A valid Elasticsearch 5.x request (optional) 
+            var request = ;  // Object | The search query to use. Read more about search queries in LUSID here https://support.lusid.com/constructing-a-search-request.
+            var filter = filter_example;  // string | Expression to filter the result set. Read more about filtering results from LUSID here https://support.lusid.com/filtering-results-from-lusid. (optional) 
 
             try
             {
-                // [EXPERIMENTAL] Search portfolios
-                ResourceListOfPortfolioSearchResult result = apiInstance.PortfoliosSearch(sortBy, start, limit, filter, request);
+                // [EXPERIMENTAL] Portfolios search
+                ResourceListOfPortfolioSearchResult result = apiInstance.PortfoliosSearch(request, filter);
                 Debug.WriteLine(result);
             }
             catch (ApiException e)
@@ -239,11 +230,8 @@ namespace Example
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **sortBy** | [**List&lt;string&gt;**](string.md)| Optional. Order the results by these fields. Use use the &#39;-&#39; sign to denote descending order e.g. -MyFieldName | [optional] 
- **start** | **int?**| Optional. When paginating, skip this number of results | [optional] 
- **limit** | **int?**| Optional. When paginating, limit the number of returned results to this many. | [optional] 
- **filter** | **string**| Optional. Expression to filter the result set | [optional] 
- **request** | **Object**| A valid Elasticsearch 5.x request | [optional] 
+ **request** | **Object**| The search query to use. Read more about search queries in LUSID here https://support.lusid.com/constructing-a-search-request. | 
+ **filter** | **string**| Expression to filter the result set. Read more about filtering results from LUSID here https://support.lusid.com/filtering-results-from-lusid. | [optional] 
 
 ### Return type
 
@@ -261,7 +249,7 @@ Name | Type | Description  | Notes
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
-| **200** | Success |  -  |
+| **200** | The portfolios found by the search |  -  |
 | **400** | The details of the input related failure |  -  |
 | **0** | Error response |  -  |
 
@@ -273,11 +261,11 @@ Name | Type | Description  | Notes
 
 ## PropertiesSearch
 
-> ResourceListOfPropertyDefinition PropertiesSearch (List<string> sortBy = null, int? start = null, int? limit = null, string filter = null, Object request = null)
+> ResourceListOfPropertyDefinition PropertiesSearch (Object request, string filter = null)
 
-[EXPERIMENTAL] Search property definitions
+[EXPERIMENTAL] Properties search
 
-Search through all property definitions
+Search across all user defined property definitions across all scopes.
 
 ### Example
 
@@ -299,16 +287,13 @@ namespace Example
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
             var apiInstance = new SearchApi(Configuration.Default);
-            var sortBy = new List<string>(); // List<string> | Optional. Order the results by these fields. Use use the '-' sign to denote descending order e.g. -MyFieldName (optional) 
-            var start = 56;  // int? | Optional. When paginating, skip this number of results (optional) 
-            var limit = 56;  // int? | Optional. When paginating, limit the number of returned results to this many. (optional) 
-            var filter = filter_example;  // string | Optional. Expression to filter the result set (optional) 
-            var request = ;  // Object | A valid Elasticsearch 5.x request (optional) 
+            var request = ;  // Object | The search query to use. Read more about search queries in LUSID here https://support.lusid.com/constructing-a-search-request.
+            var filter = filter_example;  // string | Expression to filter the result set. Read more about filtering results from LUSID here https://support.lusid.com/filtering-results-from-lusid. (optional) 
 
             try
             {
-                // [EXPERIMENTAL] Search property definitions
-                ResourceListOfPropertyDefinition result = apiInstance.PropertiesSearch(sortBy, start, limit, filter, request);
+                // [EXPERIMENTAL] Properties search
+                ResourceListOfPropertyDefinition result = apiInstance.PropertiesSearch(request, filter);
                 Debug.WriteLine(result);
             }
             catch (ApiException e)
@@ -327,11 +312,8 @@ namespace Example
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **sortBy** | [**List&lt;string&gt;**](string.md)| Optional. Order the results by these fields. Use use the &#39;-&#39; sign to denote descending order e.g. -MyFieldName | [optional] 
- **start** | **int?**| Optional. When paginating, skip this number of results | [optional] 
- **limit** | **int?**| Optional. When paginating, limit the number of returned results to this many. | [optional] 
- **filter** | **string**| Optional. Expression to filter the result set | [optional] 
- **request** | **Object**| A valid Elasticsearch 5.x request | [optional] 
+ **request** | **Object**| The search query to use. Read more about search queries in LUSID here https://support.lusid.com/constructing-a-search-request. | 
+ **filter** | **string**| Expression to filter the result set. Read more about filtering results from LUSID here https://support.lusid.com/filtering-results-from-lusid. | [optional] 
 
 ### Return type
 
@@ -349,7 +331,7 @@ Name | Type | Description  | Notes
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
-| **200** | Success |  -  |
+| **200** | The property definitions found by the search |  -  |
 | **400** | The details of the input related failure |  -  |
 | **0** | Error response |  -  |
 
