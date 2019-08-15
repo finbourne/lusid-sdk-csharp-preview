@@ -23,46 +23,42 @@ using OpenAPIDateConverter = Lusid.Sdk.Client.OpenAPIDateConverter;
 namespace Lusid.Sdk.Model
 {
     /// <summary>
-    /// UpsertQuotesResponse
+    /// DeleteInstrumentPropertiesResponse
     /// </summary>
     [DataContract]
-    public partial class UpsertQuotesResponse :  IEquatable<UpsertQuotesResponse>
+    public partial class DeleteInstrumentPropertiesResponse :  IEquatable<DeleteInstrumentPropertiesResponse>
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="UpsertQuotesResponse" /> class.
+        /// Initializes a new instance of the <see cref="DeleteInstrumentPropertiesResponse" /> class.
         /// </summary>
-        /// <param name="href">The specifc Uniform Resource Identifier (URI) for this resource at the requested effective and asAt datetime..</param>
-        /// <param name="values">The quotes which have been successfully updated or inserted..</param>
-        /// <param name="failed">The quotes that could not be updated or inserted along with a reason for their failure..</param>
+        [JsonConstructorAttribute]
+        protected DeleteInstrumentPropertiesResponse() { }
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DeleteInstrumentPropertiesResponse" /> class.
+        /// </summary>
+        /// <param name="asAt">The asAt datetime at which the properties were removed from the specified instruments. (required).</param>
         /// <param name="links">links.</param>
-        public UpsertQuotesResponse(string href = default(string), Dictionary<string, Quote> values = default(Dictionary<string, Quote>), Dictionary<string, ErrorDetail> failed = default(Dictionary<string, ErrorDetail>), List<Link> links = default(List<Link>))
+        public DeleteInstrumentPropertiesResponse(DateTimeOffset? asAt = default(DateTimeOffset?), List<Link> links = default(List<Link>))
         {
-            this.Href = href;
-            this.Values = values;
-            this.Failed = failed;
+            // to ensure "asAt" is required (not null)
+            if (asAt == null)
+            {
+                throw new InvalidDataException("asAt is a required property for DeleteInstrumentPropertiesResponse and cannot be null");
+            }
+            else
+            {
+                this.AsAt = asAt;
+            }
+            
             this.Links = links;
         }
         
         /// <summary>
-        /// The specifc Uniform Resource Identifier (URI) for this resource at the requested effective and asAt datetime.
+        /// The asAt datetime at which the properties were removed from the specified instruments.
         /// </summary>
-        /// <value>The specifc Uniform Resource Identifier (URI) for this resource at the requested effective and asAt datetime.</value>
-        [DataMember(Name="href", EmitDefaultValue=false)]
-        public string Href { get; set; }
-
-        /// <summary>
-        /// The quotes which have been successfully updated or inserted.
-        /// </summary>
-        /// <value>The quotes which have been successfully updated or inserted.</value>
-        [DataMember(Name="values", EmitDefaultValue=false)]
-        public Dictionary<string, Quote> Values { get; set; }
-
-        /// <summary>
-        /// The quotes that could not be updated or inserted along with a reason for their failure.
-        /// </summary>
-        /// <value>The quotes that could not be updated or inserted along with a reason for their failure.</value>
-        [DataMember(Name="failed", EmitDefaultValue=false)]
-        public Dictionary<string, ErrorDetail> Failed { get; set; }
+        /// <value>The asAt datetime at which the properties were removed from the specified instruments.</value>
+        [DataMember(Name="asAt", EmitDefaultValue=false)]
+        public DateTimeOffset? AsAt { get; set; }
 
         /// <summary>
         /// Gets or Sets Links
@@ -77,10 +73,8 @@ namespace Lusid.Sdk.Model
         public override string ToString()
         {
             var sb = new StringBuilder();
-            sb.Append("class UpsertQuotesResponse {\n");
-            sb.Append("  Href: ").Append(Href).Append("\n");
-            sb.Append("  Values: ").Append(Values).Append("\n");
-            sb.Append("  Failed: ").Append(Failed).Append("\n");
+            sb.Append("class DeleteInstrumentPropertiesResponse {\n");
+            sb.Append("  AsAt: ").Append(AsAt).Append("\n");
             sb.Append("  Links: ").Append(Links).Append("\n");
             sb.Append("}\n");
             return sb.ToString();
@@ -102,36 +96,24 @@ namespace Lusid.Sdk.Model
         /// <returns>Boolean</returns>
         public override bool Equals(object input)
         {
-            return this.Equals(input as UpsertQuotesResponse);
+            return this.Equals(input as DeleteInstrumentPropertiesResponse);
         }
 
         /// <summary>
-        /// Returns true if UpsertQuotesResponse instances are equal
+        /// Returns true if DeleteInstrumentPropertiesResponse instances are equal
         /// </summary>
-        /// <param name="input">Instance of UpsertQuotesResponse to be compared</param>
+        /// <param name="input">Instance of DeleteInstrumentPropertiesResponse to be compared</param>
         /// <returns>Boolean</returns>
-        public bool Equals(UpsertQuotesResponse input)
+        public bool Equals(DeleteInstrumentPropertiesResponse input)
         {
             if (input == null)
                 return false;
 
             return 
                 (
-                    this.Href == input.Href ||
-                    (this.Href != null &&
-                    this.Href.Equals(input.Href))
-                ) && 
-                (
-                    this.Values == input.Values ||
-                    this.Values != null &&
-                    input.Values != null &&
-                    this.Values.SequenceEqual(input.Values)
-                ) && 
-                (
-                    this.Failed == input.Failed ||
-                    this.Failed != null &&
-                    input.Failed != null &&
-                    this.Failed.SequenceEqual(input.Failed)
+                    this.AsAt == input.AsAt ||
+                    (this.AsAt != null &&
+                    this.AsAt.Equals(input.AsAt))
                 ) && 
                 (
                     this.Links == input.Links ||
@@ -150,12 +132,8 @@ namespace Lusid.Sdk.Model
             unchecked // Overflow is fine, just wrap
             {
                 int hashCode = 41;
-                if (this.Href != null)
-                    hashCode = hashCode * 59 + this.Href.GetHashCode();
-                if (this.Values != null)
-                    hashCode = hashCode * 59 + this.Values.GetHashCode();
-                if (this.Failed != null)
-                    hashCode = hashCode * 59 + this.Failed.GetHashCode();
+                if (this.AsAt != null)
+                    hashCode = hashCode * 59 + this.AsAt.GetHashCode();
                 if (this.Links != null)
                     hashCode = hashCode * 59 + this.Links.GetHashCode();
                 return hashCode;
