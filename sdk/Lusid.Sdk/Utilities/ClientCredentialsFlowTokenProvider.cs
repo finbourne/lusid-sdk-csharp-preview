@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Runtime.CompilerServices;
+using System.Threading;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 
@@ -32,6 +33,7 @@ namespace Lusid.Sdk.Utilities
     public class ClientCredentialsFlowTokenProvider : ITokenProvider
     {
         private readonly ApiConfiguration _apiConfig;
+        private readonly SemaphoreSlim _semaphore = new SemaphoreSlim(1, 1);
 
         internal class AuthenticationToken
         {
@@ -60,18 +62,25 @@ namespace Lusid.Sdk.Utilities
         /// <inheritdoc />
         public async Task<string> GetAuthenticationTokenAsync()
         {
-            if (_lastIssuedToken == null || _lastIssuedToken.ExpiresOn < DateTimeOffset.UtcNow)
+            await _semaphore.WaitAsync();
+            try
             {
-                if (_lastIssuedToken?.RefreshToken != null)
+                if (_lastIssuedToken == null || _lastIssuedToken.ExpiresOn < DateTimeOffset.UtcNow)
                 {
-                    _lastIssuedToken = await RefreshToken(_apiConfig, _lastIssuedToken.RefreshToken);
-                }
-                else
-                {
-                    _lastIssuedToken = await GetNewToken(_apiConfig);
+                    if (_lastIssuedToken?.RefreshToken != null)
+                    {
+                        _lastIssuedToken = await RefreshToken(_apiConfig, _lastIssuedToken.RefreshToken);
+                    }
+                    else
+                    {
+                        _lastIssuedToken = await GetNewToken(_apiConfig);
+                    }
                 }
             }
-
+            finally
+            {
+                _semaphore.Release();
+            }
             return _lastIssuedToken.Token;
         }
 

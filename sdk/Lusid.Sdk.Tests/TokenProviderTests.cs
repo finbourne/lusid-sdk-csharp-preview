@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 using Lusid.Sdk.Utilities;
 using Microsoft.Extensions.Configuration;
@@ -10,25 +12,14 @@ namespace Lusid.Sdk.Tests
 {
     public class TokenProviderTests
     {
-        private static ApiConfiguration GetConfig()
-        {
-            var apiConfig = new ApiConfiguration();
+        private static readonly Lazy<ApiConfiguration> ApiConfig =
+            new Lazy<ApiConfiguration>(() => ApiConfigurationBuilder.Build("secrets.json"));
 
-            var config = new ConfigurationBuilder()
-                .SetBasePath(Directory.GetCurrentDirectory())
-                .AddJsonFile("secrets.json")
-                .Build();
-                
-            config.GetSection("api").Bind(apiConfig);
-
-            return apiConfig;
-        }
-
-        [Test, Explicit("Needs to have secrets populated in DefaultConfig")]
+        [Test]
         public async Task CanGetToken()
         {
             // GIVEN a token provider initialised with required secrets
-            var provider = new ClientCredentialsFlowTokenProvider(GetConfig());
+            var provider = new ClientCredentialsFlowTokenProvider(ApiConfig.Value);
 
             // WHEN the token is requested
             var token = await provider.GetAuthenticationTokenAsync();
@@ -37,11 +28,11 @@ namespace Lusid.Sdk.Tests
             Assert.That(token, Is.Not.Empty);
         }
 
-        [Test, Explicit("Needs to have secrets.json file containing user with offline-access enabled")]
+        [Test]
         public async Task CanRefreshWithRefreshToken()
         {
             // GIVEN a token from the TokenProvider that contains a refresh token
-            var provider = new ClientCredentialsFlowTokenProvider(GetConfig());
+            var provider = new ClientCredentialsFlowTokenProvider(ApiConfig.Value);
             var _ = await provider.GetAuthenticationTokenAsync();
             var firstTokenDetails = provider.GetLastToken();
             
@@ -64,7 +55,7 @@ namespace Lusid.Sdk.Tests
         public async Task CanRefreshWithoutToken()
         {
             // GIVEN a token from the TokenProvider that DOES NOT contain a refresh token
-            var provider = new ClientCredentialsFlowTokenProvider(GetConfig());
+            var provider = new ClientCredentialsFlowTokenProvider(ApiConfig.Value);
             var _ = await provider.GetAuthenticationTokenAsync();
             var firstTokenDetails = provider.GetLastToken();
 
@@ -101,5 +92,22 @@ namespace Lusid.Sdk.Tests
             var __ = config.AccessToken;
             mockTokenProvider.Verify(x => x.GetAuthenticationTokenAsync(), Times.Exactly(2));
         }
+
+        [Test]
+        public void Can_Retrieve_Same_Token_From_Multiple_Threads()
+        {
+            const int threadCount = 100;
+            
+            //    create threads with calls to get a token
+            var providers = Enumerable.Repeat(new ClientCredentialsFlowTokenProvider(ApiConfig.Value), threadCount).ToList();
+            var requests = providers.Select(p => p.GetAuthenticationTokenAsync());
+
+            //    get the tokens
+            Task.WaitAll(requests.ToArray());
+
+            //    all requests must have the same token i.e. reuse a valid token
+            Assert.That(requests.GroupBy(r => r.Result).Count(), Is.EqualTo(1), "Requests have different tokens");
+        }
     }
 }
+
