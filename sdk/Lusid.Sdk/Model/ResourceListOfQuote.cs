@@ -23,32 +23,32 @@ using OpenAPIDateConverter = Lusid.Sdk.Client.OpenAPIDateConverter;
 namespace Lusid.Sdk.Model
 {
     /// <summary>
-    /// UpsertPortfolioTransactionsResponse
+    /// ResourceListOfQuote
     /// </summary>
     [DataContract]
-    public partial class UpsertPortfolioTransactionsResponse :  IEquatable<UpsertPortfolioTransactionsResponse>
+    public partial class ResourceListOfQuote :  IEquatable<ResourceListOfQuote>
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="UpsertPortfolioTransactionsResponse" /> class.
+        /// Initializes a new instance of the <see cref="ResourceListOfQuote" /> class.
         /// </summary>
         [JsonConstructorAttribute]
-        protected UpsertPortfolioTransactionsResponse() { }
+        protected ResourceListOfQuote() { }
         /// <summary>
-        /// Initializes a new instance of the <see cref="UpsertPortfolioTransactionsResponse" /> class.
+        /// Initializes a new instance of the <see cref="ResourceListOfQuote" /> class.
         /// </summary>
-        /// <param name="version">version (required).</param>
-        /// <param name="href">The specifc Uniform Resource Identifier (URI) for this resource at the requested effective and asAt datetime..</param>
+        /// <param name="values">values (required).</param>
+        /// <param name="href">href.</param>
         /// <param name="links">links.</param>
-        public UpsertPortfolioTransactionsResponse(Version version = default(Version), string href = default(string), List<Link> links = default(List<Link>))
+        public ResourceListOfQuote(List<Quote> values = default(List<Quote>), string href = default(string), List<Link> links = default(List<Link>))
         {
-            // to ensure "version" is required (not null)
-            if (version == null)
+            // to ensure "values" is required (not null)
+            if (values == null)
             {
-                throw new InvalidDataException("version is a required property for UpsertPortfolioTransactionsResponse and cannot be null");
+                throw new InvalidDataException("values is a required property for ResourceListOfQuote and cannot be null");
             }
             else
             {
-                this.Version = version;
+                this.Values = values;
             }
             
             this.Href = href;
@@ -56,15 +56,14 @@ namespace Lusid.Sdk.Model
         }
         
         /// <summary>
-        /// Gets or Sets Version
+        /// Gets or Sets Values
         /// </summary>
-        [DataMember(Name="version", EmitDefaultValue=false)]
-        public Version Version { get; set; }
+        [DataMember(Name="values", EmitDefaultValue=false)]
+        public List<Quote> Values { get; set; }
 
         /// <summary>
-        /// The specifc Uniform Resource Identifier (URI) for this resource at the requested effective and asAt datetime.
+        /// Gets or Sets Href
         /// </summary>
-        /// <value>The specifc Uniform Resource Identifier (URI) for this resource at the requested effective and asAt datetime.</value>
         [DataMember(Name="href", EmitDefaultValue=false)]
         public string Href { get; set; }
 
@@ -81,8 +80,8 @@ namespace Lusid.Sdk.Model
         public override string ToString()
         {
             var sb = new StringBuilder();
-            sb.Append("class UpsertPortfolioTransactionsResponse {\n");
-            sb.Append("  Version: ").Append(Version).Append("\n");
+            sb.Append("class ResourceListOfQuote {\n");
+            sb.Append("  Values: ").Append(Values).Append("\n");
             sb.Append("  Href: ").Append(Href).Append("\n");
             sb.Append("  Links: ").Append(Links).Append("\n");
             sb.Append("}\n");
@@ -105,24 +104,25 @@ namespace Lusid.Sdk.Model
         /// <returns>Boolean</returns>
         public override bool Equals(object input)
         {
-            return this.Equals(input as UpsertPortfolioTransactionsResponse);
+            return this.Equals(input as ResourceListOfQuote);
         }
 
         /// <summary>
-        /// Returns true if UpsertPortfolioTransactionsResponse instances are equal
+        /// Returns true if ResourceListOfQuote instances are equal
         /// </summary>
-        /// <param name="input">Instance of UpsertPortfolioTransactionsResponse to be compared</param>
+        /// <param name="input">Instance of ResourceListOfQuote to be compared</param>
         /// <returns>Boolean</returns>
-        public bool Equals(UpsertPortfolioTransactionsResponse input)
+        public bool Equals(ResourceListOfQuote input)
         {
             if (input == null)
                 return false;
 
             return 
                 (
-                    this.Version == input.Version ||
-                    (this.Version != null &&
-                    this.Version.Equals(input.Version))
+                    this.Values == input.Values ||
+                    this.Values != null &&
+                    input.Values != null &&
+                    this.Values.SequenceEqual(input.Values)
                 ) && 
                 (
                     this.Href == input.Href ||
@@ -146,8 +146,8 @@ namespace Lusid.Sdk.Model
             unchecked // Overflow is fine, just wrap
             {
                 int hashCode = 41;
-                if (this.Version != null)
-                    hashCode = hashCode * 59 + this.Version.GetHashCode();
+                if (this.Values != null)
+                    hashCode = hashCode * 59 + this.Values.GetHashCode();
                 if (this.Href != null)
                     hashCode = hashCode * 59 + this.Href.GetHashCode();
                 if (this.Links != null)
