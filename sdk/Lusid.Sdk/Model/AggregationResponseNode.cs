@@ -23,97 +23,57 @@ using OpenAPIDateConverter = Lusid.Sdk.Client.OpenAPIDateConverter;
 namespace Lusid.Sdk.Model
 {
     /// <summary>
-    /// TransactionQueryParameters
+    /// AggregationResponseNode
     /// </summary>
     [DataContract]
-    public partial class TransactionQueryParameters :  IEquatable<TransactionQueryParameters>
+    public partial class AggregationResponseNode :  IEquatable<AggregationResponseNode>
     {
         /// <summary>
-        /// The date to compare against the upper and lower bounds for the effective datetime or cut label. Defaults to &#39;TradeDate&#39; if not specified.
+        /// Initializes a new instance of the <see cref="AggregationResponseNode" /> class.
         /// </summary>
-        /// <value>The date to compare against the upper and lower bounds for the effective datetime or cut label. Defaults to &#39;TradeDate&#39; if not specified.</value>
-        [JsonConverter(typeof(StringEnumConverter))]
-        public enum QueryModeEnum
+        /// <param name="key">key.</param>
+        /// <param name="value">value.</param>
+        /// <param name="depth">depth.</param>
+        /// <param name="properties">properties.</param>
+        /// <param name="children">children.</param>
+        public AggregationResponseNode(AggregateSpec key = default(AggregateSpec), string value = default(string), int? depth = default(int?), Dictionary<string, Object> properties = default(Dictionary<string, Object>), List<AggregationResponseNode> children = default(List<AggregationResponseNode>))
         {
-            /// <summary>
-            /// Enum TradeDate for value: TradeDate
-            /// </summary>
-            [EnumMember(Value = "TradeDate")]
-            TradeDate = 1,
-
-            /// <summary>
-            /// Enum SettleDate for value: SettleDate
-            /// </summary>
-            [EnumMember(Value = "SettleDate")]
-            SettleDate = 2
-
-        }
-
-        /// <summary>
-        /// The date to compare against the upper and lower bounds for the effective datetime or cut label. Defaults to &#39;TradeDate&#39; if not specified.
-        /// </summary>
-        /// <value>The date to compare against the upper and lower bounds for the effective datetime or cut label. Defaults to &#39;TradeDate&#39; if not specified.</value>
-        [DataMember(Name="queryMode", EmitDefaultValue=false)]
-        public QueryModeEnum? QueryMode { get; set; }
-        /// <summary>
-        /// Initializes a new instance of the <see cref="TransactionQueryParameters" /> class.
-        /// </summary>
-        [JsonConstructorAttribute]
-        protected TransactionQueryParameters() { }
-        /// <summary>
-        /// Initializes a new instance of the <see cref="TransactionQueryParameters" /> class.
-        /// </summary>
-        /// <param name="startDate">The lower bound effective datetime or cut label (inclusive) from which to build the transactions. (required).</param>
-        /// <param name="endDate">The upper bound effective datetime or cut label (inclusive) from which to retrieve transactions. (required).</param>
-        /// <param name="queryMode">The date to compare against the upper and lower bounds for the effective datetime or cut label. Defaults to &#39;TradeDate&#39; if not specified..</param>
-        /// <param name="showCancelledTransactions">Option to specify whether or not to include cancelled transactions in the output. Defaults to False if not specified..</param>
-        public TransactionQueryParameters(DateTimeOrCutLabel startDate = default(DateTimeOrCutLabel), DateTimeOrCutLabel endDate = default(DateTimeOrCutLabel), QueryModeEnum? queryMode = default(QueryModeEnum?), bool? showCancelledTransactions = default(bool?))
-        {
-            // to ensure "startDate" is required (not null)
-            if (startDate == null)
-            {
-                throw new InvalidDataException("startDate is a required property for TransactionQueryParameters and cannot be null");
-            }
-            else
-            {
-                this.StartDate = startDate;
-            }
-            
-            // to ensure "endDate" is required (not null)
-            if (endDate == null)
-            {
-                throw new InvalidDataException("endDate is a required property for TransactionQueryParameters and cannot be null");
-            }
-            else
-            {
-                this.EndDate = endDate;
-            }
-            
-            this.QueryMode = queryMode;
-            this.ShowCancelledTransactions = showCancelledTransactions;
+            this.Key = key;
+            this.Value = value;
+            this.Depth = depth;
+            this.Properties = properties;
+            this.Children = children;
         }
         
         /// <summary>
-        /// The lower bound effective datetime or cut label (inclusive) from which to build the transactions.
+        /// Gets or Sets Key
         /// </summary>
-        /// <value>The lower bound effective datetime or cut label (inclusive) from which to build the transactions.</value>
-        [DataMember(Name="startDate", EmitDefaultValue=false)]
-        public DateTimeOrCutLabel StartDate { get; set; }
+        [DataMember(Name="key", EmitDefaultValue=false)]
+        public AggregateSpec Key { get; set; }
 
         /// <summary>
-        /// The upper bound effective datetime or cut label (inclusive) from which to retrieve transactions.
+        /// Gets or Sets Value
         /// </summary>
-        /// <value>The upper bound effective datetime or cut label (inclusive) from which to retrieve transactions.</value>
-        [DataMember(Name="endDate", EmitDefaultValue=false)]
-        public DateTimeOrCutLabel EndDate { get; set; }
-
+        [DataMember(Name="value", EmitDefaultValue=false)]
+        public string Value { get; set; }
 
         /// <summary>
-        /// Option to specify whether or not to include cancelled transactions in the output. Defaults to False if not specified.
+        /// Gets or Sets Depth
         /// </summary>
-        /// <value>Option to specify whether or not to include cancelled transactions in the output. Defaults to False if not specified.</value>
-        [DataMember(Name="showCancelledTransactions", EmitDefaultValue=false)]
-        public bool? ShowCancelledTransactions { get; set; }
+        [DataMember(Name="depth", EmitDefaultValue=false)]
+        public int? Depth { get; set; }
+
+        /// <summary>
+        /// Gets or Sets Properties
+        /// </summary>
+        [DataMember(Name="properties", EmitDefaultValue=false)]
+        public Dictionary<string, Object> Properties { get; set; }
+
+        /// <summary>
+        /// Gets or Sets Children
+        /// </summary>
+        [DataMember(Name="children", EmitDefaultValue=false)]
+        public List<AggregationResponseNode> Children { get; set; }
 
         /// <summary>
         /// Returns the string presentation of the object
@@ -122,11 +82,12 @@ namespace Lusid.Sdk.Model
         public override string ToString()
         {
             var sb = new StringBuilder();
-            sb.Append("class TransactionQueryParameters {\n");
-            sb.Append("  StartDate: ").Append(StartDate).Append("\n");
-            sb.Append("  EndDate: ").Append(EndDate).Append("\n");
-            sb.Append("  QueryMode: ").Append(QueryMode).Append("\n");
-            sb.Append("  ShowCancelledTransactions: ").Append(ShowCancelledTransactions).Append("\n");
+            sb.Append("class AggregationResponseNode {\n");
+            sb.Append("  Key: ").Append(Key).Append("\n");
+            sb.Append("  Value: ").Append(Value).Append("\n");
+            sb.Append("  Depth: ").Append(Depth).Append("\n");
+            sb.Append("  Properties: ").Append(Properties).Append("\n");
+            sb.Append("  Children: ").Append(Children).Append("\n");
             sb.Append("}\n");
             return sb.ToString();
         }
@@ -147,39 +108,46 @@ namespace Lusid.Sdk.Model
         /// <returns>Boolean</returns>
         public override bool Equals(object input)
         {
-            return this.Equals(input as TransactionQueryParameters);
+            return this.Equals(input as AggregationResponseNode);
         }
 
         /// <summary>
-        /// Returns true if TransactionQueryParameters instances are equal
+        /// Returns true if AggregationResponseNode instances are equal
         /// </summary>
-        /// <param name="input">Instance of TransactionQueryParameters to be compared</param>
+        /// <param name="input">Instance of AggregationResponseNode to be compared</param>
         /// <returns>Boolean</returns>
-        public bool Equals(TransactionQueryParameters input)
+        public bool Equals(AggregationResponseNode input)
         {
             if (input == null)
                 return false;
 
             return 
                 (
-                    this.StartDate == input.StartDate ||
-                    (this.StartDate != null &&
-                    this.StartDate.Equals(input.StartDate))
+                    this.Key == input.Key ||
+                    (this.Key != null &&
+                    this.Key.Equals(input.Key))
                 ) && 
                 (
-                    this.EndDate == input.EndDate ||
-                    (this.EndDate != null &&
-                    this.EndDate.Equals(input.EndDate))
+                    this.Value == input.Value ||
+                    (this.Value != null &&
+                    this.Value.Equals(input.Value))
                 ) && 
                 (
-                    this.QueryMode == input.QueryMode ||
-                    (this.QueryMode != null &&
-                    this.QueryMode.Equals(input.QueryMode))
+                    this.Depth == input.Depth ||
+                    (this.Depth != null &&
+                    this.Depth.Equals(input.Depth))
                 ) && 
                 (
-                    this.ShowCancelledTransactions == input.ShowCancelledTransactions ||
-                    (this.ShowCancelledTransactions != null &&
-                    this.ShowCancelledTransactions.Equals(input.ShowCancelledTransactions))
+                    this.Properties == input.Properties ||
+                    this.Properties != null &&
+                    input.Properties != null &&
+                    this.Properties.SequenceEqual(input.Properties)
+                ) && 
+                (
+                    this.Children == input.Children ||
+                    this.Children != null &&
+                    input.Children != null &&
+                    this.Children.SequenceEqual(input.Children)
                 );
         }
 
@@ -192,14 +160,16 @@ namespace Lusid.Sdk.Model
             unchecked // Overflow is fine, just wrap
             {
                 int hashCode = 41;
-                if (this.StartDate != null)
-                    hashCode = hashCode * 59 + this.StartDate.GetHashCode();
-                if (this.EndDate != null)
-                    hashCode = hashCode * 59 + this.EndDate.GetHashCode();
-                if (this.QueryMode != null)
-                    hashCode = hashCode * 59 + this.QueryMode.GetHashCode();
-                if (this.ShowCancelledTransactions != null)
-                    hashCode = hashCode * 59 + this.ShowCancelledTransactions.GetHashCode();
+                if (this.Key != null)
+                    hashCode = hashCode * 59 + this.Key.GetHashCode();
+                if (this.Value != null)
+                    hashCode = hashCode * 59 + this.Value.GetHashCode();
+                if (this.Depth != null)
+                    hashCode = hashCode * 59 + this.Depth.GetHashCode();
+                if (this.Properties != null)
+                    hashCode = hashCode * 59 + this.Properties.GetHashCode();
+                if (this.Children != null)
+                    hashCode = hashCode * 59 + this.Children.GetHashCode();
                 return hashCode;
             }
         }
