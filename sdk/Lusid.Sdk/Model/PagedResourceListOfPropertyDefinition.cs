@@ -23,39 +23,28 @@ using OpenAPIDateConverter = Lusid.Sdk.Client.OpenAPIDateConverter;
 namespace Lusid.Sdk.Model
 {
     /// <summary>
-    /// VersionedResourceListOfOutputTransaction
+    /// PagedResourceListOfPropertyDefinition
     /// </summary>
     [DataContract]
-    public partial class VersionedResourceListOfOutputTransaction :  IEquatable<VersionedResourceListOfOutputTransaction>
+    public partial class PagedResourceListOfPropertyDefinition :  IEquatable<PagedResourceListOfPropertyDefinition>
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="VersionedResourceListOfOutputTransaction" /> class.
+        /// Initializes a new instance of the <see cref="PagedResourceListOfPropertyDefinition" /> class.
         /// </summary>
         [JsonConstructorAttribute]
-        protected VersionedResourceListOfOutputTransaction() { }
+        protected PagedResourceListOfPropertyDefinition() { }
         /// <summary>
-        /// Initializes a new instance of the <see cref="VersionedResourceListOfOutputTransaction" /> class.
+        /// Initializes a new instance of the <see cref="PagedResourceListOfPropertyDefinition" /> class.
         /// </summary>
-        /// <param name="version">version (required).</param>
         /// <param name="values">values (required).</param>
         /// <param name="href">href.</param>
         /// <param name="links">links.</param>
-        public VersionedResourceListOfOutputTransaction(Version version = default(Version), List<OutputTransaction> values = default(List<OutputTransaction>), string href = default(string), List<Link> links = default(List<Link>))
+        public PagedResourceListOfPropertyDefinition(List<PropertyDefinition> values = default(List<PropertyDefinition>), string href = default(string), List<Link> links = default(List<Link>))
         {
-            // to ensure "version" is required (not null)
-            if (version == null)
-            {
-                throw new InvalidDataException("version is a required property for VersionedResourceListOfOutputTransaction and cannot be null");
-            }
-            else
-            {
-                this.Version = version;
-            }
-            
             // to ensure "values" is required (not null)
             if (values == null)
             {
-                throw new InvalidDataException("values is a required property for VersionedResourceListOfOutputTransaction and cannot be null");
+                throw new InvalidDataException("values is a required property for PagedResourceListOfPropertyDefinition and cannot be null");
             }
             else
             {
@@ -67,16 +56,22 @@ namespace Lusid.Sdk.Model
         }
         
         /// <summary>
-        /// Gets or Sets Version
+        /// Gets or Sets NextPage
         /// </summary>
-        [DataMember(Name="version", EmitDefaultValue=false)]
-        public Version Version { get; set; }
+        [DataMember(Name="nextPage", EmitDefaultValue=false)]
+        public string NextPage { get; private set; }
+
+        /// <summary>
+        /// Gets or Sets PreviousPage
+        /// </summary>
+        [DataMember(Name="previousPage", EmitDefaultValue=false)]
+        public string PreviousPage { get; private set; }
 
         /// <summary>
         /// Gets or Sets Values
         /// </summary>
         [DataMember(Name="values", EmitDefaultValue=false)]
-        public List<OutputTransaction> Values { get; set; }
+        public List<PropertyDefinition> Values { get; set; }
 
         /// <summary>
         /// Gets or Sets Href
@@ -97,8 +92,9 @@ namespace Lusid.Sdk.Model
         public override string ToString()
         {
             var sb = new StringBuilder();
-            sb.Append("class VersionedResourceListOfOutputTransaction {\n");
-            sb.Append("  Version: ").Append(Version).Append("\n");
+            sb.Append("class PagedResourceListOfPropertyDefinition {\n");
+            sb.Append("  NextPage: ").Append(NextPage).Append("\n");
+            sb.Append("  PreviousPage: ").Append(PreviousPage).Append("\n");
             sb.Append("  Values: ").Append(Values).Append("\n");
             sb.Append("  Href: ").Append(Href).Append("\n");
             sb.Append("  Links: ").Append(Links).Append("\n");
@@ -122,24 +118,29 @@ namespace Lusid.Sdk.Model
         /// <returns>Boolean</returns>
         public override bool Equals(object input)
         {
-            return this.Equals(input as VersionedResourceListOfOutputTransaction);
+            return this.Equals(input as PagedResourceListOfPropertyDefinition);
         }
 
         /// <summary>
-        /// Returns true if VersionedResourceListOfOutputTransaction instances are equal
+        /// Returns true if PagedResourceListOfPropertyDefinition instances are equal
         /// </summary>
-        /// <param name="input">Instance of VersionedResourceListOfOutputTransaction to be compared</param>
+        /// <param name="input">Instance of PagedResourceListOfPropertyDefinition to be compared</param>
         /// <returns>Boolean</returns>
-        public bool Equals(VersionedResourceListOfOutputTransaction input)
+        public bool Equals(PagedResourceListOfPropertyDefinition input)
         {
             if (input == null)
                 return false;
 
             return 
                 (
-                    this.Version == input.Version ||
-                    (this.Version != null &&
-                    this.Version.Equals(input.Version))
+                    this.NextPage == input.NextPage ||
+                    (this.NextPage != null &&
+                    this.NextPage.Equals(input.NextPage))
+                ) && 
+                (
+                    this.PreviousPage == input.PreviousPage ||
+                    (this.PreviousPage != null &&
+                    this.PreviousPage.Equals(input.PreviousPage))
                 ) && 
                 (
                     this.Values == input.Values ||
@@ -169,8 +170,10 @@ namespace Lusid.Sdk.Model
             unchecked // Overflow is fine, just wrap
             {
                 int hashCode = 41;
-                if (this.Version != null)
-                    hashCode = hashCode * 59 + this.Version.GetHashCode();
+                if (this.NextPage != null)
+                    hashCode = hashCode * 59 + this.NextPage.GetHashCode();
+                if (this.PreviousPage != null)
+                    hashCode = hashCode * 59 + this.PreviousPage.GetHashCode();
                 if (this.Values != null)
                     hashCode = hashCode * 59 + this.Values.GetHashCode();
                 if (this.Href != null)
