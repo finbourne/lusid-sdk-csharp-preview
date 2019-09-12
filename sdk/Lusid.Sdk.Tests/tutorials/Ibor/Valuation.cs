@@ -47,12 +47,17 @@ namespace Lusid.Sdk.Tests.Tutorials.Ibor
                 }
                 .OrderBy(i => i.Id);
 
-            var newTransactions = transactionSpecs.Select(id => _testDataUtilities.BuildTransactionRequest(id.Id, 100.0, id.Price, "GBP", id.TradeDate, "Buy"));
+            var newTransactions = transactionSpecs.Select(id =>
+                _testDataUtilities.BuildTransactionRequest(id.Id, 100.0, id.Price, "GBP", id.TradeDate, "StockIn"));
 
             //    Add transactions to the portfolio
-            _apiFactory.Api<ITransactionPortfoliosApi>().UpsertTransactions(TutorialScope, portfolioId, newTransactions.ToList());
-            
+            _apiFactory.Api<ITransactionPortfoliosApi>()
+                .UpsertTransactions(TutorialScope, portfolioId, newTransactions.ToList());
+
+
             //    Set up analytic store used to store prices for the valuation
+            var analyticsAPI = _apiFactory.Api<IAnalyticsStoresApi>();
+            var _quotesApi = _apiFactory.Api<IQuotesApi>();
             var analyticStores = _apiFactory.Api<IAnalyticsStoresApi>().ListAnalyticStores();
             var store = analyticStores.Values.Where(s => s.Date == effectiveDate && s.Scope == TutorialScope);
 
@@ -62,17 +67,42 @@ namespace Lusid.Sdk.Tests.Tutorials.Ibor
                 var analyticStoreRequest = new CreateAnalyticStoreRequest(TutorialScope, effectiveDate);
                 _apiFactory.Api<IAnalyticsStoresApi>().CreateAnalyticStore(analyticStoreRequest);
             }
-                        
+
             var prices = new List<InstrumentAnalytic>
             {
-                new InstrumentAnalytic(_instrumentIds[0], 100), 
+                new InstrumentAnalytic(_instrumentIds[0], 100),
                 new InstrumentAnalytic(_instrumentIds[1], 200),
                 new InstrumentAnalytic(_instrumentIds[2], 300)
             };
-            
-            //    Add prices to the analytics store
-            _apiFactory.Api<IAnalyticsStoresApi>().SetAnalytics(TutorialScope, effectiveDate.Year, effectiveDate.Month, effectiveDate.Day, prices);
-                       
+
+            // create quotes request
+
+            var quotesAPI = _apiFactory.Api<IQuotesApi>();
+
+            Dictionary<string, UpsertQuoteRequest> quotes_dict = new Dictionary<string, UpsertQuoteRequest>();
+
+            for (int i = 0; i < 3; i++)
+            {
+                var request = new UpsertQuoteRequest(
+                    quoteId: new QuoteId(
+                        new QuoteSeriesId(
+                            provider: "DataScope",
+                            priceSource: "BankA",
+                            instrumentId: _instrumentIds[0],
+                            instrumentIdType: QuoteSeriesId.InstrumentIdTypeEnum.LusidInstrumentId,
+                            quoteType: QuoteSeriesId.QuoteTypeEnum.Price,
+                            field: "mid"),
+                        effectiveAt: effectiveDate),
+                    metricValue: new MetricValue(
+                        value: prices[0].Value,
+                        unit: "GBP"),
+                    lineage: "InternalSystem");
+
+                quotes_dict.Add("quote" + i.ToString(), request);
+            }
+
+            _quotesApi.UpsertQuotes(TestDataUtilities.TutorialScope, quotes_dict);
+
             //    Create the aggregation request, this example calculates the percentage of total portfolio value and value by instrument 
             var aggregationRequest = new AggregationRequest(
                 recipeId: new ResourceId(TutorialScope, "default"),
@@ -87,8 +117,17 @@ namespace Lusid.Sdk.Tests.Tutorials.Ibor
             );
 
             //    Do the aggregation
-            _apiFactory.Api<IAggregationApi>().GetAggregationByPortfolio(TutorialScope, portfolioId, request: aggregationRequest);
-        }
+            var aggregation = _apiFactory.Api<IAggregationApi>()
+                .GetAggregationByPortfolio(TutorialScope, portfolioId, request: aggregationRequest);
 
+            //    Assert values changes correctly
+
+            //    ADD ASSERTIONS
+            Assert.That(aggregation.Data.Count, Is.EqualTo(3)); // length = 3
+            Assert.That(aggregation.Data[0]["Sum(Holding/default/PV)"], Is.EqualTo(10000)); // value = 10000
+            Assert.That(aggregation.Data[1]["Sum(Holding/default/PV)"], Is.EqualTo(20000)); // value = 20000
+            Assert.That(aggregation.Data[2]["Sum(Holding/default/PV)"], Is.EqualTo(30000)); // value = 30000
+
+        }
     }
 }
