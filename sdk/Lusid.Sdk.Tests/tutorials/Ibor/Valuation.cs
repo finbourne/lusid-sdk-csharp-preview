@@ -6,6 +6,7 @@ using Lusid.Sdk.Model;
 using Lusid.Sdk.Tests.Utilities;
 using Lusid.Sdk.Utilities;
 using NUnit.Framework;
+using Version = System.Version;
 
 namespace Lusid.Sdk.Tests.Tutorials.Ibor
 {
@@ -87,25 +88,38 @@ namespace Lusid.Sdk.Tests.Tutorials.Ibor
                     quoteId: new QuoteId(
                         new QuoteSeriesId(
                             provider: "DataScope",
-                            priceSource: "BankA",
-                            instrumentId: _instrumentIds[0],
+                            priceSource: "",
+                            instrumentId: _instrumentIds[i],
                             instrumentIdType: QuoteSeriesId.InstrumentIdTypeEnum.LusidInstrumentId,
                             quoteType: QuoteSeriesId.QuoteTypeEnum.Price,
                             field: "mid"),
                         effectiveAt: effectiveDate),
                     metricValue: new MetricValue(
-                        value: prices[0].Value,
+                        value: prices[i].Value,
                         unit: "GBP"),
-                    lineage: "InternalSystem");
+                    lineage: "");
 
                 quotes_dict.Add("quote" + i.ToString(), request);
             }
 
-            _quotesApi.UpsertQuotes(TestDataUtilities.TutorialScope, quotes_dict);
+            _quotesApi.UpsertQuotes(TutorialScope, quotes_dict);
+
 
             //    Create the aggregation request, this example calculates the percentage of total portfolio value and value by instrument 
+            
+            var inline_recipe = new ConfigurationRecipe(
+                code:"quotes_recipe",
+                market:new MarketContext(
+                    marketRules:null,
+                    suppliers:new MarketContextSuppliers(
+                        equity: MarketContextSuppliers.EquityEnum.DataScope),
+                    options:new MarketOptions(
+                        defaultSupplier: MarketOptions.DefaultSupplierEnum.DataScope,
+                        defaultInstrumentCodeType:MarketOptions.DefaultInstrumentCodeTypeEnum.LusidInstrumentId,
+                        defaultScope:TutorialScope)));
+
             var aggregationRequest = new AggregationRequest(
-                recipeId: new ResourceId(TutorialScope, "default"),
+                inlineRecipe: inline_recipe,
                 metrics: new List<AggregateSpec>
                 {
                     new AggregateSpec("Instrument/default/Name", AggregateSpec.OpEnum.Value),
