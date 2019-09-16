@@ -5,9 +5,10 @@ All URIs are relative to *http://localhost/api*
 Method | HTTP request | Description
 ------------- | ------------- | -------------
 [**InstrumentsSearch**](SearchApi.md#instrumentssearch) | **POST** /api/search/instruments | [EXPERIMENTAL] Instruments search
-[**PortfolioGroupsSearch**](SearchApi.md#portfoliogroupssearch) | **POST** /api/search/portfoliogroups | [EXPERIMENTAL] Portfolio groups search
-[**PortfoliosSearch**](SearchApi.md#portfoliossearch) | **POST** /api/search/portfolios | [EXPERIMENTAL] [DEPRECATED] Portfolios search
-[**PropertiesSearch**](SearchApi.md#propertiessearch) | **POST** /api/search/propertydefinitions | [EXPERIMENTAL] [DEPRECATED] Search property definitions
+[**PortfolioGroupsSearch**](SearchApi.md#portfoliogroupssearch) | **POST** /api/search/portfoliogroups | [DEPRECATED] [DEPRECATED] Portfolio groups search
+[**PortfoliosSearch**](SearchApi.md#portfoliossearch) | **POST** /api/search/portfolios | [DEPRECATED] [DEPRECATED] Portfolios search
+[**PropertiesSearch**](SearchApi.md#propertiessearch) | **POST** /api/search/propertydefinitions | [DEPRECATED] [DEPRECATED] Search property definitions
+[**SearchPortfolioGroups**](SearchApi.md#searchportfoliogroups) | **GET** /api/search/portfoliogroups | [EXPERIMENTAL] Search Portfolio Groups
 [**SearchPortfolios**](SearchApi.md#searchportfolios) | **GET** /api/search/portfolios | [EXPERIMENTAL] Search Portfolios
 [**SearchProperties**](SearchApi.md#searchproperties) | **GET** /api/search/propertydefinitions | [EXPERIMENTAL] Search Property Definitions
 
@@ -101,7 +102,7 @@ Name | Type | Description  | Notes
 
 > ResourceListOfPortfolioGroup PortfolioGroupsSearch (Object request, string filter = null)
 
-[EXPERIMENTAL] Portfolio groups search
+[DEPRECATED] [DEPRECATED] Portfolio groups search
 
 Search across all portfolio groups across all scopes.
 
@@ -130,7 +131,7 @@ namespace Example
 
             try
             {
-                // [EXPERIMENTAL] Portfolio groups search
+                // [DEPRECATED] [DEPRECATED] Portfolio groups search
                 ResourceListOfPortfolioGroup result = apiInstance.PortfolioGroupsSearch(request, filter);
                 Debug.WriteLine(result);
             }
@@ -183,7 +184,7 @@ Name | Type | Description  | Notes
 
 > ResourceListOfPortfolioSearchResult PortfoliosSearch (Object request, string filter = null)
 
-[EXPERIMENTAL] [DEPRECATED] Portfolios search
+[DEPRECATED] [DEPRECATED] Portfolios search
 
 Search across all portfolios across all scopes.
 
@@ -212,7 +213,7 @@ namespace Example
 
             try
             {
-                // [EXPERIMENTAL] [DEPRECATED] Portfolios search
+                // [DEPRECATED] [DEPRECATED] Portfolios search
                 ResourceListOfPortfolioSearchResult result = apiInstance.PortfoliosSearch(request, filter);
                 Debug.WriteLine(result);
             }
@@ -265,7 +266,7 @@ Name | Type | Description  | Notes
 
 > ResourceListOfPropertyDefinition PropertiesSearch (Object request, string filter = null)
 
-[EXPERIMENTAL] [DEPRECATED] Search property definitions
+[DEPRECATED] [DEPRECATED] Search property definitions
 
 Search across all user defined property definitions across all scopes.
 
@@ -294,7 +295,7 @@ namespace Example
 
             try
             {
-                // [EXPERIMENTAL] [DEPRECATED] Search property definitions
+                // [DEPRECATED] [DEPRECATED] Search property definitions
                 ResourceListOfPropertyDefinition result = apiInstance.PropertiesSearch(request, filter);
                 Debug.WriteLine(result);
             }
@@ -334,6 +335,94 @@ Name | Type | Description  | Notes
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
 | **200** | The property definitions found by the search |  -  |
+| **400** | The details of the input related failure |  -  |
+| **0** | Error response |  -  |
+
+[[Back to top]](#)
+[[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
+
+
+## SearchPortfolioGroups
+
+> PagedResourceListOfPortfolioGroup SearchPortfolioGroups (string search = null, string filter = null, string sortBy = null, int? limit = null, string page = null)
+
+[EXPERIMENTAL] Search Portfolio Groups
+
+Search through all portfolio groups
+
+### Example
+
+```csharp
+using System.Collections.Generic;
+using System.Diagnostics;
+using Lusid.Sdk.Api;
+using Lusid.Sdk.Client;
+using Lusid.Sdk.Model;
+
+namespace Example
+{
+    public class SearchPortfolioGroupsExample
+    {
+        public static void Main()
+        {
+            Configuration.Default.BasePath = "http://localhost/api";
+            // Configure OAuth2 access token for authorization: oauth2
+            Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
+
+            var apiInstance = new SearchApi(Configuration.Default);
+            var search = search_example;  // string | A parameter used for searching any portfolio group field. Wildcards(*) are supported at the end of words (e.g. 'Port*'). See <see href=\"https://support.lusid.com/filtering-results-from-lusid\"> filtering results from LUSID </see> for more details. (optional) 
+            var filter = filter_example;  // string | Expression to filter the result set. Read more about <see href=\"https://support.lusid.com/filtering-results-from-lusid\"> filtering results from LUSID</see>. (optional) 
+            var sortBy = sortBy_example;  // string | Order the results by these fields. Use use the '-' sign to denote descending order e.g. -MyFieldName. Multiple fields can be denoted by a comma e.g. -MyFieldName,AnotherFieldName,-AFurtherFieldName (optional) 
+            var limit = 56;  // int? | When paginating, only return this number of records (optional) 
+            var page = page_example;  // string | Encoded page string returned from a previous search result that will retrieve the next page of data. When this field is supplied, filter, sortby and search fields should not be supplied. (optional) 
+
+            try
+            {
+                // [EXPERIMENTAL] Search Portfolio Groups
+                PagedResourceListOfPortfolioGroup result = apiInstance.SearchPortfolioGroups(search, filter, sortBy, limit, page);
+                Debug.WriteLine(result);
+            }
+            catch (ApiException e)
+            {
+                Debug.Print("Exception when calling SearchApi.SearchPortfolioGroups: " + e.Message );
+                Debug.Print("Status Code: "+ e.ErrorCode);
+                Debug.Print(e.StackTrace);
+            }
+        }
+    }
+}
+```
+
+### Parameters
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **search** | **string**| A parameter used for searching any portfolio group field. Wildcards(*) are supported at the end of words (e.g. &#39;Port*&#39;). See &lt;see href&#x3D;\&quot;https://support.lusid.com/filtering-results-from-lusid\&quot;&gt; filtering results from LUSID &lt;/see&gt; for more details. | [optional] 
+ **filter** | **string**| Expression to filter the result set. Read more about &lt;see href&#x3D;\&quot;https://support.lusid.com/filtering-results-from-lusid\&quot;&gt; filtering results from LUSID&lt;/see&gt;. | [optional] 
+ **sortBy** | **string**| Order the results by these fields. Use use the &#39;-&#39; sign to denote descending order e.g. -MyFieldName. Multiple fields can be denoted by a comma e.g. -MyFieldName,AnotherFieldName,-AFurtherFieldName | [optional] 
+ **limit** | **int?**| When paginating, only return this number of records | [optional] 
+ **page** | **string**| Encoded page string returned from a previous search result that will retrieve the next page of data. When this field is supplied, filter, sortby and search fields should not be supplied. | [optional] 
+
+### Return type
+
+[**PagedResourceListOfPortfolioGroup**](PagedResourceListOfPortfolioGroup.md)
+
+### Authorization
+
+[oauth2](../README.md#oauth2)
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: text/plain, application/json, text/json
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+| **200** | Success |  -  |
 | **400** | The details of the input related failure |  -  |
 | **0** | Error response |  -  |
 
