@@ -14,6 +14,7 @@
       "backgroundColor": "#415464"
     }
   },
+  "basePath": "/api",
   "paths": {
     "/api/analytics": {
       "get": {
@@ -7019,7 +7020,7 @@
                 },
                 "values": [
                   {
-                    "instrumentUid": "LUID_L3ROI1HA",
+                    "instrumentUid": "LUID_MGTDQO8R",
                     "holdingType": "P",
                     "units": 10,
                     "settledUnits": 10,
@@ -7400,7 +7401,7 @@
                       "instrumentIdentifiers": {
                         "Instrument/default/ClientInternal": "CLI-192836"
                       },
-                      "instrumentUid": "LUID_6KH9X2LJ",
+                      "instrumentUid": "LUID_AC4P68F6",
                       "subHoldingKeys": {},
                       "properties": {},
                       "taxLots": [
@@ -7417,7 +7418,7 @@
                       "instrumentIdentifiers": {
                         "Instrument/default/ClientInternal": "CLI-462810"
                       },
-                      "instrumentUid": "LUID_GI6AWLW8",
+                      "instrumentUid": "LUID_X2QLMGFX",
                       "subHoldingKeys": {},
                       "properties": {},
                       "taxLots": [
@@ -7543,7 +7544,7 @@
                     "instrumentIdentifiers": {
                       "Instrument/default/RIC": "RIC.L"
                     },
-                    "instrumentUid": "LUID_U4UBQZ0R",
+                    "instrumentUid": "LUID_G2SXBWD7",
                     "transactionDate": "2018-08-04T00:00:00+00:00",
                     "settlementDate": "2018-08-06T00:00:00+00:00",
                     "units": 1000,
@@ -14819,7 +14820,7 @@
   "securityDefinitions": {
     "oauth2": {
       "flow": "implicit",
-      "authorizationUrl": "http://dummy.451.okta.com/v1/authorize",
+      "authorizationUrl": "https://lusid.okta.com/oauth2/aus5al5yopbHW2wJn2p6/v1/authorize",
       "type": "oauth2",
       "description": "OAuth2 Implicit Grant"
     }
