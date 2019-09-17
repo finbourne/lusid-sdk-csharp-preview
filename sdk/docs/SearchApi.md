@@ -1,13 +1,13 @@
 # Lusid.Sdk.Api.SearchApi
 
-All URIs are relative to *http://localhost/api*
+All URIs are relative to *http://localhost*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
 [**InstrumentsSearch**](SearchApi.md#instrumentssearch) | **POST** /api/search/instruments | [EXPERIMENTAL] Instruments search
-[**PortfolioGroupsSearch**](SearchApi.md#portfoliogroupssearch) | **POST** /api/search/portfoliogroups | [DEPRECATED] [DEPRECATED] Portfolio groups search
-[**PortfoliosSearch**](SearchApi.md#portfoliossearch) | **POST** /api/search/portfolios | [DEPRECATED] [DEPRECATED] Portfolios search
-[**PropertiesSearch**](SearchApi.md#propertiessearch) | **POST** /api/search/propertydefinitions | [DEPRECATED] [DEPRECATED] Search property definitions
+[**PortfolioGroupsSearch**](SearchApi.md#portfoliogroupssearch) | **POST** /api/search/portfoliogroups | [DEPRECATED] Portfolio groups search
+[**PortfoliosSearch**](SearchApi.md#portfoliossearch) | **POST** /api/search/portfolios | [DEPRECATED] Portfolios search
+[**PropertiesSearch**](SearchApi.md#propertiessearch) | **POST** /api/search/propertydefinitions | [DEPRECATED] Search property definitions
 [**SearchPortfolioGroups**](SearchApi.md#searchportfoliogroups) | **GET** /api/search/portfoliogroups | [EXPERIMENTAL] Search Portfolio Groups
 [**SearchPortfolios**](SearchApi.md#searchportfolios) | **GET** /api/search/portfolios | [EXPERIMENTAL] Search Portfolios
 [**SearchProperties**](SearchApi.md#searchproperties) | **GET** /api/search/propertydefinitions | [EXPERIMENTAL] Search Property Definitions
@@ -37,7 +37,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://localhost/api";
+            Configuration.Default.BasePath = "http://localhost";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -102,7 +102,7 @@ Name | Type | Description  | Notes
 
 > ResourceListOfPortfolioGroup PortfolioGroupsSearch (Object request, string filter = null)
 
-[DEPRECATED] [DEPRECATED] Portfolio groups search
+[DEPRECATED] Portfolio groups search
 
 Search across all portfolio groups across all scopes.
 
@@ -121,7 +121,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://localhost/api";
+            Configuration.Default.BasePath = "http://localhost";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -131,7 +131,7 @@ namespace Example
 
             try
             {
-                // [DEPRECATED] [DEPRECATED] Portfolio groups search
+                // [DEPRECATED] Portfolio groups search
                 ResourceListOfPortfolioGroup result = apiInstance.PortfolioGroupsSearch(request, filter);
                 Debug.WriteLine(result);
             }
@@ -184,7 +184,7 @@ Name | Type | Description  | Notes
 
 > ResourceListOfPortfolioSearchResult PortfoliosSearch (Object request, string filter = null)
 
-[DEPRECATED] [DEPRECATED] Portfolios search
+[DEPRECATED] Portfolios search
 
 Search across all portfolios across all scopes.
 
@@ -203,7 +203,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://localhost/api";
+            Configuration.Default.BasePath = "http://localhost";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -213,7 +213,7 @@ namespace Example
 
             try
             {
-                // [DEPRECATED] [DEPRECATED] Portfolios search
+                // [DEPRECATED] Portfolios search
                 ResourceListOfPortfolioSearchResult result = apiInstance.PortfoliosSearch(request, filter);
                 Debug.WriteLine(result);
             }
@@ -266,7 +266,7 @@ Name | Type | Description  | Notes
 
 > ResourceListOfPropertyDefinition PropertiesSearch (Object request, string filter = null)
 
-[DEPRECATED] [DEPRECATED] Search property definitions
+[DEPRECATED] Search property definitions
 
 Search across all user defined property definitions across all scopes.
 
@@ -285,7 +285,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://localhost/api";
+            Configuration.Default.BasePath = "http://localhost";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -295,7 +295,7 @@ namespace Example
 
             try
             {
-                // [DEPRECATED] [DEPRECATED] Search property definitions
+                // [DEPRECATED] Search property definitions
                 ResourceListOfPropertyDefinition result = apiInstance.PropertiesSearch(request, filter);
                 Debug.WriteLine(result);
             }
@@ -367,7 +367,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://localhost/api";
+            Configuration.Default.BasePath = "http://localhost";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -455,7 +455,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://localhost/api";
+            Configuration.Default.BasePath = "http://localhost";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -543,7 +543,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://localhost/api";
+            Configuration.Default.BasePath = "http://localhost";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
