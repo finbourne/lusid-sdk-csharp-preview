@@ -1,6 +1,6 @@
 # Lusid.Sdk.Api.AggregationApi
 
-All URIs are relative to *http://api*
+All URIs are relative to *http://localhost/api*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
@@ -34,7 +34,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://api";
+            Configuration.Default.BasePath = "http://localhost/api";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -124,7 +124,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://api";
+            Configuration.Default.BasePath = "http://localhost/api";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -214,7 +214,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://api";
+            Configuration.Default.BasePath = "http://localhost/api";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -304,7 +304,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://api";
+            Configuration.Default.BasePath = "http://localhost/api";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
