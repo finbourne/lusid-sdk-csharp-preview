@@ -23,61 +23,42 @@ using OpenAPIDateConverter = Lusid.Sdk.Client.OpenAPIDateConverter;
 namespace Lusid.Sdk.Model
 {
     /// <summary>
-    /// PagedResourceListOfPortfolioSearchResult
+    /// A collection of the data required to configure transaction types..
     /// </summary>
     [DataContract]
-    public partial class PagedResourceListOfPortfolioSearchResult :  IEquatable<PagedResourceListOfPortfolioSearchResult>
+    public partial class TransactionSetConfigurationData :  IEquatable<TransactionSetConfigurationData>
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="PagedResourceListOfPortfolioSearchResult" /> class.
+        /// Initializes a new instance of the <see cref="TransactionSetConfigurationData" /> class.
         /// </summary>
         [JsonConstructorAttribute]
-        protected PagedResourceListOfPortfolioSearchResult() { }
+        protected TransactionSetConfigurationData() { }
         /// <summary>
-        /// Initializes a new instance of the <see cref="PagedResourceListOfPortfolioSearchResult" /> class.
+        /// Initializes a new instance of the <see cref="TransactionSetConfigurationData" /> class.
         /// </summary>
-        /// <param name="values">values (required).</param>
-        /// <param name="href">href.</param>
+        /// <param name="transactionConfigs">Collection of transaction type models (required).</param>
         /// <param name="links">links.</param>
-        public PagedResourceListOfPortfolioSearchResult(List<PortfolioSearchResult> values = default(List<PortfolioSearchResult>), string href = default(string), List<Link> links = default(List<Link>))
+        public TransactionSetConfigurationData(List<TransactionConfigurationData> transactionConfigs = default(List<TransactionConfigurationData>), List<Link> links = default(List<Link>))
         {
-            // to ensure "values" is required (not null)
-            if (values == null)
+            // to ensure "transactionConfigs" is required (not null)
+            if (transactionConfigs == null)
             {
-                throw new InvalidDataException("values is a required property for PagedResourceListOfPortfolioSearchResult and cannot be null");
+                throw new InvalidDataException("transactionConfigs is a required property for TransactionSetConfigurationData and cannot be null");
             }
             else
             {
-                this.Values = values;
+                this.TransactionConfigs = transactionConfigs;
             }
             
-            this.Href = href;
             this.Links = links;
         }
         
         /// <summary>
-        /// Gets or Sets NextPage
+        /// Collection of transaction type models
         /// </summary>
-        [DataMember(Name="nextPage", EmitDefaultValue=false)]
-        public string NextPage { get; private set; }
-
-        /// <summary>
-        /// Gets or Sets PreviousPage
-        /// </summary>
-        [DataMember(Name="previousPage", EmitDefaultValue=false)]
-        public string PreviousPage { get; private set; }
-
-        /// <summary>
-        /// Gets or Sets Values
-        /// </summary>
-        [DataMember(Name="values", EmitDefaultValue=false)]
-        public List<PortfolioSearchResult> Values { get; set; }
-
-        /// <summary>
-        /// Gets or Sets Href
-        /// </summary>
-        [DataMember(Name="href", EmitDefaultValue=false)]
-        public string Href { get; set; }
+        /// <value>Collection of transaction type models</value>
+        [DataMember(Name="transactionConfigs", EmitDefaultValue=false)]
+        public List<TransactionConfigurationData> TransactionConfigs { get; set; }
 
         /// <summary>
         /// Gets or Sets Links
@@ -92,11 +73,8 @@ namespace Lusid.Sdk.Model
         public override string ToString()
         {
             var sb = new StringBuilder();
-            sb.Append("class PagedResourceListOfPortfolioSearchResult {\n");
-            sb.Append("  NextPage: ").Append(NextPage).Append("\n");
-            sb.Append("  PreviousPage: ").Append(PreviousPage).Append("\n");
-            sb.Append("  Values: ").Append(Values).Append("\n");
-            sb.Append("  Href: ").Append(Href).Append("\n");
+            sb.Append("class TransactionSetConfigurationData {\n");
+            sb.Append("  TransactionConfigs: ").Append(TransactionConfigs).Append("\n");
             sb.Append("  Links: ").Append(Links).Append("\n");
             sb.Append("}\n");
             return sb.ToString();
@@ -118,40 +96,25 @@ namespace Lusid.Sdk.Model
         /// <returns>Boolean</returns>
         public override bool Equals(object input)
         {
-            return this.Equals(input as PagedResourceListOfPortfolioSearchResult);
+            return this.Equals(input as TransactionSetConfigurationData);
         }
 
         /// <summary>
-        /// Returns true if PagedResourceListOfPortfolioSearchResult instances are equal
+        /// Returns true if TransactionSetConfigurationData instances are equal
         /// </summary>
-        /// <param name="input">Instance of PagedResourceListOfPortfolioSearchResult to be compared</param>
+        /// <param name="input">Instance of TransactionSetConfigurationData to be compared</param>
         /// <returns>Boolean</returns>
-        public bool Equals(PagedResourceListOfPortfolioSearchResult input)
+        public bool Equals(TransactionSetConfigurationData input)
         {
             if (input == null)
                 return false;
 
             return 
                 (
-                    this.NextPage == input.NextPage ||
-                    (this.NextPage != null &&
-                    this.NextPage.Equals(input.NextPage))
-                ) && 
-                (
-                    this.PreviousPage == input.PreviousPage ||
-                    (this.PreviousPage != null &&
-                    this.PreviousPage.Equals(input.PreviousPage))
-                ) && 
-                (
-                    this.Values == input.Values ||
-                    this.Values != null &&
-                    input.Values != null &&
-                    this.Values.SequenceEqual(input.Values)
-                ) && 
-                (
-                    this.Href == input.Href ||
-                    (this.Href != null &&
-                    this.Href.Equals(input.Href))
+                    this.TransactionConfigs == input.TransactionConfigs ||
+                    this.TransactionConfigs != null &&
+                    input.TransactionConfigs != null &&
+                    this.TransactionConfigs.SequenceEqual(input.TransactionConfigs)
                 ) && 
                 (
                     this.Links == input.Links ||
@@ -170,14 +133,8 @@ namespace Lusid.Sdk.Model
             unchecked // Overflow is fine, just wrap
             {
                 int hashCode = 41;
-                if (this.NextPage != null)
-                    hashCode = hashCode * 59 + this.NextPage.GetHashCode();
-                if (this.PreviousPage != null)
-                    hashCode = hashCode * 59 + this.PreviousPage.GetHashCode();
-                if (this.Values != null)
-                    hashCode = hashCode * 59 + this.Values.GetHashCode();
-                if (this.Href != null)
-                    hashCode = hashCode * 59 + this.Href.GetHashCode();
+                if (this.TransactionConfigs != null)
+                    hashCode = hashCode * 59 + this.TransactionConfigs.GetHashCode();
                 if (this.Links != null)
                     hashCode = hashCode * 59 + this.Links.GetHashCode();
                 return hashCode;
