@@ -23,92 +23,24 @@ using OpenAPIDateConverter = Lusid.Sdk.Client.OpenAPIDateConverter;
 namespace Lusid.Sdk.Model
 {
     /// <summary>
-    /// CorporateActionTransitionComponent
+    /// HttpMethod
     /// </summary>
     [DataContract]
-    public partial class CorporateActionTransitionComponent :  IEquatable<CorporateActionTransitionComponent>
+    public partial class HttpMethod :  IEquatable<HttpMethod>
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="CorporateActionTransitionComponent" /> class.
+        /// Initializes a new instance of the <see cref="HttpMethod" /> class.
         /// </summary>
         [JsonConstructorAttribute]
-        protected CorporateActionTransitionComponent() { }
-        /// <summary>
-        /// Initializes a new instance of the <see cref="CorporateActionTransitionComponent" /> class.
-        /// </summary>
-        /// <param name="instrumentIdentifiers">Unique instrument identifiers (required).</param>
-        /// <param name="instrumentUid">LUSID&#39;s internal unique instrument identifier, resolved from the instrument identifiers (required).</param>
-        /// <param name="unitsFactor">unitsFactor (required).</param>
-        /// <param name="costFactor">costFactor (required).</param>
-        public CorporateActionTransitionComponent(Dictionary<string, string> instrumentIdentifiers = default(Dictionary<string, string>), string instrumentUid = default(string), double? unitsFactor = default(double?), double? costFactor = default(double?))
+        public HttpMethod()
         {
-            // to ensure "instrumentIdentifiers" is required (not null)
-            if (instrumentIdentifiers == null)
-            {
-                throw new InvalidDataException("instrumentIdentifiers is a required property for CorporateActionTransitionComponent and cannot be null");
-            }
-            else
-            {
-                this.InstrumentIdentifiers = instrumentIdentifiers;
-            }
-            
-            // to ensure "instrumentUid" is required (not null)
-            if (instrumentUid == null)
-            {
-                throw new InvalidDataException("instrumentUid is a required property for CorporateActionTransitionComponent and cannot be null");
-            }
-            else
-            {
-                this.InstrumentUid = instrumentUid;
-            }
-            
-            // to ensure "unitsFactor" is required (not null)
-            if (unitsFactor == null)
-            {
-                throw new InvalidDataException("unitsFactor is a required property for CorporateActionTransitionComponent and cannot be null");
-            }
-            else
-            {
-                this.UnitsFactor = unitsFactor;
-            }
-            
-            // to ensure "costFactor" is required (not null)
-            if (costFactor == null)
-            {
-                throw new InvalidDataException("costFactor is a required property for CorporateActionTransitionComponent and cannot be null");
-            }
-            else
-            {
-                this.CostFactor = costFactor;
-            }
-            
         }
         
         /// <summary>
-        /// Unique instrument identifiers
+        /// Gets or Sets Method
         /// </summary>
-        /// <value>Unique instrument identifiers</value>
-        [DataMember(Name="instrumentIdentifiers", EmitDefaultValue=false)]
-        public Dictionary<string, string> InstrumentIdentifiers { get; set; }
-
-        /// <summary>
-        /// LUSID&#39;s internal unique instrument identifier, resolved from the instrument identifiers
-        /// </summary>
-        /// <value>LUSID&#39;s internal unique instrument identifier, resolved from the instrument identifiers</value>
-        [DataMember(Name="instrumentUid", EmitDefaultValue=false)]
-        public string InstrumentUid { get; set; }
-
-        /// <summary>
-        /// Gets or Sets UnitsFactor
-        /// </summary>
-        [DataMember(Name="unitsFactor", EmitDefaultValue=false)]
-        public double? UnitsFactor { get; set; }
-
-        /// <summary>
-        /// Gets or Sets CostFactor
-        /// </summary>
-        [DataMember(Name="costFactor", EmitDefaultValue=false)]
-        public double? CostFactor { get; set; }
+        [DataMember(Name="method", EmitDefaultValue=false)]
+        public string Method { get; private set; }
 
         /// <summary>
         /// Returns the string presentation of the object
@@ -117,11 +49,8 @@ namespace Lusid.Sdk.Model
         public override string ToString()
         {
             var sb = new StringBuilder();
-            sb.Append("class CorporateActionTransitionComponent {\n");
-            sb.Append("  InstrumentIdentifiers: ").Append(InstrumentIdentifiers).Append("\n");
-            sb.Append("  InstrumentUid: ").Append(InstrumentUid).Append("\n");
-            sb.Append("  UnitsFactor: ").Append(UnitsFactor).Append("\n");
-            sb.Append("  CostFactor: ").Append(CostFactor).Append("\n");
+            sb.Append("class HttpMethod {\n");
+            sb.Append("  Method: ").Append(Method).Append("\n");
             sb.Append("}\n");
             return sb.ToString();
         }
@@ -142,40 +71,24 @@ namespace Lusid.Sdk.Model
         /// <returns>Boolean</returns>
         public override bool Equals(object input)
         {
-            return this.Equals(input as CorporateActionTransitionComponent);
+            return this.Equals(input as HttpMethod);
         }
 
         /// <summary>
-        /// Returns true if CorporateActionTransitionComponent instances are equal
+        /// Returns true if HttpMethod instances are equal
         /// </summary>
-        /// <param name="input">Instance of CorporateActionTransitionComponent to be compared</param>
+        /// <param name="input">Instance of HttpMethod to be compared</param>
         /// <returns>Boolean</returns>
-        public bool Equals(CorporateActionTransitionComponent input)
+        public bool Equals(HttpMethod input)
         {
             if (input == null)
                 return false;
 
             return 
                 (
-                    this.InstrumentIdentifiers == input.InstrumentIdentifiers ||
-                    this.InstrumentIdentifiers != null &&
-                    input.InstrumentIdentifiers != null &&
-                    this.InstrumentIdentifiers.SequenceEqual(input.InstrumentIdentifiers)
-                ) && 
-                (
-                    this.InstrumentUid == input.InstrumentUid ||
-                    (this.InstrumentUid != null &&
-                    this.InstrumentUid.Equals(input.InstrumentUid))
-                ) && 
-                (
-                    this.UnitsFactor == input.UnitsFactor ||
-                    (this.UnitsFactor != null &&
-                    this.UnitsFactor.Equals(input.UnitsFactor))
-                ) && 
-                (
-                    this.CostFactor == input.CostFactor ||
-                    (this.CostFactor != null &&
-                    this.CostFactor.Equals(input.CostFactor))
+                    this.Method == input.Method ||
+                    (this.Method != null &&
+                    this.Method.Equals(input.Method))
                 );
         }
 
@@ -188,14 +101,8 @@ namespace Lusid.Sdk.Model
             unchecked // Overflow is fine, just wrap
             {
                 int hashCode = 41;
-                if (this.InstrumentIdentifiers != null)
-                    hashCode = hashCode * 59 + this.InstrumentIdentifiers.GetHashCode();
-                if (this.InstrumentUid != null)
-                    hashCode = hashCode * 59 + this.InstrumentUid.GetHashCode();
-                if (this.UnitsFactor != null)
-                    hashCode = hashCode * 59 + this.UnitsFactor.GetHashCode();
-                if (this.CostFactor != null)
-                    hashCode = hashCode * 59 + this.CostFactor.GetHashCode();
+                if (this.Method != null)
+                    hashCode = hashCode * 59 + this.Method.GetHashCode();
                 return hashCode;
             }
         }
