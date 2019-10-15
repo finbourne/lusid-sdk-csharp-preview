@@ -104,8 +104,8 @@ namespace Lusid.Sdk.Tests.Tutorials.Ibor
                 );
 
             var portfolio = _apiFactory.Api<ITransactionPortfoliosApi>().CreatePortfolio(
-                scope: TestDataUtilities.TutorialScope,
-                createRequest: request);
+                scope: TestDataUtilities.TutorialScope, 
+                transactionPortfolio: request);
 
             var portfolioCode = portfolio.Id.Code;
 
