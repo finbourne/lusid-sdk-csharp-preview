@@ -131,7 +131,7 @@ namespace Lusid.Sdk.Api
         /// <returns>ApiResponse of ResourceListOfProcessedCommand</returns>
         ApiResponse<ResourceListOfProcessedCommand> GetPortfolioCommandsWithHttpInfo (string scope, string code, DateTimeOffset? fromAsAt = null, DateTimeOffset? toAsAt = null, string filter = null);
         /// <summary>
-        /// [EARLY ACCESS] Get portfolio properties
+        /// [EARLY ACCESS] List portfolio properties
         /// </summary>
         /// <remarks>
         /// List all the properties of a single portfolio.
@@ -142,10 +142,10 @@ namespace Lusid.Sdk.Api
         /// <param name="effectiveAt">The effective datetime or cut label at which to list the portfolio&#39;s properties. Defaults to the current LUSID system datetime if not specified. (optional)</param>
         /// <param name="asAt">The asAt datetime at which to list the portfolio&#39;s properties. Defaults to return the latest version of each property if not specified. (optional)</param>
         /// <returns>PortfolioProperties</returns>
-        PortfolioProperties GetPortfolioProperties (string scope, string code, DateTimeOrCutLabel effectiveAt = null, DateTimeOffset? asAt = null);
+        PortfolioProperties ListPortfolioProperties (string scope, string code, DateTimeOrCutLabel effectiveAt = null, DateTimeOffset? asAt = null);
 
         /// <summary>
-        /// [EARLY ACCESS] Get portfolio properties
+        /// [EARLY ACCESS] List portfolio properties
         /// </summary>
         /// <remarks>
         /// List all the properties of a single portfolio.
@@ -156,7 +156,7 @@ namespace Lusid.Sdk.Api
         /// <param name="effectiveAt">The effective datetime or cut label at which to list the portfolio&#39;s properties. Defaults to the current LUSID system datetime if not specified. (optional)</param>
         /// <param name="asAt">The asAt datetime at which to list the portfolio&#39;s properties. Defaults to return the latest version of each property if not specified. (optional)</param>
         /// <returns>ApiResponse of PortfolioProperties</returns>
-        ApiResponse<PortfolioProperties> GetPortfolioPropertiesWithHttpInfo (string scope, string code, DateTimeOrCutLabel effectiveAt = null, DateTimeOffset? asAt = null);
+        ApiResponse<PortfolioProperties> ListPortfolioPropertiesWithHttpInfo (string scope, string code, DateTimeOrCutLabel effectiveAt = null, DateTimeOffset? asAt = null);
         /// <summary>
         /// [EARLY ACCESS] List portfolios
         /// </summary>
@@ -382,7 +382,7 @@ namespace Lusid.Sdk.Api
         /// <returns>Task of ApiResponse (ResourceListOfProcessedCommand)</returns>
         System.Threading.Tasks.Task<ApiResponse<ResourceListOfProcessedCommand>> GetPortfolioCommandsAsyncWithHttpInfo (string scope, string code, DateTimeOffset? fromAsAt = null, DateTimeOffset? toAsAt = null, string filter = null);
         /// <summary>
-        /// [EARLY ACCESS] Get portfolio properties
+        /// [EARLY ACCESS] List portfolio properties
         /// </summary>
         /// <remarks>
         /// List all the properties of a single portfolio.
@@ -393,10 +393,10 @@ namespace Lusid.Sdk.Api
         /// <param name="effectiveAt">The effective datetime or cut label at which to list the portfolio&#39;s properties. Defaults to the current LUSID system datetime if not specified. (optional)</param>
         /// <param name="asAt">The asAt datetime at which to list the portfolio&#39;s properties. Defaults to return the latest version of each property if not specified. (optional)</param>
         /// <returns>Task of PortfolioProperties</returns>
-        System.Threading.Tasks.Task<PortfolioProperties> GetPortfolioPropertiesAsync (string scope, string code, DateTimeOrCutLabel effectiveAt = null, DateTimeOffset? asAt = null);
+        System.Threading.Tasks.Task<PortfolioProperties> ListPortfolioPropertiesAsync (string scope, string code, DateTimeOrCutLabel effectiveAt = null, DateTimeOffset? asAt = null);
 
         /// <summary>
-        /// [EARLY ACCESS] Get portfolio properties
+        /// [EARLY ACCESS] List portfolio properties
         /// </summary>
         /// <remarks>
         /// List all the properties of a single portfolio.
@@ -407,7 +407,7 @@ namespace Lusid.Sdk.Api
         /// <param name="effectiveAt">The effective datetime or cut label at which to list the portfolio&#39;s properties. Defaults to the current LUSID system datetime if not specified. (optional)</param>
         /// <param name="asAt">The asAt datetime at which to list the portfolio&#39;s properties. Defaults to return the latest version of each property if not specified. (optional)</param>
         /// <returns>Task of ApiResponse (PortfolioProperties)</returns>
-        System.Threading.Tasks.Task<ApiResponse<PortfolioProperties>> GetPortfolioPropertiesAsyncWithHttpInfo (string scope, string code, DateTimeOrCutLabel effectiveAt = null, DateTimeOffset? asAt = null);
+        System.Threading.Tasks.Task<ApiResponse<PortfolioProperties>> ListPortfolioPropertiesAsyncWithHttpInfo (string scope, string code, DateTimeOrCutLabel effectiveAt = null, DateTimeOffset? asAt = null);
         /// <summary>
         /// [EARLY ACCESS] List portfolios
         /// </summary>
@@ -1360,7 +1360,7 @@ namespace Lusid.Sdk.Api
         }
 
         /// <summary>
-        /// [EARLY ACCESS] Get portfolio properties List all the properties of a single portfolio.
+        /// [EARLY ACCESS] List portfolio properties List all the properties of a single portfolio.
         /// </summary>
         /// <exception cref="Lusid.Sdk.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="scope">The scope of the portfolio to list the properties for.</param>
@@ -1368,14 +1368,14 @@ namespace Lusid.Sdk.Api
         /// <param name="effectiveAt">The effective datetime or cut label at which to list the portfolio&#39;s properties. Defaults to the current LUSID system datetime if not specified. (optional)</param>
         /// <param name="asAt">The asAt datetime at which to list the portfolio&#39;s properties. Defaults to return the latest version of each property if not specified. (optional)</param>
         /// <returns>PortfolioProperties</returns>
-        public PortfolioProperties GetPortfolioProperties (string scope, string code, DateTimeOrCutLabel effectiveAt = null, DateTimeOffset? asAt = null)
+        public PortfolioProperties ListPortfolioProperties (string scope, string code, DateTimeOrCutLabel effectiveAt = null, DateTimeOffset? asAt = null)
         {
-             ApiResponse<PortfolioProperties> localVarResponse = GetPortfolioPropertiesWithHttpInfo(scope, code, effectiveAt, asAt);
+             ApiResponse<PortfolioProperties> localVarResponse = ListPortfolioPropertiesWithHttpInfo(scope, code, effectiveAt, asAt);
              return localVarResponse.Data;
         }
 
         /// <summary>
-        /// [EARLY ACCESS] Get portfolio properties List all the properties of a single portfolio.
+        /// [EARLY ACCESS] List portfolio properties List all the properties of a single portfolio.
         /// </summary>
         /// <exception cref="Lusid.Sdk.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="scope">The scope of the portfolio to list the properties for.</param>
@@ -1383,14 +1383,14 @@ namespace Lusid.Sdk.Api
         /// <param name="effectiveAt">The effective datetime or cut label at which to list the portfolio&#39;s properties. Defaults to the current LUSID system datetime if not specified. (optional)</param>
         /// <param name="asAt">The asAt datetime at which to list the portfolio&#39;s properties. Defaults to return the latest version of each property if not specified. (optional)</param>
         /// <returns>ApiResponse of PortfolioProperties</returns>
-        public ApiResponse< PortfolioProperties > GetPortfolioPropertiesWithHttpInfo (string scope, string code, DateTimeOrCutLabel effectiveAt = null, DateTimeOffset? asAt = null)
+        public ApiResponse< PortfolioProperties > ListPortfolioPropertiesWithHttpInfo (string scope, string code, DateTimeOrCutLabel effectiveAt = null, DateTimeOffset? asAt = null)
         {
             // verify the required parameter 'scope' is set
             if (scope == null)
-                throw new ApiException(400, "Missing required parameter 'scope' when calling PortfoliosApi->GetPortfolioProperties");
+                throw new ApiException(400, "Missing required parameter 'scope' when calling PortfoliosApi->ListPortfolioProperties");
             // verify the required parameter 'code' is set
             if (code == null)
-                throw new ApiException(400, "Missing required parameter 'code' when calling PortfoliosApi->GetPortfolioProperties");
+                throw new ApiException(400, "Missing required parameter 'code' when calling PortfoliosApi->ListPortfolioProperties");
 
             var localVarPath = "./api/portfolios/{scope}/{code}/properties";
             var localVarPathParams = new Dictionary<String, String>();
@@ -1440,7 +1440,7 @@ namespace Lusid.Sdk.Api
 
             if (ExceptionFactory != null)
             {
-                Exception exception = ExceptionFactory("GetPortfolioProperties", localVarResponse);
+                Exception exception = ExceptionFactory("ListPortfolioProperties", localVarResponse);
                 if (exception != null) throw exception;
             }
 
@@ -1450,7 +1450,7 @@ namespace Lusid.Sdk.Api
         }
 
         /// <summary>
-        /// [EARLY ACCESS] Get portfolio properties List all the properties of a single portfolio.
+        /// [EARLY ACCESS] List portfolio properties List all the properties of a single portfolio.
         /// </summary>
         /// <exception cref="Lusid.Sdk.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="scope">The scope of the portfolio to list the properties for.</param>
@@ -1458,15 +1458,15 @@ namespace Lusid.Sdk.Api
         /// <param name="effectiveAt">The effective datetime or cut label at which to list the portfolio&#39;s properties. Defaults to the current LUSID system datetime if not specified. (optional)</param>
         /// <param name="asAt">The asAt datetime at which to list the portfolio&#39;s properties. Defaults to return the latest version of each property if not specified. (optional)</param>
         /// <returns>Task of PortfolioProperties</returns>
-        public async System.Threading.Tasks.Task<PortfolioProperties> GetPortfolioPropertiesAsync (string scope, string code, DateTimeOrCutLabel effectiveAt = null, DateTimeOffset? asAt = null)
+        public async System.Threading.Tasks.Task<PortfolioProperties> ListPortfolioPropertiesAsync (string scope, string code, DateTimeOrCutLabel effectiveAt = null, DateTimeOffset? asAt = null)
         {
-             ApiResponse<PortfolioProperties> localVarResponse = await GetPortfolioPropertiesAsyncWithHttpInfo(scope, code, effectiveAt, asAt);
+             ApiResponse<PortfolioProperties> localVarResponse = await ListPortfolioPropertiesAsyncWithHttpInfo(scope, code, effectiveAt, asAt);
              return localVarResponse.Data;
 
         }
 
         /// <summary>
-        /// [EARLY ACCESS] Get portfolio properties List all the properties of a single portfolio.
+        /// [EARLY ACCESS] List portfolio properties List all the properties of a single portfolio.
         /// </summary>
         /// <exception cref="Lusid.Sdk.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="scope">The scope of the portfolio to list the properties for.</param>
@@ -1474,14 +1474,14 @@ namespace Lusid.Sdk.Api
         /// <param name="effectiveAt">The effective datetime or cut label at which to list the portfolio&#39;s properties. Defaults to the current LUSID system datetime if not specified. (optional)</param>
         /// <param name="asAt">The asAt datetime at which to list the portfolio&#39;s properties. Defaults to return the latest version of each property if not specified. (optional)</param>
         /// <returns>Task of ApiResponse (PortfolioProperties)</returns>
-        public async System.Threading.Tasks.Task<ApiResponse<PortfolioProperties>> GetPortfolioPropertiesAsyncWithHttpInfo (string scope, string code, DateTimeOrCutLabel effectiveAt = null, DateTimeOffset? asAt = null)
+        public async System.Threading.Tasks.Task<ApiResponse<PortfolioProperties>> ListPortfolioPropertiesAsyncWithHttpInfo (string scope, string code, DateTimeOrCutLabel effectiveAt = null, DateTimeOffset? asAt = null)
         {
             // verify the required parameter 'scope' is set
             if (scope == null)
-                throw new ApiException(400, "Missing required parameter 'scope' when calling PortfoliosApi->GetPortfolioProperties");
+                throw new ApiException(400, "Missing required parameter 'scope' when calling PortfoliosApi->ListPortfolioProperties");
             // verify the required parameter 'code' is set
             if (code == null)
-                throw new ApiException(400, "Missing required parameter 'code' when calling PortfoliosApi->GetPortfolioProperties");
+                throw new ApiException(400, "Missing required parameter 'code' when calling PortfoliosApi->ListPortfolioProperties");
 
             var localVarPath = "./api/portfolios/{scope}/{code}/properties";
             var localVarPathParams = new Dictionary<String, String>();
@@ -1531,7 +1531,7 @@ namespace Lusid.Sdk.Api
 
             if (ExceptionFactory != null)
             {
-                Exception exception = ExceptionFactory("GetPortfolioProperties", localVarResponse);
+                Exception exception = ExceptionFactory("ListPortfolioProperties", localVarResponse);
                 if (exception != null) throw exception;
             }
 

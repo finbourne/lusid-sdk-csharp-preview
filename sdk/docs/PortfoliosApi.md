@@ -8,7 +8,7 @@ Method | HTTP request | Description
 [**DeletePortfolioProperties**](PortfoliosApi.md#deleteportfolioproperties) | **DELETE** /api/portfolios/{scope}/{code}/properties | [EARLY ACCESS] Delete portfolio properties
 [**GetPortfolio**](PortfoliosApi.md#getportfolio) | **GET** /api/portfolios/{scope}/{code} | [EARLY ACCESS] Get portfolio
 [**GetPortfolioCommands**](PortfoliosApi.md#getportfoliocommands) | **GET** /api/portfolios/{scope}/{code}/commands | [EARLY ACCESS] Get portfolio commands
-[**GetPortfolioProperties**](PortfoliosApi.md#getportfolioproperties) | **GET** /api/portfolios/{scope}/{code}/properties | [EARLY ACCESS] Get portfolio properties
+[**ListPortfolioProperties**](PortfoliosApi.md#listportfolioproperties) | **GET** /api/portfolios/{scope}/{code}/properties | [EARLY ACCESS] List portfolio properties
 [**ListPortfolios**](PortfoliosApi.md#listportfolios) | **GET** /api/portfolios | [EARLY ACCESS] List portfolios
 [**ListPortfoliosForScope**](PortfoliosApi.md#listportfoliosforscope) | **GET** /api/portfolios/{scope} | [EARLY ACCESS] List portfolios for scope
 [**UpdatePortfolio**](PortfoliosApi.md#updateportfolio) | **PUT** /api/portfolios/{scope}/{code} | [EARLY ACCESS] Update portfolio
@@ -358,11 +358,11 @@ Name | Type | Description  | Notes
 [[Back to README]](../README.md)
 
 
-## GetPortfolioProperties
+## ListPortfolioProperties
 
-> PortfolioProperties GetPortfolioProperties (string scope, string code, DateTimeOrCutLabel effectiveAt = null, DateTimeOffset? asAt = null)
+> PortfolioProperties ListPortfolioProperties (string scope, string code, DateTimeOrCutLabel effectiveAt = null, DateTimeOffset? asAt = null)
 
-[EARLY ACCESS] Get portfolio properties
+[EARLY ACCESS] List portfolio properties
 
 List all the properties of a single portfolio.
 
@@ -377,7 +377,7 @@ using Lusid.Sdk.Model;
 
 namespace Example
 {
-    public class GetPortfolioPropertiesExample
+    public class ListPortfolioPropertiesExample
     {
         public static void Main()
         {
@@ -393,13 +393,13 @@ namespace Example
 
             try
             {
-                // [EARLY ACCESS] Get portfolio properties
-                PortfolioProperties result = apiInstance.GetPortfolioProperties(scope, code, effectiveAt, asAt);
+                // [EARLY ACCESS] List portfolio properties
+                PortfolioProperties result = apiInstance.ListPortfolioProperties(scope, code, effectiveAt, asAt);
                 Debug.WriteLine(result);
             }
             catch (ApiException e)
             {
-                Debug.Print("Exception when calling PortfoliosApi.GetPortfolioProperties: " + e.Message );
+                Debug.Print("Exception when calling PortfoliosApi.ListPortfolioProperties: " + e.Message );
                 Debug.Print("Status Code: "+ e.ErrorCode);
                 Debug.Print(e.StackTrace);
             }

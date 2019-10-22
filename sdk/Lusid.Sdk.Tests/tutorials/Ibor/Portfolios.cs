@@ -111,7 +111,7 @@ namespace Lusid.Sdk.Tests.Tutorials.Ibor
 
             Assert.That(portfolioCode, Is.EqualTo(request.Code));
 
-            var portfolioProperties = _apiFactory.Api<IPortfoliosApi>().GetPortfolioProperties(
+            var portfolioProperties = _apiFactory.Api<IPortfoliosApi>().ListPortfolioProperties(
                 scope: TestDataUtilities.TutorialScope,
                 code: portfolioCode);
             

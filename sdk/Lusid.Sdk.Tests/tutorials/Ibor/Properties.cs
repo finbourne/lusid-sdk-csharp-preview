@@ -77,7 +77,7 @@ namespace Lusid.Sdk.Tests.tutorials.Ibor
             
             Assert.That(portfolioResult.Id.Code, Is.EqualTo(createPortfolioRequest.Code));
 
-            var portfolioProperties = _apiFactory.Api<IPortfoliosApi>().GetPortfolioProperties(TestDataUtilities.TutorialScope, portfolioResult.Id.Code).Properties;
+            var portfolioProperties = _apiFactory.Api<IPortfoliosApi>().ListPortfolioProperties(TestDataUtilities.TutorialScope, portfolioResult.Id.Code).Properties;
 
             Assert.That(portfolioProperties.Keys, Is.EquivalentTo(new [] { labelPropertyDefinitionResult.Key }));
 
@@ -139,7 +139,7 @@ namespace Lusid.Sdk.Tests.tutorials.Ibor
             
             Assert.That(portfolioResult.Id.Code, Is.EqualTo(createPortfolioRequest.Code));
 
-            var portfolioProperties = _apiFactory.Api<IPortfoliosApi>().GetPortfolioProperties(TestDataUtilities.TutorialScope, portfolioResult.Id.Code).Properties;
+            var portfolioProperties = _apiFactory.Api<IPortfoliosApi>().ListPortfolioProperties(TestDataUtilities.TutorialScope, portfolioResult.Id.Code).Properties;
 
             Assert.That(portfolioProperties.Keys, Is.EquivalentTo(new [] { metricPropertyDefinitionResult.Key}));
 
