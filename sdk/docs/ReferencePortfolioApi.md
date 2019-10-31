@@ -6,14 +6,14 @@ Method | HTTP request | Description
 ------------- | ------------- | -------------
 [**CreateReferencePortfolio**](ReferencePortfolioApi.md#createreferenceportfolio) | **POST** /api/referenceportfolios/{scope} | [EARLY ACCESS] Create reference portfolio
 [**GetReferencePortfolioConstituents**](ReferencePortfolioApi.md#getreferenceportfolioconstituents) | **GET** /api/referenceportfolios/{scope}/{code}/constituents | [EARLY ACCESS] Get constituents
-[**ListConstituentsAdjustments**](ReferencePortfolioApi.md#listconstituentsadjustments) | **GET** /api/referenceportfolios/{scope}/{code}/constituentsadjustments | [EARLY ACCESS] Gets constituents adjustments in an interval of effective time.
+[**ListConstituentsAdjustments**](ReferencePortfolioApi.md#listconstituentsadjustments) | **GET** /api/referenceportfolios/{scope}/{code}/constituentsadjustments | [EARLY ACCESS] List constituents adjustments
 [**UpsertReferencePortfolioConstituents**](ReferencePortfolioApi.md#upsertreferenceportfolioconstituents) | **POST** /api/referenceportfolios/{scope}/{code}/constituents | [EARLY ACCESS] Add constituents
 
 
 
 ## CreateReferencePortfolio
 
-> Portfolio CreateReferencePortfolio (string scope, CreateReferencePortfolioRequest referencePortfolio = null)
+> Portfolio CreateReferencePortfolio (string scope, CreateReferencePortfolioRequest referencePortfolio)
 
 [EARLY ACCESS] Create reference portfolio
 
@@ -40,7 +40,7 @@ namespace Example
 
             var apiInstance = new ReferencePortfolioApi(Configuration.Default);
             var scope = scope_example;  // string | The intended scope of the portfolio
-            var referencePortfolio = new CreateReferencePortfolioRequest(); // CreateReferencePortfolioRequest | The portfolio creation request object (optional) 
+            var referencePortfolio = new CreateReferencePortfolioRequest(); // CreateReferencePortfolioRequest | The portfolio creation request object
 
             try
             {
@@ -65,7 +65,7 @@ namespace Example
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **scope** | **string**| The intended scope of the portfolio | 
- **referencePortfolio** | [**CreateReferencePortfolioRequest**](CreateReferencePortfolioRequest.md)| The portfolio creation request object | [optional] 
+ **referencePortfolio** | [**CreateReferencePortfolioRequest**](CreateReferencePortfolioRequest.md)| The portfolio creation request object | 
 
 ### Return type
 
@@ -183,11 +183,11 @@ Name | Type | Description  | Notes
 
 ## ListConstituentsAdjustments
 
-> ResourceListOfConstituentsAdjustmentHeader ListConstituentsAdjustments (string scope, string code, DateTimeOrCutLabel fromEffectiveAt = null, DateTimeOrCutLabel toEffectiveAt = null, DateTimeOffset? asAtTime = null)
+> ResourceListOfConstituentsAdjustmentHeader ListConstituentsAdjustments (string scope, string code, DateTimeOrCutLabel fromEffectiveAt, DateTimeOrCutLabel toEffectiveAt, DateTimeOffset? asAtTime = null)
 
-[EARLY ACCESS] Gets constituents adjustments in an interval of effective time.
+[EARLY ACCESS] List constituents adjustments
 
-Specify a time period in which you'd like to see the list of times that adjustments where made to this portfolio
+List the constituent adjustments made to the specified reference portfolio over a specified interval of effective time.
 
 ### Example
 
@@ -211,13 +211,13 @@ namespace Example
             var apiInstance = new ReferencePortfolioApi(Configuration.Default);
             var scope = scope_example;  // string | The scope of the portfolio
             var code = code_example;  // string | Code for the portfolio
-            var fromEffectiveAt = fromEffectiveAt_example;  // DateTimeOrCutLabel | Events between this time (inclusive) and the toEffectiveAt are returned. (optional) 
-            var toEffectiveAt = toEffectiveAt_example;  // DateTimeOrCutLabel | Events between this time (inclusive) and the fromEffectiveAt are returned. (optional) 
+            var fromEffectiveAt = fromEffectiveAt_example;  // DateTimeOrCutLabel | Events between this time (inclusive) and the toEffectiveAt are returned.
+            var toEffectiveAt = toEffectiveAt_example;  // DateTimeOrCutLabel | Events between this time (inclusive) and the fromEffectiveAt are returned.
             var asAtTime = 2013-10-20T19:20:30+01:00;  // DateTimeOffset? | The as-at time for which the result is valid. (optional) 
 
             try
             {
-                // [EARLY ACCESS] Gets constituents adjustments in an interval of effective time.
+                // [EARLY ACCESS] List constituents adjustments
                 ResourceListOfConstituentsAdjustmentHeader result = apiInstance.ListConstituentsAdjustments(scope, code, fromEffectiveAt, toEffectiveAt, asAtTime);
                 Debug.WriteLine(result);
             }
@@ -239,8 +239,8 @@ Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **scope** | **string**| The scope of the portfolio | 
  **code** | **string**| Code for the portfolio | 
- **fromEffectiveAt** | **DateTimeOrCutLabel**| Events between this time (inclusive) and the toEffectiveAt are returned. | [optional] 
- **toEffectiveAt** | **DateTimeOrCutLabel**| Events between this time (inclusive) and the fromEffectiveAt are returned. | [optional] 
+ **fromEffectiveAt** | **DateTimeOrCutLabel**| Events between this time (inclusive) and the toEffectiveAt are returned. | 
+ **toEffectiveAt** | **DateTimeOrCutLabel**| Events between this time (inclusive) and the fromEffectiveAt are returned. | 
  **asAtTime** | **DateTimeOffset?**| The as-at time for which the result is valid. | [optional] 
 
 ### Return type
@@ -271,7 +271,7 @@ Name | Type | Description  | Notes
 
 ## UpsertReferencePortfolioConstituents
 
-> UpsertReferencePortfolioConstituentsResponse UpsertReferencePortfolioConstituents (string scope, string code, UpsertReferencePortfolioConstituentsRequest constituents = null)
+> UpsertReferencePortfolioConstituentsResponse UpsertReferencePortfolioConstituents (string scope, string code, UpsertReferencePortfolioConstituentsRequest constituents)
 
 [EARLY ACCESS] Add constituents
 
@@ -299,7 +299,7 @@ namespace Example
             var apiInstance = new ReferencePortfolioApi(Configuration.Default);
             var scope = scope_example;  // string | The scope of the portfolio
             var code = code_example;  // string | The code of the portfolio
-            var constituents = new UpsertReferencePortfolioConstituentsRequest(); // UpsertReferencePortfolioConstituentsRequest | The constituents to upload to the portfolio (optional) 
+            var constituents = new UpsertReferencePortfolioConstituentsRequest(); // UpsertReferencePortfolioConstituentsRequest | The constituents to upload to the portfolio
 
             try
             {
@@ -325,7 +325,7 @@ Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **scope** | **string**| The scope of the portfolio | 
  **code** | **string**| The code of the portfolio | 
- **constituents** | [**UpsertReferencePortfolioConstituentsRequest**](UpsertReferencePortfolioConstituentsRequest.md)| The constituents to upload to the portfolio | [optional] 
+ **constituents** | [**UpsertReferencePortfolioConstituentsRequest**](UpsertReferencePortfolioConstituentsRequest.md)| The constituents to upload to the portfolio | 
 
 ### Return type
 

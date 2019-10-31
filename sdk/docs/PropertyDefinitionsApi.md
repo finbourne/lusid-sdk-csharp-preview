@@ -348,7 +348,7 @@ Name | Type | Description  | Notes
 
 ## UpdatePropertyDefinition
 
-> PropertyDefinition UpdatePropertyDefinition (string domain, string scope, string code, UpdatePropertyDefinitionRequest definition = null)
+> PropertyDefinition UpdatePropertyDefinition (string domain, string scope, string code, UpdatePropertyDefinitionRequest definition)
 
 [EARLY ACCESS] Update property definition
 
@@ -377,7 +377,7 @@ namespace Example
             var domain = domain_example;  // string | The domain of the property being updated.
             var scope = scope_example;  // string | The scope of the property being updated.
             var code = code_example;  // string | The code of the property being updated. Together with the domain and scope this uniquely              identifies the property.
-            var definition = new UpdatePropertyDefinitionRequest(); // UpdatePropertyDefinitionRequest | The updated definition of the property. (optional) 
+            var definition = new UpdatePropertyDefinitionRequest(); // UpdatePropertyDefinitionRequest | The updated definition of the property.
 
             try
             {
@@ -404,7 +404,7 @@ Name | Type | Description  | Notes
  **domain** | **string**| The domain of the property being updated. | 
  **scope** | **string**| The scope of the property being updated. | 
  **code** | **string**| The code of the property being updated. Together with the domain and scope this uniquely              identifies the property. | 
- **definition** | [**UpdatePropertyDefinitionRequest**](UpdatePropertyDefinitionRequest.md)| The updated definition of the property. | [optional] 
+ **definition** | [**UpdatePropertyDefinitionRequest**](UpdatePropertyDefinitionRequest.md)| The updated definition of the property. | 
 
 ### Return type
 
