@@ -51,31 +51,57 @@ namespace Lusid.Sdk.Tests.Tutorials.Ibor
 
             //    Add transactions to the portfolio
             _apiFactory.Api<ITransactionPortfoliosApi>().UpsertTransactions(TutorialScope, portfolioId, newTransactions.ToList());
-            
-            //    Set up analytic store used to store prices for the valuation
-            var analyticStores = _apiFactory.Api<IAnalyticsStoresApi>().ListAnalyticStores();
-            var store = analyticStores.Values.Where(s => s.Date == effectiveDate && s.Scope == TutorialScope);
 
-            if (!store.Any())
-            {
-                //    Create the analytic store if one doesn't already exist
-                var analyticStoreRequest = new CreateAnalyticStoreRequest(TutorialScope, effectiveDate);
-                _apiFactory.Api<IAnalyticsStoresApi>().CreateAnalyticStore(analyticStoreRequest);
-            }
-                        
-            var prices = new List<InstrumentAnalytic>
-            {
-                new InstrumentAnalytic(_instrumentIds[0], 100), 
-                new InstrumentAnalytic(_instrumentIds[1], 200),
-                new InstrumentAnalytic(_instrumentIds[2], 300)
-            };
+            var scope = Guid.NewGuid().ToString();
             
-            //    Add prices to the analytics store
-            _apiFactory.Api<IAnalyticsStoresApi>().SetAnalytics(TutorialScope, effectiveDate.Year, effectiveDate.Month, effectiveDate.Day, prices);
+            var quotes = new List<(string InstrumentId, double Price)>
+                {
+                    (_instrumentIds[0], 100),
+                    (_instrumentIds[1], 200),
+                    (_instrumentIds[2], 300)
+                }
+                .Select(x => new UpsertQuoteRequest(
+                    new QuoteId(
+                        new QuoteSeriesId(
+                            provider: "DataScope", 
+                            instrumentId: x.InstrumentId, 
+                            instrumentIdType: QuoteSeriesId.InstrumentIdTypeEnum.LusidInstrumentId, 
+                            quoteType: QuoteSeriesId.QuoteTypeEnum.Price, field: "mid"
+                        ),
+                        effectiveAt: effectiveDate
+                    ),
+                    metricValue: new MetricValue(
+                        value: x.Price,
+                        unit: "GBP"
+                    )
+                ))
+                .ToDictionary(k => Guid.NewGuid().ToString());
+
+            //    Create the quotes
+            var recipe = new ConfigurationRecipe
+            (
+                code: "DataScope_Recipe",
+                market: new MarketContext
+                {
+                    Suppliers = new MarketContextSuppliers
+                    {
+                        Equity = MarketContextSuppliers.EquityEnum.DataScope
+                    },
+                    Options = new MarketOptions
+                    {
+                        DefaultSupplier = MarketOptions.DefaultSupplierEnum.DataScope,
+                        DefaultInstrumentCodeType = MarketOptions.DefaultInstrumentCodeTypeEnum.LusidInstrumentId,
+                        DefaultScope = scope
+                    }
+                }
+            );
+            
+            //    Upload the quote
+            _apiFactory.Api<IQuotesApi>().UpsertQuotes(scope, quotes);
                        
             //    Create the aggregation request, this example calculates the percentage of total portfolio value and value by instrument 
             var aggregationRequest = new AggregationRequest(
-                recipeId: new ResourceId(TutorialScope, "default"),
+                inlineRecipe: recipe,
                 metrics: new List<AggregateSpec>
                 {
                     new AggregateSpec("Instrument/default/Name", AggregateSpec.OpEnum.Value),
@@ -87,7 +113,12 @@ namespace Lusid.Sdk.Tests.Tutorials.Ibor
             );
 
             //    Do the aggregation
-            _apiFactory.Api<IAggregationApi>().GetAggregationByPortfolio(TutorialScope, portfolioId, request: aggregationRequest);
+            var results = _apiFactory.Api<IAggregationApi>().GetAggregationByPortfolio(TutorialScope, portfolioId, request: aggregationRequest);
+
+            Assert.That(results.Data, Has.Count.EqualTo(4));
+            Assert.That(results.Data[0]["Sum(Holding/default/PV)"], Is.EqualTo(10000));
+            Assert.That(results.Data[2]["Sum(Holding/default/PV)"], Is.EqualTo(20000));
+            Assert.That(results.Data[3]["Sum(Holding/default/PV)"], Is.EqualTo(30000));            
         }
 
     }
