@@ -1,10 +1,11 @@
 # Lusid.Sdk.Api.SystemConfigurationApi
 
-All URIs are relative to *http://localhost/api*
+All URIs are relative to *http://localhost*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
 [**CreateConfigurationTransactionType**](SystemConfigurationApi.md#createconfigurationtransactiontype) | **POST** /api/systemconfiguration/transactions/type | [EARLY ACCESS] Create transaction type
+[**CreateSideDefinition**](SystemConfigurationApi.md#createsidedefinition) | **POST** /api/systemconfiguration/transactions/side | [EXPERIMENTAL] Create side definition
 [**ListConfigurationTransactionTypes**](SystemConfigurationApi.md#listconfigurationtransactiontypes) | **GET** /api/systemconfiguration/transactions | [EARLY ACCESS] List transaction types
 [**SetConfigurationTransactionTypes**](SystemConfigurationApi.md#setconfigurationtransactiontypes) | **PUT** /api/systemconfiguration/transactions | [EXPERIMENTAL] Set transaction types
 
@@ -33,7 +34,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://localhost/api";
+            Configuration.Default.BasePath = "http://localhost";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -90,6 +91,86 @@ Name | Type | Description  | Notes
 [[Back to README]](../README.md)
 
 
+## CreateSideDefinition
+
+> TransactionSetConfigurationData CreateSideDefinition (SideConfigurationDataRequest side = null)
+
+[EXPERIMENTAL] Create side definition
+
+Create a new side definition for us in transaction type configuration
+
+### Example
+
+```csharp
+using System.Collections.Generic;
+using System.Diagnostics;
+using Lusid.Sdk.Api;
+using Lusid.Sdk.Client;
+using Lusid.Sdk.Model;
+
+namespace Example
+{
+    public class CreateSideDefinitionExample
+    {
+        public static void Main()
+        {
+            Configuration.Default.BasePath = "http://localhost";
+            // Configure OAuth2 access token for authorization: oauth2
+            Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
+
+            var apiInstance = new SystemConfigurationApi(Configuration.Default);
+            var side = new SideConfigurationDataRequest(); // SideConfigurationDataRequest | The definition of the side to be created. (optional) 
+
+            try
+            {
+                // [EXPERIMENTAL] Create side definition
+                TransactionSetConfigurationData result = apiInstance.CreateSideDefinition(side);
+                Debug.WriteLine(result);
+            }
+            catch (ApiException e)
+            {
+                Debug.Print("Exception when calling SystemConfigurationApi.CreateSideDefinition: " + e.Message );
+                Debug.Print("Status Code: "+ e.ErrorCode);
+                Debug.Print(e.StackTrace);
+            }
+        }
+    }
+}
+```
+
+### Parameters
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **side** | [**SideConfigurationDataRequest**](SideConfigurationDataRequest.md)| The definition of the side to be created. | [optional] 
+
+### Return type
+
+[**TransactionSetConfigurationData**](TransactionSetConfigurationData.md)
+
+### Authorization
+
+[oauth2](../README.md#oauth2)
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: text/plain, application/json, text/json
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+| **201** | Success |  -  |
+| **400** | The details of the input related failure |  -  |
+| **0** | Error response |  -  |
+
+[[Back to top]](#)
+[[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
+
+
 ## ListConfigurationTransactionTypes
 
 > TransactionSetConfigurationData ListConfigurationTransactionTypes ()
@@ -113,7 +194,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://localhost/api";
+            Configuration.Default.BasePath = "http://localhost";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -188,7 +269,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://localhost/api";
+            Configuration.Default.BasePath = "http://localhost";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
