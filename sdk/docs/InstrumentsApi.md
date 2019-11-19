@@ -129,7 +129,7 @@ namespace Example
             var identifierType = identifierType_example;  // string | The identifier type of the instrument, e.g., \"Figi\"
             var identifier = identifier_example;  // string | The identifier of the instrument to delete properties from.
             var propertyKeys = new List<string>(); // List<string> | The property keys of the properties to be deleted from the instrument. Only properties in the  Finbourne.Entities.PropertyDomain.Instrument domain can be supplied.
-            var effectiveAt = effectiveAt_example;  // DateTimeOrCutLabel | The effective date to delete the properties from. Note that this is only valid to set if the properties being deleted  are defined to be Finbourne.Entities.PropertyLifeTime.TimeVariant, otherwise this value must not be set. (optional) 
+            var effectiveAt = effectiveAt_example;  // DateTimeOrCutLabel | The effective date to delete the properties from. Note that this is only valid to set if the properties being deleted  are defined to be Finbourne.WebApi.Interface.Dto.PropertyLifeTime.TimeVariant, otherwise this value must not be set. (optional) 
 
             try
             {
@@ -156,7 +156,7 @@ Name | Type | Description  | Notes
  **identifierType** | **string**| The identifier type of the instrument, e.g., \&quot;Figi\&quot; | 
  **identifier** | **string**| The identifier of the instrument to delete properties from. | 
  **propertyKeys** | [**List&lt;string&gt;**](string.md)| The property keys of the properties to be deleted from the instrument. Only properties in the  Finbourne.Entities.PropertyDomain.Instrument domain can be supplied. | 
- **effectiveAt** | **DateTimeOrCutLabel**| The effective date to delete the properties from. Note that this is only valid to set if the properties being deleted  are defined to be Finbourne.Entities.PropertyLifeTime.TimeVariant, otherwise this value must not be set. | [optional] 
+ **effectiveAt** | **DateTimeOrCutLabel**| The effective date to delete the properties from. Note that this is only valid to set if the properties being deleted  are defined to be Finbourne.WebApi.Interface.Dto.PropertyLifeTime.TimeVariant, otherwise this value must not be set. | [optional] 
 
 ### Return type
 
