@@ -6,7 +6,10 @@ Method | HTTP request | Description
 ------------- | ------------- | -------------
 [**DeleteQuotes**](QuotesApi.md#deletequotes) | **POST** /api/quotes/{scope}/$delete | [BETA] Delete quotes
 [**GetQuotes**](QuotesApi.md#getquotes) | **POST** /api/quotes/{scope}/$get | [BETA] Get quotes
+[**GetQuotesAccessMetadataRule**](QuotesApi.md#getquotesaccessmetadatarule) | **GET** /api/metadata/quotes/rules | [EXPERIMENTAL] Get a quote access metadata rule
 [**ListQuotes**](QuotesApi.md#listquotes) | **GET** /api/quotes/{scope} | [BETA] List quotes
+[**ListQuotesAccessMetadataRules**](QuotesApi.md#listquotesaccessmetadatarules) | **GET** /api/metadata/quotes/rules/{scope} | [EXPERIMENTAL] List all quote access metadata rules in a scope
+[**UpsertQuoteAccessMetadataRule**](QuotesApi.md#upsertquoteaccessmetadatarule) | **POST** /api/metadata/quotes/rules/{scope} | [EXPERIMENTAL] Upsert a Quote Access Metadata Rule. This creates or updates the data in LUSID.
 [**UpsertQuotes**](QuotesApi.md#upsertquotes) | **POST** /api/quotes/{scope} | [BETA] Upsert quotes
 
 
@@ -181,6 +184,102 @@ Name | Type | Description  | Notes
 [[Back to README]](../README.md)
 
 
+## GetQuotesAccessMetadataRule
+
+> QuoteAccessMetadataRule GetQuotesAccessMetadataRule (string scope, string provider = null, string priceSource = null, string instrumentIdType = null, string instrumentId = null, string quoteType = null, string field = null, DateTimeOrCutLabel effectiveAt = null, DateTimeOffset? asAt = null)
+
+[EXPERIMENTAL] Get a quote access metadata rule
+
+Get a specific quote access metadata rule by specifying the corresponding identifier parts                No matching will be performed through this endpoint. To retrieve a rule, it is necessary to specify, exactly, the identifier of the rule
+
+### Example
+
+```csharp
+using System.Collections.Generic;
+using System.Diagnostics;
+using Lusid.Sdk.Api;
+using Lusid.Sdk.Client;
+using Lusid.Sdk.Model;
+
+namespace Example
+{
+    public class GetQuotesAccessMetadataRuleExample
+    {
+        public static void Main()
+        {
+            Configuration.Default.BasePath = "http://localhost";
+            // Configure OAuth2 access token for authorization: oauth2
+            Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
+
+            var apiInstance = new QuotesApi(Configuration.Default);
+            var scope = scope_example;  // string | The scope of the Quote Access Metadata Rule to retrieve.
+            var provider = provider_example;  // string | The Provider of the rule (optional) 
+            var priceSource = priceSource_example;  // string | The PriceSource of the rule (optional) 
+            var instrumentIdType = instrumentIdType_example;  // string | The InstrumentIdType of the rule (optional) 
+            var instrumentId = instrumentId_example;  // string | The InstrumentId of the rule (optional) 
+            var quoteType = quoteType_example;  // string | The QuoteType of the rule (optional) 
+            var field = field_example;  // string | The Field of the rule (optional) 
+            var effectiveAt = effectiveAt_example;  // DateTimeOrCutLabel | The effective date of the rule (optional) 
+            var asAt = 2013-10-20T19:20:30+01:00;  // DateTimeOffset? | The asAt datetime at which to retrieve the access metadata rule. Defaults to return the latest version if not specified. (optional) 
+
+            try
+            {
+                // [EXPERIMENTAL] Get a quote access metadata rule
+                QuoteAccessMetadataRule result = apiInstance.GetQuotesAccessMetadataRule(scope, provider, priceSource, instrumentIdType, instrumentId, quoteType, field, effectiveAt, asAt);
+                Debug.WriteLine(result);
+            }
+            catch (ApiException e)
+            {
+                Debug.Print("Exception when calling QuotesApi.GetQuotesAccessMetadataRule: " + e.Message );
+                Debug.Print("Status Code: "+ e.ErrorCode);
+                Debug.Print(e.StackTrace);
+            }
+        }
+    }
+}
+```
+
+### Parameters
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **scope** | **string**| The scope of the Quote Access Metadata Rule to retrieve. | 
+ **provider** | **string**| The Provider of the rule | [optional] 
+ **priceSource** | **string**| The PriceSource of the rule | [optional] 
+ **instrumentIdType** | **string**| The InstrumentIdType of the rule | [optional] 
+ **instrumentId** | **string**| The InstrumentId of the rule | [optional] 
+ **quoteType** | **string**| The QuoteType of the rule | [optional] 
+ **field** | **string**| The Field of the rule | [optional] 
+ **effectiveAt** | **DateTimeOrCutLabel**| The effective date of the rule | [optional] 
+ **asAt** | **DateTimeOffset?**| The asAt datetime at which to retrieve the access metadata rule. Defaults to return the latest version if not specified. | [optional] 
+
+### Return type
+
+[**QuoteAccessMetadataRule**](QuoteAccessMetadataRule.md)
+
+### Authorization
+
+[oauth2](../README.md#oauth2)
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: text/plain, application/json, text/json
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+| **200** | The successfully retrieved Quote Access Metadata Rule or any failure |  -  |
+| **400** | The details of the input related failure |  -  |
+| **0** | Error response |  -  |
+
+[[Back to top]](#)
+[[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
+
+
 ## ListQuotes
 
 > ResourceListOfQuote ListQuotes (string scope, DateTimeOffset? asAt = null, string page = null, int? start = null, int? limit = null, string filter = null)
@@ -262,6 +361,172 @@ Name | Type | Description  | Notes
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
 | **200** | The requested quotes |  -  |
+| **400** | The details of the input related failure |  -  |
+| **0** | Error response |  -  |
+
+[[Back to top]](#)
+[[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
+
+
+## ListQuotesAccessMetadataRules
+
+> ResourceListOfQuoteAccessMetadataRule ListQuotesAccessMetadataRules (string scope, DateTimeOffset? asAt = null)
+
+[EXPERIMENTAL] List all quote access metadata rules in a scope
+
+Get all the quote access metadata rules in the specified scope
+
+### Example
+
+```csharp
+using System.Collections.Generic;
+using System.Diagnostics;
+using Lusid.Sdk.Api;
+using Lusid.Sdk.Client;
+using Lusid.Sdk.Model;
+
+namespace Example
+{
+    public class ListQuotesAccessMetadataRulesExample
+    {
+        public static void Main()
+        {
+            Configuration.Default.BasePath = "http://localhost";
+            // Configure OAuth2 access token for authorization: oauth2
+            Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
+
+            var apiInstance = new QuotesApi(Configuration.Default);
+            var scope = scope_example;  // string | The scope of the Quote Access Metadata Rule to retrieve.
+            var asAt = 2013-10-20T19:20:30+01:00;  // DateTimeOffset? | The asAt datetime at which to retrieve the access metadata rule. Defaults to return the latest version if not specified. (optional) 
+
+            try
+            {
+                // [EXPERIMENTAL] List all quote access metadata rules in a scope
+                ResourceListOfQuoteAccessMetadataRule result = apiInstance.ListQuotesAccessMetadataRules(scope, asAt);
+                Debug.WriteLine(result);
+            }
+            catch (ApiException e)
+            {
+                Debug.Print("Exception when calling QuotesApi.ListQuotesAccessMetadataRules: " + e.Message );
+                Debug.Print("Status Code: "+ e.ErrorCode);
+                Debug.Print(e.StackTrace);
+            }
+        }
+    }
+}
+```
+
+### Parameters
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **scope** | **string**| The scope of the Quote Access Metadata Rule to retrieve. | 
+ **asAt** | **DateTimeOffset?**| The asAt datetime at which to retrieve the access metadata rule. Defaults to return the latest version if not specified. | [optional] 
+
+### Return type
+
+[**ResourceListOfQuoteAccessMetadataRule**](ResourceListOfQuoteAccessMetadataRule.md)
+
+### Authorization
+
+[oauth2](../README.md#oauth2)
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: text/plain, application/json, text/json
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+| **200** | The filtered list of results |  -  |
+| **400** | The details of the input related failure |  -  |
+| **0** | Error response |  -  |
+
+[[Back to top]](#)
+[[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
+
+
+## UpsertQuoteAccessMetadataRule
+
+> QuoteAccessMetadataRule UpsertQuoteAccessMetadataRule (string scope, UpsertQuoteAccessMetadataRuleRequest request, DateTimeOrCutLabel effectiveAt = null)
+
+[EXPERIMENTAL] Upsert a Quote Access Metadata Rule. This creates or updates the data in LUSID.
+
+Update or insert one Quote Access Metadata Rule in a single scope. An item will be updated if it already exists  and inserted if it does not.    The response will return the successfully updated or inserted Quote Access Metadata Rule or failure message if unsuccessful    It is important to always check to verify success (or failure).                Multiple rules for a key can exists with different effective at dates, when resources are accessed the rule that is active for the current time will be fetched
+
+### Example
+
+```csharp
+using System.Collections.Generic;
+using System.Diagnostics;
+using Lusid.Sdk.Api;
+using Lusid.Sdk.Client;
+using Lusid.Sdk.Model;
+
+namespace Example
+{
+    public class UpsertQuoteAccessMetadataRuleExample
+    {
+        public static void Main()
+        {
+            Configuration.Default.BasePath = "http://localhost";
+            // Configure OAuth2 access token for authorization: oauth2
+            Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
+
+            var apiInstance = new QuotesApi(Configuration.Default);
+            var scope = scope_example;  // string | The scope to use when updating or inserting the Quote Access Metadata Rule.
+            var request = new UpsertQuoteAccessMetadataRuleRequest(); // UpsertQuoteAccessMetadataRuleRequest | The Quote Access Metadata Rule to update or insert
+            var effectiveAt = effectiveAt_example;  // DateTimeOrCutLabel | The date this rule will effective from (optional) 
+
+            try
+            {
+                // [EXPERIMENTAL] Upsert a Quote Access Metadata Rule. This creates or updates the data in LUSID.
+                QuoteAccessMetadataRule result = apiInstance.UpsertQuoteAccessMetadataRule(scope, request, effectiveAt);
+                Debug.WriteLine(result);
+            }
+            catch (ApiException e)
+            {
+                Debug.Print("Exception when calling QuotesApi.UpsertQuoteAccessMetadataRule: " + e.Message );
+                Debug.Print("Status Code: "+ e.ErrorCode);
+                Debug.Print(e.StackTrace);
+            }
+        }
+    }
+}
+```
+
+### Parameters
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **scope** | **string**| The scope to use when updating or inserting the Quote Access Metadata Rule. | 
+ **request** | [**UpsertQuoteAccessMetadataRuleRequest**](UpsertQuoteAccessMetadataRuleRequest.md)| The Quote Access Metadata Rule to update or insert | 
+ **effectiveAt** | **DateTimeOrCutLabel**| The date this rule will effective from | [optional] 
+
+### Return type
+
+[**QuoteAccessMetadataRule**](QuoteAccessMetadataRule.md)
+
+### Authorization
+
+[oauth2](../README.md#oauth2)
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: text/plain, application/json, text/json
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+| **200** | The successfully updated or inserted item or any failure |  -  |
 | **400** | The details of the input related failure |  -  |
 | **0** | Error response |  -  |
 
