@@ -42,7 +42,7 @@ namespace Lusid.Sdk.Tests
             // AND which we we can use to query for the schema of the entity
             // TODO: Too difficult to convert the returned Url into parameters for the call to GetSchema
             Regex regex = new Regex(".+/(\\w+)");
-            var entityType = regex.Match(schemaHeaderItem);
+            var entityType = regex.Match(schemaHeaderItem.First());
 
             var schema = _apiFactory.Api<ISchemasApi>().GetEntitySchema(entityType.Groups[1].Value);
 

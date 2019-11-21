@@ -1,6 +1,5 @@
-
 # Lusid.Sdk.Model.Quote
-
+The quote id, value and lineage of the quotes all keyed by a unique correlation id.
 ## Properties
 
 Name | Type | Description | Notes
@@ -10,9 +9,7 @@ Name | Type | Description | Notes
 **Lineage** | **string** | Description of the quote&#39;s lineage e.g. &#39;FundAccountant_GreenQuality&#39;. | [optional] 
 **CutLabel** | **string** | The cut label that this quote was updated or inserted with. | [optional] 
 **UploadedBy** | **string** | The unique id of the user that updated or inserted the quote. | 
-**AsAt** | **DateTimeOffset?** | The asAt datetime at which the quote was committed to LUSID. | 
+**AsAt** | **DateTimeOffset** | The asAt datetime at which the quote was committed to LUSID. | 
 
-[[Back to Model list]](../README.md#documentation-for-models)
-[[Back to API list]](../README.md#documentation-for-api-endpoints)
-[[Back to README]](../README.md)
+[[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 
