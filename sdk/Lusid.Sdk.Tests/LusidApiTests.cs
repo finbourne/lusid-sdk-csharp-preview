@@ -34,15 +34,15 @@ namespace Lusid.Sdk.Tests
             _apiFactory.Api<ITransactionPortfoliosApi>().CreatePortfolio(scope, request);
 
             // WHEN the portfolio is queried
-            var portfolioResponse = _apiFactory.Api<IPortfoliosApi>().GetPortfolioAsyncWithHttpInfo(scope, code).Result;
+            var portfolioResponse = _apiFactory.Api<IPortfoliosApi>().GetPortfolio(scope, code);
 
             // THEN the result should include a schema Url
-            var schemaHeaderItem = portfolioResponse.Headers["lusid-schema-url"];
+            var schemaUrl = portfolioResponse.Links.First(l => l.Relation == "EntitySchema").Href;
 
             // AND which we we can use to query for the schema of the entity
             // TODO: Too difficult to convert the returned Url into parameters for the call to GetSchema
             Regex regex = new Regex(".+/(\\w+)");
-            var entityType = regex.Match(schemaHeaderItem);
+            var entityType = regex.Match(schemaUrl);
 
             var schema = _apiFactory.Api<ISchemasApi>().GetEntitySchema(entityType.Groups[1].Value);
 
