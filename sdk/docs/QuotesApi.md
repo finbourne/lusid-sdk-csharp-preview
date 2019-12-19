@@ -1,9 +1,10 @@
 # Lusid.Sdk.Api.QuotesApi
 
-All URIs are relative to *http://localhost/api*
+All URIs are relative to *http://localhost*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
+[**DeleteQuoteAcccesMetadataRule**](QuotesApi.md#deletequoteacccesmetadatarule) | **DELETE** /api/metadata/quotes/rules/{scope} | [EXPERIMENTAL] Delete a Quote Access Metadata Rule
 [**DeleteQuotes**](QuotesApi.md#deletequotes) | **POST** /api/quotes/{scope}/$delete | [BETA] Delete quotes
 [**GetQuotes**](QuotesApi.md#getquotes) | **POST** /api/quotes/{scope}/$get | [BETA] Get quotes
 [**GetQuotesAccessMetadataRule**](QuotesApi.md#getquotesaccessmetadatarule) | **GET** /api/metadata/quotes/rules | [EXPERIMENTAL] Get a quote access metadata rule
@@ -12,6 +13,100 @@ Method | HTTP request | Description
 [**UpsertQuoteAccessMetadataRule**](QuotesApi.md#upsertquoteaccessmetadatarule) | **POST** /api/metadata/quotes/rules/{scope} | [EXPERIMENTAL] Upsert a Quote Access Metadata Rule. This creates or updates the data in LUSID.
 [**UpsertQuotes**](QuotesApi.md#upsertquotes) | **POST** /api/quotes/{scope} | [BETA] Upsert quotes
 
+
+
+## DeleteQuoteAcccesMetadataRule
+
+> QuoteAccessMetadataRule DeleteQuoteAcccesMetadataRule (string scope, string provider = null, string priceSource = null, string instrumentIdType = null, string instrumentId = null, string quoteType = null, string field = null, DateTimeOrCutLabel effectiveAt = null)
+
+[EXPERIMENTAL] Delete a Quote Access Metadata Rule
+
+Delete the Quote Access Metadata Rule that exactly matches the provided identifier parts
+
+### Example
+
+```csharp
+using System.Collections.Generic;
+using System.Diagnostics;
+using Lusid.Sdk.Api;
+using Lusid.Sdk.Client;
+using Lusid.Sdk.Model;
+
+namespace Example
+{
+    public class DeleteQuoteAcccesMetadataRuleExample
+    {
+        public static void Main()
+        {
+            Configuration.Default.BasePath = "http://localhost";
+            // Configure OAuth2 access token for authorization: oauth2
+            Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
+
+            var apiInstance = new QuotesApi(Configuration.Default);
+            var scope = scope_example;  // string | The scope of the Quote Access Metadata Rule to retrieve.
+            var provider = provider_example;  // string | The Provider of the rule (optional) 
+            var priceSource = priceSource_example;  // string | The PriceSource of the rule (optional) 
+            var instrumentIdType = instrumentIdType_example;  // string | The InstrumentIdType of the rule (optional) 
+            var instrumentId = instrumentId_example;  // string | The InstrumentId of the rule (optional) 
+            var quoteType = quoteType_example;  // string | The QuoteType of the rule (optional) 
+            var field = field_example;  // string | The Field of the rule (optional) 
+            var effectiveAt = effectiveAt_example;  // DateTimeOrCutLabel | The effective date to delete at, if this is not supplied, it will delete all data found (optional) 
+
+            try
+            {
+                // [EXPERIMENTAL] Delete a Quote Access Metadata Rule
+                QuoteAccessMetadataRule result = apiInstance.DeleteQuoteAcccesMetadataRule(scope, provider, priceSource, instrumentIdType, instrumentId, quoteType, field, effectiveAt);
+                Debug.WriteLine(result);
+            }
+            catch (ApiException e)
+            {
+                Debug.Print("Exception when calling QuotesApi.DeleteQuoteAcccesMetadataRule: " + e.Message );
+                Debug.Print("Status Code: "+ e.ErrorCode);
+                Debug.Print(e.StackTrace);
+            }
+        }
+    }
+}
+```
+
+### Parameters
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **scope** | **string**| The scope of the Quote Access Metadata Rule to retrieve. | 
+ **provider** | **string**| The Provider of the rule | [optional] 
+ **priceSource** | **string**| The PriceSource of the rule | [optional] 
+ **instrumentIdType** | **string**| The InstrumentIdType of the rule | [optional] 
+ **instrumentId** | **string**| The InstrumentId of the rule | [optional] 
+ **quoteType** | **string**| The QuoteType of the rule | [optional] 
+ **field** | **string**| The Field of the rule | [optional] 
+ **effectiveAt** | **DateTimeOrCutLabel**| The effective date to delete at, if this is not supplied, it will delete all data found | [optional] 
+
+### Return type
+
+[**QuoteAccessMetadataRule**](QuoteAccessMetadataRule.md)
+
+### Authorization
+
+[oauth2](../README.md#oauth2)
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: text/plain, application/json, text/json
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+| **200** | The rule that has been deleted |  -  |
+| **400** | The details of the input related failure |  -  |
+| **0** | Error response |  -  |
+
+[[Back to top]](#)
+[[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
 
 
 ## DeleteQuotes
@@ -37,7 +132,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://localhost/api";
+            Configuration.Default.BasePath = "http://localhost";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -119,7 +214,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://localhost/api";
+            Configuration.Default.BasePath = "http://localhost";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -207,7 +302,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://localhost/api";
+            Configuration.Default.BasePath = "http://localhost";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -303,7 +398,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://localhost/api";
+            Configuration.Default.BasePath = "http://localhost";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -393,7 +488,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://localhost/api";
+            Configuration.Default.BasePath = "http://localhost";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -475,7 +570,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://localhost/api";
+            Configuration.Default.BasePath = "http://localhost";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -559,7 +654,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://localhost/api";
+            Configuration.Default.BasePath = "http://localhost";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
