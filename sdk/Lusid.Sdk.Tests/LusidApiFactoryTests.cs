@@ -1,5 +1,7 @@
 using System;
 using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 using Lusid.Sdk.Api;
 using Lusid.Sdk.Client;
 using Lusid.Sdk.Model;
@@ -164,6 +166,47 @@ namespace Lusid.Sdk.Tests
             var errorResponse = error.ProblemDetails();
             
             Assert.That(errorResponse, Is.Null);
+        }
+
+        [Test]
+        public async Task Multi_Threaded_ApiFactory_Use()
+        {
+            var config = ApiConfigurationBuilder.Build("secrets.json");
+            var provider = new ClientCredentialsFlowTokenProvider(config);
+            var _ = await provider.GetAuthenticationTokenAsync();
+            var configuration = new Configuration
+            {
+                AccessToken = provider.GetLastToken().Token,
+                BasePath = config.ApiUrl
+            };
+
+            var date = new DateTimeOffset(2018, 1, 1, 0, 0, 0, TimeSpan.Zero);
+
+            var request = Enumerable.Range(0, 100).Select(i => new UpsertQuoteRequest(
+                new QuoteId(
+                    new QuoteSeriesId(
+                        provider: "DataScope",
+                        priceSource: "BankA",
+                        instrumentId: "BBG000B9XRY4",
+                        instrumentIdType: QuoteSeriesId.InstrumentIdTypeEnum.Figi,
+                        quoteType: QuoteSeriesId.QuoteTypeEnum.Price,
+                        field: "mid"),
+                    effectiveAt: date.AddDays(i)),
+                metricValue: new MetricValue(
+                    value: 199.23,
+                    unit: "USD"),
+                lineage: "InternalSystem")).ToDictionary(k => k.QuoteId.EffectiveAt.ToString(), v => v);
+            
+
+            Parallel.For(0, 25, (i, state) =>
+            {
+                var factory = LusidApiFactoryBuilder.Build(configuration);
+                var result = factory.Api<IQuotesApi>().UpsertQuotes("mt-scope", request);
+                Assert.That(result.Failed, Is.Empty);
+                
+                Console.WriteLine($"{Thread.CurrentThread.ManagedThreadId} {result.Values.Count}");
+            });
+
         }
 
     }
