@@ -14,28 +14,17 @@ namespace Lusid.Sdk.Utilities
     {
         private static readonly Dictionary<int, ILusidApiFactory> ThreadFactories = new Dictionary<int, ILusidApiFactory>();
         private static readonly object Lock = new object();
-        
+
         /// <summary>
         /// Create an ILusidApiFactory using the specified configuration file.  For details on the format of the configuration file see https://support.lusid.com/getting-started-with-apis-sdks
         /// </summary>
         public static ILusidApiFactory Build(string apiSecretsFilename)
         {
             var apiConfig = ApiConfigurationBuilder.Build(apiSecretsFilename);
-
-            lock (Lock)
-            {
-                var threadId = Thread.CurrentThread.ManagedThreadId;
-
-                if (ThreadFactories.TryGetValue(threadId, out var factory))
-                {
-                    factory = new LusidApiFactory(apiConfig);
-                    ThreadFactories[threadId] = factory;
-                }
-
-                return factory;
-            }
+            return new LusidApiFactory(apiConfig);
         }
-        
+
+
         /// <summary>
         /// 
         /// </summary>
