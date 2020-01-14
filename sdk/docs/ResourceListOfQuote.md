@@ -5,7 +5,7 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**Values** | [**List&lt;Quote&gt;**](Quote.md) |  | 
+**Values** | [**List&lt;Quote&gt;**](Quote.md) |  | [optional] 
 **Href** | **string** |  | [optional] 
 **Links** | [**List&lt;Link&gt;**](Link.md) |  | [optional] 
 

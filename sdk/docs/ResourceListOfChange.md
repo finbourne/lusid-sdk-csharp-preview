@@ -5,7 +5,7 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**Values** | [**List&lt;Change&gt;**](Change.md) |  | 
+**Values** | [**List&lt;Change&gt;**](Change.md) |  | [optional] 
 **Href** | **string** |  | [optional] 
 **Links** | [**List&lt;Link&gt;**](Link.md) |  | [optional] 
 

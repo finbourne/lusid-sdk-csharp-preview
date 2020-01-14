@@ -5,7 +5,7 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**Values** | [**List&lt;QuoteAccessMetadataRule&gt;**](QuoteAccessMetadataRule.md) |  | 
+**Values** | [**List&lt;QuoteAccessMetadataRule&gt;**](QuoteAccessMetadataRule.md) |  | [optional] 
 **Href** | **string** |  | [optional] 
 **Links** | [**List&lt;Link&gt;**](Link.md) |  | [optional] 
 

@@ -7,7 +7,7 @@ Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **NextPage** | **string** |  | [optional] 
 **PreviousPage** | **string** |  | [optional] 
-**Values** | [**List&lt;PropertyDefinition&gt;**](PropertyDefinition.md) |  | 
+**Values** | [**List&lt;PropertyDefinition&gt;**](PropertyDefinition.md) |  | [optional] 
 **Href** | **string** |  | [optional] 
 **Links** | [**List&lt;Link&gt;**](Link.md) |  | [optional] 
 

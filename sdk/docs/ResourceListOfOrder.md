@@ -5,7 +5,7 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**Values** | [**List&lt;Order&gt;**](Order.md) |  | 
+**Values** | [**List&lt;Order&gt;**](Order.md) |  | [optional] 
 **Href** | **string** |  | [optional] 
 **Links** | [**List&lt;Link&gt;**](Link.md) |  | [optional] 
 
