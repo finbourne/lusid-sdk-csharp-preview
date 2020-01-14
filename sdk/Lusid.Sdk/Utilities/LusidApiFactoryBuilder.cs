@@ -1,9 +1,5 @@
-using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Threading;
-using Lusid.Sdk.Client;
-using Microsoft.Extensions.Configuration;
 
 namespace Lusid.Sdk.Utilities
 {
@@ -26,11 +22,9 @@ namespace Lusid.Sdk.Utilities
 
 
         /// <summary>
-        /// 
+        /// Create an ILusidApiFactory using the specified Url and Token Provider
         /// </summary>
-        /// <param name="configuration"></param>
-        /// <returns></returns>
-        public static ILusidApiFactory Build(Configuration configuration)
+        public static ILusidApiFactory Build(string url, ITokenProvider tokenProvider)
         {
             lock (Lock)
             {
@@ -38,7 +32,14 @@ namespace Lusid.Sdk.Utilities
 
                 if (!ThreadFactories.TryGetValue(threadId, out var factory))
                 {
-                    factory = new LusidApiFactory(configuration);
+                    // TokenProviderConfiguration.ApiClient is the client used by LusidApiFactory and is 
+                    // not threadsafe, so there needs to be a separate instance for each instance of LusidApiFactory
+                    var config = new TokenProviderConfiguration(tokenProvider)
+                    {
+                        BasePath = url
+                    };
+
+                    factory = new LusidApiFactory(config);
                     ThreadFactories[threadId] = factory;
                 }
 
