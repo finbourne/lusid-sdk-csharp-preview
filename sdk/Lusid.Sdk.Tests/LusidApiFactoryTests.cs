@@ -174,12 +174,7 @@ namespace Lusid.Sdk.Tests
             var config = ApiConfigurationBuilder.Build("secrets.json");
             var provider = new ClientCredentialsFlowTokenProvider(config);
             var _ = await provider.GetAuthenticationTokenAsync();
-            var configuration = new Configuration
-            {
-                AccessToken = provider.GetLastToken().Token,
-                BasePath = config.ApiUrl
-            };
-
+            
             var date = new DateTimeOffset(2018, 1, 1, 0, 0, 0, TimeSpan.Zero);
 
             var request = Enumerable.Range(0, 100).Select(i => new UpsertQuoteRequest(
@@ -200,6 +195,12 @@ namespace Lusid.Sdk.Tests
 
             Parallel.For(0, 25, (i, state) =>
             {
+                var configuration = new Configuration
+                {
+                    AccessToken = provider.GetLastToken().Token,
+                    BasePath = config.ApiUrl
+                };
+
                 var factory = LusidApiFactoryBuilder.Build(configuration);
                 var result = factory.Api<IQuotesApi>().UpsertQuotes("mt-scope", request);
                 Assert.That(result.Failed, Is.Empty);
@@ -214,12 +215,7 @@ namespace Lusid.Sdk.Tests
             var config = ApiConfigurationBuilder.Build("secrets.json");
             var provider = new ClientCredentialsFlowTokenProvider(config);
             var _ = await provider.GetAuthenticationTokenAsync();
-            var configuration = new Configuration
-            {
-                AccessToken = provider.GetLastToken().Token,
-                BasePath = config.ApiUrl
-            };
-
+            
             var date = new DateTimeOffset(2018, 1, 1, 0, 0, 0, TimeSpan.Zero);
 
             var request = Enumerable.Range(0, 100).Select(i => new UpsertQuoteRequest(
@@ -239,6 +235,12 @@ namespace Lusid.Sdk.Tests
 
             var tasks = Enumerable.Range(0, 25).Select(x => Task.Run(() =>
             {
+                var configuration = new Configuration
+                {
+                    AccessToken = provider.GetLastToken().Token,
+                    BasePath = config.ApiUrl
+                };
+                
                 var factory = LusidApiFactoryBuilder.Build(configuration);
                 var result = factory.Api<IQuotesApi>().UpsertQuotes("mt-scope", request);
                 Assert.That(result.Failed, Is.Empty);
