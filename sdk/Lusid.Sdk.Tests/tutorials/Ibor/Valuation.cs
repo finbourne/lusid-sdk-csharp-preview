@@ -47,14 +47,14 @@ namespace Lusid.Sdk.Tests.Tutorials.Ibor
                 }
                 .OrderBy(i => i.Id);
 
-            var newTransactions = transactionSpecs.Select(id => _testDataUtilities.BuildTransactionRequest(id.Id, 100.0, id.Price, "GBP", id.TradeDate, "Buy"));
+            var newTransactions = transactionSpecs.Select(id => _testDataUtilities.BuildTransactionRequest(id.Id, 100.0M, id.Price, "GBP", id.TradeDate, "Buy"));
 
             //    Add transactions to the portfolio
             _apiFactory.Api<ITransactionPortfoliosApi>().UpsertTransactions(TutorialScope, portfolioId, newTransactions.ToList());
 
             var scope = Guid.NewGuid().ToString();
             
-            var quotes = new List<(string InstrumentId, double Price)>
+            var quotes = new List<(string InstrumentId, decimal Price)>
                 {
                     (_instrumentIds[0], 100),
                     (_instrumentIds[1], 200),

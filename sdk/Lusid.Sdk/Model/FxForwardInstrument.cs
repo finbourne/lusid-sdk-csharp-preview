@@ -103,7 +103,7 @@ namespace Lusid.Sdk.Model
         /// <param name="maturityDate">The final maturity date of the instrument. This means the last date on which the instruments makes a payment of any amount.  For the avoidance of doubt, that is not necessarily prior to its last sensitivity date for the purposes of risk; e.g. instruments such as  Constant Maturity Swaps (CMS) often have sensitivities to rates beyond their last payment date (required).</param>
         /// <param name="domCcy">The domestic currency of the instrument. (required).</param>
         /// <param name="instrumentType">Instrument type, must be property for JSON. (required).</param>
-        public FxForwardInstrument(double? domAmount = default(double?), double? fgnAmount = default(double?), bool? isNdf = default(bool?), DateTimeOffset? fixingDate = default(DateTimeOffset?), string fgnCcy = default(string), double? refSpotRate = default(double?), DateTimeOffset? startDate = default(DateTimeOffset?), DateTimeOffset? maturityDate = default(DateTimeOffset?), string domCcy = default(string), InstrumentTypeEnum instrumentType = default(InstrumentTypeEnum))
+        public FxForwardInstrument(decimal? domAmount = default(decimal?), decimal? fgnAmount = default(decimal?), bool? isNdf = default(bool?), DateTimeOffset? fixingDate = default(DateTimeOffset?), string fgnCcy = default(string), decimal? refSpotRate = default(decimal?), DateTimeOffset? startDate = default(DateTimeOffset?), DateTimeOffset? maturityDate = default(DateTimeOffset?), string domCcy = default(string), InstrumentTypeEnum instrumentType = default(InstrumentTypeEnum))
         {
             // to ensure "domAmount" is required (not null)
             if (domAmount == null)
@@ -185,14 +185,14 @@ namespace Lusid.Sdk.Model
         /// </summary>
         /// <value>The amount that is to be paid in the domestic currency on the maturity date.</value>
         [DataMember(Name="domAmount", EmitDefaultValue=false)]
-        public double? DomAmount { get; set; }
+        public decimal? DomAmount { get; set; }
 
         /// <summary>
         /// The amount that is to be paid in the foreign currency on the maturity date
         /// </summary>
         /// <value>The amount that is to be paid in the foreign currency on the maturity date</value>
         [DataMember(Name="fgnAmount", EmitDefaultValue=false)]
-        public double? FgnAmount { get; set; }
+        public decimal? FgnAmount { get; set; }
 
         /// <summary>
         /// Is the contract an Fx-Forward of \&quot;Non-Deliverable\&quot; type, meaning a single payment in the domestic currency based on  the change in fx-rate vs  a reference rate is used.
@@ -220,7 +220,7 @@ namespace Lusid.Sdk.Model
         /// </summary>
         /// <value>The reference Fx Spot rate for currency pair Foreign-Domestic that was seen on the trade start date (time).</value>
         [DataMember(Name="refSpotRate", EmitDefaultValue=false)]
-        public double? RefSpotRate { get; set; }
+        public decimal? RefSpotRate { get; set; }
 
         /// <summary>
         /// The start date of the instrument. This is normally synonymous with the trade-date.

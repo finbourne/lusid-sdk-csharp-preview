@@ -149,7 +149,7 @@ namespace Lusid.Sdk.Tests.Tutorials.Ibor
                 transactionDate: effectiveDate,
                 settlementDate: effectiveDate,
                 units: 100,
-                transactionPrice: new TransactionPrice(12.3, TransactionPrice.TypeEnum.Price),
+                transactionPrice: new TransactionPrice(12.3M, TransactionPrice.TypeEnum.Price),
                 totalConsideration: new CurrencyAndAmount(1230, "GBP"),
                 source: "Broker"
             );
@@ -225,7 +225,7 @@ namespace Lusid.Sdk.Tests.Tutorials.Ibor
                 transactionDate: effectiveDate,
                 settlementDate: effectiveDate,
                 units: 100,
-                transactionPrice: new TransactionPrice(12.3, TransactionPrice.TypeEnum.Price),
+                transactionPrice: new TransactionPrice(12.3M, TransactionPrice.TypeEnum.Price),
                 totalConsideration: new CurrencyAndAmount(1230, "GBP"),
                 source: "Custodian"
             );

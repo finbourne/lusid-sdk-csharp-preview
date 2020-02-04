@@ -189,7 +189,7 @@ namespace Lusid.Sdk.Tests
                         field: "mid"),
                     effectiveAt: date.AddDays(i)),
                 metricValue: new MetricValue(
-                    value: 199.23,
+                    value: 199.23m,
                     unit: "USD"),
                 lineage: "InternalSystem")).ToDictionary(k => k.QuoteId.EffectiveAt.ToString(), v => v);
 

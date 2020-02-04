@@ -34,7 +34,7 @@ namespace Lusid.Sdk.Model
         /// <param name="quantity">The quantity of the instrument that is owned..</param>
         /// <param name="holdingIdentifier">Identifier for the instrument.  For a single, unique trade or transaction this can be thought of as equivalent to the transaction identifier, or  a composite of the sub-holding keys for a regular sub-holding. When there are multiple transactions sharing the same underlying instrument  such as purchase of shares on multiple dates where tax implications are different this would not be the case.    In an inlined aggregation request if this is wanted to identify a line item, it can be specified in the set of aggregation keys given on the aggregation  request that accompanies the set of weighted instruments..</param>
         /// <param name="instrument">instrument.</param>
-        public WeightedInstrument(double? quantity = default(double?), string holdingIdentifier = default(string), LusidInstrument instrument = default(LusidInstrument))
+        public WeightedInstrument(decimal? quantity = default(decimal?), string holdingIdentifier = default(string), LusidInstrument instrument = default(LusidInstrument))
         {
             this.Quantity = quantity;
             this.HoldingIdentifier = holdingIdentifier;
@@ -46,7 +46,7 @@ namespace Lusid.Sdk.Model
         /// </summary>
         /// <value>The quantity of the instrument that is owned.</value>
         [DataMember(Name="quantity", EmitDefaultValue=false)]
-        public double? Quantity { get; set; }
+        public decimal? Quantity { get; set; }
 
         /// <summary>
         /// Identifier for the instrument.  For a single, unique trade or transaction this can be thought of as equivalent to the transaction identifier, or  a composite of the sub-holding keys for a regular sub-holding. When there are multiple transactions sharing the same underlying instrument  such as purchase of shares on multiple dates where tax implications are different this would not be the case.    In an inlined aggregation request if this is wanted to identify a line item, it can be specified in the set of aggregation keys given on the aggregation  request that accompanies the set of weighted instruments.

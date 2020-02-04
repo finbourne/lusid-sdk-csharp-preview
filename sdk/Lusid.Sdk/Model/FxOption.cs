@@ -102,7 +102,7 @@ namespace Lusid.Sdk.Model
         /// <param name="domCcy">The domestic currency of the FX. (required).</param>
         /// <param name="fgnCcy">The foreign currency of the FX. (required).</param>
         /// <param name="instrumentType">Instrument type, must be property for JSON. (required).</param>
-        public FxOption(DateTimeOffset? startDate = default(DateTimeOffset?), DateTimeOffset? optionMaturityDate = default(DateTimeOffset?), DateTimeOffset? optionSettlementDate = default(DateTimeOffset?), bool? isDeliveryNotCash = default(bool?), bool? isCallNotPut = default(bool?), double? strike = default(double?), string domCcy = default(string), string fgnCcy = default(string), InstrumentTypeEnum instrumentType = default(InstrumentTypeEnum))
+        public FxOption(DateTimeOffset? startDate = default(DateTimeOffset?), DateTimeOffset? optionMaturityDate = default(DateTimeOffset?), DateTimeOffset? optionSettlementDate = default(DateTimeOffset?), bool? isDeliveryNotCash = default(bool?), bool? isCallNotPut = default(bool?), decimal? strike = default(decimal?), string domCcy = default(string), string fgnCcy = default(string), InstrumentTypeEnum instrumentType = default(InstrumentTypeEnum))
         {
             // to ensure "startDate" is required (not null)
             if (startDate == null)
@@ -236,7 +236,7 @@ namespace Lusid.Sdk.Model
         /// </summary>
         /// <value>The strike of the option.</value>
         [DataMember(Name="strike", EmitDefaultValue=false)]
-        public double? Strike { get; set; }
+        public decimal? Strike { get; set; }
 
         /// <summary>
         /// The domestic currency of the FX.

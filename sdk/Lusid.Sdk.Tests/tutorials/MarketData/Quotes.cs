@@ -35,7 +35,7 @@ namespace Lusid.Sdk.Tests.Tutorials.MarketData
                         field: "mid"),
                     new DateTimeOffset(2019, 4, 15, 0, 0, 0, TimeSpan.Zero).ToString("o")),
                 metricValue: new MetricValue(
-                    value: 199.23,
+                    value: 199.23M,
                     unit: "USD"),
                 lineage: "InternalSystem");
 
