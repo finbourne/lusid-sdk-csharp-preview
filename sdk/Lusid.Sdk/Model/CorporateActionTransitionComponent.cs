@@ -40,7 +40,7 @@ namespace Lusid.Sdk.Model
         /// <param name="instrumentUid">LUSID&#39;s internal unique instrument identifier, resolved from the instrument identifiers (required).</param>
         /// <param name="unitsFactor">unitsFactor (required).</param>
         /// <param name="costFactor">costFactor (required).</param>
-        public CorporateActionTransitionComponent(Dictionary<string, string> instrumentIdentifiers = default(Dictionary<string, string>), string instrumentUid = default(string), double? unitsFactor = default(double?), double? costFactor = default(double?))
+        public CorporateActionTransitionComponent(Dictionary<string, string> instrumentIdentifiers = default(Dictionary<string, string>), string instrumentUid = default(string), decimal? unitsFactor = default(decimal?), decimal? costFactor = default(decimal?))
         {
             // to ensure "instrumentIdentifiers" is required (not null)
             if (instrumentIdentifiers == null)
@@ -102,13 +102,13 @@ namespace Lusid.Sdk.Model
         /// Gets or Sets UnitsFactor
         /// </summary>
         [DataMember(Name="unitsFactor", EmitDefaultValue=false)]
-        public double? UnitsFactor { get; set; }
+        public decimal? UnitsFactor { get; set; }
 
         /// <summary>
         /// Gets or Sets CostFactor
         /// </summary>
         [DataMember(Name="costFactor", EmitDefaultValue=false)]
-        public double? CostFactor { get; set; }
+        public decimal? CostFactor { get; set; }
 
         /// <summary>
         /// Returns the string presentation of the object
