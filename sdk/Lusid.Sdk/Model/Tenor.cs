@@ -155,7 +155,7 @@ namespace Lusid.Sdk.Model
         /// Gets or Sets Value
         /// </summary>
         [DataMember(Name="value", EmitDefaultValue=false)]
-        public double? Value { get; private set; }
+        public decimal? Value { get; private set; }
 
 
         /// <summary>

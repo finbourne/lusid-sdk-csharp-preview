@@ -101,7 +101,7 @@ namespace Lusid.Sdk.Model
         /// <param name="maturityDate">Maturity date of the credit default swap (required).</param>
         /// <param name="domCcy">Domestic currency of the credit default swap (required).</param>
         /// <param name="instrumentType">Instrument type, must be property for JSON. (required).</param>
-        public CdsInstrument(string ticker = default(string), List<FlowConventions> conventions = default(List<FlowConventions>), double? couponRate = default(double?), CdsDetailSpecifications detailSpecifications = default(CdsDetailSpecifications), DateTimeOffset? startDate = default(DateTimeOffset?), DateTimeOffset? maturityDate = default(DateTimeOffset?), string domCcy = default(string), InstrumentTypeEnum instrumentType = default(InstrumentTypeEnum))
+        public CdsInstrument(string ticker = default(string), List<FlowConventions> conventions = default(List<FlowConventions>), decimal? couponRate = default(decimal?), CdsDetailSpecifications detailSpecifications = default(CdsDetailSpecifications), DateTimeOffset? startDate = default(DateTimeOffset?), DateTimeOffset? maturityDate = default(DateTimeOffset?), string domCcy = default(string), InstrumentTypeEnum instrumentType = default(InstrumentTypeEnum))
         {
             // to ensure "ticker" is required (not null)
             if (ticker == null)
@@ -204,7 +204,7 @@ namespace Lusid.Sdk.Model
         /// </summary>
         /// <value>The coupon rate paid on each payment date of the premium leg as a fraction of 100 percent, e.g. \&quot;0.05\&quot; meaning 500 basis points or 5%.  For a standard corporate CDS (North American) this must be either 100bps or 500bps.</value>
         [DataMember(Name="couponRate", EmitDefaultValue=false)]
-        public double? CouponRate { get; set; }
+        public decimal? CouponRate { get; set; }
 
         /// <summary>
         /// Gets or Sets DetailSpecifications

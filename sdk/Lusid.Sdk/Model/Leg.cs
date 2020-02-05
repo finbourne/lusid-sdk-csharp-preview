@@ -40,7 +40,7 @@ namespace Lusid.Sdk.Model
         /// <param name="isPayNotReceive">True if the holder of the swap pays, false if they receive the flows on this leg. (required).</param>
         /// <param name="isFloatNotFixed">True if the payments float or are fixed. (required).</param>
         /// <param name="fixedRate">If the leg is fixed, the fixed rate. (required).</param>
-        public Leg(FlowConventions conventions = default(FlowConventions), bool? isPayNotReceive = default(bool?), bool? isFloatNotFixed = default(bool?), double? fixedRate = default(double?))
+        public Leg(FlowConventions conventions = default(FlowConventions), bool? isPayNotReceive = default(bool?), bool? isFloatNotFixed = default(bool?), decimal? fixedRate = default(decimal?))
         {
             // to ensure "conventions" is required (not null)
             if (conventions == null)
@@ -109,7 +109,7 @@ namespace Lusid.Sdk.Model
         /// </summary>
         /// <value>If the leg is fixed, the fixed rate.</value>
         [DataMember(Name="fixedRate", EmitDefaultValue=false)]
-        public double? FixedRate { get; set; }
+        public decimal? FixedRate { get; set; }
 
         /// <summary>
         /// Returns the string presentation of the object

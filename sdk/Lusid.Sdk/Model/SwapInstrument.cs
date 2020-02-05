@@ -139,7 +139,7 @@ namespace Lusid.Sdk.Model
         /// <param name="isAmortizing">True if the swap is amortizing (required).</param>
         /// <param name="notionalExchange">True notional exchange type. (required).</param>
         /// <param name="instrumentType">Instrument type, must be property for JSON. (required).</param>
-        public SwapInstrument(DateTimeOffset? startDate = default(DateTimeOffset?), DateTimeOffset? maturityDate = default(DateTimeOffset?), List<Leg> legs = default(List<Leg>), double? notional = default(double?), bool? isAmortizing = default(bool?), NotionalExchangeEnum notionalExchange = default(NotionalExchangeEnum), InstrumentTypeEnum instrumentType = default(InstrumentTypeEnum))
+        public SwapInstrument(DateTimeOffset? startDate = default(DateTimeOffset?), DateTimeOffset? maturityDate = default(DateTimeOffset?), List<Leg> legs = default(List<Leg>), decimal? notional = default(decimal?), bool? isAmortizing = default(bool?), NotionalExchangeEnum notionalExchange = default(NotionalExchangeEnum), InstrumentTypeEnum instrumentType = default(InstrumentTypeEnum))
         {
             // to ensure "startDate" is required (not null)
             if (startDate == null)
@@ -239,7 +239,7 @@ namespace Lusid.Sdk.Model
         /// </summary>
         /// <value>The notional.</value>
         [DataMember(Name="notional", EmitDefaultValue=false)]
-        public double? Notional { get; set; }
+        public decimal? Notional { get; set; }
 
         /// <summary>
         /// True if the swap is amortizing
