@@ -9,6 +9,7 @@ namespace Lusid.Sdk.Tests.Utilities
     public class TestDataUtilities
     {
         public const string TutorialScope = "Testdemo";
+        public const string MarketDataScope = "FinbourneMarketData";
         
         //    Specific key used to denote cash in LUSID
         public const string LusidCashIdentifier = "Instrument/default/Currency";
