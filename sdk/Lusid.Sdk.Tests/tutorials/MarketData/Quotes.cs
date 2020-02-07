@@ -74,8 +74,7 @@ namespace Lusid.Sdk.Tests.Tutorials.MarketData
             var dateRange = Enumerable.Range(0, 30).Select(offset => startDate.AddDays(offset));
             
             var quoteSeriesId = new QuoteSeriesId(
-                provider: "DataScope",
-                priceSource: "USDRC",
+                provider: "Client",
                 instrumentId: "BBG000DMBXR2",
                 instrumentIdType: QuoteSeriesId.InstrumentIdTypeEnum.Figi,
                 quoteType: QuoteSeriesId.QuoteTypeEnum.Price,
@@ -85,7 +84,7 @@ namespace Lusid.Sdk.Tests.Tutorials.MarketData
             var quoteResponses = dateRange
                 .Select(d =>
                     _quotesApi.GetQuotes(
-                        TestDataUtilities.TutorialScope,
+                        TestDataUtilities.MarketDataScope,
                         effectiveAt: d.ToString("o"),
                         quoteIds:
                         new Dictionary<string, QuoteSeriesId> {{"correlationId", quoteSeriesId}}))
