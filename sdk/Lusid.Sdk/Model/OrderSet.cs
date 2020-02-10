@@ -23,116 +23,49 @@ using OpenAPIDateConverter = Lusid.Sdk.Client.OpenAPIDateConverter;
 namespace Lusid.Sdk.Model
 {
     /// <summary>
-    /// Full content of a holdings adjustment for a single portfolio and effective date.
+    /// A collection of details about Orders, partitioned in successful and unsuccessful sets.  Unsuccessful in this case indicates that the API call to create, upsert or retrieve them  was unsuccessful in some way (e.g. a specific order requested was not found).
     /// </summary>
     [DataContract]
-    public partial class HoldingsAdjustment :  IEquatable<HoldingsAdjustment>
+    public partial class OrderSet :  IEquatable<OrderSet>
     {
         /// <summary>
-        /// Describes how the holdings were adjusted. If &#39;PositionToZero&#39; the entire transaction portfolio&#39;s holdings were set via a call to &#39;Set holdings&#39;. If &#39;KeepTheSame&#39; only the specified holdings were adjusted via a call to &#39;Adjust holdings&#39;.
-        /// </summary>
-        /// <value>Describes how the holdings were adjusted. If &#39;PositionToZero&#39; the entire transaction portfolio&#39;s holdings were set via a call to &#39;Set holdings&#39;. If &#39;KeepTheSame&#39; only the specified holdings were adjusted via a call to &#39;Adjust holdings&#39;.</value>
-        [JsonConverter(typeof(StringEnumConverter))]
-        public enum UnmatchedHoldingMethodEnum
-        {
-            /// <summary>
-            /// Enum PositionToZero for value: PositionToZero
-            /// </summary>
-            [EnumMember(Value = "PositionToZero")]
-            PositionToZero = 1,
-
-            /// <summary>
-            /// Enum KeepTheSame for value: KeepTheSame
-            /// </summary>
-            [EnumMember(Value = "KeepTheSame")]
-            KeepTheSame = 2
-
-        }
-
-        /// <summary>
-        /// Describes how the holdings were adjusted. If &#39;PositionToZero&#39; the entire transaction portfolio&#39;s holdings were set via a call to &#39;Set holdings&#39;. If &#39;KeepTheSame&#39; only the specified holdings were adjusted via a call to &#39;Adjust holdings&#39;.
-        /// </summary>
-        /// <value>Describes how the holdings were adjusted. If &#39;PositionToZero&#39; the entire transaction portfolio&#39;s holdings were set via a call to &#39;Set holdings&#39;. If &#39;KeepTheSame&#39; only the specified holdings were adjusted via a call to &#39;Adjust holdings&#39;.</value>
-        [DataMember(Name="unmatchedHoldingMethod", EmitDefaultValue=false)]
-        public UnmatchedHoldingMethodEnum UnmatchedHoldingMethod { get; set; }
-        /// <summary>
-        /// Initializes a new instance of the <see cref="HoldingsAdjustment" /> class.
+        /// Initializes a new instance of the <see cref="OrderSet" /> class.
         /// </summary>
         [JsonConstructorAttribute]
-        protected HoldingsAdjustment() { }
+        protected OrderSet() { }
         /// <summary>
-        /// Initializes a new instance of the <see cref="HoldingsAdjustment" /> class.
+        /// Initializes a new instance of the <see cref="OrderSet" /> class.
         /// </summary>
-        /// <param name="effectiveAt">The effective datetime from which the adjustment is valid. There can only be one holdings adjustment for a transaction portfolio at a specific effective datetime, so this uniquely identifies the adjustment. (required).</param>
-        /// <param name="version">version (required).</param>
-        /// <param name="unmatchedHoldingMethod">Describes how the holdings were adjusted. If &#39;PositionToZero&#39; the entire transaction portfolio&#39;s holdings were set via a call to &#39;Set holdings&#39;. If &#39;KeepTheSame&#39; only the specified holdings were adjusted via a call to &#39;Adjust holdings&#39;. (required).</param>
-        /// <param name="adjustments">The holding adjustments. (required).</param>
+        /// <param name="orders">orders (required).</param>
+        /// <param name="failures">failures.</param>
         /// <param name="links">links.</param>
-        public HoldingsAdjustment(DateTimeOffset? effectiveAt = default(DateTimeOffset?), Version version = default(Version), UnmatchedHoldingMethodEnum unmatchedHoldingMethod = default(UnmatchedHoldingMethodEnum), List<HoldingAdjustment> adjustments = default(List<HoldingAdjustment>), List<Link> links = default(List<Link>))
+        public OrderSet(List<Order> orders = default(List<Order>), List<ErrorDetail> failures = default(List<ErrorDetail>), List<Link> links = default(List<Link>))
         {
-            // to ensure "effectiveAt" is required (not null)
-            if (effectiveAt == null)
+            // to ensure "orders" is required (not null)
+            if (orders == null)
             {
-                throw new InvalidDataException("effectiveAt is a required property for HoldingsAdjustment and cannot be null");
+                throw new InvalidDataException("orders is a required property for OrderSet and cannot be null");
             }
             else
             {
-                this.EffectiveAt = effectiveAt;
+                this.Orders = orders;
             }
             
-            // to ensure "version" is required (not null)
-            if (version == null)
-            {
-                throw new InvalidDataException("version is a required property for HoldingsAdjustment and cannot be null");
-            }
-            else
-            {
-                this.Version = version;
-            }
-            
-            // to ensure "unmatchedHoldingMethod" is required (not null)
-            if (unmatchedHoldingMethod == null)
-            {
-                throw new InvalidDataException("unmatchedHoldingMethod is a required property for HoldingsAdjustment and cannot be null");
-            }
-            else
-            {
-                this.UnmatchedHoldingMethod = unmatchedHoldingMethod;
-            }
-            
-            // to ensure "adjustments" is required (not null)
-            if (adjustments == null)
-            {
-                throw new InvalidDataException("adjustments is a required property for HoldingsAdjustment and cannot be null");
-            }
-            else
-            {
-                this.Adjustments = adjustments;
-            }
-            
+            this.Failures = failures;
             this.Links = links;
         }
         
         /// <summary>
-        /// The effective datetime from which the adjustment is valid. There can only be one holdings adjustment for a transaction portfolio at a specific effective datetime, so this uniquely identifies the adjustment.
+        /// Gets or Sets Orders
         /// </summary>
-        /// <value>The effective datetime from which the adjustment is valid. There can only be one holdings adjustment for a transaction portfolio at a specific effective datetime, so this uniquely identifies the adjustment.</value>
-        [DataMember(Name="effectiveAt", EmitDefaultValue=false)]
-        public DateTimeOffset? EffectiveAt { get; set; }
+        [DataMember(Name="orders", EmitDefaultValue=false)]
+        public List<Order> Orders { get; set; }
 
         /// <summary>
-        /// Gets or Sets Version
+        /// Gets or Sets Failures
         /// </summary>
-        [DataMember(Name="version", EmitDefaultValue=false)]
-        public Version Version { get; set; }
-
-
-        /// <summary>
-        /// The holding adjustments.
-        /// </summary>
-        /// <value>The holding adjustments.</value>
-        [DataMember(Name="adjustments", EmitDefaultValue=false)]
-        public List<HoldingAdjustment> Adjustments { get; set; }
+        [DataMember(Name="failures", EmitDefaultValue=false)]
+        public List<ErrorDetail> Failures { get; set; }
 
         /// <summary>
         /// Gets or Sets Links
@@ -147,11 +80,9 @@ namespace Lusid.Sdk.Model
         public override string ToString()
         {
             var sb = new StringBuilder();
-            sb.Append("class HoldingsAdjustment {\n");
-            sb.Append("  EffectiveAt: ").Append(EffectiveAt).Append("\n");
-            sb.Append("  Version: ").Append(Version).Append("\n");
-            sb.Append("  UnmatchedHoldingMethod: ").Append(UnmatchedHoldingMethod).Append("\n");
-            sb.Append("  Adjustments: ").Append(Adjustments).Append("\n");
+            sb.Append("class OrderSet {\n");
+            sb.Append("  Orders: ").Append(Orders).Append("\n");
+            sb.Append("  Failures: ").Append(Failures).Append("\n");
             sb.Append("  Links: ").Append(Links).Append("\n");
             sb.Append("}\n");
             return sb.ToString();
@@ -173,40 +104,31 @@ namespace Lusid.Sdk.Model
         /// <returns>Boolean</returns>
         public override bool Equals(object input)
         {
-            return this.Equals(input as HoldingsAdjustment);
+            return this.Equals(input as OrderSet);
         }
 
         /// <summary>
-        /// Returns true if HoldingsAdjustment instances are equal
+        /// Returns true if OrderSet instances are equal
         /// </summary>
-        /// <param name="input">Instance of HoldingsAdjustment to be compared</param>
+        /// <param name="input">Instance of OrderSet to be compared</param>
         /// <returns>Boolean</returns>
-        public bool Equals(HoldingsAdjustment input)
+        public bool Equals(OrderSet input)
         {
             if (input == null)
                 return false;
 
             return 
                 (
-                    this.EffectiveAt == input.EffectiveAt ||
-                    (this.EffectiveAt != null &&
-                    this.EffectiveAt.Equals(input.EffectiveAt))
+                    this.Orders == input.Orders ||
+                    this.Orders != null &&
+                    input.Orders != null &&
+                    this.Orders.SequenceEqual(input.Orders)
                 ) && 
                 (
-                    this.Version == input.Version ||
-                    (this.Version != null &&
-                    this.Version.Equals(input.Version))
-                ) && 
-                (
-                    this.UnmatchedHoldingMethod == input.UnmatchedHoldingMethod ||
-                    (this.UnmatchedHoldingMethod != null &&
-                    this.UnmatchedHoldingMethod.Equals(input.UnmatchedHoldingMethod))
-                ) && 
-                (
-                    this.Adjustments == input.Adjustments ||
-                    this.Adjustments != null &&
-                    input.Adjustments != null &&
-                    this.Adjustments.SequenceEqual(input.Adjustments)
+                    this.Failures == input.Failures ||
+                    this.Failures != null &&
+                    input.Failures != null &&
+                    this.Failures.SequenceEqual(input.Failures)
                 ) && 
                 (
                     this.Links == input.Links ||
@@ -225,14 +147,10 @@ namespace Lusid.Sdk.Model
             unchecked // Overflow is fine, just wrap
             {
                 int hashCode = 41;
-                if (this.EffectiveAt != null)
-                    hashCode = hashCode * 59 + this.EffectiveAt.GetHashCode();
-                if (this.Version != null)
-                    hashCode = hashCode * 59 + this.Version.GetHashCode();
-                if (this.UnmatchedHoldingMethod != null)
-                    hashCode = hashCode * 59 + this.UnmatchedHoldingMethod.GetHashCode();
-                if (this.Adjustments != null)
-                    hashCode = hashCode * 59 + this.Adjustments.GetHashCode();
+                if (this.Orders != null)
+                    hashCode = hashCode * 59 + this.Orders.GetHashCode();
+                if (this.Failures != null)
+                    hashCode = hashCode * 59 + this.Failures.GetHashCode();
                 if (this.Links != null)
                     hashCode = hashCode * 59 + this.Links.GetHashCode();
                 return hashCode;
