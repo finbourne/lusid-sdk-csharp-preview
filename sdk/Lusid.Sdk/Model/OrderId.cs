@@ -23,76 +23,25 @@ using OpenAPIDateConverter = Lusid.Sdk.Client.OpenAPIDateConverter;
 namespace Lusid.Sdk.Model
 {
     /// <summary>
-    /// An item of structured market data that is to be inserted into Lusid. This will typically be a Json or Xml document that  contains a set of market quotes (tradables) that can be used to construct a composite view of a market property such as the  interest rates over time; commonly referred to as an interest rate, projection or discount curve. Other examples include  volatility surfaces and credit spread curves.
+    /// OrderId
     /// </summary>
     [DataContract]
-    public partial class StructuredMarketData :  IEquatable<StructuredMarketData>
+    public partial class OrderId :  IEquatable<OrderId>
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="StructuredMarketData" /> class.
+        /// Initializes a new instance of the <see cref="OrderId" /> class.
         /// </summary>
         [JsonConstructorAttribute]
-        protected StructuredMarketData() { }
-        /// <summary>
-        /// Initializes a new instance of the <see cref="StructuredMarketData" /> class.
-        /// </summary>
-        /// <param name="documentFormat">The format of the accompanying document. (required).</param>
-        /// <param name="version">The semantic version of the document format; MAJOR.MINOR.PATCH.</param>
-        /// <param name="name">The name or description for the document.</param>
-        /// <param name="document">The document that will be stored (or retrieved) and which describes a structured market data entity such as a credit or interest rate curve (required).</param>
-        public StructuredMarketData(string documentFormat = default(string), string version = default(string), string name = default(string), string document = default(string))
+        public OrderId()
         {
-            // to ensure "documentFormat" is required (not null)
-            if (documentFormat == null)
-            {
-                throw new InvalidDataException("documentFormat is a required property for StructuredMarketData and cannot be null");
-            }
-            else
-            {
-                this.DocumentFormat = documentFormat;
-            }
-            
-            // to ensure "document" is required (not null)
-            if (document == null)
-            {
-                throw new InvalidDataException("document is a required property for StructuredMarketData and cannot be null");
-            }
-            else
-            {
-                this.Document = document;
-            }
-            
-            this.Version = version;
-            this.Name = name;
         }
         
         /// <summary>
-        /// The format of the accompanying document.
+        /// String representation of the order id.
         /// </summary>
-        /// <value>The format of the accompanying document.</value>
-        [DataMember(Name="documentFormat", EmitDefaultValue=false)]
-        public string DocumentFormat { get; set; }
-
-        /// <summary>
-        /// The semantic version of the document format; MAJOR.MINOR.PATCH
-        /// </summary>
-        /// <value>The semantic version of the document format; MAJOR.MINOR.PATCH</value>
-        [DataMember(Name="version", EmitDefaultValue=false)]
-        public string Version { get; set; }
-
-        /// <summary>
-        /// The name or description for the document
-        /// </summary>
-        /// <value>The name or description for the document</value>
-        [DataMember(Name="name", EmitDefaultValue=false)]
-        public string Name { get; set; }
-
-        /// <summary>
-        /// The document that will be stored (or retrieved) and which describes a structured market data entity such as a credit or interest rate curve
-        /// </summary>
-        /// <value>The document that will be stored (or retrieved) and which describes a structured market data entity such as a credit or interest rate curve</value>
-        [DataMember(Name="document", EmitDefaultValue=false)]
-        public string Document { get; set; }
+        /// <value>String representation of the order id.</value>
+        [DataMember(Name="id", EmitDefaultValue=false)]
+        public string Id { get; private set; }
 
         /// <summary>
         /// Returns the string presentation of the object
@@ -101,11 +50,8 @@ namespace Lusid.Sdk.Model
         public override string ToString()
         {
             var sb = new StringBuilder();
-            sb.Append("class StructuredMarketData {\n");
-            sb.Append("  DocumentFormat: ").Append(DocumentFormat).Append("\n");
-            sb.Append("  Version: ").Append(Version).Append("\n");
-            sb.Append("  Name: ").Append(Name).Append("\n");
-            sb.Append("  Document: ").Append(Document).Append("\n");
+            sb.Append("class OrderId {\n");
+            sb.Append("  Id: ").Append(Id).Append("\n");
             sb.Append("}\n");
             return sb.ToString();
         }
@@ -126,39 +72,24 @@ namespace Lusid.Sdk.Model
         /// <returns>Boolean</returns>
         public override bool Equals(object input)
         {
-            return this.Equals(input as StructuredMarketData);
+            return this.Equals(input as OrderId);
         }
 
         /// <summary>
-        /// Returns true if StructuredMarketData instances are equal
+        /// Returns true if OrderId instances are equal
         /// </summary>
-        /// <param name="input">Instance of StructuredMarketData to be compared</param>
+        /// <param name="input">Instance of OrderId to be compared</param>
         /// <returns>Boolean</returns>
-        public bool Equals(StructuredMarketData input)
+        public bool Equals(OrderId input)
         {
             if (input == null)
                 return false;
 
             return 
                 (
-                    this.DocumentFormat == input.DocumentFormat ||
-                    (this.DocumentFormat != null &&
-                    this.DocumentFormat.Equals(input.DocumentFormat))
-                ) && 
-                (
-                    this.Version == input.Version ||
-                    (this.Version != null &&
-                    this.Version.Equals(input.Version))
-                ) && 
-                (
-                    this.Name == input.Name ||
-                    (this.Name != null &&
-                    this.Name.Equals(input.Name))
-                ) && 
-                (
-                    this.Document == input.Document ||
-                    (this.Document != null &&
-                    this.Document.Equals(input.Document))
+                    this.Id == input.Id ||
+                    (this.Id != null &&
+                    this.Id.Equals(input.Id))
                 );
         }
 
@@ -171,14 +102,8 @@ namespace Lusid.Sdk.Model
             unchecked // Overflow is fine, just wrap
             {
                 int hashCode = 41;
-                if (this.DocumentFormat != null)
-                    hashCode = hashCode * 59 + this.DocumentFormat.GetHashCode();
-                if (this.Version != null)
-                    hashCode = hashCode * 59 + this.Version.GetHashCode();
-                if (this.Name != null)
-                    hashCode = hashCode * 59 + this.Name.GetHashCode();
-                if (this.Document != null)
-                    hashCode = hashCode * 59 + this.Document.GetHashCode();
+                if (this.Id != null)
+                    hashCode = hashCode * 59 + this.Id.GetHashCode();
                 return hashCode;
             }
         }
