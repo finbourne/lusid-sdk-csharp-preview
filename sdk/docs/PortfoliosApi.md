@@ -1,109 +1,19 @@
 # Lusid.Sdk.Api.PortfoliosApi
 
-All URIs are relative to *http://localhost*
+All URIs are relative to *http://localhost/api*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
-[**DeleteKeyFromPortfolioAccessMetadata**](PortfoliosApi.md#deletekeyfromportfolioaccessmetadata) | **DELETE** /api/portfolios/{scope}/{code}/metadata/{key} | [EXPERIMENTAL] Delete a Portfolio Access Metadata Rule
 [**DeletePortfolio**](PortfoliosApi.md#deleteportfolio) | **DELETE** /api/portfolios/{scope}/{code} | Delete portfolio
 [**DeletePortfolioProperties**](PortfoliosApi.md#deleteportfolioproperties) | **DELETE** /api/portfolios/{scope}/{code}/properties | Delete portfolio properties
 [**GetPortfolio**](PortfoliosApi.md#getportfolio) | **GET** /api/portfolios/{scope}/{code} | Get portfolio
 [**GetPortfolioCommands**](PortfoliosApi.md#getportfoliocommands) | **GET** /api/portfolios/{scope}/{code}/commands | [EARLY ACCESS] Get portfolio commands
-[**GetPortfolioMetadata**](PortfoliosApi.md#getportfoliometadata) | **GET** /api/portfolios/{scope}/{code}/metadata | [EXPERIMENTAL] Get access metadata rules for a portfolio
 [**GetPortfolioProperties**](PortfoliosApi.md#getportfolioproperties) | **GET** /api/portfolios/{scope}/{code}/properties | Get portfolio properties
-[**GetPortfoliosAccessMetadataByKey**](PortfoliosApi.md#getportfoliosaccessmetadatabykey) | **GET** /api/portfolios/{scope}/{code}/metadata/{key} | [EXPERIMENTAL] Get an entry identified by a key in the access metadata object
 [**ListPortfolios**](PortfoliosApi.md#listportfolios) | **GET** /api/portfolios | List portfolios
 [**ListPortfoliosForScope**](PortfoliosApi.md#listportfoliosforscope) | **GET** /api/portfolios/{scope} | List portfolios for scope
 [**UpdatePortfolio**](PortfoliosApi.md#updateportfolio) | **PUT** /api/portfolios/{scope}/{code} | Update portfolio
-[**UpsertPortfolioAccessMetadata**](PortfoliosApi.md#upsertportfolioaccessmetadata) | **PUT** /api/portfolios/{scope}/{code}/metadata/{key} | [EXPERIMENTAL] Upsert a Portfolio Access Metadata Rule associated with specific key. This creates or updates the data in LUSID.
 [**UpsertPortfolioProperties**](PortfoliosApi.md#upsertportfolioproperties) | **POST** /api/portfolios/{scope}/{code}/properties | Upsert portfolio properties
 
-
-
-## DeleteKeyFromPortfolioAccessMetadata
-
-> DeletedEntityResponse DeleteKeyFromPortfolioAccessMetadata (string scope, string code, string key, DateTimeOrCutLabel effectiveAt = null)
-
-[EXPERIMENTAL] Delete a Portfolio Access Metadata Rule
-
-Delete the Portfolio Access Metadata Rule that exactly matches the provided identifier parts
-
-### Example
-
-```csharp
-using System.Collections.Generic;
-using System.Diagnostics;
-using Lusid.Sdk.Api;
-using Lusid.Sdk.Client;
-using Lusid.Sdk.Model;
-
-namespace Example
-{
-    public class DeleteKeyFromPortfolioAccessMetadataExample
-    {
-        public static void Main()
-        {
-            Configuration.Default.BasePath = "http://localhost";
-            // Configure OAuth2 access token for authorization: oauth2
-            Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
-
-            var apiInstance = new PortfoliosApi(Configuration.Default);
-            var scope = scope_example;  // string | The scope of the Quote Access Metadata Rule to retrieve.
-            var code = code_example;  // string | Portfolio code
-            var key = key_example;  // string | The key identifying the access metadata entry to delete
-            var effectiveAt = effectiveAt_example;  // DateTimeOrCutLabel | The effective date to delete at, if this is not supplied, it will delete all data found (optional) 
-
-            try
-            {
-                // [EXPERIMENTAL] Delete a Portfolio Access Metadata Rule
-                DeletedEntityResponse result = apiInstance.DeleteKeyFromPortfolioAccessMetadata(scope, code, key, effectiveAt);
-                Debug.WriteLine(result);
-            }
-            catch (ApiException e)
-            {
-                Debug.Print("Exception when calling PortfoliosApi.DeleteKeyFromPortfolioAccessMetadata: " + e.Message );
-                Debug.Print("Status Code: "+ e.ErrorCode);
-                Debug.Print(e.StackTrace);
-            }
-        }
-    }
-}
-```
-
-### Parameters
-
-
-Name | Type | Description  | Notes
-------------- | ------------- | ------------- | -------------
- **scope** | **string**| The scope of the Quote Access Metadata Rule to retrieve. | 
- **code** | **string**| Portfolio code | 
- **key** | **string**| The key identifying the access metadata entry to delete | 
- **effectiveAt** | **DateTimeOrCutLabel**| The effective date to delete at, if this is not supplied, it will delete all data found | [optional] 
-
-### Return type
-
-[**DeletedEntityResponse**](DeletedEntityResponse.md)
-
-### Authorization
-
-[oauth2](../README.md#oauth2)
-
-### HTTP request headers
-
-- **Content-Type**: Not defined
-- **Accept**: text/plain, application/json, text/json
-
-### HTTP response details
-| Status code | Description | Response headers |
-|-------------|-------------|------------------|
-| **200** | The rule that has been deleted |  -  |
-| **400** | The details of the input related failure |  -  |
-| **0** | Error response |  -  |
-
-[[Back to top]](#)
-[[Back to API list]](../README.md#documentation-for-api-endpoints)
-[[Back to Model list]](../README.md#documentation-for-models)
-[[Back to README]](../README.md)
 
 
 ## DeletePortfolio
@@ -129,7 +39,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://localhost";
+            Configuration.Default.BasePath = "http://localhost/api";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -211,7 +121,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://localhost";
+            Configuration.Default.BasePath = "http://localhost/api";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -297,7 +207,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://localhost";
+            Configuration.Default.BasePath = "http://localhost/api";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -385,7 +295,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://localhost";
+            Configuration.Default.BasePath = "http://localhost/api";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -450,92 +360,6 @@ Name | Type | Description  | Notes
 [[Back to README]](../README.md)
 
 
-## GetPortfolioMetadata
-
-> Dictionary&lt;string, List&lt;AccessMetadataValue&gt;&gt; GetPortfolioMetadata (string scope, string code, string effectiveAt = null, DateTimeOffset? asAt = null)
-
-[EXPERIMENTAL] Get access metadata rules for a portfolio
-
-Pass the scope and portfolio code parameters to retrieve the AccessMetadata associated with a portfolio
-
-### Example
-
-```csharp
-using System.Collections.Generic;
-using System.Diagnostics;
-using Lusid.Sdk.Api;
-using Lusid.Sdk.Client;
-using Lusid.Sdk.Model;
-
-namespace Example
-{
-    public class GetPortfolioMetadataExample
-    {
-        public static void Main()
-        {
-            Configuration.Default.BasePath = "http://localhost";
-            // Configure OAuth2 access token for authorization: oauth2
-            Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
-
-            var apiInstance = new PortfoliosApi(Configuration.Default);
-            var scope = scope_example;  // string | The scope of the Portfolio Access Metadata Rule to retrieve.
-            var code = code_example;  // string | Portfolio code
-            var effectiveAt = effectiveAt_example;  // string | The effectiveAt datetime at which to retrieve the access metadata rule. (optional) 
-            var asAt = 2013-10-20T19:20:30+01:00;  // DateTimeOffset? | The asAt datetime at which to retrieve the portfolio access metadata. (optional) 
-
-            try
-            {
-                // [EXPERIMENTAL] Get access metadata rules for a portfolio
-                Dictionary<string, List<AccessMetadataValue>> result = apiInstance.GetPortfolioMetadata(scope, code, effectiveAt, asAt);
-                Debug.WriteLine(result);
-            }
-            catch (ApiException e)
-            {
-                Debug.Print("Exception when calling PortfoliosApi.GetPortfolioMetadata: " + e.Message );
-                Debug.Print("Status Code: "+ e.ErrorCode);
-                Debug.Print(e.StackTrace);
-            }
-        }
-    }
-}
-```
-
-### Parameters
-
-
-Name | Type | Description  | Notes
-------------- | ------------- | ------------- | -------------
- **scope** | **string**| The scope of the Portfolio Access Metadata Rule to retrieve. | 
- **code** | **string**| Portfolio code | 
- **effectiveAt** | **string**| The effectiveAt datetime at which to retrieve the access metadata rule. | [optional] 
- **asAt** | **DateTimeOffset?**| The asAt datetime at which to retrieve the portfolio access metadata. | [optional] 
-
-### Return type
-
-**Dictionary<string, List<AccessMetadataValue>>**
-
-### Authorization
-
-[oauth2](../README.md#oauth2)
-
-### HTTP request headers
-
-- **Content-Type**: Not defined
-- **Accept**: text/plain, application/json, text/json
-
-### HTTP response details
-| Status code | Description | Response headers |
-|-------------|-------------|------------------|
-| **200** | The filtered list of results |  -  |
-| **400** | The details of the input related failure |  -  |
-| **0** | Error response |  -  |
-
-[[Back to top]](#)
-[[Back to API list]](../README.md#documentation-for-api-endpoints)
-[[Back to Model list]](../README.md#documentation-for-models)
-[[Back to README]](../README.md)
-
-
 ## GetPortfolioProperties
 
 > PortfolioProperties GetPortfolioProperties (string scope, string code, DateTimeOrCutLabel effectiveAt = null, DateTimeOffset? asAt = null)
@@ -559,7 +383,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://localhost";
+            Configuration.Default.BasePath = "http://localhost/api";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -622,94 +446,6 @@ Name | Type | Description  | Notes
 [[Back to README]](../README.md)
 
 
-## GetPortfoliosAccessMetadataByKey
-
-> ResourceListOfAccessMetadataValueOf GetPortfoliosAccessMetadataByKey (string scope, string code, string key, DateTimeOrCutLabel effectiveAt = null, DateTimeOffset? asAt = null)
-
-[EXPERIMENTAL] Get an entry identified by a key in the access metadata object
-
-Get a specific portfolio access metadata rule by specifying the corresponding identifier parts                No matching will be performed through this endpoint. To retrieve a rule, it is necessary to specify, exactly, the identifier of the rule
-
-### Example
-
-```csharp
-using System.Collections.Generic;
-using System.Diagnostics;
-using Lusid.Sdk.Api;
-using Lusid.Sdk.Client;
-using Lusid.Sdk.Model;
-
-namespace Example
-{
-    public class GetPortfoliosAccessMetadataByKeyExample
-    {
-        public static void Main()
-        {
-            Configuration.Default.BasePath = "http://localhost";
-            // Configure OAuth2 access token for authorization: oauth2
-            Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
-
-            var apiInstance = new PortfoliosApi(Configuration.Default);
-            var scope = scope_example;  // string | The scope of the Portfolio Access Metadata Rule to retrieve.
-            var code = code_example;  // string | The code of the portfolio
-            var key = key_example;  // string | Key of the metadata to retrieve
-            var effectiveAt = effectiveAt_example;  // DateTimeOrCutLabel | The effective date of the rule (optional) 
-            var asAt = 2013-10-20T19:20:30+01:00;  // DateTimeOffset? | The asAt datetime at which to retrieve the portfolio access metadata. (optional) 
-
-            try
-            {
-                // [EXPERIMENTAL] Get an entry identified by a key in the access metadata object
-                ResourceListOfAccessMetadataValueOf result = apiInstance.GetPortfoliosAccessMetadataByKey(scope, code, key, effectiveAt, asAt);
-                Debug.WriteLine(result);
-            }
-            catch (ApiException e)
-            {
-                Debug.Print("Exception when calling PortfoliosApi.GetPortfoliosAccessMetadataByKey: " + e.Message );
-                Debug.Print("Status Code: "+ e.ErrorCode);
-                Debug.Print(e.StackTrace);
-            }
-        }
-    }
-}
-```
-
-### Parameters
-
-
-Name | Type | Description  | Notes
-------------- | ------------- | ------------- | -------------
- **scope** | **string**| The scope of the Portfolio Access Metadata Rule to retrieve. | 
- **code** | **string**| The code of the portfolio | 
- **key** | **string**| Key of the metadata to retrieve | 
- **effectiveAt** | **DateTimeOrCutLabel**| The effective date of the rule | [optional] 
- **asAt** | **DateTimeOffset?**| The asAt datetime at which to retrieve the portfolio access metadata. | [optional] 
-
-### Return type
-
-[**ResourceListOfAccessMetadataValueOf**](ResourceListOfAccessMetadataValueOf.md)
-
-### Authorization
-
-[oauth2](../README.md#oauth2)
-
-### HTTP request headers
-
-- **Content-Type**: Not defined
-- **Accept**: text/plain, application/json, text/json
-
-### HTTP response details
-| Status code | Description | Response headers |
-|-------------|-------------|------------------|
-| **200** | The successfully retrieved Portfolio Access Metadata Rule or any failure |  -  |
-| **400** | The details of the input related failure |  -  |
-| **0** | Error response |  -  |
-
-[[Back to top]](#)
-[[Back to API list]](../README.md#documentation-for-api-endpoints)
-[[Back to Model list]](../README.md#documentation-for-models)
-[[Back to README]](../README.md)
-
-
 ## ListPortfolios
 
 > ResourceListOfPortfolio ListPortfolios (DateTimeOrCutLabel effectiveAt = null, DateTimeOffset? asAt = null, string page = null, int? start = null, int? limit = null, string filter = null, string query = null, List<string> propertyKeys = null)
@@ -733,7 +469,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://localhost";
+            Configuration.Default.BasePath = "http://localhost/api";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -827,7 +563,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://localhost";
+            Configuration.Default.BasePath = "http://localhost/api";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -921,7 +657,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://localhost";
+            Configuration.Default.BasePath = "http://localhost/api";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -984,94 +720,6 @@ Name | Type | Description  | Notes
 [[Back to README]](../README.md)
 
 
-## UpsertPortfolioAccessMetadata
-
-> ResourceListOfAccessMetadataValueOf UpsertPortfolioAccessMetadata (string scope, string code, string key, UpsertPortfolioAccessMetadataRequest request, DateTimeOrCutLabel effectiveAt = null)
-
-[EXPERIMENTAL] Upsert a Portfolio Access Metadata Rule associated with specific key. This creates or updates the data in LUSID.
-
-Update or insert one Portfolio Access Metadata Rule in a single scope. An item will be updated if it already exists  and inserted if it does not.    The response will return the successfully updated or inserted Portfolio Access Metadata Rule or failure message if unsuccessful    It is important to always check to verify success (or failure).                Multiple rules for a key can exists with different effective at dates, when resources are accessed the rule that is active for the current time will be fetched
-
-### Example
-
-```csharp
-using System.Collections.Generic;
-using System.Diagnostics;
-using Lusid.Sdk.Api;
-using Lusid.Sdk.Client;
-using Lusid.Sdk.Model;
-
-namespace Example
-{
-    public class UpsertPortfolioAccessMetadataExample
-    {
-        public static void Main()
-        {
-            Configuration.Default.BasePath = "http://localhost";
-            // Configure OAuth2 access token for authorization: oauth2
-            Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
-
-            var apiInstance = new PortfoliosApi(Configuration.Default);
-            var scope = scope_example;  // string | The scope to use when updating or inserting the Portfolio Access Metadata Rule.
-            var code = code_example;  // string | Portfolio code
-            var key = key_example;  // string | Key of the access metadata to upsert
-            var request = new UpsertPortfolioAccessMetadataRequest(); // UpsertPortfolioAccessMetadataRequest | The Portfolio Access Metadata Rule to update or insert
-            var effectiveAt = effectiveAt_example;  // DateTimeOrCutLabel | The date this rule will effective from (optional) 
-
-            try
-            {
-                // [EXPERIMENTAL] Upsert a Portfolio Access Metadata Rule associated with specific key. This creates or updates the data in LUSID.
-                ResourceListOfAccessMetadataValueOf result = apiInstance.UpsertPortfolioAccessMetadata(scope, code, key, request, effectiveAt);
-                Debug.WriteLine(result);
-            }
-            catch (ApiException e)
-            {
-                Debug.Print("Exception when calling PortfoliosApi.UpsertPortfolioAccessMetadata: " + e.Message );
-                Debug.Print("Status Code: "+ e.ErrorCode);
-                Debug.Print(e.StackTrace);
-            }
-        }
-    }
-}
-```
-
-### Parameters
-
-
-Name | Type | Description  | Notes
-------------- | ------------- | ------------- | -------------
- **scope** | **string**| The scope to use when updating or inserting the Portfolio Access Metadata Rule. | 
- **code** | **string**| Portfolio code | 
- **key** | **string**| Key of the access metadata to upsert | 
- **request** | [**UpsertPortfolioAccessMetadataRequest**](UpsertPortfolioAccessMetadataRequest.md)| The Portfolio Access Metadata Rule to update or insert | 
- **effectiveAt** | **DateTimeOrCutLabel**| The date this rule will effective from | [optional] 
-
-### Return type
-
-[**ResourceListOfAccessMetadataValueOf**](ResourceListOfAccessMetadataValueOf.md)
-
-### Authorization
-
-[oauth2](../README.md#oauth2)
-
-### HTTP request headers
-
-- **Content-Type**: Not defined
-- **Accept**: text/plain, application/json, text/json
-
-### HTTP response details
-| Status code | Description | Response headers |
-|-------------|-------------|------------------|
-| **200** | The successfully updated or inserted item or any failure |  -  |
-| **400** | The details of the input related failure |  -  |
-| **0** | Error response |  -  |
-
-[[Back to top]](#)
-[[Back to API list]](../README.md#documentation-for-api-endpoints)
-[[Back to Model list]](../README.md#documentation-for-models)
-[[Back to README]](../README.md)
-
-
 ## UpsertPortfolioProperties
 
 > PortfolioProperties UpsertPortfolioProperties (string scope, string code, Dictionary<string, Property> portfolioProperties)
@@ -1095,7 +743,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://localhost";
+            Configuration.Default.BasePath = "http://localhost/api";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
