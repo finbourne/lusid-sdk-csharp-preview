@@ -23,46 +23,47 @@ using OpenAPIDateConverter = Lusid.Sdk.Client.OpenAPIDateConverter;
 namespace Lusid.Sdk.Model
 {
     /// <summary>
-    /// The response to a request to annul (delete) a set of structured data from Lusid. This might have been for market data or some other structured entity.
+    /// PagedResourceListOfOrder
     /// </summary>
     [DataContract]
-    public partial class AnnulStructuredDataResponse :  IEquatable<AnnulStructuredDataResponse>
+    public partial class PagedResourceListOfOrder :  IEquatable<PagedResourceListOfOrder>
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="AnnulStructuredDataResponse" /> class.
+        /// Initializes a new instance of the <see cref="PagedResourceListOfOrder" /> class.
         /// </summary>
-        /// <param name="href">The specifc Uniform Resource Identifier (URI) for this resource at the requested effective and asAt datetime..</param>
-        /// <param name="values">The set of values that were removed..</param>
-        /// <param name="failed">The set of values where removal failed, with a description as to why that is the case, e.g. badly formed request.</param>
+        /// <param name="values">values.</param>
+        /// <param name="href">href.</param>
         /// <param name="links">links.</param>
-        public AnnulStructuredDataResponse(string href = default(string), Dictionary<string, DateTimeOffset?> values = default(Dictionary<string, DateTimeOffset?>), Dictionary<string, ErrorDetail> failed = default(Dictionary<string, ErrorDetail>), List<Link> links = default(List<Link>))
+        public PagedResourceListOfOrder(List<Order> values = default(List<Order>), string href = default(string), List<Link> links = default(List<Link>))
         {
-            this.Href = href;
             this.Values = values;
-            this.Failed = failed;
+            this.Href = href;
             this.Links = links;
         }
         
         /// <summary>
-        /// The specifc Uniform Resource Identifier (URI) for this resource at the requested effective and asAt datetime.
+        /// Gets or Sets NextPage
         /// </summary>
-        /// <value>The specifc Uniform Resource Identifier (URI) for this resource at the requested effective and asAt datetime.</value>
+        [DataMember(Name="nextPage", EmitDefaultValue=false)]
+        public string NextPage { get; private set; }
+
+        /// <summary>
+        /// Gets or Sets PreviousPage
+        /// </summary>
+        [DataMember(Name="previousPage", EmitDefaultValue=false)]
+        public string PreviousPage { get; private set; }
+
+        /// <summary>
+        /// Gets or Sets Values
+        /// </summary>
+        [DataMember(Name="values", EmitDefaultValue=false)]
+        public List<Order> Values { get; set; }
+
+        /// <summary>
+        /// Gets or Sets Href
+        /// </summary>
         [DataMember(Name="href", EmitDefaultValue=false)]
         public string Href { get; set; }
-
-        /// <summary>
-        /// The set of values that were removed.
-        /// </summary>
-        /// <value>The set of values that were removed.</value>
-        [DataMember(Name="values", EmitDefaultValue=false)]
-        public Dictionary<string, DateTimeOffset?> Values { get; set; }
-
-        /// <summary>
-        /// The set of values where removal failed, with a description as to why that is the case, e.g. badly formed request
-        /// </summary>
-        /// <value>The set of values where removal failed, with a description as to why that is the case, e.g. badly formed request</value>
-        [DataMember(Name="failed", EmitDefaultValue=false)]
-        public Dictionary<string, ErrorDetail> Failed { get; set; }
 
         /// <summary>
         /// Gets or Sets Links
@@ -77,10 +78,11 @@ namespace Lusid.Sdk.Model
         public override string ToString()
         {
             var sb = new StringBuilder();
-            sb.Append("class AnnulStructuredDataResponse {\n");
-            sb.Append("  Href: ").Append(Href).Append("\n");
+            sb.Append("class PagedResourceListOfOrder {\n");
+            sb.Append("  NextPage: ").Append(NextPage).Append("\n");
+            sb.Append("  PreviousPage: ").Append(PreviousPage).Append("\n");
             sb.Append("  Values: ").Append(Values).Append("\n");
-            sb.Append("  Failed: ").Append(Failed).Append("\n");
+            sb.Append("  Href: ").Append(Href).Append("\n");
             sb.Append("  Links: ").Append(Links).Append("\n");
             sb.Append("}\n");
             return sb.ToString();
@@ -102,24 +104,29 @@ namespace Lusid.Sdk.Model
         /// <returns>Boolean</returns>
         public override bool Equals(object input)
         {
-            return this.Equals(input as AnnulStructuredDataResponse);
+            return this.Equals(input as PagedResourceListOfOrder);
         }
 
         /// <summary>
-        /// Returns true if AnnulStructuredDataResponse instances are equal
+        /// Returns true if PagedResourceListOfOrder instances are equal
         /// </summary>
-        /// <param name="input">Instance of AnnulStructuredDataResponse to be compared</param>
+        /// <param name="input">Instance of PagedResourceListOfOrder to be compared</param>
         /// <returns>Boolean</returns>
-        public bool Equals(AnnulStructuredDataResponse input)
+        public bool Equals(PagedResourceListOfOrder input)
         {
             if (input == null)
                 return false;
 
             return 
                 (
-                    this.Href == input.Href ||
-                    (this.Href != null &&
-                    this.Href.Equals(input.Href))
+                    this.NextPage == input.NextPage ||
+                    (this.NextPage != null &&
+                    this.NextPage.Equals(input.NextPage))
+                ) && 
+                (
+                    this.PreviousPage == input.PreviousPage ||
+                    (this.PreviousPage != null &&
+                    this.PreviousPage.Equals(input.PreviousPage))
                 ) && 
                 (
                     this.Values == input.Values ||
@@ -128,10 +135,9 @@ namespace Lusid.Sdk.Model
                     this.Values.SequenceEqual(input.Values)
                 ) && 
                 (
-                    this.Failed == input.Failed ||
-                    this.Failed != null &&
-                    input.Failed != null &&
-                    this.Failed.SequenceEqual(input.Failed)
+                    this.Href == input.Href ||
+                    (this.Href != null &&
+                    this.Href.Equals(input.Href))
                 ) && 
                 (
                     this.Links == input.Links ||
@@ -150,12 +156,14 @@ namespace Lusid.Sdk.Model
             unchecked // Overflow is fine, just wrap
             {
                 int hashCode = 41;
-                if (this.Href != null)
-                    hashCode = hashCode * 59 + this.Href.GetHashCode();
+                if (this.NextPage != null)
+                    hashCode = hashCode * 59 + this.NextPage.GetHashCode();
+                if (this.PreviousPage != null)
+                    hashCode = hashCode * 59 + this.PreviousPage.GetHashCode();
                 if (this.Values != null)
                     hashCode = hashCode * 59 + this.Values.GetHashCode();
-                if (this.Failed != null)
-                    hashCode = hashCode * 59 + this.Failed.GetHashCode();
+                if (this.Href != null)
+                    hashCode = hashCode * 59 + this.Href.GetHashCode();
                 if (this.Links != null)
                     hashCode = hashCode * 59 + this.Links.GetHashCode();
                 return hashCode;
