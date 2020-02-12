@@ -23,18 +23,18 @@ using OpenAPIDateConverter = Lusid.Sdk.Client.OpenAPIDateConverter;
 namespace Lusid.Sdk.Model
 {
     /// <summary>
-    /// ResourceListOfHoldingsAdjustmentHeader
+    /// ResourceListOfAccessMetadataValueOf
     /// </summary>
     [DataContract]
-    public partial class ResourceListOfHoldingsAdjustmentHeader :  IEquatable<ResourceListOfHoldingsAdjustmentHeader>
+    public partial class ResourceListOfAccessMetadataValueOf :  IEquatable<ResourceListOfAccessMetadataValueOf>
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="ResourceListOfHoldingsAdjustmentHeader" /> class.
+        /// Initializes a new instance of the <see cref="ResourceListOfAccessMetadataValueOf" /> class.
         /// </summary>
         /// <param name="values">values.</param>
         /// <param name="href">href.</param>
         /// <param name="links">links.</param>
-        public ResourceListOfHoldingsAdjustmentHeader(List<HoldingsAdjustmentHeader> values = default(List<HoldingsAdjustmentHeader>), string href = default(string), List<Link> links = default(List<Link>))
+        public ResourceListOfAccessMetadataValueOf(List<List<AccessMetadataValue>> values = default(List<List<AccessMetadataValue>>), string href = default(string), List<Link> links = default(List<Link>))
         {
             this.Values = values;
             this.Href = href;
@@ -45,7 +45,7 @@ namespace Lusid.Sdk.Model
         /// Gets or Sets Values
         /// </summary>
         [DataMember(Name="values", EmitDefaultValue=false)]
-        public List<HoldingsAdjustmentHeader> Values { get; set; }
+        public List<List<AccessMetadataValue>> Values { get; set; }
 
         /// <summary>
         /// Gets or Sets Href
@@ -66,7 +66,7 @@ namespace Lusid.Sdk.Model
         public override string ToString()
         {
             var sb = new StringBuilder();
-            sb.Append("class ResourceListOfHoldingsAdjustmentHeader {\n");
+            sb.Append("class ResourceListOfAccessMetadataValueOf {\n");
             sb.Append("  Values: ").Append(Values).Append("\n");
             sb.Append("  Href: ").Append(Href).Append("\n");
             sb.Append("  Links: ").Append(Links).Append("\n");
@@ -90,15 +90,15 @@ namespace Lusid.Sdk.Model
         /// <returns>Boolean</returns>
         public override bool Equals(object input)
         {
-            return this.Equals(input as ResourceListOfHoldingsAdjustmentHeader);
+            return this.Equals(input as ResourceListOfAccessMetadataValueOf);
         }
 
         /// <summary>
-        /// Returns true if ResourceListOfHoldingsAdjustmentHeader instances are equal
+        /// Returns true if ResourceListOfAccessMetadataValueOf instances are equal
         /// </summary>
-        /// <param name="input">Instance of ResourceListOfHoldingsAdjustmentHeader to be compared</param>
+        /// <param name="input">Instance of ResourceListOfAccessMetadataValueOf to be compared</param>
         /// <returns>Boolean</returns>
-        public bool Equals(ResourceListOfHoldingsAdjustmentHeader input)
+        public bool Equals(ResourceListOfAccessMetadataValueOf input)
         {
             if (input == null)
                 return false;

@@ -23,41 +23,40 @@ using OpenAPIDateConverter = Lusid.Sdk.Client.OpenAPIDateConverter;
 namespace Lusid.Sdk.Model
 {
     /// <summary>
-    /// ResourceListOfHoldingsAdjustmentHeader
+    /// UpsertPortfolioAccessMetadataRequest
     /// </summary>
     [DataContract]
-    public partial class ResourceListOfHoldingsAdjustmentHeader :  IEquatable<ResourceListOfHoldingsAdjustmentHeader>
+    public partial class UpsertPortfolioAccessMetadataRequest :  IEquatable<UpsertPortfolioAccessMetadataRequest>
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="ResourceListOfHoldingsAdjustmentHeader" /> class.
+        /// Initializes a new instance of the <see cref="UpsertPortfolioAccessMetadataRequest" /> class.
         /// </summary>
-        /// <param name="values">values.</param>
-        /// <param name="href">href.</param>
-        /// <param name="links">links.</param>
-        public ResourceListOfHoldingsAdjustmentHeader(List<HoldingsAdjustmentHeader> values = default(List<HoldingsAdjustmentHeader>), string href = default(string), List<Link> links = default(List<Link>))
+        [JsonConstructorAttribute]
+        protected UpsertPortfolioAccessMetadataRequest() { }
+        /// <summary>
+        /// Initializes a new instance of the <see cref="UpsertPortfolioAccessMetadataRequest" /> class.
+        /// </summary>
+        /// <param name="metadata">The access control metadata to assign to portfolios that match the identifier (required).</param>
+        public UpsertPortfolioAccessMetadataRequest(List<AccessMetadataValue> metadata = default(List<AccessMetadataValue>))
         {
-            this.Values = values;
-            this.Href = href;
-            this.Links = links;
+            // to ensure "metadata" is required (not null)
+            if (metadata == null)
+            {
+                throw new InvalidDataException("metadata is a required property for UpsertPortfolioAccessMetadataRequest and cannot be null");
+            }
+            else
+            {
+                this.Metadata = metadata;
+            }
+            
         }
         
         /// <summary>
-        /// Gets or Sets Values
+        /// The access control metadata to assign to portfolios that match the identifier
         /// </summary>
-        [DataMember(Name="values", EmitDefaultValue=false)]
-        public List<HoldingsAdjustmentHeader> Values { get; set; }
-
-        /// <summary>
-        /// Gets or Sets Href
-        /// </summary>
-        [DataMember(Name="href", EmitDefaultValue=false)]
-        public string Href { get; set; }
-
-        /// <summary>
-        /// Gets or Sets Links
-        /// </summary>
-        [DataMember(Name="links", EmitDefaultValue=false)]
-        public List<Link> Links { get; set; }
+        /// <value>The access control metadata to assign to portfolios that match the identifier</value>
+        [DataMember(Name="metadata", EmitDefaultValue=false)]
+        public List<AccessMetadataValue> Metadata { get; set; }
 
         /// <summary>
         /// Returns the string presentation of the object
@@ -66,10 +65,8 @@ namespace Lusid.Sdk.Model
         public override string ToString()
         {
             var sb = new StringBuilder();
-            sb.Append("class ResourceListOfHoldingsAdjustmentHeader {\n");
-            sb.Append("  Values: ").Append(Values).Append("\n");
-            sb.Append("  Href: ").Append(Href).Append("\n");
-            sb.Append("  Links: ").Append(Links).Append("\n");
+            sb.Append("class UpsertPortfolioAccessMetadataRequest {\n");
+            sb.Append("  Metadata: ").Append(Metadata).Append("\n");
             sb.Append("}\n");
             return sb.ToString();
         }
@@ -90,36 +87,25 @@ namespace Lusid.Sdk.Model
         /// <returns>Boolean</returns>
         public override bool Equals(object input)
         {
-            return this.Equals(input as ResourceListOfHoldingsAdjustmentHeader);
+            return this.Equals(input as UpsertPortfolioAccessMetadataRequest);
         }
 
         /// <summary>
-        /// Returns true if ResourceListOfHoldingsAdjustmentHeader instances are equal
+        /// Returns true if UpsertPortfolioAccessMetadataRequest instances are equal
         /// </summary>
-        /// <param name="input">Instance of ResourceListOfHoldingsAdjustmentHeader to be compared</param>
+        /// <param name="input">Instance of UpsertPortfolioAccessMetadataRequest to be compared</param>
         /// <returns>Boolean</returns>
-        public bool Equals(ResourceListOfHoldingsAdjustmentHeader input)
+        public bool Equals(UpsertPortfolioAccessMetadataRequest input)
         {
             if (input == null)
                 return false;
 
             return 
                 (
-                    this.Values == input.Values ||
-                    this.Values != null &&
-                    input.Values != null &&
-                    this.Values.SequenceEqual(input.Values)
-                ) && 
-                (
-                    this.Href == input.Href ||
-                    (this.Href != null &&
-                    this.Href.Equals(input.Href))
-                ) && 
-                (
-                    this.Links == input.Links ||
-                    this.Links != null &&
-                    input.Links != null &&
-                    this.Links.SequenceEqual(input.Links)
+                    this.Metadata == input.Metadata ||
+                    this.Metadata != null &&
+                    input.Metadata != null &&
+                    this.Metadata.SequenceEqual(input.Metadata)
                 );
         }
 
@@ -132,12 +118,8 @@ namespace Lusid.Sdk.Model
             unchecked // Overflow is fine, just wrap
             {
                 int hashCode = 41;
-                if (this.Values != null)
-                    hashCode = hashCode * 59 + this.Values.GetHashCode();
-                if (this.Href != null)
-                    hashCode = hashCode * 59 + this.Href.GetHashCode();
-                if (this.Links != null)
-                    hashCode = hashCode * 59 + this.Links.GetHashCode();
+                if (this.Metadata != null)
+                    hashCode = hashCode * 59 + this.Metadata.GetHashCode();
                 return hashCode;
             }
         }
