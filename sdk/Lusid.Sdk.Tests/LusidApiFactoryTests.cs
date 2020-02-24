@@ -168,7 +168,6 @@ namespace Lusid.Sdk.Tests
             Assert.That(errorResponse, Is.Null);
         }
 
-
         [TestCase(1, 10)]
         [TestCase(100, 25, Explicit = true)]
         public void Multi_Threaded_ApiFactory_Tasks(int quoteCount, int threadCount)
@@ -204,7 +203,5 @@ namespace Lusid.Sdk.Tests
 
             Task.WaitAll(tasks.ToArray());
         }
-
-
     }
 }
