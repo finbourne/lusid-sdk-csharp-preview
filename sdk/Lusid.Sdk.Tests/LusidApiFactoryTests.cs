@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Concurrent;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -205,6 +206,52 @@ namespace Lusid.Sdk.Tests
             Task.WaitAll(tasks.ToArray());
         }
 
+        [Test]
+        public void ShouldReturnCachedInstancePerLogicalRequest() // DEV-6922
+        {
+            ITokenProvider provider = new ClientCredentialsFlowTokenProvider(new ApiConfiguration());
 
+            var apiFactories = new ConcurrentDictionary<Guid, ILusidApiFactory>();
+
+            Task[] tasks = Enumerable
+                .Range(0, 100)
+                .Select(_ => Guid.NewGuid())
+                .Select(GetApiMultipleTimesDuringAsyncWorkflow)
+                .ToArray();
+
+            Task.WaitAll(tasks);
+
+            async Task GetApiMultipleTimesDuringAsyncWorkflow(Guid requestId)
+            {
+                // First call to Build in a single logical request should return a brand new builder instance
+                string url = "https://someclient.lusid.com";
+                ILusidApiFactory factory1 = LusidApiFactoryBuilder.Build(url, provider);
+                
+                Assert.That(apiFactories.Values.Any(factoryFromAnotherRequest => ReferenceEquals(factory1, factoryFromAnotherRequest)), Is.False, 
+                    "Build returned a factory instance which has already been supplied to a different request!");
+                
+                Assert.That(apiFactories.TryAdd(requestId, factory1), Is.True);
+
+                // Subsequent calls to Build (on the same thread) should return a cached instance
+                ILusidApiFactory factory2 = LusidApiFactoryBuilder.Build(url, provider);
+                Assert.AreSame(factory2, apiFactories[requestId], "Subsequent call to Build (same thread) should have returned a cached factory instance");
+
+                await Task.Delay(50);
+
+                // Subsequent calls to Build following an `await` (thus on a potentially different thread) should return the correct cached instance
+                ILusidApiFactory factory3 = LusidApiFactoryBuilder.Build(url, provider);
+                Assert.AreSame(factory3, apiFactories[requestId], "Subsequent call to Build (post await) should have returned a cached factory instance");
+                Assert.That(apiFactories.Values, Is.Unique.Using((ILusidApiFactory a, ILusidApiFactory b) => ReferenceEquals(a, b)));
+
+                // Subsequent calls to Build on different threads should return the correct cached instance
+                Parallel.For(0, 10,
+                    i =>
+                    {
+                        var factoryN = LusidApiFactoryBuilder.Build(url, provider);
+                        Assert.AreSame(factoryN, apiFactories[requestId],
+                            "Subsequent calls to Build on different threads should return the cached factory instance");
+                    });
+            }
+        }
     }
 }
