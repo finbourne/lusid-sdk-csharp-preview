@@ -23,51 +23,29 @@ using OpenAPIDateConverter = Lusid.Sdk.Client.OpenAPIDateConverter;
 namespace Lusid.Sdk.Model
 {
     /// <summary>
-    /// VersionedResourceListOfOutputTransaction
+    /// ResourceListOfGetRecipeResponse
     /// </summary>
     [DataContract]
-    public partial class VersionedResourceListOfOutputTransaction :  IEquatable<VersionedResourceListOfOutputTransaction>
+    public partial class ResourceListOfGetRecipeResponse :  IEquatable<ResourceListOfGetRecipeResponse>
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="VersionedResourceListOfOutputTransaction" /> class.
+        /// Initializes a new instance of the <see cref="ResourceListOfGetRecipeResponse" /> class.
         /// </summary>
-        [JsonConstructorAttribute]
-        protected VersionedResourceListOfOutputTransaction() { }
-        /// <summary>
-        /// Initializes a new instance of the <see cref="VersionedResourceListOfOutputTransaction" /> class.
-        /// </summary>
-        /// <param name="version">version (required).</param>
         /// <param name="values">values.</param>
         /// <param name="href">href.</param>
         /// <param name="links">links.</param>
-        public VersionedResourceListOfOutputTransaction(Version version = default(Version), List<OutputTransaction> values = default(List<OutputTransaction>), string href = default(string), List<Link> links = default(List<Link>))
+        public ResourceListOfGetRecipeResponse(List<GetRecipeResponse> values = default(List<GetRecipeResponse>), string href = default(string), List<Link> links = default(List<Link>))
         {
-            // to ensure "version" is required (not null)
-            if (version == null)
-            {
-                throw new InvalidDataException("version is a required property for VersionedResourceListOfOutputTransaction and cannot be null");
-            }
-            else
-            {
-                this.Version = version;
-            }
-            
             this.Values = values;
             this.Href = href;
             this.Links = links;
         }
         
         /// <summary>
-        /// Gets or Sets Version
-        /// </summary>
-        [DataMember(Name="version", EmitDefaultValue=false)]
-        public Version Version { get; set; }
-
-        /// <summary>
         /// Gets or Sets Values
         /// </summary>
         [DataMember(Name="values", EmitDefaultValue=false)]
-        public List<OutputTransaction> Values { get; set; }
+        public List<GetRecipeResponse> Values { get; set; }
 
         /// <summary>
         /// Gets or Sets Href
@@ -88,8 +66,7 @@ namespace Lusid.Sdk.Model
         public override string ToString()
         {
             var sb = new StringBuilder();
-            sb.Append("class VersionedResourceListOfOutputTransaction {\n");
-            sb.Append("  Version: ").Append(Version).Append("\n");
+            sb.Append("class ResourceListOfGetRecipeResponse {\n");
             sb.Append("  Values: ").Append(Values).Append("\n");
             sb.Append("  Href: ").Append(Href).Append("\n");
             sb.Append("  Links: ").Append(Links).Append("\n");
@@ -113,25 +90,20 @@ namespace Lusid.Sdk.Model
         /// <returns>Boolean</returns>
         public override bool Equals(object input)
         {
-            return this.Equals(input as VersionedResourceListOfOutputTransaction);
+            return this.Equals(input as ResourceListOfGetRecipeResponse);
         }
 
         /// <summary>
-        /// Returns true if VersionedResourceListOfOutputTransaction instances are equal
+        /// Returns true if ResourceListOfGetRecipeResponse instances are equal
         /// </summary>
-        /// <param name="input">Instance of VersionedResourceListOfOutputTransaction to be compared</param>
+        /// <param name="input">Instance of ResourceListOfGetRecipeResponse to be compared</param>
         /// <returns>Boolean</returns>
-        public bool Equals(VersionedResourceListOfOutputTransaction input)
+        public bool Equals(ResourceListOfGetRecipeResponse input)
         {
             if (input == null)
                 return false;
 
             return 
-                (
-                    this.Version == input.Version ||
-                    (this.Version != null &&
-                    this.Version.Equals(input.Version))
-                ) && 
                 (
                     this.Values == input.Values ||
                     this.Values != null &&
@@ -160,8 +132,6 @@ namespace Lusid.Sdk.Model
             unchecked // Overflow is fine, just wrap
             {
                 int hashCode = 41;
-                if (this.Version != null)
-                    hashCode = hashCode * 59 + this.Version.GetHashCode();
                 if (this.Values != null)
                     hashCode = hashCode * 59 + this.Values.GetHashCode();
                 if (this.Href != null)
