@@ -73,7 +73,7 @@ namespace Lusid.Sdk.Tests.Tutorials.Ibor
             // using the instrument identifiers passed
             Assert.That(upsertResult.Values.Count == 1);
             Assert.That(upsertResult.Values.All(rl => rl.Id.Code.Equals(orderId)));
-            Assert.That(upsertResult.Values.All(rl => rl.InstrumentUid.Equals(_instrumentIds.First())));
+            Assert.That(upsertResult.Values.All(rl => rl.LusidInstrumentId.Equals(_instrumentIds.First())));
         }
         
         [Test]
@@ -119,7 +119,7 @@ namespace Lusid.Sdk.Tests.Tutorials.Ibor
             // using the instrument identifiers passed
             Assert.That(upsertResult.Values.Count == 1);
             Assert.That(upsertResult.Values.All(rl => rl.Id.Code.Equals(orderId)));
-            Assert.That(upsertResult.Values.All(rl => rl.InstrumentUid.Equals("LUID_ZZZZZZZZ")));
+            Assert.That(upsertResult.Values.All(rl => rl.LusidInstrumentId.Equals("LUID_ZZZZZZZZ")));
         }
         
         [Test]
@@ -157,7 +157,7 @@ namespace Lusid.Sdk.Tests.Tutorials.Ibor
             // using the instrument identifiers passed
             Assert.That(upsertResult.Values.Count == 1);
             Assert.That(upsertResult.Values.All(rl => rl.Id.Code.Equals(orderId)));
-            Assert.That(upsertResult.Values.All(rl => rl.InstrumentUid.Equals(_instrumentIds.First())));
+            Assert.That(upsertResult.Values.All(rl => rl.LusidInstrumentId.Equals(_instrumentIds.First())));
             Assert.That(upsertResult.Values.All(rl => rl.Quantity == 100));
             Assert.That(upsertResult.Values.All(rl => !rl.Properties.Any()));
             
@@ -196,7 +196,7 @@ namespace Lusid.Sdk.Tests.Tutorials.Ibor
             // using the instrument identifiers passed. We can see that the quantity has been udpated, and properties added
             Assert.That(upsertResult.Values.Count == 1);
             Assert.That(upsertResult.Values.All(rl => rl.Id.Code.Equals(orderId)));
-            Assert.That(upsertResult.Values.All(rl => rl.InstrumentUid.Equals(_instrumentIds.First())));
+            Assert.That(upsertResult.Values.All(rl => rl.LusidInstrumentId.Equals(_instrumentIds.First())));
             Assert.That(upsertResult.Values.All(rl => rl.Quantity == 500));
             Assert.That(upsertResult.Values.All(rl => rl.Properties.Count() == 5));
         }
@@ -291,7 +291,7 @@ namespace Lusid.Sdk.Tests.Tutorials.Ibor
             // The return gives us a list of orders upserted, and LusidInstrument for each has been mapped to a LUID
             // using the instrument identifiers passed
             Assert.That(upsertResult.Values.Count == 3);
-            Assert.That(upsertResult.Values.Single(rl => rl.Id.Code.Equals(orderId1)).InstrumentUid, Is.EqualTo(_instrumentIds.First()));
+            Assert.That(upsertResult.Values.Single(rl => rl.Id.Code.Equals(orderId1)).LusidInstrumentId, Is.EqualTo(_instrumentIds.First()));
             
             var quantityFilter = _ordersApi.ListOrders(scope: testScope, asAt: DateTimeOffset.UtcNow, filter: "Quantity gt 100");
 
@@ -303,10 +303,10 @@ namespace Lusid.Sdk.Tests.Tutorials.Ibor
             Assert.That(orderBookFilter.Values.Count == 1);
             Assert.That(orderBookFilter.Values.Single(rl => rl.Id.Code.Equals(orderId3)).Properties[$"Order/{testScope}/OrderBook"].Value.LabelValue, Is.EqualTo("UK Test Orders 2"));
             
-            var instrumentFilter = _ordersApi.ListOrders(scope: testScope, asAt: DateTimeOffset.UtcNow, filter: $"InstrumentUid eq '{_instrumentIds.First()}'");
+            var instrumentFilter = _ordersApi.ListOrders(scope: testScope, asAt: DateTimeOffset.UtcNow, filter: $"LusidInstrumentId eq '{_instrumentIds.First()}'");
             
             Assert.That(instrumentFilter.Values.Count == 2);
-            Assert.That(instrumentFilter.Values.All(rl => rl.InstrumentUid.Equals(_instrumentIds[0])));
+            Assert.That(instrumentFilter.Values.All(rl => rl.LusidInstrumentId.Equals(_instrumentIds[0])));
 
         }
     }
