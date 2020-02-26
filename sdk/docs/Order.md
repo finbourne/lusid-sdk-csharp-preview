@@ -10,8 +10,8 @@ Name | Type | Description | Notes
 **InstrumentIdentifiers** | **Dictionary&lt;string, string&gt;** | The instrument ordered. | 
 **Quantity** | **int?** | The quantity of given instrument ordered. | 
 **Portfolio** | [**ResourceId**](ResourceId.md) |  | 
-**Id** | [**OrderId**](OrderId.md) |  | 
-**LusidInstrument** | **string** | The LUSID instrument id for the instrument ordered. | 
+**Id** | [**ResourceId**](ResourceId.md) |  | 
+**LusidInstrumentId** | **string** | The LUSID instrument id for the instrument ordered. | 
 **Links** | [**List&lt;Link&gt;**](Link.md) |  | [optional] 
 
 [[Back to Model list]](../README.md#documentation-for-models)
