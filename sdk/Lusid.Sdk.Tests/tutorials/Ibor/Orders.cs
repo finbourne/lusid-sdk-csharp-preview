@@ -55,13 +55,13 @@ namespace Lusid.Sdk.Tests.Tutorials.Ibor
                         // [Experimental] Currently this portfolio doesn't need to exist. As the domain model evolves
                         // this reference might disappear, or might become a strict reference to an existing portfolio.
                         portfolio: new ResourceId(testScope, "OrdersTestPortfolio"),
-                        properties: new List<PerpetualProperty>
+                        properties: new Dictionary<string, PerpetualProperty>
                         {
-                            new PerpetualProperty($"Order/{testScope}/TIF", new PropertyValue("GTC")),
-                            new PerpetualProperty($"Order/{testScope}/OrderBook", new PropertyValue("UK Test Orders")),
-                            new PerpetualProperty($"Order/{testScope}/PortfolioManager", new PropertyValue("F Bar")),
-                            new PerpetualProperty($"Order/{testScope}/Account", new PropertyValue("J Wilson")),
-                            new PerpetualProperty($"Order/{testScope}/Strategy", new PropertyValue("RiskArb")),
+                            { $"Order/{testScope}/TIF", new PerpetualProperty($"Order/{testScope}/TIF", new PropertyValue("GTC")) },
+                            { $"Order/{testScope}/OrderBook", new PerpetualProperty($"Order/{testScope}/OrderBook", new PropertyValue("UK Test Orders")) },
+                            { $"Order/{testScope}/PortfolioManager", new PerpetualProperty($"Order/{testScope}/PortfolioManager", new PropertyValue("F Bar")) },
+                            { $"Order/{testScope}/Account", new PerpetualProperty($"Order/{testScope}/Account", new PropertyValue("J Wilson")) },
+                            { $"Order/{testScope}/Strategy", new PerpetualProperty($"Order/{testScope}/Strategy", new PropertyValue("RiskArb")) },
                         }
                     )
                 });
@@ -101,13 +101,13 @@ namespace Lusid.Sdk.Tests.Tutorials.Ibor
                         // [Experimental] Currently this portfolio doesn't need to exist. As the domain model evolves
                         // this reference might disappear, or might become a strict reference to an existing portfolio
                         portfolio: new ResourceId(testScope, "OrdersTestPortfolio"),
-                        properties: new List<PerpetualProperty>
+                        properties: new Dictionary<string, PerpetualProperty>
                         {
-                            new PerpetualProperty($"Order/{testScope}/TIF", new PropertyValue("GTC")),
-                            new PerpetualProperty($"Order/{testScope}/OrderBook", new PropertyValue("UK Test Orders")),
-                            new PerpetualProperty($"Order/{testScope}/PortfolioManager", new PropertyValue("F Bar")),
-                            new PerpetualProperty($"Order/{testScope}/Account", new PropertyValue("J Wilson")),
-                            new PerpetualProperty($"Order/{testScope}/Strategy", new PropertyValue("RiskArb")),
+                            { $"Order/{testScope}/TIF", new PerpetualProperty($"Order/{testScope}/TIF", new PropertyValue("GTC")) },
+                            { $"Order/{testScope}/OrderBook", new PerpetualProperty($"Order/{testScope}/OrderBook", new PropertyValue("UK Test Orders")) },
+                            { $"Order/{testScope}/PortfolioManager", new PerpetualProperty($"Order/{testScope}/PortfolioManager", new PropertyValue("F Bar")) },
+                            { $"Order/{testScope}/Account", new PerpetualProperty($"Order/{testScope}/Account", new PropertyValue("J Wilson")) },
+                            { $"Order/{testScope}/Strategy", new PerpetualProperty($"Order/{testScope}/Strategy", new PropertyValue("RiskArb")) },
                         }
                     )
                 });
@@ -147,7 +147,7 @@ namespace Lusid.Sdk.Tests.Tutorials.Ibor
                         // [Experimental] Currently this portfolio doesn't need to exist. As the domain model evolves
                         // this reference might disappear, or might become a strict reference to an existing portfolio
                         portfolio: new ResourceId(testScope, "OrdersTestPortfolio"),
-                        properties: new List<PerpetualProperty>()
+                        properties: new Dictionary<string, PerpetualProperty>()
                     )
                 });
 
@@ -179,13 +179,13 @@ namespace Lusid.Sdk.Tests.Tutorials.Ibor
                         // [Experimental] Currently this portfolio doesn't need to exist. As the domain model evolves
                         // this reference might disappear, or might become a strict reference to an existing portfolio
                         portfolio: new ResourceId(testScope, "OrdersTestPortfolio"),
-                        properties: new List<PerpetualProperty>
+                        properties: new Dictionary<string, PerpetualProperty>
                         {
-                            new PerpetualProperty($"Order/{testScope}/TIF", new PropertyValue("GTC")),
-                            new PerpetualProperty($"Order/{testScope}/OrderBook", new PropertyValue("UK Test Orders")),
-                            new PerpetualProperty($"Order/{testScope}/PortfolioManager", new PropertyValue("F Bar")),
-                            new PerpetualProperty($"Order/{testScope}/Account", new PropertyValue("J Wilson")),
-                            new PerpetualProperty($"Order/{testScope}/Strategy", new PropertyValue("RiskArb")),
+                            { $"Order/{testScope}/TIF", new PerpetualProperty($"Order/{testScope}/TIF", new PropertyValue("GTC")) },
+                            { $"Order/{testScope}/OrderBook", new PerpetualProperty($"Order/{testScope}/OrderBook", new PropertyValue("UK Test Orders")) },
+                            { $"Order/{testScope}/PortfolioManager", new PerpetualProperty($"Order/{testScope}/PortfolioManager", new PropertyValue("F Bar")) },
+                            { $"Order/{testScope}/Account", new PerpetualProperty($"Order/{testScope}/Account", new PropertyValue("J Wilson")) },
+                            { $"Order/{testScope}/Strategy", new PerpetualProperty($"Order/{testScope}/Strategy", new PropertyValue("RiskArb")) },
                         }
                         )
                 });
@@ -228,13 +228,13 @@ namespace Lusid.Sdk.Tests.Tutorials.Ibor
                         // [Experimental] Currently this portfolio doesn't need to exist. As the domain model evolves
                         // this reference might disappear, or might become a strict reference to an existing portfolio
                         portfolio: new ResourceId(testScope, "OrdersTestPortfolio"),
-                        properties: new List<PerpetualProperty>
+                        properties: new Dictionary<string, PerpetualProperty>
                         {
-                            new PerpetualProperty($"Order/{testScope}/TIF", new PropertyValue("GTC")),
-                            new PerpetualProperty($"Order/{testScope}/OrderBook", new PropertyValue("UK Test Orders")),
-                            new PerpetualProperty($"Order/{testScope}/PortfolioManager", new PropertyValue("F Bar")),
-                            new PerpetualProperty($"Order/{testScope}/Account", new PropertyValue("ZB123")),
-                            new PerpetualProperty($"Order/{testScope}/Strategy", new PropertyValue("RiskArb")),
+                            { $"Order/{testScope}/TIF", new PerpetualProperty($"Order/{testScope}/TIF", new PropertyValue("GTC")) },
+                            { $"Order/{testScope}/OrderBook", new PerpetualProperty($"Order/{testScope}/OrderBook", new PropertyValue("UK Test Orders")) },
+                            { $"Order/{testScope}/PortfolioManager", new PerpetualProperty($"Order/{testScope}/PortfolioManager", new PropertyValue("F Bar")) },
+                            { $"Order/{testScope}/Account", new PerpetualProperty($"Order/{testScope}/Account", new PropertyValue("ZB123")) },
+                            { $"Order/{testScope}/Strategy", new PerpetualProperty($"Order/{testScope}/Strategy", new PropertyValue("RiskArb")) },
                         }
                     ),
                     new OrderRequest(
@@ -251,13 +251,13 @@ namespace Lusid.Sdk.Tests.Tutorials.Ibor
                         // [Experimental] Currently this portfolio doesn't need to exist. As the domain model evolves
                         // this reference might disappear, or might become a strict reference to an existing portfolio
                         portfolio: new ResourceId(testScope, "OrdersTestPortfolio"),
-                        properties: new List<PerpetualProperty>
+                        properties: new Dictionary<string, PerpetualProperty>
                         {
-                            new PerpetualProperty($"Order/{testScope}/TIF", new PropertyValue("GTC")),
-                            new PerpetualProperty($"Order/{testScope}/OrderBook", new PropertyValue("UK Test Orders")),
-                            new PerpetualProperty($"Order/{testScope}/PortfolioManager", new PropertyValue("F Bar")),
-                            new PerpetualProperty($"Order/{testScope}/Account", new PropertyValue("J Wilson")),
-                            new PerpetualProperty($"Order/{testScope}/Strategy", new PropertyValue("UK Growth")),
+                            { $"Order/{testScope}/TIF", new PerpetualProperty($"Order/{testScope}/TIF", new PropertyValue("GTC")) },
+                            { $"Order/{testScope}/OrderBook", new PerpetualProperty($"Order/{testScope}/OrderBook", new PropertyValue("UK Test Orders")) },
+                            { $"Order/{testScope}/PortfolioManager", new PerpetualProperty($"Order/{testScope}/PortfolioManager", new PropertyValue("F Bar")) },
+                            { $"Order/{testScope}/Account", new PerpetualProperty($"Order/{testScope}/Account", new PropertyValue("J Wilson")) },
+                            { $"Order/{testScope}/Strategy", new PerpetualProperty($"Order/{testScope}/Strategy", new PropertyValue("UK Growth")) },
                         }
                     ),
                     new OrderRequest(
@@ -274,13 +274,13 @@ namespace Lusid.Sdk.Tests.Tutorials.Ibor
                         // [Experimental] Currently this portfolio doesn't need to exist. As the domain model evolves
                         // this reference might disappear, or might become a strict reference to an existing portfolio
                         portfolio: new ResourceId(testScope, "OrdersTestPortfolio"),
-                        properties: new List<PerpetualProperty>
+                        properties: new Dictionary<string, PerpetualProperty>
                         {
-                            new PerpetualProperty($"Order/{testScope}/TIF", new PropertyValue("GTC")),
-                            new PerpetualProperty($"Order/{testScope}/OrderBook", new PropertyValue("UK Test Orders 2")),
-                            new PerpetualProperty($"Order/{testScope}/PortfolioManager", new PropertyValue("F Bar")),
-                            new PerpetualProperty($"Order/{testScope}/Account", new PropertyValue("J Wilson")),
-                            new PerpetualProperty($"Order/{testScope}/Strategy", new PropertyValue("RiskArb")),
+                            { $"Order/{testScope}/TIF", new PerpetualProperty($"Order/{testScope}/TIF", new PropertyValue("GTC")) },
+                            { $"Order/{testScope}/OrderBook", new PerpetualProperty($"Order/{testScope}/OrderBook", new PropertyValue("UK Test Orders 2")) },
+                            { $"Order/{testScope}/PortfolioManager", new PerpetualProperty($"Order/{testScope}/PortfolioManager", new PropertyValue("F Bar")) },
+                            { $"Order/{testScope}/Account", new PerpetualProperty($"Order/{testScope}/Account", new PropertyValue("J Wilson")) },
+                            { $"Order/{testScope}/Strategy", new PerpetualProperty($"Order/{testScope}/Strategy", new PropertyValue("RiskArb")) },
                         }
                     )
                 });
