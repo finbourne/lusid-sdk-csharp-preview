@@ -23,43 +23,40 @@ using OpenAPIDateConverter = Lusid.Sdk.Client.OpenAPIDateConverter;
 namespace Lusid.Sdk.Model
 {
     /// <summary>
-    /// VersionSummaryDto
+    /// UpsertPortfolioGroupAccessMetadataRequest
     /// </summary>
     [DataContract]
-    public partial class VersionSummaryDto :  IEquatable<VersionSummaryDto>
+    public partial class UpsertPortfolioGroupAccessMetadataRequest :  IEquatable<UpsertPortfolioGroupAccessMetadataRequest>
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="VersionSummaryDto" /> class.
+        /// Initializes a new instance of the <see cref="UpsertPortfolioGroupAccessMetadataRequest" /> class.
         /// </summary>
-        /// <param name="links">links.</param>
-        public VersionSummaryDto(List<Link> links = default(List<Link>))
+        [JsonConstructorAttribute]
+        protected UpsertPortfolioGroupAccessMetadataRequest() { }
+        /// <summary>
+        /// Initializes a new instance of the <see cref="UpsertPortfolioGroupAccessMetadataRequest" /> class.
+        /// </summary>
+        /// <param name="metadata">The access control metadata to assign to portfolio groups that match the identifier (required).</param>
+        public UpsertPortfolioGroupAccessMetadataRequest(List<AccessMetadataValue> metadata = default(List<AccessMetadataValue>))
         {
-            this.Links = links;
+            // to ensure "metadata" is required (not null)
+            if (metadata == null)
+            {
+                throw new InvalidDataException("metadata is a required property for UpsertPortfolioGroupAccessMetadataRequest and cannot be null");
+            }
+            else
+            {
+                this.Metadata = metadata;
+            }
+            
         }
         
         /// <summary>
-        /// Gets or Sets ApiVersion
+        /// The access control metadata to assign to portfolio groups that match the identifier
         /// </summary>
-        [DataMember(Name="apiVersion", EmitDefaultValue=false)]
-        public string ApiVersion { get; private set; }
-
-        /// <summary>
-        /// Gets or Sets BuildVersion
-        /// </summary>
-        [DataMember(Name="buildVersion", EmitDefaultValue=false)]
-        public string BuildVersion { get; private set; }
-
-        /// <summary>
-        /// Gets or Sets ExcelVersion
-        /// </summary>
-        [DataMember(Name="excelVersion", EmitDefaultValue=false)]
-        public string ExcelVersion { get; private set; }
-
-        /// <summary>
-        /// Gets or Sets Links
-        /// </summary>
-        [DataMember(Name="links", EmitDefaultValue=false)]
-        public List<Link> Links { get; set; }
+        /// <value>The access control metadata to assign to portfolio groups that match the identifier</value>
+        [DataMember(Name="metadata", EmitDefaultValue=false)]
+        public List<AccessMetadataValue> Metadata { get; set; }
 
         /// <summary>
         /// Returns the string presentation of the object
@@ -68,11 +65,8 @@ namespace Lusid.Sdk.Model
         public override string ToString()
         {
             var sb = new StringBuilder();
-            sb.Append("class VersionSummaryDto {\n");
-            sb.Append("  ApiVersion: ").Append(ApiVersion).Append("\n");
-            sb.Append("  BuildVersion: ").Append(BuildVersion).Append("\n");
-            sb.Append("  ExcelVersion: ").Append(ExcelVersion).Append("\n");
-            sb.Append("  Links: ").Append(Links).Append("\n");
+            sb.Append("class UpsertPortfolioGroupAccessMetadataRequest {\n");
+            sb.Append("  Metadata: ").Append(Metadata).Append("\n");
             sb.Append("}\n");
             return sb.ToString();
         }
@@ -93,40 +87,25 @@ namespace Lusid.Sdk.Model
         /// <returns>Boolean</returns>
         public override bool Equals(object input)
         {
-            return this.Equals(input as VersionSummaryDto);
+            return this.Equals(input as UpsertPortfolioGroupAccessMetadataRequest);
         }
 
         /// <summary>
-        /// Returns true if VersionSummaryDto instances are equal
+        /// Returns true if UpsertPortfolioGroupAccessMetadataRequest instances are equal
         /// </summary>
-        /// <param name="input">Instance of VersionSummaryDto to be compared</param>
+        /// <param name="input">Instance of UpsertPortfolioGroupAccessMetadataRequest to be compared</param>
         /// <returns>Boolean</returns>
-        public bool Equals(VersionSummaryDto input)
+        public bool Equals(UpsertPortfolioGroupAccessMetadataRequest input)
         {
             if (input == null)
                 return false;
 
             return 
                 (
-                    this.ApiVersion == input.ApiVersion ||
-                    (this.ApiVersion != null &&
-                    this.ApiVersion.Equals(input.ApiVersion))
-                ) && 
-                (
-                    this.BuildVersion == input.BuildVersion ||
-                    (this.BuildVersion != null &&
-                    this.BuildVersion.Equals(input.BuildVersion))
-                ) && 
-                (
-                    this.ExcelVersion == input.ExcelVersion ||
-                    (this.ExcelVersion != null &&
-                    this.ExcelVersion.Equals(input.ExcelVersion))
-                ) && 
-                (
-                    this.Links == input.Links ||
-                    this.Links != null &&
-                    input.Links != null &&
-                    this.Links.SequenceEqual(input.Links)
+                    this.Metadata == input.Metadata ||
+                    this.Metadata != null &&
+                    input.Metadata != null &&
+                    this.Metadata.SequenceEqual(input.Metadata)
                 );
         }
 
@@ -139,14 +118,8 @@ namespace Lusid.Sdk.Model
             unchecked // Overflow is fine, just wrap
             {
                 int hashCode = 41;
-                if (this.ApiVersion != null)
-                    hashCode = hashCode * 59 + this.ApiVersion.GetHashCode();
-                if (this.BuildVersion != null)
-                    hashCode = hashCode * 59 + this.BuildVersion.GetHashCode();
-                if (this.ExcelVersion != null)
-                    hashCode = hashCode * 59 + this.ExcelVersion.GetHashCode();
-                if (this.Links != null)
-                    hashCode = hashCode * 59 + this.Links.GetHashCode();
+                if (this.Metadata != null)
+                    hashCode = hashCode * 59 + this.Metadata.GetHashCode();
                 return hashCode;
             }
         }
