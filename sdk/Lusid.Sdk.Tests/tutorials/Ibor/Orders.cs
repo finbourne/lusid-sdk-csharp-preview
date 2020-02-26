@@ -62,10 +62,7 @@ namespace Lusid.Sdk.Tests.Tutorials.Ibor
                             new PerpetualProperty($"Order/{testScope}/PortfolioManager", new PropertyValue("F Bar")),
                             new PerpetualProperty($"Order/{testScope}/Account", new PropertyValue("J Wilson")),
                             new PerpetualProperty($"Order/{testScope}/Strategy", new PropertyValue("RiskArb")),
-                        },
-                        // [EXPERIMENTAL] Currently required but not used, as the internal instrument
-                        // is resolved on upsert.  To remove shortly.
-                        lusidInstrument: "CCY_ZZZ" 
+                        }
                     )
                 });
 
@@ -74,9 +71,9 @@ namespace Lusid.Sdk.Tests.Tutorials.Ibor
 
             // The return gives us a list of orders upserted, and LusidInstrument for each has been mapped to a LUID
             // using the instrument identifiers passed
-            Assert.That(upsertResult.Values.Count, Is.EqualTo(1));
-            Assert.That(upsertResult.Values.Count(rl => rl.Id.Id.Equals(orderId)), Is.EqualTo(1));
-            Assert.That(upsertResult.Values.Single(rl => rl.Id.Id.Equals(orderId)).LusidInstrument, Is.EqualTo(_instrumentIds.First()));
+            Assert.That(upsertResult.Values.Count == 1);
+            Assert.That(upsertResult.Values.All(rl => rl.Id.Code.Equals(orderId)));
+            Assert.That(upsertResult.Values.All(rl => rl.LusidInstrumentId.Equals(_instrumentIds.First())));
         }
         
         [Test]
@@ -111,10 +108,7 @@ namespace Lusid.Sdk.Tests.Tutorials.Ibor
                             new PerpetualProperty($"Order/{testScope}/PortfolioManager", new PropertyValue("F Bar")),
                             new PerpetualProperty($"Order/{testScope}/Account", new PropertyValue("J Wilson")),
                             new PerpetualProperty($"Order/{testScope}/Strategy", new PropertyValue("RiskArb")),
-                        },
-                        // [EXPERIMENTAL] Currently required but not used, as the internal instrument
-                        // is resolved on upsert.  To remove shortly.
-                        lusidInstrument: "" 
+                        }
                     )
                 });
 
@@ -123,9 +117,9 @@ namespace Lusid.Sdk.Tests.Tutorials.Ibor
 
             // The return gives us a list of orders upserted, and LusidInstrument for each has been mapped to a LUID
             // using the instrument identifiers passed
-            Assert.That(upsertResult.Values.Count, Is.EqualTo(1));
-            Assert.That(upsertResult.Values.Count(rl => rl.Id.Id.Equals(orderId)), Is.EqualTo(1));
-            Assert.That(upsertResult.Values.Single(rl => rl.Id.Id.Equals(orderId)).LusidInstrument, Is.EqualTo("LUID_ZZZZZZZZ"));
+            Assert.That(upsertResult.Values.Count == 1);
+            Assert.That(upsertResult.Values.All(rl => rl.Id.Code.Equals(orderId)));
+            Assert.That(upsertResult.Values.All(rl => rl.LusidInstrumentId.Equals("LUID_ZZZZZZZZ")));
         }
         
         [Test]
@@ -153,9 +147,6 @@ namespace Lusid.Sdk.Tests.Tutorials.Ibor
                         // [Experimental] Currently this portfolio doesn't need to exist. As the domain model evolves
                         // this reference might disappear, or might become a strict reference to an existing portfolio
                         portfolio: new ResourceId(testScope, "OrdersTestPortfolio"),
-                        // [EXPERIMENTAL] Currently required but not used, as the internal instrument
-                        // is resolved on upsert.  To remove shortly.
-                        lusidInstrument: "CCY_ZZZ",
                         properties: new List<PerpetualProperty>()
                     )
                 });
@@ -164,11 +155,11 @@ namespace Lusid.Sdk.Tests.Tutorials.Ibor
 
             // The return gives us a list of orders upserted, and LusidInstrument for each has been mapped to a LUID
             // using the instrument identifiers passed
-            Assert.That(upsertResult.Values.Count, Is.EqualTo(1));
-            Assert.That(upsertResult.Values.Count(rl => rl.Id.Id.Equals(orderId)), Is.EqualTo(1));
-            Assert.That(upsertResult.Values.Single(rl => rl.Id.Id.Equals(orderId)).LusidInstrument, Is.EqualTo(_instrumentIds.First()));
-            Assert.That(upsertResult.Values.Single(rl => rl.Id.Id.Equals(orderId)).Quantity, Is.EqualTo(100));
-            Assert.That(upsertResult.Values.Single(rl => rl.Id.Id.Equals(orderId)).Properties.Count(), Is.EqualTo(0));
+            Assert.That(upsertResult.Values.Count == 1);
+            Assert.That(upsertResult.Values.All(rl => rl.Id.Code.Equals(orderId)));
+            Assert.That(upsertResult.Values.All(rl => rl.LusidInstrumentId.Equals(_instrumentIds.First())));
+            Assert.That(upsertResult.Values.All(rl => rl.Quantity == 100));
+            Assert.That(upsertResult.Values.All(rl => !rl.Properties.Any()));
             
             // We can update that Order with a new Quantity, and some extra parameters
             var updateRequest = new OrderSetRequest(
@@ -195,10 +186,7 @@ namespace Lusid.Sdk.Tests.Tutorials.Ibor
                             new PerpetualProperty($"Order/{testScope}/PortfolioManager", new PropertyValue("F Bar")),
                             new PerpetualProperty($"Order/{testScope}/Account", new PropertyValue("J Wilson")),
                             new PerpetualProperty($"Order/{testScope}/Strategy", new PropertyValue("RiskArb")),
-                        },
-                        // [EXPERIMENTAL] Currently required but not used, as the internal instrument
-                        // is resolved on upsert.  To remove shortly.
-                        lusidInstrument: "CCY_ZZZ"
+                        }
                         )
                 });
             
@@ -206,11 +194,11 @@ namespace Lusid.Sdk.Tests.Tutorials.Ibor
             
             // The return gives us a list of orders upserted, and LusidInstrument for each has been mapped to a LUID
             // using the instrument identifiers passed. We can see that the quantity has been udpated, and properties added
-            Assert.That(upsertResult.Values.Count, Is.EqualTo(1));
-            Assert.That(upsertResult.Values.Count(rl => rl.Id.Id.Equals(orderId)), Is.EqualTo(1));
-            Assert.That(upsertResult.Values.Single(rl => rl.Id.Id.Equals(orderId)).LusidInstrument, Is.EqualTo(_instrumentIds.First()));
-            Assert.That(upsertResult.Values.Single(rl => rl.Id.Id.Equals(orderId)).Quantity, Is.EqualTo(500));
-            Assert.That(upsertResult.Values.Single(rl => rl.Id.Id.Equals(orderId)).Properties.Count(), Is.EqualTo(5));
+            Assert.That(upsertResult.Values.Count == 1);
+            Assert.That(upsertResult.Values.All(rl => rl.Id.Code.Equals(orderId)));
+            Assert.That(upsertResult.Values.All(rl => rl.LusidInstrumentId.Equals(_instrumentIds.First())));
+            Assert.That(upsertResult.Values.All(rl => rl.Quantity == 500));
+            Assert.That(upsertResult.Values.All(rl => rl.Properties.Count() == 5));
         }
         
         [Test]
@@ -247,10 +235,7 @@ namespace Lusid.Sdk.Tests.Tutorials.Ibor
                             new PerpetualProperty($"Order/{testScope}/PortfolioManager", new PropertyValue("F Bar")),
                             new PerpetualProperty($"Order/{testScope}/Account", new PropertyValue("ZB123")),
                             new PerpetualProperty($"Order/{testScope}/Strategy", new PropertyValue("RiskArb")),
-                        },
-                        // [EXPERIMENTAL] Currently required but not used, as the internal instrument
-                        // is resolved on upsert.  To remove shortly.
-                        lusidInstrument: "CCY_ZZZ"
+                        }
                     ),
                     new OrderRequest(
                         code: orderId2,
@@ -273,10 +258,7 @@ namespace Lusid.Sdk.Tests.Tutorials.Ibor
                             new PerpetualProperty($"Order/{testScope}/PortfolioManager", new PropertyValue("F Bar")),
                             new PerpetualProperty($"Order/{testScope}/Account", new PropertyValue("J Wilson")),
                             new PerpetualProperty($"Order/{testScope}/Strategy", new PropertyValue("UK Growth")),
-                        },
-                        // [EXPERIMENTAL] Currently required but not used, as the internal instrument
-                        // is resolved on upsert.  To remove shortly.
-                        lusidInstrument: "CCY_ZZZ"
+                        }
                     ),
                     new OrderRequest(
                         code: orderId3,
@@ -299,10 +281,7 @@ namespace Lusid.Sdk.Tests.Tutorials.Ibor
                             new PerpetualProperty($"Order/{testScope}/PortfolioManager", new PropertyValue("F Bar")),
                             new PerpetualProperty($"Order/{testScope}/Account", new PropertyValue("J Wilson")),
                             new PerpetualProperty($"Order/{testScope}/Strategy", new PropertyValue("RiskArb")),
-                        },
-                        // [EXPERIMENTAL] Currently required but not used, as the internal instrument
-                        // is resolved on upsert.  To remove shortly.
-                        lusidInstrument: "CCY_ZZZ"
+                        }
                     )
                 });
 
@@ -311,25 +290,23 @@ namespace Lusid.Sdk.Tests.Tutorials.Ibor
 
             // The return gives us a list of orders upserted, and LusidInstrument for each has been mapped to a LUID
             // using the instrument identifiers passed
-            Assert.That(upsertResult.Values.Count(), Is.EqualTo(3));
-            Assert.That(upsertResult.Values.Single(rl => rl.Id.Id.Equals(orderId1)).LusidInstrument, Is.EqualTo(_instrumentIds.First()));
+            Assert.That(upsertResult.Values.Count == 3);
+            Assert.That(upsertResult.Values.Single(rl => rl.Id.Code.Equals(orderId1)).LusidInstrumentId, Is.EqualTo(_instrumentIds.First()));
             
             var quantityFilter = _ordersApi.ListOrders(scope: testScope, asAt: DateTimeOffset.UtcNow, filter: "Quantity gt 100");
 
-            Assert.That(quantityFilter.Values.Count(), Is.EqualTo(2));
-            Assert.That(quantityFilter.Values.Single(rl => rl.Id.Id.Equals(orderId2)).Quantity, Is.GreaterThan(100));
-            Assert.That(quantityFilter.Values.Single(rl => rl.Id.Id.Equals(orderId3)).Quantity, Is.GreaterThan(100));
-            
+            Assert.That(quantityFilter.Values.Count == 2);
+            Assert.That(quantityFilter.Values.All(rl => rl.Quantity > 100));
+
             var orderBookFilter = _ordersApi.ListOrders(scope: testScope, asAt: DateTimeOffset.UtcNow, filter: $"Properties[{testScope}/OrderBook] eq 'UK Test Orders 2'");
 
-            Assert.That(orderBookFilter.Values.Count(), Is.EqualTo(1));
-            Assert.That(orderBookFilter.Values.Single(rl => rl.Id.Id.Equals(orderId3)).Properties[$"Order/{testScope}/OrderBook"].Value.LabelValue, Is.EqualTo("UK Test Orders 2"));
+            Assert.That(orderBookFilter.Values.Count == 1);
+            Assert.That(orderBookFilter.Values.Single(rl => rl.Id.Code.Equals(orderId3)).Properties[$"Order/{testScope}/OrderBook"].Value.LabelValue, Is.EqualTo("UK Test Orders 2"));
             
-            var instrumentFilter = _ordersApi.ListOrders(scope: testScope, asAt: DateTimeOffset.UtcNow, filter: $"InstrumentUid eq '{_instrumentIds.First()}'");
+            var instrumentFilter = _ordersApi.ListOrders(scope: testScope, asAt: DateTimeOffset.UtcNow, filter: $"LusidInstrumentId eq '{_instrumentIds.First()}'");
             
-            Assert.That(instrumentFilter.Values.Count(), Is.EqualTo(2));
-            Assert.That(instrumentFilter.Values.Single(rl => rl.Id.Id.Equals(orderId2)).LusidInstrument, Is.EqualTo(_instrumentIds[0]));
-            Assert.That(instrumentFilter.Values.Single(rl => rl.Id.Id.Equals(orderId1)).LusidInstrument, Is.EqualTo(_instrumentIds[0]));
+            Assert.That(instrumentFilter.Values.Count == 2);
+            Assert.That(instrumentFilter.Values.All(rl => rl.LusidInstrumentId.Equals(_instrumentIds[0])));
 
         }
     }
