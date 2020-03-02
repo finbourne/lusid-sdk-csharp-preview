@@ -23,10 +23,10 @@ using OpenAPIDateConverter = Lusid.Sdk.Client.OpenAPIDateConverter;
 namespace Lusid.Sdk.Model
 {
     /// <summary>
-    /// Lusid-ibor internal representation of a Fx Forward instrument
+    /// A swaption, an option to enter into an interest rate swap.
     /// </summary>
     [DataContract]
-    public partial class FxForwardInstrument :  IEquatable<FxForwardInstrument>
+    public partial class Swaption :  IEquatable<Swaption>
     {
         /// <summary>
         /// Instrument type, must be property for JSON.
@@ -92,162 +92,97 @@ namespace Lusid.Sdk.Model
         [DataMember(Name="instrumentType", EmitDefaultValue=false)]
         public InstrumentTypeEnum InstrumentType { get; set; }
         /// <summary>
-        /// Initializes a new instance of the <see cref="FxForwardInstrument" /> class.
+        /// Initializes a new instance of the <see cref="Swaption" /> class.
         /// </summary>
         [JsonConstructorAttribute]
-        protected FxForwardInstrument() { }
+        protected Swaption() { }
         /// <summary>
-        /// Initializes a new instance of the <see cref="FxForwardInstrument" /> class.
+        /// Initializes a new instance of the <see cref="Swaption" /> class.
         /// </summary>
-        /// <param name="domAmount">The amount that is to be paid in the domestic currency on the maturity date. (required).</param>
-        /// <param name="fgnAmount">The amount that is to be paid in the foreign currency on the maturity date (required).</param>
-        /// <param name="isNdf">Is the contract an Fx-Forward of \&quot;Non-Deliverable\&quot; type, meaning a single payment in the domestic currency based on  the change in fx-rate vs  a reference rate is used..</param>
-        /// <param name="fixingDate">The fixing date. Its presence determines the NDF status of the instrument..</param>
-        /// <param name="fgnCcy">The foreign (other) currency of the instrument. In the NDF case, only payments are made in the domestic currency.  For the outright forward, currencies are exchanged. By domestic is then that of the portfolio. (required).</param>
-        /// <param name="refSpotRate">The reference Fx Spot rate for currency pair Foreign-Domestic that was seen on the trade start date (time)..</param>
-        /// <param name="startDate">The start date of the instrument. This is normally synonymous with the trade-date. (required).</param>
-        /// <param name="maturityDate">The final maturity date of the instrument. This means the last date on which the instruments makes a payment of any amount.  For the avoidance of doubt, that is not necessarily prior to its last sensitivity date for the purposes of risk; e.g. instruments such as  Constant Maturity Swaps (CMS) often have sensitivities to rates beyond their last payment date (required).</param>
-        /// <param name="domCcy">The domestic currency of the instrument. (required).</param>
+        /// <param name="startDate">startDate (required).</param>
+        /// <param name="isPayerNotReceiver">True if on exercise the holder of the option enters the swap paying fixed, false if floating. (required).</param>
+        /// <param name="isDeliveryNotCash">True of the option is settled in cash false if by delivery of the swap. (required).</param>
+        /// <param name="swap">swap (required).</param>
         /// <param name="instrumentType">Instrument type, must be property for JSON. (required).</param>
-        public FxForwardInstrument(decimal? domAmount = default(decimal?), decimal? fgnAmount = default(decimal?), bool? isNdf = default(bool?), DateTimeOffset? fixingDate = default(DateTimeOffset?), string fgnCcy = default(string), decimal? refSpotRate = default(decimal?), DateTimeOffset? startDate = default(DateTimeOffset?), DateTimeOffset? maturityDate = default(DateTimeOffset?), string domCcy = default(string), InstrumentTypeEnum instrumentType = default(InstrumentTypeEnum))
+        public Swaption(DateTimeOffset? startDate = default(DateTimeOffset?), bool? isPayerNotReceiver = default(bool?), bool? isDeliveryNotCash = default(bool?), LusidInstrument swap = default(LusidInstrument), InstrumentTypeEnum instrumentType = default(InstrumentTypeEnum))
         {
-            // to ensure "domAmount" is required (not null)
-            if (domAmount == null)
-            {
-                throw new InvalidDataException("domAmount is a required property for FxForwardInstrument and cannot be null");
-            }
-            else
-            {
-                this.DomAmount = domAmount;
-            }
-            
-            // to ensure "fgnAmount" is required (not null)
-            if (fgnAmount == null)
-            {
-                throw new InvalidDataException("fgnAmount is a required property for FxForwardInstrument and cannot be null");
-            }
-            else
-            {
-                this.FgnAmount = fgnAmount;
-            }
-            
-            // to ensure "fgnCcy" is required (not null)
-            if (fgnCcy == null)
-            {
-                throw new InvalidDataException("fgnCcy is a required property for FxForwardInstrument and cannot be null");
-            }
-            else
-            {
-                this.FgnCcy = fgnCcy;
-            }
-            
             // to ensure "startDate" is required (not null)
             if (startDate == null)
             {
-                throw new InvalidDataException("startDate is a required property for FxForwardInstrument and cannot be null");
+                throw new InvalidDataException("startDate is a required property for Swaption and cannot be null");
             }
             else
             {
                 this.StartDate = startDate;
             }
             
-            // to ensure "maturityDate" is required (not null)
-            if (maturityDate == null)
+            // to ensure "isPayerNotReceiver" is required (not null)
+            if (isPayerNotReceiver == null)
             {
-                throw new InvalidDataException("maturityDate is a required property for FxForwardInstrument and cannot be null");
+                throw new InvalidDataException("isPayerNotReceiver is a required property for Swaption and cannot be null");
             }
             else
             {
-                this.MaturityDate = maturityDate;
+                this.IsPayerNotReceiver = isPayerNotReceiver;
             }
             
-            // to ensure "domCcy" is required (not null)
-            if (domCcy == null)
+            // to ensure "isDeliveryNotCash" is required (not null)
+            if (isDeliveryNotCash == null)
             {
-                throw new InvalidDataException("domCcy is a required property for FxForwardInstrument and cannot be null");
+                throw new InvalidDataException("isDeliveryNotCash is a required property for Swaption and cannot be null");
             }
             else
             {
-                this.DomCcy = domCcy;
+                this.IsDeliveryNotCash = isDeliveryNotCash;
+            }
+            
+            // to ensure "swap" is required (not null)
+            if (swap == null)
+            {
+                throw new InvalidDataException("swap is a required property for Swaption and cannot be null");
+            }
+            else
+            {
+                this.Swap = swap;
             }
             
             // to ensure "instrumentType" is required (not null)
             if (instrumentType == null)
             {
-                throw new InvalidDataException("instrumentType is a required property for FxForwardInstrument and cannot be null");
+                throw new InvalidDataException("instrumentType is a required property for Swaption and cannot be null");
             }
             else
             {
                 this.InstrumentType = instrumentType;
             }
             
-            this.IsNdf = isNdf;
-            this.FixingDate = fixingDate;
-            this.RefSpotRate = refSpotRate;
         }
         
         /// <summary>
-        /// The amount that is to be paid in the domestic currency on the maturity date.
+        /// Gets or Sets StartDate
         /// </summary>
-        /// <value>The amount that is to be paid in the domestic currency on the maturity date.</value>
-        [DataMember(Name="domAmount", EmitDefaultValue=false)]
-        public decimal? DomAmount { get; set; }
-
-        /// <summary>
-        /// The amount that is to be paid in the foreign currency on the maturity date
-        /// </summary>
-        /// <value>The amount that is to be paid in the foreign currency on the maturity date</value>
-        [DataMember(Name="fgnAmount", EmitDefaultValue=false)]
-        public decimal? FgnAmount { get; set; }
-
-        /// <summary>
-        /// Is the contract an Fx-Forward of \&quot;Non-Deliverable\&quot; type, meaning a single payment in the domestic currency based on  the change in fx-rate vs  a reference rate is used.
-        /// </summary>
-        /// <value>Is the contract an Fx-Forward of \&quot;Non-Deliverable\&quot; type, meaning a single payment in the domestic currency based on  the change in fx-rate vs  a reference rate is used.</value>
-        [DataMember(Name="isNdf", EmitDefaultValue=false)]
-        public bool? IsNdf { get; set; }
-
-        /// <summary>
-        /// The fixing date. Its presence determines the NDF status of the instrument.
-        /// </summary>
-        /// <value>The fixing date. Its presence determines the NDF status of the instrument.</value>
-        [DataMember(Name="fixingDate", EmitDefaultValue=false)]
-        public DateTimeOffset? FixingDate { get; set; }
-
-        /// <summary>
-        /// The foreign (other) currency of the instrument. In the NDF case, only payments are made in the domestic currency.  For the outright forward, currencies are exchanged. By domestic is then that of the portfolio.
-        /// </summary>
-        /// <value>The foreign (other) currency of the instrument. In the NDF case, only payments are made in the domestic currency.  For the outright forward, currencies are exchanged. By domestic is then that of the portfolio.</value>
-        [DataMember(Name="fgnCcy", EmitDefaultValue=false)]
-        public string FgnCcy { get; set; }
-
-        /// <summary>
-        /// The reference Fx Spot rate for currency pair Foreign-Domestic that was seen on the trade start date (time).
-        /// </summary>
-        /// <value>The reference Fx Spot rate for currency pair Foreign-Domestic that was seen on the trade start date (time).</value>
-        [DataMember(Name="refSpotRate", EmitDefaultValue=false)]
-        public decimal? RefSpotRate { get; set; }
-
-        /// <summary>
-        /// The start date of the instrument. This is normally synonymous with the trade-date.
-        /// </summary>
-        /// <value>The start date of the instrument. This is normally synonymous with the trade-date.</value>
         [DataMember(Name="startDate", EmitDefaultValue=false)]
         public DateTimeOffset? StartDate { get; set; }
 
         /// <summary>
-        /// The final maturity date of the instrument. This means the last date on which the instruments makes a payment of any amount.  For the avoidance of doubt, that is not necessarily prior to its last sensitivity date for the purposes of risk; e.g. instruments such as  Constant Maturity Swaps (CMS) often have sensitivities to rates beyond their last payment date
+        /// True if on exercise the holder of the option enters the swap paying fixed, false if floating.
         /// </summary>
-        /// <value>The final maturity date of the instrument. This means the last date on which the instruments makes a payment of any amount.  For the avoidance of doubt, that is not necessarily prior to its last sensitivity date for the purposes of risk; e.g. instruments such as  Constant Maturity Swaps (CMS) often have sensitivities to rates beyond their last payment date</value>
-        [DataMember(Name="maturityDate", EmitDefaultValue=false)]
-        public DateTimeOffset? MaturityDate { get; set; }
+        /// <value>True if on exercise the holder of the option enters the swap paying fixed, false if floating.</value>
+        [DataMember(Name="isPayerNotReceiver", EmitDefaultValue=false)]
+        public bool? IsPayerNotReceiver { get; set; }
 
         /// <summary>
-        /// The domestic currency of the instrument.
+        /// True of the option is settled in cash false if by delivery of the swap.
         /// </summary>
-        /// <value>The domestic currency of the instrument.</value>
-        [DataMember(Name="domCcy", EmitDefaultValue=false)]
-        public string DomCcy { get; set; }
+        /// <value>True of the option is settled in cash false if by delivery of the swap.</value>
+        [DataMember(Name="isDeliveryNotCash", EmitDefaultValue=false)]
+        public bool? IsDeliveryNotCash { get; set; }
+
+        /// <summary>
+        /// Gets or Sets Swap
+        /// </summary>
+        [DataMember(Name="swap", EmitDefaultValue=false)]
+        public LusidInstrument Swap { get; set; }
 
 
         /// <summary>
@@ -257,16 +192,11 @@ namespace Lusid.Sdk.Model
         public override string ToString()
         {
             var sb = new StringBuilder();
-            sb.Append("class FxForwardInstrument {\n");
-            sb.Append("  DomAmount: ").Append(DomAmount).Append("\n");
-            sb.Append("  FgnAmount: ").Append(FgnAmount).Append("\n");
-            sb.Append("  IsNdf: ").Append(IsNdf).Append("\n");
-            sb.Append("  FixingDate: ").Append(FixingDate).Append("\n");
-            sb.Append("  FgnCcy: ").Append(FgnCcy).Append("\n");
-            sb.Append("  RefSpotRate: ").Append(RefSpotRate).Append("\n");
+            sb.Append("class Swaption {\n");
             sb.Append("  StartDate: ").Append(StartDate).Append("\n");
-            sb.Append("  MaturityDate: ").Append(MaturityDate).Append("\n");
-            sb.Append("  DomCcy: ").Append(DomCcy).Append("\n");
+            sb.Append("  IsPayerNotReceiver: ").Append(IsPayerNotReceiver).Append("\n");
+            sb.Append("  IsDeliveryNotCash: ").Append(IsDeliveryNotCash).Append("\n");
+            sb.Append("  Swap: ").Append(Swap).Append("\n");
             sb.Append("  InstrumentType: ").Append(InstrumentType).Append("\n");
             sb.Append("}\n");
             return sb.ToString();
@@ -288,64 +218,39 @@ namespace Lusid.Sdk.Model
         /// <returns>Boolean</returns>
         public override bool Equals(object input)
         {
-            return this.Equals(input as FxForwardInstrument);
+            return this.Equals(input as Swaption);
         }
 
         /// <summary>
-        /// Returns true if FxForwardInstrument instances are equal
+        /// Returns true if Swaption instances are equal
         /// </summary>
-        /// <param name="input">Instance of FxForwardInstrument to be compared</param>
+        /// <param name="input">Instance of Swaption to be compared</param>
         /// <returns>Boolean</returns>
-        public bool Equals(FxForwardInstrument input)
+        public bool Equals(Swaption input)
         {
             if (input == null)
                 return false;
 
             return 
                 (
-                    this.DomAmount == input.DomAmount ||
-                    (this.DomAmount != null &&
-                    this.DomAmount.Equals(input.DomAmount))
-                ) && 
-                (
-                    this.FgnAmount == input.FgnAmount ||
-                    (this.FgnAmount != null &&
-                    this.FgnAmount.Equals(input.FgnAmount))
-                ) && 
-                (
-                    this.IsNdf == input.IsNdf ||
-                    (this.IsNdf != null &&
-                    this.IsNdf.Equals(input.IsNdf))
-                ) && 
-                (
-                    this.FixingDate == input.FixingDate ||
-                    (this.FixingDate != null &&
-                    this.FixingDate.Equals(input.FixingDate))
-                ) && 
-                (
-                    this.FgnCcy == input.FgnCcy ||
-                    (this.FgnCcy != null &&
-                    this.FgnCcy.Equals(input.FgnCcy))
-                ) && 
-                (
-                    this.RefSpotRate == input.RefSpotRate ||
-                    (this.RefSpotRate != null &&
-                    this.RefSpotRate.Equals(input.RefSpotRate))
-                ) && 
-                (
                     this.StartDate == input.StartDate ||
                     (this.StartDate != null &&
                     this.StartDate.Equals(input.StartDate))
                 ) && 
                 (
-                    this.MaturityDate == input.MaturityDate ||
-                    (this.MaturityDate != null &&
-                    this.MaturityDate.Equals(input.MaturityDate))
+                    this.IsPayerNotReceiver == input.IsPayerNotReceiver ||
+                    (this.IsPayerNotReceiver != null &&
+                    this.IsPayerNotReceiver.Equals(input.IsPayerNotReceiver))
                 ) && 
                 (
-                    this.DomCcy == input.DomCcy ||
-                    (this.DomCcy != null &&
-                    this.DomCcy.Equals(input.DomCcy))
+                    this.IsDeliveryNotCash == input.IsDeliveryNotCash ||
+                    (this.IsDeliveryNotCash != null &&
+                    this.IsDeliveryNotCash.Equals(input.IsDeliveryNotCash))
+                ) && 
+                (
+                    this.Swap == input.Swap ||
+                    (this.Swap != null &&
+                    this.Swap.Equals(input.Swap))
                 ) && 
                 (
                     this.InstrumentType == input.InstrumentType ||
@@ -363,24 +268,14 @@ namespace Lusid.Sdk.Model
             unchecked // Overflow is fine, just wrap
             {
                 int hashCode = 41;
-                if (this.DomAmount != null)
-                    hashCode = hashCode * 59 + this.DomAmount.GetHashCode();
-                if (this.FgnAmount != null)
-                    hashCode = hashCode * 59 + this.FgnAmount.GetHashCode();
-                if (this.IsNdf != null)
-                    hashCode = hashCode * 59 + this.IsNdf.GetHashCode();
-                if (this.FixingDate != null)
-                    hashCode = hashCode * 59 + this.FixingDate.GetHashCode();
-                if (this.FgnCcy != null)
-                    hashCode = hashCode * 59 + this.FgnCcy.GetHashCode();
-                if (this.RefSpotRate != null)
-                    hashCode = hashCode * 59 + this.RefSpotRate.GetHashCode();
                 if (this.StartDate != null)
                     hashCode = hashCode * 59 + this.StartDate.GetHashCode();
-                if (this.MaturityDate != null)
-                    hashCode = hashCode * 59 + this.MaturityDate.GetHashCode();
-                if (this.DomCcy != null)
-                    hashCode = hashCode * 59 + this.DomCcy.GetHashCode();
+                if (this.IsPayerNotReceiver != null)
+                    hashCode = hashCode * 59 + this.IsPayerNotReceiver.GetHashCode();
+                if (this.IsDeliveryNotCash != null)
+                    hashCode = hashCode * 59 + this.IsDeliveryNotCash.GetHashCode();
+                if (this.Swap != null)
+                    hashCode = hashCode * 59 + this.Swap.GetHashCode();
                 if (this.InstrumentType != null)
                     hashCode = hashCode * 59 + this.InstrumentType.GetHashCode();
                 return hashCode;
