@@ -49,8 +49,8 @@ namespace Lusid.Sdk.Tests.Utilities
 
         public TransactionRequest BuildTransactionRequest(
             string instrumentId,
-            decimal? units, 
-            decimal? price,
+            decimal units, 
+            decimal price,
             string currency,
             DateTimeOffset tradeDate, 
             string transactionType)
@@ -71,7 +71,7 @@ namespace Lusid.Sdk.Tests.Utilities
         }
 
         public TransactionRequest BuildCashFundsInTransactionRequest(
-            decimal? units,
+            decimal units,
             string currency,
             DateTimeOffset tradeDate)
         {
