@@ -11,6 +11,7 @@ Name | Type | Description | Notes
 **Data** | [**AggregationResponseNodeOfDictionaryOfStringToObject**](AggregationResponseNodeOfDictionaryOfStringToObject.md) |  | [optional] 
 **AggregationCurrency** | **string** |  | [optional] 
 **DataSchema** | [**ResultDataSchema**](ResultDataSchema.md) |  | [optional] 
+**AggregationFailures** | [**List&lt;AggregationMeasureFailureDetail&gt;**](AggregationMeasureFailureDetail.md) |  | [optional] 
 **Links** | [**List&lt;Link&gt;**](Link.md) |  | [optional] 
 
 [[Back to Model list]](../README.md#documentation-for-models)

@@ -23,51 +23,57 @@ using OpenAPIDateConverter = Lusid.Sdk.Client.OpenAPIDateConverter;
 namespace Lusid.Sdk.Model
 {
     /// <summary>
-    /// PortfolioGroupProperties
+    /// AggregationMeasureFailureDetail
     /// </summary>
     [DataContract]
-    public partial class PortfolioGroupProperties :  IEquatable<PortfolioGroupProperties>
+    public partial class AggregationMeasureFailureDetail :  IEquatable<AggregationMeasureFailureDetail>
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="PortfolioGroupProperties" /> class.
+        /// Initializes a new instance of the <see cref="AggregationMeasureFailureDetail" /> class.
         /// </summary>
-        /// <param name="href">The specifc Uniform Resource Identifier (URI) for this resource at the requested effective and asAt datetime..</param>
-        /// <param name="properties">The portfolio group properties. These will be from the &#39;PortfolioGroup&#39; domain..</param>
-        /// <param name="version">version.</param>
-        /// <param name="links">links.</param>
-        public PortfolioGroupProperties(string href = default(string), Dictionary<string, Property> properties = default(Dictionary<string, Property>), Version version = default(Version), List<Link> links = default(List<Link>))
+        /// <param name="id">id.</param>
+        /// <param name="effectiveAt">effectiveAt.</param>
+        /// <param name="measure">measure.</param>
+        /// <param name="reason">reason.</param>
+        /// <param name="detail">detail.</param>
+        public AggregationMeasureFailureDetail(string id = default(string), DateTimeOffset? effectiveAt = default(DateTimeOffset?), string measure = default(string), string reason = default(string), string detail = default(string))
         {
-            this.Href = href;
-            this.Properties = properties;
-            this.Version = version;
-            this.Links = links;
+            this.Id = id;
+            this.EffectiveAt = effectiveAt;
+            this.Measure = measure;
+            this.Reason = reason;
+            this.Detail = detail;
         }
         
         /// <summary>
-        /// The specifc Uniform Resource Identifier (URI) for this resource at the requested effective and asAt datetime.
+        /// Gets or Sets Id
         /// </summary>
-        /// <value>The specifc Uniform Resource Identifier (URI) for this resource at the requested effective and asAt datetime.</value>
-        [DataMember(Name="href", EmitDefaultValue=false)]
-        public string Href { get; set; }
+        [DataMember(Name="id", EmitDefaultValue=false)]
+        public string Id { get; set; }
 
         /// <summary>
-        /// The portfolio group properties. These will be from the &#39;PortfolioGroup&#39; domain.
+        /// Gets or Sets EffectiveAt
         /// </summary>
-        /// <value>The portfolio group properties. These will be from the &#39;PortfolioGroup&#39; domain.</value>
-        [DataMember(Name="properties", EmitDefaultValue=false)]
-        public Dictionary<string, Property> Properties { get; set; }
+        [DataMember(Name="effectiveAt", EmitDefaultValue=false)]
+        public DateTimeOffset? EffectiveAt { get; set; }
 
         /// <summary>
-        /// Gets or Sets Version
+        /// Gets or Sets Measure
         /// </summary>
-        [DataMember(Name="version", EmitDefaultValue=false)]
-        public Version Version { get; set; }
+        [DataMember(Name="measure", EmitDefaultValue=false)]
+        public string Measure { get; set; }
 
         /// <summary>
-        /// Gets or Sets Links
+        /// Gets or Sets Reason
         /// </summary>
-        [DataMember(Name="links", EmitDefaultValue=false)]
-        public List<Link> Links { get; set; }
+        [DataMember(Name="reason", EmitDefaultValue=false)]
+        public string Reason { get; set; }
+
+        /// <summary>
+        /// Gets or Sets Detail
+        /// </summary>
+        [DataMember(Name="detail", EmitDefaultValue=false)]
+        public string Detail { get; set; }
 
         /// <summary>
         /// Returns the string presentation of the object
@@ -76,11 +82,12 @@ namespace Lusid.Sdk.Model
         public override string ToString()
         {
             var sb = new StringBuilder();
-            sb.Append("class PortfolioGroupProperties {\n");
-            sb.Append("  Href: ").Append(Href).Append("\n");
-            sb.Append("  Properties: ").Append(Properties).Append("\n");
-            sb.Append("  Version: ").Append(Version).Append("\n");
-            sb.Append("  Links: ").Append(Links).Append("\n");
+            sb.Append("class AggregationMeasureFailureDetail {\n");
+            sb.Append("  Id: ").Append(Id).Append("\n");
+            sb.Append("  EffectiveAt: ").Append(EffectiveAt).Append("\n");
+            sb.Append("  Measure: ").Append(Measure).Append("\n");
+            sb.Append("  Reason: ").Append(Reason).Append("\n");
+            sb.Append("  Detail: ").Append(Detail).Append("\n");
             sb.Append("}\n");
             return sb.ToString();
         }
@@ -101,41 +108,44 @@ namespace Lusid.Sdk.Model
         /// <returns>Boolean</returns>
         public override bool Equals(object input)
         {
-            return this.Equals(input as PortfolioGroupProperties);
+            return this.Equals(input as AggregationMeasureFailureDetail);
         }
 
         /// <summary>
-        /// Returns true if PortfolioGroupProperties instances are equal
+        /// Returns true if AggregationMeasureFailureDetail instances are equal
         /// </summary>
-        /// <param name="input">Instance of PortfolioGroupProperties to be compared</param>
+        /// <param name="input">Instance of AggregationMeasureFailureDetail to be compared</param>
         /// <returns>Boolean</returns>
-        public bool Equals(PortfolioGroupProperties input)
+        public bool Equals(AggregationMeasureFailureDetail input)
         {
             if (input == null)
                 return false;
 
             return 
                 (
-                    this.Href == input.Href ||
-                    (this.Href != null &&
-                    this.Href.Equals(input.Href))
+                    this.Id == input.Id ||
+                    (this.Id != null &&
+                    this.Id.Equals(input.Id))
                 ) && 
                 (
-                    this.Properties == input.Properties ||
-                    this.Properties != null &&
-                    input.Properties != null &&
-                    this.Properties.SequenceEqual(input.Properties)
+                    this.EffectiveAt == input.EffectiveAt ||
+                    (this.EffectiveAt != null &&
+                    this.EffectiveAt.Equals(input.EffectiveAt))
                 ) && 
                 (
-                    this.Version == input.Version ||
-                    (this.Version != null &&
-                    this.Version.Equals(input.Version))
+                    this.Measure == input.Measure ||
+                    (this.Measure != null &&
+                    this.Measure.Equals(input.Measure))
                 ) && 
                 (
-                    this.Links == input.Links ||
-                    this.Links != null &&
-                    input.Links != null &&
-                    this.Links.SequenceEqual(input.Links)
+                    this.Reason == input.Reason ||
+                    (this.Reason != null &&
+                    this.Reason.Equals(input.Reason))
+                ) && 
+                (
+                    this.Detail == input.Detail ||
+                    (this.Detail != null &&
+                    this.Detail.Equals(input.Detail))
                 );
         }
 
@@ -148,14 +158,16 @@ namespace Lusid.Sdk.Model
             unchecked // Overflow is fine, just wrap
             {
                 int hashCode = 41;
-                if (this.Href != null)
-                    hashCode = hashCode * 59 + this.Href.GetHashCode();
-                if (this.Properties != null)
-                    hashCode = hashCode * 59 + this.Properties.GetHashCode();
-                if (this.Version != null)
-                    hashCode = hashCode * 59 + this.Version.GetHashCode();
-                if (this.Links != null)
-                    hashCode = hashCode * 59 + this.Links.GetHashCode();
+                if (this.Id != null)
+                    hashCode = hashCode * 59 + this.Id.GetHashCode();
+                if (this.EffectiveAt != null)
+                    hashCode = hashCode * 59 + this.EffectiveAt.GetHashCode();
+                if (this.Measure != null)
+                    hashCode = hashCode * 59 + this.Measure.GetHashCode();
+                if (this.Reason != null)
+                    hashCode = hashCode * 59 + this.Reason.GetHashCode();
+                if (this.Detail != null)
+                    hashCode = hashCode * 59 + this.Detail.GetHashCode();
                 return hashCode;
             }
         }
