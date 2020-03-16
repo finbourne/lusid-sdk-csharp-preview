@@ -1,5 +1,6 @@
 ﻿using System;
 
+// ReSharper disable once CheckNamespace
 namespace Lusid.Sdk.Client
 {
     // DEV-7152: Bug in .NET Core 2.2 means any un-disposed HttpClients will leak sockets
