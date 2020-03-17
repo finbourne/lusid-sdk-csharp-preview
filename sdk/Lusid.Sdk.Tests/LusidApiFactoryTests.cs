@@ -204,7 +204,7 @@ namespace Lusid.Sdk.Tests
             Task.WaitAll(tasks.ToArray());
         }
 
-        [Test, Explicit("Only an issue on .NET Core 2.2 on Linux OS")]
+        [Test, Explicit("Only an issue on .NET Core 2.2 on Linux / MacOS")]
         public void LinuxSocketLeakTest() // See DEV-7152
         {
             ApiConfiguration config = ApiConfigurationBuilder.Build("secrets.json");
@@ -219,6 +219,16 @@ namespace Lusid.Sdk.Tests
                 api = BuildApi();
                 PortfolioGroup result = api.GetPortfolioGroup("sdktest", "TestGroup");
                 Assert.That(result, Is.Not.Null);
+
+                // Option 1: force dispose of ApiClient
+                //api.Configuration.ApiClient.Dispose();
+
+                // Option 2: force all finalizers to run
+                if (i % 100 == 0)
+                {
+                    GC.Collect();
+                    GC.WaitForPendingFinalizers();
+                }
             }
 
             /*** Local Functions ***/
