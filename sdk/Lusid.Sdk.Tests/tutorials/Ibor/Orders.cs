@@ -62,7 +62,9 @@ namespace Lusid.Sdk.Tests.Tutorials.Ibor
                             { $"Order/{testScope}/PortfolioManager", new PerpetualProperty($"Order/{testScope}/PortfolioManager", new PropertyValue("F Bar")) },
                             { $"Order/{testScope}/Account", new PerpetualProperty($"Order/{testScope}/Account", new PropertyValue("J Wilson")) },
                             { $"Order/{testScope}/Strategy", new PerpetualProperty($"Order/{testScope}/Strategy", new PropertyValue("RiskArb")) },
-                        }
+                        },
+                        side: "Buy",
+                        orderBook: new ResourceId(testScope, "OrdersTestBook")
                     )
                 });
 
@@ -108,7 +110,9 @@ namespace Lusid.Sdk.Tests.Tutorials.Ibor
                             { $"Order/{testScope}/PortfolioManager", new PerpetualProperty($"Order/{testScope}/PortfolioManager", new PropertyValue("F Bar")) },
                             { $"Order/{testScope}/Account", new PerpetualProperty($"Order/{testScope}/Account", new PropertyValue("J Wilson")) },
                             { $"Order/{testScope}/Strategy", new PerpetualProperty($"Order/{testScope}/Strategy", new PropertyValue("RiskArb")) },
-                        }
+                        },
+                        side: "Buy",
+                        orderBook: new ResourceId(testScope, "OrdersTestBook")
                     )
                 });
 
@@ -147,7 +151,9 @@ namespace Lusid.Sdk.Tests.Tutorials.Ibor
                         // [Experimental] Currently this portfolio doesn't need to exist. As the domain model evolves
                         // this reference might disappear, or might become a strict reference to an existing portfolio
                         portfolio: new ResourceId(testScope, "OrdersTestPortfolio"),
-                        properties: new Dictionary<string, PerpetualProperty>()
+                        properties: new Dictionary<string, PerpetualProperty>(),
+                        side: "Buy",
+                        orderBook: new ResourceId(testScope, "OrdersTestBook")
                     )
                 });
 
@@ -186,7 +192,9 @@ namespace Lusid.Sdk.Tests.Tutorials.Ibor
                             { $"Order/{testScope}/PortfolioManager", new PerpetualProperty($"Order/{testScope}/PortfolioManager", new PropertyValue("F Bar")) },
                             { $"Order/{testScope}/Account", new PerpetualProperty($"Order/{testScope}/Account", new PropertyValue("J Wilson")) },
                             { $"Order/{testScope}/Strategy", new PerpetualProperty($"Order/{testScope}/Strategy", new PropertyValue("RiskArb")) },
-                        }
+                        },
+                        side: "Buy",
+                        orderBook: new ResourceId(testScope, "OrdersTestBook")
                         )
                 });
             
@@ -231,11 +239,13 @@ namespace Lusid.Sdk.Tests.Tutorials.Ibor
                         properties: new Dictionary<string, PerpetualProperty>
                         {
                             { $"Order/{testScope}/TIF", new PerpetualProperty($"Order/{testScope}/TIF", new PropertyValue("GTC")) },
-                            { $"Order/{testScope}/OrderBook", new PerpetualProperty($"Order/{testScope}/OrderBook", new PropertyValue("UK Test Orders")) },
+                            { $"Order/{testScope}/OrderBook", new PerpetualProperty($"Order/{testScope}/OrderGroup", new PropertyValue("UK Test Orders")) },
                             { $"Order/{testScope}/PortfolioManager", new PerpetualProperty($"Order/{testScope}/PortfolioManager", new PropertyValue("F Bar")) },
                             { $"Order/{testScope}/Account", new PerpetualProperty($"Order/{testScope}/Account", new PropertyValue("ZB123")) },
                             { $"Order/{testScope}/Strategy", new PerpetualProperty($"Order/{testScope}/Strategy", new PropertyValue("RiskArb")) },
-                        }
+                        },
+                        side: "Buy",
+                        orderBook: new ResourceId(testScope, "OrdersTestBook")
                     ),
                     new OrderRequest(
                         code: orderId2,
@@ -254,11 +264,13 @@ namespace Lusid.Sdk.Tests.Tutorials.Ibor
                         properties: new Dictionary<string, PerpetualProperty>
                         {
                             { $"Order/{testScope}/TIF", new PerpetualProperty($"Order/{testScope}/TIF", new PropertyValue("GTC")) },
-                            { $"Order/{testScope}/OrderBook", new PerpetualProperty($"Order/{testScope}/OrderBook", new PropertyValue("UK Test Orders")) },
+                            { $"Order/{testScope}/OrderBook", new PerpetualProperty($"Order/{testScope}/OrderGroup", new PropertyValue("UK Test Orders")) },
                             { $"Order/{testScope}/PortfolioManager", new PerpetualProperty($"Order/{testScope}/PortfolioManager", new PropertyValue("F Bar")) },
                             { $"Order/{testScope}/Account", new PerpetualProperty($"Order/{testScope}/Account", new PropertyValue("J Wilson")) },
                             { $"Order/{testScope}/Strategy", new PerpetualProperty($"Order/{testScope}/Strategy", new PropertyValue("UK Growth")) },
-                        }
+                        },
+                        side: "Sell",
+                        orderBook: new ResourceId(testScope, "AnotherOrdersTestBook")
                     ),
                     new OrderRequest(
                         code: orderId3,
@@ -277,11 +289,13 @@ namespace Lusid.Sdk.Tests.Tutorials.Ibor
                         properties: new Dictionary<string, PerpetualProperty>
                         {
                             { $"Order/{testScope}/TIF", new PerpetualProperty($"Order/{testScope}/TIF", new PropertyValue("GTC")) },
-                            { $"Order/{testScope}/OrderBook", new PerpetualProperty($"Order/{testScope}/OrderBook", new PropertyValue("UK Test Orders 2")) },
+                            { $"Order/{testScope}/OrderBook", new PerpetualProperty($"Order/{testScope}/OrderGroup", new PropertyValue("UK Test Orders 2")) },
                             { $"Order/{testScope}/PortfolioManager", new PerpetualProperty($"Order/{testScope}/PortfolioManager", new PropertyValue("F Bar")) },
                             { $"Order/{testScope}/Account", new PerpetualProperty($"Order/{testScope}/Account", new PropertyValue("J Wilson")) },
                             { $"Order/{testScope}/Strategy", new PerpetualProperty($"Order/{testScope}/Strategy", new PropertyValue("RiskArb")) },
-                        }
+                        },
+                        side: "Buy",
+                        orderBook: new ResourceId(testScope, "OrdersTestBook")
                     )
                 });
 
@@ -290,24 +304,35 @@ namespace Lusid.Sdk.Tests.Tutorials.Ibor
 
             // The return gives us a list of orders upserted, and LusidInstrument for each has been mapped to a LUID
             // using the instrument identifiers passed
-            Assert.That(upsertResult.Values.Count == 3);
+            Assert.That(upsertResult.Values.Count, Is.EqualTo(3));
             Assert.That(upsertResult.Values.Single(rl => rl.Id.Code.Equals(orderId1)).LusidInstrumentId, Is.EqualTo(_instrumentIds.First()));
-            
-            var quantityFilter = _ordersApi.ListOrders(scope: testScope, asAt: DateTimeOffset.UtcNow, filter: "Quantity gt 100");
 
-            Assert.That(quantityFilter.Values.Count == 2);
+            var t = upsertResult.Values.First().Version.AsAtDate;
+
+            var quantityFilter = _ordersApi.ListOrders(scope: testScope, asAt: t, filter: "Quantity gt 100");
+
+            Assert.That(quantityFilter.Values.Count, Is.EqualTo(2));
             Assert.That(quantityFilter.Values.All(rl => rl.Quantity > 100));
 
-            var orderBookFilter = _ordersApi.ListOrders(scope: testScope, asAt: DateTimeOffset.UtcNow, filter: $"Properties[{testScope}/OrderBook] eq 'UK Test Orders 2'");
+            var propertyFilter = _ordersApi.ListOrders(scope: testScope, asAt: t, filter: $"Properties[{testScope}/OrderGroup] eq 'UK Test Orders 2'");
 
-            Assert.That(orderBookFilter.Values.Count == 1);
-            Assert.That(orderBookFilter.Values.Single(rl => rl.Id.Code.Equals(orderId3)).Properties[$"Order/{testScope}/OrderBook"].Value.LabelValue, Is.EqualTo("UK Test Orders 2"));
+            Assert.That(propertyFilter.Values.Count, Is.EqualTo(1));
+            Assert.That(propertyFilter.Values.Single(rl => rl.Id.Code.Equals(orderId3)).Properties[$"Order/{testScope}/OrderGroup"].Value.LabelValue, Is.EqualTo("UK Test Orders 2"));
             
-            var instrumentFilter = _ordersApi.ListOrders(scope: testScope, asAt: DateTimeOffset.UtcNow, filter: $"LusidInstrumentId eq '{_instrumentIds.First()}'");
+            var instrumentFilter = _ordersApi.ListOrders(scope: testScope, asAt: t, filter: $"LusidInstrumentId eq '{_instrumentIds.First()}'");
             
-            Assert.That(instrumentFilter.Values.Count == 2);
+            Assert.That(instrumentFilter.Values.Count, Is.EqualTo(2));
             Assert.That(instrumentFilter.Values.All(rl => rl.LusidInstrumentId.Equals(_instrumentIds[0])));
 
+            var sideFilter = _ordersApi.ListOrders(scope: testScope, asAt: t, filter: $"Side eq 'Sell'");
+
+            Assert.That(sideFilter.Values.Count, Is.EqualTo(1));
+            Assert.That(sideFilter.Values.All(rl => rl.Side.Equals("Sell")));
+
+            var orderBookFilter = _ordersApi.ListOrders(scope: testScope, asAt: t, filter: $"OrderBook eq '{testScope}/AnotherOrdersTestBook'");
+
+            Assert.That(orderBookFilter.Values.Count, Is.EqualTo(1));
+            Assert.That(orderBookFilter.Values.All(rl => rl.OrderBook.Code.Equals("AnotherOrdersTestBook")));
         }
     }
 }
