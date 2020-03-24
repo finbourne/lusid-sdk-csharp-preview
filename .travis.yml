@@ -1,6 +1,16 @@
-language: minimal
+dist: trusty
+sudo: required
+
+jdk:
+  - oraclejdk8
+
 services:
 - docker
+
+cache:
+  directories:
+    - '$HOME/.sonar/cache'
+
 script:
 - |
 
@@ -31,12 +41,31 @@ script:
     -e FBN_CLIENT_ID=${!fbn_clientid} \
     -e FBN_CLIENT_SECRET=${!fbn_client_secret} \
     -e FBN_LUSID_API_URL=${!fbn_lusid_api_url} \
-    -e FBN_APP_NAME=${!fbn_app_name} \
+    -e FBN_APP_NAME="${!fbn_app_name}" \
     -v $(pwd):/usr/src/ \
     finbourne/lusid-sdk-csharp-preview-test
+
+
+  # set up env vars for sonar
+  export FBN_TOKEN_URL=${!fbn_token_url}
+  export FBN_USERNAME=${!fbn_username}
+  export FBN_PASSWORD=${!fbn_password}
+  export FBN_CLIENT_ID=${!fbn_clientid}
+  export FBN_CLIENT_SECRET=${!fbn_client_secret}
+  export FBN_LUSID_API_URL=${!fbn_lusid_api_url}
+  export FBN_APP_NAME="${!fbn_app_name}"
+
+  # run sonar
+  sonar-scanner
 
 notifications:
   slack:
     rooms:
       secure: "PPPPK/r1OJc3NrV2HVbux08rG3nyD6P+FiDbeGyya7muf3ZA+U6RiGRRps0hyHJAw4YdO4/DqTF3cbmg6vSRx5YAiFadlXenhjcbn6xm64/zAGmQLCeQ/uyJm/uRPMhqELz4uKi3WhALDv/DttEaaOZznYifB7oEMOKS2O2RvDvW8XFqKltQY/lIF5DrZjgb+ijQ8/WNk7/QdzQFsRx4NU6H7kggVwuCTij1QGf+4bVCZr8cGzBpyiMKODpBvLgB2wUs7T4DjiO4gTuqb37Ip7WrTrsPkBaihAEYN0y64IMqcI1odTRh7xFcGNSJugQ/Bd85qGbJcuM0lmu1UyOx56KHF3nleh0j7iudTUoJgplCeXYej2KSqvau87bkcaR5wSA7dGZyQTyrICJDmwBWyvv3lzoQy3i1pbC5cVDcluCgNR1tF9llkL8d5KgLfYb7BACSaTcTEIPZf+xb6tOzwtM4ejCidTTT4eKm5l0VN5ZX/VsJgHGuCCPOK9Kax+e3rMfrf1iRrMjmldIzMRNQ23Cnx9JHt7Li6Zz6uwj+9QzlbKIq83Fd9LkIP2MfC1DaeHSqBpQT+nNq6IXo+QPqaqOImZ8irNq9RLqF7WbzS0cog1Le4HrQHxTVhvez6dsbZR4zEN3ViJ57cI1VgM08F8idPY1tDuBnKmlLhOK9a3w="
     on_failure: always
+
+addons:
+  sonarcloud:
+    organization: "finbourne"
+    token:
+      secure: "bO5fqxiJVDeX6GpSXi/beWzwgC7D/m/jd5p25XQhdepVut9hHzUv/Z7o0I5cy/FwVeHMyG/gTST9UTgBGNthEk5I2OcwRN3sC7TEq1RKxHoRhMqtXmHBSA5s89IMuCWezvOXQhW8sQTloQ0qCg/exowbRYzRoNkReUWCMZoI2uVcjP4bLGDkO9+XBxchKlXlpIQ50tFHz6s6ZNbqKvF9A1rjvHofu2NiTKIOhykMCUYC0T1PZmH9oIsGuzqYIBool8jzUrlt8kjbvoEls2HpkaaK0ZNzbraS2QLoNKaD3EmJ174HCWzX2bbey2NezZ+NE7Ik1jc6k4y4aI/ARumhsRCMie5OrlRX6qDrFdYEV+W+7PtOOk0ezQ388ScG4hGKB64a+01OHI0bafxM1ZfTEVHyPq9GSupOv8L5AZqpZMPQkKTxirfxBQ7Gtph7cFohRtjvOcN4ykoU3WazZ79kRsdLqe7HlbsPlKtLbOkRru7sbyWV3gobWMRmJiNjkvPx7hl8VJIIcV8g2siJwjfSBbYiL1kPnc3/JMr5L3Hs56w8VH+IoE5DRh82Fb1G2aOwQ0BBr+ezTXsECgvAUYLR9BQCBRI/2i3d8RXodz3EdkQfWaC+LyDhFCzOZMJ92tDczltLECUtIHmX0upZMxo0dQK9ykBt8wIGnqCs2wwznFg="
