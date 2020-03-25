@@ -12,6 +12,7 @@ Name | Type | Description | Notes
 **AggregationCurrency** | **string** |  | [optional] 
 **DataSchema** | [**ResultDataSchema**](ResultDataSchema.md) |  | [optional] 
 **AggregationFailures** | [**List&lt;AggregationMeasureFailureDetail&gt;**](AggregationMeasureFailureDetail.md) |  | [optional] 
+**Manifest** | [**MarketDataManifest**](MarketDataManifest.md) |  | [optional] 
 **Links** | [**List&lt;Link&gt;**](Link.md) |  | [optional] 
 
 [[Back to Model list]](../README.md#documentation-for-models)
