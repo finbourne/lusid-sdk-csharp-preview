@@ -23,315 +23,26 @@ using OpenAPIDateConverter = Lusid.Sdk.Client.OpenAPIDateConverter;
 namespace Lusid.Sdk.Model
 {
     /// <summary>
-    /// A flow convention defines the specification for generation of the date schedule for a leg or set of cashflows.  It determines the tenor of these and, how to map the unadjusted set of dates to dates which are &#39;good business  days&#39;. For example, if an unadjusted date falls on a Saturday or a bank holiday, should it be rolled forward  or backward to obtain the adjusted date.
+    /// UpsertPersonAccessMetadataRequest
     /// </summary>
     [DataContract]
-    public partial class FlowConventions :  IEquatable<FlowConventions>
+    public partial class UpsertPersonAccessMetadataRequest :  IEquatable<UpsertPersonAccessMetadataRequest>
     {
         /// <summary>
-        /// when calculating the fraction of a year between two dates, what convention is used to represent the number of days in a year  and difference between them.
+        /// Initializes a new instance of the <see cref="UpsertPersonAccessMetadataRequest" /> class.
         /// </summary>
-        /// <value>when calculating the fraction of a year between two dates, what convention is used to represent the number of days in a year  and difference between them.</value>
-        [JsonConverter(typeof(StringEnumConverter))]
-        public enum DayCountConventionEnum
+        /// <param name="metadata">The access control metadata to assign to a Person that matches the identifier.</param>
+        public UpsertPersonAccessMetadataRequest(List<AccessMetadataValue> metadata = default(List<AccessMetadataValue>))
         {
-            /// <summary>
-            /// Enum Actual360 for value: Actual360
-            /// </summary>
-            [EnumMember(Value = "Actual360")]
-            Actual360 = 1,
-
-            /// <summary>
-            /// Enum Act360 for value: Act360
-            /// </summary>
-            [EnumMember(Value = "Act360")]
-            Act360 = 2,
-
-            /// <summary>
-            /// Enum MoneyMarket for value: MoneyMarket
-            /// </summary>
-            [EnumMember(Value = "MoneyMarket")]
-            MoneyMarket = 3,
-
-            /// <summary>
-            /// Enum Actual365 for value: Actual365
-            /// </summary>
-            [EnumMember(Value = "Actual365")]
-            Actual365 = 4,
-
-            /// <summary>
-            /// Enum Act365 for value: Act365
-            /// </summary>
-            [EnumMember(Value = "Act365")]
-            Act365 = 5,
-
-            /// <summary>
-            /// Enum Thirty360 for value: Thirty360
-            /// </summary>
-            [EnumMember(Value = "Thirty360")]
-            Thirty360 = 6,
-
-            /// <summary>
-            /// Enum ThirtyU360 for value: ThirtyU360
-            /// </summary>
-            [EnumMember(Value = "ThirtyU360")]
-            ThirtyU360 = 7,
-
-            /// <summary>
-            /// Enum Bond for value: Bond
-            /// </summary>
-            [EnumMember(Value = "Bond")]
-            Bond = 8,
-
-            /// <summary>
-            /// Enum ThirtyE360 for value: ThirtyE360
-            /// </summary>
-            [EnumMember(Value = "ThirtyE360")]
-            ThirtyE360 = 9,
-
-            /// <summary>
-            /// Enum EuroBond for value: EuroBond
-            /// </summary>
-            [EnumMember(Value = "EuroBond")]
-            EuroBond = 10,
-
-            /// <summary>
-            /// Enum ActAct for value: ActAct
-            /// </summary>
-            [EnumMember(Value = "ActAct")]
-            ActAct = 11,
-
-            /// <summary>
-            /// Enum ActualActual for value: ActualActual
-            /// </summary>
-            [EnumMember(Value = "ActualActual")]
-            ActualActual = 12,
-
-            /// <summary>
-            /// Enum ActActIsda for value: ActActIsda
-            /// </summary>
-            [EnumMember(Value = "ActActIsda")]
-            ActActIsda = 13,
-
-            /// <summary>
-            /// Enum Invalid for value: Invalid
-            /// </summary>
-            [EnumMember(Value = "Invalid")]
-            Invalid = 14
-
-        }
-
-        /// <summary>
-        /// when calculating the fraction of a year between two dates, what convention is used to represent the number of days in a year  and difference between them.
-        /// </summary>
-        /// <value>when calculating the fraction of a year between two dates, what convention is used to represent the number of days in a year  and difference between them.</value>
-        [DataMember(Name="dayCountConvention", EmitDefaultValue=false)]
-        public DayCountConventionEnum DayCountConvention { get; set; }
-        /// <summary>
-        /// when generating a set of dates, what convention should be used for adjusting dates that coincide with a non-business day.
-        /// </summary>
-        /// <value>when generating a set of dates, what convention should be used for adjusting dates that coincide with a non-business day.</value>
-        [JsonConverter(typeof(StringEnumConverter))]
-        public enum RollConventionEnum
-        {
-            /// <summary>
-            /// Enum NoAdjustment for value: NoAdjustment
-            /// </summary>
-            [EnumMember(Value = "NoAdjustment")]
-            NoAdjustment = 1,
-
-            /// <summary>
-            /// Enum None for value: None
-            /// </summary>
-            [EnumMember(Value = "None")]
-            None = 2,
-
-            /// <summary>
-            /// Enum Previous for value: Previous
-            /// </summary>
-            [EnumMember(Value = "Previous")]
-            Previous = 3,
-
-            /// <summary>
-            /// Enum P for value: P
-            /// </summary>
-            [EnumMember(Value = "P")]
-            P = 4,
-
-            /// <summary>
-            /// Enum Following for value: Following
-            /// </summary>
-            [EnumMember(Value = "Following")]
-            Following = 5,
-
-            /// <summary>
-            /// Enum F for value: F
-            /// </summary>
-            [EnumMember(Value = "F")]
-            F = 6,
-
-            /// <summary>
-            /// Enum ModifiedPrevious for value: ModifiedPrevious
-            /// </summary>
-            [EnumMember(Value = "ModifiedPrevious")]
-            ModifiedPrevious = 7,
-
-            /// <summary>
-            /// Enum MP for value: MP
-            /// </summary>
-            [EnumMember(Value = "MP")]
-            MP = 8,
-
-            /// <summary>
-            /// Enum ModifiedFollowing for value: ModifiedFollowing
-            /// </summary>
-            [EnumMember(Value = "ModifiedFollowing")]
-            ModifiedFollowing = 9,
-
-            /// <summary>
-            /// Enum MF for value: MF
-            /// </summary>
-            [EnumMember(Value = "MF")]
-            MF = 10,
-
-            /// <summary>
-            /// Enum EndOfMonth for value: EndOfMonth
-            /// </summary>
-            [EnumMember(Value = "EndOfMonth")]
-            EndOfMonth = 11,
-
-            /// <summary>
-            /// Enum EOM for value: EOM
-            /// </summary>
-            [EnumMember(Value = "EOM")]
-            EOM = 12,
-
-            /// <summary>
-            /// Enum EndOfMonthPrevious for value: EndOfMonthPrevious
-            /// </summary>
-            [EnumMember(Value = "EndOfMonthPrevious")]
-            EndOfMonthPrevious = 13,
-
-            /// <summary>
-            /// Enum EOMP for value: EOMP
-            /// </summary>
-            [EnumMember(Value = "EOMP")]
-            EOMP = 14,
-
-            /// <summary>
-            /// Enum EndOfMonthFollowing for value: EndOfMonthFollowing
-            /// </summary>
-            [EnumMember(Value = "EndOfMonthFollowing")]
-            EndOfMonthFollowing = 15,
-
-            /// <summary>
-            /// Enum EOMF for value: EOMF
-            /// </summary>
-            [EnumMember(Value = "EOMF")]
-            EOMF = 16,
-
-            /// <summary>
-            /// Enum Invalid for value: Invalid
-            /// </summary>
-            [EnumMember(Value = "Invalid")]
-            Invalid = 17
-
-        }
-
-        /// <summary>
-        /// when generating a set of dates, what convention should be used for adjusting dates that coincide with a non-business day.
-        /// </summary>
-        /// <value>when generating a set of dates, what convention should be used for adjusting dates that coincide with a non-business day.</value>
-        [DataMember(Name="rollConvention", EmitDefaultValue=false)]
-        public RollConventionEnum RollConvention { get; set; }
-        /// <summary>
-        /// Initializes a new instance of the <see cref="FlowConventions" /> class.
-        /// </summary>
-        [JsonConstructorAttribute]
-        protected FlowConventions() { }
-        /// <summary>
-        /// Initializes a new instance of the <see cref="FlowConventions" /> class.
-        /// </summary>
-        /// <param name="currency">Currency of the flow convention. (required).</param>
-        /// <param name="paymentFrequency">paymentFrequency (required).</param>
-        /// <param name="dayCountConvention">when calculating the fraction of a year between two dates, what convention is used to represent the number of days in a year  and difference between them. (required).</param>
-        /// <param name="rollConvention">when generating a set of dates, what convention should be used for adjusting dates that coincide with a non-business day. (required).</param>
-        /// <param name="holidayCalendars">An array of strings denoting holiday calendars that apply to generation and payment. (required).</param>
-        public FlowConventions(string currency = default(string), Tenor paymentFrequency = default(Tenor), DayCountConventionEnum dayCountConvention = default(DayCountConventionEnum), RollConventionEnum rollConvention = default(RollConventionEnum), List<string> holidayCalendars = default(List<string>))
-        {
-            // to ensure "currency" is required (not null)
-            if (currency == null)
-            {
-                throw new InvalidDataException("currency is a required property for FlowConventions and cannot be null");
-            }
-            else
-            {
-                this.Currency = currency;
-            }
-            
-            // to ensure "paymentFrequency" is required (not null)
-            if (paymentFrequency == null)
-            {
-                throw new InvalidDataException("paymentFrequency is a required property for FlowConventions and cannot be null");
-            }
-            else
-            {
-                this.PaymentFrequency = paymentFrequency;
-            }
-            
-            // to ensure "dayCountConvention" is required (not null)
-            if (dayCountConvention == null)
-            {
-                throw new InvalidDataException("dayCountConvention is a required property for FlowConventions and cannot be null");
-            }
-            else
-            {
-                this.DayCountConvention = dayCountConvention;
-            }
-            
-            // to ensure "rollConvention" is required (not null)
-            if (rollConvention == null)
-            {
-                throw new InvalidDataException("rollConvention is a required property for FlowConventions and cannot be null");
-            }
-            else
-            {
-                this.RollConvention = rollConvention;
-            }
-            
-            // to ensure "holidayCalendars" is required (not null)
-            if (holidayCalendars == null)
-            {
-                throw new InvalidDataException("holidayCalendars is a required property for FlowConventions and cannot be null");
-            }
-            else
-            {
-                this.HolidayCalendars = holidayCalendars;
-            }
-            
+            this.Metadata = metadata;
         }
         
         /// <summary>
-        /// Currency of the flow convention.
+        /// The access control metadata to assign to a Person that matches the identifier
         /// </summary>
-        /// <value>Currency of the flow convention.</value>
-        [DataMember(Name="currency", EmitDefaultValue=false)]
-        public string Currency { get; set; }
-
-        /// <summary>
-        /// Gets or Sets PaymentFrequency
-        /// </summary>
-        [DataMember(Name="paymentFrequency", EmitDefaultValue=false)]
-        public Tenor PaymentFrequency { get; set; }
-
-
-
-        /// <summary>
-        /// An array of strings denoting holiday calendars that apply to generation and payment.
-        /// </summary>
-        /// <value>An array of strings denoting holiday calendars that apply to generation and payment.</value>
-        [DataMember(Name="holidayCalendars", EmitDefaultValue=false)]
-        public List<string> HolidayCalendars { get; set; }
+        /// <value>The access control metadata to assign to a Person that matches the identifier</value>
+        [DataMember(Name="metadata", EmitDefaultValue=false)]
+        public List<AccessMetadataValue> Metadata { get; set; }
 
         /// <summary>
         /// Returns the string presentation of the object
@@ -340,12 +51,8 @@ namespace Lusid.Sdk.Model
         public override string ToString()
         {
             var sb = new StringBuilder();
-            sb.Append("class FlowConventions {\n");
-            sb.Append("  Currency: ").Append(Currency).Append("\n");
-            sb.Append("  PaymentFrequency: ").Append(PaymentFrequency).Append("\n");
-            sb.Append("  DayCountConvention: ").Append(DayCountConvention).Append("\n");
-            sb.Append("  RollConvention: ").Append(RollConvention).Append("\n");
-            sb.Append("  HolidayCalendars: ").Append(HolidayCalendars).Append("\n");
+            sb.Append("class UpsertPersonAccessMetadataRequest {\n");
+            sb.Append("  Metadata: ").Append(Metadata).Append("\n");
             sb.Append("}\n");
             return sb.ToString();
         }
@@ -366,45 +73,25 @@ namespace Lusid.Sdk.Model
         /// <returns>Boolean</returns>
         public override bool Equals(object input)
         {
-            return this.Equals(input as FlowConventions);
+            return this.Equals(input as UpsertPersonAccessMetadataRequest);
         }
 
         /// <summary>
-        /// Returns true if FlowConventions instances are equal
+        /// Returns true if UpsertPersonAccessMetadataRequest instances are equal
         /// </summary>
-        /// <param name="input">Instance of FlowConventions to be compared</param>
+        /// <param name="input">Instance of UpsertPersonAccessMetadataRequest to be compared</param>
         /// <returns>Boolean</returns>
-        public bool Equals(FlowConventions input)
+        public bool Equals(UpsertPersonAccessMetadataRequest input)
         {
             if (input == null)
                 return false;
 
             return 
                 (
-                    this.Currency == input.Currency ||
-                    (this.Currency != null &&
-                    this.Currency.Equals(input.Currency))
-                ) && 
-                (
-                    this.PaymentFrequency == input.PaymentFrequency ||
-                    (this.PaymentFrequency != null &&
-                    this.PaymentFrequency.Equals(input.PaymentFrequency))
-                ) && 
-                (
-                    this.DayCountConvention == input.DayCountConvention ||
-                    (this.DayCountConvention != null &&
-                    this.DayCountConvention.Equals(input.DayCountConvention))
-                ) && 
-                (
-                    this.RollConvention == input.RollConvention ||
-                    (this.RollConvention != null &&
-                    this.RollConvention.Equals(input.RollConvention))
-                ) && 
-                (
-                    this.HolidayCalendars == input.HolidayCalendars ||
-                    this.HolidayCalendars != null &&
-                    input.HolidayCalendars != null &&
-                    this.HolidayCalendars.SequenceEqual(input.HolidayCalendars)
+                    this.Metadata == input.Metadata ||
+                    this.Metadata != null &&
+                    input.Metadata != null &&
+                    this.Metadata.SequenceEqual(input.Metadata)
                 );
         }
 
@@ -417,16 +104,8 @@ namespace Lusid.Sdk.Model
             unchecked // Overflow is fine, just wrap
             {
                 int hashCode = 41;
-                if (this.Currency != null)
-                    hashCode = hashCode * 59 + this.Currency.GetHashCode();
-                if (this.PaymentFrequency != null)
-                    hashCode = hashCode * 59 + this.PaymentFrequency.GetHashCode();
-                if (this.DayCountConvention != null)
-                    hashCode = hashCode * 59 + this.DayCountConvention.GetHashCode();
-                if (this.RollConvention != null)
-                    hashCode = hashCode * 59 + this.RollConvention.GetHashCode();
-                if (this.HolidayCalendars != null)
-                    hashCode = hashCode * 59 + this.HolidayCalendars.GetHashCode();
+                if (this.Metadata != null)
+                    hashCode = hashCode * 59 + this.Metadata.GetHashCode();
                 return hashCode;
             }
         }
