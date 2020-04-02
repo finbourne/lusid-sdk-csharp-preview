@@ -5,8 +5,8 @@ All URIs are relative to *http://localhost*
 Method | HTTP request | Description
 ------------- | ------------- | -------------
 [**GetAllocation**](AllocationsApi.md#getallocation) | **GET** /api/allocations/{scope}/{code} | [EXPERIMENTAL] Fetch a given allocation.
-[**ListAllocations**](AllocationsApi.md#listallocations) | **GET** /api/allocations/{scope} | [EXPERIMENTAL] Fetch the last pre-AsAt date version of each allocation in scope (does not fetch the entire history).
-[**UpsertAllocations**](AllocationsApi.md#upsertallocations) | **POST** /api/allocations/{scope} | [EXPERIMENTAL] Upsert; update existing allocations with given ids, or create new allocations otherwise.
+[**ListAllocations**](AllocationsApi.md#listallocations) | **GET** /api/allocations | [EXPERIMENTAL] Fetch the last pre-AsAt date version of each allocation in scope (does not fetch the entire history).
+[**UpsertAllocations**](AllocationsApi.md#upsertallocations) | **POST** /api/allocations | [EXPERIMENTAL] Upsert; update existing allocations with given ids, or create new allocations otherwise.
 
 
 
@@ -96,7 +96,7 @@ Name | Type | Description  | Notes
 
 ## ListAllocations
 
-> PagedResourceListOfAllocation ListAllocations (string scope, DateTimeOffset? asAt = null, string page = null, List<string> sortBy = null, int? start = null, int? limit = null, string filter = null, List<string> propertyKeys = null)
+> PagedResourceListOfAllocation ListAllocations (DateTimeOffset? asAt = null, string page = null, List<string> sortBy = null, int? start = null, int? limit = null, string filter = null, List<string> propertyKeys = null)
 
 [EXPERIMENTAL] Fetch the last pre-AsAt date version of each allocation in scope (does not fetch the entire history).
 
@@ -120,7 +120,6 @@ namespace Example
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
             var apiInstance = new AllocationsApi(Configuration.Default);
-            var scope = scope_example;  // string | The scope to which the allocations belong.
             var asAt = 2013-10-20T19:20:30+01:00;  // DateTimeOffset? | The asAt datetime at which to retrieve the allocation. Defaults to return the latest version of the allocation if not specified. (optional) 
             var page = page_example;  // string | The pagination token to use to continue listing allocations from a previous call to list allocations.              This value is returned from the previous call. If a pagination token is provided the sortBy, filter, effectiveAt, and asAt fields              must not have changed since the original request. Also, if set, a start value cannot be provided. (optional) 
             var sortBy = new List<string>(); // List<string> | Allocation the results by these fields. Use use the '-' sign to denote descending allocation e.g. -MyFieldName. (optional) 
@@ -132,7 +131,7 @@ namespace Example
             try
             {
                 // [EXPERIMENTAL] Fetch the last pre-AsAt date version of each allocation in scope (does not fetch the entire history).
-                PagedResourceListOfAllocation result = apiInstance.ListAllocations(scope, asAt, page, sortBy, start, limit, filter, propertyKeys);
+                PagedResourceListOfAllocation result = apiInstance.ListAllocations(asAt, page, sortBy, start, limit, filter, propertyKeys);
                 Debug.WriteLine(result);
             }
             catch (ApiException e)
@@ -151,7 +150,6 @@ namespace Example
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **scope** | **string**| The scope to which the allocations belong. | 
  **asAt** | **DateTimeOffset?**| The asAt datetime at which to retrieve the allocation. Defaults to return the latest version of the allocation if not specified. | [optional] 
  **page** | **string**| The pagination token to use to continue listing allocations from a previous call to list allocations.              This value is returned from the previous call. If a pagination token is provided the sortBy, filter, effectiveAt, and asAt fields              must not have changed since the original request. Also, if set, a start value cannot be provided. | [optional] 
  **sortBy** | [**List&lt;string&gt;**](string.md)| Allocation the results by these fields. Use use the &#39;-&#39; sign to denote descending allocation e.g. -MyFieldName. | [optional] 
@@ -188,7 +186,7 @@ Name | Type | Description  | Notes
 
 ## UpsertAllocations
 
-> ResourceListOfAllocation UpsertAllocations (string scope, AllocationSetRequest request = null)
+> ResourceListOfAllocation UpsertAllocations (AllocationSetRequest request = null)
 
 [EXPERIMENTAL] Upsert; update existing allocations with given ids, or create new allocations otherwise.
 
@@ -212,13 +210,12 @@ namespace Example
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
             var apiInstance = new AllocationsApi(Configuration.Default);
-            var scope = scope_example;  // string | The scope to which the allocations belong.
             var request = new AllocationSetRequest(); // AllocationSetRequest | The collection of allocation requests. (optional) 
 
             try
             {
                 // [EXPERIMENTAL] Upsert; update existing allocations with given ids, or create new allocations otherwise.
-                ResourceListOfAllocation result = apiInstance.UpsertAllocations(scope, request);
+                ResourceListOfAllocation result = apiInstance.UpsertAllocations(request);
                 Debug.WriteLine(result);
             }
             catch (ApiException e)
@@ -237,7 +234,6 @@ namespace Example
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **scope** | **string**| The scope to which the allocations belong. | 
  **request** | [**AllocationSetRequest**](AllocationSetRequest.md)| The collection of allocation requests. | [optional] 
 
 ### Return type

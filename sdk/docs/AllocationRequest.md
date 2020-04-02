@@ -10,7 +10,7 @@ Name | Type | Description | Notes
 **Quantity** | **int?** | The quantity of given instrument allocated. | 
 **PortfolioId** | [**ResourceId**](ResourceId.md) |  | 
 **AllocatedOrderId** | [**ResourceId**](ResourceId.md) |  | 
-**Code** | **string** | Uniquely identifies this allocation. | 
+**Id** | [**ResourceId**](ResourceId.md) |  | 
 
 [[Back to Model list]](../README.md#documentation-for-models)
 [[Back to API list]](../README.md#documentation-for-api-endpoints)
