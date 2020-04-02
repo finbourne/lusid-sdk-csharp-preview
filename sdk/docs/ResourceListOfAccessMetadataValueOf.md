@@ -5,7 +5,7 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**Values** | **List&lt;List&lt;AccessMetadataValue&gt;&gt;** |  | [optional] 
+**Values** | **List&lt;List&lt;AccessMetadataValue&gt;&gt;** |  | 
 **Href** | **string** |  | [optional] 
 **Links** | [**List&lt;Link&gt;**](Link.md) |  | [optional] 
 

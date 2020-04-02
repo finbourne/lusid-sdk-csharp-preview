@@ -7,7 +7,7 @@ Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **NextPage** | **string** |  | [optional] 
 **PreviousPage** | **string** |  | [optional] 
-**Values** | [**List&lt;Order&gt;**](Order.md) |  | [optional] 
+**Values** | [**List&lt;Order&gt;**](Order.md) |  | 
 **Href** | **string** |  | [optional] 
 **Links** | [**List&lt;Link&gt;**](Link.md) |  | [optional] 
 
