@@ -1,6 +1,6 @@
 # Lusid.Sdk.Api.ConfigurationRecipeApi
 
-All URIs are relative to *http://localhost/api*
+All URIs are relative to *http://localhost*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
@@ -10,9 +10,8 @@ Method | HTTP request | Description
 [**UpsertConfigurationRecipe**](ConfigurationRecipeApi.md#upsertconfigurationrecipe) | **POST** /api/recipes/{scope} | [EXPERIMENTAL] Upsert a Configuration Recipe. This creates or updates the data in Lusid.
 
 
-
-## DeleteConfigurationRecipe
-
+<a name="deleteconfigurationrecipe"></a>
+# **DeleteConfigurationRecipe**
 > AnnulSingleStructuredDataResponse DeleteConfigurationRecipe (string scope, string code)
 
 [EXPERIMENTAL] Delete a Configuration Recipe, assuming that it is present.
@@ -20,7 +19,6 @@ Method | HTTP request | Description
 Delete the specified Configuration Recipe from a single scope.                The response will return either detail of the deleted item, or an explanation (failure) as to why this did not succeed.                It is important to always check for any unsuccessful response.
 
 ### Example
-
 ```csharp
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -34,11 +32,12 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://localhost/api";
+            Configuration config = new Configuration();
+            config.BasePath = "http://localhost";
             // Configure OAuth2 access token for authorization: oauth2
-            Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
+            config.AccessToken = "YOUR_ACCESS_TOKEN";
 
-            var apiInstance = new ConfigurationRecipeApi(Configuration.Default);
+            var apiInstance = new ConfigurationRecipeApi(config);
             var scope = scope_example;  // string | The scope of the Configuration Recipe to delete.
             var code = code_example;  // string | The Configuration Recipe to delete.
 
@@ -48,7 +47,7 @@ namespace Example
                 AnnulSingleStructuredDataResponse result = apiInstance.DeleteConfigurationRecipe(scope, code);
                 Debug.WriteLine(result);
             }
-            catch (ApiException e)
+            catch (ApiException  e)
             {
                 Debug.Print("Exception when calling ConfigurationRecipeApi.DeleteConfigurationRecipe: " + e.Message );
                 Debug.Print("Status Code: "+ e.ErrorCode);
@@ -60,7 +59,6 @@ namespace Example
 ```
 
 ### Parameters
-
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
@@ -77,8 +75,8 @@ Name | Type | Description  | Notes
 
 ### HTTP request headers
 
-- **Content-Type**: Not defined
-- **Accept**: text/plain, application/json, text/json
+ - **Content-Type**: Not defined
+ - **Accept**: text/plain, application/json, text/json
 
 ### HTTP response details
 | Status code | Description | Response headers |
@@ -87,14 +85,10 @@ Name | Type | Description  | Notes
 | **400** | The details of the input related failure |  -  |
 | **0** | Error response |  -  |
 
-[[Back to top]](#)
-[[Back to API list]](../README.md#documentation-for-api-endpoints)
-[[Back to Model list]](../README.md#documentation-for-models)
-[[Back to README]](../README.md)
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
-
-## GetConfigurationRecipe
-
+<a name="getconfigurationrecipe"></a>
+# **GetConfigurationRecipe**
 > GetRecipeResponse GetConfigurationRecipe (string scope, string code, DateTimeOffset? asAt = null)
 
 [EXPERIMENTAL] Get Configuration Recipe
@@ -102,7 +96,6 @@ Name | Type | Description  | Notes
 Get a Configuration Recipe from a single scope.                The response will return either the recipe that has been stored, or a failure explaining why the request was unsuccessful.                It is important to always check for any unsuccessful requests (failures).
 
 ### Example
-
 ```csharp
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -116,11 +109,12 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://localhost/api";
+            Configuration config = new Configuration();
+            config.BasePath = "http://localhost";
             // Configure OAuth2 access token for authorization: oauth2
-            Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
+            config.AccessToken = "YOUR_ACCESS_TOKEN";
 
-            var apiInstance = new ConfigurationRecipeApi(Configuration.Default);
+            var apiInstance = new ConfigurationRecipeApi(config);
             var scope = scope_example;  // string | The scope of the Configuration Recipe to retrieve.
             var code = code_example;  // string | The name of the recipe to retrieve the data for.
             var asAt = 2013-10-20T19:20:30+01:00;  // DateTimeOffset? | The asAt datetime at which to retrieve the Configuration Recipe. Defaults to return the latest version if not specified. (optional) 
@@ -131,7 +125,7 @@ namespace Example
                 GetRecipeResponse result = apiInstance.GetConfigurationRecipe(scope, code, asAt);
                 Debug.WriteLine(result);
             }
-            catch (ApiException e)
+            catch (ApiException  e)
             {
                 Debug.Print("Exception when calling ConfigurationRecipeApi.GetConfigurationRecipe: " + e.Message );
                 Debug.Print("Status Code: "+ e.ErrorCode);
@@ -143,7 +137,6 @@ namespace Example
 ```
 
 ### Parameters
-
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
@@ -161,8 +154,8 @@ Name | Type | Description  | Notes
 
 ### HTTP request headers
 
-- **Content-Type**: Not defined
-- **Accept**: text/plain, application/json, text/json
+ - **Content-Type**: Not defined
+ - **Accept**: text/plain, application/json, text/json
 
 ### HTTP response details
 | Status code | Description | Response headers |
@@ -171,14 +164,10 @@ Name | Type | Description  | Notes
 | **400** | The details of the input related failure |  -  |
 | **0** | Error response |  -  |
 
-[[Back to top]](#)
-[[Back to API list]](../README.md#documentation-for-api-endpoints)
-[[Back to Model list]](../README.md#documentation-for-models)
-[[Back to README]](../README.md)
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
-
-## ListConfigurationRecipes
-
+<a name="listconfigurationrecipes"></a>
+# **ListConfigurationRecipes**
 > ResourceListOfGetRecipeResponse ListConfigurationRecipes (string scope, DateTimeOffset? asAt = null, string filter = null)
 
 [EXPERIMENTAL] List the set of Configuration Recipes
@@ -186,7 +175,6 @@ Name | Type | Description  | Notes
 List the set of  configuration recipes at the specified date/time and scope
 
 ### Example
-
 ```csharp
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -200,11 +188,12 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://localhost/api";
+            Configuration config = new Configuration();
+            config.BasePath = "http://localhost";
             // Configure OAuth2 access token for authorization: oauth2
-            Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
+            config.AccessToken = "YOUR_ACCESS_TOKEN";
 
-            var apiInstance = new ConfigurationRecipeApi(Configuration.Default);
+            var apiInstance = new ConfigurationRecipeApi(config);
             var scope = scope_example;  // string | The scope of the Configuration Recipes to list
             var asAt = 2013-10-20T19:20:30+01:00;  // DateTimeOffset? | The asAt datetime at which to list the Configuration Recipes. Defaults to latest if not specified. (optional) 
             var filter = filter_example;  // string | Expression to filter the result set.              For example, to filter on code, use \"value.code eq 'string'\"              Read more about filtering results from LUSID here https://support.lusid.com/filtering-results-from-lusid. (optional) 
@@ -215,7 +204,7 @@ namespace Example
                 ResourceListOfGetRecipeResponse result = apiInstance.ListConfigurationRecipes(scope, asAt, filter);
                 Debug.WriteLine(result);
             }
-            catch (ApiException e)
+            catch (ApiException  e)
             {
                 Debug.Print("Exception when calling ConfigurationRecipeApi.ListConfigurationRecipes: " + e.Message );
                 Debug.Print("Status Code: "+ e.ErrorCode);
@@ -227,7 +216,6 @@ namespace Example
 ```
 
 ### Parameters
-
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
@@ -245,8 +233,8 @@ Name | Type | Description  | Notes
 
 ### HTTP request headers
 
-- **Content-Type**: Not defined
-- **Accept**: text/plain, application/json, text/json
+ - **Content-Type**: Not defined
+ - **Accept**: text/plain, application/json, text/json
 
 ### HTTP response details
 | Status code | Description | Response headers |
@@ -255,14 +243,10 @@ Name | Type | Description  | Notes
 | **400** | The details of the input related failure |  -  |
 | **0** | Error response |  -  |
 
-[[Back to top]](#)
-[[Back to API list]](../README.md#documentation-for-api-endpoints)
-[[Back to Model list]](../README.md#documentation-for-models)
-[[Back to README]](../README.md)
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
-
-## UpsertConfigurationRecipe
-
+<a name="upsertconfigurationrecipe"></a>
+# **UpsertConfigurationRecipe**
 > UpsertSingleStructuredDataResponse UpsertConfigurationRecipe (string scope, UpsertRecipeRequest structuredData)
 
 [EXPERIMENTAL] Upsert a Configuration Recipe. This creates or updates the data in Lusid.
@@ -270,7 +254,6 @@ Name | Type | Description  | Notes
 Update or insert one Configuration Recipe in a single scope. An item will be updated if it already exists  and inserted if it does not.                The response will return the successfully updated or inserted Configuration Recipe or failure message if unsuccessful                It is important to always check to verify success (or failure).
 
 ### Example
-
 ```csharp
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -284,11 +267,12 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://localhost/api";
+            Configuration config = new Configuration();
+            config.BasePath = "http://localhost";
             // Configure OAuth2 access token for authorization: oauth2
-            Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
+            config.AccessToken = "YOUR_ACCESS_TOKEN";
 
-            var apiInstance = new ConfigurationRecipeApi(Configuration.Default);
+            var apiInstance = new ConfigurationRecipeApi(config);
             var scope = scope_example;  // string | The scope to use when updating or inserting the Configuration Recipe.
             var structuredData = new UpsertRecipeRequest(); // UpsertRecipeRequest | The Configuration Recipe to update or insert
 
@@ -298,7 +282,7 @@ namespace Example
                 UpsertSingleStructuredDataResponse result = apiInstance.UpsertConfigurationRecipe(scope, structuredData);
                 Debug.WriteLine(result);
             }
-            catch (ApiException e)
+            catch (ApiException  e)
             {
                 Debug.Print("Exception when calling ConfigurationRecipeApi.UpsertConfigurationRecipe: " + e.Message );
                 Debug.Print("Status Code: "+ e.ErrorCode);
@@ -310,7 +294,6 @@ namespace Example
 ```
 
 ### Parameters
-
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
@@ -327,8 +310,8 @@ Name | Type | Description  | Notes
 
 ### HTTP request headers
 
-- **Content-Type**: Not defined
-- **Accept**: text/plain, application/json, text/json
+ - **Content-Type**: Not defined
+ - **Accept**: text/plain, application/json, text/json
 
 ### HTTP response details
 | Status code | Description | Response headers |
@@ -337,8 +320,5 @@ Name | Type | Description  | Notes
 | **400** | The details of the input related failure |  -  |
 | **0** | Error response |  -  |
 
-[[Back to top]](#)
-[[Back to API list]](../README.md#documentation-for-api-endpoints)
-[[Back to Model list]](../README.md#documentation-for-models)
-[[Back to README]](../README.md)
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 

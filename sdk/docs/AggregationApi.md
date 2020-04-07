@@ -1,6 +1,6 @@
 # Lusid.Sdk.Api.AggregationApi
 
-All URIs are relative to *http://localhost/api*
+All URIs are relative to *http://localhost*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
@@ -11,9 +11,8 @@ Method | HTTP request | Description
 [**GetNestedAggregationByGroup**](AggregationApi.md#getnestedaggregationbygroup) | **POST** /api/portfoliogroups/{scope}/{code}/$aggregatenested | [EXPERIMENTAL] Aggregate data in a portfolio group, as nested
 
 
-
-## GetAggregationByGroup
-
+<a name="getaggregationbygroup"></a>
+# **GetAggregationByGroup**
 > ListAggregationResponse GetAggregationByGroup (string scope, string code, List<string> sortBy = null, int? start = null, int? limit = null, AggregationRequest request = null)
 
 [EXPERIMENTAL] Aggregate data in a portfolio group
@@ -21,7 +20,6 @@ Method | HTTP request | Description
 Aggregate data sourced from the specified portfolio group
 
 ### Example
-
 ```csharp
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -35,11 +33,12 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://localhost/api";
+            Configuration config = new Configuration();
+            config.BasePath = "http://localhost";
             // Configure OAuth2 access token for authorization: oauth2
-            Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
+            config.AccessToken = "YOUR_ACCESS_TOKEN";
 
-            var apiInstance = new AggregationApi(Configuration.Default);
+            var apiInstance = new AggregationApi(config);
             var scope = scope_example;  // string | The scope of the portfolio group
             var code = code_example;  // string | The code of the portfolio group
             var sortBy = new List<string>(); // List<string> | Optional. Order the results by these fields. Use use the '-' sign to denote descending order e.g. -MyFieldName (optional) 
@@ -53,7 +52,7 @@ namespace Example
                 ListAggregationResponse result = apiInstance.GetAggregationByGroup(scope, code, sortBy, start, limit, request);
                 Debug.WriteLine(result);
             }
-            catch (ApiException e)
+            catch (ApiException  e)
             {
                 Debug.Print("Exception when calling AggregationApi.GetAggregationByGroup: " + e.Message );
                 Debug.Print("Status Code: "+ e.ErrorCode);
@@ -65,7 +64,6 @@ namespace Example
 ```
 
 ### Parameters
-
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
@@ -86,8 +84,8 @@ Name | Type | Description  | Notes
 
 ### HTTP request headers
 
-- **Content-Type**: Not defined
-- **Accept**: text/plain, application/json, text/json
+ - **Content-Type**: Not defined
+ - **Accept**: text/plain, application/json, text/json
 
 ### HTTP response details
 | Status code | Description | Response headers |
@@ -96,14 +94,10 @@ Name | Type | Description  | Notes
 | **400** | The details of the input related failure |  -  |
 | **0** | Error response |  -  |
 
-[[Back to top]](#)
-[[Back to API list]](../README.md#documentation-for-api-endpoints)
-[[Back to Model list]](../README.md#documentation-for-models)
-[[Back to README]](../README.md)
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
-
-## GetAggregationByPortfolio
-
+<a name="getaggregationbyportfolio"></a>
+# **GetAggregationByPortfolio**
 > ListAggregationResponse GetAggregationByPortfolio (string scope, string code, List<string> sortBy = null, int? start = null, int? limit = null, AggregationRequest request = null)
 
 [EXPERIMENTAL] Aggregate data in a portfolio
@@ -111,7 +105,6 @@ Name | Type | Description  | Notes
 Aggregate data sourced from the specified portfolio
 
 ### Example
-
 ```csharp
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -125,11 +118,12 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://localhost/api";
+            Configuration config = new Configuration();
+            config.BasePath = "http://localhost";
             // Configure OAuth2 access token for authorization: oauth2
-            Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
+            config.AccessToken = "YOUR_ACCESS_TOKEN";
 
-            var apiInstance = new AggregationApi(Configuration.Default);
+            var apiInstance = new AggregationApi(config);
             var scope = scope_example;  // string | The scope of the portfolio
             var code = code_example;  // string | The code of the portfolio
             var sortBy = new List<string>(); // List<string> | Optional. Order the results by these fields. Use use the '-' sign to denote descending order e.g. -MyFieldName (optional) 
@@ -143,7 +137,7 @@ namespace Example
                 ListAggregationResponse result = apiInstance.GetAggregationByPortfolio(scope, code, sortBy, start, limit, request);
                 Debug.WriteLine(result);
             }
-            catch (ApiException e)
+            catch (ApiException  e)
             {
                 Debug.Print("Exception when calling AggregationApi.GetAggregationByPortfolio: " + e.Message );
                 Debug.Print("Status Code: "+ e.ErrorCode);
@@ -155,7 +149,6 @@ namespace Example
 ```
 
 ### Parameters
-
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
@@ -176,8 +169,8 @@ Name | Type | Description  | Notes
 
 ### HTTP request headers
 
-- **Content-Type**: Not defined
-- **Accept**: text/plain, application/json, text/json
+ - **Content-Type**: Not defined
+ - **Accept**: text/plain, application/json, text/json
 
 ### HTTP response details
 | Status code | Description | Response headers |
@@ -186,14 +179,10 @@ Name | Type | Description  | Notes
 | **400** | The details of the input related failure |  -  |
 | **0** | Error response |  -  |
 
-[[Back to top]](#)
-[[Back to API list]](../README.md#documentation-for-api-endpoints)
-[[Back to Model list]](../README.md#documentation-for-models)
-[[Back to README]](../README.md)
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
-
-## GetAggregationByResultSet
-
+<a name="getaggregationbyresultset"></a>
+# **GetAggregationByResultSet**
 > ListAggregationResponse GetAggregationByResultSet (string scope, string resultsKey, List<string> sortBy = null, int? start = null, int? limit = null, AggregationRequest request = null)
 
 [EXPERIMENTAL] Aggregate using result data
@@ -201,7 +190,6 @@ Name | Type | Description  | Notes
 Aggregate data from a previously-run Result data set into a flat row of results
 
 ### Example
-
 ```csharp
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -215,11 +203,12 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://localhost/api";
+            Configuration config = new Configuration();
+            config.BasePath = "http://localhost";
             // Configure OAuth2 access token for authorization: oauth2
-            Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
+            config.AccessToken = "YOUR_ACCESS_TOKEN";
 
-            var apiInstance = new AggregationApi(Configuration.Default);
+            var apiInstance = new AggregationApi(config);
             var scope = scope_example;  // string | The scope of the Result data set
             var resultsKey = resultsKey_example;  // string | The key of the Result data set
             var sortBy = new List<string>(); // List<string> | Optional. Order the results by these fields. Use use the '-' sign to denote descending order e.g. -MyFieldName (optional) 
@@ -233,7 +222,7 @@ namespace Example
                 ListAggregationResponse result = apiInstance.GetAggregationByResultSet(scope, resultsKey, sortBy, start, limit, request);
                 Debug.WriteLine(result);
             }
-            catch (ApiException e)
+            catch (ApiException  e)
             {
                 Debug.Print("Exception when calling AggregationApi.GetAggregationByResultSet: " + e.Message );
                 Debug.Print("Status Code: "+ e.ErrorCode);
@@ -245,7 +234,6 @@ namespace Example
 ```
 
 ### Parameters
-
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
@@ -266,8 +254,8 @@ Name | Type | Description  | Notes
 
 ### HTTP request headers
 
-- **Content-Type**: Not defined
-- **Accept**: text/plain, application/json, text/json
+ - **Content-Type**: Not defined
+ - **Accept**: text/plain, application/json, text/json
 
 ### HTTP response details
 | Status code | Description | Response headers |
@@ -276,14 +264,10 @@ Name | Type | Description  | Notes
 | **400** | The details of the input related failure |  -  |
 | **0** | Error response |  -  |
 
-[[Back to top]](#)
-[[Back to API list]](../README.md#documentation-for-api-endpoints)
-[[Back to Model list]](../README.md#documentation-for-models)
-[[Back to README]](../README.md)
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
-
-## GetAggregationOfWeightedInstruments
-
+<a name="getaggregationofweightedinstruments"></a>
+# **GetAggregationOfWeightedInstruments**
 > ListAggregationResponse GetAggregationOfWeightedInstruments (string scope, List<string> sortBy = null, int? start = null, int? limit = null, InlineAggregationRequest inlineRequest = null)
 
 [EXPERIMENTAL] Aggregate data in an inlined portfolio
@@ -291,7 +275,6 @@ Name | Type | Description  | Notes
 Aggregate data sourced from the portfolio that is defined by the weighted set of instruments passed to the request.
 
 ### Example
-
 ```csharp
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -305,11 +288,12 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://localhost/api";
+            Configuration config = new Configuration();
+            config.BasePath = "http://localhost";
             // Configure OAuth2 access token for authorization: oauth2
-            Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
+            config.AccessToken = "YOUR_ACCESS_TOKEN";
 
-            var apiInstance = new AggregationApi(Configuration.Default);
+            var apiInstance = new AggregationApi(config);
             var scope = scope_example;  // string | The scope of the instruments should that be required
             var sortBy = new List<string>(); // List<string> | Optional. Order the results by these fields. Use use the '-' sign to denote descending order e.g. -MyFieldName (optional) 
             var start = 56;  // int? | Optional. When paginating, skip this number of results (optional) 
@@ -322,7 +306,7 @@ namespace Example
                 ListAggregationResponse result = apiInstance.GetAggregationOfWeightedInstruments(scope, sortBy, start, limit, inlineRequest);
                 Debug.WriteLine(result);
             }
-            catch (ApiException e)
+            catch (ApiException  e)
             {
                 Debug.Print("Exception when calling AggregationApi.GetAggregationOfWeightedInstruments: " + e.Message );
                 Debug.Print("Status Code: "+ e.ErrorCode);
@@ -334,7 +318,6 @@ namespace Example
 ```
 
 ### Parameters
-
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
@@ -354,8 +337,8 @@ Name | Type | Description  | Notes
 
 ### HTTP request headers
 
-- **Content-Type**: Not defined
-- **Accept**: text/plain, application/json, text/json
+ - **Content-Type**: Not defined
+ - **Accept**: text/plain, application/json, text/json
 
 ### HTTP response details
 | Status code | Description | Response headers |
@@ -364,14 +347,10 @@ Name | Type | Description  | Notes
 | **400** | The details of the input related failure |  -  |
 | **0** | Error response |  -  |
 
-[[Back to top]](#)
-[[Back to API list]](../README.md#documentation-for-api-endpoints)
-[[Back to Model list]](../README.md#documentation-for-models)
-[[Back to README]](../README.md)
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
-
-## GetNestedAggregationByGroup
-
+<a name="getnestedaggregationbygroup"></a>
+# **GetNestedAggregationByGroup**
 > NestedAggregationResponse GetNestedAggregationByGroup (string scope, string code, AggregationRequest request = null)
 
 [EXPERIMENTAL] Aggregate data in a portfolio group, as nested
@@ -379,7 +358,6 @@ Name | Type | Description  | Notes
 Obsolete - Aggregate data sourced from the specified portfolio group into a nested structure. Data is nested following the group-by specifications.
 
 ### Example
-
 ```csharp
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -393,11 +371,12 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://localhost/api";
+            Configuration config = new Configuration();
+            config.BasePath = "http://localhost";
             // Configure OAuth2 access token for authorization: oauth2
-            Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
+            config.AccessToken = "YOUR_ACCESS_TOKEN";
 
-            var apiInstance = new AggregationApi(Configuration.Default);
+            var apiInstance = new AggregationApi(config);
             var scope = scope_example;  // string | The scope of the portfolio group
             var code = code_example;  // string | The code of the portfolio group
             var request = new AggregationRequest(); // AggregationRequest | The request specifying the parameters of the aggregation (optional) 
@@ -408,7 +387,7 @@ namespace Example
                 NestedAggregationResponse result = apiInstance.GetNestedAggregationByGroup(scope, code, request);
                 Debug.WriteLine(result);
             }
-            catch (ApiException e)
+            catch (ApiException  e)
             {
                 Debug.Print("Exception when calling AggregationApi.GetNestedAggregationByGroup: " + e.Message );
                 Debug.Print("Status Code: "+ e.ErrorCode);
@@ -420,7 +399,6 @@ namespace Example
 ```
 
 ### Parameters
-
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
@@ -438,8 +416,8 @@ Name | Type | Description  | Notes
 
 ### HTTP request headers
 
-- **Content-Type**: Not defined
-- **Accept**: text/plain, application/json, text/json
+ - **Content-Type**: Not defined
+ - **Accept**: text/plain, application/json, text/json
 
 ### HTTP response details
 | Status code | Description | Response headers |
@@ -448,8 +426,5 @@ Name | Type | Description  | Notes
 | **400** | The details of the input related failure |  -  |
 | **0** | Error response |  -  |
 
-[[Back to top]](#)
-[[Back to API list]](../README.md#documentation-for-api-endpoints)
-[[Back to Model list]](../README.md#documentation-for-models)
-[[Back to README]](../README.md)
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
