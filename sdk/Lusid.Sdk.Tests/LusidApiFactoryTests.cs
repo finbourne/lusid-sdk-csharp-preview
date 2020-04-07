@@ -41,7 +41,7 @@ namespace Lusid.Sdk.Tests
 
         class InvalidApi : IApiAccessor
         {
-            public IReadableConfiguration Configuration { get; set; }
+            public Configuration Configuration { get; set; }
             public string GetBasePath()
             {
                 throw new NotImplementedException();
