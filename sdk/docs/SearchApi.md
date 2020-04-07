@@ -13,8 +13,9 @@ Method | HTTP request | Description
 [**SearchProperties**](SearchApi.md#searchproperties) | **GET** /api/search/propertydefinitions | [EXPERIMENTAL] Search Property Definitions
 
 
-<a name="instrumentssearch"></a>
-# **InstrumentsSearch**
+
+## InstrumentsSearch
+
 > ICollection&lt;InstrumentMatch&gt; InstrumentsSearch (List<InstrumentSearchProperty> symbols, DateTimeOrCutLabel masteredEffectiveAt = null, bool? masteredOnly = null)
 
 [EXPERIMENTAL] Instruments search
@@ -22,6 +23,7 @@ Method | HTTP request | Description
 Search across all instruments that have been mastered in LUSID. Optionally augment the results with instruments from an external symbology service,  currently OpenFIGI.
 
 ### Example
+
 ```csharp
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -35,12 +37,11 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration config = new Configuration();
-            config.BasePath = "http://localhost";
+            Configuration.Default.BasePath = "http://localhost";
             // Configure OAuth2 access token for authorization: oauth2
-            config.AccessToken = "YOUR_ACCESS_TOKEN";
+            Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
-            var apiInstance = new SearchApi(config);
+            var apiInstance = new SearchApi(Configuration.Default);
             var symbols = new List<InstrumentSearchProperty>(); // List<InstrumentSearchProperty> | A collection of instrument properties to search for. LUSID will return instruments for any matched              properties.
             var masteredEffectiveAt = masteredEffectiveAt_example;  // DateTimeOrCutLabel | The effective datetime or cut label to use when searching mastered instruments. This parameter has no effect on instruments that  have not been mastered within LUSID. Defaults to the current LUSID system datetime if not specified. (optional) 
             var masteredOnly = true;  // bool? | If set to true, only search over instruments that have been mastered within LUSID. Defaults to false. (optional)  (default to false)
@@ -51,7 +52,7 @@ namespace Example
                 ICollection<InstrumentMatch> result = apiInstance.InstrumentsSearch(symbols, masteredEffectiveAt, masteredOnly);
                 Debug.WriteLine(result);
             }
-            catch (ApiException  e)
+            catch (ApiException e)
             {
                 Debug.Print("Exception when calling SearchApi.InstrumentsSearch: " + e.Message );
                 Debug.Print("Status Code: "+ e.ErrorCode);
@@ -63,6 +64,7 @@ namespace Example
 ```
 
 ### Parameters
+
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
@@ -80,8 +82,8 @@ Name | Type | Description  | Notes
 
 ### HTTP request headers
 
- - **Content-Type**: Not defined
- - **Accept**: text/plain, application/json, text/json
+- **Content-Type**: Not defined
+- **Accept**: text/plain, application/json, text/json
 
 ### HTTP response details
 | Status code | Description | Response headers |
@@ -90,10 +92,14 @@ Name | Type | Description  | Notes
 | **400** | The details of the input related failure |  -  |
 | **0** | Error response |  -  |
 
-[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+[[Back to top]](#)
+[[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
 
-<a name="portfoliogroupssearch"></a>
-# **PortfolioGroupsSearch**
+
+## PortfolioGroupsSearch
+
 > ResourceListOfPortfolioGroup PortfolioGroupsSearch (Object request, string filter = null)
 
 [DEPRECATED] Portfolio groups search
@@ -101,6 +107,7 @@ Name | Type | Description  | Notes
 Search across all portfolio groups across all scopes.
 
 ### Example
+
 ```csharp
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -114,12 +121,11 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration config = new Configuration();
-            config.BasePath = "http://localhost";
+            Configuration.Default.BasePath = "http://localhost";
             // Configure OAuth2 access token for authorization: oauth2
-            config.AccessToken = "YOUR_ACCESS_TOKEN";
+            Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
-            var apiInstance = new SearchApi(config);
+            var apiInstance = new SearchApi(Configuration.Default);
             var request = ;  // Object | The search query to use. Read more about search queries in LUSID here https://support.lusid.com/constructing-a-search-request.
             var filter = filter_example;  // string | Expression to filter the result set. Read more about filtering results from LUSID here https://support.lusid.com/filtering-results-from-lusid. (optional) 
 
@@ -129,7 +135,7 @@ namespace Example
                 ResourceListOfPortfolioGroup result = apiInstance.PortfolioGroupsSearch(request, filter);
                 Debug.WriteLine(result);
             }
-            catch (ApiException  e)
+            catch (ApiException e)
             {
                 Debug.Print("Exception when calling SearchApi.PortfolioGroupsSearch: " + e.Message );
                 Debug.Print("Status Code: "+ e.ErrorCode);
@@ -141,6 +147,7 @@ namespace Example
 ```
 
 ### Parameters
+
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
@@ -157,8 +164,8 @@ Name | Type | Description  | Notes
 
 ### HTTP request headers
 
- - **Content-Type**: Not defined
- - **Accept**: text/plain, application/json, text/json
+- **Content-Type**: Not defined
+- **Accept**: text/plain, application/json, text/json
 
 ### HTTP response details
 | Status code | Description | Response headers |
@@ -167,10 +174,14 @@ Name | Type | Description  | Notes
 | **400** | The details of the input related failure |  -  |
 | **0** | Error response |  -  |
 
-[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+[[Back to top]](#)
+[[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
 
-<a name="portfoliossearch"></a>
-# **PortfoliosSearch**
+
+## PortfoliosSearch
+
 > ResourceListOfPortfolioSearchResult PortfoliosSearch (Object request, string filter = null)
 
 [DEPRECATED] Portfolios search
@@ -178,6 +189,7 @@ Name | Type | Description  | Notes
 Search across all portfolios across all scopes.
 
 ### Example
+
 ```csharp
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -191,12 +203,11 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration config = new Configuration();
-            config.BasePath = "http://localhost";
+            Configuration.Default.BasePath = "http://localhost";
             // Configure OAuth2 access token for authorization: oauth2
-            config.AccessToken = "YOUR_ACCESS_TOKEN";
+            Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
-            var apiInstance = new SearchApi(config);
+            var apiInstance = new SearchApi(Configuration.Default);
             var request = ;  // Object | The search query to use. Read more about search queries in LUSID here https://support.lusid.com/constructing-a-search-request.
             var filter = filter_example;  // string | Expression to filter the result set. Read more about filtering results from LUSID here https://support.lusid.com/filtering-results-from-lusid. (optional) 
 
@@ -206,7 +217,7 @@ namespace Example
                 ResourceListOfPortfolioSearchResult result = apiInstance.PortfoliosSearch(request, filter);
                 Debug.WriteLine(result);
             }
-            catch (ApiException  e)
+            catch (ApiException e)
             {
                 Debug.Print("Exception when calling SearchApi.PortfoliosSearch: " + e.Message );
                 Debug.Print("Status Code: "+ e.ErrorCode);
@@ -218,6 +229,7 @@ namespace Example
 ```
 
 ### Parameters
+
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
@@ -234,8 +246,8 @@ Name | Type | Description  | Notes
 
 ### HTTP request headers
 
- - **Content-Type**: Not defined
- - **Accept**: text/plain, application/json, text/json
+- **Content-Type**: Not defined
+- **Accept**: text/plain, application/json, text/json
 
 ### HTTP response details
 | Status code | Description | Response headers |
@@ -244,10 +256,14 @@ Name | Type | Description  | Notes
 | **400** | The details of the input related failure |  -  |
 | **0** | Error response |  -  |
 
-[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+[[Back to top]](#)
+[[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
 
-<a name="propertiessearch"></a>
-# **PropertiesSearch**
+
+## PropertiesSearch
+
 > ResourceListOfPropertyDefinition PropertiesSearch (Object request, string filter = null)
 
 [DEPRECATED] Search property definitions
@@ -255,6 +271,7 @@ Name | Type | Description  | Notes
 Search across all user defined property definitions across all scopes.
 
 ### Example
+
 ```csharp
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -268,12 +285,11 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration config = new Configuration();
-            config.BasePath = "http://localhost";
+            Configuration.Default.BasePath = "http://localhost";
             // Configure OAuth2 access token for authorization: oauth2
-            config.AccessToken = "YOUR_ACCESS_TOKEN";
+            Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
-            var apiInstance = new SearchApi(config);
+            var apiInstance = new SearchApi(Configuration.Default);
             var request = ;  // Object | The search query to use. Read more about search queries in LUSID here https://support.lusid.com/constructing-a-search-request.
             var filter = filter_example;  // string | Expression to filter the result set. Read more about filtering results from LUSID here https://support.lusid.com/filtering-results-from-lusid. (optional) 
 
@@ -283,7 +299,7 @@ namespace Example
                 ResourceListOfPropertyDefinition result = apiInstance.PropertiesSearch(request, filter);
                 Debug.WriteLine(result);
             }
-            catch (ApiException  e)
+            catch (ApiException e)
             {
                 Debug.Print("Exception when calling SearchApi.PropertiesSearch: " + e.Message );
                 Debug.Print("Status Code: "+ e.ErrorCode);
@@ -295,6 +311,7 @@ namespace Example
 ```
 
 ### Parameters
+
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
@@ -311,8 +328,8 @@ Name | Type | Description  | Notes
 
 ### HTTP request headers
 
- - **Content-Type**: Not defined
- - **Accept**: text/plain, application/json, text/json
+- **Content-Type**: Not defined
+- **Accept**: text/plain, application/json, text/json
 
 ### HTTP response details
 | Status code | Description | Response headers |
@@ -321,10 +338,14 @@ Name | Type | Description  | Notes
 | **400** | The details of the input related failure |  -  |
 | **0** | Error response |  -  |
 
-[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+[[Back to top]](#)
+[[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
 
-<a name="searchportfoliogroups"></a>
-# **SearchPortfolioGroups**
+
+## SearchPortfolioGroups
+
 > PagedResourceListOfPortfolioGroup SearchPortfolioGroups (string search = null, string filter = null, string sortBy = null, int? limit = null, string page = null)
 
 [EXPERIMENTAL] Search Portfolio Groups
@@ -332,6 +353,7 @@ Name | Type | Description  | Notes
 Search through all portfolio groups
 
 ### Example
+
 ```csharp
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -345,12 +367,11 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration config = new Configuration();
-            config.BasePath = "http://localhost";
+            Configuration.Default.BasePath = "http://localhost";
             // Configure OAuth2 access token for authorization: oauth2
-            config.AccessToken = "YOUR_ACCESS_TOKEN";
+            Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
-            var apiInstance = new SearchApi(config);
+            var apiInstance = new SearchApi(Configuration.Default);
             var search = search_example;  // string | A parameter used for searching any portfolio group field. Wildcards(*) are supported at the end of words (e.g. 'Port*'). Read more about filtering results from LUSID here https://support.lusid.com/filtering-results-from-lusid. (optional) 
             var filter = filter_example;  // string | Expression to filter the result set.   For example, to filter on the Scope, use \"id.scope eq 'string'\"  Read more about filtering results from LUSID here https://support.lusid.com/filtering-results-from-lusid. (optional) 
             var sortBy = sortBy_example;  // string | Order the results by these fields. Use use the '-' sign to denote descending order e.g. -MyFieldName. Multiple fields can be denoted by a comma e.g. -MyFieldName,AnotherFieldName,-AFurtherFieldName (optional) 
@@ -363,7 +384,7 @@ namespace Example
                 PagedResourceListOfPortfolioGroup result = apiInstance.SearchPortfolioGroups(search, filter, sortBy, limit, page);
                 Debug.WriteLine(result);
             }
-            catch (ApiException  e)
+            catch (ApiException e)
             {
                 Debug.Print("Exception when calling SearchApi.SearchPortfolioGroups: " + e.Message );
                 Debug.Print("Status Code: "+ e.ErrorCode);
@@ -375,6 +396,7 @@ namespace Example
 ```
 
 ### Parameters
+
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
@@ -394,8 +416,8 @@ Name | Type | Description  | Notes
 
 ### HTTP request headers
 
- - **Content-Type**: Not defined
- - **Accept**: text/plain, application/json, text/json
+- **Content-Type**: Not defined
+- **Accept**: text/plain, application/json, text/json
 
 ### HTTP response details
 | Status code | Description | Response headers |
@@ -404,10 +426,14 @@ Name | Type | Description  | Notes
 | **400** | The details of the input related failure |  -  |
 | **0** | Error response |  -  |
 
-[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+[[Back to top]](#)
+[[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
 
-<a name="searchportfolios"></a>
-# **SearchPortfolios**
+
+## SearchPortfolios
+
 > PagedResourceListOfPortfolioSearchResult SearchPortfolios (string search = null, string filter = null, string sortBy = null, int? limit = null, string page = null)
 
 [EXPERIMENTAL] Search Portfolios
@@ -415,6 +441,7 @@ Name | Type | Description  | Notes
 Search through all portfolios
 
 ### Example
+
 ```csharp
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -428,12 +455,11 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration config = new Configuration();
-            config.BasePath = "http://localhost";
+            Configuration.Default.BasePath = "http://localhost";
             // Configure OAuth2 access token for authorization: oauth2
-            config.AccessToken = "YOUR_ACCESS_TOKEN";
+            Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
-            var apiInstance = new SearchApi(config);
+            var apiInstance = new SearchApi(Configuration.Default);
             var search = search_example;  // string | A parameter used for searching any portfolio field. Wildcards(*) are supported at the end of words (e.g. 'Port*'). Read more about filtering results from LUSID here https://support.lusid.com/filtering-results-from-lusid. (optional) 
             var filter = filter_example;  // string | Expression to filter the result set.   For example, to filter on the portfolio Type, use \"type eq 'Transaction'\"  Read more about filtering results from LUSID here https://support.lusid.com/filtering-results-from-lusid. (optional) 
             var sortBy = sortBy_example;  // string | Order the results by these fields. Use use the '-' sign to denote descending order e.g. -MyFieldName. Multiple fields can be denoted by a comma e.g. -MyFieldName,AnotherFieldName,-AFurtherFieldName (optional) 
@@ -446,7 +472,7 @@ namespace Example
                 PagedResourceListOfPortfolioSearchResult result = apiInstance.SearchPortfolios(search, filter, sortBy, limit, page);
                 Debug.WriteLine(result);
             }
-            catch (ApiException  e)
+            catch (ApiException e)
             {
                 Debug.Print("Exception when calling SearchApi.SearchPortfolios: " + e.Message );
                 Debug.Print("Status Code: "+ e.ErrorCode);
@@ -458,6 +484,7 @@ namespace Example
 ```
 
 ### Parameters
+
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
@@ -477,8 +504,8 @@ Name | Type | Description  | Notes
 
 ### HTTP request headers
 
- - **Content-Type**: Not defined
- - **Accept**: text/plain, application/json, text/json
+- **Content-Type**: Not defined
+- **Accept**: text/plain, application/json, text/json
 
 ### HTTP response details
 | Status code | Description | Response headers |
@@ -487,10 +514,14 @@ Name | Type | Description  | Notes
 | **400** | The details of the input related failure |  -  |
 | **0** | Error response |  -  |
 
-[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+[[Back to top]](#)
+[[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
 
-<a name="searchproperties"></a>
-# **SearchProperties**
+
+## SearchProperties
+
 > PagedResourceListOfPropertyDefinition SearchProperties (string search = null, string filter = null, string sortBy = null, int? limit = null, string page = null)
 
 [EXPERIMENTAL] Search Property Definitions
@@ -498,6 +529,7 @@ Name | Type | Description  | Notes
 Search through all Property Definitions
 
 ### Example
+
 ```csharp
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -511,12 +543,11 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration config = new Configuration();
-            config.BasePath = "http://localhost";
+            Configuration.Default.BasePath = "http://localhost";
             // Configure OAuth2 access token for authorization: oauth2
-            config.AccessToken = "YOUR_ACCESS_TOKEN";
+            Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
-            var apiInstance = new SearchApi(config);
+            var apiInstance = new SearchApi(Configuration.Default);
             var search = search_example;  // string | A parameter used for searching any field. Wildcards(*) are supported at the end of words (e.g. 'Port*'). Read more about filtering results from LUSID here https://support.lusid.com/filtering-results-from-lusid. (optional) 
             var filter = filter_example;  // string | Expression to filter the result set.   For example, to filter on the Value Type, use \"valueType eq 'string'\"  Read more about filtering results from LUSID here https://support.lusid.com/filtering-results-from-lusid. (optional) 
             var sortBy = sortBy_example;  // string | Order the results by these fields. Use use the '-' sign to denote descending order e.g. -MyFieldName. Multiple fields can be denoted by a comma e.g. -MyFieldName,AnotherFieldName,-AFurtherFieldName (optional) 
@@ -529,7 +560,7 @@ namespace Example
                 PagedResourceListOfPropertyDefinition result = apiInstance.SearchProperties(search, filter, sortBy, limit, page);
                 Debug.WriteLine(result);
             }
-            catch (ApiException  e)
+            catch (ApiException e)
             {
                 Debug.Print("Exception when calling SearchApi.SearchProperties: " + e.Message );
                 Debug.Print("Status Code: "+ e.ErrorCode);
@@ -541,6 +572,7 @@ namespace Example
 ```
 
 ### Parameters
+
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
@@ -560,8 +592,8 @@ Name | Type | Description  | Notes
 
 ### HTTP request headers
 
- - **Content-Type**: Not defined
- - **Accept**: text/plain, application/json, text/json
+- **Content-Type**: Not defined
+- **Accept**: text/plain, application/json, text/json
 
 ### HTTP response details
 | Status code | Description | Response headers |
@@ -570,5 +602,8 @@ Name | Type | Description  | Notes
 | **400** | The details of the input related failure |  -  |
 | **0** | Error response |  -  |
 
-[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+[[Back to top]](#)
+[[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
 

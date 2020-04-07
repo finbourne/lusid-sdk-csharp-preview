@@ -1,14 +1,17 @@
+
 # Lusid.Sdk.Model.CdsDetailSpecification
-CDSs generally conform to fairly standard definitions, but can be tweaked in a number of different ways.  This class gathers a number of common features which may deviate. These will default to the market standard when  no overrides are provided
+
 ## Properties
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **Seniority** | **string** | The seniority level of the CDS | 
 **RestructuringType** | **string** | The restructuring clause | 
-**ProtectStartDay** | **bool** | Does the protection leg pay out in the case of default on the start date | 
-**PayAccruedInterestOnDefault** | **bool** | Should accrued interest on the premium leg be paid if a credit event occurs | 
+**ProtectStartDay** | **bool?** | Does the protection leg pay out in the case of default on the start date | 
+**PayAccruedInterestOnDefault** | **bool?** | Should accrued interest on the premium leg be paid if a credit event occurs | 
 **RollFrequency** | [**Tenor**](Tenor.md) |  | 
 
-[[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to README]](../README.md)
 

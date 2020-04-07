@@ -9,8 +9,9 @@ Method | HTTP request | Description
 [**ReconcileValuation**](ReconciliationsApi.md#reconcilevaluation) | **POST** /api/portfolios/$reconcileValuation | [EXPERIMENTAL] Reconcile valuations performed on one or two sets of holdings using one or two configuration recipes.
 
 
-<a name="reconcileholdings"></a>
-# **ReconcileHoldings**
+
+## ReconcileHoldings
+
 > ResourceListOfReconciliationBreak ReconcileHoldings (List<string> sortBy = null, int? start = null, int? limit = null, string filter = null, PortfoliosReconciliationRequest request = null)
 
 [EARLY ACCESS] Reconcile portfolio holdings
@@ -18,6 +19,7 @@ Method | HTTP request | Description
 Reconcile the holdings of two portfolios.
 
 ### Example
+
 ```csharp
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -31,12 +33,11 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration config = new Configuration();
-            config.BasePath = "http://localhost";
+            Configuration.Default.BasePath = "http://localhost";
             // Configure OAuth2 access token for authorization: oauth2
-            config.AccessToken = "YOUR_ACCESS_TOKEN";
+            Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
-            var apiInstance = new ReconciliationsApi(config);
+            var apiInstance = new ReconciliationsApi(Configuration.Default);
             var sortBy = new List<string>(); // List<string> | Optional. Order the results by these fields. Use use the '-' sign to denote descending order e.g. -MyFieldName (optional) 
             var start = 56;  // int? | Optional. When paginating, skip this number of results (optional) 
             var limit = 56;  // int? | Optional. When paginating, limit the number of returned results to this many. (optional) 
@@ -49,7 +50,7 @@ namespace Example
                 ResourceListOfReconciliationBreak result = apiInstance.ReconcileHoldings(sortBy, start, limit, filter, request);
                 Debug.WriteLine(result);
             }
-            catch (ApiException  e)
+            catch (ApiException e)
             {
                 Debug.Print("Exception when calling ReconciliationsApi.ReconcileHoldings: " + e.Message );
                 Debug.Print("Status Code: "+ e.ErrorCode);
@@ -61,6 +62,7 @@ namespace Example
 ```
 
 ### Parameters
+
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
@@ -80,8 +82,8 @@ Name | Type | Description  | Notes
 
 ### HTTP request headers
 
- - **Content-Type**: Not defined
- - **Accept**: text/plain, application/json, text/json
+- **Content-Type**: Not defined
+- **Accept**: text/plain, application/json, text/json
 
 ### HTTP response details
 | Status code | Description | Response headers |
@@ -90,10 +92,14 @@ Name | Type | Description  | Notes
 | **400** | The details of the input related failure |  -  |
 | **0** | Error response |  -  |
 
-[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+[[Back to top]](#)
+[[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
 
-<a name="reconcileholdingspreview"></a>
-# **ReconcileHoldingsPreview**
+
+## ReconcileHoldingsPreview
+
 > ResourceListOfReconciliationBreak ReconcileHoldingsPreview (List<string> sortBy = null, int? start = null, int? limit = null, string filter = null, PortfoliosReconciliationRequestPreview request = null)
 
 [EXPERIMENTAL] Reconcile portfolio holdings with given tolerance
@@ -101,6 +107,7 @@ Name | Type | Description  | Notes
 Reconcile the holdings of two portfolios.
 
 ### Example
+
 ```csharp
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -114,12 +121,11 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration config = new Configuration();
-            config.BasePath = "http://localhost";
+            Configuration.Default.BasePath = "http://localhost";
             // Configure OAuth2 access token for authorization: oauth2
-            config.AccessToken = "YOUR_ACCESS_TOKEN";
+            Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
-            var apiInstance = new ReconciliationsApi(config);
+            var apiInstance = new ReconciliationsApi(Configuration.Default);
             var sortBy = new List<string>(); // List<string> | Optional. Order the results by these fields. Use use the '-' sign to denote descending order e.g. -MyFieldName (optional) 
             var start = 56;  // int? | Optional. When paginating, skip this number of results (optional) 
             var limit = 56;  // int? | Optional. When paginating, limit the number of returned results to this many. (optional) 
@@ -132,7 +138,7 @@ namespace Example
                 ResourceListOfReconciliationBreak result = apiInstance.ReconcileHoldingsPreview(sortBy, start, limit, filter, request);
                 Debug.WriteLine(result);
             }
-            catch (ApiException  e)
+            catch (ApiException e)
             {
                 Debug.Print("Exception when calling ReconciliationsApi.ReconcileHoldingsPreview: " + e.Message );
                 Debug.Print("Status Code: "+ e.ErrorCode);
@@ -144,6 +150,7 @@ namespace Example
 ```
 
 ### Parameters
+
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
@@ -163,8 +170,8 @@ Name | Type | Description  | Notes
 
 ### HTTP request headers
 
- - **Content-Type**: Not defined
- - **Accept**: text/plain, application/json, text/json
+- **Content-Type**: Not defined
+- **Accept**: text/plain, application/json, text/json
 
 ### HTTP response details
 | Status code | Description | Response headers |
@@ -173,10 +180,14 @@ Name | Type | Description  | Notes
 | **400** | The details of the input related failure |  -  |
 | **0** | Error response |  -  |
 
-[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+[[Back to top]](#)
+[[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
 
-<a name="reconcilevaluation"></a>
-# **ReconcileValuation**
+
+## ReconcileValuation
+
 > ResourceListOfReconciliationBreak ReconcileValuation (List<string> sortBy = null, int? start = null, int? limit = null, string filter = null, ValuationsReconciliationRequest request = null)
 
 [EXPERIMENTAL] Reconcile valuations performed on one or two sets of holdings using one or two configuration recipes.
@@ -184,6 +195,7 @@ Name | Type | Description  | Notes
 Perform valuation of one or two set of holdings using different one or two configuration recipes. Produce a breakdown of the resulting differences in valuation.
 
 ### Example
+
 ```csharp
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -197,12 +209,11 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration config = new Configuration();
-            config.BasePath = "http://localhost";
+            Configuration.Default.BasePath = "http://localhost";
             // Configure OAuth2 access token for authorization: oauth2
-            config.AccessToken = "YOUR_ACCESS_TOKEN";
+            Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
-            var apiInstance = new ReconciliationsApi(config);
+            var apiInstance = new ReconciliationsApi(Configuration.Default);
             var sortBy = new List<string>(); // List<string> | Optional. Order the results by these fields. Use use the '-' sign to denote descending order e.g. -MyFieldName (optional) 
             var start = 56;  // int? | Optional. When paginating, skip this number of results (optional) 
             var limit = 56;  // int? | Optional. When paginating, limit the number of returned results to this many. (optional) 
@@ -215,7 +226,7 @@ namespace Example
                 ResourceListOfReconciliationBreak result = apiInstance.ReconcileValuation(sortBy, start, limit, filter, request);
                 Debug.WriteLine(result);
             }
-            catch (ApiException  e)
+            catch (ApiException e)
             {
                 Debug.Print("Exception when calling ReconciliationsApi.ReconcileValuation: " + e.Message );
                 Debug.Print("Status Code: "+ e.ErrorCode);
@@ -227,6 +238,7 @@ namespace Example
 ```
 
 ### Parameters
+
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
@@ -246,8 +258,8 @@ Name | Type | Description  | Notes
 
 ### HTTP request headers
 
- - **Content-Type**: Not defined
- - **Accept**: text/plain, application/json, text/json
+- **Content-Type**: Not defined
+- **Accept**: text/plain, application/json, text/json
 
 ### HTTP response details
 | Status code | Description | Response headers |
@@ -256,5 +268,8 @@ Name | Type | Description  | Notes
 | **400** | The details of the input related failure |  -  |
 | **0** | Error response |  -  |
 
-[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+[[Back to top]](#)
+[[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
 

@@ -1,10 +1,12 @@
+
 # Lusid.Sdk.Model.ListAggregationResponse
+
 ## Properties
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**AggregationEffectiveAt** | **DateTimeOffset** |  | [optional] 
-**AggregationAsAt** | **DateTimeOffset** |  | [optional] 
+**AggregationEffectiveAt** | **DateTimeOffset?** |  | [optional] 
+**AggregationAsAt** | **DateTimeOffset?** |  | [optional] 
 **Href** | **string** |  | [optional] 
 **Data** | **List&lt;Dictionary&lt;string, Object&gt;&gt;** |  | [optional] 
 **AggregationCurrency** | **string** |  | [optional] 
@@ -13,5 +15,7 @@ Name | Type | Description | Notes
 **Manifest** | [**MarketDataManifest**](MarketDataManifest.md) |  | [optional] 
 **Links** | [**List&lt;Link&gt;**](Link.md) |  | [optional] 
 
-[[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to README]](../README.md)
 

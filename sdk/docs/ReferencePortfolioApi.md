@@ -10,8 +10,9 @@ Method | HTTP request | Description
 [**UpsertReferencePortfolioConstituents**](ReferencePortfolioApi.md#upsertreferenceportfolioconstituents) | **POST** /api/referenceportfolios/{scope}/{code}/constituents | Add constituents
 
 
-<a name="createreferenceportfolio"></a>
-# **CreateReferencePortfolio**
+
+## CreateReferencePortfolio
+
 > Portfolio CreateReferencePortfolio (string scope, CreateReferencePortfolioRequest referencePortfolio)
 
 Create reference portfolio
@@ -19,6 +20,7 @@ Create reference portfolio
 Create a new reference portfolio.
 
 ### Example
+
 ```csharp
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -32,12 +34,11 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration config = new Configuration();
-            config.BasePath = "http://localhost";
+            Configuration.Default.BasePath = "http://localhost";
             // Configure OAuth2 access token for authorization: oauth2
-            config.AccessToken = "YOUR_ACCESS_TOKEN";
+            Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
-            var apiInstance = new ReferencePortfolioApi(config);
+            var apiInstance = new ReferencePortfolioApi(Configuration.Default);
             var scope = scope_example;  // string | The intended scope of the portfolio
             var referencePortfolio = new CreateReferencePortfolioRequest(); // CreateReferencePortfolioRequest | The portfolio creation request object
 
@@ -47,7 +48,7 @@ namespace Example
                 Portfolio result = apiInstance.CreateReferencePortfolio(scope, referencePortfolio);
                 Debug.WriteLine(result);
             }
-            catch (ApiException  e)
+            catch (ApiException e)
             {
                 Debug.Print("Exception when calling ReferencePortfolioApi.CreateReferencePortfolio: " + e.Message );
                 Debug.Print("Status Code: "+ e.ErrorCode);
@@ -59,6 +60,7 @@ namespace Example
 ```
 
 ### Parameters
+
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
@@ -75,8 +77,8 @@ Name | Type | Description  | Notes
 
 ### HTTP request headers
 
- - **Content-Type**: Not defined
- - **Accept**: text/plain, application/json, text/json
+- **Content-Type**: Not defined
+- **Accept**: text/plain, application/json, text/json
 
 ### HTTP response details
 | Status code | Description | Response headers |
@@ -85,10 +87,14 @@ Name | Type | Description  | Notes
 | **400** | The details of the input related failure |  -  |
 | **0** | Error response |  -  |
 
-[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+[[Back to top]](#)
+[[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
 
-<a name="getreferenceportfolioconstituents"></a>
-# **GetReferencePortfolioConstituents**
+
+## GetReferencePortfolioConstituents
+
 > GetReferencePortfolioConstituentsResponse GetReferencePortfolioConstituents (string scope, string code, DateTimeOrCutLabel effectiveAt = null, DateTimeOffset? asAt = null, List<string> propertyKeys = null)
 
 Get constituents
@@ -96,6 +102,7 @@ Get constituents
 Get constituents from the specified reference portfolio at an effective time.
 
 ### Example
+
 ```csharp
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -109,12 +116,11 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration config = new Configuration();
-            config.BasePath = "http://localhost";
+            Configuration.Default.BasePath = "http://localhost";
             // Configure OAuth2 access token for authorization: oauth2
-            config.AccessToken = "YOUR_ACCESS_TOKEN";
+            Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
-            var apiInstance = new ReferencePortfolioApi(config);
+            var apiInstance = new ReferencePortfolioApi(Configuration.Default);
             var scope = scope_example;  // string | The scope of the reference portfolio.
             var code = code_example;  // string | The code of the reference portfolio. Together with the scope this uniquely identifies              the reference portfolio.
             var effectiveAt = effectiveAt_example;  // DateTimeOrCutLabel | The effective date of the constituents to retrieve. Defaults to the current LUSID system datetime if not specified. (optional) 
@@ -127,7 +133,7 @@ namespace Example
                 GetReferencePortfolioConstituentsResponse result = apiInstance.GetReferencePortfolioConstituents(scope, code, effectiveAt, asAt, propertyKeys);
                 Debug.WriteLine(result);
             }
-            catch (ApiException  e)
+            catch (ApiException e)
             {
                 Debug.Print("Exception when calling ReferencePortfolioApi.GetReferencePortfolioConstituents: " + e.Message );
                 Debug.Print("Status Code: "+ e.ErrorCode);
@@ -139,6 +145,7 @@ namespace Example
 ```
 
 ### Parameters
+
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
@@ -158,8 +165,8 @@ Name | Type | Description  | Notes
 
 ### HTTP request headers
 
- - **Content-Type**: Not defined
- - **Accept**: text/plain, application/json, text/json
+- **Content-Type**: Not defined
+- **Accept**: text/plain, application/json, text/json
 
 ### HTTP response details
 | Status code | Description | Response headers |
@@ -168,10 +175,14 @@ Name | Type | Description  | Notes
 | **400** | The details of the input related failure |  -  |
 | **0** | Error response |  -  |
 
-[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+[[Back to top]](#)
+[[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
 
-<a name="listconstituentsadjustments"></a>
-# **ListConstituentsAdjustments**
+
+## ListConstituentsAdjustments
+
 > ResourceListOfConstituentsAdjustmentHeader ListConstituentsAdjustments (string scope, string code, DateTimeOrCutLabel fromEffectiveAt, DateTimeOrCutLabel toEffectiveAt, DateTimeOffset? asAtTime = null)
 
 List constituents adjustments
@@ -179,6 +190,7 @@ List constituents adjustments
 List the constituent adjustments made to the specified reference portfolio over a specified interval of effective time.
 
 ### Example
+
 ```csharp
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -192,12 +204,11 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration config = new Configuration();
-            config.BasePath = "http://localhost";
+            Configuration.Default.BasePath = "http://localhost";
             // Configure OAuth2 access token for authorization: oauth2
-            config.AccessToken = "YOUR_ACCESS_TOKEN";
+            Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
-            var apiInstance = new ReferencePortfolioApi(config);
+            var apiInstance = new ReferencePortfolioApi(Configuration.Default);
             var scope = scope_example;  // string | The scope of the portfolio
             var code = code_example;  // string | Code for the portfolio
             var fromEffectiveAt = fromEffectiveAt_example;  // DateTimeOrCutLabel | Events between this time (inclusive) and the toEffectiveAt are returned.
@@ -210,7 +221,7 @@ namespace Example
                 ResourceListOfConstituentsAdjustmentHeader result = apiInstance.ListConstituentsAdjustments(scope, code, fromEffectiveAt, toEffectiveAt, asAtTime);
                 Debug.WriteLine(result);
             }
-            catch (ApiException  e)
+            catch (ApiException e)
             {
                 Debug.Print("Exception when calling ReferencePortfolioApi.ListConstituentsAdjustments: " + e.Message );
                 Debug.Print("Status Code: "+ e.ErrorCode);
@@ -222,6 +233,7 @@ namespace Example
 ```
 
 ### Parameters
+
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
@@ -241,8 +253,8 @@ Name | Type | Description  | Notes
 
 ### HTTP request headers
 
- - **Content-Type**: Not defined
- - **Accept**: text/plain, application/json, text/json
+- **Content-Type**: Not defined
+- **Accept**: text/plain, application/json, text/json
 
 ### HTTP response details
 | Status code | Description | Response headers |
@@ -251,10 +263,14 @@ Name | Type | Description  | Notes
 | **400** | The details of the input related failure |  -  |
 | **0** | Error response |  -  |
 
-[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+[[Back to top]](#)
+[[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
 
-<a name="upsertreferenceportfolioconstituents"></a>
-# **UpsertReferencePortfolioConstituents**
+
+## UpsertReferencePortfolioConstituents
+
 > UpsertReferencePortfolioConstituentsResponse UpsertReferencePortfolioConstituents (string scope, string code, UpsertReferencePortfolioConstituentsRequest constituents)
 
 Add constituents
@@ -262,6 +278,7 @@ Add constituents
 Add constituents to the specified reference portfolio.
 
 ### Example
+
 ```csharp
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -275,12 +292,11 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration config = new Configuration();
-            config.BasePath = "http://localhost";
+            Configuration.Default.BasePath = "http://localhost";
             // Configure OAuth2 access token for authorization: oauth2
-            config.AccessToken = "YOUR_ACCESS_TOKEN";
+            Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
-            var apiInstance = new ReferencePortfolioApi(config);
+            var apiInstance = new ReferencePortfolioApi(Configuration.Default);
             var scope = scope_example;  // string | The scope of the portfolio
             var code = code_example;  // string | The code of the portfolio
             var constituents = new UpsertReferencePortfolioConstituentsRequest(); // UpsertReferencePortfolioConstituentsRequest | The constituents to upload to the portfolio
@@ -291,7 +307,7 @@ namespace Example
                 UpsertReferencePortfolioConstituentsResponse result = apiInstance.UpsertReferencePortfolioConstituents(scope, code, constituents);
                 Debug.WriteLine(result);
             }
-            catch (ApiException  e)
+            catch (ApiException e)
             {
                 Debug.Print("Exception when calling ReferencePortfolioApi.UpsertReferencePortfolioConstituents: " + e.Message );
                 Debug.Print("Status Code: "+ e.ErrorCode);
@@ -303,6 +319,7 @@ namespace Example
 ```
 
 ### Parameters
+
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
@@ -320,8 +337,8 @@ Name | Type | Description  | Notes
 
 ### HTTP request headers
 
- - **Content-Type**: Not defined
- - **Accept**: text/plain, application/json, text/json
+- **Content-Type**: Not defined
+- **Accept**: text/plain, application/json, text/json
 
 ### HTTP response details
 | Status code | Description | Response headers |
@@ -330,5 +347,8 @@ Name | Type | Description  | Notes
 | **400** | The details of the input related failure |  -  |
 | **0** | Error response |  -  |
 
-[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+[[Back to top]](#)
+[[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
 

@@ -13,8 +13,9 @@ Method | HTTP request | Description
 [**UpsertPersonAccessMetadata**](PersonsApi.md#upsertpersonaccessmetadata) | **PUT** /api/persons/{idTypeScope}/{idTypeCode}/{code}/metadata/{metadataKey} | [EXPERIMENTAL] Upsert a Person Access Metadata entry associated with a specific metadataKey. This creates or updates the data in LUSID.
 
 
-<a name="deleteperson"></a>
-# **DeletePerson**
+
+## DeletePerson
+
 > DeletedEntityResponse DeletePerson (string idTypeScope, string idTypeCode, string code)
 
 [EXPERIMENTAL] Delete person
@@ -22,6 +23,7 @@ Method | HTTP request | Description
 Delete a person. Deletion will be valid from the person's creation datetime.  This means that the person will no longer exist at any effective datetime from the asAt datetime of deletion.
 
 ### Example
+
 ```csharp
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -35,12 +37,11 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration config = new Configuration();
-            config.BasePath = "http://localhost";
+            Configuration.Default.BasePath = "http://localhost";
             // Configure OAuth2 access token for authorization: oauth2
-            config.AccessToken = "YOUR_ACCESS_TOKEN";
+            Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
-            var apiInstance = new PersonsApi(config);
+            var apiInstance = new PersonsApi(Configuration.Default);
             var idTypeScope = idTypeScope_example;  // string | The scope of the person identifier type.
             var idTypeCode = idTypeCode_example;  // string | The code of the person identifier type.
             var code = code_example;  // string | Code of the person under specified identifier type scope and code. This together with defined              identifier type uniquely identifies the person to delete.
@@ -51,7 +52,7 @@ namespace Example
                 DeletedEntityResponse result = apiInstance.DeletePerson(idTypeScope, idTypeCode, code);
                 Debug.WriteLine(result);
             }
-            catch (ApiException  e)
+            catch (ApiException e)
             {
                 Debug.Print("Exception when calling PersonsApi.DeletePerson: " + e.Message );
                 Debug.Print("Status Code: "+ e.ErrorCode);
@@ -63,6 +64,7 @@ namespace Example
 ```
 
 ### Parameters
+
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
@@ -80,8 +82,8 @@ Name | Type | Description  | Notes
 
 ### HTTP request headers
 
- - **Content-Type**: Not defined
- - **Accept**: text/plain, application/json, text/json
+- **Content-Type**: Not defined
+- **Accept**: text/plain, application/json, text/json
 
 ### HTTP response details
 | Status code | Description | Response headers |
@@ -90,10 +92,14 @@ Name | Type | Description  | Notes
 | **400** | The details of the input related failure |  -  |
 | **0** | Error response |  -  |
 
-[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+[[Back to top]](#)
+[[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
 
-<a name="deletepersonaccessmetadata"></a>
-# **DeletePersonAccessMetadata**
+
+## DeletePersonAccessMetadata
+
 > DeletedEntityResponse DeletePersonAccessMetadata (string idTypeScope, string idTypeCode, string code, string metadataKey, DateTimeOrCutLabel effectiveAt = null)
 
 [EXPERIMENTAL] Delete a Person Access Metadata entry
@@ -101,6 +107,7 @@ Name | Type | Description  | Notes
 Deletes the Person Access Metadata entry that exactly matches the provided identifier parts.    It is important to always check to verify success (or failure).
 
 ### Example
+
 ```csharp
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -114,12 +121,11 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration config = new Configuration();
-            config.BasePath = "http://localhost";
+            Configuration.Default.BasePath = "http://localhost";
             // Configure OAuth2 access token for authorization: oauth2
-            config.AccessToken = "YOUR_ACCESS_TOKEN";
+            Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
-            var apiInstance = new PersonsApi(config);
+            var apiInstance = new PersonsApi(Configuration.Default);
             var idTypeScope = idTypeScope_example;  // string | Scope of the person identifier.
             var idTypeCode = idTypeCode_example;  // string | Code of the person identifier.
             var code = code_example;  // string | Code of the person under specified identifier type's scope and code.
@@ -132,7 +138,7 @@ namespace Example
                 DeletedEntityResponse result = apiInstance.DeletePersonAccessMetadata(idTypeScope, idTypeCode, code, metadataKey, effectiveAt);
                 Debug.WriteLine(result);
             }
-            catch (ApiException  e)
+            catch (ApiException e)
             {
                 Debug.Print("Exception when calling PersonsApi.DeletePersonAccessMetadata: " + e.Message );
                 Debug.Print("Status Code: "+ e.ErrorCode);
@@ -144,6 +150,7 @@ namespace Example
 ```
 
 ### Parameters
+
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
@@ -163,8 +170,8 @@ Name | Type | Description  | Notes
 
 ### HTTP request headers
 
- - **Content-Type**: Not defined
- - **Accept**: text/plain, application/json, text/json
+- **Content-Type**: Not defined
+- **Accept**: text/plain, application/json, text/json
 
 ### HTTP response details
 | Status code | Description | Response headers |
@@ -173,10 +180,14 @@ Name | Type | Description  | Notes
 | **400** | The details of the input related failure |  -  |
 | **0** | Error response |  -  |
 
-[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+[[Back to top]](#)
+[[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
 
-<a name="getallpersonaccessmetadata"></a>
-# **GetAllPersonAccessMetadata**
+
+## GetAllPersonAccessMetadata
+
 > Dictionary&lt;string, List&lt;AccessMetadataValue&gt;&gt; GetAllPersonAccessMetadata (string idTypeScope, string idTypeCode, string code, DateTimeOrCutLabel effectiveAt = null, DateTimeOffset? asAt = null)
 
 [EXPERIMENTAL] Get Access Metadata rules for a Person
@@ -184,6 +195,7 @@ Name | Type | Description  | Notes
 Pass the Scope and Code of the Person identifier along with the person code parameter to retrieve the associated Access Metadata
 
 ### Example
+
 ```csharp
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -197,12 +209,11 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration config = new Configuration();
-            config.BasePath = "http://localhost";
+            Configuration.Default.BasePath = "http://localhost";
             // Configure OAuth2 access token for authorization: oauth2
-            config.AccessToken = "YOUR_ACCESS_TOKEN";
+            Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
-            var apiInstance = new PersonsApi(config);
+            var apiInstance = new PersonsApi(Configuration.Default);
             var idTypeScope = idTypeScope_example;  // string | Scope of the person identifier.
             var idTypeCode = idTypeCode_example;  // string | Code of the person identifier.
             var code = code_example;  // string | Code of the person under specified identifier type's scope and code.
@@ -215,7 +226,7 @@ namespace Example
                 Dictionary<string, List<AccessMetadataValue>> result = apiInstance.GetAllPersonAccessMetadata(idTypeScope, idTypeCode, code, effectiveAt, asAt);
                 Debug.WriteLine(result);
             }
-            catch (ApiException  e)
+            catch (ApiException e)
             {
                 Debug.Print("Exception when calling PersonsApi.GetAllPersonAccessMetadata: " + e.Message );
                 Debug.Print("Status Code: "+ e.ErrorCode);
@@ -227,6 +238,7 @@ namespace Example
 ```
 
 ### Parameters
+
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
@@ -246,8 +258,8 @@ Name | Type | Description  | Notes
 
 ### HTTP request headers
 
- - **Content-Type**: Not defined
- - **Accept**: text/plain, application/json, text/json
+- **Content-Type**: Not defined
+- **Accept**: text/plain, application/json, text/json
 
 ### HTTP response details
 | Status code | Description | Response headers |
@@ -256,10 +268,14 @@ Name | Type | Description  | Notes
 | **400** | The details of the input related failure |  -  |
 | **0** | Error response |  -  |
 
-[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+[[Back to top]](#)
+[[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
 
-<a name="getperson"></a>
-# **GetPerson**
+
+## GetPerson
+
 > Person GetPerson (string idTypeScope, string idTypeCode, string code, List<string> propertyKeys = null, DateTimeOrCutLabel effectiveAt = null, DateTimeOffset? asAt = null)
 
 [EXPERIMENTAL] Get Person
@@ -267,6 +283,7 @@ Name | Type | Description  | Notes
 Retrieve the definition of a person.
 
 ### Example
+
 ```csharp
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -280,12 +297,11 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration config = new Configuration();
-            config.BasePath = "http://localhost";
+            Configuration.Default.BasePath = "http://localhost";
             // Configure OAuth2 access token for authorization: oauth2
-            config.AccessToken = "YOUR_ACCESS_TOKEN";
+            Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
-            var apiInstance = new PersonsApi(config);
+            var apiInstance = new PersonsApi(Configuration.Default);
             var idTypeScope = idTypeScope_example;  // string | Scope of the person identifier.
             var idTypeCode = idTypeCode_example;  // string | Code of the person identifier.
             var code = code_example;  // string | Code of the person under specified scope and code. This together with stated identifier type uniquely              identifies the person.
@@ -299,7 +315,7 @@ namespace Example
                 Person result = apiInstance.GetPerson(idTypeScope, idTypeCode, code, propertyKeys, effectiveAt, asAt);
                 Debug.WriteLine(result);
             }
-            catch (ApiException  e)
+            catch (ApiException e)
             {
                 Debug.Print("Exception when calling PersonsApi.GetPerson: " + e.Message );
                 Debug.Print("Status Code: "+ e.ErrorCode);
@@ -311,6 +327,7 @@ namespace Example
 ```
 
 ### Parameters
+
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
@@ -331,8 +348,8 @@ Name | Type | Description  | Notes
 
 ### HTTP request headers
 
- - **Content-Type**: Not defined
- - **Accept**: text/plain, application/json, text/json
+- **Content-Type**: Not defined
+- **Accept**: text/plain, application/json, text/json
 
 ### HTTP response details
 | Status code | Description | Response headers |
@@ -341,10 +358,14 @@ Name | Type | Description  | Notes
 | **400** | The details of the input related failure |  -  |
 | **0** | Error response |  -  |
 
-[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+[[Back to top]](#)
+[[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
 
-<a name="getpersonaccessmetadatabykey"></a>
-# **GetPersonAccessMetadataByKey**
+
+## GetPersonAccessMetadataByKey
+
 > ICollection&lt;AccessMetadataValue&gt; GetPersonAccessMetadataByKey (string idTypeScope, string idTypeCode, string code, string metadataKey, DateTimeOrCutLabel effectiveAt = null, DateTimeOffset? asAt = null)
 
 [EXPERIMENTAL] Get an entry identified by a metadataKey in the Access Metadata of a Person
@@ -352,6 +373,7 @@ Name | Type | Description  | Notes
 Get a specific Person Access Metadata by specifying the corresponding identifier parts and Person code                No matching will be performed through this endpoint. To retrieve an entry, it is necessary to specify, exactly, the identifier of the entry
 
 ### Example
+
 ```csharp
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -365,12 +387,11 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration config = new Configuration();
-            config.BasePath = "http://localhost";
+            Configuration.Default.BasePath = "http://localhost";
             // Configure OAuth2 access token for authorization: oauth2
-            config.AccessToken = "YOUR_ACCESS_TOKEN";
+            Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
-            var apiInstance = new PersonsApi(config);
+            var apiInstance = new PersonsApi(Configuration.Default);
             var idTypeScope = idTypeScope_example;  // string | Scope of the person identifier.
             var idTypeCode = idTypeCode_example;  // string | Code of the person identifier.
             var code = code_example;  // string | Code of the person under specified identifier type's scope and code.
@@ -384,7 +405,7 @@ namespace Example
                 ICollection<AccessMetadataValue> result = apiInstance.GetPersonAccessMetadataByKey(idTypeScope, idTypeCode, code, metadataKey, effectiveAt, asAt);
                 Debug.WriteLine(result);
             }
-            catch (ApiException  e)
+            catch (ApiException e)
             {
                 Debug.Print("Exception when calling PersonsApi.GetPersonAccessMetadataByKey: " + e.Message );
                 Debug.Print("Status Code: "+ e.ErrorCode);
@@ -396,6 +417,7 @@ namespace Example
 ```
 
 ### Parameters
+
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
@@ -416,8 +438,8 @@ Name | Type | Description  | Notes
 
 ### HTTP request headers
 
- - **Content-Type**: Not defined
- - **Accept**: text/plain, application/json, text/json
+- **Content-Type**: Not defined
+- **Accept**: text/plain, application/json, text/json
 
 ### HTTP response details
 | Status code | Description | Response headers |
@@ -426,10 +448,14 @@ Name | Type | Description  | Notes
 | **400** | The details of the input related failure |  -  |
 | **0** | Error response |  -  |
 
-[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+[[Back to top]](#)
+[[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
 
-<a name="upsertperson"></a>
-# **UpsertPerson**
+
+## UpsertPerson
+
 > Person UpsertPerson (UpsertPersonRequest request = null)
 
 [EXPERIMENTAL] Upsert Person
@@ -437,6 +463,7 @@ Name | Type | Description  | Notes
 Create or update new person under specified scope
 
 ### Example
+
 ```csharp
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -450,12 +477,11 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration config = new Configuration();
-            config.BasePath = "http://localhost";
+            Configuration.Default.BasePath = "http://localhost";
             // Configure OAuth2 access token for authorization: oauth2
-            config.AccessToken = "YOUR_ACCESS_TOKEN";
+            Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
-            var apiInstance = new PersonsApi(config);
+            var apiInstance = new PersonsApi(Configuration.Default);
             var request = new UpsertPersonRequest(); // UpsertPersonRequest | Request to create or update a person. (optional) 
 
             try
@@ -464,7 +490,7 @@ namespace Example
                 Person result = apiInstance.UpsertPerson(request);
                 Debug.WriteLine(result);
             }
-            catch (ApiException  e)
+            catch (ApiException e)
             {
                 Debug.Print("Exception when calling PersonsApi.UpsertPerson: " + e.Message );
                 Debug.Print("Status Code: "+ e.ErrorCode);
@@ -476,6 +502,7 @@ namespace Example
 ```
 
 ### Parameters
+
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
@@ -491,8 +518,8 @@ Name | Type | Description  | Notes
 
 ### HTTP request headers
 
- - **Content-Type**: Not defined
- - **Accept**: text/plain, application/json, text/json
+- **Content-Type**: Not defined
+- **Accept**: text/plain, application/json, text/json
 
 ### HTTP response details
 | Status code | Description | Response headers |
@@ -501,10 +528,14 @@ Name | Type | Description  | Notes
 | **400** | The details of the input related failure |  -  |
 | **0** | Error response |  -  |
 
-[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+[[Back to top]](#)
+[[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
 
-<a name="upsertpersonaccessmetadata"></a>
-# **UpsertPersonAccessMetadata**
+
+## UpsertPersonAccessMetadata
+
 > ResourceListOfAccessMetadataValueOf UpsertPersonAccessMetadata (string idTypeScope, string idTypeCode, string code, string metadataKey, UpsertPersonAccessMetadataRequest request, DateTimeOrCutLabel effectiveAt = null)
 
 [EXPERIMENTAL] Upsert a Person Access Metadata entry associated with a specific metadataKey. This creates or updates the data in LUSID.
@@ -512,6 +543,7 @@ Name | Type | Description  | Notes
 Update or insert one Person Access Metadata entry in a single scope. An item will be updated if it already exists  and inserted if it does not.                The response will return the successfully updated or inserted Person Access Metadata rule or failure message if unsuccessful.                It is important to always check to verify success (or failure).                Multiple rules for a metadataKey can exist with different effective at dates, when resources are accessed the rule that is active for the current time will be fetched.
 
 ### Example
+
 ```csharp
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -525,12 +557,11 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration config = new Configuration();
-            config.BasePath = "http://localhost";
+            Configuration.Default.BasePath = "http://localhost";
             // Configure OAuth2 access token for authorization: oauth2
-            config.AccessToken = "YOUR_ACCESS_TOKEN";
+            Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
-            var apiInstance = new PersonsApi(config);
+            var apiInstance = new PersonsApi(Configuration.Default);
             var idTypeScope = idTypeScope_example;  // string | Scope of the person identifier.
             var idTypeCode = idTypeCode_example;  // string | Code of the person identifier.
             var code = code_example;  // string | Code of the person under specified identifier type's scope and code.
@@ -544,7 +575,7 @@ namespace Example
                 ResourceListOfAccessMetadataValueOf result = apiInstance.UpsertPersonAccessMetadata(idTypeScope, idTypeCode, code, metadataKey, request, effectiveAt);
                 Debug.WriteLine(result);
             }
-            catch (ApiException  e)
+            catch (ApiException e)
             {
                 Debug.Print("Exception when calling PersonsApi.UpsertPersonAccessMetadata: " + e.Message );
                 Debug.Print("Status Code: "+ e.ErrorCode);
@@ -556,6 +587,7 @@ namespace Example
 ```
 
 ### Parameters
+
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
@@ -576,8 +608,8 @@ Name | Type | Description  | Notes
 
 ### HTTP request headers
 
- - **Content-Type**: Not defined
- - **Accept**: text/plain, application/json, text/json
+- **Content-Type**: Not defined
+- **Accept**: text/plain, application/json, text/json
 
 ### HTTP response details
 | Status code | Description | Response headers |
@@ -586,5 +618,8 @@ Name | Type | Description  | Notes
 | **400** | The details of the input related failure |  -  |
 | **0** | Error response |  -  |
 
-[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+[[Back to top]](#)
+[[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
 

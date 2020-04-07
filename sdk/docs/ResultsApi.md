@@ -8,8 +8,9 @@ Method | HTTP request | Description
 [**UpsertResults**](ResultsApi.md#upsertresults) | **POST** /api/results | [EXPERIMENTAL] Upsert results
 
 
-<a name="getresults"></a>
-# **GetResults**
+
+## GetResults
+
 > Results GetResults (string entityScope, string entityCode, string calculationScope, string calculationCode, DateTimeOffset? effectiveAt)
 
 [EXPERIMENTAL] Retrieve a page of results all keyed by the provided parameters. The result store is not bi-temporal; a single date  addressed the market effectiveAt.
@@ -17,6 +18,7 @@ Method | HTTP request | Description
 Retrieve pre-calculated results that have been stored in LUSID.
 
 ### Example
+
 ```csharp
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -30,12 +32,11 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration config = new Configuration();
-            config.BasePath = "http://localhost";
+            Configuration.Default.BasePath = "http://localhost";
             // Configure OAuth2 access token for authorization: oauth2
-            config.AccessToken = "YOUR_ACCESS_TOKEN";
+            Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
-            var apiInstance = new ResultsApi(config);
+            var apiInstance = new ResultsApi(Configuration.Default);
             var entityScope = entityScope_example;  // string | The scope of the data or entity being stored
             var entityCode = entityCode_example;  // string | The identifier for the data or results entity being stored
             var calculationScope = calculationScope_example;  // string | The identifying scope for the calculation that produced the result
@@ -48,7 +49,7 @@ namespace Example
                 Results result = apiInstance.GetResults(entityScope, entityCode, calculationScope, calculationCode, effectiveAt);
                 Debug.WriteLine(result);
             }
-            catch (ApiException  e)
+            catch (ApiException e)
             {
                 Debug.Print("Exception when calling ResultsApi.GetResults: " + e.Message );
                 Debug.Print("Status Code: "+ e.ErrorCode);
@@ -60,6 +61,7 @@ namespace Example
 ```
 
 ### Parameters
+
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
@@ -79,8 +81,8 @@ Name | Type | Description  | Notes
 
 ### HTTP request headers
 
- - **Content-Type**: Not defined
- - **Accept**: text/plain, application/json, text/json
+- **Content-Type**: Not defined
+- **Accept**: text/plain, application/json, text/json
 
 ### HTTP response details
 | Status code | Description | Response headers |
@@ -89,10 +91,14 @@ Name | Type | Description  | Notes
 | **400** | The details of the input related failure |  -  |
 | **0** | Error response |  -  |
 
-[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+[[Back to top]](#)
+[[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
 
-<a name="upsertresults"></a>
-# **UpsertResults**
+
+## UpsertResults
+
 > Results UpsertResults (CreateResults request = null)
 
 [EXPERIMENTAL] Upsert results
@@ -100,6 +106,7 @@ Name | Type | Description  | Notes
 Upsert pre-calculated results against a specified combination of key parameters defined in the CreateResults request.
 
 ### Example
+
 ```csharp
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -113,12 +120,11 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration config = new Configuration();
-            config.BasePath = "http://localhost";
+            Configuration.Default.BasePath = "http://localhost";
             // Configure OAuth2 access token for authorization: oauth2
-            config.AccessToken = "YOUR_ACCESS_TOKEN";
+            Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
-            var apiInstance = new ResultsApi(config);
+            var apiInstance = new ResultsApi(Configuration.Default);
             var request = new CreateResults(); // CreateResults | The details of what to upsert (optional) 
 
             try
@@ -127,7 +133,7 @@ namespace Example
                 Results result = apiInstance.UpsertResults(request);
                 Debug.WriteLine(result);
             }
-            catch (ApiException  e)
+            catch (ApiException e)
             {
                 Debug.Print("Exception when calling ResultsApi.UpsertResults: " + e.Message );
                 Debug.Print("Status Code: "+ e.ErrorCode);
@@ -139,6 +145,7 @@ namespace Example
 ```
 
 ### Parameters
+
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
@@ -154,8 +161,8 @@ Name | Type | Description  | Notes
 
 ### HTTP request headers
 
- - **Content-Type**: Not defined
- - **Accept**: text/plain, application/json, text/json
+- **Content-Type**: Not defined
+- **Accept**: text/plain, application/json, text/json
 
 ### HTTP response details
 | Status code | Description | Response headers |
@@ -164,5 +171,8 @@ Name | Type | Description  | Notes
 | **400** | The details of the input related failure |  -  |
 | **0** | Error response |  -  |
 
-[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+[[Back to top]](#)
+[[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
 

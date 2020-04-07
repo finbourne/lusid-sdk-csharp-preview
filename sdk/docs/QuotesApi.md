@@ -14,8 +14,9 @@ Method | HTTP request | Description
 [**UpsertQuotes**](QuotesApi.md#upsertquotes) | **POST** /api/quotes/{scope} | [BETA] Upsert quotes
 
 
-<a name="deletequoteacccesmetadatarule"></a>
-# **DeleteQuoteAcccesMetadataRule**
+
+## DeleteQuoteAcccesMetadataRule
+
 > QuoteAccessMetadataRule DeleteQuoteAcccesMetadataRule (string scope, string provider = null, string priceSource = null, string instrumentIdType = null, string instrumentId = null, string quoteType = null, string field = null, DateTimeOrCutLabel effectiveAt = null)
 
 [EXPERIMENTAL] Delete a Quote Access Metadata Rule
@@ -23,6 +24,7 @@ Method | HTTP request | Description
 Delete the Quote Access Metadata Rule that exactly matches the provided identifier parts
 
 ### Example
+
 ```csharp
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -36,12 +38,11 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration config = new Configuration();
-            config.BasePath = "http://localhost";
+            Configuration.Default.BasePath = "http://localhost";
             // Configure OAuth2 access token for authorization: oauth2
-            config.AccessToken = "YOUR_ACCESS_TOKEN";
+            Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
-            var apiInstance = new QuotesApi(config);
+            var apiInstance = new QuotesApi(Configuration.Default);
             var scope = scope_example;  // string | The scope of the Quote Access Metadata Rule to retrieve.
             var provider = provider_example;  // string | The Provider of the rule (optional) 
             var priceSource = priceSource_example;  // string | The PriceSource of the rule (optional) 
@@ -57,7 +58,7 @@ namespace Example
                 QuoteAccessMetadataRule result = apiInstance.DeleteQuoteAcccesMetadataRule(scope, provider, priceSource, instrumentIdType, instrumentId, quoteType, field, effectiveAt);
                 Debug.WriteLine(result);
             }
-            catch (ApiException  e)
+            catch (ApiException e)
             {
                 Debug.Print("Exception when calling QuotesApi.DeleteQuoteAcccesMetadataRule: " + e.Message );
                 Debug.Print("Status Code: "+ e.ErrorCode);
@@ -69,6 +70,7 @@ namespace Example
 ```
 
 ### Parameters
+
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
@@ -91,8 +93,8 @@ Name | Type | Description  | Notes
 
 ### HTTP request headers
 
- - **Content-Type**: Not defined
- - **Accept**: text/plain, application/json, text/json
+- **Content-Type**: Not defined
+- **Accept**: text/plain, application/json, text/json
 
 ### HTTP response details
 | Status code | Description | Response headers |
@@ -101,10 +103,14 @@ Name | Type | Description  | Notes
 | **400** | The details of the input related failure |  -  |
 | **0** | Error response |  -  |
 
-[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+[[Back to top]](#)
+[[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
 
-<a name="deletequotes"></a>
-# **DeleteQuotes**
+
+## DeleteQuotes
+
 > AnnulQuotesResponse DeleteQuotes (string scope, Dictionary<string, QuoteId> quotes = null)
 
 [BETA] Delete quotes
@@ -112,6 +118,7 @@ Name | Type | Description  | Notes
 Delete one or more specified quotes from a single scope. A quote is identified by its unique id which includes information about  the type of quote as well as the exact effective datetime (to the microsecond) from which it became valid.                In the request each quote must be keyed by a unique correlation id. This id is ephemeral and is not stored by LUSID.  It serves only as a way to easily identify each quote in the response.                The response will return both the collection of successfully deleted quotes, as well as those that failed.  For the failures a reason will be provided explaining why the quote could not be deleted.                It is important to always check the failed set for any unsuccessful results.
 
 ### Example
+
 ```csharp
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -125,12 +132,11 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration config = new Configuration();
-            config.BasePath = "http://localhost";
+            Configuration.Default.BasePath = "http://localhost";
             // Configure OAuth2 access token for authorization: oauth2
-            config.AccessToken = "YOUR_ACCESS_TOKEN";
+            Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
-            var apiInstance = new QuotesApi(config);
+            var apiInstance = new QuotesApi(Configuration.Default);
             var scope = scope_example;  // string | The scope of the quotes to delete.
             var quotes = new Dictionary<string, QuoteId>(); // Dictionary<string, QuoteId> | The quotes to delete keyed by a unique correlation id. (optional) 
 
@@ -140,7 +146,7 @@ namespace Example
                 AnnulQuotesResponse result = apiInstance.DeleteQuotes(scope, quotes);
                 Debug.WriteLine(result);
             }
-            catch (ApiException  e)
+            catch (ApiException e)
             {
                 Debug.Print("Exception when calling QuotesApi.DeleteQuotes: " + e.Message );
                 Debug.Print("Status Code: "+ e.ErrorCode);
@@ -152,6 +158,7 @@ namespace Example
 ```
 
 ### Parameters
+
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
@@ -168,8 +175,8 @@ Name | Type | Description  | Notes
 
 ### HTTP request headers
 
- - **Content-Type**: Not defined
- - **Accept**: text/plain, application/json, text/json
+- **Content-Type**: Not defined
+- **Accept**: text/plain, application/json, text/json
 
 ### HTTP response details
 | Status code | Description | Response headers |
@@ -178,10 +185,14 @@ Name | Type | Description  | Notes
 | **400** | The details of the input related failure |  -  |
 | **0** | Error response |  -  |
 
-[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+[[Back to top]](#)
+[[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
 
-<a name="getquotes"></a>
-# **GetQuotes**
+
+## GetQuotes
+
 > GetQuotesResponse GetQuotes (string scope, DateTimeOrCutLabel effectiveAt = null, DateTimeOffset? asAt = null, string maxAge = null, Dictionary<string, QuoteSeriesId> quoteIds = null)
 
 [BETA] Get quotes
@@ -189,6 +200,7 @@ Name | Type | Description  | Notes
 Get one or more quotes from a single scope.                Each quote can be identified by its time invariant quote series id.                For each quote series id LUSID will return the most recent quote with respect to the provided (or default) effective datetime.                 An optional maximum age range window can be specified which defines how far back to look back for a quote from the specified effective datetime.  LUSID will return the most recent quote within this window.                In the request each quote series id must be keyed by a unique correlation id. This id is ephemeral and is not stored by LUSID.  It serves only as a way to easily identify each quote in the response.                The response will return three collections. One, the successfully retrieved quotes. Two, those that had a  valid quote series id but could not be found. Three, those that failed because LUSID could not construct a valid quote series id from the request.    For the quotes that failed or could not be found a reason will be provided explaining why the quote could not be retrieved.                It is important to always check the failed and not found sets for any unsuccessful results.  The maximum number of quotes that this method can get per request is 2,000.
 
 ### Example
+
 ```csharp
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -202,12 +214,11 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration config = new Configuration();
-            config.BasePath = "http://localhost";
+            Configuration.Default.BasePath = "http://localhost";
             // Configure OAuth2 access token for authorization: oauth2
-            config.AccessToken = "YOUR_ACCESS_TOKEN";
+            Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
-            var apiInstance = new QuotesApi(config);
+            var apiInstance = new QuotesApi(Configuration.Default);
             var scope = scope_example;  // string | The scope of the quotes to retrieve.
             var effectiveAt = effectiveAt_example;  // DateTimeOrCutLabel | The effective datetime or cut label at which to retrieve the quotes. Defaults to the current LUSID system datetime if not specified. (optional) 
             var asAt = 2013-10-20T19:20:30+01:00;  // DateTimeOffset? | The asAt datetime at which to retrieve the quotes. Defaults to return the latest version of each quote if not specified. (optional) 
@@ -220,7 +231,7 @@ namespace Example
                 GetQuotesResponse result = apiInstance.GetQuotes(scope, effectiveAt, asAt, maxAge, quoteIds);
                 Debug.WriteLine(result);
             }
-            catch (ApiException  e)
+            catch (ApiException e)
             {
                 Debug.Print("Exception when calling QuotesApi.GetQuotes: " + e.Message );
                 Debug.Print("Status Code: "+ e.ErrorCode);
@@ -232,6 +243,7 @@ namespace Example
 ```
 
 ### Parameters
+
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
@@ -251,8 +263,8 @@ Name | Type | Description  | Notes
 
 ### HTTP request headers
 
- - **Content-Type**: Not defined
- - **Accept**: text/plain, application/json, text/json
+- **Content-Type**: Not defined
+- **Accept**: text/plain, application/json, text/json
 
 ### HTTP response details
 | Status code | Description | Response headers |
@@ -261,10 +273,14 @@ Name | Type | Description  | Notes
 | **400** | The details of the input related failure |  -  |
 | **0** | Error response |  -  |
 
-[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+[[Back to top]](#)
+[[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
 
-<a name="getquotesaccessmetadatarule"></a>
-# **GetQuotesAccessMetadataRule**
+
+## GetQuotesAccessMetadataRule
+
 > QuoteAccessMetadataRule GetQuotesAccessMetadataRule (string scope, string provider = null, string priceSource = null, string instrumentIdType = null, string instrumentId = null, string quoteType = null, string field = null, DateTimeOrCutLabel effectiveAt = null, DateTimeOffset? asAt = null)
 
 [EXPERIMENTAL] Get a quote access metadata rule
@@ -272,6 +288,7 @@ Name | Type | Description  | Notes
 Get a specific quote access metadata rule by specifying the corresponding identifier parts                No matching will be performed through this endpoint. To retrieve a rule, it is necessary to specify, exactly, the identifier of the rule
 
 ### Example
+
 ```csharp
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -285,12 +302,11 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration config = new Configuration();
-            config.BasePath = "http://localhost";
+            Configuration.Default.BasePath = "http://localhost";
             // Configure OAuth2 access token for authorization: oauth2
-            config.AccessToken = "YOUR_ACCESS_TOKEN";
+            Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
-            var apiInstance = new QuotesApi(config);
+            var apiInstance = new QuotesApi(Configuration.Default);
             var scope = scope_example;  // string | The scope of the Quote Access Metadata Rule to retrieve.
             var provider = provider_example;  // string | The Provider of the rule (optional) 
             var priceSource = priceSource_example;  // string | The PriceSource of the rule (optional) 
@@ -307,7 +323,7 @@ namespace Example
                 QuoteAccessMetadataRule result = apiInstance.GetQuotesAccessMetadataRule(scope, provider, priceSource, instrumentIdType, instrumentId, quoteType, field, effectiveAt, asAt);
                 Debug.WriteLine(result);
             }
-            catch (ApiException  e)
+            catch (ApiException e)
             {
                 Debug.Print("Exception when calling QuotesApi.GetQuotesAccessMetadataRule: " + e.Message );
                 Debug.Print("Status Code: "+ e.ErrorCode);
@@ -319,6 +335,7 @@ namespace Example
 ```
 
 ### Parameters
+
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
@@ -342,8 +359,8 @@ Name | Type | Description  | Notes
 
 ### HTTP request headers
 
- - **Content-Type**: Not defined
- - **Accept**: text/plain, application/json, text/json
+- **Content-Type**: Not defined
+- **Accept**: text/plain, application/json, text/json
 
 ### HTTP response details
 | Status code | Description | Response headers |
@@ -352,10 +369,14 @@ Name | Type | Description  | Notes
 | **400** | The details of the input related failure |  -  |
 | **0** | Error response |  -  |
 
-[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+[[Back to top]](#)
+[[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
 
-<a name="listquotes"></a>
-# **ListQuotes**
+
+## ListQuotes
+
 > ResourceListOfQuote ListQuotes (string scope, DateTimeOffset? asAt = null, string page = null, int? start = null, int? limit = null, string filter = null)
 
 [BETA] List quotes
@@ -363,6 +384,7 @@ Name | Type | Description  | Notes
 List all the quotes from a single scope at the specified date/time
 
 ### Example
+
 ```csharp
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -376,12 +398,11 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration config = new Configuration();
-            config.BasePath = "http://localhost";
+            Configuration.Default.BasePath = "http://localhost";
             // Configure OAuth2 access token for authorization: oauth2
-            config.AccessToken = "YOUR_ACCESS_TOKEN";
+            Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
-            var apiInstance = new QuotesApi(config);
+            var apiInstance = new QuotesApi(Configuration.Default);
             var scope = scope_example;  // string | The scope of the quotes to list.
             var asAt = 2013-10-20T19:20:30+01:00;  // DateTimeOffset? | The asAt datetime at which to list the quotes. Defaults to latest if not specified. (optional) 
             var page = page_example;  // string | The pagination token to use to continue listing quotes from a previous call to list quotes.              This value is returned from the previous call. If a pagination token is provided the sortBy, filter, effectiveAt, and asAt fields              must not have changed since the original request. Also, if set, a start value cannot be provided. (optional) 
@@ -395,7 +416,7 @@ namespace Example
                 ResourceListOfQuote result = apiInstance.ListQuotes(scope, asAt, page, start, limit, filter);
                 Debug.WriteLine(result);
             }
-            catch (ApiException  e)
+            catch (ApiException e)
             {
                 Debug.Print("Exception when calling QuotesApi.ListQuotes: " + e.Message );
                 Debug.Print("Status Code: "+ e.ErrorCode);
@@ -407,6 +428,7 @@ namespace Example
 ```
 
 ### Parameters
+
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
@@ -427,8 +449,8 @@ Name | Type | Description  | Notes
 
 ### HTTP request headers
 
- - **Content-Type**: Not defined
- - **Accept**: text/plain, application/json, text/json
+- **Content-Type**: Not defined
+- **Accept**: text/plain, application/json, text/json
 
 ### HTTP response details
 | Status code | Description | Response headers |
@@ -437,10 +459,14 @@ Name | Type | Description  | Notes
 | **400** | The details of the input related failure |  -  |
 | **0** | Error response |  -  |
 
-[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+[[Back to top]](#)
+[[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
 
-<a name="listquotesaccessmetadatarules"></a>
-# **ListQuotesAccessMetadataRules**
+
+## ListQuotesAccessMetadataRules
+
 > ResourceListOfQuoteAccessMetadataRule ListQuotesAccessMetadataRules (string scope, DateTimeOffset? asAt = null)
 
 [EXPERIMENTAL] List all quote access metadata rules in a scope
@@ -448,6 +474,7 @@ Name | Type | Description  | Notes
 Get all the quote access metadata rules in the specified scope
 
 ### Example
+
 ```csharp
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -461,12 +488,11 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration config = new Configuration();
-            config.BasePath = "http://localhost";
+            Configuration.Default.BasePath = "http://localhost";
             // Configure OAuth2 access token for authorization: oauth2
-            config.AccessToken = "YOUR_ACCESS_TOKEN";
+            Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
-            var apiInstance = new QuotesApi(config);
+            var apiInstance = new QuotesApi(Configuration.Default);
             var scope = scope_example;  // string | The scope of the Quote Access Metadata Rule to retrieve.
             var asAt = 2013-10-20T19:20:30+01:00;  // DateTimeOffset? | The asAt datetime at which to retrieve the access metadata rule. Defaults to return the latest version if not specified. (optional) 
 
@@ -476,7 +502,7 @@ namespace Example
                 ResourceListOfQuoteAccessMetadataRule result = apiInstance.ListQuotesAccessMetadataRules(scope, asAt);
                 Debug.WriteLine(result);
             }
-            catch (ApiException  e)
+            catch (ApiException e)
             {
                 Debug.Print("Exception when calling QuotesApi.ListQuotesAccessMetadataRules: " + e.Message );
                 Debug.Print("Status Code: "+ e.ErrorCode);
@@ -488,6 +514,7 @@ namespace Example
 ```
 
 ### Parameters
+
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
@@ -504,8 +531,8 @@ Name | Type | Description  | Notes
 
 ### HTTP request headers
 
- - **Content-Type**: Not defined
- - **Accept**: text/plain, application/json, text/json
+- **Content-Type**: Not defined
+- **Accept**: text/plain, application/json, text/json
 
 ### HTTP response details
 | Status code | Description | Response headers |
@@ -514,10 +541,14 @@ Name | Type | Description  | Notes
 | **400** | The details of the input related failure |  -  |
 | **0** | Error response |  -  |
 
-[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+[[Back to top]](#)
+[[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
 
-<a name="upsertquoteaccessmetadatarule"></a>
-# **UpsertQuoteAccessMetadataRule**
+
+## UpsertQuoteAccessMetadataRule
+
 > QuoteAccessMetadataRule UpsertQuoteAccessMetadataRule (string scope, UpsertQuoteAccessMetadataRuleRequest request, DateTimeOrCutLabel effectiveAt = null)
 
 [EXPERIMENTAL] Upsert a Quote Access Metadata Rule. This creates or updates the data in LUSID.
@@ -525,6 +556,7 @@ Name | Type | Description  | Notes
 Update or insert one Quote Access Metadata Rule in a single scope. An item will be updated if it already exists  and inserted if it does not.    The response will return the successfully updated or inserted Quote Access Metadata Rule or failure message if unsuccessful    It is important to always check to verify success (or failure).                Multiple rules for a key can exists with different effective at dates, when resources are accessed the rule that is active for the current time will be fetched
 
 ### Example
+
 ```csharp
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -538,12 +570,11 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration config = new Configuration();
-            config.BasePath = "http://localhost";
+            Configuration.Default.BasePath = "http://localhost";
             // Configure OAuth2 access token for authorization: oauth2
-            config.AccessToken = "YOUR_ACCESS_TOKEN";
+            Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
-            var apiInstance = new QuotesApi(config);
+            var apiInstance = new QuotesApi(Configuration.Default);
             var scope = scope_example;  // string | The scope to use when updating or inserting the Quote Access Metadata Rule.
             var request = new UpsertQuoteAccessMetadataRuleRequest(); // UpsertQuoteAccessMetadataRuleRequest | The Quote Access Metadata Rule to update or insert
             var effectiveAt = effectiveAt_example;  // DateTimeOrCutLabel | The date this rule will effective from (optional) 
@@ -554,7 +585,7 @@ namespace Example
                 QuoteAccessMetadataRule result = apiInstance.UpsertQuoteAccessMetadataRule(scope, request, effectiveAt);
                 Debug.WriteLine(result);
             }
-            catch (ApiException  e)
+            catch (ApiException e)
             {
                 Debug.Print("Exception when calling QuotesApi.UpsertQuoteAccessMetadataRule: " + e.Message );
                 Debug.Print("Status Code: "+ e.ErrorCode);
@@ -566,6 +597,7 @@ namespace Example
 ```
 
 ### Parameters
+
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
@@ -583,8 +615,8 @@ Name | Type | Description  | Notes
 
 ### HTTP request headers
 
- - **Content-Type**: Not defined
- - **Accept**: text/plain, application/json, text/json
+- **Content-Type**: Not defined
+- **Accept**: text/plain, application/json, text/json
 
 ### HTTP response details
 | Status code | Description | Response headers |
@@ -593,10 +625,14 @@ Name | Type | Description  | Notes
 | **400** | The details of the input related failure |  -  |
 | **0** | Error response |  -  |
 
-[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+[[Back to top]](#)
+[[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
 
-<a name="upsertquotes"></a>
-# **UpsertQuotes**
+
+## UpsertQuotes
+
 > UpsertQuotesResponse UpsertQuotes (string scope, Dictionary<string, UpsertQuoteRequest> quotes = null)
 
 [BETA] Upsert quotes
@@ -604,6 +640,7 @@ Name | Type | Description  | Notes
 Update or insert one or more quotes in a single scope. A quote will be updated if it already exists  and inserted if it does not.                In the request each quote must be keyed by a unique correlation id. This id is ephemeral and is not stored by LUSID.  It serves only as a way to easily identify each quote in the response.                The response will return both the collection of successfully updated or inserted quotes, as well as those that failed.  For the failures a reason will be provided explaining why the quote could not be updated or inserted.                It is important to always check the failed set for any unsuccessful results.  The maximum number of quotes that this method can upsert per request is 2,000.
 
 ### Example
+
 ```csharp
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -617,12 +654,11 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration config = new Configuration();
-            config.BasePath = "http://localhost";
+            Configuration.Default.BasePath = "http://localhost";
             // Configure OAuth2 access token for authorization: oauth2
-            config.AccessToken = "YOUR_ACCESS_TOKEN";
+            Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
-            var apiInstance = new QuotesApi(config);
+            var apiInstance = new QuotesApi(Configuration.Default);
             var scope = scope_example;  // string | The scope to use when updating or inserting the quotes.
             var quotes = new Dictionary<string, UpsertQuoteRequest>(); // Dictionary<string, UpsertQuoteRequest> | The quotes to update or insert keyed by a unique correlation id. (optional) 
 
@@ -632,7 +668,7 @@ namespace Example
                 UpsertQuotesResponse result = apiInstance.UpsertQuotes(scope, quotes);
                 Debug.WriteLine(result);
             }
-            catch (ApiException  e)
+            catch (ApiException e)
             {
                 Debug.Print("Exception when calling QuotesApi.UpsertQuotes: " + e.Message );
                 Debug.Print("Status Code: "+ e.ErrorCode);
@@ -644,6 +680,7 @@ namespace Example
 ```
 
 ### Parameters
+
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
@@ -660,8 +697,8 @@ Name | Type | Description  | Notes
 
 ### HTTP request headers
 
- - **Content-Type**: Not defined
- - **Accept**: text/plain, application/json, text/json
+- **Content-Type**: Not defined
+- **Accept**: text/plain, application/json, text/json
 
 ### HTTP response details
 | Status code | Description | Response headers |
@@ -670,5 +707,8 @@ Name | Type | Description  | Notes
 | **400** | The details of the input related failure |  -  |
 | **0** | Error response |  -  |
 
-[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+[[Back to top]](#)
+[[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
 
