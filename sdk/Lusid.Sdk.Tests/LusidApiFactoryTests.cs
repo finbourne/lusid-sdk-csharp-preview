@@ -211,10 +211,10 @@ namespace Lusid.Sdk.Tests
             var provider = new ClientCredentialsFlowTokenProvider(config);
 
             var api = BuildApi();
-            api.CreatePortfolioGroup("sdktest", new CreatePortfolioGroupRequest("TestGroup", displayName: "TestGroup"));
+            api.CreatePortfolioGroup($"sdktest-{Guid.NewGuid().ToString()}", new CreatePortfolioGroupRequest("TestGroup", displayName: "TestGroup"));
 
             // This loop should eventually throw a SocketException: "Address already in use" once all the sockets have been exhausted
-            for (int i = 0; i < 50_000; i++)
+            for (int i = 0; i < 50_000; i++)    
             {
                 api = BuildApi();
                 PortfolioGroup result = api.GetPortfolioGroup("sdktest", "TestGroup");
@@ -224,11 +224,11 @@ namespace Lusid.Sdk.Tests
                 //api.Configuration.ApiClient.Dispose();
 
                 // Option 2: force all finalizers to run
-                if (i % 100 == 0)
-                {
-                    GC.Collect();
-                    GC.WaitForPendingFinalizers();
-                }
+                // if (i % 100 == 0)
+                // {
+                //     GC.Collect();
+                //     GC.WaitForPendingFinalizers();
+                // }
             }
 
             /*** Local Functions ***/
@@ -237,8 +237,8 @@ namespace Lusid.Sdk.Tests
                 // An instance of HttpClient is created within LusidApiFactory.Configuration.ApiClient.RestClient
                 // which wasn't being disposed
                 ILusidApiFactory factory = LusidApiFactoryBuilder.Build(config.ApiUrl, provider);
-                IPortfolioGroupsApi api = factory.Api<IPortfolioGroupsApi>();
-                return api;
+                IPortfolioGroupsApi portfolioGroupsApi = factory.Api<IPortfolioGroupsApi>();
+                return portfolioGroupsApi;
             }
         }
     }
