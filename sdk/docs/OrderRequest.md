@@ -9,9 +9,9 @@ Name | Type | Description | Notes
 **InstrumentIdentifiers** | **Dictionary&lt;string, string&gt;** | The instrument ordered. | 
 **Quantity** | **int?** | The quantity of given instrument ordered. | 
 **Side** | **string** | The client&#39;s representation of the order&#39;s side (buy, sell, short, etc) | 
-**OrderBook** | [**ResourceId**](ResourceId.md) |  | 
-**Portfolio** | [**ResourceId**](ResourceId.md) |  | 
-**Code** | **string** | Uniquely identifies this order. | 
+**OrderBookId** | [**ResourceId**](ResourceId.md) |  | 
+**PortfolioId** | [**ResourceId**](ResourceId.md) |  | 
+**Id** | [**ResourceId**](ResourceId.md) |  | 
 
 [[Back to Model list]](../README.md#documentation-for-models)
 [[Back to API list]](../README.md#documentation-for-api-endpoints)
