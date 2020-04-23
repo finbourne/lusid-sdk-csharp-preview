@@ -33,7 +33,7 @@ namespace Lusid.Sdk.Tests.Tutorials.Ibor
         [Test]
         public void Upsert_Simple_Order()
         {
-            var testScope = $"TestScope-{Guid.NewGuid().ToString()}";
+            var testScope = $"Orders-SimpleUpsert-TestScope";
             var order = $"Order-{Guid.NewGuid().ToString()}";
             var orderId = new ResourceId(testScope, order);
 
@@ -82,7 +82,7 @@ namespace Lusid.Sdk.Tests.Tutorials.Ibor
         [Test]
         public void Upsert_Simple_Order_With_Unknown_Instrument()
         {
-            var testScope = $"TestScope-{Guid.NewGuid().ToString()}";
+            var testScope = $"Orders-UnknownInstrument-TestScope";
             var order = $"Order-{Guid.NewGuid().ToString()}";
             var orderId = new ResourceId(testScope, order);
 
@@ -131,7 +131,7 @@ namespace Lusid.Sdk.Tests.Tutorials.Ibor
         [Test]
         public void Update_Simple_Order()
         {
-            var testScope = $"TestScope-{Guid.NewGuid().ToString()}";
+            var testScope = $"Orders-Simple-TestScope";
             var order = $"Order-{Guid.NewGuid().ToString()}";
             var orderId = new ResourceId(testScope, order);
 
@@ -215,15 +215,15 @@ namespace Lusid.Sdk.Tests.Tutorials.Ibor
         [Test]
         public void Upsert_And_Retrieve_Simple_Orders()
         {
-            var testScope = $"TestScope-{Guid.NewGuid().ToString()}";
+            var testScope = $"Orders-Filter-TestScope";
             var order1 = $"Order-{Guid.NewGuid().ToString()}";
             var order2 = $"Order-{Guid.NewGuid().ToString()}";
             var order3 = $"Order-{Guid.NewGuid().ToString()}";
             var orderId1 = new ResourceId(testScope, order1);
             var orderId2 = new ResourceId(testScope, order2);
             var orderId3 = new ResourceId(testScope, order3);
-            
-            // We want to make a request for a single order. The internal security id will be mapped on upsert
+
+            // We want to make a request to upsert several orders. The internal security id will be mapped on upsert
             // from the instrument identifiers passed. We can filter on a number of parameters on query.
             var request = new OrderSetRequest(
                 orderRequests: new List<OrderRequest>
@@ -305,7 +305,7 @@ namespace Lusid.Sdk.Tests.Tutorials.Ibor
                     )
                 });
 
-            // We can ask the Orders API to upsert this order for us
+            // We can ask the Orders API to upsert these orders for us
             var upsertResult = _ordersApi.UpsertOrders(request: request);
 
             // The return gives us a list of orders upserted, and LusidInstrument for each has been mapped to a LUID
@@ -315,11 +315,20 @@ namespace Lusid.Sdk.Tests.Tutorials.Ibor
 
             var t = upsertResult.Values.First().Version.AsAtDate;
 
-            var quantityFilter = _ordersApi.ListOrders(asAt: t, filter: $"Quantity gt 100 and Scope eq '{testScope}'");
+            var order1Filter = $"{testScope}/{order1}";
+            var order2Filter = $"{testScope}/{order2}";
+            var order3Filter = $"{testScope}/{order3}";
+
+            var quantityFilter = _ordersApi.ListOrders(asAt:
+                t,
+                filter: $"Quantity gt 100 and Scope eq '{testScope}' and Id in '{order1Filter}', '{order2Filter}', '{order3Filter}'");
 
             Assert.That(quantityFilter.Values.Count, Is.EqualTo(2));
             Assert.That(quantityFilter.Values.All(rl => rl.Quantity > 100));
 
+            /*
+             * Other filters are also possible:
+             *
             var propertyFilter = _ordersApi.ListOrders(asAt: t, filter: $"Properties[{testScope}/OrderGroup] eq 'UK Test Orders 2'");
 
             Assert.That(propertyFilter.Values.Count, Is.EqualTo(1));
@@ -339,6 +348,7 @@ namespace Lusid.Sdk.Tests.Tutorials.Ibor
 
             Assert.That(orderBookFilter.Values.Count, Is.EqualTo(1));
             Assert.That(orderBookFilter.Values.All(rl => rl.OrderBookId.Code.Equals("AnotherOrdersTestBook")));
+            */
         }
     }
 }
