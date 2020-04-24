@@ -33,16 +33,17 @@ namespace Lusid.Sdk.Tests.Tutorials.Ibor
         [Test]
         public void Upsert_Simple_Order()
         {
-            var testScope = $"TestScope-{Guid.NewGuid().ToString()}";
-            var orderId = $"Order-{Guid.NewGuid().ToString()}";
-            
+            var testScope = $"Orders-SimpleUpsert-TestScope";
+            var order = $"Order-{Guid.NewGuid().ToString()}";
+            var orderId = new ResourceId(testScope, order);
+
             // We want to make a request for a single order. The internal security id will be mapped on upsert
             // from the instrument identifiers passed.
             var request = new OrderSetRequest(
                 orderRequests: new List<OrderRequest>
                 {
                     new OrderRequest(
-                        code: orderId,
+                        id: orderId,
                         quantity: 100,
                         // These instrument identifiers should all map to the same instrument. If the instance of
                         // LUSID has the specified instruments registered these identifiers will get resolved to
@@ -54,7 +55,7 @@ namespace Lusid.Sdk.Tests.Tutorials.Ibor
                         },
                         // [Experimental] Currently this portfolio doesn't need to exist. As the domain model evolves
                         // this reference might disappear, or might become a strict reference to an existing portfolio.
-                        portfolio: new ResourceId(testScope, "OrdersTestPortfolio"),
+                        portfolioId: new ResourceId(testScope, "OrdersTestPortfolio"),
                         properties: new Dictionary<string, PerpetualProperty>
                         {
                             { $"Order/{testScope}/TIF", new PerpetualProperty($"Order/{testScope}/TIF", new PropertyValue("GTC")) },
@@ -64,33 +65,34 @@ namespace Lusid.Sdk.Tests.Tutorials.Ibor
                             { $"Order/{testScope}/Strategy", new PerpetualProperty($"Order/{testScope}/Strategy", new PropertyValue("RiskArb")) },
                         },
                         side: "Buy",
-                        orderBook: new ResourceId(testScope, "OrdersTestBook")
+                        orderBookId: new ResourceId(testScope, "OrdersTestBook")
                     )
                 });
 
             // We can ask the Orders API to upsert this order for us
-            var upsertResult = _ordersApi.UpsertOrders(scope: testScope, request: request);
+            var upsertResult = _ordersApi.UpsertOrders(request: request);
 
             // The return gives us a list of orders upserted, and LusidInstrument for each has been mapped to a LUID
             // using the instrument identifiers passed
             Assert.That(upsertResult.Values.Count == 1);
-            Assert.That(upsertResult.Values.All(rl => rl.Id.Code.Equals(orderId)));
+            Assert.That(upsertResult.Values.All(rl => rl.Id.Code.Equals(order)));
             Assert.That(upsertResult.Values.All(rl => rl.LusidInstrumentId.Equals(_instrumentIds.First())));
         }
         
         [Test]
         public void Upsert_Simple_Order_With_Unknown_Instrument()
         {
-            var testScope = $"TestScope-{Guid.NewGuid().ToString()}";
-            var orderId = $"Order-{Guid.NewGuid().ToString()}";
-            
+            var testScope = $"Orders-UnknownInstrument-TestScope";
+            var order = $"Order-{Guid.NewGuid().ToString()}";
+            var orderId = new ResourceId(testScope, order);
+
             // We want to make a request for a single order. We'll map the internal security id to an Unknown placeholder
             // if we can't translate it.
             var initialRequest = new OrderSetRequest(
                 orderRequests: new List<OrderRequest>
                 {
                     new OrderRequest(
-                        code: orderId,
+                        id: orderId,
                         quantity: 100,
                         // These instrument identifiers should all map to the same instrument. If the instance of
                         // LUSID has the specified instruments registered these identifiers will get resolved to
@@ -102,7 +104,7 @@ namespace Lusid.Sdk.Tests.Tutorials.Ibor
                         },
                         // [Experimental] Currently this portfolio doesn't need to exist. As the domain model evolves
                         // this reference might disappear, or might become a strict reference to an existing portfolio
-                        portfolio: new ResourceId(testScope, "OrdersTestPortfolio"),
+                        portfolioId: new ResourceId(testScope, "OrdersTestPortfolio"),
                         properties: new Dictionary<string, PerpetualProperty>
                         {
                             { $"Order/{testScope}/TIF", new PerpetualProperty($"Order/{testScope}/TIF", new PropertyValue("GTC")) },
@@ -112,33 +114,34 @@ namespace Lusid.Sdk.Tests.Tutorials.Ibor
                             { $"Order/{testScope}/Strategy", new PerpetualProperty($"Order/{testScope}/Strategy", new PropertyValue("RiskArb")) },
                         },
                         side: "Buy",
-                        orderBook: new ResourceId(testScope, "OrdersTestBook")
+                        orderBookId: new ResourceId(testScope, "OrdersTestBook")
                     )
                 });
 
             // We can ask the Orders API to upsert this order for us
-            var upsertResult = _ordersApi.UpsertOrders(scope: testScope, request: initialRequest);
+            var upsertResult = _ordersApi.UpsertOrders(request: initialRequest);
 
             // The return gives us a list of orders upserted, and LusidInstrument for each has been mapped to a LUID
             // using the instrument identifiers passed
             Assert.That(upsertResult.Values.Count == 1);
-            Assert.That(upsertResult.Values.All(rl => rl.Id.Code.Equals(orderId)));
+            Assert.That(upsertResult.Values.All(rl => rl.Id.Code.Equals(order)));
             Assert.That(upsertResult.Values.All(rl => rl.LusidInstrumentId.Equals("LUID_ZZZZZZZZ")));
         }
         
         [Test]
         public void Update_Simple_Order()
         {
-            var testScope = $"TestScope-{Guid.NewGuid().ToString()}";
-            var orderId = $"Order-{Guid.NewGuid().ToString()}";
-            
+            var testScope = $"Orders-Simple-TestScope";
+            var order = $"Order-{Guid.NewGuid().ToString()}";
+            var orderId = new ResourceId(testScope, order);
+
             // We want to make a request for a single order. The internal security id will be mapped on upsert
             // from the instrument identifiers passed. Properties
             var request = new OrderSetRequest(
                 orderRequests: new List<OrderRequest>
                 {
                     new OrderRequest(
-                        code: orderId,
+                        id: orderId,
                         quantity: 100,
                         // These instrument identifiers should all map to the same instrument. If the instance of
                         // LUSID has the specified instruments registered these identifiers will get resolved to
@@ -150,19 +153,19 @@ namespace Lusid.Sdk.Tests.Tutorials.Ibor
                         },
                         // [Experimental] Currently this portfolio doesn't need to exist. As the domain model evolves
                         // this reference might disappear, or might become a strict reference to an existing portfolio
-                        portfolio: new ResourceId(testScope, "OrdersTestPortfolio"),
+                        portfolioId: new ResourceId(testScope, "OrdersTestPortfolio"),
                         properties: new Dictionary<string, PerpetualProperty>(),
                         side: "Buy",
-                        orderBook: new ResourceId(testScope, "OrdersTestBook")
+                        orderBookId: new ResourceId(testScope, "OrdersTestBook")
                     )
                 });
 
-            var upsertResult = _ordersApi.UpsertOrders(scope: testScope, request: request);
+            var upsertResult = _ordersApi.UpsertOrders(request: request);
 
             // The return gives us a list of orders upserted, and LusidInstrument for each has been mapped to a LUID
             // using the instrument identifiers passed
             Assert.That(upsertResult.Values.Count == 1);
-            Assert.That(upsertResult.Values.All(rl => rl.Id.Code.Equals(orderId)));
+            Assert.That(upsertResult.Values.All(rl => rl.Id.Code.Equals(order)));
             Assert.That(upsertResult.Values.All(rl => rl.LusidInstrumentId.Equals(_instrumentIds.First())));
             Assert.That(upsertResult.Values.All(rl => rl.Quantity == 100));
             Assert.That(upsertResult.Values.All(rl => !rl.Properties.Any()));
@@ -172,7 +175,7 @@ namespace Lusid.Sdk.Tests.Tutorials.Ibor
                 orderRequests: new List<OrderRequest>
                 {
                     new OrderRequest(
-                        code: orderId,
+                        id: orderId,
                         quantity: 500,
                         // These instrument identifiers should all map to the same instrument. If the instance of
                         // LUSID has the specified instruments registered these identifiers will get resolved to
@@ -184,7 +187,7 @@ namespace Lusid.Sdk.Tests.Tutorials.Ibor
                         },
                         // [Experimental] Currently this portfolio doesn't need to exist. As the domain model evolves
                         // this reference might disappear, or might become a strict reference to an existing portfolio
-                        portfolio: new ResourceId(testScope, "OrdersTestPortfolio"),
+                        portfolioId: new ResourceId(testScope, "OrdersTestPortfolio"),
                         properties: new Dictionary<string, PerpetualProperty>
                         {
                             { $"Order/{testScope}/TIF", new PerpetualProperty($"Order/{testScope}/TIF", new PropertyValue("GTC")) },
@@ -194,16 +197,16 @@ namespace Lusid.Sdk.Tests.Tutorials.Ibor
                             { $"Order/{testScope}/Strategy", new PerpetualProperty($"Order/{testScope}/Strategy", new PropertyValue("RiskArb")) },
                         },
                         side: "Buy",
-                        orderBook: new ResourceId(testScope, "OrdersTestBook")
+                        orderBookId: new ResourceId(testScope, "OrdersTestBook")
                         )
                 });
             
-            upsertResult = _ordersApi.UpsertOrders(scope: testScope, request: updateRequest);
+            upsertResult = _ordersApi.UpsertOrders(request: updateRequest);
             
             // The return gives us a list of orders upserted, and LusidInstrument for each has been mapped to a LUID
             // using the instrument identifiers passed. We can see that the quantity has been udpated, and properties added
             Assert.That(upsertResult.Values.Count == 1);
-            Assert.That(upsertResult.Values.All(rl => rl.Id.Code.Equals(orderId)));
+            Assert.That(upsertResult.Values.All(rl => rl.Id.Code.Equals(order)));
             Assert.That(upsertResult.Values.All(rl => rl.LusidInstrumentId.Equals(_instrumentIds.First())));
             Assert.That(upsertResult.Values.All(rl => rl.Quantity == 500));
             Assert.That(upsertResult.Values.All(rl => rl.Properties.Count() == 5));
@@ -212,19 +215,22 @@ namespace Lusid.Sdk.Tests.Tutorials.Ibor
         [Test]
         public void Upsert_And_Retrieve_Simple_Orders()
         {
-            var testScope = $"TestScope-{Guid.NewGuid().ToString()}";
-            var orderId1 = $"Order-{Guid.NewGuid().ToString()}";
-            var orderId2 = $"Order-{Guid.NewGuid().ToString()}";
-            var orderId3 = $"Order-{Guid.NewGuid().ToString()}";
-            
-            // We want to make a request for a single order. The internal security id will be mapped on upsert
+            var testScope = $"Orders-Filter-TestScope";
+            var order1 = $"Order-{Guid.NewGuid().ToString()}";
+            var order2 = $"Order-{Guid.NewGuid().ToString()}";
+            var order3 = $"Order-{Guid.NewGuid().ToString()}";
+            var orderId1 = new ResourceId(testScope, order1);
+            var orderId2 = new ResourceId(testScope, order2);
+            var orderId3 = new ResourceId(testScope, order3);
+
+            // We want to make a request to upsert several orders. The internal security id will be mapped on upsert
             // from the instrument identifiers passed. We can filter on a number of parameters on query.
             var request = new OrderSetRequest(
                 orderRequests: new List<OrderRequest>
                 {
                     new OrderRequest(
-                        code: orderId1,
-                        quantity: 100,
+                        id: orderId1,
+                        quantity: 99,
                         // These instrument identifiers should all map to the same instrument. If the instance of
                         // LUSID has the specified instruments registered these identifiers will get resolved to
                         // an actual internal instrument on upsert; otherwise, they'll be resolved to instrument or
@@ -235,7 +241,7 @@ namespace Lusid.Sdk.Tests.Tutorials.Ibor
                         },
                         // [Experimental] Currently this portfolio doesn't need to exist. As the domain model evolves
                         // this reference might disappear, or might become a strict reference to an existing portfolio
-                        portfolio: new ResourceId(testScope, "OrdersTestPortfolio"),
+                        portfolioId: new ResourceId(testScope, "OrdersTestPortfolio"),
                         properties: new Dictionary<string, PerpetualProperty>
                         {
                             { $"Order/{testScope}/TIF", new PerpetualProperty($"Order/{testScope}/TIF", new PropertyValue("GTC")) },
@@ -245,10 +251,10 @@ namespace Lusid.Sdk.Tests.Tutorials.Ibor
                             { $"Order/{testScope}/Strategy", new PerpetualProperty($"Order/{testScope}/Strategy", new PropertyValue("RiskArb")) },
                         },
                         side: "Buy",
-                        orderBook: new ResourceId(testScope, "OrdersTestBook")
+                        orderBookId: new ResourceId(testScope, "OrdersTestBook")
                     ),
                     new OrderRequest(
-                        code: orderId2,
+                        id: orderId2,
                         quantity: 200,
                         // These instrument identifiers should all map to the same instrument. If the instance of
                         // LUSID has the specified instruments registered these identifiers will get resolved to
@@ -260,7 +266,7 @@ namespace Lusid.Sdk.Tests.Tutorials.Ibor
                         },
                         // [Experimental] Currently this portfolio doesn't need to exist. As the domain model evolves
                         // this reference might disappear, or might become a strict reference to an existing portfolio
-                        portfolio: new ResourceId(testScope, "OrdersTestPortfolio"),
+                        portfolioId: new ResourceId(testScope, "OrdersTestPortfolio"),
                         properties: new Dictionary<string, PerpetualProperty>
                         {
                             { $"Order/{testScope}/TIF", new PerpetualProperty($"Order/{testScope}/TIF", new PropertyValue("GTC")) },
@@ -270,10 +276,10 @@ namespace Lusid.Sdk.Tests.Tutorials.Ibor
                             { $"Order/{testScope}/Strategy", new PerpetualProperty($"Order/{testScope}/Strategy", new PropertyValue("UK Growth")) },
                         },
                         side: "Sell",
-                        orderBook: new ResourceId(testScope, "AnotherOrdersTestBook")
+                        orderBookId: new ResourceId(testScope, "AnotherOrdersTestBook")
                     ),
                     new OrderRequest(
-                        code: orderId3,
+                        id: orderId3,
                         quantity: 300,
                         // These instrument identifiers should all map to the same instrument. If the instance of
                         // LUSID has the specified instruments registered these identifiers will get resolved to
@@ -285,7 +291,7 @@ namespace Lusid.Sdk.Tests.Tutorials.Ibor
                         },
                         // [Experimental] Currently this portfolio doesn't need to exist. As the domain model evolves
                         // this reference might disappear, or might become a strict reference to an existing portfolio
-                        portfolio: new ResourceId(testScope, "OrdersTestPortfolio"),
+                        portfolioId: new ResourceId(testScope, "OrdersTestPortfolio"),
                         properties: new Dictionary<string, PerpetualProperty>
                         {
                             { $"Order/{testScope}/TIF", new PerpetualProperty($"Order/{testScope}/TIF", new PropertyValue("GTC")) },
@@ -295,44 +301,54 @@ namespace Lusid.Sdk.Tests.Tutorials.Ibor
                             { $"Order/{testScope}/Strategy", new PerpetualProperty($"Order/{testScope}/Strategy", new PropertyValue("RiskArb")) },
                         },
                         side: "Buy",
-                        orderBook: new ResourceId(testScope, "OrdersTestBook")
+                        orderBookId: new ResourceId(testScope, "OrdersTestBook")
                     )
                 });
 
-            // We can ask the Orders API to upsert this order for us
-            var upsertResult = _ordersApi.UpsertOrders(scope: testScope, request: request);
+            // We can ask the Orders API to upsert these orders for us
+            var upsertResult = _ordersApi.UpsertOrders(request: request);
 
             // The return gives us a list of orders upserted, and LusidInstrument for each has been mapped to a LUID
             // using the instrument identifiers passed
             Assert.That(upsertResult.Values.Count, Is.EqualTo(3));
-            Assert.That(upsertResult.Values.Single(rl => rl.Id.Code.Equals(orderId1)).LusidInstrumentId, Is.EqualTo(_instrumentIds.First()));
+            Assert.That(upsertResult.Values.Single(rl => rl.Id.Code.Equals(order1)).LusidInstrumentId, Is.EqualTo(_instrumentIds.First()));
 
             var t = upsertResult.Values.First().Version.AsAtDate;
 
-            var quantityFilter = _ordersApi.ListOrders(scope: testScope, asAt: t, filter: "Quantity gt 100");
+            var order1Filter = $"{testScope}/{order1}";
+            var order2Filter = $"{testScope}/{order2}";
+            var order3Filter = $"{testScope}/{order3}";
+
+            var quantityFilter = _ordersApi.ListOrders(asAt:
+                t,
+                filter: $"Quantity gt 100 and Scope eq '{testScope}' and Id in '{order1Filter}', '{order2Filter}', '{order3Filter}'");
 
             Assert.That(quantityFilter.Values.Count, Is.EqualTo(2));
             Assert.That(quantityFilter.Values.All(rl => rl.Quantity > 100));
 
-            var propertyFilter = _ordersApi.ListOrders(scope: testScope, asAt: t, filter: $"Properties[{testScope}/OrderGroup] eq 'UK Test Orders 2'");
+            /*
+             * Other filters are also possible:
+             *
+            var propertyFilter = _ordersApi.ListOrders(asAt: t, filter: $"Properties[{testScope}/OrderGroup] eq 'UK Test Orders 2'");
 
             Assert.That(propertyFilter.Values.Count, Is.EqualTo(1));
-            Assert.That(propertyFilter.Values.Single(rl => rl.Id.Code.Equals(orderId3)).Properties[$"Order/{testScope}/OrderGroup"].Value.LabelValue, Is.EqualTo("UK Test Orders 2"));
+            Assert.That(propertyFilter.Values.Single(rl => rl.Id.Code.Equals(order3)).Properties[$"Order/{testScope}/OrderGroup"].Value.LabelValue, Is.EqualTo("UK Test Orders 2"));
             
-            var instrumentFilter = _ordersApi.ListOrders(scope: testScope, asAt: t, filter: $"LusidInstrumentId eq '{_instrumentIds.First()}'");
+            var instrumentFilter = _ordersApi.ListOrders(asAt: t, filter: $"LusidInstrumentId eq '{_instrumentIds.First()}' and Scope eq '{testScope}'");
             
             Assert.That(instrumentFilter.Values.Count, Is.EqualTo(2));
             Assert.That(instrumentFilter.Values.All(rl => rl.LusidInstrumentId.Equals(_instrumentIds[0])));
 
-            var sideFilter = _ordersApi.ListOrders(scope: testScope, asAt: t, filter: $"Side eq 'Sell'");
+            var sideFilter = _ordersApi.ListOrders(asAt: t, filter: $"Side eq 'Sell' and Scope eq '{testScope}'");
 
             Assert.That(sideFilter.Values.Count, Is.EqualTo(1));
             Assert.That(sideFilter.Values.All(rl => rl.Side.Equals("Sell")));
 
-            var orderBookFilter = _ordersApi.ListOrders(scope: testScope, asAt: t, filter: $"OrderBook eq '{testScope}/AnotherOrdersTestBook'");
+            var orderBookFilter = _ordersApi.ListOrders(asAt: t, filter: $"OrderBook eq '{testScope}/AnotherOrdersTestBook'");
 
             Assert.That(orderBookFilter.Values.Count, Is.EqualTo(1));
-            Assert.That(orderBookFilter.Values.All(rl => rl.OrderBook.Code.Equals("AnotherOrdersTestBook")));
+            Assert.That(orderBookFilter.Values.All(rl => rl.OrderBookId.Code.Equals("AnotherOrdersTestBook")));
+            */
         }
     }
 }
