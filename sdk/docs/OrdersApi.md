@@ -1,6 +1,6 @@
 # Lusid.Sdk.Api.OrdersApi
 
-All URIs are relative to *http://localhost*
+All URIs are relative to *http://localhost/api*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
@@ -32,7 +32,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://localhost";
+            Configuration.Default.BasePath = "http://localhost/api";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -116,7 +116,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://localhost";
+            Configuration.Default.BasePath = "http://localhost/api";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -126,7 +126,7 @@ namespace Example
             var sortBy = new List<string>(); // List<string> | Order the results by these fields. Use use the '-' sign to denote descending order e.g. -MyFieldName. (optional) 
             var start = 56;  // int? | When paginating, skip this number of results. (optional) 
             var limit = 56;  // int? | When paginating, limit the number of returned results to this many. (optional) 
-            var filter = filter_example;  // string | Expression to filter the result set. Read more about filtering results from LUSID here:              https://support.lusid.com/filtering-results-from-lusid. (optional) 
+            var filter = filter_example;  // string | Expression to filter the result set.  Currently Orders can be filtered by Id (e.g.              \"Id eq 'TestScope/ORD001'), Quantity (e.g. \"Quantity lt 100\"), Portfolio (e.g. \"Portfolio eq 'TestScope/UKEquities'\"),              LUSID Instrument Id (e.g. \"LusidInstrumentId eq 'LUID_12345678'\"), Scope (e.g. \"Scope eq 'TestScope'\"),              or by Property (Read more about filtering results from LUSID here:              https://support.lusid.com/filtering-results-from-lusid). (optional) 
             var propertyKeys = new List<string>(); // List<string> | A list of property keys from the \"Orders\" domain to decorate onto each order.                  These take the format {domain}/{scope}/{code} e.g. \"Orders/system/Name\". (optional) 
 
             try
@@ -156,7 +156,7 @@ Name | Type | Description  | Notes
  **sortBy** | [**List&lt;string&gt;**](string.md)| Order the results by these fields. Use use the &#39;-&#39; sign to denote descending order e.g. -MyFieldName. | [optional] 
  **start** | **int?**| When paginating, skip this number of results. | [optional] 
  **limit** | **int?**| When paginating, limit the number of returned results to this many. | [optional] 
- **filter** | **string**| Expression to filter the result set. Read more about filtering results from LUSID here:              https://support.lusid.com/filtering-results-from-lusid. | [optional] 
+ **filter** | **string**| Expression to filter the result set.  Currently Orders can be filtered by Id (e.g.              \&quot;Id eq &#39;TestScope/ORD001&#39;), Quantity (e.g. \&quot;Quantity lt 100\&quot;), Portfolio (e.g. \&quot;Portfolio eq &#39;TestScope/UKEquities&#39;\&quot;),              LUSID Instrument Id (e.g. \&quot;LusidInstrumentId eq &#39;LUID_12345678&#39;\&quot;), Scope (e.g. \&quot;Scope eq &#39;TestScope&#39;\&quot;),              or by Property (Read more about filtering results from LUSID here:              https://support.lusid.com/filtering-results-from-lusid). | [optional] 
  **propertyKeys** | [**List&lt;string&gt;**](string.md)| A list of property keys from the \&quot;Orders\&quot; domain to decorate onto each order.                  These take the format {domain}/{scope}/{code} e.g. \&quot;Orders/system/Name\&quot;. | [optional] 
 
 ### Return type
@@ -206,7 +206,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://localhost";
+            Configuration.Default.BasePath = "http://localhost/api";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -286,7 +286,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://localhost";
+            Configuration.Default.BasePath = "http://localhost/api";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
