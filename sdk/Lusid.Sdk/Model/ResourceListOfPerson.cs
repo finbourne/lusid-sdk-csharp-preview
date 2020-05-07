@@ -23,66 +23,55 @@ using OpenAPIDateConverter = Lusid.Sdk.Client.OpenAPIDateConverter;
 namespace Lusid.Sdk.Model
 {
     /// <summary>
-    /// Property
+    /// ResourceListOfPerson
     /// </summary>
     [DataContract]
-    public partial class Property :  IEquatable<Property>
+    public partial class ResourceListOfPerson :  IEquatable<ResourceListOfPerson>
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="Property" /> class.
+        /// Initializes a new instance of the <see cref="ResourceListOfPerson" /> class.
         /// </summary>
         [JsonConstructorAttribute]
-        protected Property() { }
+        protected ResourceListOfPerson() { }
         /// <summary>
-        /// Initializes a new instance of the <see cref="Property" /> class.
+        /// Initializes a new instance of the <see cref="ResourceListOfPerson" /> class.
         /// </summary>
-        /// <param name="key">The key of the property. This takes the format {domain}/{scope}/{code} e.g. &#39;Instrument/system/Name&#39; or &#39;Transaction/strategy/quantsignal&#39;. (required).</param>
-        /// <param name="value">value (required).</param>
-        /// <param name="effectiveFrom">The effective datetime from which the property is valid..</param>
-        public Property(string key = default(string), PropertyValue value = default(PropertyValue), DateTimeOffset? effectiveFrom = default(DateTimeOffset?))
+        /// <param name="values">values (required).</param>
+        /// <param name="href">href.</param>
+        /// <param name="links">links.</param>
+        public ResourceListOfPerson(List<Person> values = default(List<Person>), string href = default(string), List<Link> links = default(List<Link>))
         {
-            // to ensure "key" is required (not null)
-            if (key == null)
+            // to ensure "values" is required (not null)
+            if (values == null)
             {
-                throw new InvalidDataException("key is a required property for Property and cannot be null");
+                throw new InvalidDataException("values is a required property for ResourceListOfPerson and cannot be null");
             }
             else
             {
-                this.Key = key;
+                this.Values = values;
             }
             
-            // to ensure "value" is required (not null)
-            if (value == null)
-            {
-                throw new InvalidDataException("value is a required property for Property and cannot be null");
-            }
-            else
-            {
-                this.Value = value;
-            }
-            
-            this.EffectiveFrom = effectiveFrom;
+            this.Href = href;
+            this.Links = links;
         }
         
         /// <summary>
-        /// The key of the property. This takes the format {domain}/{scope}/{code} e.g. &#39;Instrument/system/Name&#39; or &#39;Transaction/strategy/quantsignal&#39;.
+        /// Gets or Sets Values
         /// </summary>
-        /// <value>The key of the property. This takes the format {domain}/{scope}/{code} e.g. &#39;Instrument/system/Name&#39; or &#39;Transaction/strategy/quantsignal&#39;.</value>
-        [DataMember(Name="key", EmitDefaultValue=false)]
-        public string Key { get; set; }
+        [DataMember(Name="values", EmitDefaultValue=false)]
+        public List<Person> Values { get; set; }
 
         /// <summary>
-        /// Gets or Sets Value
+        /// Gets or Sets Href
         /// </summary>
-        [DataMember(Name="value", EmitDefaultValue=false)]
-        public PropertyValue Value { get; set; }
+        [DataMember(Name="href", EmitDefaultValue=false)]
+        public string Href { get; set; }
 
         /// <summary>
-        /// The effective datetime from which the property is valid.
+        /// Gets or Sets Links
         /// </summary>
-        /// <value>The effective datetime from which the property is valid.</value>
-        [DataMember(Name="effectiveFrom", EmitDefaultValue=false)]
-        public DateTimeOffset? EffectiveFrom { get; set; }
+        [DataMember(Name="links", EmitDefaultValue=false)]
+        public List<Link> Links { get; set; }
 
         /// <summary>
         /// Returns the string presentation of the object
@@ -91,10 +80,10 @@ namespace Lusid.Sdk.Model
         public override string ToString()
         {
             var sb = new StringBuilder();
-            sb.Append("class Property {\n");
-            sb.Append("  Key: ").Append(Key).Append("\n");
-            sb.Append("  Value: ").Append(Value).Append("\n");
-            sb.Append("  EffectiveFrom: ").Append(EffectiveFrom).Append("\n");
+            sb.Append("class ResourceListOfPerson {\n");
+            sb.Append("  Values: ").Append(Values).Append("\n");
+            sb.Append("  Href: ").Append(Href).Append("\n");
+            sb.Append("  Links: ").Append(Links).Append("\n");
             sb.Append("}\n");
             return sb.ToString();
         }
@@ -115,34 +104,36 @@ namespace Lusid.Sdk.Model
         /// <returns>Boolean</returns>
         public override bool Equals(object input)
         {
-            return this.Equals(input as Property);
+            return this.Equals(input as ResourceListOfPerson);
         }
 
         /// <summary>
-        /// Returns true if Property instances are equal
+        /// Returns true if ResourceListOfPerson instances are equal
         /// </summary>
-        /// <param name="input">Instance of Property to be compared</param>
+        /// <param name="input">Instance of ResourceListOfPerson to be compared</param>
         /// <returns>Boolean</returns>
-        public bool Equals(Property input)
+        public bool Equals(ResourceListOfPerson input)
         {
             if (input == null)
                 return false;
 
             return 
                 (
-                    this.Key == input.Key ||
-                    (this.Key != null &&
-                    this.Key.Equals(input.Key))
+                    this.Values == input.Values ||
+                    this.Values != null &&
+                    input.Values != null &&
+                    this.Values.SequenceEqual(input.Values)
                 ) && 
                 (
-                    this.Value == input.Value ||
-                    (this.Value != null &&
-                    this.Value.Equals(input.Value))
+                    this.Href == input.Href ||
+                    (this.Href != null &&
+                    this.Href.Equals(input.Href))
                 ) && 
                 (
-                    this.EffectiveFrom == input.EffectiveFrom ||
-                    (this.EffectiveFrom != null &&
-                    this.EffectiveFrom.Equals(input.EffectiveFrom))
+                    this.Links == input.Links ||
+                    this.Links != null &&
+                    input.Links != null &&
+                    this.Links.SequenceEqual(input.Links)
                 );
         }
 
@@ -155,12 +146,12 @@ namespace Lusid.Sdk.Model
             unchecked // Overflow is fine, just wrap
             {
                 int hashCode = 41;
-                if (this.Key != null)
-                    hashCode = hashCode * 59 + this.Key.GetHashCode();
-                if (this.Value != null)
-                    hashCode = hashCode * 59 + this.Value.GetHashCode();
-                if (this.EffectiveFrom != null)
-                    hashCode = hashCode * 59 + this.EffectiveFrom.GetHashCode();
+                if (this.Values != null)
+                    hashCode = hashCode * 59 + this.Values.GetHashCode();
+                if (this.Href != null)
+                    hashCode = hashCode * 59 + this.Href.GetHashCode();
+                if (this.Links != null)
+                    hashCode = hashCode * 59 + this.Links.GetHashCode();
                 return hashCode;
             }
         }
