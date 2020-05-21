@@ -5,10 +5,10 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**StartDate** | **DateTimeOffset?** |  | 
-**IsPayerNotReceiver** | **bool?** | True if on exercise the holder of the option enters the swap paying fixed, false if floating. | 
-**IsDeliveryNotCash** | **bool?** | True of the option is settled in cash false if by delivery of the swap. | 
-**Swap** | [**LusidInstrument**](LusidInstrument.md) |  | 
+**StartDate** | **DateTimeOffset?** | The start date of the instrument. This is normally synonymous with the trade-date. | 
+**Swap** | [**SwapInstrument**](SwapInstrument.md) |  | 
+**PayOrReceiveFixed** | **string** | True if on exercise the holder of the option enters the swap paying fixed, false if floating. | 
+**DeliveryMethod** | **string** | How does the option settle | 
 **InstrumentType** | **string** | Instrument type, must be property for JSON. | 
 
 [[Back to Model list]](../README.md#documentation-for-models)
