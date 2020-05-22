@@ -245,7 +245,7 @@ namespace Lusid.Sdk.Tests.Tutorials.Ibor
                         properties: new Dictionary<string, PerpetualProperty>
                         {
                             { $"Order/{testScope}/TIF", new PerpetualProperty($"Order/{testScope}/TIF", new PropertyValue("GTC")) },
-                            { $"Order/{testScope}/OrderBook", new PerpetualProperty($"Order/{testScope}/OrderGroup", new PropertyValue("UK Test Orders")) },
+                            { $"Order/{testScope}/OrderBook", new PerpetualProperty($"Order/{testScope}/OrderBook", new PropertyValue("UK Test Orders")) },
                             { $"Order/{testScope}/PortfolioManager", new PerpetualProperty($"Order/{testScope}/PortfolioManager", new PropertyValue("F Bar")) },
                             { $"Order/{testScope}/Account", new PerpetualProperty($"Order/{testScope}/Account", new PropertyValue("ZB123")) },
                             { $"Order/{testScope}/Strategy", new PerpetualProperty($"Order/{testScope}/Strategy", new PropertyValue("RiskArb")) },
@@ -270,7 +270,7 @@ namespace Lusid.Sdk.Tests.Tutorials.Ibor
                         properties: new Dictionary<string, PerpetualProperty>
                         {
                             { $"Order/{testScope}/TIF", new PerpetualProperty($"Order/{testScope}/TIF", new PropertyValue("GTC")) },
-                            { $"Order/{testScope}/OrderBook", new PerpetualProperty($"Order/{testScope}/OrderGroup", new PropertyValue("UK Test Orders")) },
+                            { $"Order/{testScope}/OrderBook", new PerpetualProperty($"Order/{testScope}/OrderBook", new PropertyValue("UK Test Orders")) },
                             { $"Order/{testScope}/PortfolioManager", new PerpetualProperty($"Order/{testScope}/PortfolioManager", new PropertyValue("F Bar")) },
                             { $"Order/{testScope}/Account", new PerpetualProperty($"Order/{testScope}/Account", new PropertyValue("J Wilson")) },
                             { $"Order/{testScope}/Strategy", new PerpetualProperty($"Order/{testScope}/Strategy", new PropertyValue("UK Growth")) },
@@ -295,7 +295,7 @@ namespace Lusid.Sdk.Tests.Tutorials.Ibor
                         properties: new Dictionary<string, PerpetualProperty>
                         {
                             { $"Order/{testScope}/TIF", new PerpetualProperty($"Order/{testScope}/TIF", new PropertyValue("GTC")) },
-                            { $"Order/{testScope}/OrderBook", new PerpetualProperty($"Order/{testScope}/OrderGroup", new PropertyValue("UK Test Orders 2")) },
+                            { $"Order/{testScope}/OrderBook", new PerpetualProperty($"Order/{testScope}/OrderBook", new PropertyValue("UK Test Orders 2")) },
                             { $"Order/{testScope}/PortfolioManager", new PerpetualProperty($"Order/{testScope}/PortfolioManager", new PropertyValue("F Bar")) },
                             { $"Order/{testScope}/Account", new PerpetualProperty($"Order/{testScope}/Account", new PropertyValue("J Wilson")) },
                             { $"Order/{testScope}/Strategy", new PerpetualProperty($"Order/{testScope}/Strategy", new PropertyValue("RiskArb")) },
