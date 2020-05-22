@@ -18,144 +18,151 @@ using System.Collections.ObjectModel;
 using System.Runtime.Serialization;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
-using JsonSubTypes;
 using OpenAPIDateConverter = Lusid.Sdk.Client.OpenAPIDateConverter;
 
 namespace Lusid.Sdk.Model
 {
     /// <summary>
-    /// Base class in hierarchy for LUSID Instruments. Valuation would normally be performed through passing LUSID a Code for a portfolio to be valued.  In that case the set of instruments have already been uploaded. Equally, one might wish to pass in a set of instruments directly and have LUSID  value the inlined set. This the base instrument for this case.
+    /// Specification class to request for the creation/supplementing of a configuration recipe
     /// </summary>
     [DataContract]
-    [JsonConverter(typeof(JsonSubtypes), "LusidInstrument")]
-    [JsonSubtypes.KnownSubType(typeof(FxForwardInstrument), "FxForwardInstrument")]
-    [JsonSubtypes.KnownSubType(typeof(EquityOption), "EquityOption")]
-    [JsonSubtypes.KnownSubType(typeof(InstrumentLeg), "InstrumentLeg")]
-    [JsonSubtypes.KnownSubType(typeof(BondInstrument), "BondInstrument")]
-    [JsonSubtypes.KnownSubType(typeof(FixedLeg), "FixedLeg")]
-    [JsonSubtypes.KnownSubType(typeof(FxOption), "FxOption")]
-    [JsonSubtypes.KnownSubType(typeof(FloatingLeg), "FloatingLeg")]
-    [JsonSubtypes.KnownSubType(typeof(Swaption), "Swaption")]
-    [JsonSubtypes.KnownSubType(typeof(SwapInstrument), "SwapInstrument")]
-    [JsonSubtypes.KnownSubType(typeof(CdsInstrument), "CdsInstrument")]
-    public partial class LusidInstrument :  IEquatable<LusidInstrument>
+    public partial class CreateRecipeRequest :  IEquatable<CreateRecipeRequest>
     {
         /// <summary>
-        /// Instrument type, must be property for JSON.
-        /// </summary>
-        /// <value>Instrument type, must be property for JSON.</value>
-        [JsonConverter(typeof(StringEnumConverter))]
-        public enum InstrumentTypeEnum
-        {
-            /// <summary>
-            /// Enum QuotedSecurity for value: QuotedSecurity
-            /// </summary>
-            [EnumMember(Value = "QuotedSecurity")]
-            QuotedSecurity = 1,
-
-            /// <summary>
-            /// Enum InterestRateSwap for value: InterestRateSwap
-            /// </summary>
-            [EnumMember(Value = "InterestRateSwap")]
-            InterestRateSwap = 2,
-
-            /// <summary>
-            /// Enum FxForward for value: FxForward
-            /// </summary>
-            [EnumMember(Value = "FxForward")]
-            FxForward = 3,
-
-            /// <summary>
-            /// Enum Exotic for value: Exotic
-            /// </summary>
-            [EnumMember(Value = "Exotic")]
-            Exotic = 4,
-
-            /// <summary>
-            /// Enum FxOption for value: FxOption
-            /// </summary>
-            [EnumMember(Value = "FxOption")]
-            FxOption = 5,
-
-            /// <summary>
-            /// Enum CreditDefaultSwap for value: CreditDefaultSwap
-            /// </summary>
-            [EnumMember(Value = "CreditDefaultSwap")]
-            CreditDefaultSwap = 6,
-
-            /// <summary>
-            /// Enum InterestRateSwaption for value: InterestRateSwaption
-            /// </summary>
-            [EnumMember(Value = "InterestRateSwaption")]
-            InterestRateSwaption = 7,
-
-            /// <summary>
-            /// Enum Bond for value: Bond
-            /// </summary>
-            [EnumMember(Value = "Bond")]
-            Bond = 8,
-
-            /// <summary>
-            /// Enum EquityOption for value: EquityOption
-            /// </summary>
-            [EnumMember(Value = "EquityOption")]
-            EquityOption = 9,
-
-            /// <summary>
-            /// Enum FixedRateLeg for value: FixedRateLeg
-            /// </summary>
-            [EnumMember(Value = "FixedRateLeg")]
-            FixedRateLeg = 10,
-
-            /// <summary>
-            /// Enum FloatingRateLeg for value: FloatingRateLeg
-            /// </summary>
-            [EnumMember(Value = "FloatingRateLeg")]
-            FloatingRateLeg = 11,
-
-            /// <summary>
-            /// Enum BespokeCashflowLeg for value: BespokeCashflowLeg
-            /// </summary>
-            [EnumMember(Value = "BespokeCashflowLeg")]
-            BespokeCashflowLeg = 12,
-
-            /// <summary>
-            /// Enum Unknown for value: Unknown
-            /// </summary>
-            [EnumMember(Value = "Unknown")]
-            Unknown = 13
-
-        }
-
-        /// <summary>
-        /// Instrument type, must be property for JSON.
-        /// </summary>
-        /// <value>Instrument type, must be property for JSON.</value>
-        [DataMember(Name="instrumentType", EmitDefaultValue=false)]
-        public InstrumentTypeEnum InstrumentType { get; set; }
-        /// <summary>
-        /// Initializes a new instance of the <see cref="LusidInstrument" /> class.
+        /// Initializes a new instance of the <see cref="CreateRecipeRequest" /> class.
         /// </summary>
         [JsonConstructorAttribute]
-        protected LusidInstrument() { }
+        protected CreateRecipeRequest() { }
         /// <summary>
-        /// Initializes a new instance of the <see cref="LusidInstrument" /> class.
+        /// Initializes a new instance of the <see cref="CreateRecipeRequest" /> class.
         /// </summary>
-        /// <param name="instrumentType">Instrument type, must be property for JSON. (required).</param>
-        public LusidInstrument(InstrumentTypeEnum instrumentType = default(InstrumentTypeEnum))
+        /// <param name="recipeCreationMarketDataScopes">The scopes in which the recipe creation would look for quotes/data..</param>
+        /// <param name="recipeId">recipeId.</param>
+        /// <param name="inlineRecipe">inlineRecipe.</param>
+        /// <param name="asAt">The asAt date to use.</param>
+        /// <param name="effectiveFrom">If present, the EffectiveFrom and EffectiveAt dates are interpreted as a range of dates for which to perform a valuation.  In this case, valuation is calculated for the portfolio(s) for each date that is a business day in the given range..</param>
+        /// <param name="effectiveAt">The market data time, i.e. the time to run the aggregation request effective of. (required).</param>
+        /// <param name="metrics">The set of specifications for items to calculate or retrieve during the aggregation and present in the results.  This is logically equivalent to the set of operations in a Sql select statement  select [operation1(field1), operation2(field2), ... ] from results (required).</param>
+        /// <param name="groupBy">The set of items by which to perform grouping. This primarily matters when one or more of the metric operators is a mapping  that reduces set size, e.g. sum or proportion. The group-by statement determines the set of keys by which to break the results out..</param>
+        /// <param name="filters">A set of filters to use to reduce the data found in a request. Equivalent to the &#39;where ...&#39; part of a Sql select statement.  For example, filter a set of values within a given range or matching a particular value..</param>
+        /// <param name="limit">limit the results to a particular number of values..</param>
+        /// <param name="sort">A (possibly empty/null) set of specifications for how to order the results..</param>
+        /// <param name="reportCcy">Three letter ISO currency string indicating what currency to report in for ReportCcy denominated queries.  If not present then the currency of the relevant portfolio will be used in its place where relevant..</param>
+        public CreateRecipeRequest(List<string> recipeCreationMarketDataScopes = default(List<string>), ResourceId recipeId = default(ResourceId), ConfigurationRecipe inlineRecipe = default(ConfigurationRecipe), DateTimeOffset? asAt = default(DateTimeOffset?), DateTimeOrCutLabel effectiveFrom = default(DateTimeOrCutLabel), DateTimeOrCutLabel effectiveAt = default(DateTimeOrCutLabel), List<AggregateSpec> metrics = default(List<AggregateSpec>), List<string> groupBy = default(List<string>), List<PropertyFilter> filters = default(List<PropertyFilter>), int? limit = default(int?), List<OrderBySpec> sort = default(List<OrderBySpec>), string reportCcy = default(string))
         {
-            // to ensure "instrumentType" is required (not null)
-            if (instrumentType == null)
+            // to ensure "effectiveAt" is required (not null)
+            if (effectiveAt == null)
             {
-                throw new InvalidDataException("instrumentType is a required property for LusidInstrument and cannot be null");
+                throw new InvalidDataException("effectiveAt is a required property for CreateRecipeRequest and cannot be null");
             }
             else
             {
-                this.InstrumentType = instrumentType;
+                this.EffectiveAt = effectiveAt;
             }
             
+            // to ensure "metrics" is required (not null)
+            if (metrics == null)
+            {
+                throw new InvalidDataException("metrics is a required property for CreateRecipeRequest and cannot be null");
+            }
+            else
+            {
+                this.Metrics = metrics;
+            }
+            
+            this.RecipeCreationMarketDataScopes = recipeCreationMarketDataScopes;
+            this.RecipeId = recipeId;
+            this.InlineRecipe = inlineRecipe;
+            this.AsAt = asAt;
+            this.EffectiveFrom = effectiveFrom;
+            this.GroupBy = groupBy;
+            this.Filters = filters;
+            this.Limit = limit;
+            this.Sort = sort;
+            this.ReportCcy = reportCcy;
         }
         
+        /// <summary>
+        /// The scopes in which the recipe creation would look for quotes/data.
+        /// </summary>
+        /// <value>The scopes in which the recipe creation would look for quotes/data.</value>
+        [DataMember(Name="recipeCreationMarketDataScopes", EmitDefaultValue=false)]
+        public List<string> RecipeCreationMarketDataScopes { get; set; }
+
+        /// <summary>
+        /// Gets or Sets RecipeId
+        /// </summary>
+        [DataMember(Name="recipeId", EmitDefaultValue=false)]
+        public ResourceId RecipeId { get; set; }
+
+        /// <summary>
+        /// Gets or Sets InlineRecipe
+        /// </summary>
+        [DataMember(Name="inlineRecipe", EmitDefaultValue=false)]
+        public ConfigurationRecipe InlineRecipe { get; set; }
+
+        /// <summary>
+        /// The asAt date to use
+        /// </summary>
+        /// <value>The asAt date to use</value>
+        [DataMember(Name="asAt", EmitDefaultValue=false)]
+        public DateTimeOffset? AsAt { get; set; }
+
+        /// <summary>
+        /// If present, the EffectiveFrom and EffectiveAt dates are interpreted as a range of dates for which to perform a valuation.  In this case, valuation is calculated for the portfolio(s) for each date that is a business day in the given range.
+        /// </summary>
+        /// <value>If present, the EffectiveFrom and EffectiveAt dates are interpreted as a range of dates for which to perform a valuation.  In this case, valuation is calculated for the portfolio(s) for each date that is a business day in the given range.</value>
+        [DataMember(Name="effectiveFrom", EmitDefaultValue=false)]
+        public DateTimeOrCutLabel EffectiveFrom { get; set; }
+
+        /// <summary>
+        /// The market data time, i.e. the time to run the aggregation request effective of.
+        /// </summary>
+        /// <value>The market data time, i.e. the time to run the aggregation request effective of.</value>
+        [DataMember(Name="effectiveAt", EmitDefaultValue=false)]
+        public DateTimeOrCutLabel EffectiveAt { get; set; }
+
+        /// <summary>
+        /// The set of specifications for items to calculate or retrieve during the aggregation and present in the results.  This is logically equivalent to the set of operations in a Sql select statement  select [operation1(field1), operation2(field2), ... ] from results
+        /// </summary>
+        /// <value>The set of specifications for items to calculate or retrieve during the aggregation and present in the results.  This is logically equivalent to the set of operations in a Sql select statement  select [operation1(field1), operation2(field2), ... ] from results</value>
+        [DataMember(Name="metrics", EmitDefaultValue=false)]
+        public List<AggregateSpec> Metrics { get; set; }
+
+        /// <summary>
+        /// The set of items by which to perform grouping. This primarily matters when one or more of the metric operators is a mapping  that reduces set size, e.g. sum or proportion. The group-by statement determines the set of keys by which to break the results out.
+        /// </summary>
+        /// <value>The set of items by which to perform grouping. This primarily matters when one or more of the metric operators is a mapping  that reduces set size, e.g. sum or proportion. The group-by statement determines the set of keys by which to break the results out.</value>
+        [DataMember(Name="groupBy", EmitDefaultValue=false)]
+        public List<string> GroupBy { get; set; }
+
+        /// <summary>
+        /// A set of filters to use to reduce the data found in a request. Equivalent to the &#39;where ...&#39; part of a Sql select statement.  For example, filter a set of values within a given range or matching a particular value.
+        /// </summary>
+        /// <value>A set of filters to use to reduce the data found in a request. Equivalent to the &#39;where ...&#39; part of a Sql select statement.  For example, filter a set of values within a given range or matching a particular value.</value>
+        [DataMember(Name="filters", EmitDefaultValue=false)]
+        public List<PropertyFilter> Filters { get; set; }
+
+        /// <summary>
+        /// limit the results to a particular number of values.
+        /// </summary>
+        /// <value>limit the results to a particular number of values.</value>
+        [DataMember(Name="limit", EmitDefaultValue=false)]
+        public int? Limit { get; set; }
+
+        /// <summary>
+        /// A (possibly empty/null) set of specifications for how to order the results.
+        /// </summary>
+        /// <value>A (possibly empty/null) set of specifications for how to order the results.</value>
+        [DataMember(Name="sort", EmitDefaultValue=false)]
+        public List<OrderBySpec> Sort { get; set; }
+
+        /// <summary>
+        /// Three letter ISO currency string indicating what currency to report in for ReportCcy denominated queries.  If not present then the currency of the relevant portfolio will be used in its place where relevant.
+        /// </summary>
+        /// <value>Three letter ISO currency string indicating what currency to report in for ReportCcy denominated queries.  If not present then the currency of the relevant portfolio will be used in its place where relevant.</value>
+        [DataMember(Name="reportCcy", EmitDefaultValue=false)]
+        public string ReportCcy { get; set; }
 
         /// <summary>
         /// Returns the string presentation of the object
@@ -164,8 +171,19 @@ namespace Lusid.Sdk.Model
         public override string ToString()
         {
             var sb = new StringBuilder();
-            sb.Append("class LusidInstrument {\n");
-            sb.Append("  InstrumentType: ").Append(InstrumentType).Append("\n");
+            sb.Append("class CreateRecipeRequest {\n");
+            sb.Append("  RecipeCreationMarketDataScopes: ").Append(RecipeCreationMarketDataScopes).Append("\n");
+            sb.Append("  RecipeId: ").Append(RecipeId).Append("\n");
+            sb.Append("  InlineRecipe: ").Append(InlineRecipe).Append("\n");
+            sb.Append("  AsAt: ").Append(AsAt).Append("\n");
+            sb.Append("  EffectiveFrom: ").Append(EffectiveFrom).Append("\n");
+            sb.Append("  EffectiveAt: ").Append(EffectiveAt).Append("\n");
+            sb.Append("  Metrics: ").Append(Metrics).Append("\n");
+            sb.Append("  GroupBy: ").Append(GroupBy).Append("\n");
+            sb.Append("  Filters: ").Append(Filters).Append("\n");
+            sb.Append("  Limit: ").Append(Limit).Append("\n");
+            sb.Append("  Sort: ").Append(Sort).Append("\n");
+            sb.Append("  ReportCcy: ").Append(ReportCcy).Append("\n");
             sb.Append("}\n");
             return sb.ToString();
         }
@@ -186,24 +204,84 @@ namespace Lusid.Sdk.Model
         /// <returns>Boolean</returns>
         public override bool Equals(object input)
         {
-            return this.Equals(input as LusidInstrument);
+            return this.Equals(input as CreateRecipeRequest);
         }
 
         /// <summary>
-        /// Returns true if LusidInstrument instances are equal
+        /// Returns true if CreateRecipeRequest instances are equal
         /// </summary>
-        /// <param name="input">Instance of LusidInstrument to be compared</param>
+        /// <param name="input">Instance of CreateRecipeRequest to be compared</param>
         /// <returns>Boolean</returns>
-        public bool Equals(LusidInstrument input)
+        public bool Equals(CreateRecipeRequest input)
         {
             if (input == null)
                 return false;
 
             return 
                 (
-                    this.InstrumentType == input.InstrumentType ||
-                    (this.InstrumentType != null &&
-                    this.InstrumentType.Equals(input.InstrumentType))
+                    this.RecipeCreationMarketDataScopes == input.RecipeCreationMarketDataScopes ||
+                    this.RecipeCreationMarketDataScopes != null &&
+                    input.RecipeCreationMarketDataScopes != null &&
+                    this.RecipeCreationMarketDataScopes.SequenceEqual(input.RecipeCreationMarketDataScopes)
+                ) && 
+                (
+                    this.RecipeId == input.RecipeId ||
+                    (this.RecipeId != null &&
+                    this.RecipeId.Equals(input.RecipeId))
+                ) && 
+                (
+                    this.InlineRecipe == input.InlineRecipe ||
+                    (this.InlineRecipe != null &&
+                    this.InlineRecipe.Equals(input.InlineRecipe))
+                ) && 
+                (
+                    this.AsAt == input.AsAt ||
+                    (this.AsAt != null &&
+                    this.AsAt.Equals(input.AsAt))
+                ) && 
+                (
+                    this.EffectiveFrom == input.EffectiveFrom ||
+                    (this.EffectiveFrom != null &&
+                    this.EffectiveFrom.Equals(input.EffectiveFrom))
+                ) && 
+                (
+                    this.EffectiveAt == input.EffectiveAt ||
+                    (this.EffectiveAt != null &&
+                    this.EffectiveAt.Equals(input.EffectiveAt))
+                ) && 
+                (
+                    this.Metrics == input.Metrics ||
+                    this.Metrics != null &&
+                    input.Metrics != null &&
+                    this.Metrics.SequenceEqual(input.Metrics)
+                ) && 
+                (
+                    this.GroupBy == input.GroupBy ||
+                    this.GroupBy != null &&
+                    input.GroupBy != null &&
+                    this.GroupBy.SequenceEqual(input.GroupBy)
+                ) && 
+                (
+                    this.Filters == input.Filters ||
+                    this.Filters != null &&
+                    input.Filters != null &&
+                    this.Filters.SequenceEqual(input.Filters)
+                ) && 
+                (
+                    this.Limit == input.Limit ||
+                    (this.Limit != null &&
+                    this.Limit.Equals(input.Limit))
+                ) && 
+                (
+                    this.Sort == input.Sort ||
+                    this.Sort != null &&
+                    input.Sort != null &&
+                    this.Sort.SequenceEqual(input.Sort)
+                ) && 
+                (
+                    this.ReportCcy == input.ReportCcy ||
+                    (this.ReportCcy != null &&
+                    this.ReportCcy.Equals(input.ReportCcy))
                 );
         }
 
@@ -216,8 +294,30 @@ namespace Lusid.Sdk.Model
             unchecked // Overflow is fine, just wrap
             {
                 int hashCode = 41;
-                if (this.InstrumentType != null)
-                    hashCode = hashCode * 59 + this.InstrumentType.GetHashCode();
+                if (this.RecipeCreationMarketDataScopes != null)
+                    hashCode = hashCode * 59 + this.RecipeCreationMarketDataScopes.GetHashCode();
+                if (this.RecipeId != null)
+                    hashCode = hashCode * 59 + this.RecipeId.GetHashCode();
+                if (this.InlineRecipe != null)
+                    hashCode = hashCode * 59 + this.InlineRecipe.GetHashCode();
+                if (this.AsAt != null)
+                    hashCode = hashCode * 59 + this.AsAt.GetHashCode();
+                if (this.EffectiveFrom != null)
+                    hashCode = hashCode * 59 + this.EffectiveFrom.GetHashCode();
+                if (this.EffectiveAt != null)
+                    hashCode = hashCode * 59 + this.EffectiveAt.GetHashCode();
+                if (this.Metrics != null)
+                    hashCode = hashCode * 59 + this.Metrics.GetHashCode();
+                if (this.GroupBy != null)
+                    hashCode = hashCode * 59 + this.GroupBy.GetHashCode();
+                if (this.Filters != null)
+                    hashCode = hashCode * 59 + this.Filters.GetHashCode();
+                if (this.Limit != null)
+                    hashCode = hashCode * 59 + this.Limit.GetHashCode();
+                if (this.Sort != null)
+                    hashCode = hashCode * 59 + this.Sort.GetHashCode();
+                if (this.ReportCcy != null)
+                    hashCode = hashCode * 59 + this.ReportCcy.GetHashCode();
                 return hashCode;
             }
         }
