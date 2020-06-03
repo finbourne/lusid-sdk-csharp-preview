@@ -7,6 +7,7 @@ Method | HTTP request | Description
 [**DeleteConfigurationRecipe**](ConfigurationRecipeApi.md#deleteconfigurationrecipe) | **DELETE** /api/recipes/{scope}/{code} | [EXPERIMENTAL] Delete a Configuration Recipe, assuming that it is present.
 [**GetConfigurationRecipe**](ConfigurationRecipeApi.md#getconfigurationrecipe) | **GET** /api/recipes/{scope}/{code} | [EXPERIMENTAL] Get Configuration Recipe
 [**ListConfigurationRecipes**](ConfigurationRecipeApi.md#listconfigurationrecipes) | **GET** /api/recipes/{scope} | [EXPERIMENTAL] List the set of Configuration Recipes
+[**ListConfigurationRecipesForAllScopes**](ConfigurationRecipeApi.md#listconfigurationrecipesforallscopes) | **GET** /api/recipes | [EXPERIMENTAL] List the set of Configuration Recipes from all scopes
 [**UpsertConfigurationRecipe**](ConfigurationRecipeApi.md#upsertconfigurationrecipe) | **POST** /api/recipes/{scope} | [EXPERIMENTAL] Upsert a Configuration Recipe. This creates or updates the data in Lusid.
 
 
@@ -252,6 +253,88 @@ Name | Type | Description  | Notes
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
 | **200** | The requested configuration recipes |  -  |
+| **400** | The details of the input related failure |  -  |
+| **0** | Error response |  -  |
+
+[[Back to top]](#)
+[[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
+
+
+## ListConfigurationRecipesForAllScopes
+
+> ResourceListOfGetRecipeResponse ListConfigurationRecipesForAllScopes (DateTimeOffset? asAt = null, string filter = null)
+
+[EXPERIMENTAL] List the set of Configuration Recipes from all scopes
+
+List the set of configuration recipes at the specified date/time across all the scopes and allowing filtering (e.g. filter by scope)
+
+### Example
+
+```csharp
+using System.Collections.Generic;
+using System.Diagnostics;
+using Lusid.Sdk.Api;
+using Lusid.Sdk.Client;
+using Lusid.Sdk.Model;
+
+namespace Example
+{
+    public class ListConfigurationRecipesForAllScopesExample
+    {
+        public static void Main()
+        {
+            Configuration.Default.BasePath = "http://localhost";
+            // Configure OAuth2 access token for authorization: oauth2
+            Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
+
+            var apiInstance = new ConfigurationRecipeApi(Configuration.Default);
+            var asAt = 2013-10-20T19:20:30+01:00;  // DateTimeOffset? | The asAt datetime at which to list the Configuration Recipes. Defaults to latest if not specified. (optional) 
+            var filter = filter_example;  // string | Expression to filter the result set.             For example, to filter on code, use \"value.code eq 'string'\"             Read more about filtering results from LUSID here https://support.lusid.com/filtering-results-from-lusid. (optional) 
+
+            try
+            {
+                // [EXPERIMENTAL] List the set of Configuration Recipes from all scopes
+                ResourceListOfGetRecipeResponse result = apiInstance.ListConfigurationRecipesForAllScopes(asAt, filter);
+                Debug.WriteLine(result);
+            }
+            catch (ApiException e)
+            {
+                Debug.Print("Exception when calling ConfigurationRecipeApi.ListConfigurationRecipesForAllScopes: " + e.Message );
+                Debug.Print("Status Code: "+ e.ErrorCode);
+                Debug.Print(e.StackTrace);
+            }
+        }
+    }
+}
+```
+
+### Parameters
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **asAt** | **DateTimeOffset?**| The asAt datetime at which to list the Configuration Recipes. Defaults to latest if not specified. | [optional] 
+ **filter** | **string**| Expression to filter the result set.             For example, to filter on code, use \&quot;value.code eq &#39;string&#39;\&quot;             Read more about filtering results from LUSID here https://support.lusid.com/filtering-results-from-lusid. | [optional] 
+
+### Return type
+
+[**ResourceListOfGetRecipeResponse**](ResourceListOfGetRecipeResponse.md)
+
+### Authorization
+
+[oauth2](../README.md#oauth2)
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: text/plain, application/json, text/json
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+| **200** | The configuration recipes for all scopes |  -  |
 | **400** | The details of the input related failure |  -  |
 | **0** | Error response |  -  |
 
