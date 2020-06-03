@@ -7,13 +7,14 @@ Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **InstrumentType** | **string** | Instrument type, must be property for JSON. | 
 **Code** | **string** | The reset code of the option. | 
-**StartDate** | **DateTimeOffset?** | The start date of the option. | 
+**Strike** | **decimal?** | The strike of the option. | 
 **OptionMaturityDate** | **DateTimeOffset?** | The maturity date of the option. | 
 **OptionSettlementDate** | **DateTimeOffset?** | The settlement date of the option. | 
-**IsDeliveryNotCash** | **bool?** | True of the option is settled in cash false if delivery. | 
-**IsCallNotPut** | **bool?** | True if the option is a call, false if the option is a put. | 
-**Strike** | **decimal?** | The strike of the option. | 
-**DomCcy** | **string** | The domestic currency. | 
+**StartDate** | **DateTimeOffset?** | The start date of the instrument. This is normally synonymous with the trade-date. | 
+**OptionType** | **string** | Type of optionality for the option | 
+**DeliveryType** | **string** | is the option cash settled or physical delivery of option | 
+**UnderlyingIdentifier** | **string** | external market codes and identifiers for the option, e.g. RIC. | 
+**DomCcy** | **string** | The domestic currency of the instrument. | 
 
 [[Back to Model list]](../README.md#documentation-for-models)
 [[Back to API list]](../README.md#documentation-for-api-endpoints)
