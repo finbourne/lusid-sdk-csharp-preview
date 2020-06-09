@@ -30,8 +30,8 @@ namespace Lusid.Sdk.Tests.Tutorials.MarketData
                         provider: "DataScope",
                         priceSource: "BankA",
                         instrumentId: "BBG000B9XRY4",
-                        instrumentIdType: QuoteSeriesId.InstrumentIdTypeEnum.Figi,
-                        quoteType: QuoteSeriesId.QuoteTypeEnum.Price,
+                        instrumentIdType: QuoteInstrumentIdType.Figi,
+                        quoteType: QuoteType.Price,
                         field: "mid"),
                     new DateTimeOffset(2019, 4, 15, 0, 0, 0, TimeSpan.Zero).ToString("o")),
                 metricValue: new MetricValue(
@@ -49,8 +49,8 @@ namespace Lusid.Sdk.Tests.Tutorials.MarketData
                     provider: "DataScope",
                     priceSource: "BankA",
                     instrumentId: "BBG000B9XRY4",
-                    instrumentIdType: QuoteSeriesId.InstrumentIdTypeEnum.Figi,
-                    quoteType: QuoteSeriesId.QuoteTypeEnum.Price,
+                    instrumentIdType: QuoteInstrumentIdType.Figi,
+                    quoteType: QuoteType.Price,
                     field: "mid");
             var effectiveDate = new DateTimeOffset(2019, 4, 15, 0, 0, 0, TimeSpan.Zero);
             
@@ -58,7 +58,7 @@ namespace Lusid.Sdk.Tests.Tutorials.MarketData
             var quoteResponse = _quotesApi.GetQuotes(
                 TestDataUtilities.TutorialScope,
                 effectiveAt: effectiveDate.ToString("o"),
-                quoteIds: new Dictionary<string, QuoteSeriesId> {{"correlationId", quoteSeriesId}});
+                requestBody: new Dictionary<string, QuoteSeriesId> {{"correlationId", quoteSeriesId}});
             
             Assert.That(quoteResponse.Values.Count, Is.EqualTo(1));
 
@@ -76,8 +76,8 @@ namespace Lusid.Sdk.Tests.Tutorials.MarketData
             var quoteSeriesId = new QuoteSeriesId(
                 provider: "Client",
                 instrumentId: "BBG000DMBXR2",
-                instrumentIdType: QuoteSeriesId.InstrumentIdTypeEnum.Figi,
-                quoteType: QuoteSeriesId.QuoteTypeEnum.Price,
+                instrumentIdType: QuoteInstrumentIdType.Figi,
+                quoteType: QuoteType.Price,
                 field: "mid");
 
             //    Get the quotes for each day in the date range
@@ -86,7 +86,7 @@ namespace Lusid.Sdk.Tests.Tutorials.MarketData
                     _quotesApi.GetQuotes(
                         TestDataUtilities.MarketDataScope,
                         effectiveAt: d.ToString("o"),
-                        quoteIds:
+                        requestBody:
                         new Dictionary<string, QuoteSeriesId> {{"correlationId", quoteSeriesId}}))
                 .SelectMany(q => q.Values)
                 .ToList();

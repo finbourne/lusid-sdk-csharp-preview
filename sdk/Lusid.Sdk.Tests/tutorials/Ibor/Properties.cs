@@ -34,14 +34,14 @@ namespace Lusid.Sdk.Tests.tutorials.Ibor
             var labelPropertyDefinition = new CreatePropertyDefinitionRequest(
                 
                 //    The domain the property is to be applied to
-                domain: CreatePropertyDefinitionRequest.DomainEnum.Portfolio,
+                domain: PropertyDomain.Portfolio,
                 
                 //    The scope the property will be created in
                 scope: TestDataUtilities.TutorialScope,
                 
                 //    When the property value is set it will be valid forever and cannot be changed.
                 //    Properties whose values can change over time should be created with LifeTimeEnum.TIMEVARIANT
-                lifeTime: CreatePropertyDefinitionRequest.LifeTimeEnum.Perpetual,
+                lifeTime: PropertyLifeTime.Perpetual,
                 
                 code: labelPropertyName,
                 valueRequired: false,
@@ -96,14 +96,14 @@ namespace Lusid.Sdk.Tests.tutorials.Ibor
             var metricPropertyDefinition = new CreatePropertyDefinitionRequest(
                 
                 //    The domain the property is to be applied to
-                domain: CreatePropertyDefinitionRequest.DomainEnum.Portfolio,
+                domain: PropertyDomain.Portfolio,
                 
                 //    The scope the property will be created in
                 scope: TestDataUtilities.TutorialScope,
                 
                 //    When the property value is set it will be valid forever and cannot be changed.
                 //    Properties whose values can change over time should be created with LifeTimeEnum.TIMEVARIANT
-                lifeTime: CreatePropertyDefinitionRequest.LifeTimeEnum.Perpetual,
+                lifeTime: PropertyLifeTime.Perpetual,
                 
                 code: metricPropertyName,
                 valueRequired: false,

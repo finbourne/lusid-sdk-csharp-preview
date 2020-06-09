@@ -183,8 +183,8 @@ namespace Lusid.Sdk.Tests
                         provider: "DataScope",
                         priceSource: "BankA",
                         instrumentId: "BBG000B9XRY4",
-                        instrumentIdType: QuoteSeriesId.InstrumentIdTypeEnum.Figi,
-                        quoteType: QuoteSeriesId.QuoteTypeEnum.Price,
+                        instrumentIdType: QuoteInstrumentIdType.Figi,
+                        quoteType: QuoteType.Price,
                         field: "mid"),
                     effectiveAt: date.AddDays(i)),
                 metricValue: new MetricValue(

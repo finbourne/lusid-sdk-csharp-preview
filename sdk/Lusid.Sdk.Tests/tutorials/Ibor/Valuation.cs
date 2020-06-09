@@ -65,8 +65,8 @@ namespace Lusid.Sdk.Tests.Tutorials.Ibor
                         new QuoteSeriesId(
                             provider: "DataScope", 
                             instrumentId: x.InstrumentId, 
-                            instrumentIdType: QuoteSeriesId.InstrumentIdTypeEnum.LusidInstrumentId, 
-                            quoteType: QuoteSeriesId.QuoteTypeEnum.Price, field: "mid"
+                            instrumentIdType: QuoteInstrumentIdType.LusidInstrumentId, 
+                            quoteType: QuoteType.Price, field: "mid"
                         ),
                         effectiveAt: effectiveDate
                     ),
@@ -85,12 +85,12 @@ namespace Lusid.Sdk.Tests.Tutorials.Ibor
                 {
                     Suppliers = new MarketContextSuppliers
                     {
-                        Equity = MarketContextSuppliers.EquityEnum.DataScope
+                        Equity = ResourceSupplier.DataScope
                     },
                     Options = new MarketOptions
                     {
-                        DefaultSupplier = MarketOptions.DefaultSupplierEnum.DataScope,
-                        DefaultInstrumentCodeType = MarketOptions.DefaultInstrumentCodeTypeEnum.LusidInstrumentId,
+                        DefaultSupplier = ResourceSupplier.DataScope,
+                        DefaultInstrumentCodeType =  QuoteInstrumentIdType.LusidInstrumentId,
                         DefaultScope = scope
                     }
                 }
@@ -104,16 +104,16 @@ namespace Lusid.Sdk.Tests.Tutorials.Ibor
                 inlineRecipe: recipe,
                 metrics: new List<AggregateSpec>
                 {
-                    new AggregateSpec("Instrument/default/Name", AggregateSpec.OpEnum.Value),
-                    new AggregateSpec("Holding/default/PV", AggregateSpec.OpEnum.Proportion),
-                    new AggregateSpec("Holding/default/PV", AggregateSpec.OpEnum.Sum)
+                    new AggregateSpec("Instrument/default/Name", AggregationOp.Value),
+                    new AggregateSpec("Holding/default/PV", AggregationOp.Proportion),
+                    new AggregateSpec("Holding/default/PV", AggregationOp.Sum)
                 },
                 groupBy: new List<string> {"Instrument/default/Name"},
                 effectiveAt: effectiveDate
             );
 
             //    Do the aggregation
-            var results = _apiFactory.Api<IAggregationApi>().GetAggregationByPortfolio(TutorialScope, portfolioId, request: aggregationRequest);
+            var results = _apiFactory.Api<IAggregationApi>().GetAggregationByPortfolio(TutorialScope, portfolioId, aggregationRequest: aggregationRequest);
 
             Assert.That(results.Data, Has.Count.EqualTo(4));
             Assert.That(results.Data[0]["Sum(Holding/default/PV)"], Is.EqualTo(10000));
