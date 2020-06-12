@@ -58,7 +58,7 @@ namespace Lusid.Sdk.Tests.Tutorials.MarketData
             var quoteResponse = _quotesApi.GetQuotes(
                 TestDataUtilities.TutorialScope,
                 effectiveAt: effectiveDate.ToString("o"),
-                quoteIds: new Dictionary<string, QuoteSeriesId> {{"correlationId", quoteSeriesId}});
+                requestBody: new Dictionary<string, QuoteSeriesId> {{"correlationId", quoteSeriesId}});
             
             Assert.That(quoteResponse.Values.Count, Is.EqualTo(1));
 
@@ -86,7 +86,7 @@ namespace Lusid.Sdk.Tests.Tutorials.MarketData
                     _quotesApi.GetQuotes(
                         TestDataUtilities.MarketDataScope,
                         effectiveAt: d.ToString("o"),
-                        quoteIds:
+                        requestBody:
                         new Dictionary<string, QuoteSeriesId> {{"correlationId", quoteSeriesId}}))
                 .SelectMany(q => q.Values)
                 .ToList();
