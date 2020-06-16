@@ -1,6 +1,6 @@
 # Lusid.Sdk.Api.ResultsApi
 
-All URIs are relative to *http://localhost/api*
+All URIs are relative to *http://localhost:46312*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
@@ -32,7 +32,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://localhost/api";
+            Configuration.Default.BasePath = "http://localhost:46312";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -99,7 +99,7 @@ Name | Type | Description  | Notes
 
 ## UpsertResults
 
-> Results UpsertResults (CreateResults request = null)
+> Results UpsertResults (CreateResults createResults = null)
 
 [EXPERIMENTAL] Upsert results
 
@@ -120,17 +120,17 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://localhost/api";
+            Configuration.Default.BasePath = "http://localhost:46312";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
             var apiInstance = new ResultsApi(Configuration.Default);
-            var request = new CreateResults(); // CreateResults | The details of what to upsert (optional) 
+            var createResults = new CreateResults(); // CreateResults | The details of what to upsert (optional) 
 
             try
             {
                 // [EXPERIMENTAL] Upsert results
-                Results result = apiInstance.UpsertResults(request);
+                Results result = apiInstance.UpsertResults(createResults);
                 Debug.WriteLine(result);
             }
             catch (ApiException e)
@@ -149,7 +149,7 @@ namespace Example
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **request** | [**CreateResults**](CreateResults.md)| The details of what to upsert | [optional] 
+ **createResults** | [**CreateResults**](CreateResults.md)| The details of what to upsert | [optional] 
 
 ### Return type
 
@@ -161,7 +161,7 @@ Name | Type | Description  | Notes
 
 ### HTTP request headers
 
-- **Content-Type**: Not defined
+- **Content-Type**: application/json-patch+json, application/json, text/json, application/_*+json
 - **Accept**: text/plain, application/json, text/json
 
 ### HTTP response details

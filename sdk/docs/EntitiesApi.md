@@ -1,6 +1,6 @@
 # Lusid.Sdk.Api.EntitiesApi
 
-All URIs are relative to *http://localhost/api*
+All URIs are relative to *http://localhost:46312*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
@@ -31,7 +31,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://localhost/api";
+            Configuration.Default.BasePath = "http://localhost:46312";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -82,8 +82,8 @@ Name | Type | Description  | Notes
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
-| **200** | A list of portfolio changes in the requested scope relative to the specified time. |  -  |
 | **400** | The details of the input related failure |  -  |
+| **200** | A list of portfolio changes in the requested scope relative to the specified time. |  -  |
 | **0** | Error response |  -  |
 
 [[Back to top]](#)

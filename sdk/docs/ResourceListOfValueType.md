@@ -5,7 +5,7 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**Values** | **List&lt;string&gt;** |  | 
+**Values** | [**List&lt;ValueType&gt;**](ValueType.md) |  | 
 **Href** | **string** |  | [optional] 
 **Links** | [**List&lt;Link&gt;**](Link.md) |  | [optional] 
 

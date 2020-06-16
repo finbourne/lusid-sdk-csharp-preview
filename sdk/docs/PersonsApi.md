@@ -1,6 +1,6 @@
 # Lusid.Sdk.Api.PersonsApi
 
-All URIs are relative to *http://localhost/api*
+All URIs are relative to *http://localhost:46312*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
@@ -42,7 +42,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://localhost/api";
+            Configuration.Default.BasePath = "http://localhost:46312";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -126,7 +126,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://localhost/api";
+            Configuration.Default.BasePath = "http://localhost:46312";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -214,7 +214,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://localhost/api";
+            Configuration.Default.BasePath = "http://localhost:46312";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -302,7 +302,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://localhost/api";
+            Configuration.Default.BasePath = "http://localhost:46312";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -390,7 +390,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://localhost/api";
+            Configuration.Default.BasePath = "http://localhost:46312";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -478,7 +478,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://localhost/api";
+            Configuration.Default.BasePath = "http://localhost:46312";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -568,7 +568,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://localhost/api";
+            Configuration.Default.BasePath = "http://localhost:46312";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -658,7 +658,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://localhost/api";
+            Configuration.Default.BasePath = "http://localhost:46312";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -733,7 +733,7 @@ Name | Type | Description  | Notes
 
 ## SetPersonIdentifiers
 
-> Person SetPersonIdentifiers (string idTypeScope, string idTypeCode, string code, SetPersonIdentifiersRequest identifiers)
+> Person SetPersonIdentifiers (string idTypeScope, string idTypeCode, string code, SetPersonIdentifiersRequest setPersonIdentifiersRequest)
 
 [EXPERIMENTAL] Set Person Identifiers
 
@@ -754,7 +754,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://localhost/api";
+            Configuration.Default.BasePath = "http://localhost:46312";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -762,12 +762,12 @@ namespace Example
             var idTypeScope = idTypeScope_example;  // string | Scope of the person identifier type.
             var idTypeCode = idTypeCode_example;  // string | Code of the person identifier type.
             var code = code_example;  // string | Code of the person under specified identifier type's scope and code. This together with stated identifier type uniquely              identifies the person.
-            var identifiers = new SetPersonIdentifiersRequest(); // SetPersonIdentifiersRequest | Request containing identifiers to set for the person. Identifiers not specified in request will not be changed.
+            var setPersonIdentifiersRequest = new SetPersonIdentifiersRequest(); // SetPersonIdentifiersRequest | Request containing identifiers to set for the person. Identifiers not specified in request will not be changed.
 
             try
             {
                 // [EXPERIMENTAL] Set Person Identifiers
-                Person result = apiInstance.SetPersonIdentifiers(idTypeScope, idTypeCode, code, identifiers);
+                Person result = apiInstance.SetPersonIdentifiers(idTypeScope, idTypeCode, code, setPersonIdentifiersRequest);
                 Debug.WriteLine(result);
             }
             catch (ApiException e)
@@ -789,7 +789,7 @@ Name | Type | Description  | Notes
  **idTypeScope** | **string**| Scope of the person identifier type. | 
  **idTypeCode** | **string**| Code of the person identifier type. | 
  **code** | **string**| Code of the person under specified identifier type&#39;s scope and code. This together with stated identifier type uniquely              identifies the person. | 
- **identifiers** | [**SetPersonIdentifiersRequest**](SetPersonIdentifiersRequest.md)| Request containing identifiers to set for the person. Identifiers not specified in request will not be changed. | 
+ **setPersonIdentifiersRequest** | [**SetPersonIdentifiersRequest**](SetPersonIdentifiersRequest.md)| Request containing identifiers to set for the person. Identifiers not specified in request will not be changed. | 
 
 ### Return type
 
@@ -801,7 +801,7 @@ Name | Type | Description  | Notes
 
 ### HTTP request headers
 
-- **Content-Type**: Not defined
+- **Content-Type**: application/json-patch+json, application/json, text/json, application/_*+json
 - **Accept**: text/plain, application/json, text/json
 
 ### HTTP response details
@@ -819,7 +819,7 @@ Name | Type | Description  | Notes
 
 ## SetPersonProperties
 
-> Person SetPersonProperties (string idTypeScope, string idTypeCode, string code, SetPersonPropertiesRequest properties)
+> Person SetPersonProperties (string idTypeScope, string idTypeCode, string code, SetPersonPropertiesRequest setPersonPropertiesRequest)
 
 [EXPERIMENTAL] Set Person Properties
 
@@ -840,7 +840,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://localhost/api";
+            Configuration.Default.BasePath = "http://localhost:46312";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -848,12 +848,12 @@ namespace Example
             var idTypeScope = idTypeScope_example;  // string | Scope of the person identifier type.
             var idTypeCode = idTypeCode_example;  // string | Code of the person identifier type.
             var code = code_example;  // string | Code of the person under specified identifier type's scope and code. This together with stated identifier type uniquely              identifies the person.
-            var properties = new SetPersonPropertiesRequest(); // SetPersonPropertiesRequest | Request containing properties to set for the person. Properties not specified in request will not be changed.
+            var setPersonPropertiesRequest = new SetPersonPropertiesRequest(); // SetPersonPropertiesRequest | Request containing properties to set for the person. Properties not specified in request will not be changed.
 
             try
             {
                 // [EXPERIMENTAL] Set Person Properties
-                Person result = apiInstance.SetPersonProperties(idTypeScope, idTypeCode, code, properties);
+                Person result = apiInstance.SetPersonProperties(idTypeScope, idTypeCode, code, setPersonPropertiesRequest);
                 Debug.WriteLine(result);
             }
             catch (ApiException e)
@@ -875,7 +875,7 @@ Name | Type | Description  | Notes
  **idTypeScope** | **string**| Scope of the person identifier type. | 
  **idTypeCode** | **string**| Code of the person identifier type. | 
  **code** | **string**| Code of the person under specified identifier type&#39;s scope and code. This together with stated identifier type uniquely              identifies the person. | 
- **properties** | [**SetPersonPropertiesRequest**](SetPersonPropertiesRequest.md)| Request containing properties to set for the person. Properties not specified in request will not be changed. | 
+ **setPersonPropertiesRequest** | [**SetPersonPropertiesRequest**](SetPersonPropertiesRequest.md)| Request containing properties to set for the person. Properties not specified in request will not be changed. | 
 
 ### Return type
 
@@ -887,7 +887,7 @@ Name | Type | Description  | Notes
 
 ### HTTP request headers
 
-- **Content-Type**: Not defined
+- **Content-Type**: application/json-patch+json, application/json, text/json, application/_*+json
 - **Accept**: text/plain, application/json, text/json
 
 ### HTTP response details
@@ -905,7 +905,7 @@ Name | Type | Description  | Notes
 
 ## UpsertPerson
 
-> Person UpsertPerson (UpsertPersonRequest request)
+> Person UpsertPerson (UpsertPersonRequest upsertPersonRequest)
 
 [EXPERIMENTAL] Upsert Person
 
@@ -926,17 +926,17 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://localhost/api";
+            Configuration.Default.BasePath = "http://localhost:46312";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
             var apiInstance = new PersonsApi(Configuration.Default);
-            var request = new UpsertPersonRequest(); // UpsertPersonRequest | Request to create or update a person.
+            var upsertPersonRequest = new UpsertPersonRequest(); // UpsertPersonRequest | Request to create or update a person.
 
             try
             {
                 // [EXPERIMENTAL] Upsert Person
-                Person result = apiInstance.UpsertPerson(request);
+                Person result = apiInstance.UpsertPerson(upsertPersonRequest);
                 Debug.WriteLine(result);
             }
             catch (ApiException e)
@@ -955,7 +955,7 @@ namespace Example
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **request** | [**UpsertPersonRequest**](UpsertPersonRequest.md)| Request to create or update a person. | 
+ **upsertPersonRequest** | [**UpsertPersonRequest**](UpsertPersonRequest.md)| Request to create or update a person. | 
 
 ### Return type
 
@@ -967,7 +967,7 @@ Name | Type | Description  | Notes
 
 ### HTTP request headers
 
-- **Content-Type**: Not defined
+- **Content-Type**: application/json-patch+json, application/json, text/json, application/_*+json
 - **Accept**: text/plain, application/json, text/json
 
 ### HTTP response details
@@ -985,7 +985,7 @@ Name | Type | Description  | Notes
 
 ## UpsertPersonAccessMetadata
 
-> ResourceListOfAccessMetadataValueOf UpsertPersonAccessMetadata (string idTypeScope, string idTypeCode, string code, string metadataKey, UpsertPersonAccessMetadataRequest request, DateTimeOrCutLabel effectiveAt = null)
+> ResourceListOfAccessMetadataValueOf UpsertPersonAccessMetadata (string idTypeScope, string idTypeCode, string code, string metadataKey, UpsertPersonAccessMetadataRequest upsertPersonAccessMetadataRequest, DateTimeOrCutLabel effectiveAt = null)
 
 [EXPERIMENTAL] Upsert a Person Access Metadata entry associated with a specific metadataKey. This creates or updates the data in LUSID.
 
@@ -1006,7 +1006,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://localhost/api";
+            Configuration.Default.BasePath = "http://localhost:46312";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -1015,13 +1015,13 @@ namespace Example
             var idTypeCode = idTypeCode_example;  // string | Code of the person identifier.
             var code = code_example;  // string | Code of the person under specified identifier type's scope and code.
             var metadataKey = metadataKey_example;  // string | Key of the metadata entry to retrieve
-            var request = new UpsertPersonAccessMetadataRequest(); // UpsertPersonAccessMetadataRequest | The Person Access Metadata entry to upsert
+            var upsertPersonAccessMetadataRequest = new UpsertPersonAccessMetadataRequest(); // UpsertPersonAccessMetadataRequest | The Person Access Metadata entry to upsert
             var effectiveAt = effectiveAt_example;  // DateTimeOrCutLabel | The effectiveAt datetime at which to upsert the Access Metadata (optional) 
 
             try
             {
                 // [EXPERIMENTAL] Upsert a Person Access Metadata entry associated with a specific metadataKey. This creates or updates the data in LUSID.
-                ResourceListOfAccessMetadataValueOf result = apiInstance.UpsertPersonAccessMetadata(idTypeScope, idTypeCode, code, metadataKey, request, effectiveAt);
+                ResourceListOfAccessMetadataValueOf result = apiInstance.UpsertPersonAccessMetadata(idTypeScope, idTypeCode, code, metadataKey, upsertPersonAccessMetadataRequest, effectiveAt);
                 Debug.WriteLine(result);
             }
             catch (ApiException e)
@@ -1044,7 +1044,7 @@ Name | Type | Description  | Notes
  **idTypeCode** | **string**| Code of the person identifier. | 
  **code** | **string**| Code of the person under specified identifier type&#39;s scope and code. | 
  **metadataKey** | **string**| Key of the metadata entry to retrieve | 
- **request** | [**UpsertPersonAccessMetadataRequest**](UpsertPersonAccessMetadataRequest.md)| The Person Access Metadata entry to upsert | 
+ **upsertPersonAccessMetadataRequest** | [**UpsertPersonAccessMetadataRequest**](UpsertPersonAccessMetadataRequest.md)| The Person Access Metadata entry to upsert | 
  **effectiveAt** | **DateTimeOrCutLabel**| The effectiveAt datetime at which to upsert the Access Metadata | [optional] 
 
 ### Return type
@@ -1057,7 +1057,7 @@ Name | Type | Description  | Notes
 
 ### HTTP request headers
 
-- **Content-Type**: Not defined
+- **Content-Type**: application/json-patch+json, application/json, text/json, application/_*+json
 - **Accept**: text/plain, application/json, text/json
 
 ### HTTP response details

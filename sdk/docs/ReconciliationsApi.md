@@ -1,6 +1,6 @@
 # Lusid.Sdk.Api.ReconciliationsApi
 
-All URIs are relative to *http://localhost/api*
+All URIs are relative to *http://localhost:46312*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
@@ -13,7 +13,7 @@ Method | HTTP request | Description
 
 ## ReconcileHoldings
 
-> ResourceListOfReconciliationBreak ReconcileHoldings (List<string> sortBy = null, int? start = null, int? limit = null, string filter = null, PortfoliosReconciliationRequest request = null)
+> ResourceListOfReconciliationBreak ReconcileHoldings (List<string> sortBy = null, int? start = null, int? limit = null, string filter = null, PortfoliosReconciliationRequest portfoliosReconciliationRequest = null)
 
 [EARLY ACCESS] Reconcile portfolio holdings
 
@@ -34,7 +34,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://localhost/api";
+            Configuration.Default.BasePath = "http://localhost:46312";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -43,12 +43,12 @@ namespace Example
             var start = 56;  // int? | Optional. When paginating, skip this number of results (optional) 
             var limit = 56;  // int? | Optional. When paginating, limit the number of returned results to this many. (optional) 
             var filter = filter_example;  // string | Optional. Expression to filter the result set.              For example, to filter on the left portfolio Code, use \"left.portfolioId.code eq 'string'\"              Read more about filtering results from LUSID here https://support.lusid.com/filtering-results-from-lusid. (optional) 
-            var request = new PortfoliosReconciliationRequest(); // PortfoliosReconciliationRequest | The specifications of the inputs to the reconciliation (optional) 
+            var portfoliosReconciliationRequest = new PortfoliosReconciliationRequest(); // PortfoliosReconciliationRequest | The specifications of the inputs to the reconciliation (optional) 
 
             try
             {
                 // [EARLY ACCESS] Reconcile portfolio holdings
-                ResourceListOfReconciliationBreak result = apiInstance.ReconcileHoldings(sortBy, start, limit, filter, request);
+                ResourceListOfReconciliationBreak result = apiInstance.ReconcileHoldings(sortBy, start, limit, filter, portfoliosReconciliationRequest);
                 Debug.WriteLine(result);
             }
             catch (ApiException e)
@@ -71,7 +71,7 @@ Name | Type | Description  | Notes
  **start** | **int?**| Optional. When paginating, skip this number of results | [optional] 
  **limit** | **int?**| Optional. When paginating, limit the number of returned results to this many. | [optional] 
  **filter** | **string**| Optional. Expression to filter the result set.              For example, to filter on the left portfolio Code, use \&quot;left.portfolioId.code eq &#39;string&#39;\&quot;              Read more about filtering results from LUSID here https://support.lusid.com/filtering-results-from-lusid. | [optional] 
- **request** | [**PortfoliosReconciliationRequest**](PortfoliosReconciliationRequest.md)| The specifications of the inputs to the reconciliation | [optional] 
+ **portfoliosReconciliationRequest** | [**PortfoliosReconciliationRequest**](PortfoliosReconciliationRequest.md)| The specifications of the inputs to the reconciliation | [optional] 
 
 ### Return type
 
@@ -83,7 +83,7 @@ Name | Type | Description  | Notes
 
 ### HTTP request headers
 
-- **Content-Type**: Not defined
+- **Content-Type**: application/json-patch+json, application/json, text/json, application/_*+json
 - **Accept**: text/plain, application/json, text/json
 
 ### HTTP response details
@@ -101,7 +101,7 @@ Name | Type | Description  | Notes
 
 ## ReconcileHoldingsPreview
 
-> ResourceListOfReconciliationBreak ReconcileHoldingsPreview (List<string> sortBy = null, int? start = null, int? limit = null, string filter = null, PortfoliosReconciliationRequestPreview request = null)
+> ResourceListOfReconciliationBreak ReconcileHoldingsPreview (List<string> sortBy = null, int? start = null, int? limit = null, string filter = null, PortfoliosReconciliationRequestPreview portfoliosReconciliationRequestPreview = null)
 
 [EXPERIMENTAL] Reconcile portfolio holdings with given tolerance
 
@@ -122,7 +122,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://localhost/api";
+            Configuration.Default.BasePath = "http://localhost:46312";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -131,12 +131,12 @@ namespace Example
             var start = 56;  // int? | Optional. When paginating, skip this number of results (optional) 
             var limit = 56;  // int? | Optional. When paginating, limit the number of returned results to this many. (optional) 
             var filter = filter_example;  // string | Optional. Expression to filter the result set (optional) 
-            var request = new PortfoliosReconciliationRequestPreview(); // PortfoliosReconciliationRequestPreview | The specifications of the inputs to the reconciliation. This request can take tolerance for units and cost. (optional) 
+            var portfoliosReconciliationRequestPreview = new PortfoliosReconciliationRequestPreview(); // PortfoliosReconciliationRequestPreview | The specifications of the inputs to the reconciliation. This request can take tolerance for units and cost. (optional) 
 
             try
             {
                 // [EXPERIMENTAL] Reconcile portfolio holdings with given tolerance
-                ResourceListOfReconciliationBreak result = apiInstance.ReconcileHoldingsPreview(sortBy, start, limit, filter, request);
+                ResourceListOfReconciliationBreak result = apiInstance.ReconcileHoldingsPreview(sortBy, start, limit, filter, portfoliosReconciliationRequestPreview);
                 Debug.WriteLine(result);
             }
             catch (ApiException e)
@@ -159,7 +159,7 @@ Name | Type | Description  | Notes
  **start** | **int?**| Optional. When paginating, skip this number of results | [optional] 
  **limit** | **int?**| Optional. When paginating, limit the number of returned results to this many. | [optional] 
  **filter** | **string**| Optional. Expression to filter the result set | [optional] 
- **request** | [**PortfoliosReconciliationRequestPreview**](PortfoliosReconciliationRequestPreview.md)| The specifications of the inputs to the reconciliation. This request can take tolerance for units and cost. | [optional] 
+ **portfoliosReconciliationRequestPreview** | [**PortfoliosReconciliationRequestPreview**](PortfoliosReconciliationRequestPreview.md)| The specifications of the inputs to the reconciliation. This request can take tolerance for units and cost. | [optional] 
 
 ### Return type
 
@@ -171,7 +171,7 @@ Name | Type | Description  | Notes
 
 ### HTTP request headers
 
-- **Content-Type**: Not defined
+- **Content-Type**: application/json-patch+json, application/json, text/json, application/_*+json
 - **Accept**: text/plain, application/json, text/json
 
 ### HTTP response details
@@ -189,7 +189,7 @@ Name | Type | Description  | Notes
 
 ## ReconcileInline
 
-> ResourceListOfReconciliationBreak ReconcileInline (List<string> sortBy = null, int? start = null, int? limit = null, string filter = null, InlineValuationsReconciliationRequest request = null)
+> ResourceListOfReconciliationBreak ReconcileInline (List<string> sortBy = null, int? start = null, int? limit = null, string filter = null, InlineValuationsReconciliationRequest inlineValuationsReconciliationRequest = null)
 
 [EXPERIMENTAL] Reconcile valuations performed on one or two sets of inline instruments using one or two configuration recipes.
 
@@ -210,7 +210,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://localhost/api";
+            Configuration.Default.BasePath = "http://localhost:46312";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -219,12 +219,12 @@ namespace Example
             var start = 56;  // int? | Optional. When paginating, skip this number of results (optional) 
             var limit = 56;  // int? | Optional. When paginating, limit the number of returned results to this many. (optional) 
             var filter = filter_example;  // string | Optional. Expression to filter the result set.              For example, to filter on the left portfolio Code, use \"left.portfolioId.code eq 'string'\"              Read more about filtering results from LUSID here https://support.lusid.com/filtering-results-from-lusid. (optional) 
-            var request = new InlineValuationsReconciliationRequest(); // InlineValuationsReconciliationRequest | The specifications of the inputs to the reconciliation (optional) 
+            var inlineValuationsReconciliationRequest = new InlineValuationsReconciliationRequest(); // InlineValuationsReconciliationRequest | The specifications of the inputs to the reconciliation (optional) 
 
             try
             {
                 // [EXPERIMENTAL] Reconcile valuations performed on one or two sets of inline instruments using one or two configuration recipes.
-                ResourceListOfReconciliationBreak result = apiInstance.ReconcileInline(sortBy, start, limit, filter, request);
+                ResourceListOfReconciliationBreak result = apiInstance.ReconcileInline(sortBy, start, limit, filter, inlineValuationsReconciliationRequest);
                 Debug.WriteLine(result);
             }
             catch (ApiException e)
@@ -247,7 +247,7 @@ Name | Type | Description  | Notes
  **start** | **int?**| Optional. When paginating, skip this number of results | [optional] 
  **limit** | **int?**| Optional. When paginating, limit the number of returned results to this many. | [optional] 
  **filter** | **string**| Optional. Expression to filter the result set.              For example, to filter on the left portfolio Code, use \&quot;left.portfolioId.code eq &#39;string&#39;\&quot;              Read more about filtering results from LUSID here https://support.lusid.com/filtering-results-from-lusid. | [optional] 
- **request** | [**InlineValuationsReconciliationRequest**](InlineValuationsReconciliationRequest.md)| The specifications of the inputs to the reconciliation | [optional] 
+ **inlineValuationsReconciliationRequest** | [**InlineValuationsReconciliationRequest**](InlineValuationsReconciliationRequest.md)| The specifications of the inputs to the reconciliation | [optional] 
 
 ### Return type
 
@@ -259,7 +259,7 @@ Name | Type | Description  | Notes
 
 ### HTTP request headers
 
-- **Content-Type**: Not defined
+- **Content-Type**: application/json-patch+json, application/json, text/json, application/_*+json
 - **Accept**: text/plain, application/json, text/json
 
 ### HTTP response details
@@ -277,7 +277,7 @@ Name | Type | Description  | Notes
 
 ## ReconcileValuation
 
-> ResourceListOfReconciliationBreak ReconcileValuation (List<string> sortBy = null, int? start = null, int? limit = null, string filter = null, ValuationsReconciliationRequest request = null)
+> ResourceListOfReconciliationBreak ReconcileValuation (List<string> sortBy = null, int? start = null, int? limit = null, string filter = null, ValuationsReconciliationRequest valuationsReconciliationRequest = null)
 
 [EXPERIMENTAL] Reconcile valuations performed on one or two sets of holdings using one or two configuration recipes.
 
@@ -298,7 +298,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://localhost/api";
+            Configuration.Default.BasePath = "http://localhost:46312";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -307,12 +307,12 @@ namespace Example
             var start = 56;  // int? | Optional. When paginating, skip this number of results (optional) 
             var limit = 56;  // int? | Optional. When paginating, limit the number of returned results to this many. (optional) 
             var filter = filter_example;  // string | Optional. Expression to filter the result set.               For example, to filter on the left portfolio Code, use \"left.portfolioId.code eq 'string'\"              Read more about filtering results from LUSID here https://support.lusid.com/filtering-results-from-lusid. (optional) 
-            var request = new ValuationsReconciliationRequest(); // ValuationsReconciliationRequest | The specifications of the inputs to the reconciliation (optional) 
+            var valuationsReconciliationRequest = new ValuationsReconciliationRequest(); // ValuationsReconciliationRequest | The specifications of the inputs to the reconciliation (optional) 
 
             try
             {
                 // [EXPERIMENTAL] Reconcile valuations performed on one or two sets of holdings using one or two configuration recipes.
-                ResourceListOfReconciliationBreak result = apiInstance.ReconcileValuation(sortBy, start, limit, filter, request);
+                ResourceListOfReconciliationBreak result = apiInstance.ReconcileValuation(sortBy, start, limit, filter, valuationsReconciliationRequest);
                 Debug.WriteLine(result);
             }
             catch (ApiException e)
@@ -335,7 +335,7 @@ Name | Type | Description  | Notes
  **start** | **int?**| Optional. When paginating, skip this number of results | [optional] 
  **limit** | **int?**| Optional. When paginating, limit the number of returned results to this many. | [optional] 
  **filter** | **string**| Optional. Expression to filter the result set.               For example, to filter on the left portfolio Code, use \&quot;left.portfolioId.code eq &#39;string&#39;\&quot;              Read more about filtering results from LUSID here https://support.lusid.com/filtering-results-from-lusid. | [optional] 
- **request** | [**ValuationsReconciliationRequest**](ValuationsReconciliationRequest.md)| The specifications of the inputs to the reconciliation | [optional] 
+ **valuationsReconciliationRequest** | [**ValuationsReconciliationRequest**](ValuationsReconciliationRequest.md)| The specifications of the inputs to the reconciliation | [optional] 
 
 ### Return type
 
@@ -347,7 +347,7 @@ Name | Type | Description  | Notes
 
 ### HTTP request headers
 
-- **Content-Type**: Not defined
+- **Content-Type**: application/json-patch+json, application/json, text/json, application/_*+json
 - **Accept**: text/plain, application/json, text/json
 
 ### HTTP response details

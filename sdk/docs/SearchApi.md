@@ -1,6 +1,6 @@
 # Lusid.Sdk.Api.SearchApi
 
-All URIs are relative to *http://localhost/api*
+All URIs are relative to *http://localhost:46312*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
@@ -16,7 +16,7 @@ Method | HTTP request | Description
 
 ## InstrumentsSearch
 
-> ICollection&lt;InstrumentMatch&gt; InstrumentsSearch (List<InstrumentSearchProperty> symbols, DateTimeOrCutLabel masteredEffectiveAt = null, bool? masteredOnly = null)
+> ICollection&lt;InstrumentMatch&gt; InstrumentsSearch (List<InstrumentSearchProperty> instrumentSearchProperty, DateTimeOrCutLabel masteredEffectiveAt = null, bool? masteredOnly = null)
 
 [EXPERIMENTAL] Instruments search
 
@@ -37,19 +37,19 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://localhost/api";
+            Configuration.Default.BasePath = "http://localhost:46312";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
             var apiInstance = new SearchApi(Configuration.Default);
-            var symbols = new List<InstrumentSearchProperty>(); // List<InstrumentSearchProperty> | A collection of instrument properties to search for. LUSID will return instruments for any matched              properties.
+            var instrumentSearchProperty = new List<InstrumentSearchProperty>(); // List<InstrumentSearchProperty> | A collection of instrument properties to search for. LUSID will return instruments for any matched              properties.
             var masteredEffectiveAt = masteredEffectiveAt_example;  // DateTimeOrCutLabel | The effective datetime or cut label to use when searching mastered instruments. This parameter has no effect on instruments that  have not been mastered within LUSID. Defaults to the current LUSID system datetime if not specified. (optional) 
             var masteredOnly = true;  // bool? | If set to true, only search over instruments that have been mastered within LUSID. Defaults to false. (optional)  (default to false)
 
             try
             {
                 // [EXPERIMENTAL] Instruments search
-                ICollection<InstrumentMatch> result = apiInstance.InstrumentsSearch(symbols, masteredEffectiveAt, masteredOnly);
+                ICollection<InstrumentMatch> result = apiInstance.InstrumentsSearch(instrumentSearchProperty, masteredEffectiveAt, masteredOnly);
                 Debug.WriteLine(result);
             }
             catch (ApiException e)
@@ -68,7 +68,7 @@ namespace Example
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **symbols** | [**List&lt;InstrumentSearchProperty&gt;**](InstrumentSearchProperty.md)| A collection of instrument properties to search for. LUSID will return instruments for any matched              properties. | 
+ **instrumentSearchProperty** | [**List&lt;InstrumentSearchProperty&gt;**](InstrumentSearchProperty.md)| A collection of instrument properties to search for. LUSID will return instruments for any matched              properties. | 
  **masteredEffectiveAt** | **DateTimeOrCutLabel**| The effective datetime or cut label to use when searching mastered instruments. This parameter has no effect on instruments that  have not been mastered within LUSID. Defaults to the current LUSID system datetime if not specified. | [optional] 
  **masteredOnly** | **bool?**| If set to true, only search over instruments that have been mastered within LUSID. Defaults to false. | [optional] [default to false]
 
@@ -82,7 +82,7 @@ Name | Type | Description  | Notes
 
 ### HTTP request headers
 
-- **Content-Type**: Not defined
+- **Content-Type**: application/json-patch+json, application/json, text/json, application/_*+json
 - **Accept**: text/plain, application/json, text/json
 
 ### HTTP response details
@@ -100,7 +100,7 @@ Name | Type | Description  | Notes
 
 ## PortfolioGroupsSearch
 
-> ResourceListOfPortfolioGroup PortfolioGroupsSearch (Object request, string filter = null)
+> ResourceListOfPortfolioGroup PortfolioGroupsSearch (Object body, string filter = null)
 
 [DEPRECATED] Portfolio groups search
 
@@ -121,18 +121,18 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://localhost/api";
+            Configuration.Default.BasePath = "http://localhost:46312";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
             var apiInstance = new SearchApi(Configuration.Default);
-            var request = ;  // Object | The search query to use. Read more about search queries in LUSID here https://support.lusid.com/constructing-a-search-request.
+            var body = ;  // Object | The search query to use. Read more about search queries in LUSID here https://support.lusid.com/constructing-a-search-request.
             var filter = filter_example;  // string | Expression to filter the result set. Read more about filtering results from LUSID here https://support.lusid.com/filtering-results-from-lusid. (optional) 
 
             try
             {
                 // [DEPRECATED] Portfolio groups search
-                ResourceListOfPortfolioGroup result = apiInstance.PortfolioGroupsSearch(request, filter);
+                ResourceListOfPortfolioGroup result = apiInstance.PortfolioGroupsSearch(body, filter);
                 Debug.WriteLine(result);
             }
             catch (ApiException e)
@@ -151,7 +151,7 @@ namespace Example
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **request** | **Object**| The search query to use. Read more about search queries in LUSID here https://support.lusid.com/constructing-a-search-request. | 
+ **body** | **Object**| The search query to use. Read more about search queries in LUSID here https://support.lusid.com/constructing-a-search-request. | 
  **filter** | **string**| Expression to filter the result set. Read more about filtering results from LUSID here https://support.lusid.com/filtering-results-from-lusid. | [optional] 
 
 ### Return type
@@ -164,7 +164,7 @@ Name | Type | Description  | Notes
 
 ### HTTP request headers
 
-- **Content-Type**: Not defined
+- **Content-Type**: application/json-patch+json, application/json, text/json, application/_*+json
 - **Accept**: text/plain, application/json, text/json
 
 ### HTTP response details
@@ -182,7 +182,7 @@ Name | Type | Description  | Notes
 
 ## PortfoliosSearch
 
-> ResourceListOfPortfolioSearchResult PortfoliosSearch (Object request, string filter = null)
+> ResourceListOfPortfolioSearchResult PortfoliosSearch (Object body, string filter = null)
 
 [DEPRECATED] Portfolios search
 
@@ -203,18 +203,18 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://localhost/api";
+            Configuration.Default.BasePath = "http://localhost:46312";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
             var apiInstance = new SearchApi(Configuration.Default);
-            var request = ;  // Object | The search query to use. Read more about search queries in LUSID here https://support.lusid.com/constructing-a-search-request.
+            var body = ;  // Object | The search query to use. Read more about search queries in LUSID here https://support.lusid.com/constructing-a-search-request.
             var filter = filter_example;  // string | Expression to filter the result set. Read more about filtering results from LUSID here https://support.lusid.com/filtering-results-from-lusid. (optional) 
 
             try
             {
                 // [DEPRECATED] Portfolios search
-                ResourceListOfPortfolioSearchResult result = apiInstance.PortfoliosSearch(request, filter);
+                ResourceListOfPortfolioSearchResult result = apiInstance.PortfoliosSearch(body, filter);
                 Debug.WriteLine(result);
             }
             catch (ApiException e)
@@ -233,7 +233,7 @@ namespace Example
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **request** | **Object**| The search query to use. Read more about search queries in LUSID here https://support.lusid.com/constructing-a-search-request. | 
+ **body** | **Object**| The search query to use. Read more about search queries in LUSID here https://support.lusid.com/constructing-a-search-request. | 
  **filter** | **string**| Expression to filter the result set. Read more about filtering results from LUSID here https://support.lusid.com/filtering-results-from-lusid. | [optional] 
 
 ### Return type
@@ -246,7 +246,7 @@ Name | Type | Description  | Notes
 
 ### HTTP request headers
 
-- **Content-Type**: Not defined
+- **Content-Type**: application/json-patch+json, application/json, text/json, application/_*+json
 - **Accept**: text/plain, application/json, text/json
 
 ### HTTP response details
@@ -264,7 +264,7 @@ Name | Type | Description  | Notes
 
 ## PropertiesSearch
 
-> ResourceListOfPropertyDefinition PropertiesSearch (Object request, string filter = null)
+> ResourceListOfPropertyDefinition PropertiesSearch (Object body, string filter = null)
 
 [DEPRECATED] Search property definitions
 
@@ -285,18 +285,18 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://localhost/api";
+            Configuration.Default.BasePath = "http://localhost:46312";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
             var apiInstance = new SearchApi(Configuration.Default);
-            var request = ;  // Object | The search query to use. Read more about search queries in LUSID here https://support.lusid.com/constructing-a-search-request.
+            var body = ;  // Object | The search query to use. Read more about search queries in LUSID here https://support.lusid.com/constructing-a-search-request.
             var filter = filter_example;  // string | Expression to filter the result set. Read more about filtering results from LUSID here https://support.lusid.com/filtering-results-from-lusid. (optional) 
 
             try
             {
                 // [DEPRECATED] Search property definitions
-                ResourceListOfPropertyDefinition result = apiInstance.PropertiesSearch(request, filter);
+                ResourceListOfPropertyDefinition result = apiInstance.PropertiesSearch(body, filter);
                 Debug.WriteLine(result);
             }
             catch (ApiException e)
@@ -315,7 +315,7 @@ namespace Example
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **request** | **Object**| The search query to use. Read more about search queries in LUSID here https://support.lusid.com/constructing-a-search-request. | 
+ **body** | **Object**| The search query to use. Read more about search queries in LUSID here https://support.lusid.com/constructing-a-search-request. | 
  **filter** | **string**| Expression to filter the result set. Read more about filtering results from LUSID here https://support.lusid.com/filtering-results-from-lusid. | [optional] 
 
 ### Return type
@@ -328,7 +328,7 @@ Name | Type | Description  | Notes
 
 ### HTTP request headers
 
-- **Content-Type**: Not defined
+- **Content-Type**: application/json-patch+json, application/json, text/json, application/_*+json
 - **Accept**: text/plain, application/json, text/json
 
 ### HTTP response details
@@ -367,7 +367,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://localhost/api";
+            Configuration.Default.BasePath = "http://localhost:46312";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -455,7 +455,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://localhost/api";
+            Configuration.Default.BasePath = "http://localhost:46312";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -543,7 +543,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://localhost/api";
+            Configuration.Default.BasePath = "http://localhost:46312";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 

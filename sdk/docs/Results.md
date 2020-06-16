@@ -8,7 +8,7 @@ Name | Type | Description | Notes
 **Version** | [**Version**](Version.md) |  | [optional] 
 **Href** | **string** |  | [optional] 
 **Values** | **string** |  | [optional] 
-**Format** | **string** |  | [optional] 
+**Format** | **string** | The available values are: DataReader, Portfolio, Csv, Unknown | [optional] 
 **Links** | [**List&lt;Link&gt;**](Link.md) |  | [optional] 
 
 [[Back to Model list]](../README.md#documentation-for-models)

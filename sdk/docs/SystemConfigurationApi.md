@@ -1,6 +1,6 @@
 # Lusid.Sdk.Api.SystemConfigurationApi
 
-All URIs are relative to *http://localhost/api*
+All URIs are relative to *http://localhost:46312*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
@@ -13,7 +13,7 @@ Method | HTTP request | Description
 
 ## CreateConfigurationTransactionType
 
-> TransactionSetConfigurationData CreateConfigurationTransactionType (TransactionConfigurationDataRequest type = null)
+> TransactionSetConfigurationData CreateConfigurationTransactionType (TransactionConfigurationDataRequest transactionConfigurationDataRequest = null)
 
 [EARLY ACCESS] Create transaction type
 
@@ -34,17 +34,17 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://localhost/api";
+            Configuration.Default.BasePath = "http://localhost:46312";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
             var apiInstance = new SystemConfigurationApi(Configuration.Default);
-            var type = new TransactionConfigurationDataRequest(); // TransactionConfigurationDataRequest | A transaction type definition (optional) 
+            var transactionConfigurationDataRequest = new TransactionConfigurationDataRequest(); // TransactionConfigurationDataRequest | A transaction type definition (optional) 
 
             try
             {
                 // [EARLY ACCESS] Create transaction type
-                TransactionSetConfigurationData result = apiInstance.CreateConfigurationTransactionType(type);
+                TransactionSetConfigurationData result = apiInstance.CreateConfigurationTransactionType(transactionConfigurationDataRequest);
                 Debug.WriteLine(result);
             }
             catch (ApiException e)
@@ -63,7 +63,7 @@ namespace Example
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **type** | [**TransactionConfigurationDataRequest**](TransactionConfigurationDataRequest.md)| A transaction type definition | [optional] 
+ **transactionConfigurationDataRequest** | [**TransactionConfigurationDataRequest**](TransactionConfigurationDataRequest.md)| A transaction type definition | [optional] 
 
 ### Return type
 
@@ -75,7 +75,7 @@ Name | Type | Description  | Notes
 
 ### HTTP request headers
 
-- **Content-Type**: Not defined
+- **Content-Type**: application/json-patch+json, application/json, text/json, application/_*+json
 - **Accept**: text/plain, application/json, text/json
 
 ### HTTP response details
@@ -93,7 +93,7 @@ Name | Type | Description  | Notes
 
 ## CreateSideDefinition
 
-> TransactionSetConfigurationData CreateSideDefinition (SideConfigurationDataRequest side = null)
+> TransactionSetConfigurationData CreateSideDefinition (SideConfigurationDataRequest sideConfigurationDataRequest = null)
 
 [EXPERIMENTAL] Create side definition
 
@@ -114,17 +114,17 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://localhost/api";
+            Configuration.Default.BasePath = "http://localhost:46312";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
             var apiInstance = new SystemConfigurationApi(Configuration.Default);
-            var side = new SideConfigurationDataRequest(); // SideConfigurationDataRequest | The definition of the side to be created. (optional) 
+            var sideConfigurationDataRequest = new SideConfigurationDataRequest(); // SideConfigurationDataRequest | The definition of the side to be created. (optional) 
 
             try
             {
                 // [EXPERIMENTAL] Create side definition
-                TransactionSetConfigurationData result = apiInstance.CreateSideDefinition(side);
+                TransactionSetConfigurationData result = apiInstance.CreateSideDefinition(sideConfigurationDataRequest);
                 Debug.WriteLine(result);
             }
             catch (ApiException e)
@@ -143,7 +143,7 @@ namespace Example
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **side** | [**SideConfigurationDataRequest**](SideConfigurationDataRequest.md)| The definition of the side to be created. | [optional] 
+ **sideConfigurationDataRequest** | [**SideConfigurationDataRequest**](SideConfigurationDataRequest.md)| The definition of the side to be created. | [optional] 
 
 ### Return type
 
@@ -155,7 +155,7 @@ Name | Type | Description  | Notes
 
 ### HTTP request headers
 
-- **Content-Type**: Not defined
+- **Content-Type**: application/json-patch+json, application/json, text/json, application/_*+json
 - **Accept**: text/plain, application/json, text/json
 
 ### HTTP response details
@@ -194,7 +194,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://localhost/api";
+            Configuration.Default.BasePath = "http://localhost:46312";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -248,7 +248,7 @@ This endpoint does not need any parameter.
 
 ## SetConfigurationTransactionTypes
 
-> TransactionSetConfigurationData SetConfigurationTransactionTypes (TransactionSetConfigurationDataRequest types = null)
+> TransactionSetConfigurationData SetConfigurationTransactionTypes (TransactionSetConfigurationDataRequest transactionSetConfigurationDataRequest = null)
 
 [EXPERIMENTAL] Set transaction types
 
@@ -269,17 +269,17 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://localhost/api";
+            Configuration.Default.BasePath = "http://localhost:46312";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
             var apiInstance = new SystemConfigurationApi(Configuration.Default);
-            var types = new TransactionSetConfigurationDataRequest(); // TransactionSetConfigurationDataRequest | The complete set of transaction type definitions (optional) 
+            var transactionSetConfigurationDataRequest = new TransactionSetConfigurationDataRequest(); // TransactionSetConfigurationDataRequest | The complete set of transaction type definitions (optional) 
 
             try
             {
                 // [EXPERIMENTAL] Set transaction types
-                TransactionSetConfigurationData result = apiInstance.SetConfigurationTransactionTypes(types);
+                TransactionSetConfigurationData result = apiInstance.SetConfigurationTransactionTypes(transactionSetConfigurationDataRequest);
                 Debug.WriteLine(result);
             }
             catch (ApiException e)
@@ -298,7 +298,7 @@ namespace Example
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **types** | [**TransactionSetConfigurationDataRequest**](TransactionSetConfigurationDataRequest.md)| The complete set of transaction type definitions | [optional] 
+ **transactionSetConfigurationDataRequest** | [**TransactionSetConfigurationDataRequest**](TransactionSetConfigurationDataRequest.md)| The complete set of transaction type definitions | [optional] 
 
 ### Return type
 
@@ -310,7 +310,7 @@ Name | Type | Description  | Notes
 
 ### HTTP request headers
 
-- **Content-Type**: Not defined
+- **Content-Type**: application/json-patch+json, application/json, text/json, application/_*+json
 - **Accept**: text/plain, application/json, text/json
 
 ### HTTP response details

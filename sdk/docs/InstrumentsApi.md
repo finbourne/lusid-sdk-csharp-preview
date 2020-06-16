@@ -1,6 +1,6 @@
 # Lusid.Sdk.Api.InstrumentsApi
 
-All URIs are relative to *http://localhost/api*
+All URIs are relative to *http://localhost:46312*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
@@ -40,7 +40,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://localhost/api";
+            Configuration.Default.BasePath = "http://localhost:46312";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -101,7 +101,7 @@ Name | Type | Description  | Notes
 
 ## DeleteInstrumentProperties
 
-> DeleteInstrumentPropertiesResponse DeleteInstrumentProperties (string identifierType, string identifier, List<string> propertyKeys, DateTimeOrCutLabel effectiveAt = null)
+> DeleteInstrumentPropertiesResponse DeleteInstrumentProperties (string identifierType, string identifier, List<string> requestBody, DateTimeOrCutLabel effectiveAt = null)
 
 [EXPERIMENTAL] Delete properties from an instrument
 
@@ -122,20 +122,20 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://localhost/api";
+            Configuration.Default.BasePath = "http://localhost:46312";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
             var apiInstance = new InstrumentsApi(Configuration.Default);
             var identifierType = identifierType_example;  // string | The identifier type of the instrument, e.g., \"Figi\"
             var identifier = identifier_example;  // string | The identifier of the instrument to delete properties from.
-            var propertyKeys = new List<string>(); // List<string> | The property keys of the properties to be deleted from the instrument. Only properties in the  Finbourne.WebApi.Interface.Dto.PropertyDomain.Instrument domain can be supplied.
+            var requestBody = new List<string>(); // List<string> | The property keys of the properties to be deleted from the instrument. Only properties in the  Finbourne.WebApi.Interface.Dto.PropertyDomain.Instrument domain can be supplied.
             var effectiveAt = effectiveAt_example;  // DateTimeOrCutLabel | The effective date to delete the properties from. Note that this is only valid to set if the properties being deleted  are defined to be Finbourne.WebApi.Interface.Dto.PropertyLifeTime.TimeVariant, otherwise this value must not be set. (optional) 
 
             try
             {
                 // [EXPERIMENTAL] Delete properties from an instrument
-                DeleteInstrumentPropertiesResponse result = apiInstance.DeleteInstrumentProperties(identifierType, identifier, propertyKeys, effectiveAt);
+                DeleteInstrumentPropertiesResponse result = apiInstance.DeleteInstrumentProperties(identifierType, identifier, requestBody, effectiveAt);
                 Debug.WriteLine(result);
             }
             catch (ApiException e)
@@ -156,7 +156,7 @@ Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **identifierType** | **string**| The identifier type of the instrument, e.g., \&quot;Figi\&quot; | 
  **identifier** | **string**| The identifier of the instrument to delete properties from. | 
- **propertyKeys** | [**List&lt;string&gt;**](string.md)| The property keys of the properties to be deleted from the instrument. Only properties in the  Finbourne.WebApi.Interface.Dto.PropertyDomain.Instrument domain can be supplied. | 
+ **requestBody** | [**List&lt;string&gt;**](string.md)| The property keys of the properties to be deleted from the instrument. Only properties in the  Finbourne.WebApi.Interface.Dto.PropertyDomain.Instrument domain can be supplied. | 
  **effectiveAt** | **DateTimeOrCutLabel**| The effective date to delete the properties from. Note that this is only valid to set if the properties being deleted  are defined to be Finbourne.WebApi.Interface.Dto.PropertyLifeTime.TimeVariant, otherwise this value must not be set. | [optional] 
 
 ### Return type
@@ -169,7 +169,7 @@ Name | Type | Description  | Notes
 
 ### HTTP request headers
 
-- **Content-Type**: Not defined
+- **Content-Type**: application/json-patch+json, application/json, text/json, application/_*+json
 - **Accept**: text/plain, application/json, text/json
 
 ### HTTP response details
@@ -208,7 +208,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://localhost/api";
+            Configuration.Default.BasePath = "http://localhost:46312";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -296,7 +296,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://localhost/api";
+            Configuration.Default.BasePath = "http://localhost:46312";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -350,7 +350,7 @@ This endpoint does not need any parameter.
 
 ## GetInstruments
 
-> GetInstrumentsResponse GetInstruments (string identifierType, List<string> identifiers, DateTimeOrCutLabel effectiveAt = null, DateTimeOffset? asAt = null, List<string> propertyKeys = null)
+> GetInstrumentsResponse GetInstruments (string identifierType, List<string> requestBody, DateTimeOrCutLabel effectiveAt = null, DateTimeOffset? asAt = null, List<string> propertyKeys = null)
 
 Get instruments
 
@@ -371,13 +371,13 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://localhost/api";
+            Configuration.Default.BasePath = "http://localhost:46312";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
             var apiInstance = new InstrumentsApi(Configuration.Default);
             var identifierType = identifierType_example;  // string | The identifier being supplied e.g. \"Figi\".
-            var identifiers = new List<string>(); // List<string> | The values of the identifier for the requested instruments.
+            var requestBody = new List<string>(); // List<string> | The values of the identifier for the requested instruments.
             var effectiveAt = effectiveAt_example;  // DateTimeOrCutLabel | The effective datetime or cut label at which to retrieve the instrument definitions.              Defaults to the current LUSID system datetime if not specified. (optional) 
             var asAt = 2013-10-20T19:20:30+01:00;  // DateTimeOffset? | The asAt datetime at which to retrieve the instrument definitions.              Defaults to return the latest version of each instrument definition if not specified. (optional) 
             var propertyKeys = new List<string>(); // List<string> | A list of property keys from the \"Instrument\" domain to decorate onto the instrument.              These take the format {domain}/{scope}/{code} e.g. \"Instrument/system/Name\". (optional) 
@@ -385,7 +385,7 @@ namespace Example
             try
             {
                 // Get instruments
-                GetInstrumentsResponse result = apiInstance.GetInstruments(identifierType, identifiers, effectiveAt, asAt, propertyKeys);
+                GetInstrumentsResponse result = apiInstance.GetInstruments(identifierType, requestBody, effectiveAt, asAt, propertyKeys);
                 Debug.WriteLine(result);
             }
             catch (ApiException e)
@@ -405,7 +405,7 @@ namespace Example
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **identifierType** | **string**| The identifier being supplied e.g. \&quot;Figi\&quot;. | 
- **identifiers** | [**List&lt;string&gt;**](string.md)| The values of the identifier for the requested instruments. | 
+ **requestBody** | [**List&lt;string&gt;**](string.md)| The values of the identifier for the requested instruments. | 
  **effectiveAt** | **DateTimeOrCutLabel**| The effective datetime or cut label at which to retrieve the instrument definitions.              Defaults to the current LUSID system datetime if not specified. | [optional] 
  **asAt** | **DateTimeOffset?**| The asAt datetime at which to retrieve the instrument definitions.              Defaults to return the latest version of each instrument definition if not specified. | [optional] 
  **propertyKeys** | [**List&lt;string&gt;**](string.md)| A list of property keys from the \&quot;Instrument\&quot; domain to decorate onto the instrument.              These take the format {domain}/{scope}/{code} e.g. \&quot;Instrument/system/Name\&quot;. | [optional] 
@@ -420,7 +420,7 @@ Name | Type | Description  | Notes
 
 ### HTTP request headers
 
-- **Content-Type**: Not defined
+- **Content-Type**: application/json-patch+json, application/json, text/json, application/_*+json
 - **Accept**: text/plain, application/json, text/json
 
 ### HTTP response details
@@ -459,7 +459,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://localhost/api";
+            Configuration.Default.BasePath = "http://localhost:46312";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -532,7 +532,7 @@ Name | Type | Description  | Notes
 
 ## UpdateInstrumentIdentifier
 
-> Instrument UpdateInstrumentIdentifier (string identifierType, string identifier, UpdateInstrumentIdentifierRequest request)
+> Instrument UpdateInstrumentIdentifier (string identifierType, string identifier, UpdateInstrumentIdentifierRequest updateInstrumentIdentifierRequest)
 
 [EARLY ACCESS] Update instrument identifier
 
@@ -553,19 +553,19 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://localhost/api";
+            Configuration.Default.BasePath = "http://localhost:46312";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
             var apiInstance = new InstrumentsApi(Configuration.Default);
             var identifierType = identifierType_example;  // string | The identifier to use to resolve the instrument e.g. \"Figi\".
             var identifier = identifier_example;  // string | The original value of the identifier for the requested instrument.
-            var request = new UpdateInstrumentIdentifierRequest(); // UpdateInstrumentIdentifierRequest | The identifier to update or remove. This may or may not be the same identifier used              to resolve the instrument.
+            var updateInstrumentIdentifierRequest = new UpdateInstrumentIdentifierRequest(); // UpdateInstrumentIdentifierRequest | The identifier to update or remove. This may or may not be the same identifier used              to resolve the instrument.
 
             try
             {
                 // [EARLY ACCESS] Update instrument identifier
-                Instrument result = apiInstance.UpdateInstrumentIdentifier(identifierType, identifier, request);
+                Instrument result = apiInstance.UpdateInstrumentIdentifier(identifierType, identifier, updateInstrumentIdentifierRequest);
                 Debug.WriteLine(result);
             }
             catch (ApiException e)
@@ -586,7 +586,7 @@ Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **identifierType** | **string**| The identifier to use to resolve the instrument e.g. \&quot;Figi\&quot;. | 
  **identifier** | **string**| The original value of the identifier for the requested instrument. | 
- **request** | [**UpdateInstrumentIdentifierRequest**](UpdateInstrumentIdentifierRequest.md)| The identifier to update or remove. This may or may not be the same identifier used              to resolve the instrument. | 
+ **updateInstrumentIdentifierRequest** | [**UpdateInstrumentIdentifierRequest**](UpdateInstrumentIdentifierRequest.md)| The identifier to update or remove. This may or may not be the same identifier used              to resolve the instrument. | 
 
 ### Return type
 
@@ -598,7 +598,7 @@ Name | Type | Description  | Notes
 
 ### HTTP request headers
 
-- **Content-Type**: Not defined
+- **Content-Type**: application/json-patch+json, application/json, text/json, application/_*+json
 - **Accept**: text/plain, application/json, text/json
 
 ### HTTP response details
@@ -616,7 +616,7 @@ Name | Type | Description  | Notes
 
 ## UpsertInstruments
 
-> UpsertInstrumentsResponse UpsertInstruments (Dictionary<string, InstrumentDefinition> instruments)
+> UpsertInstrumentsResponse UpsertInstruments (Dictionary<string, InstrumentDefinition> requestBody)
 
 Upsert instruments
 
@@ -637,17 +637,17 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://localhost/api";
+            Configuration.Default.BasePath = "http://localhost:46312";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
             var apiInstance = new InstrumentsApi(Configuration.Default);
-            var instruments = new Dictionary<string, InstrumentDefinition>(); // Dictionary<string, InstrumentDefinition> | The definitions of the instruments to update or insert.
+            var requestBody = new Dictionary<string, InstrumentDefinition>(); // Dictionary<string, InstrumentDefinition> | The definitions of the instruments to update or insert.
 
             try
             {
                 // Upsert instruments
-                UpsertInstrumentsResponse result = apiInstance.UpsertInstruments(instruments);
+                UpsertInstrumentsResponse result = apiInstance.UpsertInstruments(requestBody);
                 Debug.WriteLine(result);
             }
             catch (ApiException e)
@@ -666,7 +666,7 @@ namespace Example
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **instruments** | [**Dictionary&lt;string, InstrumentDefinition&gt;**](InstrumentDefinition.md)| The definitions of the instruments to update or insert. | 
+ **requestBody** | [**Dictionary&lt;string, InstrumentDefinition&gt;**](InstrumentDefinition.md)| The definitions of the instruments to update or insert. | 
 
 ### Return type
 
@@ -678,7 +678,7 @@ Name | Type | Description  | Notes
 
 ### HTTP request headers
 
-- **Content-Type**: Not defined
+- **Content-Type**: application/json-patch+json, application/json, text/json, application/_*+json
 - **Accept**: text/plain, application/json, text/json
 
 ### HTTP response details
@@ -696,7 +696,7 @@ Name | Type | Description  | Notes
 
 ## UpsertInstrumentsProperties
 
-> UpsertInstrumentPropertiesResponse UpsertInstrumentsProperties (List<UpsertInstrumentPropertyRequest> instrumentProperties)
+> UpsertInstrumentPropertiesResponse UpsertInstrumentsProperties (List<UpsertInstrumentPropertyRequest> upsertInstrumentPropertyRequest)
 
 Upsert instruments properties
 
@@ -717,17 +717,17 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://localhost/api";
+            Configuration.Default.BasePath = "http://localhost:46312";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
             var apiInstance = new InstrumentsApi(Configuration.Default);
-            var instrumentProperties = new List<UpsertInstrumentPropertyRequest>(); // List<UpsertInstrumentPropertyRequest> | A collection of instruments and associated instrument properties to update or insert.
+            var upsertInstrumentPropertyRequest = new List<UpsertInstrumentPropertyRequest>(); // List<UpsertInstrumentPropertyRequest> | A collection of instruments and associated instrument properties to update or insert.
 
             try
             {
                 // Upsert instruments properties
-                UpsertInstrumentPropertiesResponse result = apiInstance.UpsertInstrumentsProperties(instrumentProperties);
+                UpsertInstrumentPropertiesResponse result = apiInstance.UpsertInstrumentsProperties(upsertInstrumentPropertyRequest);
                 Debug.WriteLine(result);
             }
             catch (ApiException e)
@@ -746,7 +746,7 @@ namespace Example
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **instrumentProperties** | [**List&lt;UpsertInstrumentPropertyRequest&gt;**](UpsertInstrumentPropertyRequest.md)| A collection of instruments and associated instrument properties to update or insert. | 
+ **upsertInstrumentPropertyRequest** | [**List&lt;UpsertInstrumentPropertyRequest&gt;**](UpsertInstrumentPropertyRequest.md)| A collection of instruments and associated instrument properties to update or insert. | 
 
 ### Return type
 
@@ -758,7 +758,7 @@ Name | Type | Description  | Notes
 
 ### HTTP request headers
 
-- **Content-Type**: Not defined
+- **Content-Type**: application/json-patch+json, application/json, text/json, application/_*+json
 - **Accept**: text/plain, application/json, text/json
 
 ### HTTP response details
@@ -776,7 +776,7 @@ Name | Type | Description  | Notes
 
 ## UpsertLusidInstruments
 
-> UpsertInstrumentsResponse UpsertLusidInstruments (Dictionary<string, LusidInstrumentDefinition> instruments)
+> UpsertInstrumentsResponse UpsertLusidInstruments (Dictionary<string, LusidInstrumentDefinition> requestBody)
 
 [EXPERIMENTAL] Upsert instruments
 
@@ -797,17 +797,17 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://localhost/api";
+            Configuration.Default.BasePath = "http://localhost:46312";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
             var apiInstance = new InstrumentsApi(Configuration.Default);
-            var instruments = new Dictionary<string, LusidInstrumentDefinition>(); // Dictionary<string, LusidInstrumentDefinition> | The definitions of the instruments to update or insert.
+            var requestBody = new Dictionary<string, LusidInstrumentDefinition>(); // Dictionary<string, LusidInstrumentDefinition> | The definitions of the instruments to update or insert.
 
             try
             {
                 // [EXPERIMENTAL] Upsert instruments
-                UpsertInstrumentsResponse result = apiInstance.UpsertLusidInstruments(instruments);
+                UpsertInstrumentsResponse result = apiInstance.UpsertLusidInstruments(requestBody);
                 Debug.WriteLine(result);
             }
             catch (ApiException e)
@@ -826,7 +826,7 @@ namespace Example
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **instruments** | [**Dictionary&lt;string, LusidInstrumentDefinition&gt;**](LusidInstrumentDefinition.md)| The definitions of the instruments to update or insert. | 
+ **requestBody** | [**Dictionary&lt;string, LusidInstrumentDefinition&gt;**](LusidInstrumentDefinition.md)| The definitions of the instruments to update or insert. | 
 
 ### Return type
 
@@ -838,7 +838,7 @@ Name | Type | Description  | Notes
 
 ### HTTP request headers
 
-- **Content-Type**: Not defined
+- **Content-Type**: application/json-patch+json, application/json, text/json, application/_*+json
 - **Accept**: text/plain, application/json, text/json
 
 ### HTTP response details

@@ -1,6 +1,6 @@
 # Lusid.Sdk.Api.AggregationApi
 
-All URIs are relative to *http://localhost/api*
+All URIs are relative to *http://localhost:46312*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
@@ -17,7 +17,7 @@ Method | HTTP request | Description
 
 ## GenerateConfigurationRecipe
 
-> ConfigurationRecipe GenerateConfigurationRecipe (string scope, string code, CreateRecipeRequest request = null)
+> ConfigurationRecipe GenerateConfigurationRecipe (string scope, string code, CreateRecipeRequest createRecipeRequest = null)
 
 [EXPERIMENTAL] Generates a recipe sufficient to perform valuations for the given portfolio.
 
@@ -38,19 +38,19 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://localhost/api";
+            Configuration.Default.BasePath = "http://localhost:46312";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
             var apiInstance = new AggregationApi(Configuration.Default);
             var scope = scope_example;  // string | The scope of the portfolio
             var code = code_example;  // string | The code of the portfolio
-            var request = new CreateRecipeRequest(); // CreateRecipeRequest | The request specifying the parameters to generating the recipe (optional) 
+            var createRecipeRequest = new CreateRecipeRequest(); // CreateRecipeRequest | The request specifying the parameters to generating the recipe (optional) 
 
             try
             {
                 // [EXPERIMENTAL] Generates a recipe sufficient to perform valuations for the given portfolio.
-                ConfigurationRecipe result = apiInstance.GenerateConfigurationRecipe(scope, code, request);
+                ConfigurationRecipe result = apiInstance.GenerateConfigurationRecipe(scope, code, createRecipeRequest);
                 Debug.WriteLine(result);
             }
             catch (ApiException e)
@@ -71,7 +71,7 @@ Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **scope** | **string**| The scope of the portfolio | 
  **code** | **string**| The code of the portfolio | 
- **request** | [**CreateRecipeRequest**](CreateRecipeRequest.md)| The request specifying the parameters to generating the recipe | [optional] 
+ **createRecipeRequest** | [**CreateRecipeRequest**](CreateRecipeRequest.md)| The request specifying the parameters to generating the recipe | [optional] 
 
 ### Return type
 
@@ -83,7 +83,7 @@ Name | Type | Description  | Notes
 
 ### HTTP request headers
 
-- **Content-Type**: Not defined
+- **Content-Type**: application/json-patch+json, application/json, text/json, application/_*+json
 - **Accept**: text/plain, application/json, text/json
 
 ### HTTP response details
@@ -101,7 +101,7 @@ Name | Type | Description  | Notes
 
 ## GetAggregationByGroup
 
-> ListAggregationResponse GetAggregationByGroup (string scope, string code, List<string> sortBy = null, int? start = null, int? limit = null, AggregationRequest request = null)
+> ListAggregationResponse GetAggregationByGroup (string scope, string code, List<string> sortBy = null, int? start = null, int? limit = null, AggregationRequest aggregationRequest = null)
 
 [EXPERIMENTAL] Aggregate data in a portfolio group
 
@@ -122,7 +122,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://localhost/api";
+            Configuration.Default.BasePath = "http://localhost:46312";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -132,12 +132,12 @@ namespace Example
             var sortBy = new List<string>(); // List<string> | Optional. Order the results by these fields. Use use the '-' sign to denote descending order e.g. -MyFieldName (optional) 
             var start = 56;  // int? | Optional. When paginating, skip this number of results (optional) 
             var limit = 56;  // int? | Optional. When paginating, limit the number of returned results to this many. (optional) 
-            var request = new AggregationRequest(); // AggregationRequest | The request specifying the parameters of the aggregation (optional) 
+            var aggregationRequest = new AggregationRequest(); // AggregationRequest | The request specifying the parameters of the aggregation (optional) 
 
             try
             {
                 // [EXPERIMENTAL] Aggregate data in a portfolio group
-                ListAggregationResponse result = apiInstance.GetAggregationByGroup(scope, code, sortBy, start, limit, request);
+                ListAggregationResponse result = apiInstance.GetAggregationByGroup(scope, code, sortBy, start, limit, aggregationRequest);
                 Debug.WriteLine(result);
             }
             catch (ApiException e)
@@ -161,7 +161,7 @@ Name | Type | Description  | Notes
  **sortBy** | [**List&lt;string&gt;**](string.md)| Optional. Order the results by these fields. Use use the &#39;-&#39; sign to denote descending order e.g. -MyFieldName | [optional] 
  **start** | **int?**| Optional. When paginating, skip this number of results | [optional] 
  **limit** | **int?**| Optional. When paginating, limit the number of returned results to this many. | [optional] 
- **request** | [**AggregationRequest**](AggregationRequest.md)| The request specifying the parameters of the aggregation | [optional] 
+ **aggregationRequest** | [**AggregationRequest**](AggregationRequest.md)| The request specifying the parameters of the aggregation | [optional] 
 
 ### Return type
 
@@ -173,7 +173,7 @@ Name | Type | Description  | Notes
 
 ### HTTP request headers
 
-- **Content-Type**: Not defined
+- **Content-Type**: application/json-patch+json, application/json, text/json, application/_*+json
 - **Accept**: text/plain, application/json, text/json
 
 ### HTTP response details
@@ -191,7 +191,7 @@ Name | Type | Description  | Notes
 
 ## GetAggregationByPortfolio
 
-> ListAggregationResponse GetAggregationByPortfolio (string scope, string code, List<string> sortBy = null, int? start = null, int? limit = null, AggregationRequest request = null)
+> ListAggregationResponse GetAggregationByPortfolio (string scope, string code, List<string> sortBy = null, int? start = null, int? limit = null, AggregationRequest aggregationRequest = null)
 
 [EXPERIMENTAL] Aggregate data in a portfolio
 
@@ -212,7 +212,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://localhost/api";
+            Configuration.Default.BasePath = "http://localhost:46312";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -222,12 +222,12 @@ namespace Example
             var sortBy = new List<string>(); // List<string> | Optional. Order the results by these fields. Use use the '-' sign to denote descending order e.g. -MyFieldName (optional) 
             var start = 56;  // int? | Optional. When paginating, skip this number of results (optional) 
             var limit = 56;  // int? | Optional. When paginating, limit the number of returned results to this many. (optional) 
-            var request = new AggregationRequest(); // AggregationRequest | The request specifying the parameters of the aggregation (optional) 
+            var aggregationRequest = new AggregationRequest(); // AggregationRequest | The request specifying the parameters of the aggregation (optional) 
 
             try
             {
                 // [EXPERIMENTAL] Aggregate data in a portfolio
-                ListAggregationResponse result = apiInstance.GetAggregationByPortfolio(scope, code, sortBy, start, limit, request);
+                ListAggregationResponse result = apiInstance.GetAggregationByPortfolio(scope, code, sortBy, start, limit, aggregationRequest);
                 Debug.WriteLine(result);
             }
             catch (ApiException e)
@@ -251,7 +251,7 @@ Name | Type | Description  | Notes
  **sortBy** | [**List&lt;string&gt;**](string.md)| Optional. Order the results by these fields. Use use the &#39;-&#39; sign to denote descending order e.g. -MyFieldName | [optional] 
  **start** | **int?**| Optional. When paginating, skip this number of results | [optional] 
  **limit** | **int?**| Optional. When paginating, limit the number of returned results to this many. | [optional] 
- **request** | [**AggregationRequest**](AggregationRequest.md)| The request specifying the parameters of the aggregation | [optional] 
+ **aggregationRequest** | [**AggregationRequest**](AggregationRequest.md)| The request specifying the parameters of the aggregation | [optional] 
 
 ### Return type
 
@@ -263,7 +263,7 @@ Name | Type | Description  | Notes
 
 ### HTTP request headers
 
-- **Content-Type**: Not defined
+- **Content-Type**: application/json-patch+json, application/json, text/json, application/_*+json
 - **Accept**: text/plain, application/json, text/json
 
 ### HTTP response details
@@ -281,7 +281,7 @@ Name | Type | Description  | Notes
 
 ## GetAggregationByResultSet
 
-> ListAggregationResponse GetAggregationByResultSet (string scope, string resultsKey, List<string> sortBy = null, int? start = null, int? limit = null, AggregationRequest request = null)
+> ListAggregationResponse GetAggregationByResultSet (string scope, string resultsKey, List<string> sortBy = null, int? start = null, int? limit = null, AggregationRequest aggregationRequest = null)
 
 [EXPERIMENTAL] Aggregate using result data
 
@@ -302,7 +302,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://localhost/api";
+            Configuration.Default.BasePath = "http://localhost:46312";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -312,12 +312,12 @@ namespace Example
             var sortBy = new List<string>(); // List<string> | Optional. Order the results by these fields. Use use the '-' sign to denote descending order e.g. -MyFieldName (optional) 
             var start = 56;  // int? | Optional. When paginating, skip this number of results (optional) 
             var limit = 56;  // int? | Optional. When paginating, limit the number of returned results to this many. (optional) 
-            var request = new AggregationRequest(); // AggregationRequest | The request specifying the parameters of the aggregation (optional) 
+            var aggregationRequest = new AggregationRequest(); // AggregationRequest | The request specifying the parameters of the aggregation (optional) 
 
             try
             {
                 // [EXPERIMENTAL] Aggregate using result data
-                ListAggregationResponse result = apiInstance.GetAggregationByResultSet(scope, resultsKey, sortBy, start, limit, request);
+                ListAggregationResponse result = apiInstance.GetAggregationByResultSet(scope, resultsKey, sortBy, start, limit, aggregationRequest);
                 Debug.WriteLine(result);
             }
             catch (ApiException e)
@@ -341,7 +341,7 @@ Name | Type | Description  | Notes
  **sortBy** | [**List&lt;string&gt;**](string.md)| Optional. Order the results by these fields. Use use the &#39;-&#39; sign to denote descending order e.g. -MyFieldName | [optional] 
  **start** | **int?**| Optional. When paginating, skip this number of results | [optional] 
  **limit** | **int?**| Optional. When paginating, limit the number of returned results to this many. | [optional] 
- **request** | [**AggregationRequest**](AggregationRequest.md)| The request specifying the parameters of the aggregation | [optional] 
+ **aggregationRequest** | [**AggregationRequest**](AggregationRequest.md)| The request specifying the parameters of the aggregation | [optional] 
 
 ### Return type
 
@@ -353,7 +353,7 @@ Name | Type | Description  | Notes
 
 ### HTTP request headers
 
-- **Content-Type**: Not defined
+- **Content-Type**: application/json-patch+json, application/json, text/json, application/_*+json
 - **Accept**: text/plain, application/json, text/json
 
 ### HTTP response details
@@ -371,7 +371,7 @@ Name | Type | Description  | Notes
 
 ## GetAggregationOfWeightedInstruments
 
-> ListAggregationResponse GetAggregationOfWeightedInstruments (string scope, List<string> sortBy = null, int? start = null, int? limit = null, InlineAggregationRequest inlineRequest = null)
+> ListAggregationResponse GetAggregationOfWeightedInstruments (string scope, List<string> sortBy = null, int? start = null, int? limit = null, InlineAggregationRequest inlineAggregationRequest = null)
 
 [EXPERIMENTAL] Aggregate data in an inlined portfolio
 
@@ -392,7 +392,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://localhost/api";
+            Configuration.Default.BasePath = "http://localhost:46312";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -401,12 +401,12 @@ namespace Example
             var sortBy = new List<string>(); // List<string> | Optional. Order the results by these fields. Use use the '-' sign to denote descending order e.g. -MyFieldName (optional) 
             var start = 56;  // int? | Optional. When paginating, skip this number of results (optional) 
             var limit = 56;  // int? | Optional. When paginating, limit the number of returned results to this many. (optional) 
-            var inlineRequest = new InlineAggregationRequest(); // InlineAggregationRequest | The request specifying the parameters of the aggregation and the inlined set of instruments to aggregate over. (optional) 
+            var inlineAggregationRequest = new InlineAggregationRequest(); // InlineAggregationRequest | The request specifying the parameters of the aggregation and the inlined set of instruments to aggregate over. (optional) 
 
             try
             {
                 // [EXPERIMENTAL] Aggregate data in an inlined portfolio
-                ListAggregationResponse result = apiInstance.GetAggregationOfWeightedInstruments(scope, sortBy, start, limit, inlineRequest);
+                ListAggregationResponse result = apiInstance.GetAggregationOfWeightedInstruments(scope, sortBy, start, limit, inlineAggregationRequest);
                 Debug.WriteLine(result);
             }
             catch (ApiException e)
@@ -429,7 +429,7 @@ Name | Type | Description  | Notes
  **sortBy** | [**List&lt;string&gt;**](string.md)| Optional. Order the results by these fields. Use use the &#39;-&#39; sign to denote descending order e.g. -MyFieldName | [optional] 
  **start** | **int?**| Optional. When paginating, skip this number of results | [optional] 
  **limit** | **int?**| Optional. When paginating, limit the number of returned results to this many. | [optional] 
- **inlineRequest** | [**InlineAggregationRequest**](InlineAggregationRequest.md)| The request specifying the parameters of the aggregation and the inlined set of instruments to aggregate over. | [optional] 
+ **inlineAggregationRequest** | [**InlineAggregationRequest**](InlineAggregationRequest.md)| The request specifying the parameters of the aggregation and the inlined set of instruments to aggregate over. | [optional] 
 
 ### Return type
 
@@ -441,7 +441,7 @@ Name | Type | Description  | Notes
 
 ### HTTP request headers
 
-- **Content-Type**: Not defined
+- **Content-Type**: application/json-patch+json, application/json, text/json, application/_*+json
 - **Accept**: text/plain, application/json, text/json
 
 ### HTTP response details
@@ -459,7 +459,7 @@ Name | Type | Description  | Notes
 
 ## GetNestedAggregationByGroup
 
-> NestedAggregationResponse GetNestedAggregationByGroup (string scope, string code, AggregationRequest request = null)
+> NestedAggregationResponse GetNestedAggregationByGroup (string scope, string code, AggregationRequest aggregationRequest = null)
 
 [EXPERIMENTAL] Aggregate data in a portfolio group, as nested
 
@@ -480,19 +480,19 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://localhost/api";
+            Configuration.Default.BasePath = "http://localhost:46312";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
             var apiInstance = new AggregationApi(Configuration.Default);
             var scope = scope_example;  // string | The scope of the portfolio group
             var code = code_example;  // string | The code of the portfolio group
-            var request = new AggregationRequest(); // AggregationRequest | The request specifying the parameters of the aggregation (optional) 
+            var aggregationRequest = new AggregationRequest(); // AggregationRequest | The request specifying the parameters of the aggregation (optional) 
 
             try
             {
                 // [EXPERIMENTAL] Aggregate data in a portfolio group, as nested
-                NestedAggregationResponse result = apiInstance.GetNestedAggregationByGroup(scope, code, request);
+                NestedAggregationResponse result = apiInstance.GetNestedAggregationByGroup(scope, code, aggregationRequest);
                 Debug.WriteLine(result);
             }
             catch (ApiException e)
@@ -513,7 +513,7 @@ Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **scope** | **string**| The scope of the portfolio group | 
  **code** | **string**| The code of the portfolio group | 
- **request** | [**AggregationRequest**](AggregationRequest.md)| The request specifying the parameters of the aggregation | [optional] 
+ **aggregationRequest** | [**AggregationRequest**](AggregationRequest.md)| The request specifying the parameters of the aggregation | [optional] 
 
 ### Return type
 
@@ -525,7 +525,7 @@ Name | Type | Description  | Notes
 
 ### HTTP request headers
 
-- **Content-Type**: Not defined
+- **Content-Type**: application/json-patch+json, application/json, text/json, application/_*+json
 - **Accept**: text/plain, application/json, text/json
 
 ### HTTP response details
@@ -543,7 +543,7 @@ Name | Type | Description  | Notes
 
 ## GetNestedAggregationByPortfolio
 
-> NestedAggregationResponse GetNestedAggregationByPortfolio (string scope, string code, AggregationRequest request = null)
+> NestedAggregationResponse GetNestedAggregationByPortfolio (string scope, string code, AggregationRequest aggregationRequest = null)
 
 [EXPERIMENTAL] 
 
@@ -564,19 +564,19 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://localhost/api";
+            Configuration.Default.BasePath = "http://localhost:46312";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
             var apiInstance = new AggregationApi(Configuration.Default);
             var scope = scope_example;  // string | The scope of the portfolio
             var code = code_example;  // string | The code of the portfolio
-            var request = new AggregationRequest(); // AggregationRequest | The request specifying the parameters of the aggregation (optional) 
+            var aggregationRequest = new AggregationRequest(); // AggregationRequest | The request specifying the parameters of the aggregation (optional) 
 
             try
             {
                 // [EXPERIMENTAL] 
-                NestedAggregationResponse result = apiInstance.GetNestedAggregationByPortfolio(scope, code, request);
+                NestedAggregationResponse result = apiInstance.GetNestedAggregationByPortfolio(scope, code, aggregationRequest);
                 Debug.WriteLine(result);
             }
             catch (ApiException e)
@@ -597,7 +597,7 @@ Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **scope** | **string**| The scope of the portfolio | 
  **code** | **string**| The code of the portfolio | 
- **request** | [**AggregationRequest**](AggregationRequest.md)| The request specifying the parameters of the aggregation | [optional] 
+ **aggregationRequest** | [**AggregationRequest**](AggregationRequest.md)| The request specifying the parameters of the aggregation | [optional] 
 
 ### Return type
 
@@ -609,7 +609,7 @@ Name | Type | Description  | Notes
 
 ### HTTP request headers
 
-- **Content-Type**: Not defined
+- **Content-Type**: application/json-patch+json, application/json, text/json, application/_*+json
 - **Accept**: text/plain, application/json, text/json
 
 ### HTTP response details
@@ -648,7 +648,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://localhost/api";
+            Configuration.Default.BasePath = "http://localhost:46312";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 

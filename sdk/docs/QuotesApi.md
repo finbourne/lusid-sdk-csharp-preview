@@ -1,6 +1,6 @@
 # Lusid.Sdk.Api.QuotesApi
 
-All URIs are relative to *http://localhost/api*
+All URIs are relative to *http://localhost:46312*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
@@ -39,7 +39,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://localhost/api";
+            Configuration.Default.BasePath = "http://localhost:46312";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -112,7 +112,7 @@ Name | Type | Description  | Notes
 
 ## DeleteQuotes
 
-> AnnulQuotesResponse DeleteQuotes (string scope, Dictionary<string, QuoteId> quotes = null)
+> AnnulQuotesResponse DeleteQuotes (string scope, Dictionary<string, QuoteId> requestBody = null)
 
 [BETA] Delete quotes
 
@@ -133,18 +133,18 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://localhost/api";
+            Configuration.Default.BasePath = "http://localhost:46312";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
             var apiInstance = new QuotesApi(Configuration.Default);
             var scope = scope_example;  // string | The scope of the quotes to delete.
-            var quotes = new Dictionary<string, QuoteId>(); // Dictionary<string, QuoteId> | The quotes to delete keyed by a unique correlation id. (optional) 
+            var requestBody = new Dictionary<string, QuoteId>(); // Dictionary<string, QuoteId> | The quotes to delete keyed by a unique correlation id. (optional) 
 
             try
             {
                 // [BETA] Delete quotes
-                AnnulQuotesResponse result = apiInstance.DeleteQuotes(scope, quotes);
+                AnnulQuotesResponse result = apiInstance.DeleteQuotes(scope, requestBody);
                 Debug.WriteLine(result);
             }
             catch (ApiException e)
@@ -164,7 +164,7 @@ namespace Example
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **scope** | **string**| The scope of the quotes to delete. | 
- **quotes** | [**Dictionary&lt;string, QuoteId&gt;**](QuoteId.md)| The quotes to delete keyed by a unique correlation id. | [optional] 
+ **requestBody** | [**Dictionary&lt;string, QuoteId&gt;**](QuoteId.md)| The quotes to delete keyed by a unique correlation id. | [optional] 
 
 ### Return type
 
@@ -176,7 +176,7 @@ Name | Type | Description  | Notes
 
 ### HTTP request headers
 
-- **Content-Type**: Not defined
+- **Content-Type**: application/json-patch+json, application/json, text/json, application/_*+json
 - **Accept**: text/plain, application/json, text/json
 
 ### HTTP response details
@@ -194,7 +194,7 @@ Name | Type | Description  | Notes
 
 ## GetQuotes
 
-> GetQuotesResponse GetQuotes (string scope, DateTimeOrCutLabel effectiveAt = null, DateTimeOffset? asAt = null, string maxAge = null, Dictionary<string, QuoteSeriesId> quoteIds = null)
+> GetQuotesResponse GetQuotes (string scope, DateTimeOrCutLabel effectiveAt = null, DateTimeOffset? asAt = null, string maxAge = null, Dictionary<string, QuoteSeriesId> requestBody = null)
 
 [BETA] Get quotes
 
@@ -215,7 +215,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://localhost/api";
+            Configuration.Default.BasePath = "http://localhost:46312";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -224,12 +224,12 @@ namespace Example
             var effectiveAt = effectiveAt_example;  // DateTimeOrCutLabel | The effective datetime or cut label at which to retrieve the quotes. Defaults to the current LUSID system datetime if not specified. (optional) 
             var asAt = 2013-10-20T19:20:30+01:00;  // DateTimeOffset? | The asAt datetime at which to retrieve the quotes. Defaults to return the latest version of each quote if not specified. (optional) 
             var maxAge = maxAge_example;  // string | The duration of the look back window in an ISO8601 time interval format e.g. P1Y2M3DT4H30M (1 year, 2 months, 3 days, 4 hours and 30 minutes).               This is subtracted from the provided effectiveAt datetime or cut label to generate a effective datetime window inside which a quote must exist to be retrieved. (optional) 
-            var quoteIds = new Dictionary<string, QuoteSeriesId>(); // Dictionary<string, QuoteSeriesId> | The time invariant quote series ids of the quotes to retrieve. These need to be               keyed by a unique correlation id allowing the retrieved quote to be identified in the response. (optional) 
+            var requestBody = new Dictionary<string, QuoteSeriesId>(); // Dictionary<string, QuoteSeriesId> | The time invariant quote series ids of the quotes to retrieve. These need to be               keyed by a unique correlation id allowing the retrieved quote to be identified in the response. (optional) 
 
             try
             {
                 // [BETA] Get quotes
-                GetQuotesResponse result = apiInstance.GetQuotes(scope, effectiveAt, asAt, maxAge, quoteIds);
+                GetQuotesResponse result = apiInstance.GetQuotes(scope, effectiveAt, asAt, maxAge, requestBody);
                 Debug.WriteLine(result);
             }
             catch (ApiException e)
@@ -252,7 +252,7 @@ Name | Type | Description  | Notes
  **effectiveAt** | **DateTimeOrCutLabel**| The effective datetime or cut label at which to retrieve the quotes. Defaults to the current LUSID system datetime if not specified. | [optional] 
  **asAt** | **DateTimeOffset?**| The asAt datetime at which to retrieve the quotes. Defaults to return the latest version of each quote if not specified. | [optional] 
  **maxAge** | **string**| The duration of the look back window in an ISO8601 time interval format e.g. P1Y2M3DT4H30M (1 year, 2 months, 3 days, 4 hours and 30 minutes).               This is subtracted from the provided effectiveAt datetime or cut label to generate a effective datetime window inside which a quote must exist to be retrieved. | [optional] 
- **quoteIds** | [**Dictionary&lt;string, QuoteSeriesId&gt;**](QuoteSeriesId.md)| The time invariant quote series ids of the quotes to retrieve. These need to be               keyed by a unique correlation id allowing the retrieved quote to be identified in the response. | [optional] 
+ **requestBody** | [**Dictionary&lt;string, QuoteSeriesId&gt;**](QuoteSeriesId.md)| The time invariant quote series ids of the quotes to retrieve. These need to be               keyed by a unique correlation id allowing the retrieved quote to be identified in the response. | [optional] 
 
 ### Return type
 
@@ -264,7 +264,7 @@ Name | Type | Description  | Notes
 
 ### HTTP request headers
 
-- **Content-Type**: Not defined
+- **Content-Type**: application/json-patch+json, application/json, text/json, application/_*+json
 - **Accept**: text/plain, application/json, text/json
 
 ### HTTP response details
@@ -303,7 +303,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://localhost/api";
+            Configuration.Default.BasePath = "http://localhost:46312";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -399,7 +399,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://localhost/api";
+            Configuration.Default.BasePath = "http://localhost:46312";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -489,7 +489,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://localhost/api";
+            Configuration.Default.BasePath = "http://localhost:46312";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -571,7 +571,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://localhost/api";
+            Configuration.Default.BasePath = "http://localhost:46312";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -640,7 +640,7 @@ Name | Type | Description  | Notes
 
 ## UpsertQuoteAccessMetadataRule
 
-> QuoteAccessMetadataRule UpsertQuoteAccessMetadataRule (string scope, UpsertQuoteAccessMetadataRuleRequest request, DateTimeOrCutLabel effectiveAt = null)
+> QuoteAccessMetadataRule UpsertQuoteAccessMetadataRule (string scope, UpsertQuoteAccessMetadataRuleRequest upsertQuoteAccessMetadataRuleRequest, DateTimeOrCutLabel effectiveAt = null)
 
 [EXPERIMENTAL] Upsert a Quote Access Metadata Rule. This creates or updates the data in LUSID.
 
@@ -661,19 +661,19 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://localhost/api";
+            Configuration.Default.BasePath = "http://localhost:46312";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
             var apiInstance = new QuotesApi(Configuration.Default);
             var scope = scope_example;  // string | The scope to use when updating or inserting the Quote Access Metadata Rule.
-            var request = new UpsertQuoteAccessMetadataRuleRequest(); // UpsertQuoteAccessMetadataRuleRequest | The Quote Access Metadata Rule to update or insert
+            var upsertQuoteAccessMetadataRuleRequest = new UpsertQuoteAccessMetadataRuleRequest(); // UpsertQuoteAccessMetadataRuleRequest | The Quote Access Metadata Rule to update or insert
             var effectiveAt = effectiveAt_example;  // DateTimeOrCutLabel | The date this rule will effective from (optional) 
 
             try
             {
                 // [EXPERIMENTAL] Upsert a Quote Access Metadata Rule. This creates or updates the data in LUSID.
-                QuoteAccessMetadataRule result = apiInstance.UpsertQuoteAccessMetadataRule(scope, request, effectiveAt);
+                QuoteAccessMetadataRule result = apiInstance.UpsertQuoteAccessMetadataRule(scope, upsertQuoteAccessMetadataRuleRequest, effectiveAt);
                 Debug.WriteLine(result);
             }
             catch (ApiException e)
@@ -693,7 +693,7 @@ namespace Example
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **scope** | **string**| The scope to use when updating or inserting the Quote Access Metadata Rule. | 
- **request** | [**UpsertQuoteAccessMetadataRuleRequest**](UpsertQuoteAccessMetadataRuleRequest.md)| The Quote Access Metadata Rule to update or insert | 
+ **upsertQuoteAccessMetadataRuleRequest** | [**UpsertQuoteAccessMetadataRuleRequest**](UpsertQuoteAccessMetadataRuleRequest.md)| The Quote Access Metadata Rule to update or insert | 
  **effectiveAt** | **DateTimeOrCutLabel**| The date this rule will effective from | [optional] 
 
 ### Return type
@@ -706,7 +706,7 @@ Name | Type | Description  | Notes
 
 ### HTTP request headers
 
-- **Content-Type**: Not defined
+- **Content-Type**: application/json-patch+json, application/json, text/json, application/_*+json
 - **Accept**: text/plain, application/json, text/json
 
 ### HTTP response details
@@ -724,7 +724,7 @@ Name | Type | Description  | Notes
 
 ## UpsertQuotes
 
-> UpsertQuotesResponse UpsertQuotes (string scope, Dictionary<string, UpsertQuoteRequest> quotes = null)
+> UpsertQuotesResponse UpsertQuotes (string scope, Dictionary<string, UpsertQuoteRequest> requestBody = null)
 
 [BETA] Upsert quotes
 
@@ -745,18 +745,18 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://localhost/api";
+            Configuration.Default.BasePath = "http://localhost:46312";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
             var apiInstance = new QuotesApi(Configuration.Default);
             var scope = scope_example;  // string | The scope to use when updating or inserting the quotes.
-            var quotes = new Dictionary<string, UpsertQuoteRequest>(); // Dictionary<string, UpsertQuoteRequest> | The quotes to update or insert keyed by a unique correlation id. (optional) 
+            var requestBody = new Dictionary<string, UpsertQuoteRequest>(); // Dictionary<string, UpsertQuoteRequest> | The quotes to update or insert keyed by a unique correlation id. (optional) 
 
             try
             {
                 // [BETA] Upsert quotes
-                UpsertQuotesResponse result = apiInstance.UpsertQuotes(scope, quotes);
+                UpsertQuotesResponse result = apiInstance.UpsertQuotes(scope, requestBody);
                 Debug.WriteLine(result);
             }
             catch (ApiException e)
@@ -776,7 +776,7 @@ namespace Example
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **scope** | **string**| The scope to use when updating or inserting the quotes. | 
- **quotes** | [**Dictionary&lt;string, UpsertQuoteRequest&gt;**](UpsertQuoteRequest.md)| The quotes to update or insert keyed by a unique correlation id. | [optional] 
+ **requestBody** | [**Dictionary&lt;string, UpsertQuoteRequest&gt;**](UpsertQuoteRequest.md)| The quotes to update or insert keyed by a unique correlation id. | [optional] 
 
 ### Return type
 
@@ -788,7 +788,7 @@ Name | Type | Description  | Notes
 
 ### HTTP request headers
 
-- **Content-Type**: Not defined
+- **Content-Type**: application/json-patch+json, application/json, text/json, application/_*+json
 - **Accept**: text/plain, application/json, text/json
 
 ### HTTP response details

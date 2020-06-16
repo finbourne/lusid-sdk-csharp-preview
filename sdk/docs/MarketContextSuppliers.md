@@ -5,11 +5,11 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**Commodity** | **string** |  | [optional] 
-**Credit** | **string** |  | [optional] 
-**Equity** | **string** |  | [optional] 
-**Fx** | **string** |  | [optional] 
-**Rates** | **string** |  | [optional] 
+**Commodity** | **ResourceSupplier** |  | [optional] 
+**Credit** | **ResourceSupplier** |  | [optional] 
+**Equity** | **ResourceSupplier** |  | [optional] 
+**Fx** | **ResourceSupplier** |  | [optional] 
+**Rates** | **ResourceSupplier** |  | [optional] 
 
 [[Back to Model list]](../README.md#documentation-for-models)
 [[Back to API list]](../README.md#documentation-for-api-endpoints)

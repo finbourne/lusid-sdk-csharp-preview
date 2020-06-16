@@ -1,6 +1,6 @@
 # Lusid.Sdk.Api.ConfigurationRecipeApi
 
-All URIs are relative to *http://localhost/api*
+All URIs are relative to *http://localhost:46312*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
@@ -35,7 +35,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://localhost/api";
+            Configuration.Default.BasePath = "http://localhost:46312";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -117,7 +117,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://localhost/api";
+            Configuration.Default.BasePath = "http://localhost:46312";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -201,7 +201,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://localhost/api";
+            Configuration.Default.BasePath = "http://localhost:46312";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -285,7 +285,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://localhost/api";
+            Configuration.Default.BasePath = "http://localhost:46312";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -346,7 +346,7 @@ Name | Type | Description  | Notes
 
 ## UpsertConfigurationRecipe
 
-> UpsertSingleStructuredDataResponse UpsertConfigurationRecipe (string scope, UpsertRecipeRequest structuredData)
+> UpsertSingleStructuredDataResponse UpsertConfigurationRecipe (string scope, UpsertRecipeRequest upsertRecipeRequest)
 
 [EXPERIMENTAL] Upsert a Configuration Recipe. This creates or updates the data in Lusid.
 
@@ -367,18 +367,18 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://localhost/api";
+            Configuration.Default.BasePath = "http://localhost:46312";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
             var apiInstance = new ConfigurationRecipeApi(Configuration.Default);
             var scope = scope_example;  // string | The scope to use when updating or inserting the Configuration Recipe.
-            var structuredData = new UpsertRecipeRequest(); // UpsertRecipeRequest | The Configuration Recipe to update or insert
+            var upsertRecipeRequest = new UpsertRecipeRequest(); // UpsertRecipeRequest | The Configuration Recipe to update or insert
 
             try
             {
                 // [EXPERIMENTAL] Upsert a Configuration Recipe. This creates or updates the data in Lusid.
-                UpsertSingleStructuredDataResponse result = apiInstance.UpsertConfigurationRecipe(scope, structuredData);
+                UpsertSingleStructuredDataResponse result = apiInstance.UpsertConfigurationRecipe(scope, upsertRecipeRequest);
                 Debug.WriteLine(result);
             }
             catch (ApiException e)
@@ -398,7 +398,7 @@ namespace Example
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **scope** | **string**| The scope to use when updating or inserting the Configuration Recipe. | 
- **structuredData** | [**UpsertRecipeRequest**](UpsertRecipeRequest.md)| The Configuration Recipe to update or insert | 
+ **upsertRecipeRequest** | [**UpsertRecipeRequest**](UpsertRecipeRequest.md)| The Configuration Recipe to update or insert | 
 
 ### Return type
 
@@ -410,7 +410,7 @@ Name | Type | Description  | Notes
 
 ### HTTP request headers
 
-- **Content-Type**: Not defined
+- **Content-Type**: application/json-patch+json, application/json, text/json, application/_*+json
 - **Accept**: text/plain, application/json, text/json
 
 ### HTTP response details

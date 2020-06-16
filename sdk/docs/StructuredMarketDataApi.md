@@ -1,6 +1,6 @@
 # Lusid.Sdk.Api.StructuredMarketDataApi
 
-All URIs are relative to *http://localhost/api*
+All URIs are relative to *http://localhost:46312*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
@@ -12,7 +12,7 @@ Method | HTTP request | Description
 
 ## DeleteStructuredMarketData
 
-> AnnulStructuredDataResponse DeleteStructuredMarketData (string scope, Dictionary<string, StructuredMarketDataId> structuredDataIds)
+> AnnulStructuredDataResponse DeleteStructuredMarketData (string scope, Dictionary<string, StructuredMarketDataId> requestBody)
 
 [EXPERIMENTAL] Delete one or more items of structured market data, assuming they are present.
 
@@ -33,18 +33,18 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://localhost/api";
+            Configuration.Default.BasePath = "http://localhost:46312";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
             var apiInstance = new StructuredMarketDataApi(Configuration.Default);
             var scope = scope_example;  // string | The scope of the structured market data to delete.
-            var structuredDataIds = new Dictionary<string, StructuredMarketDataId>(); // Dictionary<string, StructuredMarketDataId> | The structured market data Ids to delete, each keyed by a unique correlation id.
+            var requestBody = new Dictionary<string, StructuredMarketDataId>(); // Dictionary<string, StructuredMarketDataId> | The structured market data Ids to delete, each keyed by a unique correlation id.
 
             try
             {
                 // [EXPERIMENTAL] Delete one or more items of structured market data, assuming they are present.
-                AnnulStructuredDataResponse result = apiInstance.DeleteStructuredMarketData(scope, structuredDataIds);
+                AnnulStructuredDataResponse result = apiInstance.DeleteStructuredMarketData(scope, requestBody);
                 Debug.WriteLine(result);
             }
             catch (ApiException e)
@@ -64,7 +64,7 @@ namespace Example
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **scope** | **string**| The scope of the structured market data to delete. | 
- **structuredDataIds** | [**Dictionary&lt;string, StructuredMarketDataId&gt;**](StructuredMarketDataId.md)| The structured market data Ids to delete, each keyed by a unique correlation id. | 
+ **requestBody** | [**Dictionary&lt;string, StructuredMarketDataId&gt;**](StructuredMarketDataId.md)| The structured market data Ids to delete, each keyed by a unique correlation id. | 
 
 ### Return type
 
@@ -76,7 +76,7 @@ Name | Type | Description  | Notes
 
 ### HTTP request headers
 
-- **Content-Type**: Not defined
+- **Content-Type**: application/json-patch+json, application/json, text/json, application/_*+json
 - **Accept**: text/plain, application/json, text/json
 
 ### HTTP response details
@@ -94,7 +94,7 @@ Name | Type | Description  | Notes
 
 ## GetStructuredMarketData
 
-> GetStructuredMarketDataResponse GetStructuredMarketData (string scope, Dictionary<string, StructuredMarketDataId> structuredDataIds, DateTimeOrCutLabel effectiveAt = null, DateTimeOffset? asAt = null, string maxAge = null)
+> GetStructuredMarketDataResponse GetStructuredMarketData (string scope, Dictionary<string, StructuredMarketDataId> requestBody, DateTimeOrCutLabel effectiveAt = null, DateTimeOffset? asAt = null, string maxAge = null)
 
 [EXPERIMENTAL] Get structured market data
 
@@ -115,13 +115,13 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://localhost/api";
+            Configuration.Default.BasePath = "http://localhost:46312";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
             var apiInstance = new StructuredMarketDataApi(Configuration.Default);
             var scope = scope_example;  // string | The scope of the structured market data to retrieve.
-            var structuredDataIds = new Dictionary<string, StructuredMarketDataId>(); // Dictionary<string, StructuredMarketDataId> | The time invariant set of structured data identifiers to retrieve the data for. These need to be               keyed by a unique correlation id allowing the retrieved item to be identified in the response.
+            var requestBody = new Dictionary<string, StructuredMarketDataId>(); // Dictionary<string, StructuredMarketDataId> | The time invariant set of structured data identifiers to retrieve the data for. These need to be               keyed by a unique correlation id allowing the retrieved item to be identified in the response.
             var effectiveAt = effectiveAt_example;  // DateTimeOrCutLabel | The effective datetime at which to retrieve the structured market data. Defaults to the current LUSID system datetime if not specified. (optional) 
             var asAt = 2013-10-20T19:20:30+01:00;  // DateTimeOffset? | The asAt datetime at which to retrieve the structured market data. Defaults to return the latest version if not specified. (optional) 
             var maxAge = maxAge_example;  // string | The duration of the look back window in an ISO8601 time interval format e.g. P1Y2M3DT4H30M (1 year, 2 months, 3 days, 4 hours and 30 minutes).               This is subtracted from the provided effectiveAt datetime to generate a effective datetime window inside which a structured market data item must exist to be retrieved. (optional) 
@@ -129,7 +129,7 @@ namespace Example
             try
             {
                 // [EXPERIMENTAL] Get structured market data
-                GetStructuredMarketDataResponse result = apiInstance.GetStructuredMarketData(scope, structuredDataIds, effectiveAt, asAt, maxAge);
+                GetStructuredMarketDataResponse result = apiInstance.GetStructuredMarketData(scope, requestBody, effectiveAt, asAt, maxAge);
                 Debug.WriteLine(result);
             }
             catch (ApiException e)
@@ -149,7 +149,7 @@ namespace Example
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **scope** | **string**| The scope of the structured market data to retrieve. | 
- **structuredDataIds** | [**Dictionary&lt;string, StructuredMarketDataId&gt;**](StructuredMarketDataId.md)| The time invariant set of structured data identifiers to retrieve the data for. These need to be               keyed by a unique correlation id allowing the retrieved item to be identified in the response. | 
+ **requestBody** | [**Dictionary&lt;string, StructuredMarketDataId&gt;**](StructuredMarketDataId.md)| The time invariant set of structured data identifiers to retrieve the data for. These need to be               keyed by a unique correlation id allowing the retrieved item to be identified in the response. | 
  **effectiveAt** | **DateTimeOrCutLabel**| The effective datetime at which to retrieve the structured market data. Defaults to the current LUSID system datetime if not specified. | [optional] 
  **asAt** | **DateTimeOffset?**| The asAt datetime at which to retrieve the structured market data. Defaults to return the latest version if not specified. | [optional] 
  **maxAge** | **string**| The duration of the look back window in an ISO8601 time interval format e.g. P1Y2M3DT4H30M (1 year, 2 months, 3 days, 4 hours and 30 minutes).               This is subtracted from the provided effectiveAt datetime to generate a effective datetime window inside which a structured market data item must exist to be retrieved. | [optional] 
@@ -164,7 +164,7 @@ Name | Type | Description  | Notes
 
 ### HTTP request headers
 
-- **Content-Type**: Not defined
+- **Content-Type**: application/json-patch+json, application/json, text/json, application/_*+json
 - **Accept**: text/plain, application/json, text/json
 
 ### HTTP response details
@@ -182,7 +182,7 @@ Name | Type | Description  | Notes
 
 ## UpsertStructuredMarketData
 
-> UpsertStructuredDataResponse UpsertStructuredMarketData (string scope, Dictionary<string, UpsertStructuredMarketDataRequest> structuredData)
+> UpsertStructuredDataResponse UpsertStructuredMarketData (string scope, Dictionary<string, UpsertStructuredMarketDataRequest> requestBody)
 
 [EXPERIMENTAL] Upsert a set of structured market data items. This creates or updates the data in Lusid.
 
@@ -203,18 +203,18 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://localhost/api";
+            Configuration.Default.BasePath = "http://localhost:46312";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
             var apiInstance = new StructuredMarketDataApi(Configuration.Default);
             var scope = scope_example;  // string | The scope to use when updating or inserting the structured market data.
-            var structuredData = new Dictionary<string, UpsertStructuredMarketDataRequest>(); // Dictionary<string, UpsertStructuredMarketDataRequest> | The set of structured market data items to update or insert keyed by a unique correlation id.
+            var requestBody = new Dictionary<string, UpsertStructuredMarketDataRequest>(); // Dictionary<string, UpsertStructuredMarketDataRequest> | The set of structured market data items to update or insert keyed by a unique correlation id.
 
             try
             {
                 // [EXPERIMENTAL] Upsert a set of structured market data items. This creates or updates the data in Lusid.
-                UpsertStructuredDataResponse result = apiInstance.UpsertStructuredMarketData(scope, structuredData);
+                UpsertStructuredDataResponse result = apiInstance.UpsertStructuredMarketData(scope, requestBody);
                 Debug.WriteLine(result);
             }
             catch (ApiException e)
@@ -234,7 +234,7 @@ namespace Example
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **scope** | **string**| The scope to use when updating or inserting the structured market data. | 
- **structuredData** | [**Dictionary&lt;string, UpsertStructuredMarketDataRequest&gt;**](UpsertStructuredMarketDataRequest.md)| The set of structured market data items to update or insert keyed by a unique correlation id. | 
+ **requestBody** | [**Dictionary&lt;string, UpsertStructuredMarketDataRequest&gt;**](UpsertStructuredMarketDataRequest.md)| The set of structured market data items to update or insert keyed by a unique correlation id. | 
 
 ### Return type
 
@@ -246,7 +246,7 @@ Name | Type | Description  | Notes
 
 ### HTTP request headers
 
-- **Content-Type**: Not defined
+- **Content-Type**: application/json-patch+json, application/json, text/json, application/_*+json
 - **Accept**: text/plain, application/json, text/json
 
 ### HTTP response details

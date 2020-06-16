@@ -8,7 +8,7 @@ Name | Type | Description | Notes
 **AggregationEffectiveAt** | **DateTimeOffset?** |  | [optional] 
 **AggregationAsAt** | **DateTimeOffset?** |  | [optional] 
 **Href** | **string** |  | [optional] 
-**Data** | [**AggregationResponseNodeOfDictionaryOfStringToObject**](AggregationResponseNodeOfDictionaryOfStringToObject.md) |  | [optional] 
+**Data** | [**AggregationResponseNode**](AggregationResponseNode.md) |  | [optional] 
 **AggregationCurrency** | **string** |  | [optional] 
 **DataSchema** | [**ResultDataSchema**](ResultDataSchema.md) |  | [optional] 
 **AggregationFailures** | [**List&lt;AggregationMeasureFailureDetail&gt;**](AggregationMeasureFailureDetail.md) |  | [optional] 

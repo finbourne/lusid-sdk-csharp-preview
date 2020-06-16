@@ -1,6 +1,6 @@
 # Lusid.Sdk.Api.OrdersApi
 
-All URIs are relative to *http://localhost/api*
+All URIs are relative to *http://localhost:46312*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
@@ -32,7 +32,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://localhost/api";
+            Configuration.Default.BasePath = "http://localhost:46312";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -116,7 +116,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://localhost/api";
+            Configuration.Default.BasePath = "http://localhost:46312";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -126,7 +126,7 @@ namespace Example
             var sortBy = new List<string>(); // List<string> | Order the results by these fields. Use use the '-' sign to denote descending order e.g. -MyFieldName. (optional) 
             var start = 56;  // int? | When paginating, skip this number of results. (optional) 
             var limit = 56;  // int? | When paginating, limit the number of returned results to this many. (optional) 
-            var filter = filter_example;  // string | Expression to filter the result set. Read more about filtering results from LUSID here:              https://support.lusid.com/filtering-results-from-lusid. (optional) 
+            var filter = filter_example;  // string | Expression to filter the result set. Read more about filtering results from LUSID here:              https://support.lusid.com/filtering-results-from-lusid. (optional)  (default to "")
             var propertyKeys = new List<string>(); // List<string> | A list of property keys from the \"Orders\" domain to decorate onto each order.                  These take the format {domain}/{scope}/{code} e.g. \"Orders/system/Name\". (optional) 
 
             try
@@ -156,7 +156,7 @@ Name | Type | Description  | Notes
  **sortBy** | [**List&lt;string&gt;**](string.md)| Order the results by these fields. Use use the &#39;-&#39; sign to denote descending order e.g. -MyFieldName. | [optional] 
  **start** | **int?**| When paginating, skip this number of results. | [optional] 
  **limit** | **int?**| When paginating, limit the number of returned results to this many. | [optional] 
- **filter** | **string**| Expression to filter the result set. Read more about filtering results from LUSID here:              https://support.lusid.com/filtering-results-from-lusid. | [optional] 
+ **filter** | **string**| Expression to filter the result set. Read more about filtering results from LUSID here:              https://support.lusid.com/filtering-results-from-lusid. | [optional] [default to &quot;&quot;]
  **propertyKeys** | [**List&lt;string&gt;**](string.md)| A list of property keys from the \&quot;Orders\&quot; domain to decorate onto each order.                  These take the format {domain}/{scope}/{code} e.g. \&quot;Orders/system/Name\&quot;. | [optional] 
 
 ### Return type
@@ -187,7 +187,7 @@ Name | Type | Description  | Notes
 
 ## UpsertOrderProperties
 
-> UpsertOrderPropertiesResponse UpsertOrderProperties (string scope, List<UpsertOrderPropertiesRequest> request = null)
+> UpsertOrderPropertiesResponse UpsertOrderProperties (string scope, List<UpsertOrderPropertiesRequest> upsertOrderPropertiesRequest = null)
 
 [EXPERIMENTAL] Upsert; update properties on existing Orders with given ids.
 
@@ -206,18 +206,18 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://localhost/api";
+            Configuration.Default.BasePath = "http://localhost:46312";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
             var apiInstance = new OrdersApi(Configuration.Default);
             var scope = scope_example;  // string | The scope to which the orders belong.
-            var request = new List<UpsertOrderPropertiesRequest>(); // List<UpsertOrderPropertiesRequest> | A collection of order property upsert requests. (optional) 
+            var upsertOrderPropertiesRequest = new List<UpsertOrderPropertiesRequest>(); // List<UpsertOrderPropertiesRequest> | A collection of order property upsert requests. (optional) 
 
             try
             {
                 // [EXPERIMENTAL] Upsert; update properties on existing Orders with given ids.
-                UpsertOrderPropertiesResponse result = apiInstance.UpsertOrderProperties(scope, request);
+                UpsertOrderPropertiesResponse result = apiInstance.UpsertOrderProperties(scope, upsertOrderPropertiesRequest);
                 Debug.WriteLine(result);
             }
             catch (ApiException e)
@@ -237,7 +237,7 @@ namespace Example
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **scope** | **string**| The scope to which the orders belong. | 
- **request** | [**List&lt;UpsertOrderPropertiesRequest&gt;**](UpsertOrderPropertiesRequest.md)| A collection of order property upsert requests. | [optional] 
+ **upsertOrderPropertiesRequest** | [**List&lt;UpsertOrderPropertiesRequest&gt;**](UpsertOrderPropertiesRequest.md)| A collection of order property upsert requests. | [optional] 
 
 ### Return type
 
@@ -249,7 +249,7 @@ Name | Type | Description  | Notes
 
 ### HTTP request headers
 
-- **Content-Type**: Not defined
+- **Content-Type**: application/json-patch+json, application/json, text/json, application/_*+json
 - **Accept**: text/plain, application/json, text/json
 
 ### HTTP response details
@@ -267,7 +267,7 @@ Name | Type | Description  | Notes
 
 ## UpsertOrders
 
-> ResourceListOfOrder UpsertOrders (OrderSetRequest request = null)
+> ResourceListOfOrder UpsertOrders (OrderSetRequest orderSetRequest = null)
 
 [EXPERIMENTAL] Upsert; update existing orders with given ids, or create new orders otherwise.
 
@@ -286,17 +286,17 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://localhost/api";
+            Configuration.Default.BasePath = "http://localhost:46312";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
             var apiInstance = new OrdersApi(Configuration.Default);
-            var request = new OrderSetRequest(); // OrderSetRequest | The collection of order requests. (optional) 
+            var orderSetRequest = new OrderSetRequest(); // OrderSetRequest | The collection of order requests. (optional) 
 
             try
             {
                 // [EXPERIMENTAL] Upsert; update existing orders with given ids, or create new orders otherwise.
-                ResourceListOfOrder result = apiInstance.UpsertOrders(request);
+                ResourceListOfOrder result = apiInstance.UpsertOrders(orderSetRequest);
                 Debug.WriteLine(result);
             }
             catch (ApiException e)
@@ -315,7 +315,7 @@ namespace Example
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **request** | [**OrderSetRequest**](OrderSetRequest.md)| The collection of order requests. | [optional] 
+ **orderSetRequest** | [**OrderSetRequest**](OrderSetRequest.md)| The collection of order requests. | [optional] 
 
 ### Return type
 
@@ -327,7 +327,7 @@ Name | Type | Description  | Notes
 
 ### HTTP request headers
 
-- **Content-Type**: Not defined
+- **Content-Type**: application/json-patch+json, application/json, text/json, application/_*+json
 - **Accept**: text/plain, application/json, text/json
 
 ### HTTP response details

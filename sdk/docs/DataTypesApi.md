@@ -1,6 +1,6 @@
 # Lusid.Sdk.Api.DataTypesApi
 
-All URIs are relative to *http://localhost/api*
+All URIs are relative to *http://localhost:46312*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
@@ -14,7 +14,7 @@ Method | HTTP request | Description
 
 ## CreateDataType
 
-> DataType CreateDataType (CreateDataTypeRequest request = null)
+> DataType CreateDataType (CreateDataTypeRequest createDataTypeRequest = null)
 
 [BETA] Create data type definition
 
@@ -35,17 +35,17 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://localhost/api";
+            Configuration.Default.BasePath = "http://localhost:46312";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
             var apiInstance = new DataTypesApi(Configuration.Default);
-            var request = new CreateDataTypeRequest(); // CreateDataTypeRequest | The definition of the new data type (optional) 
+            var createDataTypeRequest = new CreateDataTypeRequest(); // CreateDataTypeRequest | The definition of the new data type (optional) 
 
             try
             {
                 // [BETA] Create data type definition
-                DataType result = apiInstance.CreateDataType(request);
+                DataType result = apiInstance.CreateDataType(createDataTypeRequest);
                 Debug.WriteLine(result);
             }
             catch (ApiException e)
@@ -64,7 +64,7 @@ namespace Example
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **request** | [**CreateDataTypeRequest**](CreateDataTypeRequest.md)| The definition of the new data type | [optional] 
+ **createDataTypeRequest** | [**CreateDataTypeRequest**](CreateDataTypeRequest.md)| The definition of the new data type | [optional] 
 
 ### Return type
 
@@ -76,7 +76,7 @@ Name | Type | Description  | Notes
 
 ### HTTP request headers
 
-- **Content-Type**: Not defined
+- **Content-Type**: application/json-patch+json, application/json, text/json, application/_*+json
 - **Accept**: text/plain, application/json, text/json
 
 ### HTTP response details
@@ -115,7 +115,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://localhost/api";
+            Configuration.Default.BasePath = "http://localhost:46312";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -199,7 +199,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://localhost/api";
+            Configuration.Default.BasePath = "http://localhost:46312";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -287,7 +287,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://localhost/api";
+            Configuration.Default.BasePath = "http://localhost:46312";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -358,7 +358,7 @@ Name | Type | Description  | Notes
 
 ## UpdateDataType
 
-> DataType UpdateDataType (string scope, string code, UpdateDataTypeRequest request = null)
+> DataType UpdateDataType (string scope, string code, UpdateDataTypeRequest updateDataTypeRequest = null)
 
 [BETA] Update data type definition
 
@@ -379,19 +379,19 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://localhost/api";
+            Configuration.Default.BasePath = "http://localhost:46312";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
             var apiInstance = new DataTypesApi(Configuration.Default);
             var scope = scope_example;  // string | The scope of the data type
             var code = code_example;  // string | The code of the data type
-            var request = new UpdateDataTypeRequest(); // UpdateDataTypeRequest | The updated definition of the data type (optional) 
+            var updateDataTypeRequest = new UpdateDataTypeRequest(); // UpdateDataTypeRequest | The updated definition of the data type (optional) 
 
             try
             {
                 // [BETA] Update data type definition
-                DataType result = apiInstance.UpdateDataType(scope, code, request);
+                DataType result = apiInstance.UpdateDataType(scope, code, updateDataTypeRequest);
                 Debug.WriteLine(result);
             }
             catch (ApiException e)
@@ -412,7 +412,7 @@ Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **scope** | **string**| The scope of the data type | 
  **code** | **string**| The code of the data type | 
- **request** | [**UpdateDataTypeRequest**](UpdateDataTypeRequest.md)| The updated definition of the data type | [optional] 
+ **updateDataTypeRequest** | [**UpdateDataTypeRequest**](UpdateDataTypeRequest.md)| The updated definition of the data type | [optional] 
 
 ### Return type
 
@@ -424,7 +424,7 @@ Name | Type | Description  | Notes
 
 ### HTTP request headers
 
-- **Content-Type**: Not defined
+- **Content-Type**: application/json-patch+json, application/json, text/json, application/_*+json
 - **Accept**: text/plain, application/json, text/json
 
 ### HTTP response details
