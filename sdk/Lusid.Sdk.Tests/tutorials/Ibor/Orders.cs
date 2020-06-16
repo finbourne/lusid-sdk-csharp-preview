@@ -70,7 +70,7 @@ namespace Lusid.Sdk.Tests.Tutorials.Ibor
                 });
 
             // We can ask the Orders API to upsert this order for us
-            var upsertResult = _ordersApi.UpsertOrders(request: request);
+            var upsertResult = _ordersApi.UpsertOrders(request);
 
             // The return gives us a list of orders upserted, and LusidInstrument for each has been mapped to a LUID
             // using the instrument identifiers passed
@@ -119,7 +119,7 @@ namespace Lusid.Sdk.Tests.Tutorials.Ibor
                 });
 
             // We can ask the Orders API to upsert this order for us
-            var upsertResult = _ordersApi.UpsertOrders(request: initialRequest);
+            var upsertResult = _ordersApi.UpsertOrders(initialRequest);
 
             // The return gives us a list of orders upserted, and LusidInstrument for each has been mapped to a LUID
             // using the instrument identifiers passed
@@ -160,7 +160,7 @@ namespace Lusid.Sdk.Tests.Tutorials.Ibor
                     )
                 });
 
-            var upsertResult = _ordersApi.UpsertOrders(request: request);
+            var upsertResult = _ordersApi.UpsertOrders(request);
 
             // The return gives us a list of orders upserted, and LusidInstrument for each has been mapped to a LUID
             // using the instrument identifiers passed
@@ -201,7 +201,7 @@ namespace Lusid.Sdk.Tests.Tutorials.Ibor
                         )
                 });
             
-            upsertResult = _ordersApi.UpsertOrders(request: updateRequest);
+            upsertResult = _ordersApi.UpsertOrders(updateRequest);
             
             // The return gives us a list of orders upserted, and LusidInstrument for each has been mapped to a LUID
             // using the instrument identifiers passed. We can see that the quantity has been udpated, and properties added
@@ -306,7 +306,7 @@ namespace Lusid.Sdk.Tests.Tutorials.Ibor
                 });
 
             // We can ask the Orders API to upsert these orders for us
-            var upsertResult = _ordersApi.UpsertOrders(request: request);
+            var upsertResult = _ordersApi.UpsertOrders(request);
 
             // The return gives us a list of orders upserted, and LusidInstrument for each has been mapped to a LUID
             // using the instrument identifiers passed

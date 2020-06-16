@@ -85,7 +85,7 @@ namespace Lusid.Sdk.Tests.Tutorials.Ibor
                 {
                     Suppliers = new MarketContextSuppliers
                     {
-                        Equity = MarketContextSuppliers.EquityEnum.DataScope
+                        Equity = ResourceSupplier.DataScope
                     },
                     Options = new MarketOptions
                     {
@@ -113,7 +113,7 @@ namespace Lusid.Sdk.Tests.Tutorials.Ibor
             );
 
             //    Do the aggregation
-            var results = _apiFactory.Api<IAggregationApi>().GetAggregationByPortfolio(TutorialScope, portfolioId, request: aggregationRequest);
+            var results = _apiFactory.Api<IAggregationApi>().GetAggregationByPortfolio(TutorialScope, portfolioId, aggregationRequest: aggregationRequest);
 
             Assert.That(results.Data, Has.Count.EqualTo(4));
             Assert.That(results.Data[0]["Sum(Holding/default/PV)"], Is.EqualTo(10000));
