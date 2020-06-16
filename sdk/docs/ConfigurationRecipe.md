@@ -5,7 +5,6 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**Scope** | **string** | The scope used when updating or inserting the Configuration Recipe. | 
 **Code** | **string** | User given string name (code) to identify the recipe. | 
 **Market** | [**MarketContext**](MarketContext.md) |  | [optional] 
 **Pricing** | [**PricingContext**](PricingContext.md) |  | [optional] 
