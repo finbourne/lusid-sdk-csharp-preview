@@ -114,13 +114,12 @@ namespace Lusid.Sdk.Tests.Tutorials.Ibor
             );
 
             //    Do the aggregation
-            var results = _apiFactory.Api<IAggregationApi>().GetAggregationByPortfolio(TutorialScope, portfolioId, aggregationRequest: aggregationRequest);
+            var results = _apiFactory.Api<IAggregationApi>().GetAggregation(TutorialScope, portfolioId, aggregationRequest: aggregationRequest);
 
             Assert.That(results.Data, Has.Count.EqualTo(4));
             Assert.That(results.Data[0]["Sum(Holding/default/PV)"], Is.EqualTo(10000));
             Assert.That(results.Data[2]["Sum(Holding/default/PV)"], Is.EqualTo(20000));
             Assert.That(results.Data[3]["Sum(Holding/default/PV)"], Is.EqualTo(30000));            
         }
-
     }
 }
