@@ -10,11 +10,11 @@ Name | Type | Description | Notes
 **OptionMaturityDate** | **DateTimeOffset?** | The maturity date of the option. | 
 **OptionSettlementDate** | **DateTimeOffset?** | The settlement date of the option. | 
 **StartDate** | **DateTimeOffset?** | The start date of the instrument. This is normally synonymous with the trade-date. | 
-**OptionType** | **string** | Type of optionality for the option | 
-**DeliveryType** | **string** | is the option cash settled or physical delivery of option | 
-**UnderlyingIdentifier** | **string** | external market codes and identifiers for the option, e.g. RIC. | 
+**OptionType** | **string** | The available values are: None, Call, Put | 
+**DeliveryType** | **string** | The available values are: Cash, Physical | 
+**UnderlyingIdentifier** | **string** | The available values are: LusidInstrumentId, Isin, Sedol, Cusip, ClientInternal, Figi, RIC, QuotePermId | 
 **DomCcy** | **string** | The domestic currency of the instrument. | 
-**InstrumentType** | **string** | Instrument type, must be property for JSON. | 
+**InstrumentType** | **string** | The available values are: QuotedSecurity, InterestRateSwap, FxForward, Exotic, FxOption, CreditDefaultSwap, InterestRateSwaption, Bond, EquityOption, FixedRateLeg, FloatingRateLeg, BespokeCashflowLeg, Unknown | 
 
 [[Back to Model list]](../README.md#documentation-for-models)
 [[Back to API list]](../README.md#documentation-for-api-endpoints)

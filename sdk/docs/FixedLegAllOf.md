@@ -10,7 +10,7 @@ Name | Type | Description | Notes
 **StartDate** | **DateTimeOffset?** | The start date of the instrument. This is normally synonymous with the trade-date. | 
 **LegDefinition** | [**LegDefinition**](LegDefinition.md) |  | 
 **Overrides** | [**FixedLegAllOfOverrides**](FixedLegAllOfOverrides.md) |  | [optional] 
-**InstrumentType** | **string** | Instrument type, must be property for JSON. | 
+**InstrumentType** | **string** | The available values are: QuotedSecurity, InterestRateSwap, FxForward, Exotic, FxOption, CreditDefaultSwap, InterestRateSwaption, Bond, EquityOption, FixedRateLeg, FloatingRateLeg, BespokeCashflowLeg, Unknown | 
 
 [[Back to Model list]](../README.md#documentation-for-models)
 [[Back to API list]](../README.md#documentation-for-api-endpoints)

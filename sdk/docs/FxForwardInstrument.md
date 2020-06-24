@@ -5,7 +5,7 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**InstrumentType** | **string** | Instrument type, must be property for JSON. | 
+**InstrumentType** | **string** | The available values are: QuotedSecurity, InterestRateSwap, FxForward, Exotic, FxOption, CreditDefaultSwap, InterestRateSwaption, Bond, EquityOption, FixedRateLeg, FloatingRateLeg, BespokeCashflowLeg, Unknown | 
 **DomAmount** | **decimal?** | The amount that is to be paid in the domestic currency on the maturity date. | 
 **FgnAmount** | **decimal?** | The amount that is to be paid in the foreign currency on the maturity date | 
 **IsNdf** | **bool?** | Is the contract an Fx-Forward of \&quot;Non-Deliverable\&quot; type, meaning a single payment in the domestic currency based on  the change in fx-rate vs  a reference rate is used. | [optional] 

@@ -5,11 +5,11 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**InstrumentType** | **string** | Instrument type, must be property for JSON. | 
+**InstrumentType** | **string** | The available values are: QuotedSecurity, InterestRateSwap, FxForward, Exotic, FxOption, CreditDefaultSwap, InterestRateSwaption, Bond, EquityOption, FixedRateLeg, FloatingRateLeg, BespokeCashflowLeg, Unknown | 
 **StartDate** | **DateTimeOffset?** | The start date of the instrument. This is normally synonymous with the trade-date. | 
 **Swap** | [**SwapInstrument**](SwapInstrument.md) |  | 
-**PayOrReceiveFixed** | **string** | True if on exercise the holder of the option enters the swap paying fixed, false if floating. | 
-**DeliveryMethod** | **string** | How does the option settle | 
+**PayOrReceiveFixed** | **string** | The available values are: NotDefined, Pay, Receive | 
+**DeliveryMethod** | **string** | The available values are: Cash, Physical | 
 
 [[Back to Model list]](../README.md#documentation-for-models)
 [[Back to API list]](../README.md#documentation-for-api-endpoints)

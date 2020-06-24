@@ -12,7 +12,7 @@ Name | Type | Description | Notes
 **Principal** | **decimal?** | The face-value or principal for the bond at outset.              This might be reduced through its lifetime in the event of amortization or similar. | 
 **FlowConventions** | [**FlowConventions**](FlowConventions.md) |  | 
 **Identifiers** | **Dictionary&lt;string, string&gt;** | set of market identifiers along with their types, e.g. ISIN, CUSIP, SEDOL. | [optional] 
-**InstrumentType** | **string** | Instrument type, must be property for JSON. | 
+**InstrumentType** | **string** | The available values are: QuotedSecurity, InterestRateSwap, FxForward, Exotic, FxOption, CreditDefaultSwap, InterestRateSwaption, Bond, EquityOption, FixedRateLeg, FloatingRateLeg, BespokeCashflowLeg, Unknown | 
 
 [[Back to Model list]](../README.md#documentation-for-models)
 [[Back to API list]](../README.md#documentation-for-api-endpoints)
