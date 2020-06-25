@@ -5,7 +5,7 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**Key** | **string** | The key that uniquely identifies the property. It has the format {domain}/{scope}/{code}. | 
+**Key** | **string** | The key that uniquely identifies a queryable address in Lusid. | 
 **SortOrder** | **string** | The available values are: Ascending, Descending | 
 
 [[Back to Model list]](../README.md#documentation-for-models)

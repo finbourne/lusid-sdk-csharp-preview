@@ -5,7 +5,7 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**Key** | **string** | The key that uniquely identifies the property. It has the format {domain}/{scope}/{code}. | [optional] 
+**Key** | **string** | The key that uniquely identifies a queryable address in Lusid. | [optional] 
 **Op** | **string** | The available values are: Sum, Proportion, Average, Count, Min, Max, Value | [optional] 
 
 [[Back to Model list]](../README.md#documentation-for-models)
