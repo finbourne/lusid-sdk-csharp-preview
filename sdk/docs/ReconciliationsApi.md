@@ -1,6 +1,6 @@
 # Lusid.Sdk.Api.ReconciliationsApi
 
-All URIs are relative to *https://fbn-prd.lusid.com/api*
+All URIs are relative to *http://localhost:51747*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
@@ -34,7 +34,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "https://fbn-prd.lusid.com/api";
+            Configuration.Default.BasePath = "http://localhost:51747";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -122,7 +122,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "https://fbn-prd.lusid.com/api";
+            Configuration.Default.BasePath = "http://localhost:51747";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -189,7 +189,7 @@ Name | Type | Description  | Notes
 
 ## ReconcileInline
 
-> ResourceListOfReconciliationBreak ReconcileInline (List<string> sortBy = null, int? start = null, int? limit = null, string filter = null, InlineValuationsReconciliationRequest inlineValuationsReconciliationRequest = null)
+> AggregationReconciliation ReconcileInline (List<string> sortBy = null, int? start = null, int? limit = null, string filter = null, InlineValuationsReconciliationRequest inlineValuationsReconciliationRequest = null)
 
 [EXPERIMENTAL] Reconcile valuations performed on one or two sets of inline instruments using one or two configuration recipes.
 
@@ -210,7 +210,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "https://fbn-prd.lusid.com/api";
+            Configuration.Default.BasePath = "http://localhost:51747";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -224,7 +224,7 @@ namespace Example
             try
             {
                 // [EXPERIMENTAL] Reconcile valuations performed on one or two sets of inline instruments using one or two configuration recipes.
-                ResourceListOfReconciliationBreak result = apiInstance.ReconcileInline(sortBy, start, limit, filter, inlineValuationsReconciliationRequest);
+                AggregationReconciliation result = apiInstance.ReconcileInline(sortBy, start, limit, filter, inlineValuationsReconciliationRequest);
                 Debug.WriteLine(result);
             }
             catch (ApiException e)
@@ -251,7 +251,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**ResourceListOfReconciliationBreak**](ResourceListOfReconciliationBreak.md)
+[**AggregationReconciliation**](AggregationReconciliation.md)
 
 ### Authorization
 
@@ -298,7 +298,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "https://fbn-prd.lusid.com/api";
+            Configuration.Default.BasePath = "http://localhost:51747";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
