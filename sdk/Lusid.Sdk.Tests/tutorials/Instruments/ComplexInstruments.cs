@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
+using Lusid.Sdk.Api;
 using Lusid.Sdk.Model;
+using Lusid.Sdk.Utilities;
 using NUnit.Framework;
 
 namespace Lusid.Sdk.Tests.Tutorials.Misc
@@ -8,23 +10,35 @@ namespace Lusid.Sdk.Tests.Tutorials.Misc
     [TestFixture]
     public class ComplexInstruments
     {
+        private IInstrumentsApi _instrumentsApi;
+
+        [OneTimeSetUp]
+        public void SetUp()
+        {
+            var apiFactory = LusidApiFactoryBuilder.Build("secrets.json");
+            _instrumentsApi = apiFactory.Api<IInstrumentsApi>();
+        }
+
         [Test]
         public void DemonstrateCreationOfFxForward()
         {
             // CREATE an Fx-Forward (that can then be upserted into LUSID)
             var usdJpyFxRate = 109m; // Assume 1 USD is worth 109m as contract is struck. USD is domestic, JPY is foreign.
             var fxForward = new FxForwardInstrument(
-                domAmount: 1m,
+                domAmount: -1m,
                 fgnAmount: usdJpyFxRate,
                 domCcy: "USD",
                 fgnCcy: "JPY",
                 startDate: new DateTimeOffset(2020, 2, 7, 0, 0, 0, TimeSpan.Zero),
-                maturityDate: new DateTimeOffset(2020, 9, 18, 0, 0, 0, TimeSpan.Zero)
+                maturityDate: new DateTimeOffset(2020, 9, 18, 0, 0, 0, TimeSpan.Zero),
+                instrumentType: LusidInstrument.InstrumentTypeEnum.FxForward
                 );
 
             // ASSERT that it was created
             Assert.That(fxForward, Is.Not.Null);
+
             // CAN NOW UPSERT TO LUSID
+            UpsertOtcToLusid(fxForward, "some-name-for-this-fxforward", "id-fxfwd-1");
         }
 
         [Test]
@@ -75,7 +89,8 @@ namespace Lusid.Sdk.Tests.Tutorials.Misc
                 notional: 100m,
                 startDate: startDate,
                 maturityDate: maturityDate,
-                legDefinition: fixedLegDef
+                legDefinition: fixedLegDef,
+                instrumentType: LusidInstrument.InstrumentTypeEnum.FixedRateLeg
                 );
 
             // CREATE the floating leg
@@ -83,7 +98,8 @@ namespace Lusid.Sdk.Tests.Tutorials.Misc
                 notional: 100m,
                 startDate: startDate,
                 maturityDate: maturityDate,
-                legDefinition: floatLegDef
+                legDefinition: floatLegDef,
+                instrumentType: LusidInstrument.InstrumentTypeEnum.FloatingRateLeg
             );
 
             var irs = new SwapInstrument(
@@ -93,12 +109,38 @@ namespace Lusid.Sdk.Tests.Tutorials.Misc
                 {
                     floatLeg,
                     fixedLeg
-                }
+                },
+                instrumentType: LusidInstrument.InstrumentTypeEnum.InterestRateSwap
             );
 
             // ASSERT that it was created
             Assert.That(irs, Is.Not.Null);
+
             // CAN NOW UPSERT TO LUSID
+            UpsertOtcToLusid(irs, "some-name-for-this-swap", "id-swap-1");
+        }
+
+        private void UpsertOtcToLusid(LusidInstrument instrument, string name, string idUniqueToInstrument)
+        {
+            // PACKAGE instrument for upsert
+            var instrumentDefinition = new LusidInstrumentDefinition(
+                name: name,
+                identifiers: new Dictionary<string, InstrumentIdValue>
+                {
+                    ["ClientInternal"] = new InstrumentIdValue(value: idUniqueToInstrument)
+                },
+                definition: instrument
+                );
+
+            // put instrument into Lusid
+            var response = _instrumentsApi.UpsertLusidInstruments(new Dictionary<string, LusidInstrumentDefinition>
+            {
+                ["someId1"] = instrumentDefinition
+            });
+
+            // Check the response succeeded and has no errors.
+            Assert.That(response.Failed.Count, Is.EqualTo(0));
+            Assert.That(response.Values.Count, Is.EqualTo(1));
         }
     }
 }
