@@ -5,7 +5,7 @@ using Lusid.Sdk.Model;
 using Lusid.Sdk.Utilities;
 using NUnit.Framework;
 
-namespace Lusid.Sdk.Tests.Tutorials.Misc
+namespace Lusid.Sdk.Tests.Tutorials.Instruments
 {
     [TestFixture]
     public class ComplexInstruments
