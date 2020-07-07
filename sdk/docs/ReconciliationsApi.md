@@ -1,6 +1,6 @@
 # Lusid.Sdk.Api.ReconciliationsApi
 
-All URIs are relative to *http://localhost:55772*
+All URIs are relative to *http://localhost:46975*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
@@ -34,7 +34,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://localhost:55772";
+            Configuration.Default.BasePath = "http://localhost:46975";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -122,7 +122,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://localhost:55772";
+            Configuration.Default.BasePath = "http://localhost:46975";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -189,7 +189,7 @@ Name | Type | Description  | Notes
 
 ## ReconcileInline
 
-> AggregationReconciliation ReconcileInline (List<string> sortBy = null, int? start = null, int? limit = null, string filter = null, InlineValuationsReconciliationRequest inlineValuationsReconciliationRequest = null)
+> ListAggregationReconciliation ReconcileInline (List<string> sortBy = null, int? start = null, int? limit = null, string filter = null, InlineValuationsReconciliationRequest inlineValuationsReconciliationRequest = null)
 
 [EXPERIMENTAL] Reconcile valuations performed on one or two sets of inline instruments using one or two configuration recipes.
 
@@ -210,7 +210,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://localhost:55772";
+            Configuration.Default.BasePath = "http://localhost:46975";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -224,7 +224,7 @@ namespace Example
             try
             {
                 // [EXPERIMENTAL] Reconcile valuations performed on one or two sets of inline instruments using one or two configuration recipes.
-                AggregationReconciliation result = apiInstance.ReconcileInline(sortBy, start, limit, filter, inlineValuationsReconciliationRequest);
+                ListAggregationReconciliation result = apiInstance.ReconcileInline(sortBy, start, limit, filter, inlineValuationsReconciliationRequest);
                 Debug.WriteLine(result);
             }
             catch (ApiException e)
@@ -251,7 +251,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**AggregationReconciliation**](AggregationReconciliation.md)
+[**ListAggregationReconciliation**](ListAggregationReconciliation.md)
 
 ### Authorization
 
@@ -277,7 +277,7 @@ Name | Type | Description  | Notes
 
 ## ReconcileValuation
 
-> ResourceListOfReconciliationBreak ReconcileValuation (List<string> sortBy = null, int? start = null, int? limit = null, string filter = null, ValuationsReconciliationRequest valuationsReconciliationRequest = null)
+> ListAggregationReconciliation ReconcileValuation (List<string> sortBy = null, int? start = null, int? limit = null, string filter = null, ValuationsReconciliationRequest valuationsReconciliationRequest = null)
 
 [EXPERIMENTAL] Reconcile valuations performed on one or two sets of holdings using one or two configuration recipes.
 
@@ -298,7 +298,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://localhost:55772";
+            Configuration.Default.BasePath = "http://localhost:46975";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -312,7 +312,7 @@ namespace Example
             try
             {
                 // [EXPERIMENTAL] Reconcile valuations performed on one or two sets of holdings using one or two configuration recipes.
-                ResourceListOfReconciliationBreak result = apiInstance.ReconcileValuation(sortBy, start, limit, filter, valuationsReconciliationRequest);
+                ListAggregationReconciliation result = apiInstance.ReconcileValuation(sortBy, start, limit, filter, valuationsReconciliationRequest);
                 Debug.WriteLine(result);
             }
             catch (ApiException e)
@@ -339,7 +339,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**ResourceListOfReconciliationBreak**](ResourceListOfReconciliationBreak.md)
+[**ListAggregationReconciliation**](ListAggregationReconciliation.md)
 
 ### Authorization
 
