@@ -1,13 +1,13 @@
 # Lusid.Sdk.Api.ConfigurationRecipeApi
 
-All URIs are relative to *http://localhost:35645*
+All URIs are relative to *http://localhost:44264*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
 [**DeleteConfigurationRecipe**](ConfigurationRecipeApi.md#deleteconfigurationrecipe) | **DELETE** /api/recipes/{scope}/{code} | [EXPERIMENTAL] Delete a Configuration Recipe, assuming that it is present.
 [**GetConfigurationRecipe**](ConfigurationRecipeApi.md#getconfigurationrecipe) | **GET** /api/recipes/{scope}/{code} | [EXPERIMENTAL] Get Configuration Recipe
-[**ListConfigurationRecipes**](ConfigurationRecipeApi.md#listconfigurationrecipes) | **GET** /api/recipes/{scope} | [EXPERIMENTAL] List the set of Configuration Recipes
-[**ListConfigurationRecipesForAllScopes**](ConfigurationRecipeApi.md#listconfigurationrecipesforallscopes) | **GET** /api/recipes | [EXPERIMENTAL] List the set of Configuration Recipes from all scopes
+[**ListConfigurationRecipes**](ConfigurationRecipeApi.md#listconfigurationrecipes) | **GET** /api/recipes | [EXPERIMENTAL] List the set of Configuration Recipes
+[**ListConfigurationRecipesForAllScopes**](ConfigurationRecipeApi.md#listconfigurationrecipesforallscopes) | **GET** /api/recipes/list | [EXPERIMENTAL] List the set of Configuration Recipes from all scopes
 [**UpsertConfigurationRecipe**](ConfigurationRecipeApi.md#upsertconfigurationrecipe) | **POST** /api/recipes | [EXPERIMENTAL] Upsert a Configuration Recipe. This creates or updates the data in Lusid.
 
 
@@ -35,7 +35,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://localhost:35645";
+            Configuration.Default.BasePath = "http://localhost:44264";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -117,7 +117,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://localhost:35645";
+            Configuration.Default.BasePath = "http://localhost:44264";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -180,11 +180,11 @@ Name | Type | Description  | Notes
 
 ## ListConfigurationRecipes
 
-> ResourceListOfGetRecipeResponse ListConfigurationRecipes (string scope, DateTimeOffset? asAt = null, string filter = null)
+> ResourceListOfGetRecipeResponse ListConfigurationRecipes (DateTimeOffset? asAt = null)
 
 [EXPERIMENTAL] List the set of Configuration Recipes
 
-List the set of  configuration recipes at the specified date/time and scope
+List the set of configuration recipes at the specified date/time and scope
 
 ### Example
 
@@ -201,19 +201,17 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://localhost:35645";
+            Configuration.Default.BasePath = "http://localhost:44264";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
             var apiInstance = new ConfigurationRecipeApi(Configuration.Default);
-            var scope = scope_example;  // string | The scope of the Configuration Recipes to list
             var asAt = 2013-10-20T19:20:30+01:00;  // DateTimeOffset? | The asAt datetime at which to list the Configuration Recipes. Defaults to latest if not specified. (optional) 
-            var filter = filter_example;  // string | Expression to filter the result set.              For example, to filter on code, use \"value.code eq 'string'\"              Read more about filtering results from LUSID here https://support.lusid.com/filtering-results-from-lusid. (optional) 
 
             try
             {
                 // [EXPERIMENTAL] List the set of Configuration Recipes
-                ResourceListOfGetRecipeResponse result = apiInstance.ListConfigurationRecipes(scope, asAt, filter);
+                ResourceListOfGetRecipeResponse result = apiInstance.ListConfigurationRecipes(asAt);
                 Debug.WriteLine(result);
             }
             catch (ApiException e)
@@ -232,9 +230,7 @@ namespace Example
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **scope** | **string**| The scope of the Configuration Recipes to list | 
  **asAt** | **DateTimeOffset?**| The asAt datetime at which to list the Configuration Recipes. Defaults to latest if not specified. | [optional] 
- **filter** | **string**| Expression to filter the result set.              For example, to filter on code, use \&quot;value.code eq &#39;string&#39;\&quot;              Read more about filtering results from LUSID here https://support.lusid.com/filtering-results-from-lusid. | [optional] 
 
 ### Return type
 
@@ -285,7 +281,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://localhost:35645";
+            Configuration.Default.BasePath = "http://localhost:44264";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -367,7 +363,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://localhost:35645";
+            Configuration.Default.BasePath = "http://localhost:44264";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
