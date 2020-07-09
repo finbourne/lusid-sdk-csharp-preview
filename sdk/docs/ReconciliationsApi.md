@@ -1,6 +1,6 @@
 # Lusid.Sdk.Api.ReconciliationsApi
 
-All URIs are relative to *http://localhost:57287*
+All URIs are relative to *http://localhost:41758*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
@@ -34,7 +34,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://localhost:57287";
+            Configuration.Default.BasePath = "http://localhost:41758";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -122,7 +122,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://localhost:57287";
+            Configuration.Default.BasePath = "http://localhost:41758";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -210,7 +210,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://localhost:57287";
+            Configuration.Default.BasePath = "http://localhost:41758";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -298,7 +298,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://localhost:57287";
+            Configuration.Default.BasePath = "http://localhost:41758";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
