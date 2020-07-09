@@ -62,6 +62,8 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
 
             // CREATE the flow conventions, index convention
             var flowConventions = new FlowConventions(
+                scope: null,
+                code: null,
                 currency: "GBP",
                 paymentFrequency: new Tenor(6, Tenor.UnitEnum.Month),
                 rollConvention: FlowConventions.RollConventionEnum.MF,
