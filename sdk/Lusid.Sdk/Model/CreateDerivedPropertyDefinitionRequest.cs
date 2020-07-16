@@ -23,33 +23,158 @@ using OpenAPIDateConverter = Lusid.Sdk.Client.OpenAPIDateConverter;
 namespace Lusid.Sdk.Model
 {
     /// <summary>
-    /// If it is desired to have multiple recipes, there is a strong likelihood that they will share various components.  A configuration recipe snippet allows a user to define a set of rules that can then be included into a parent recipe.  This allows sharing of common blocks of the recipe.                For example, a user might define a set of rules for resolving Fx and then include them into every recipe used firm-wide, thereby  enforcing consistency. As the rules can be permissioned differently using Shrine, it is possible to enable users to   read but not alter such a rule set.                The same applies to a set of pricing rules.                A configuration snippet must only contain one entry from the available set.                 Recipes are compiled from the set of snippets through a model that is analogous to inheritance.  A recipe can have a set of &#39;parent&#39; recipes from which it inherits. These are specified in the inheritance section of a recipe.  Upon loading, the recipe will fall back on these recipe components for any options or rules that are not explicitly specified in the  named recipe for the request.                This allows control of pricing to be harmonised across a set of desks within an institution. Suppose that, e.g.  there are four desks looking after products under the areas of Fx, Rates, Credit and Exotics.  The model and market data for pricing given asset types would potentially be controlled by the appropriate desk; e.g. rules for Fx market data resolution being  controlled by the Fx desk. The exotics desk would likely depend upon rules for all the other asset classes as well as, say, correlation rules of its own.  It could inherit the market data and model rules from the other desks for finding the appropriate institution-standard data and then overlay that with the correlation rules.                Note that permissioning of the store means that one could decide that only a particular desk or control function could update certain rules. That would assist the abilitiy  to ensure that pricing is performed consistently and provide an audit of changes made to it along with restricting changes to appropriate authorised functions.
+    /// CreateDerivedPropertyDefinitionRequest
     /// </summary>
     [DataContract]
-    public partial class ConfigurationRecipeSnippet :  IEquatable<ConfigurationRecipeSnippet>
+    public partial class CreateDerivedPropertyDefinitionRequest :  IEquatable<CreateDerivedPropertyDefinitionRequest>
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="ConfigurationRecipeSnippet" /> class.
+        /// The domain that the property exists in. The available values are: NotDefined, Transaction, Portfolio, Holding, ReferenceHolding, TransactionConfiguration, Instrument, CutLabelDefinition, Analytic, PortfolioGroup, Person, AccessMetadata, Order, UnitResult, MarketData, ConfigurationRecipe, Allocation
+        /// </summary>
+        /// <value>The domain that the property exists in. The available values are: NotDefined, Transaction, Portfolio, Holding, ReferenceHolding, TransactionConfiguration, Instrument, CutLabelDefinition, Analytic, PortfolioGroup, Person, AccessMetadata, Order, UnitResult, MarketData, ConfigurationRecipe, Allocation</value>
+        [JsonConverter(typeof(StringEnumConverter))]
+        public enum DomainEnum
+        {
+            /// <summary>
+            /// Enum NotDefined for value: NotDefined
+            /// </summary>
+            [EnumMember(Value = "NotDefined")]
+            NotDefined = 1,
+
+            /// <summary>
+            /// Enum Transaction for value: Transaction
+            /// </summary>
+            [EnumMember(Value = "Transaction")]
+            Transaction = 2,
+
+            /// <summary>
+            /// Enum Portfolio for value: Portfolio
+            /// </summary>
+            [EnumMember(Value = "Portfolio")]
+            Portfolio = 3,
+
+            /// <summary>
+            /// Enum Holding for value: Holding
+            /// </summary>
+            [EnumMember(Value = "Holding")]
+            Holding = 4,
+
+            /// <summary>
+            /// Enum ReferenceHolding for value: ReferenceHolding
+            /// </summary>
+            [EnumMember(Value = "ReferenceHolding")]
+            ReferenceHolding = 5,
+
+            /// <summary>
+            /// Enum TransactionConfiguration for value: TransactionConfiguration
+            /// </summary>
+            [EnumMember(Value = "TransactionConfiguration")]
+            TransactionConfiguration = 6,
+
+            /// <summary>
+            /// Enum Instrument for value: Instrument
+            /// </summary>
+            [EnumMember(Value = "Instrument")]
+            Instrument = 7,
+
+            /// <summary>
+            /// Enum CutLabelDefinition for value: CutLabelDefinition
+            /// </summary>
+            [EnumMember(Value = "CutLabelDefinition")]
+            CutLabelDefinition = 8,
+
+            /// <summary>
+            /// Enum Analytic for value: Analytic
+            /// </summary>
+            [EnumMember(Value = "Analytic")]
+            Analytic = 9,
+
+            /// <summary>
+            /// Enum PortfolioGroup for value: PortfolioGroup
+            /// </summary>
+            [EnumMember(Value = "PortfolioGroup")]
+            PortfolioGroup = 10,
+
+            /// <summary>
+            /// Enum Person for value: Person
+            /// </summary>
+            [EnumMember(Value = "Person")]
+            Person = 11,
+
+            /// <summary>
+            /// Enum AccessMetadata for value: AccessMetadata
+            /// </summary>
+            [EnumMember(Value = "AccessMetadata")]
+            AccessMetadata = 12,
+
+            /// <summary>
+            /// Enum Order for value: Order
+            /// </summary>
+            [EnumMember(Value = "Order")]
+            Order = 13,
+
+            /// <summary>
+            /// Enum UnitResult for value: UnitResult
+            /// </summary>
+            [EnumMember(Value = "UnitResult")]
+            UnitResult = 14,
+
+            /// <summary>
+            /// Enum MarketData for value: MarketData
+            /// </summary>
+            [EnumMember(Value = "MarketData")]
+            MarketData = 15,
+
+            /// <summary>
+            /// Enum ConfigurationRecipe for value: ConfigurationRecipe
+            /// </summary>
+            [EnumMember(Value = "ConfigurationRecipe")]
+            ConfigurationRecipe = 16,
+
+            /// <summary>
+            /// Enum Allocation for value: Allocation
+            /// </summary>
+            [EnumMember(Value = "Allocation")]
+            Allocation = 17
+
+        }
+
+        /// <summary>
+        /// The domain that the property exists in. The available values are: NotDefined, Transaction, Portfolio, Holding, ReferenceHolding, TransactionConfiguration, Instrument, CutLabelDefinition, Analytic, PortfolioGroup, Person, AccessMetadata, Order, UnitResult, MarketData, ConfigurationRecipe, Allocation
+        /// </summary>
+        /// <value>The domain that the property exists in. The available values are: NotDefined, Transaction, Portfolio, Holding, ReferenceHolding, TransactionConfiguration, Instrument, CutLabelDefinition, Analytic, PortfolioGroup, Person, AccessMetadata, Order, UnitResult, MarketData, ConfigurationRecipe, Allocation</value>
+        [DataMember(Name="domain", EmitDefaultValue=false)]
+        public DomainEnum Domain { get; set; }
+        /// <summary>
+        /// Initializes a new instance of the <see cref="CreateDerivedPropertyDefinitionRequest" /> class.
         /// </summary>
         [JsonConstructorAttribute]
-        protected ConfigurationRecipeSnippet() { }
+        protected CreateDerivedPropertyDefinitionRequest() { }
         /// <summary>
-        /// Initializes a new instance of the <see cref="ConfigurationRecipeSnippet" /> class.
+        /// Initializes a new instance of the <see cref="CreateDerivedPropertyDefinitionRequest" /> class.
         /// </summary>
-        /// <param name="scope">The scope used when updating or inserting the Configuration Recipe snippet (required).</param>
-        /// <param name="code">User given string name (code) to identify the recipe. (required).</param>
-        /// <param name="aggregationOptions">aggregationOptions.</param>
-        /// <param name="modelRules">The set of model rules that are available. There may be multiple rules for Vendors, but only one per model-instrument pair.  Which of these preference sets is used depends upon the model choice selection if specified, or failing that the global default model specification  in the options..</param>
-        /// <param name="pricingOptions">pricingOptions.</param>
-        /// <param name="marketRules">The set of rules that define how to resolve particular use cases. These can be relatively general or specific in nature.  Nominally any number are possible and will be processed in order where applicable. However, there is evidently a potential  for increased computational cost where many rules must be applied to resolve data. Ensuring that portfolios are structured in  such a way as to reduce the number of rules required is therefore sensible..</param>
-        /// <param name="marketOptions">marketOptions.</param>
-        /// <param name="recipe">recipe.</param>
-        public ConfigurationRecipeSnippet(string scope = default(string), string code = default(string), AggregationOptions aggregationOptions = default(AggregationOptions), List<VendorModelRule> modelRules = default(List<VendorModelRule>), PricingOptions pricingOptions = default(PricingOptions), List<MarketDataKeyRule> marketRules = default(List<MarketDataKeyRule>), MarketOptions marketOptions = default(MarketOptions), ConfigurationRecipe recipe = default(ConfigurationRecipe))
+        /// <param name="domain">The domain that the property exists in. The available values are: NotDefined, Transaction, Portfolio, Holding, ReferenceHolding, TransactionConfiguration, Instrument, CutLabelDefinition, Analytic, PortfolioGroup, Person, AccessMetadata, Order, UnitResult, MarketData, ConfigurationRecipe, Allocation (required).</param>
+        /// <param name="scope">The scope that the property exists in. (required).</param>
+        /// <param name="code">The code of the property. Together with the domain and scope this uniquely identifies the property. (required).</param>
+        /// <param name="displayName">The display name of the property. (required).</param>
+        /// <param name="dataTypeId">dataTypeId (required).</param>
+        /// <param name="derivation">The string that contains the rule for the derived property..</param>
+        public CreateDerivedPropertyDefinitionRequest(DomainEnum domain = default(DomainEnum), string scope = default(string), string code = default(string), string displayName = default(string), ResourceId dataTypeId = default(ResourceId), string derivation = default(string))
         {
+            // to ensure "domain" is required (not null)
+            if (domain == null)
+            {
+                throw new InvalidDataException("domain is a required property for CreateDerivedPropertyDefinitionRequest and cannot be null");
+            }
+            else
+            {
+                this.Domain = domain;
+            }
+            
             // to ensure "scope" is required (not null)
             if (scope == null)
             {
-                throw new InvalidDataException("scope is a required property for ConfigurationRecipeSnippet and cannot be null");
+                throw new InvalidDataException("scope is a required property for CreateDerivedPropertyDefinitionRequest and cannot be null");
             }
             else
             {
@@ -59,74 +184,71 @@ namespace Lusid.Sdk.Model
             // to ensure "code" is required (not null)
             if (code == null)
             {
-                throw new InvalidDataException("code is a required property for ConfigurationRecipeSnippet and cannot be null");
+                throw new InvalidDataException("code is a required property for CreateDerivedPropertyDefinitionRequest and cannot be null");
             }
             else
             {
                 this.Code = code;
             }
             
-            this.ModelRules = modelRules;
-            this.MarketRules = marketRules;
-            this.AggregationOptions = aggregationOptions;
-            this.ModelRules = modelRules;
-            this.PricingOptions = pricingOptions;
-            this.MarketRules = marketRules;
-            this.MarketOptions = marketOptions;
-            this.Recipe = recipe;
+            // to ensure "displayName" is required (not null)
+            if (displayName == null)
+            {
+                throw new InvalidDataException("displayName is a required property for CreateDerivedPropertyDefinitionRequest and cannot be null");
+            }
+            else
+            {
+                this.DisplayName = displayName;
+            }
+            
+            // to ensure "dataTypeId" is required (not null)
+            if (dataTypeId == null)
+            {
+                throw new InvalidDataException("dataTypeId is a required property for CreateDerivedPropertyDefinitionRequest and cannot be null");
+            }
+            else
+            {
+                this.DataTypeId = dataTypeId;
+            }
+            
+            this.Derivation = derivation;
+            this.Derivation = derivation;
         }
         
+
         /// <summary>
-        /// The scope used when updating or inserting the Configuration Recipe snippet
+        /// The scope that the property exists in.
         /// </summary>
-        /// <value>The scope used when updating or inserting the Configuration Recipe snippet</value>
+        /// <value>The scope that the property exists in.</value>
         [DataMember(Name="scope", EmitDefaultValue=false)]
         public string Scope { get; set; }
 
         /// <summary>
-        /// User given string name (code) to identify the recipe.
+        /// The code of the property. Together with the domain and scope this uniquely identifies the property.
         /// </summary>
-        /// <value>User given string name (code) to identify the recipe.</value>
+        /// <value>The code of the property. Together with the domain and scope this uniquely identifies the property.</value>
         [DataMember(Name="code", EmitDefaultValue=false)]
         public string Code { get; set; }
 
         /// <summary>
-        /// Gets or Sets AggregationOptions
+        /// The display name of the property.
         /// </summary>
-        [DataMember(Name="aggregationOptions", EmitDefaultValue=false)]
-        public AggregationOptions AggregationOptions { get; set; }
+        /// <value>The display name of the property.</value>
+        [DataMember(Name="displayName", EmitDefaultValue=false)]
+        public string DisplayName { get; set; }
 
         /// <summary>
-        /// The set of model rules that are available. There may be multiple rules for Vendors, but only one per model-instrument pair.  Which of these preference sets is used depends upon the model choice selection if specified, or failing that the global default model specification  in the options.
+        /// Gets or Sets DataTypeId
         /// </summary>
-        /// <value>The set of model rules that are available. There may be multiple rules for Vendors, but only one per model-instrument pair.  Which of these preference sets is used depends upon the model choice selection if specified, or failing that the global default model specification  in the options.</value>
-        [DataMember(Name="modelRules", EmitDefaultValue=true)]
-        public List<VendorModelRule> ModelRules { get; set; }
+        [DataMember(Name="dataTypeId", EmitDefaultValue=false)]
+        public ResourceId DataTypeId { get; set; }
 
         /// <summary>
-        /// Gets or Sets PricingOptions
+        /// The string that contains the rule for the derived property.
         /// </summary>
-        [DataMember(Name="pricingOptions", EmitDefaultValue=false)]
-        public PricingOptions PricingOptions { get; set; }
-
-        /// <summary>
-        /// The set of rules that define how to resolve particular use cases. These can be relatively general or specific in nature.  Nominally any number are possible and will be processed in order where applicable. However, there is evidently a potential  for increased computational cost where many rules must be applied to resolve data. Ensuring that portfolios are structured in  such a way as to reduce the number of rules required is therefore sensible.
-        /// </summary>
-        /// <value>The set of rules that define how to resolve particular use cases. These can be relatively general or specific in nature.  Nominally any number are possible and will be processed in order where applicable. However, there is evidently a potential  for increased computational cost where many rules must be applied to resolve data. Ensuring that portfolios are structured in  such a way as to reduce the number of rules required is therefore sensible.</value>
-        [DataMember(Name="marketRules", EmitDefaultValue=true)]
-        public List<MarketDataKeyRule> MarketRules { get; set; }
-
-        /// <summary>
-        /// Gets or Sets MarketOptions
-        /// </summary>
-        [DataMember(Name="marketOptions", EmitDefaultValue=false)]
-        public MarketOptions MarketOptions { get; set; }
-
-        /// <summary>
-        /// Gets or Sets Recipe
-        /// </summary>
-        [DataMember(Name="recipe", EmitDefaultValue=false)]
-        public ConfigurationRecipe Recipe { get; set; }
+        /// <value>The string that contains the rule for the derived property.</value>
+        [DataMember(Name="derivation", EmitDefaultValue=true)]
+        public string Derivation { get; set; }
 
         /// <summary>
         /// Returns the string presentation of the object
@@ -135,15 +257,13 @@ namespace Lusid.Sdk.Model
         public override string ToString()
         {
             var sb = new StringBuilder();
-            sb.Append("class ConfigurationRecipeSnippet {\n");
+            sb.Append("class CreateDerivedPropertyDefinitionRequest {\n");
+            sb.Append("  Domain: ").Append(Domain).Append("\n");
             sb.Append("  Scope: ").Append(Scope).Append("\n");
             sb.Append("  Code: ").Append(Code).Append("\n");
-            sb.Append("  AggregationOptions: ").Append(AggregationOptions).Append("\n");
-            sb.Append("  ModelRules: ").Append(ModelRules).Append("\n");
-            sb.Append("  PricingOptions: ").Append(PricingOptions).Append("\n");
-            sb.Append("  MarketRules: ").Append(MarketRules).Append("\n");
-            sb.Append("  MarketOptions: ").Append(MarketOptions).Append("\n");
-            sb.Append("  Recipe: ").Append(Recipe).Append("\n");
+            sb.Append("  DisplayName: ").Append(DisplayName).Append("\n");
+            sb.Append("  DataTypeId: ").Append(DataTypeId).Append("\n");
+            sb.Append("  Derivation: ").Append(Derivation).Append("\n");
             sb.Append("}\n");
             return sb.ToString();
         }
@@ -164,20 +284,25 @@ namespace Lusid.Sdk.Model
         /// <returns>Boolean</returns>
         public override bool Equals(object input)
         {
-            return this.Equals(input as ConfigurationRecipeSnippet);
+            return this.Equals(input as CreateDerivedPropertyDefinitionRequest);
         }
 
         /// <summary>
-        /// Returns true if ConfigurationRecipeSnippet instances are equal
+        /// Returns true if CreateDerivedPropertyDefinitionRequest instances are equal
         /// </summary>
-        /// <param name="input">Instance of ConfigurationRecipeSnippet to be compared</param>
+        /// <param name="input">Instance of CreateDerivedPropertyDefinitionRequest to be compared</param>
         /// <returns>Boolean</returns>
-        public bool Equals(ConfigurationRecipeSnippet input)
+        public bool Equals(CreateDerivedPropertyDefinitionRequest input)
         {
             if (input == null)
                 return false;
 
             return 
+                (
+                    this.Domain == input.Domain ||
+                    (this.Domain != null &&
+                    this.Domain.Equals(input.Domain))
+                ) && 
                 (
                     this.Scope == input.Scope ||
                     (this.Scope != null &&
@@ -189,36 +314,19 @@ namespace Lusid.Sdk.Model
                     this.Code.Equals(input.Code))
                 ) && 
                 (
-                    this.AggregationOptions == input.AggregationOptions ||
-                    (this.AggregationOptions != null &&
-                    this.AggregationOptions.Equals(input.AggregationOptions))
+                    this.DisplayName == input.DisplayName ||
+                    (this.DisplayName != null &&
+                    this.DisplayName.Equals(input.DisplayName))
                 ) && 
                 (
-                    this.ModelRules == input.ModelRules ||
-                    this.ModelRules != null &&
-                    input.ModelRules != null &&
-                    this.ModelRules.SequenceEqual(input.ModelRules)
+                    this.DataTypeId == input.DataTypeId ||
+                    (this.DataTypeId != null &&
+                    this.DataTypeId.Equals(input.DataTypeId))
                 ) && 
                 (
-                    this.PricingOptions == input.PricingOptions ||
-                    (this.PricingOptions != null &&
-                    this.PricingOptions.Equals(input.PricingOptions))
-                ) && 
-                (
-                    this.MarketRules == input.MarketRules ||
-                    this.MarketRules != null &&
-                    input.MarketRules != null &&
-                    this.MarketRules.SequenceEqual(input.MarketRules)
-                ) && 
-                (
-                    this.MarketOptions == input.MarketOptions ||
-                    (this.MarketOptions != null &&
-                    this.MarketOptions.Equals(input.MarketOptions))
-                ) && 
-                (
-                    this.Recipe == input.Recipe ||
-                    (this.Recipe != null &&
-                    this.Recipe.Equals(input.Recipe))
+                    this.Derivation == input.Derivation ||
+                    (this.Derivation != null &&
+                    this.Derivation.Equals(input.Derivation))
                 );
         }
 
@@ -231,22 +339,18 @@ namespace Lusid.Sdk.Model
             unchecked // Overflow is fine, just wrap
             {
                 int hashCode = 41;
+                if (this.Domain != null)
+                    hashCode = hashCode * 59 + this.Domain.GetHashCode();
                 if (this.Scope != null)
                     hashCode = hashCode * 59 + this.Scope.GetHashCode();
                 if (this.Code != null)
                     hashCode = hashCode * 59 + this.Code.GetHashCode();
-                if (this.AggregationOptions != null)
-                    hashCode = hashCode * 59 + this.AggregationOptions.GetHashCode();
-                if (this.ModelRules != null)
-                    hashCode = hashCode * 59 + this.ModelRules.GetHashCode();
-                if (this.PricingOptions != null)
-                    hashCode = hashCode * 59 + this.PricingOptions.GetHashCode();
-                if (this.MarketRules != null)
-                    hashCode = hashCode * 59 + this.MarketRules.GetHashCode();
-                if (this.MarketOptions != null)
-                    hashCode = hashCode * 59 + this.MarketOptions.GetHashCode();
-                if (this.Recipe != null)
-                    hashCode = hashCode * 59 + this.Recipe.GetHashCode();
+                if (this.DisplayName != null)
+                    hashCode = hashCode * 59 + this.DisplayName.GetHashCode();
+                if (this.DataTypeId != null)
+                    hashCode = hashCode * 59 + this.DataTypeId.GetHashCode();
+                if (this.Derivation != null)
+                    hashCode = hashCode * 59 + this.Derivation.GetHashCode();
                 return hashCode;
             }
         }
