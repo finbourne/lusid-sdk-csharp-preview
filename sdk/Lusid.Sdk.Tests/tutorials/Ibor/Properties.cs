@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using NUnit.Framework;
 using Lusid.Sdk.Api;
 using Lusid.Sdk.Model;
 using Lusid.Sdk.Tests.Utilities;
 using Lusid.Sdk.Utilities;
-using NUnit.Framework;
+using static Lusid.Sdk.Utilities.PropertyExtensions;
 
 namespace Lusid.Sdk.Tests.tutorials.Ibor
 {
@@ -147,6 +149,75 @@ namespace Lusid.Sdk.Tests.tutorials.Ibor
             var metricProperty = portfolioProperties[metricPropertyDefinitionResult.Key];
             Assert.That(metricProperty.Value.MetricValue.Value, Is.EqualTo(metricPropertyValueRequest.MetricValue.Value));
             Assert.That(metricProperty.Value.MetricValue.Unit, Is.EqualTo(metricPropertyValueRequest.MetricValue.Unit));
+        }
+        
+        [Test]
+        public void Create_Portfolio_With_MultiValue_Property()
+        {
+            var uuid = Guid.NewGuid().ToString();
+            var propertyName = $"manager-{uuid}";
+            var effectiveDate = new DateTimeOffset(2018, 1, 1, 0, 0, 0, TimeSpan.Zero);
+            
+            //    Details of the property to be created
+            var multiValuePropertyDefinition = new CreatePropertyDefinitionRequest(
+                
+                //    The domain the property is to be applied to
+                domain: CreatePropertyDefinitionRequest.DomainEnum.Portfolio,
+                
+                //    The scope the property will be created in
+                scope: TestDataUtilities.TutorialScope,
+                
+                //    When the property value is set it will be valid forever and cannot be changed.
+                //    Properties whose values can change over time should be created with LifeTimeEnum.TIMEVARIANT
+                lifeTime: CreatePropertyDefinitionRequest.LifeTimeEnum.Perpetual,
+                
+                // Multi-value properties have constraint style "Collection"
+                constraintStyle: "Collection",
+                
+                code: propertyName,
+                valueRequired: false,
+                displayName: "Manager",
+                dataTypeId: new ResourceId("system", "string")
+            );
+            
+            //    Create the property definitions
+            var propertyDefinitionResult = _apiFactory.Api<IPropertyDefinitionsApi>().CreatePropertyDefinition(multiValuePropertyDefinition);
+            
+            //    Create the property values
+            var propertyValue = CreateLabelSet("a","b");
+            
+            //    Details of the new portfolio to be created, created here with the minimum set of mandatory fields 
+            var createPortfolioRequest = new CreateTransactionPortfolioRequest(
+                code: $"id-{uuid}",
+                displayName: $"Portfolio-{uuid}",
+                baseCurrency: "GBP",
+                created: effectiveDate
+            );
+
+            //    Create the portfolio
+            var portfolioResult = _apiFactory.Api<ITransactionPortfoliosApi>().CreatePortfolio(TestDataUtilities.TutorialScope, createPortfolioRequest);
+            
+            Assert.That(portfolioResult.Id.Code, Is.EqualTo(createPortfolioRequest.Code));
+            
+            var propertiesUpsertResult = _apiFactory.Api<IPortfoliosApi>().UpsertPortfolioProperties(
+                TestDataUtilities.TutorialScope,
+                portfolioResult.Id.Code,
+                new Dictionary<string, Property>
+                {
+                    [propertyDefinitionResult.Key] = 
+                        new Property(
+                            propertyDefinitionResult.Key, 
+                            propertyValue)
+                }
+            );
+            Assert.That(propertiesUpsertResult.Properties.Values.Single().Value.LabelValueSet, Is.EqualTo(propertyValue.LabelValueSet));
+
+            var portfolioProperties = _apiFactory.Api<IPortfoliosApi>().GetPortfolioProperties(TestDataUtilities.TutorialScope, portfolioResult.Id.Code).Properties;
+
+            Assert.That(portfolioProperties.Keys, Is.EquivalentTo(new [] { propertyDefinitionResult.Key}));
+
+            var returnedProperty = portfolioProperties[propertyDefinitionResult.Key];
+            Assert.That(returnedProperty.Value, Is.EqualTo(propertyValue).Using(Comparer));
         }
     }
 }
