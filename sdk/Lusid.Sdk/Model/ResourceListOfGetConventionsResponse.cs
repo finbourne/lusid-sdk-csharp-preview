@@ -23,90 +23,57 @@ using OpenAPIDateConverter = Lusid.Sdk.Client.OpenAPIDateConverter;
 namespace Lusid.Sdk.Model
 {
     /// <summary>
-    /// An identifier that uniquely describes an item of structured market data such as an interest rate curve or volatility surface.
+    /// ResourceListOfGetConventionsResponse
     /// </summary>
     [DataContract]
-    public partial class StructuredMarketDataId :  IEquatable<StructuredMarketDataId>
+    public partial class ResourceListOfGetConventionsResponse :  IEquatable<ResourceListOfGetConventionsResponse>
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="StructuredMarketDataId" /> class.
+        /// Initializes a new instance of the <see cref="ResourceListOfGetConventionsResponse" /> class.
         /// </summary>
         [JsonConstructorAttribute]
-        protected StructuredMarketDataId() { }
+        protected ResourceListOfGetConventionsResponse() { }
         /// <summary>
-        /// Initializes a new instance of the <see cref="StructuredMarketDataId" /> class.
+        /// Initializes a new instance of the <see cref="ResourceListOfGetConventionsResponse" /> class.
         /// </summary>
-        /// <param name="provider">The platform or vendor that provided the structured market data, e.g. &#39;DataScope&#39;, &#39;LUSID&#39;, &#39;ISDA&#39; etc. (required).</param>
-        /// <param name="priceSource">The source or originator of the structured market data, e.g. a bank or financial institution..</param>
-        /// <param name="lineage">Description of the structured market data&#39;s lineage e.g. &#39;FundAccountant_GreenQuality&#39;..</param>
-        /// <param name="effectiveAt">The effectiveAt or cut label that this item of structured market data is/was updated/inserted with..</param>
-        /// <param name="marketElementType">The type of the market element that the market entity represents, e.g. a vol surface or credit curve.</param>
-        /// <param name="marketAsset">The name of the market entity that the document represents.</param>
-        public StructuredMarketDataId(string provider = default(string), string priceSource = default(string), string lineage = default(string), DateTimeOrCutLabel effectiveAt = default(DateTimeOrCutLabel), string marketElementType = default(string), string marketAsset = default(string))
+        /// <param name="values">values (required).</param>
+        /// <param name="href">href.</param>
+        /// <param name="links">links.</param>
+        public ResourceListOfGetConventionsResponse(List<GetConventionsResponse> values = default(List<GetConventionsResponse>), string href = default(string), List<Link> links = default(List<Link>))
         {
-            // to ensure "provider" is required (not null)
-            if (provider == null)
+            // to ensure "values" is required (not null)
+            if (values == null)
             {
-                throw new InvalidDataException("provider is a required property for StructuredMarketDataId and cannot be null");
+                throw new InvalidDataException("values is a required property for ResourceListOfGetConventionsResponse and cannot be null");
             }
             else
             {
-                this.Provider = provider;
+                this.Values = values;
             }
             
-            this.PriceSource = priceSource;
-            this.Lineage = lineage;
-            this.EffectiveAt = effectiveAt;
-            this.MarketElementType = marketElementType;
-            this.MarketAsset = marketAsset;
-            this.PriceSource = priceSource;
-            this.Lineage = lineage;
-            this.EffectiveAt = effectiveAt;
-            this.MarketElementType = marketElementType;
-            this.MarketAsset = marketAsset;
+            this.Href = href;
+            this.Links = links;
+            this.Href = href;
+            this.Links = links;
         }
         
         /// <summary>
-        /// The platform or vendor that provided the structured market data, e.g. &#39;DataScope&#39;, &#39;LUSID&#39;, &#39;ISDA&#39; etc.
+        /// Gets or Sets Values
         /// </summary>
-        /// <value>The platform or vendor that provided the structured market data, e.g. &#39;DataScope&#39;, &#39;LUSID&#39;, &#39;ISDA&#39; etc.</value>
-        [DataMember(Name="provider", EmitDefaultValue=false)]
-        public string Provider { get; set; }
+        [DataMember(Name="values", EmitDefaultValue=false)]
+        public List<GetConventionsResponse> Values { get; set; }
 
         /// <summary>
-        /// The source or originator of the structured market data, e.g. a bank or financial institution.
+        /// Gets or Sets Href
         /// </summary>
-        /// <value>The source or originator of the structured market data, e.g. a bank or financial institution.</value>
-        [DataMember(Name="priceSource", EmitDefaultValue=true)]
-        public string PriceSource { get; set; }
+        [DataMember(Name="href", EmitDefaultValue=true)]
+        public string Href { get; set; }
 
         /// <summary>
-        /// Description of the structured market data&#39;s lineage e.g. &#39;FundAccountant_GreenQuality&#39;.
+        /// Gets or Sets Links
         /// </summary>
-        /// <value>Description of the structured market data&#39;s lineage e.g. &#39;FundAccountant_GreenQuality&#39;.</value>
-        [DataMember(Name="lineage", EmitDefaultValue=true)]
-        public string Lineage { get; set; }
-
-        /// <summary>
-        /// The effectiveAt or cut label that this item of structured market data is/was updated/inserted with.
-        /// </summary>
-        /// <value>The effectiveAt or cut label that this item of structured market data is/was updated/inserted with.</value>
-        [DataMember(Name="effectiveAt", EmitDefaultValue=true)]
-        public DateTimeOrCutLabel EffectiveAt { get; set; }
-
-        /// <summary>
-        /// The type of the market element that the market entity represents, e.g. a vol surface or credit curve
-        /// </summary>
-        /// <value>The type of the market element that the market entity represents, e.g. a vol surface or credit curve</value>
-        [DataMember(Name="marketElementType", EmitDefaultValue=true)]
-        public string MarketElementType { get; set; }
-
-        /// <summary>
-        /// The name of the market entity that the document represents
-        /// </summary>
-        /// <value>The name of the market entity that the document represents</value>
-        [DataMember(Name="marketAsset", EmitDefaultValue=true)]
-        public string MarketAsset { get; set; }
+        [DataMember(Name="links", EmitDefaultValue=true)]
+        public List<Link> Links { get; set; }
 
         /// <summary>
         /// Returns the string presentation of the object
@@ -115,13 +82,10 @@ namespace Lusid.Sdk.Model
         public override string ToString()
         {
             var sb = new StringBuilder();
-            sb.Append("class StructuredMarketDataId {\n");
-            sb.Append("  Provider: ").Append(Provider).Append("\n");
-            sb.Append("  PriceSource: ").Append(PriceSource).Append("\n");
-            sb.Append("  Lineage: ").Append(Lineage).Append("\n");
-            sb.Append("  EffectiveAt: ").Append(EffectiveAt).Append("\n");
-            sb.Append("  MarketElementType: ").Append(MarketElementType).Append("\n");
-            sb.Append("  MarketAsset: ").Append(MarketAsset).Append("\n");
+            sb.Append("class ResourceListOfGetConventionsResponse {\n");
+            sb.Append("  Values: ").Append(Values).Append("\n");
+            sb.Append("  Href: ").Append(Href).Append("\n");
+            sb.Append("  Links: ").Append(Links).Append("\n");
             sb.Append("}\n");
             return sb.ToString();
         }
@@ -142,49 +106,36 @@ namespace Lusid.Sdk.Model
         /// <returns>Boolean</returns>
         public override bool Equals(object input)
         {
-            return this.Equals(input as StructuredMarketDataId);
+            return this.Equals(input as ResourceListOfGetConventionsResponse);
         }
 
         /// <summary>
-        /// Returns true if StructuredMarketDataId instances are equal
+        /// Returns true if ResourceListOfGetConventionsResponse instances are equal
         /// </summary>
-        /// <param name="input">Instance of StructuredMarketDataId to be compared</param>
+        /// <param name="input">Instance of ResourceListOfGetConventionsResponse to be compared</param>
         /// <returns>Boolean</returns>
-        public bool Equals(StructuredMarketDataId input)
+        public bool Equals(ResourceListOfGetConventionsResponse input)
         {
             if (input == null)
                 return false;
 
             return 
                 (
-                    this.Provider == input.Provider ||
-                    (this.Provider != null &&
-                    this.Provider.Equals(input.Provider))
+                    this.Values == input.Values ||
+                    this.Values != null &&
+                    input.Values != null &&
+                    this.Values.SequenceEqual(input.Values)
                 ) && 
                 (
-                    this.PriceSource == input.PriceSource ||
-                    (this.PriceSource != null &&
-                    this.PriceSource.Equals(input.PriceSource))
+                    this.Href == input.Href ||
+                    (this.Href != null &&
+                    this.Href.Equals(input.Href))
                 ) && 
                 (
-                    this.Lineage == input.Lineage ||
-                    (this.Lineage != null &&
-                    this.Lineage.Equals(input.Lineage))
-                ) && 
-                (
-                    this.EffectiveAt == input.EffectiveAt ||
-                    (this.EffectiveAt != null &&
-                    this.EffectiveAt.Equals(input.EffectiveAt))
-                ) && 
-                (
-                    this.MarketElementType == input.MarketElementType ||
-                    (this.MarketElementType != null &&
-                    this.MarketElementType.Equals(input.MarketElementType))
-                ) && 
-                (
-                    this.MarketAsset == input.MarketAsset ||
-                    (this.MarketAsset != null &&
-                    this.MarketAsset.Equals(input.MarketAsset))
+                    this.Links == input.Links ||
+                    this.Links != null &&
+                    input.Links != null &&
+                    this.Links.SequenceEqual(input.Links)
                 );
         }
 
@@ -197,18 +148,12 @@ namespace Lusid.Sdk.Model
             unchecked // Overflow is fine, just wrap
             {
                 int hashCode = 41;
-                if (this.Provider != null)
-                    hashCode = hashCode * 59 + this.Provider.GetHashCode();
-                if (this.PriceSource != null)
-                    hashCode = hashCode * 59 + this.PriceSource.GetHashCode();
-                if (this.Lineage != null)
-                    hashCode = hashCode * 59 + this.Lineage.GetHashCode();
-                if (this.EffectiveAt != null)
-                    hashCode = hashCode * 59 + this.EffectiveAt.GetHashCode();
-                if (this.MarketElementType != null)
-                    hashCode = hashCode * 59 + this.MarketElementType.GetHashCode();
-                if (this.MarketAsset != null)
-                    hashCode = hashCode * 59 + this.MarketAsset.GetHashCode();
+                if (this.Values != null)
+                    hashCode = hashCode * 59 + this.Values.GetHashCode();
+                if (this.Href != null)
+                    hashCode = hashCode * 59 + this.Href.GetHashCode();
+                if (this.Links != null)
+                    hashCode = hashCode * 59 + this.Links.GetHashCode();
                 return hashCode;
             }
         }
