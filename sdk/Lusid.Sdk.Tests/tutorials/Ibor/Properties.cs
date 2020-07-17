@@ -155,7 +155,7 @@ namespace Lusid.Sdk.Tests.tutorials.Ibor
         public void Create_Portfolio_With_MultiValue_Property()
         {
             var uuid = Guid.NewGuid().ToString();
-            var propertyName = $"manager-{uuid}";
+            var propertyName = $"managers-{uuid}";
             var effectiveDate = new DateTimeOffset(2018, 1, 1, 0, 0, 0, TimeSpan.Zero);
             
             //    Details of the property to be created
@@ -176,7 +176,7 @@ namespace Lusid.Sdk.Tests.tutorials.Ibor
                 
                 code: propertyName,
                 valueRequired: false,
-                displayName: "Manager",
+                displayName: "Managers",
                 dataTypeId: new ResourceId("system", "string")
             );
             
@@ -184,7 +184,7 @@ namespace Lusid.Sdk.Tests.tutorials.Ibor
             var propertyDefinitionResult = _apiFactory.Api<IPropertyDefinitionsApi>().CreatePropertyDefinition(multiValuePropertyDefinition);
             
             //    Create the property values
-            var propertyValue = CreateLabelSet("a","b");
+            var propertyValue = CreateLabelSet("PortfolioManager1","PortfolioManager2");
             
             //    Details of the new portfolio to be created, created here with the minimum set of mandatory fields 
             var createPortfolioRequest = new CreateTransactionPortfolioRequest(
