@@ -31,6 +31,11 @@ namespace Lusid.Sdk.Utilities
         /// </summary>
         public static PropertyValue CreateLabelSet(params string[] values)
         {
+            if (values.Distinct().Count() != values.Length)
+            {
+                throw new ArgumentException("Labels must be distinct.", nameof(values));
+            }
+            
             return new PropertyValue(labelValueSet: new LabelValueSet(values.ToList()));
         }
         
