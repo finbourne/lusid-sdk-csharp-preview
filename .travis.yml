@@ -56,7 +56,7 @@ script:
   export FBN_APP_NAME="${!fbn_app_name}"
 
   # run sonar
-  sonar-scanner
+#   sonar-scanner
 
 notifications:
   slack:
