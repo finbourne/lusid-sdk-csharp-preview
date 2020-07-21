@@ -52,6 +52,7 @@ namespace Lusid.Sdk.Utilities
             };
             
             configuration.AddDefaultHeader("X-LUSID-Application", apiConfiguration.ApplicationName);
+            configuration.ApiClient.RegisterConverters();
 
             _apis = Init(configuration);
         }
