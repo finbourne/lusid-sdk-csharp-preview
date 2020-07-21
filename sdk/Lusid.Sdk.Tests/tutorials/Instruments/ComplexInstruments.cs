@@ -65,10 +65,12 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
                 scope: null,
                 code: null,
                 currency: "GBP",
-                paymentFrequency: new Tenor(6, Tenor.UnitEnum.Month),
+                paymentFrequency: "6M",
                 rollConvention: FlowConventions.RollConventionEnum.MF,
                 dayCountConvention: FlowConventions.DayCountConventionEnum.Act365,
-                holidayCalendars:new List<string>()
+                holidayCalendars:new List<string>(),
+                settleDays: 2,
+                resetDays: 2
                 );
 
             var idxConvention = new IndexConvention(
