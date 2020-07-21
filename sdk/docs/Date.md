@@ -1,0 +1,23 @@
+
+# Lusid.Sdk.Model.Date
+
+## Properties
+
+Name | Type | Description | Notes
+------------ | ------------- | ------------- | -------------
+**Href** | **string** |  | [optional] 
+**CalendarIdentifier** | [**ResourceId**](ResourceId.md) |  | 
+**DateIdentifier** | **string** |  | 
+**FromUtc** | **DateTimeOffset?** |  | 
+**ToUtc** | **DateTimeOffset?** |  | 
+**LocalDate** | **string** |  | 
+**Timezone** | **string** |  | 
+**Description** | **string** |  | 
+**Type** | **string** |  | 
+**Attributes** | [**DateAttributes**](DateAttributes.md) |  | 
+**SourceData** | **Dictionary&lt;string, string&gt;** |  | 
+
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to README]](../README.md)
+
