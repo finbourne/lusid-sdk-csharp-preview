@@ -23,31 +23,140 @@ using OpenAPIDateConverter = Lusid.Sdk.Client.OpenAPIDateConverter;
 namespace Lusid.Sdk.Model
 {
     /// <summary>
-    /// Defines OptionType
+    /// ResourceListOfDate
     /// </summary>
-    
-    [JsonConverter(typeof(StringEnumConverter))]
-    
-    public enum OptionType
+    [DataContract]
+    public partial class ResourceListOfDate :  IEquatable<ResourceListOfDate>
     {
         /// <summary>
-        /// Enum None for value: None
+        /// Initializes a new instance of the <see cref="ResourceListOfDate" /> class.
         /// </summary>
-        [EnumMember(Value = "None")]
-        None = 1,
+        [JsonConstructorAttribute]
+        protected ResourceListOfDate() { }
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ResourceListOfDate" /> class.
+        /// </summary>
+        /// <param name="values">values (required).</param>
+        /// <param name="href">href.</param>
+        /// <param name="links">links.</param>
+        public ResourceListOfDate(List<Date> values = default(List<Date>), string href = default(string), List<Link> links = default(List<Link>))
+        {
+            // to ensure "values" is required (not null)
+            if (values == null)
+            {
+                throw new InvalidDataException("values is a required property for ResourceListOfDate and cannot be null");
+            }
+            else
+            {
+                this.Values = values;
+            }
+            
+            this.Href = href;
+            this.Links = links;
+            this.Href = href;
+            this.Links = links;
+        }
+        
+        /// <summary>
+        /// Gets or Sets Values
+        /// </summary>
+        [DataMember(Name="values", EmitDefaultValue=false)]
+        public List<Date> Values { get; set; }
 
         /// <summary>
-        /// Enum Call for value: Call
+        /// Gets or Sets Href
         /// </summary>
-        [EnumMember(Value = "Call")]
-        Call = 2,
+        [DataMember(Name="href", EmitDefaultValue=true)]
+        public string Href { get; set; }
 
         /// <summary>
-        /// Enum Put for value: Put
+        /// Gets or Sets Links
         /// </summary>
-        [EnumMember(Value = "Put")]
-        Put = 3
+        [DataMember(Name="links", EmitDefaultValue=true)]
+        public List<Link> Links { get; set; }
 
+        /// <summary>
+        /// Returns the string presentation of the object
+        /// </summary>
+        /// <returns>String presentation of the object</returns>
+        public override string ToString()
+        {
+            var sb = new StringBuilder();
+            sb.Append("class ResourceListOfDate {\n");
+            sb.Append("  Values: ").Append(Values).Append("\n");
+            sb.Append("  Href: ").Append(Href).Append("\n");
+            sb.Append("  Links: ").Append(Links).Append("\n");
+            sb.Append("}\n");
+            return sb.ToString();
+        }
+  
+        /// <summary>
+        /// Returns the JSON string presentation of the object
+        /// </summary>
+        /// <returns>JSON string presentation of the object</returns>
+        public virtual string ToJson()
+        {
+            return JsonConvert.SerializeObject(this, Formatting.Indented);
+        }
+
+        /// <summary>
+        /// Returns true if objects are equal
+        /// </summary>
+        /// <param name="input">Object to be compared</param>
+        /// <returns>Boolean</returns>
+        public override bool Equals(object input)
+        {
+            return this.Equals(input as ResourceListOfDate);
+        }
+
+        /// <summary>
+        /// Returns true if ResourceListOfDate instances are equal
+        /// </summary>
+        /// <param name="input">Instance of ResourceListOfDate to be compared</param>
+        /// <returns>Boolean</returns>
+        public bool Equals(ResourceListOfDate input)
+        {
+            if (input == null)
+                return false;
+
+            return 
+                (
+                    this.Values == input.Values ||
+                    this.Values != null &&
+                    input.Values != null &&
+                    this.Values.SequenceEqual(input.Values)
+                ) && 
+                (
+                    this.Href == input.Href ||
+                    (this.Href != null &&
+                    this.Href.Equals(input.Href))
+                ) && 
+                (
+                    this.Links == input.Links ||
+                    this.Links != null &&
+                    input.Links != null &&
+                    this.Links.SequenceEqual(input.Links)
+                );
+        }
+
+        /// <summary>
+        /// Gets the hash code
+        /// </summary>
+        /// <returns>Hash code</returns>
+        public override int GetHashCode()
+        {
+            unchecked // Overflow is fine, just wrap
+            {
+                int hashCode = 41;
+                if (this.Values != null)
+                    hashCode = hashCode * 59 + this.Values.GetHashCode();
+                if (this.Href != null)
+                    hashCode = hashCode * 59 + this.Href.GetHashCode();
+                if (this.Links != null)
+                    hashCode = hashCode * 59 + this.Links.GetHashCode();
+                return hashCode;
+            }
+        }
     }
 
 }
