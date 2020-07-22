@@ -1,6 +1,6 @@
 # Lusid.Sdk.Api.CalendarsApi
 
-All URIs are relative to *http://localhost:47721*
+All URIs are relative to *http://localhost:30920*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
@@ -16,7 +16,7 @@ Method | HTTP request | Description
 
 ## AddDateToCalendar
 
-> Date AddDateToCalendar (string scope, string code, CreateDateRequest createDateRequest)
+> CalendarDate AddDateToCalendar (string scope, string code, CreateDateRequest createDateRequest)
 
 [EXPERIMENTAL] Add a date to a calendar
 
@@ -37,7 +37,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://localhost:47721";
+            Configuration.Default.BasePath = "http://localhost:30920";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -49,7 +49,7 @@ namespace Example
             try
             {
                 // [EXPERIMENTAL] Add a date to a calendar
-                Date result = apiInstance.AddDateToCalendar(scope, code, createDateRequest);
+                CalendarDate result = apiInstance.AddDateToCalendar(scope, code, createDateRequest);
                 Debug.WriteLine(result);
             }
             catch (ApiException e)
@@ -74,7 +74,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**Date**](Date.md)
+[**CalendarDate**](CalendarDate.md)
 
 ### Authorization
 
@@ -121,7 +121,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://localhost:47721";
+            Configuration.Default.BasePath = "http://localhost:30920";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -201,7 +201,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://localhost:47721";
+            Configuration.Default.BasePath = "http://localhost:30920";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -262,7 +262,7 @@ Name | Type | Description  | Notes
 
 ## DeleteDateFromCalendar
 
-> Date DeleteDateFromCalendar (string scope, string code, string dateId)
+> CalendarDate DeleteDateFromCalendar (string scope, string code, string dateId)
 
 [EXPERIMENTAL] Remove a date from a calendar
 
@@ -283,7 +283,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://localhost:47721";
+            Configuration.Default.BasePath = "http://localhost:30920";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -295,7 +295,7 @@ namespace Example
             try
             {
                 // [EXPERIMENTAL] Remove a date from a calendar
-                Date result = apiInstance.DeleteDateFromCalendar(scope, code, dateId);
+                CalendarDate result = apiInstance.DeleteDateFromCalendar(scope, code, dateId);
                 Debug.WriteLine(result);
             }
             catch (ApiException e)
@@ -320,7 +320,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**Date**](Date.md)
+[**CalendarDate**](CalendarDate.md)
 
 ### Authorization
 
@@ -367,7 +367,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://localhost:47721";
+            Configuration.Default.BasePath = "http://localhost:30920";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -430,7 +430,7 @@ Name | Type | Description  | Notes
 
 ## GetDates
 
-> ResourceListOfDate GetDates (string scope, string code, DateTimeOrCutLabel fromEffectiveAt = null, DateTimeOrCutLabel toEffectiveAt = null, DateTimeOffset? asAt = null, List<string> idFilter = null)
+> ResourceListOfCalendarDate GetDates (string scope, string code, DateTimeOrCutLabel fromEffectiveAt = null, DateTimeOrCutLabel toEffectiveAt = null, DateTimeOffset? asAt = null, List<string> idFilter = null)
 
 [EXPERIMENTAL] Get dates for a specific calendar
 
@@ -451,7 +451,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://localhost:47721";
+            Configuration.Default.BasePath = "http://localhost:30920";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -466,7 +466,7 @@ namespace Example
             try
             {
                 // [EXPERIMENTAL] Get dates for a specific calendar
-                ResourceListOfDate result = apiInstance.GetDates(scope, code, fromEffectiveAt, toEffectiveAt, asAt, idFilter);
+                ResourceListOfCalendarDate result = apiInstance.GetDates(scope, code, fromEffectiveAt, toEffectiveAt, asAt, idFilter);
                 Debug.WriteLine(result);
             }
             catch (ApiException e)
@@ -494,7 +494,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**ResourceListOfDate**](ResourceListOfDate.md)
+[**ResourceListOfCalendarDate**](ResourceListOfCalendarDate.md)
 
 ### Authorization
 
@@ -541,7 +541,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://localhost:47721";
+            Configuration.Default.BasePath = "http://localhost:30920";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
