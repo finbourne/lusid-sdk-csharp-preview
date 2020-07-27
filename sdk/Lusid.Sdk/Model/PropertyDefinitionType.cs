@@ -23,125 +23,25 @@ using OpenAPIDateConverter = Lusid.Sdk.Client.OpenAPIDateConverter;
 namespace Lusid.Sdk.Model
 {
     /// <summary>
-    /// A bundle of requests to configure a set of transaction types.
+    /// Defines PropertyDefinitionType
     /// </summary>
-    [DataContract]
-    public partial class TransactionSetConfigurationDataRequest :  IEquatable<TransactionSetConfigurationDataRequest>
+    
+    [JsonConverter(typeof(StringEnumConverter))]
+    
+    public enum PropertyDefinitionType
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="TransactionSetConfigurationDataRequest" /> class.
+        /// Enum ValueProperty for value: ValueProperty
         /// </summary>
-        [JsonConstructorAttribute]
-        protected TransactionSetConfigurationDataRequest() { }
-        /// <summary>
-        /// Initializes a new instance of the <see cref="TransactionSetConfigurationDataRequest" /> class.
-        /// </summary>
-        /// <param name="transactionConfigRequests">Collection of transaction type models (required).</param>
-        /// <param name="sideConfigRequests">Collection of side definition requests..</param>
-        public TransactionSetConfigurationDataRequest(List<TransactionConfigurationDataRequest> transactionConfigRequests = default(List<TransactionConfigurationDataRequest>), List<SideConfigurationDataRequest> sideConfigRequests = default(List<SideConfigurationDataRequest>))
-        {
-            // to ensure "transactionConfigRequests" is required (not null)
-            if (transactionConfigRequests == null)
-            {
-                throw new InvalidDataException("transactionConfigRequests is a required property for TransactionSetConfigurationDataRequest and cannot be null");
-            }
-            else
-            {
-                this.TransactionConfigRequests = transactionConfigRequests;
-            }
-            
-            this.SideConfigRequests = sideConfigRequests;
-            this.SideConfigRequests = sideConfigRequests;
-        }
-        
-        /// <summary>
-        /// Collection of transaction type models
-        /// </summary>
-        /// <value>Collection of transaction type models</value>
-        [DataMember(Name="transactionConfigRequests", EmitDefaultValue=false)]
-        public List<TransactionConfigurationDataRequest> TransactionConfigRequests { get; set; }
+        [EnumMember(Value = "ValueProperty")]
+        ValueProperty = 1,
 
         /// <summary>
-        /// Collection of side definition requests.
+        /// Enum DerivedDefinition for value: DerivedDefinition
         /// </summary>
-        /// <value>Collection of side definition requests.</value>
-        [DataMember(Name="sideConfigRequests", EmitDefaultValue=true)]
-        public List<SideConfigurationDataRequest> SideConfigRequests { get; set; }
+        [EnumMember(Value = "DerivedDefinition")]
+        DerivedDefinition = 2
 
-        /// <summary>
-        /// Returns the string presentation of the object
-        /// </summary>
-        /// <returns>String presentation of the object</returns>
-        public override string ToString()
-        {
-            var sb = new StringBuilder();
-            sb.Append("class TransactionSetConfigurationDataRequest {\n");
-            sb.Append("  TransactionConfigRequests: ").Append(TransactionConfigRequests).Append("\n");
-            sb.Append("  SideConfigRequests: ").Append(SideConfigRequests).Append("\n");
-            sb.Append("}\n");
-            return sb.ToString();
-        }
-  
-        /// <summary>
-        /// Returns the JSON string presentation of the object
-        /// </summary>
-        /// <returns>JSON string presentation of the object</returns>
-        public virtual string ToJson()
-        {
-            return JsonConvert.SerializeObject(this, Formatting.Indented);
-        }
-
-        /// <summary>
-        /// Returns true if objects are equal
-        /// </summary>
-        /// <param name="input">Object to be compared</param>
-        /// <returns>Boolean</returns>
-        public override bool Equals(object input)
-        {
-            return this.Equals(input as TransactionSetConfigurationDataRequest);
-        }
-
-        /// <summary>
-        /// Returns true if TransactionSetConfigurationDataRequest instances are equal
-        /// </summary>
-        /// <param name="input">Instance of TransactionSetConfigurationDataRequest to be compared</param>
-        /// <returns>Boolean</returns>
-        public bool Equals(TransactionSetConfigurationDataRequest input)
-        {
-            if (input == null)
-                return false;
-
-            return 
-                (
-                    this.TransactionConfigRequests == input.TransactionConfigRequests ||
-                    this.TransactionConfigRequests != null &&
-                    input.TransactionConfigRequests != null &&
-                    this.TransactionConfigRequests.SequenceEqual(input.TransactionConfigRequests)
-                ) && 
-                (
-                    this.SideConfigRequests == input.SideConfigRequests ||
-                    this.SideConfigRequests != null &&
-                    input.SideConfigRequests != null &&
-                    this.SideConfigRequests.SequenceEqual(input.SideConfigRequests)
-                );
-        }
-
-        /// <summary>
-        /// Gets the hash code
-        /// </summary>
-        /// <returns>Hash code</returns>
-        public override int GetHashCode()
-        {
-            unchecked // Overflow is fine, just wrap
-            {
-                int hashCode = 41;
-                if (this.TransactionConfigRequests != null)
-                    hashCode = hashCode * 59 + this.TransactionConfigRequests.GetHashCode();
-                if (this.SideConfigRequests != null)
-                    hashCode = hashCode * 59 + this.SideConfigRequests.GetHashCode();
-                return hashCode;
-            }
-        }
     }
 
 }
