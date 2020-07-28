@@ -5,11 +5,11 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**RollFrequency** | [**Tenor**](Tenor.md) |  | 
+**RollFrequency** | **string** | The frequency at which the reference bonds are updated, this defaults to 6M, but can be 3M, exp for historically issued products | [optional] 
 **Scope** | **string** | The scope used when updating or inserting the convention. | [optional] 
 **Code** | **string** | The code of the convention. | [optional] 
 **Currency** | **string** | Currency of the flow convention. | 
-**PaymentFrequency** | [**Tenor**](Tenor.md) |  | 
+**PaymentFrequency** | **string** | When generating a multiperiod flow, or when the maturity of the flow is not given but the start date is,  the tenor is the time-step from the anchor-date to the nominal maturity of the flow prior to any adjustment. | 
 **DayCountConvention** | **string** | The available values are: Actual360, Act360, MoneyMarket, Actual365, Act365, Thirty360, ThirtyU360, Bond, ThirtyE360, EuroBond, ActAct, ActualActual, ActActIsda, ActActIsma, ActActIcma, Invalid | 
 **RollConvention** | **string** | The available values are: NoAdjustment, None, Previous, P, Following, F, ModifiedPrevious, MP, ModifiedFollowing, MF, EndOfMonth, EOM, EndOfMonthPrevious, EOMP, EndOfMonthFollowing, EOMF, Invalid | 
 **HolidayCalendars** | **List&lt;string&gt;** | An array of strings denoting holiday calendars that apply to generation and payment. | 
