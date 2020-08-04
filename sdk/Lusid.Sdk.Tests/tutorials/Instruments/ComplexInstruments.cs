@@ -74,10 +74,10 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
                 );
 
             var idxConvention = new IndexConvention(
-                name: "GbpLibor6m",
+                code: "GbpLibor6m",
                 publicationDayLag: 0,
                 currency: "GBP",
-                paymentTenor: new Tenor(6, Tenor.UnitEnum.Month),
+                paymentTenor: "6M",
                 dayCountConvention: IndexConvention.DayCountConventionEnum.Act365,
                 fixingReference: "BP00"
             );
