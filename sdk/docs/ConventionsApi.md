@@ -1,22 +1,29 @@
 # Lusid.Sdk.Api.ConventionsApi
 
-All URIs are relative to *http://localhost:48199*
+All URIs are relative to *http://localhost:41522*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
-[**DeleteConventions**](ConventionsApi.md#deleteconventions) | **DELETE** /api/conventions/{scope}/{code} | [EXPERIMENTAL] Delete the conventions of given scope and code, assuming that it is present.
-[**GetFlowConventions**](ConventionsApi.md#getflowconventions) | **GET** /api/conventions/{scope}/{code} | [EXPERIMENTAL] Get Flow Conventions
+[**DeleteCdsFlowConventions**](ConventionsApi.md#deletecdsflowconventions) | **DELETE** /api/conventions/credit/conventions/{scope}/{code} | [EXPERIMENTAL] Delete the CDS Flow Conventions of given scope and code, assuming that it is present.
+[**DeleteFlowConventions**](ConventionsApi.md#deleteflowconventions) | **DELETE** /api/conventions/rates/flowconventions/{scope}/{code} | [EXPERIMENTAL] Delete the Flow Conventions of given scope and code, assuming that it is present.
+[**DeleteIndexConvention**](ConventionsApi.md#deleteindexconvention) | **DELETE** /api/conventions/rates/indexconventions/{scope}/{code} | [EXPERIMENTAL] Delete the Index Convention of given scope and code, assuming that it is present.
+[**GetCdsFlowConventions**](ConventionsApi.md#getcdsflowconventions) | **GET** /api/conventions/credit/conventions/{scope}/{code} | [EXPERIMENTAL] Get CDS Flow Conventions
+[**GetFlowConventions**](ConventionsApi.md#getflowconventions) | **GET** /api/conventions/rates/flowconventions/{scope}/{code} | [EXPERIMENTAL] Get Flow Conventions
+[**GetIndexConvention**](ConventionsApi.md#getindexconvention) | **GET** /api/conventions/rates/indexconventions/{scope}/{code} | [EXPERIMENTAL] Get Index Convention
 [**ListConventions**](ConventionsApi.md#listconventions) | **GET** /api/conventions | [EXPERIMENTAL] List the set of conventions
+[**UpsertCdsFlowConventions**](ConventionsApi.md#upsertcdsflowconventions) | **POST** /api/conventions/credit/conventions | [EXPERIMENTAL] Upsert a set of CDS Flow Conventions. This creates or updates the data in Lusid.
+[**UpsertFlowConventions**](ConventionsApi.md#upsertflowconventions) | **POST** /api/conventions/rates/flowconventions | [EXPERIMENTAL] Upsert a set of Flow Conventions. This creates or updates the data in Lusid.
+[**UpsertIndexConvention**](ConventionsApi.md#upsertindexconvention) | **POST** /api/conventions/rates/indexconventions | [EXPERIMENTAL] Upsert a set of Index Convention. This creates or updates the data in Lusid.
 
 
 
-## DeleteConventions
+## DeleteCdsFlowConventions
 
-> AnnulSingleStructuredDataResponse DeleteConventions (string scope, string code)
+> AnnulSingleStructuredDataResponse DeleteCdsFlowConventions (string scope, string code)
 
-[EXPERIMENTAL] Delete the conventions of given scope and code, assuming that it is present.
+[EXPERIMENTAL] Delete the CDS Flow Conventions of given scope and code, assuming that it is present.
 
-Delete the specified conventions from a single scope.  The response will return either detail of the deleted item, or an explanation (failure) as to why this did not succeed.  It is important to always check for any unsuccessful response.
+Delete the specified CDS Flow Conventions from a single scope.  The response will return either detail of the deleted item, or an explanation (failure) as to why this did not succeed.  It is important to always check for any unsuccessful response.
 
 ### Example
 
@@ -29,27 +36,27 @@ using Lusid.Sdk.Model;
 
 namespace Example
 {
-    public class DeleteConventionsExample
+    public class DeleteCdsFlowConventionsExample
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://localhost:48199";
+            Configuration.Default.BasePath = "http://localhost:41522";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
             var apiInstance = new ConventionsApi(Configuration.Default);
-            var scope = scope_example;  // string | The scope of the conventions to delete.
-            var code = code_example;  // string | The conventions to delete.
+            var scope = scope_example;  // string | The scope of the CDS Flow Conventions to delete.
+            var code = code_example;  // string | The CDS Flow Conventions to delete.
 
             try
             {
-                // [EXPERIMENTAL] Delete the conventions of given scope and code, assuming that it is present.
-                AnnulSingleStructuredDataResponse result = apiInstance.DeleteConventions(scope, code);
+                // [EXPERIMENTAL] Delete the CDS Flow Conventions of given scope and code, assuming that it is present.
+                AnnulSingleStructuredDataResponse result = apiInstance.DeleteCdsFlowConventions(scope, code);
                 Debug.WriteLine(result);
             }
             catch (ApiException e)
             {
-                Debug.Print("Exception when calling ConventionsApi.DeleteConventions: " + e.Message );
+                Debug.Print("Exception when calling ConventionsApi.DeleteCdsFlowConventions: " + e.Message );
                 Debug.Print("Status Code: "+ e.ErrorCode);
                 Debug.Print(e.StackTrace);
             }
@@ -63,8 +70,8 @@ namespace Example
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **scope** | **string**| The scope of the conventions to delete. | 
- **code** | **string**| The conventions to delete. | 
+ **scope** | **string**| The scope of the CDS Flow Conventions to delete. | 
+ **code** | **string**| The CDS Flow Conventions to delete. | 
 
 ### Return type
 
@@ -83,6 +90,254 @@ Name | Type | Description  | Notes
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
 | **200** | The AsAt of deletion or failure |  -  |
+| **400** | The details of the input related failure |  -  |
+| **0** | Error response |  -  |
+
+[[Back to top]](#)
+[[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
+
+
+## DeleteFlowConventions
+
+> AnnulSingleStructuredDataResponse DeleteFlowConventions (string scope, string code)
+
+[EXPERIMENTAL] Delete the Flow Conventions of given scope and code, assuming that it is present.
+
+Delete the specified conventions from a single scope.  The response will return either detail of the deleted item, or an explanation (failure) as to why this did not succeed.  It is important to always check for any unsuccessful response.
+
+### Example
+
+```csharp
+using System.Collections.Generic;
+using System.Diagnostics;
+using Lusid.Sdk.Api;
+using Lusid.Sdk.Client;
+using Lusid.Sdk.Model;
+
+namespace Example
+{
+    public class DeleteFlowConventionsExample
+    {
+        public static void Main()
+        {
+            Configuration.Default.BasePath = "http://localhost:41522";
+            // Configure OAuth2 access token for authorization: oauth2
+            Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
+
+            var apiInstance = new ConventionsApi(Configuration.Default);
+            var scope = scope_example;  // string | The scope of the Flow Conventions to delete.
+            var code = code_example;  // string | The Flow Conventions to delete.
+
+            try
+            {
+                // [EXPERIMENTAL] Delete the Flow Conventions of given scope and code, assuming that it is present.
+                AnnulSingleStructuredDataResponse result = apiInstance.DeleteFlowConventions(scope, code);
+                Debug.WriteLine(result);
+            }
+            catch (ApiException e)
+            {
+                Debug.Print("Exception when calling ConventionsApi.DeleteFlowConventions: " + e.Message );
+                Debug.Print("Status Code: "+ e.ErrorCode);
+                Debug.Print(e.StackTrace);
+            }
+        }
+    }
+}
+```
+
+### Parameters
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **scope** | **string**| The scope of the Flow Conventions to delete. | 
+ **code** | **string**| The Flow Conventions to delete. | 
+
+### Return type
+
+[**AnnulSingleStructuredDataResponse**](AnnulSingleStructuredDataResponse.md)
+
+### Authorization
+
+[oauth2](../README.md#oauth2)
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: text/plain, application/json, text/json
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+| **200** | The AsAt of deletion or failure |  -  |
+| **400** | The details of the input related failure |  -  |
+| **0** | Error response |  -  |
+
+[[Back to top]](#)
+[[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
+
+
+## DeleteIndexConvention
+
+> AnnulSingleStructuredDataResponse DeleteIndexConvention (string scope, string code)
+
+[EXPERIMENTAL] Delete the Index Convention of given scope and code, assuming that it is present.
+
+Delete the specified Index Convention from a single scope.  The response will return either detail of the deleted item, or an explanation (failure) as to why this did not succeed.  It is important to always check for any unsuccessful response.
+
+### Example
+
+```csharp
+using System.Collections.Generic;
+using System.Diagnostics;
+using Lusid.Sdk.Api;
+using Lusid.Sdk.Client;
+using Lusid.Sdk.Model;
+
+namespace Example
+{
+    public class DeleteIndexConventionExample
+    {
+        public static void Main()
+        {
+            Configuration.Default.BasePath = "http://localhost:41522";
+            // Configure OAuth2 access token for authorization: oauth2
+            Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
+
+            var apiInstance = new ConventionsApi(Configuration.Default);
+            var scope = scope_example;  // string | The scope of the Index Convention to delete.
+            var code = code_example;  // string | The Index Convention to delete.
+
+            try
+            {
+                // [EXPERIMENTAL] Delete the Index Convention of given scope and code, assuming that it is present.
+                AnnulSingleStructuredDataResponse result = apiInstance.DeleteIndexConvention(scope, code);
+                Debug.WriteLine(result);
+            }
+            catch (ApiException e)
+            {
+                Debug.Print("Exception when calling ConventionsApi.DeleteIndexConvention: " + e.Message );
+                Debug.Print("Status Code: "+ e.ErrorCode);
+                Debug.Print(e.StackTrace);
+            }
+        }
+    }
+}
+```
+
+### Parameters
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **scope** | **string**| The scope of the Index Convention to delete. | 
+ **code** | **string**| The Index Convention to delete. | 
+
+### Return type
+
+[**AnnulSingleStructuredDataResponse**](AnnulSingleStructuredDataResponse.md)
+
+### Authorization
+
+[oauth2](../README.md#oauth2)
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: text/plain, application/json, text/json
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+| **200** | The AsAt of deletion or failure |  -  |
+| **400** | The details of the input related failure |  -  |
+| **0** | Error response |  -  |
+
+[[Back to top]](#)
+[[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
+
+
+## GetCdsFlowConventions
+
+> GetConventionsResponse GetCdsFlowConventions (string scope, string code, DateTimeOffset? asAt = null)
+
+[EXPERIMENTAL] Get CDS Flow Conventions
+
+Get a CDS Flow Conventions from a single scope.  The response will return either the conventions that has been stored, or a failure explaining why the request was unsuccessful.  It is important to always check for any unsuccessful requests (failures).
+
+### Example
+
+```csharp
+using System.Collections.Generic;
+using System.Diagnostics;
+using Lusid.Sdk.Api;
+using Lusid.Sdk.Client;
+using Lusid.Sdk.Model;
+
+namespace Example
+{
+    public class GetCdsFlowConventionsExample
+    {
+        public static void Main()
+        {
+            Configuration.Default.BasePath = "http://localhost:41522";
+            // Configure OAuth2 access token for authorization: oauth2
+            Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
+
+            var apiInstance = new ConventionsApi(Configuration.Default);
+            var scope = scope_example;  // string | The scope of the CDS Flow Conventions to retrieve.
+            var code = code_example;  // string | The name of the CDS Flow Conventions to retrieve the data for.
+            var asAt = 2013-10-20T19:20:30+01:00;  // DateTimeOffset? | The asAt datetime at which to retrieve the CDS Flow Conventions. Defaults to return the latest version if not specified. (optional) 
+
+            try
+            {
+                // [EXPERIMENTAL] Get CDS Flow Conventions
+                GetConventionsResponse result = apiInstance.GetCdsFlowConventions(scope, code, asAt);
+                Debug.WriteLine(result);
+            }
+            catch (ApiException e)
+            {
+                Debug.Print("Exception when calling ConventionsApi.GetCdsFlowConventions: " + e.Message );
+                Debug.Print("Status Code: "+ e.ErrorCode);
+                Debug.Print(e.StackTrace);
+            }
+        }
+    }
+}
+```
+
+### Parameters
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **scope** | **string**| The scope of the CDS Flow Conventions to retrieve. | 
+ **code** | **string**| The name of the CDS Flow Conventions to retrieve the data for. | 
+ **asAt** | **DateTimeOffset?**| The asAt datetime at which to retrieve the CDS Flow Conventions. Defaults to return the latest version if not specified. | [optional] 
+
+### Return type
+
+[**GetConventionsResponse**](GetConventionsResponse.md)
+
+### Authorization
+
+[oauth2](../README.md#oauth2)
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: text/plain, application/json, text/json
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+| **200** | The successfully retrieved CDS Flow Conventions or any failure |  -  |
 | **400** | The details of the input related failure |  -  |
 | **0** | Error response |  -  |
 
@@ -115,7 +370,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://localhost:48199";
+            Configuration.Default.BasePath = "http://localhost:41522";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -176,6 +431,90 @@ Name | Type | Description  | Notes
 [[Back to README]](../README.md)
 
 
+## GetIndexConvention
+
+> GetConventionsResponse GetIndexConvention (string scope, string code, DateTimeOffset? asAt = null)
+
+[EXPERIMENTAL] Get Index Convention
+
+Get a Index Convention from a single scope.  The response will return either the conventions that has been stored, or a failure explaining why the request was unsuccessful.  It is important to always check for any unsuccessful requests (failures).
+
+### Example
+
+```csharp
+using System.Collections.Generic;
+using System.Diagnostics;
+using Lusid.Sdk.Api;
+using Lusid.Sdk.Client;
+using Lusid.Sdk.Model;
+
+namespace Example
+{
+    public class GetIndexConventionExample
+    {
+        public static void Main()
+        {
+            Configuration.Default.BasePath = "http://localhost:41522";
+            // Configure OAuth2 access token for authorization: oauth2
+            Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
+
+            var apiInstance = new ConventionsApi(Configuration.Default);
+            var scope = scope_example;  // string | The scope of the Index Convention to retrieve.
+            var code = code_example;  // string | The name of the Index Convention to retrieve the data for.
+            var asAt = 2013-10-20T19:20:30+01:00;  // DateTimeOffset? | The asAt datetime at which to retrieve the Index Convention. Defaults to return the latest version if not specified. (optional) 
+
+            try
+            {
+                // [EXPERIMENTAL] Get Index Convention
+                GetConventionsResponse result = apiInstance.GetIndexConvention(scope, code, asAt);
+                Debug.WriteLine(result);
+            }
+            catch (ApiException e)
+            {
+                Debug.Print("Exception when calling ConventionsApi.GetIndexConvention: " + e.Message );
+                Debug.Print("Status Code: "+ e.ErrorCode);
+                Debug.Print(e.StackTrace);
+            }
+        }
+    }
+}
+```
+
+### Parameters
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **scope** | **string**| The scope of the Index Convention to retrieve. | 
+ **code** | **string**| The name of the Index Convention to retrieve the data for. | 
+ **asAt** | **DateTimeOffset?**| The asAt datetime at which to retrieve the Index Convention. Defaults to return the latest version if not specified. | [optional] 
+
+### Return type
+
+[**GetConventionsResponse**](GetConventionsResponse.md)
+
+### Authorization
+
+[oauth2](../README.md#oauth2)
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: text/plain, application/json, text/json
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+| **200** | The successfully retrieved Index Convention or any failure |  -  |
+| **400** | The details of the input related failure |  -  |
+| **0** | Error response |  -  |
+
+[[Back to top]](#)
+[[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
+
+
 ## ListConventions
 
 > ResourceListOfGetConventionsResponse ListConventions (DateTimeOffset? asAt = null)
@@ -199,7 +538,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://localhost:48199";
+            Configuration.Default.BasePath = "http://localhost:41522";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -247,6 +586,246 @@ Name | Type | Description  | Notes
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
 | **200** | The requested conventions |  -  |
+| **400** | The details of the input related failure |  -  |
+| **0** | Error response |  -  |
+
+[[Back to top]](#)
+[[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
+
+
+## UpsertCdsFlowConventions
+
+> UpsertSingleStructuredDataResponse UpsertCdsFlowConventions (UpsertConventionsRequest upsertConventionsRequest)
+
+[EXPERIMENTAL] Upsert a set of CDS Flow Conventions. This creates or updates the data in Lusid.
+
+Update or insert CDS Flow Conventions in a single scope. An item will be updated if it already exists  and inserted if it does not.                The response will return the successfully updated or inserted CDS Flow Conventions or failure message if unsuccessful                It is important to always check to verify success (or failure).
+
+### Example
+
+```csharp
+using System.Collections.Generic;
+using System.Diagnostics;
+using Lusid.Sdk.Api;
+using Lusid.Sdk.Client;
+using Lusid.Sdk.Model;
+
+namespace Example
+{
+    public class UpsertCdsFlowConventionsExample
+    {
+        public static void Main()
+        {
+            Configuration.Default.BasePath = "http://localhost:41522";
+            // Configure OAuth2 access token for authorization: oauth2
+            Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
+
+            var apiInstance = new ConventionsApi(Configuration.Default);
+            var upsertConventionsRequest = new UpsertConventionsRequest(); // UpsertConventionsRequest | The CDS Flow Conventions to update or insert
+
+            try
+            {
+                // [EXPERIMENTAL] Upsert a set of CDS Flow Conventions. This creates or updates the data in Lusid.
+                UpsertSingleStructuredDataResponse result = apiInstance.UpsertCdsFlowConventions(upsertConventionsRequest);
+                Debug.WriteLine(result);
+            }
+            catch (ApiException e)
+            {
+                Debug.Print("Exception when calling ConventionsApi.UpsertCdsFlowConventions: " + e.Message );
+                Debug.Print("Status Code: "+ e.ErrorCode);
+                Debug.Print(e.StackTrace);
+            }
+        }
+    }
+}
+```
+
+### Parameters
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **upsertConventionsRequest** | [**UpsertConventionsRequest**](UpsertConventionsRequest.md)| The CDS Flow Conventions to update or insert | 
+
+### Return type
+
+[**UpsertSingleStructuredDataResponse**](UpsertSingleStructuredDataResponse.md)
+
+### Authorization
+
+[oauth2](../README.md#oauth2)
+
+### HTTP request headers
+
+- **Content-Type**: application/json-patch+json, application/json, text/json, application/_*+json
+- **Accept**: text/plain, application/json, text/json
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+| **200** | The successfully updated or inserted item or any failure |  -  |
+| **400** | The details of the input related failure |  -  |
+| **0** | Error response |  -  |
+
+[[Back to top]](#)
+[[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
+
+
+## UpsertFlowConventions
+
+> UpsertSingleStructuredDataResponse UpsertFlowConventions (UpsertConventionsRequest upsertConventionsRequest)
+
+[EXPERIMENTAL] Upsert a set of Flow Conventions. This creates or updates the data in Lusid.
+
+Update or insert Flow Conventions in a single scope. An item will be updated if it already exists  and inserted if it does not.                The response will return the successfully updated or inserted Flow Conventions or failure message if unsuccessful                It is important to always check to verify success (or failure).
+
+### Example
+
+```csharp
+using System.Collections.Generic;
+using System.Diagnostics;
+using Lusid.Sdk.Api;
+using Lusid.Sdk.Client;
+using Lusid.Sdk.Model;
+
+namespace Example
+{
+    public class UpsertFlowConventionsExample
+    {
+        public static void Main()
+        {
+            Configuration.Default.BasePath = "http://localhost:41522";
+            // Configure OAuth2 access token for authorization: oauth2
+            Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
+
+            var apiInstance = new ConventionsApi(Configuration.Default);
+            var upsertConventionsRequest = new UpsertConventionsRequest(); // UpsertConventionsRequest | The Flow Conventions to update or insert
+
+            try
+            {
+                // [EXPERIMENTAL] Upsert a set of Flow Conventions. This creates or updates the data in Lusid.
+                UpsertSingleStructuredDataResponse result = apiInstance.UpsertFlowConventions(upsertConventionsRequest);
+                Debug.WriteLine(result);
+            }
+            catch (ApiException e)
+            {
+                Debug.Print("Exception when calling ConventionsApi.UpsertFlowConventions: " + e.Message );
+                Debug.Print("Status Code: "+ e.ErrorCode);
+                Debug.Print(e.StackTrace);
+            }
+        }
+    }
+}
+```
+
+### Parameters
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **upsertConventionsRequest** | [**UpsertConventionsRequest**](UpsertConventionsRequest.md)| The Flow Conventions to update or insert | 
+
+### Return type
+
+[**UpsertSingleStructuredDataResponse**](UpsertSingleStructuredDataResponse.md)
+
+### Authorization
+
+[oauth2](../README.md#oauth2)
+
+### HTTP request headers
+
+- **Content-Type**: application/json-patch+json, application/json, text/json, application/_*+json
+- **Accept**: text/plain, application/json, text/json
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+| **200** | The successfully updated or inserted item or any failure |  -  |
+| **400** | The details of the input related failure |  -  |
+| **0** | Error response |  -  |
+
+[[Back to top]](#)
+[[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
+
+
+## UpsertIndexConvention
+
+> UpsertSingleStructuredDataResponse UpsertIndexConvention (UpsertConventionsRequest upsertConventionsRequest)
+
+[EXPERIMENTAL] Upsert a set of Index Convention. This creates or updates the data in Lusid.
+
+Update or insert Index Convention in a single scope. An item will be updated if it already exists  and inserted if it does not.                The response will return the successfully updated or inserted Index Convention or failure message if unsuccessful                It is important to always check to verify success (or failure).
+
+### Example
+
+```csharp
+using System.Collections.Generic;
+using System.Diagnostics;
+using Lusid.Sdk.Api;
+using Lusid.Sdk.Client;
+using Lusid.Sdk.Model;
+
+namespace Example
+{
+    public class UpsertIndexConventionExample
+    {
+        public static void Main()
+        {
+            Configuration.Default.BasePath = "http://localhost:41522";
+            // Configure OAuth2 access token for authorization: oauth2
+            Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
+
+            var apiInstance = new ConventionsApi(Configuration.Default);
+            var upsertConventionsRequest = new UpsertConventionsRequest(); // UpsertConventionsRequest | The Index Conventions to update or insert
+
+            try
+            {
+                // [EXPERIMENTAL] Upsert a set of Index Convention. This creates or updates the data in Lusid.
+                UpsertSingleStructuredDataResponse result = apiInstance.UpsertIndexConvention(upsertConventionsRequest);
+                Debug.WriteLine(result);
+            }
+            catch (ApiException e)
+            {
+                Debug.Print("Exception when calling ConventionsApi.UpsertIndexConvention: " + e.Message );
+                Debug.Print("Status Code: "+ e.ErrorCode);
+                Debug.Print(e.StackTrace);
+            }
+        }
+    }
+}
+```
+
+### Parameters
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **upsertConventionsRequest** | [**UpsertConventionsRequest**](UpsertConventionsRequest.md)| The Index Conventions to update or insert | 
+
+### Return type
+
+[**UpsertSingleStructuredDataResponse**](UpsertSingleStructuredDataResponse.md)
+
+### Authorization
+
+[oauth2](../README.md#oauth2)
+
+### HTTP request headers
+
+- **Content-Type**: application/json-patch+json, application/json, text/json, application/_*+json
+- **Accept**: text/plain, application/json, text/json
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+| **200** | The successfully updated or inserted item or any failure |  -  |
 | **400** | The details of the input related failure |  -  |
 | **0** | Error response |  -  |
 
