@@ -23,58 +23,56 @@ using OpenAPIDateConverter = Lusid.Sdk.Client.OpenAPIDateConverter;
 namespace Lusid.Sdk.Model
 {
     /// <summary>
-    /// UpsertOrderPropertiesRequest
+    /// Whether or not a DateTimeOffset is a business DateTime
     /// </summary>
     [DataContract]
-    public partial class UpsertOrderPropertiesRequest :  IEquatable<UpsertOrderPropertiesRequest>
+    public partial class IsBusinessDayResponse :  IEquatable<IsBusinessDayResponse>
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="UpsertOrderPropertiesRequest" /> class.
+        /// Initializes a new instance of the <see cref="IsBusinessDayResponse" /> class.
         /// </summary>
         [JsonConstructorAttribute]
-        protected UpsertOrderPropertiesRequest() { }
+        protected IsBusinessDayResponse() { }
         /// <summary>
-        /// Initializes a new instance of the <see cref="UpsertOrderPropertiesRequest" /> class.
+        /// Initializes a new instance of the <see cref="IsBusinessDayResponse" /> class.
         /// </summary>
-        /// <param name="properties">Client-defined properties associated with this order. (required).</param>
-        /// <param name="id">Uniquely identifies this order. (required).</param>
-        public UpsertOrderPropertiesRequest(List<Property> properties = default(List<Property>), string id = default(string))
+        /// <param name="requestedDateTime">requestedDateTime (required).</param>
+        /// <param name="isBusinessDay">isBusinessDay (required).</param>
+        public IsBusinessDayResponse(DateTimeOffset? requestedDateTime = default(DateTimeOffset?), bool? isBusinessDay = default(bool?))
         {
-            // to ensure "properties" is required (not null)
-            if (properties == null)
+            // to ensure "requestedDateTime" is required (not null)
+            if (requestedDateTime == null)
             {
-                throw new InvalidDataException("properties is a required property for UpsertOrderPropertiesRequest and cannot be null");
+                throw new InvalidDataException("requestedDateTime is a required property for IsBusinessDayResponse and cannot be null");
             }
             else
             {
-                this.Properties = properties;
+                this.RequestedDateTime = requestedDateTime;
             }
             
-            // to ensure "id" is required (not null)
-            if (id == null)
+            // to ensure "isBusinessDay" is required (not null)
+            if (isBusinessDay == null)
             {
-                throw new InvalidDataException("id is a required property for UpsertOrderPropertiesRequest and cannot be null");
+                throw new InvalidDataException("isBusinessDay is a required property for IsBusinessDayResponse and cannot be null");
             }
             else
             {
-                this.Id = id;
+                this.IsBusinessDay = isBusinessDay;
             }
             
         }
         
         /// <summary>
-        /// Client-defined properties associated with this order.
+        /// Gets or Sets RequestedDateTime
         /// </summary>
-        /// <value>Client-defined properties associated with this order.</value>
-        [DataMember(Name="properties", EmitDefaultValue=false)]
-        public List<Property> Properties { get; set; }
+        [DataMember(Name="requestedDateTime", EmitDefaultValue=false)]
+        public DateTimeOffset? RequestedDateTime { get; set; }
 
         /// <summary>
-        /// Uniquely identifies this order.
+        /// Gets or Sets IsBusinessDay
         /// </summary>
-        /// <value>Uniquely identifies this order.</value>
-        [DataMember(Name="id", EmitDefaultValue=false)]
-        public string Id { get; set; }
+        [DataMember(Name="isBusinessDay", EmitDefaultValue=false)]
+        public bool? IsBusinessDay { get; set; }
 
         /// <summary>
         /// Returns the string presentation of the object
@@ -83,9 +81,9 @@ namespace Lusid.Sdk.Model
         public override string ToString()
         {
             var sb = new StringBuilder();
-            sb.Append("class UpsertOrderPropertiesRequest {\n");
-            sb.Append("  Properties: ").Append(Properties).Append("\n");
-            sb.Append("  Id: ").Append(Id).Append("\n");
+            sb.Append("class IsBusinessDayResponse {\n");
+            sb.Append("  RequestedDateTime: ").Append(RequestedDateTime).Append("\n");
+            sb.Append("  IsBusinessDay: ").Append(IsBusinessDay).Append("\n");
             sb.Append("}\n");
             return sb.ToString();
         }
@@ -106,30 +104,29 @@ namespace Lusid.Sdk.Model
         /// <returns>Boolean</returns>
         public override bool Equals(object input)
         {
-            return this.Equals(input as UpsertOrderPropertiesRequest);
+            return this.Equals(input as IsBusinessDayResponse);
         }
 
         /// <summary>
-        /// Returns true if UpsertOrderPropertiesRequest instances are equal
+        /// Returns true if IsBusinessDayResponse instances are equal
         /// </summary>
-        /// <param name="input">Instance of UpsertOrderPropertiesRequest to be compared</param>
+        /// <param name="input">Instance of IsBusinessDayResponse to be compared</param>
         /// <returns>Boolean</returns>
-        public bool Equals(UpsertOrderPropertiesRequest input)
+        public bool Equals(IsBusinessDayResponse input)
         {
             if (input == null)
                 return false;
 
             return 
                 (
-                    this.Properties == input.Properties ||
-                    this.Properties != null &&
-                    input.Properties != null &&
-                    this.Properties.SequenceEqual(input.Properties)
+                    this.RequestedDateTime == input.RequestedDateTime ||
+                    (this.RequestedDateTime != null &&
+                    this.RequestedDateTime.Equals(input.RequestedDateTime))
                 ) && 
                 (
-                    this.Id == input.Id ||
-                    (this.Id != null &&
-                    this.Id.Equals(input.Id))
+                    this.IsBusinessDay == input.IsBusinessDay ||
+                    (this.IsBusinessDay != null &&
+                    this.IsBusinessDay.Equals(input.IsBusinessDay))
                 );
         }
 
@@ -142,10 +139,10 @@ namespace Lusid.Sdk.Model
             unchecked // Overflow is fine, just wrap
             {
                 int hashCode = 41;
-                if (this.Properties != null)
-                    hashCode = hashCode * 59 + this.Properties.GetHashCode();
-                if (this.Id != null)
-                    hashCode = hashCode * 59 + this.Id.GetHashCode();
+                if (this.RequestedDateTime != null)
+                    hashCode = hashCode * 59 + this.RequestedDateTime.GetHashCode();
+                if (this.IsBusinessDay != null)
+                    hashCode = hashCode * 59 + this.IsBusinessDay.GetHashCode();
                 return hashCode;
             }
         }

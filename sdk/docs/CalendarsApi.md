@@ -1,6 +1,6 @@
 # Lusid.Sdk.Api.CalendarsApi
 
-All URIs are relative to *http://localhost:37256*
+All URIs are relative to *http://localhost:48199*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
@@ -10,6 +10,7 @@ Method | HTTP request | Description
 [**DeleteDateFromCalendar**](CalendarsApi.md#deletedatefromcalendar) | **DELETE** /api/calendar/generic/{scope}/{code}/dates/{dateId} | [EXPERIMENTAL] Remove a date from a calendar
 [**GetCalendar**](CalendarsApi.md#getcalendar) | **GET** /api/calendar/generic/{scope}/{code} | [EXPERIMENTAL] Get a calendar in its generic form
 [**GetDates**](CalendarsApi.md#getdates) | **GET** /api/calendar/generic/{scope}/{code}/dates | [EXPERIMENTAL] Get dates for a specific calendar
+[**IsBusinessDateTime**](CalendarsApi.md#isbusinessdatetime) | **GET** /api/calendar/businessday/{scope}/{code} | [EXPERIMENTAL] Check whether a DateTime is a \&quot;Business DateTime\&quot;
 [**UpdateCalendar**](CalendarsApi.md#updatecalendar) | **PUT** /api/calendar/generic/{scope}/{code}/mask | [EXPERIMENTAL] Update a calendar
 
 
@@ -37,7 +38,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://localhost:37256";
+            Configuration.Default.BasePath = "http://localhost:48199";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -121,7 +122,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://localhost:37256";
+            Configuration.Default.BasePath = "http://localhost:48199";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -201,7 +202,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://localhost:37256";
+            Configuration.Default.BasePath = "http://localhost:48199";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -283,7 +284,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://localhost:37256";
+            Configuration.Default.BasePath = "http://localhost:48199";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -367,7 +368,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://localhost:37256";
+            Configuration.Default.BasePath = "http://localhost:48199";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -451,7 +452,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://localhost:37256";
+            Configuration.Default.BasePath = "http://localhost:48199";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -518,6 +519,92 @@ Name | Type | Description  | Notes
 [[Back to README]](../README.md)
 
 
+## IsBusinessDateTime
+
+> IsBusinessDayResponse IsBusinessDateTime (DateTimeOffset? dateTime, string scope, string code, DateTimeOffset? asAt = null)
+
+[EXPERIMENTAL] Check whether a DateTime is a \"Business DateTime\"
+
+A Business DateTime is defined as a point in time that:      * Does not represent a day that overlaps with the calendars WeekendMask      * If the calendar is a \"Holiday Calendar\" Does not overlap with any dates in the calendar      * If the calendar is a \"TradingHours Calendar\" Does overlap with a date in the calendar                All dates specified must be UTC and the upper bound of a calendar is not inclusive   e.g. From: 2020-12-25-00-00-00        To: 2020-12-26-00-00-00  IsBusinessDay(2020-12-26-00-00-00) == false
+
+### Example
+
+```csharp
+using System.Collections.Generic;
+using System.Diagnostics;
+using Lusid.Sdk.Api;
+using Lusid.Sdk.Client;
+using Lusid.Sdk.Model;
+
+namespace Example
+{
+    public class IsBusinessDateTimeExample
+    {
+        public static void Main()
+        {
+            Configuration.Default.BasePath = "http://localhost:48199";
+            // Configure OAuth2 access token for authorization: oauth2
+            Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
+
+            var apiInstance = new CalendarsApi(Configuration.Default);
+            var dateTime = 2013-10-20T19:20:30+01:00;  // DateTimeOffset? | DateTime to check - This DateTime must be UTC
+            var scope = scope_example;  // string | Scope of the calendar
+            var code = code_example;  // string | Code of the calendar
+            var asAt = 2013-10-20T19:20:30+01:00;  // DateTimeOffset? | AsAt for the request (optional) 
+
+            try
+            {
+                // [EXPERIMENTAL] Check whether a DateTime is a \"Business DateTime\"
+                IsBusinessDayResponse result = apiInstance.IsBusinessDateTime(dateTime, scope, code, asAt);
+                Debug.WriteLine(result);
+            }
+            catch (ApiException e)
+            {
+                Debug.Print("Exception when calling CalendarsApi.IsBusinessDateTime: " + e.Message );
+                Debug.Print("Status Code: "+ e.ErrorCode);
+                Debug.Print(e.StackTrace);
+            }
+        }
+    }
+}
+```
+
+### Parameters
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **dateTime** | **DateTimeOffset?**| DateTime to check - This DateTime must be UTC | 
+ **scope** | **string**| Scope of the calendar | 
+ **code** | **string**| Code of the calendar | 
+ **asAt** | **DateTimeOffset?**| AsAt for the request | [optional] 
+
+### Return type
+
+[**IsBusinessDayResponse**](IsBusinessDayResponse.md)
+
+### Authorization
+
+[oauth2](../README.md#oauth2)
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: text/plain, application/json, text/json
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+| **200** | Whether or not the requested DateTime is a BusinessDay or not |  -  |
+| **400** | The details of the input related failure |  -  |
+| **0** | Error response |  -  |
+
+[[Back to top]](#)
+[[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
+
+
 ## UpdateCalendar
 
 > Calendar UpdateCalendar (string scope, string code, UpdateCalendarRequest updateCalendarRequest)
@@ -541,7 +628,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://localhost:37256";
+            Configuration.Default.BasePath = "http://localhost:48199";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
