@@ -1,17 +1,17 @@
 # Lusid.Sdk.Api.CalendarsApi
 
-All URIs are relative to *http://localhost:57966*
+All URIs are relative to *http://localhost:56549*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
-[**AddDateToCalendar**](CalendarsApi.md#adddatetocalendar) | **PUT** /api/calendar/generic/{scope}/{code}/dates | [EXPERIMENTAL] Add a date to a calendar
-[**CreateCalendar**](CalendarsApi.md#createcalendar) | **POST** /api/calendar/generic | [EXPERIMENTAL] Create a calendar in its generic form
-[**DeleteCalendar**](CalendarsApi.md#deletecalendar) | **DELETE** /api/calendar/generic/{scope}/{code} | [EXPERIMENTAL] Delete a calendar
-[**DeleteDateFromCalendar**](CalendarsApi.md#deletedatefromcalendar) | **DELETE** /api/calendar/generic/{scope}/{code}/dates/{dateId} | [EXPERIMENTAL] Remove a date from a calendar
-[**GetCalendar**](CalendarsApi.md#getcalendar) | **GET** /api/calendar/generic/{scope}/{code} | [EXPERIMENTAL] Get a calendar in its generic form
-[**GetDates**](CalendarsApi.md#getdates) | **GET** /api/calendar/generic/{scope}/{code}/dates | [EXPERIMENTAL] Get dates for a specific calendar
-[**IsBusinessDateTime**](CalendarsApi.md#isbusinessdatetime) | **GET** /api/calendar/businessday/{scope}/{code} | [EXPERIMENTAL] Check whether a DateTime is a \&quot;Business DateTime\&quot;
-[**UpdateCalendar**](CalendarsApi.md#updatecalendar) | **PUT** /api/calendar/generic/{scope}/{code}/mask | [EXPERIMENTAL] Update a calendar
+[**AddDateToCalendar**](CalendarsApi.md#adddatetocalendar) | **PUT** /api/calendars/generic/{scope}/{code}/dates | [EXPERIMENTAL] Add a date to a calendar
+[**CreateCalendar**](CalendarsApi.md#createcalendar) | **POST** /api/calendars/generic | [EXPERIMENTAL] Create a calendar in its generic form
+[**DeleteCalendar**](CalendarsApi.md#deletecalendar) | **DELETE** /api/calendars/generic/{scope}/{code} | [EXPERIMENTAL] Delete a calendar
+[**DeleteDateFromCalendar**](CalendarsApi.md#deletedatefromcalendar) | **DELETE** /api/calendars/generic/{scope}/{code}/dates/{dateId} | [EXPERIMENTAL] Remove a date from a calendar
+[**GetCalendar**](CalendarsApi.md#getcalendar) | **GET** /api/calendars/generic/{scope}/{code} | [EXPERIMENTAL] Get a calendar in its generic form
+[**GetDates**](CalendarsApi.md#getdates) | **GET** /api/calendars/generic/{scope}/{code}/dates | [EXPERIMENTAL] Get dates for a specific calendar
+[**IsBusinessDateTime**](CalendarsApi.md#isbusinessdatetime) | **GET** /api/calendars/businessday/{scope}/{code} | [EXPERIMENTAL] Check whether a DateTime is a \&quot;Business DateTime\&quot;
+[**UpdateCalendar**](CalendarsApi.md#updatecalendar) | **PUT** /api/calendars/generic/{scope}/{code}/mask | [EXPERIMENTAL] Update a calendar
 
 
 
@@ -38,7 +38,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://localhost:57966";
+            Configuration.Default.BasePath = "http://localhost:56549";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -122,7 +122,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://localhost:57966";
+            Configuration.Default.BasePath = "http://localhost:56549";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -202,7 +202,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://localhost:57966";
+            Configuration.Default.BasePath = "http://localhost:56549";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -284,7 +284,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://localhost:57966";
+            Configuration.Default.BasePath = "http://localhost:56549";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -368,7 +368,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://localhost:57966";
+            Configuration.Default.BasePath = "http://localhost:56549";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -452,7 +452,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://localhost:57966";
+            Configuration.Default.BasePath = "http://localhost:56549";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -542,7 +542,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://localhost:57966";
+            Configuration.Default.BasePath = "http://localhost:56549";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -628,7 +628,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://localhost:57966";
+            Configuration.Default.BasePath = "http://localhost:56549";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
