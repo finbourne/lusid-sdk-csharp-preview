@@ -1,6 +1,6 @@
 # Lusid.Sdk.Api.ConventionsApi
 
-All URIs are relative to *http://localhost:44218*
+All URIs are relative to *http://localhost:41728*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
@@ -10,9 +10,11 @@ Method | HTTP request | Description
 [**GetCdsFlowConventions**](ConventionsApi.md#getcdsflowconventions) | **GET** /api/conventions/credit/conventions/{scope}/{code} | [EXPERIMENTAL] Get CDS Flow Conventions
 [**GetFlowConventions**](ConventionsApi.md#getflowconventions) | **GET** /api/conventions/rates/flowconventions/{scope}/{code} | [EXPERIMENTAL] Get Flow Conventions
 [**GetIndexConvention**](ConventionsApi.md#getindexconvention) | **GET** /api/conventions/rates/indexconventions/{scope}/{code} | [EXPERIMENTAL] Get Index Convention
-[**ListConventions**](ConventionsApi.md#listconventions) | **GET** /api/conventions | [EXPERIMENTAL] List the set of conventions
+[**ListCdsFlowConventions**](ConventionsApi.md#listcdsflowconventions) | **GET** /api/conventions/credit/conventions | [EXPERIMENTAL] List the set of CDS Flow Conventions
+[**ListFlowConventions**](ConventionsApi.md#listflowconventions) | **GET** /api/conventions/rates/flowconventions | [EXPERIMENTAL] List the set of Flow Conventions
+[**ListIndexConvention**](ConventionsApi.md#listindexconvention) | **GET** /api/conventions/rates/indexconventions | [EXPERIMENTAL] List the set of Index Conventions
 [**UpsertCdsFlowConventions**](ConventionsApi.md#upsertcdsflowconventions) | **POST** /api/conventions/credit/conventions | [EXPERIMENTAL] Upsert a set of CDS Flow Conventions. This creates or updates the data in Lusid.
-[**UpsertFlowConventions**](ConventionsApi.md#upsertflowconventions) | **POST** /api/conventions/rates/flowconventions | [EXPERIMENTAL] Upsert a set of Flow Conventions. This creates or updates the data in Lusid.
+[**UpsertFlowConventions**](ConventionsApi.md#upsertflowconventions) | **POST** /api/conventions/rates/flowconventions | [EXPERIMENTAL] Upsert Flow Conventions. This creates or updates the data in Lusid.
 [**UpsertIndexConvention**](ConventionsApi.md#upsertindexconvention) | **POST** /api/conventions/rates/indexconventions | [EXPERIMENTAL] Upsert a set of Index Convention. This creates or updates the data in Lusid.
 
 
@@ -40,7 +42,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://localhost:44218";
+            Configuration.Default.BasePath = "http://localhost:41728";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -122,7 +124,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://localhost:44218";
+            Configuration.Default.BasePath = "http://localhost:41728";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -204,7 +206,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://localhost:44218";
+            Configuration.Default.BasePath = "http://localhost:41728";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -265,7 +267,7 @@ Name | Type | Description  | Notes
 
 ## GetCdsFlowConventions
 
-> GetConventionsResponse GetCdsFlowConventions (string scope, string code, DateTimeOffset? asAt = null)
+> GetCdsFlowConventionsResponse GetCdsFlowConventions (string scope, string code, DateTimeOffset? asAt = null)
 
 [EXPERIMENTAL] Get CDS Flow Conventions
 
@@ -286,7 +288,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://localhost:44218";
+            Configuration.Default.BasePath = "http://localhost:41728";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -298,7 +300,7 @@ namespace Example
             try
             {
                 // [EXPERIMENTAL] Get CDS Flow Conventions
-                GetConventionsResponse result = apiInstance.GetCdsFlowConventions(scope, code, asAt);
+                GetCdsFlowConventionsResponse result = apiInstance.GetCdsFlowConventions(scope, code, asAt);
                 Debug.WriteLine(result);
             }
             catch (ApiException e)
@@ -323,7 +325,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**GetConventionsResponse**](GetConventionsResponse.md)
+[**GetCdsFlowConventionsResponse**](GetCdsFlowConventionsResponse.md)
 
 ### Authorization
 
@@ -349,7 +351,7 @@ Name | Type | Description  | Notes
 
 ## GetFlowConventions
 
-> GetConventionsResponse GetFlowConventions (string scope, string code, DateTimeOffset? asAt = null)
+> GetFlowConventionsResponse GetFlowConventions (string scope, string code, DateTimeOffset? asAt = null)
 
 [EXPERIMENTAL] Get Flow Conventions
 
@@ -370,7 +372,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://localhost:44218";
+            Configuration.Default.BasePath = "http://localhost:41728";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -382,7 +384,7 @@ namespace Example
             try
             {
                 // [EXPERIMENTAL] Get Flow Conventions
-                GetConventionsResponse result = apiInstance.GetFlowConventions(scope, code, asAt);
+                GetFlowConventionsResponse result = apiInstance.GetFlowConventions(scope, code, asAt);
                 Debug.WriteLine(result);
             }
             catch (ApiException e)
@@ -407,7 +409,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**GetConventionsResponse**](GetConventionsResponse.md)
+[**GetFlowConventionsResponse**](GetFlowConventionsResponse.md)
 
 ### Authorization
 
@@ -433,7 +435,7 @@ Name | Type | Description  | Notes
 
 ## GetIndexConvention
 
-> GetConventionsResponse GetIndexConvention (string scope, string code, DateTimeOffset? asAt = null)
+> GetIndexConventionResponse GetIndexConvention (string scope, string code, DateTimeOffset? asAt = null)
 
 [EXPERIMENTAL] Get Index Convention
 
@@ -454,7 +456,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://localhost:44218";
+            Configuration.Default.BasePath = "http://localhost:41728";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -466,7 +468,7 @@ namespace Example
             try
             {
                 // [EXPERIMENTAL] Get Index Convention
-                GetConventionsResponse result = apiInstance.GetIndexConvention(scope, code, asAt);
+                GetIndexConventionResponse result = apiInstance.GetIndexConvention(scope, code, asAt);
                 Debug.WriteLine(result);
             }
             catch (ApiException e)
@@ -491,7 +493,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**GetConventionsResponse**](GetConventionsResponse.md)
+[**GetIndexConventionResponse**](GetIndexConventionResponse.md)
 
 ### Authorization
 
@@ -515,13 +517,13 @@ Name | Type | Description  | Notes
 [[Back to README]](../README.md)
 
 
-## ListConventions
+## ListCdsFlowConventions
 
-> ResourceListOfGetConventionsResponse ListConventions (DateTimeOffset? asAt = null)
+> ResourceListOfGetCdsFlowConventionsResponse ListCdsFlowConventions (DateTimeOffset? asAt = null)
 
-[EXPERIMENTAL] List the set of conventions
+[EXPERIMENTAL] List the set of CDS Flow Conventions
 
-List the set of conventions at the specified date/time
+List the set of CDS Flow Conventions at the specified date/time
 
 ### Example
 
@@ -534,11 +536,11 @@ using Lusid.Sdk.Model;
 
 namespace Example
 {
-    public class ListConventionsExample
+    public class ListCdsFlowConventionsExample
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://localhost:44218";
+            Configuration.Default.BasePath = "http://localhost:41728";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -547,13 +549,13 @@ namespace Example
 
             try
             {
-                // [EXPERIMENTAL] List the set of conventions
-                ResourceListOfGetConventionsResponse result = apiInstance.ListConventions(asAt);
+                // [EXPERIMENTAL] List the set of CDS Flow Conventions
+                ResourceListOfGetCdsFlowConventionsResponse result = apiInstance.ListCdsFlowConventions(asAt);
                 Debug.WriteLine(result);
             }
             catch (ApiException e)
             {
-                Debug.Print("Exception when calling ConventionsApi.ListConventions: " + e.Message );
+                Debug.Print("Exception when calling ConventionsApi.ListCdsFlowConventions: " + e.Message );
                 Debug.Print("Status Code: "+ e.ErrorCode);
                 Debug.Print(e.StackTrace);
             }
@@ -571,7 +573,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**ResourceListOfGetConventionsResponse**](ResourceListOfGetConventionsResponse.md)
+[**ResourceListOfGetCdsFlowConventionsResponse**](ResourceListOfGetCdsFlowConventionsResponse.md)
 
 ### Authorization
 
@@ -585,7 +587,167 @@ Name | Type | Description  | Notes
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
-| **200** | The requested conventions |  -  |
+| **200** | The requested CDS Flow conventions |  -  |
+| **400** | The details of the input related failure |  -  |
+| **0** | Error response |  -  |
+
+[[Back to top]](#)
+[[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
+
+
+## ListFlowConventions
+
+> ResourceListOfGetFlowConventionsResponse ListFlowConventions (DateTimeOffset? asAt = null)
+
+[EXPERIMENTAL] List the set of Flow Conventions
+
+List the set of Flow Conventions at the specified date/time
+
+### Example
+
+```csharp
+using System.Collections.Generic;
+using System.Diagnostics;
+using Lusid.Sdk.Api;
+using Lusid.Sdk.Client;
+using Lusid.Sdk.Model;
+
+namespace Example
+{
+    public class ListFlowConventionsExample
+    {
+        public static void Main()
+        {
+            Configuration.Default.BasePath = "http://localhost:41728";
+            // Configure OAuth2 access token for authorization: oauth2
+            Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
+
+            var apiInstance = new ConventionsApi(Configuration.Default);
+            var asAt = 2013-10-20T19:20:30+01:00;  // DateTimeOffset? | The asAt datetime at which to list the conventions. Defaults to latest if not specified. (optional) 
+
+            try
+            {
+                // [EXPERIMENTAL] List the set of Flow Conventions
+                ResourceListOfGetFlowConventionsResponse result = apiInstance.ListFlowConventions(asAt);
+                Debug.WriteLine(result);
+            }
+            catch (ApiException e)
+            {
+                Debug.Print("Exception when calling ConventionsApi.ListFlowConventions: " + e.Message );
+                Debug.Print("Status Code: "+ e.ErrorCode);
+                Debug.Print(e.StackTrace);
+            }
+        }
+    }
+}
+```
+
+### Parameters
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **asAt** | **DateTimeOffset?**| The asAt datetime at which to list the conventions. Defaults to latest if not specified. | [optional] 
+
+### Return type
+
+[**ResourceListOfGetFlowConventionsResponse**](ResourceListOfGetFlowConventionsResponse.md)
+
+### Authorization
+
+[oauth2](../README.md#oauth2)
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: text/plain, application/json, text/json
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+| **200** | The requested Flow conventions |  -  |
+| **400** | The details of the input related failure |  -  |
+| **0** | Error response |  -  |
+
+[[Back to top]](#)
+[[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
+
+
+## ListIndexConvention
+
+> ResourceListOfGetIndexConventionResponse ListIndexConvention (DateTimeOffset? asAt = null)
+
+[EXPERIMENTAL] List the set of Index Conventions
+
+List the set of Index Conventions at the specified date/time
+
+### Example
+
+```csharp
+using System.Collections.Generic;
+using System.Diagnostics;
+using Lusid.Sdk.Api;
+using Lusid.Sdk.Client;
+using Lusid.Sdk.Model;
+
+namespace Example
+{
+    public class ListIndexConventionExample
+    {
+        public static void Main()
+        {
+            Configuration.Default.BasePath = "http://localhost:41728";
+            // Configure OAuth2 access token for authorization: oauth2
+            Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
+
+            var apiInstance = new ConventionsApi(Configuration.Default);
+            var asAt = 2013-10-20T19:20:30+01:00;  // DateTimeOffset? | The asAt datetime at which to list the conventions. Defaults to latest if not specified. (optional) 
+
+            try
+            {
+                // [EXPERIMENTAL] List the set of Index Conventions
+                ResourceListOfGetIndexConventionResponse result = apiInstance.ListIndexConvention(asAt);
+                Debug.WriteLine(result);
+            }
+            catch (ApiException e)
+            {
+                Debug.Print("Exception when calling ConventionsApi.ListIndexConvention: " + e.Message );
+                Debug.Print("Status Code: "+ e.ErrorCode);
+                Debug.Print(e.StackTrace);
+            }
+        }
+    }
+}
+```
+
+### Parameters
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **asAt** | **DateTimeOffset?**| The asAt datetime at which to list the conventions. Defaults to latest if not specified. | [optional] 
+
+### Return type
+
+[**ResourceListOfGetIndexConventionResponse**](ResourceListOfGetIndexConventionResponse.md)
+
+### Authorization
+
+[oauth2](../README.md#oauth2)
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: text/plain, application/json, text/json
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+| **200** | The requested Index conventions |  -  |
 | **400** | The details of the input related failure |  -  |
 | **0** | Error response |  -  |
 
@@ -597,7 +759,7 @@ Name | Type | Description  | Notes
 
 ## UpsertCdsFlowConventions
 
-> UpsertSingleStructuredDataResponse UpsertCdsFlowConventions (UpsertConventionsRequest upsertConventionsRequest)
+> UpsertSingleStructuredDataResponse UpsertCdsFlowConventions (UpsertCdsFlowConventionsRequest upsertCdsFlowConventionsRequest)
 
 [EXPERIMENTAL] Upsert a set of CDS Flow Conventions. This creates or updates the data in Lusid.
 
@@ -618,17 +780,17 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://localhost:44218";
+            Configuration.Default.BasePath = "http://localhost:41728";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
             var apiInstance = new ConventionsApi(Configuration.Default);
-            var upsertConventionsRequest = new UpsertConventionsRequest(); // UpsertConventionsRequest | The CDS Flow Conventions to update or insert
+            var upsertCdsFlowConventionsRequest = new UpsertCdsFlowConventionsRequest(); // UpsertCdsFlowConventionsRequest | The CDS Flow Conventions to update or insert
 
             try
             {
                 // [EXPERIMENTAL] Upsert a set of CDS Flow Conventions. This creates or updates the data in Lusid.
-                UpsertSingleStructuredDataResponse result = apiInstance.UpsertCdsFlowConventions(upsertConventionsRequest);
+                UpsertSingleStructuredDataResponse result = apiInstance.UpsertCdsFlowConventions(upsertCdsFlowConventionsRequest);
                 Debug.WriteLine(result);
             }
             catch (ApiException e)
@@ -647,7 +809,7 @@ namespace Example
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **upsertConventionsRequest** | [**UpsertConventionsRequest**](UpsertConventionsRequest.md)| The CDS Flow Conventions to update or insert | 
+ **upsertCdsFlowConventionsRequest** | [**UpsertCdsFlowConventionsRequest**](UpsertCdsFlowConventionsRequest.md)| The CDS Flow Conventions to update or insert | 
 
 ### Return type
 
@@ -677,9 +839,9 @@ Name | Type | Description  | Notes
 
 ## UpsertFlowConventions
 
-> UpsertSingleStructuredDataResponse UpsertFlowConventions (UpsertConventionsRequest upsertConventionsRequest)
+> UpsertSingleStructuredDataResponse UpsertFlowConventions (UpsertFlowConventionsRequest upsertFlowConventionsRequest)
 
-[EXPERIMENTAL] Upsert a set of Flow Conventions. This creates or updates the data in Lusid.
+[EXPERIMENTAL] Upsert Flow Conventions. This creates or updates the data in Lusid.
 
 Update or insert Flow Conventions in a single scope. An item will be updated if it already exists  and inserted if it does not.                The response will return the successfully updated or inserted Flow Conventions or failure message if unsuccessful                It is important to always check to verify success (or failure).
 
@@ -698,17 +860,17 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://localhost:44218";
+            Configuration.Default.BasePath = "http://localhost:41728";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
             var apiInstance = new ConventionsApi(Configuration.Default);
-            var upsertConventionsRequest = new UpsertConventionsRequest(); // UpsertConventionsRequest | The Flow Conventions to update or insert
+            var upsertFlowConventionsRequest = new UpsertFlowConventionsRequest(); // UpsertFlowConventionsRequest | The Flow Conventions to update or insert
 
             try
             {
-                // [EXPERIMENTAL] Upsert a set of Flow Conventions. This creates or updates the data in Lusid.
-                UpsertSingleStructuredDataResponse result = apiInstance.UpsertFlowConventions(upsertConventionsRequest);
+                // [EXPERIMENTAL] Upsert Flow Conventions. This creates or updates the data in Lusid.
+                UpsertSingleStructuredDataResponse result = apiInstance.UpsertFlowConventions(upsertFlowConventionsRequest);
                 Debug.WriteLine(result);
             }
             catch (ApiException e)
@@ -727,7 +889,7 @@ namespace Example
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **upsertConventionsRequest** | [**UpsertConventionsRequest**](UpsertConventionsRequest.md)| The Flow Conventions to update or insert | 
+ **upsertFlowConventionsRequest** | [**UpsertFlowConventionsRequest**](UpsertFlowConventionsRequest.md)| The Flow Conventions to update or insert | 
 
 ### Return type
 
@@ -757,7 +919,7 @@ Name | Type | Description  | Notes
 
 ## UpsertIndexConvention
 
-> UpsertSingleStructuredDataResponse UpsertIndexConvention (UpsertConventionsRequest upsertConventionsRequest)
+> UpsertSingleStructuredDataResponse UpsertIndexConvention (UpsertIndexConventionRequest upsertIndexConventionRequest)
 
 [EXPERIMENTAL] Upsert a set of Index Convention. This creates or updates the data in Lusid.
 
@@ -778,17 +940,17 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://localhost:44218";
+            Configuration.Default.BasePath = "http://localhost:41728";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
             var apiInstance = new ConventionsApi(Configuration.Default);
-            var upsertConventionsRequest = new UpsertConventionsRequest(); // UpsertConventionsRequest | The Index Conventions to update or insert
+            var upsertIndexConventionRequest = new UpsertIndexConventionRequest(); // UpsertIndexConventionRequest | The Index Conventions to update or insert
 
             try
             {
                 // [EXPERIMENTAL] Upsert a set of Index Convention. This creates or updates the data in Lusid.
-                UpsertSingleStructuredDataResponse result = apiInstance.UpsertIndexConvention(upsertConventionsRequest);
+                UpsertSingleStructuredDataResponse result = apiInstance.UpsertIndexConvention(upsertIndexConventionRequest);
                 Debug.WriteLine(result);
             }
             catch (ApiException e)
@@ -807,7 +969,7 @@ namespace Example
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **upsertConventionsRequest** | [**UpsertConventionsRequest**](UpsertConventionsRequest.md)| The Index Conventions to update or insert | 
+ **upsertIndexConventionRequest** | [**UpsertIndexConventionRequest**](UpsertIndexConventionRequest.md)| The Index Conventions to update or insert | 
 
 ### Return type
 
