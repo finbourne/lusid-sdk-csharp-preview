@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Lusid.Sdk.Api;
 using Lusid.Sdk.Model;
+using Lusid.Sdk.Tests.Features;
 using Lusid.Sdk.Utilities;
 using NUnit.Framework;
 
@@ -19,7 +20,8 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
             var apiFactory = LusidApiFactoryBuilder.Build("secrets.json");
             _instrumentsApi = apiFactory.Api<IInstrumentsApi>();
         }
-
+        
+        [LusidFeature("F37")]
         [Test]
         public void DemonstrateCreationOfFxForward()
         {
@@ -52,7 +54,8 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
             Assert.That(retrFxFwd.DomCcy, Is.EqualTo(fxForward.DomCcy));
             Assert.That(retrFxFwd.FgnCcy, Is.EqualTo(fxForward.FgnCcy));
         }
-
+        
+        [LusidFeature("F38")]
         [Test]
         public void DemonstrateCreationOfSwap()
         {
@@ -142,7 +145,7 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
             var retrSwap = retrieved as SwapInstrument;
             Assert.That(retrSwap, Is.Not.Null);
         }
-
+        
         private void UpsertOtcToLusid(LusidInstrument instrument, string name, string idUniqueToInstrument)
         {
             // PACKAGE instrument for upsert

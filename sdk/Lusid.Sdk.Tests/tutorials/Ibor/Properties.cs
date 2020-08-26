@@ -4,6 +4,7 @@ using System.Linq;
 using NUnit.Framework;
 using Lusid.Sdk.Api;
 using Lusid.Sdk.Model;
+using Lusid.Sdk.Tests.Features;
 using Lusid.Sdk.Tests.Utilities;
 using Lusid.Sdk.Utilities;
 using static Lusid.Sdk.Utilities.PropertyExtensions;
@@ -24,7 +25,8 @@ namespace Lusid.Sdk.Tests.tutorials.Ibor
         {
             _apiFactory = LusidApiFactoryBuilder.Build("secrets.json");
         }
-
+        
+        [LusidFeature("F14")]
         [Test]
         public void Create_Portfolio_With_Label_Property()
         {
@@ -86,7 +88,8 @@ namespace Lusid.Sdk.Tests.tutorials.Ibor
             var labelProperty = portfolioProperties[labelPropertyDefinitionResult.Key];
             Assert.That(labelProperty.Value.LabelValue, Is.EqualTo(labelPropertyValueRequest.LabelValue));
         }
-
+        
+        [LusidFeature("F15")]
         [Test]
         public void Create_Portfolio_With_Metric_Property()
         {
@@ -151,6 +154,7 @@ namespace Lusid.Sdk.Tests.tutorials.Ibor
             Assert.That(metricProperty.Value.MetricValue.Unit, Is.EqualTo(metricPropertyValueRequest.MetricValue.Unit));
         }
         
+        [LusidFeature("F35")]
         [Test]
         public void Create_Portfolio_With_MultiValue_Property()
         {

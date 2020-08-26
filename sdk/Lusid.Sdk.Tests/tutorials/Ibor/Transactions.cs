@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Lusid.Sdk.Api;
 using Lusid.Sdk.Model;
+using Lusid.Sdk.Tests.Features;
 using Lusid.Sdk.Tests.Utilities;
 using Lusid.Sdk.Utilities;
 using NUnit.Framework;
@@ -30,7 +31,8 @@ namespace Lusid.Sdk.Tests.Tutorials.Ibor
             _instrumentIds = instrumentLoader.LoadInstruments();
             _testDataUtilities = new TestDataUtilities(apiFactory.Api<ITransactionPortfoliosApi>());
         }
-
+        
+        [LusidFeature("F17")]
         [Test]
         public void Load_Listed_Instrument_Transaction()
         {
@@ -69,6 +71,7 @@ namespace Lusid.Sdk.Tests.Tutorials.Ibor
             Assert.That(transactions.Values[0].TransactionId, Is.EqualTo(transaction.TransactionId));
         }
         
+        [LusidFeature("F18")]
         [Test]
         public void Load_Cash_Transaction()
         {
@@ -106,7 +109,7 @@ namespace Lusid.Sdk.Tests.Tutorials.Ibor
             Assert.That(transactions.Values, Has.Count.EqualTo(1));
             Assert.That(transactions.Values[0].TransactionId, Is.EqualTo(transaction.TransactionId));
         }
-        
+        [LusidFeature("F19")]
         [Test]
         public void Load_Otc_Instrument_Transaction()
         {
@@ -165,7 +168,8 @@ namespace Lusid.Sdk.Tests.Tutorials.Ibor
             Assert.That(transactions.Values[0].TransactionId, Is.EqualTo(transaction.TransactionId));
             Assert.That(transactions.Values[0].InstrumentUid, Is.EqualTo(swapId));
         }
-
+        
+        [LusidFeature("F31")]
         [Test]
         public void Cancel_Transactions()
         {

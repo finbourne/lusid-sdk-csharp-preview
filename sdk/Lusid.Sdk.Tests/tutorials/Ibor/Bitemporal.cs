@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading;
 using Lusid.Sdk.Api;
 using Lusid.Sdk.Model;
+using Lusid.Sdk.Tests.Features;
 using Lusid.Sdk.Tests.Utilities;
 using Lusid.Sdk.Utilities;
 using NUnit.Framework;
@@ -28,6 +29,7 @@ namespace Lusid.Sdk.Tests.Tutorials.Ibor
         }
         
         [Test]
+        [LusidFeature("F1")]
         public void Apply_Bitemporal_Portfolio_Change()
         {
             var portfolioId = _testDataUtilities.CreateTransactionPortfolio(TestDataUtilities.TutorialScope);

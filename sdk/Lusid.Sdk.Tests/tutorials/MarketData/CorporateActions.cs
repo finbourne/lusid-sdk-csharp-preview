@@ -1,5 +1,6 @@
 using System;
 using Lusid.Sdk.Api;
+using Lusid.Sdk.Tests.Features;
 using Lusid.Sdk.Utilities;
 using NUnit.Framework;
 
@@ -16,7 +17,8 @@ namespace Lusid.Sdk.Tests.Tutorials.MarketData
             var apiFactory = LusidApiFactoryBuilder.Build("secrets.json");
             _corporateActionSourcesApi = apiFactory.Api<ICorporateActionSourcesApi>();
         }
-
+        
+        [LusidFeature("F33")]
         [Test]
         public void List_Corporate_Action_Sources()
         {

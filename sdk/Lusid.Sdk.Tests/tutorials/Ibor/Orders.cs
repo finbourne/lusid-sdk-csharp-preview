@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Lusid.Sdk.Api;
 using Lusid.Sdk.Model;
+using Lusid.Sdk.Tests.Features;
 using Lusid.Sdk.Tests.Utilities;
 using Lusid.Sdk.Utilities;
 using NUnit.Framework;
@@ -29,7 +30,8 @@ namespace Lusid.Sdk.Tests.Tutorials.Ibor
             _instrumentIds = _instrumentLoader.LoadInstruments();
             _ordersApi = _apiFactory.Api<IOrdersApi>();
         }
-
+        
+        [LusidFeature("F4")]
         [Test]
         public void Upsert_Simple_Order()
         {
@@ -79,6 +81,7 @@ namespace Lusid.Sdk.Tests.Tutorials.Ibor
             Assert.That(upsertResult.Values.All(rl => rl.LusidInstrumentId.Equals(_instrumentIds.First())));
         }
         
+        [LusidFeature("F5")]
         [Test]
         public void Upsert_Simple_Order_With_Unknown_Instrument()
         {
@@ -128,6 +131,7 @@ namespace Lusid.Sdk.Tests.Tutorials.Ibor
             Assert.That(upsertResult.Values.All(rl => rl.LusidInstrumentId.Equals("LUID_ZZZZZZZZ")));
         }
         
+        [LusidFeature("F6")]
         [Test]
         public void Update_Simple_Order()
         {
@@ -212,6 +216,7 @@ namespace Lusid.Sdk.Tests.Tutorials.Ibor
             Assert.That(upsertResult.Values.All(rl => rl.Properties.Count() == 5));
         }
         
+        [LusidFeature("F7")]
         [Test]
         public void Upsert_And_Retrieve_Simple_Orders()
         {
