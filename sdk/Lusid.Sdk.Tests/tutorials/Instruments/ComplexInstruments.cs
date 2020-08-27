@@ -25,7 +25,7 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
         {
             // CREATE an Fx-Forward (that can then be upserted into LUSID)
             var usdJpyFxRate = 109m; // Assume 1 USD is worth 109m as contract is struck. USD is domestic, JPY is foreign.
-            var fxForward = new FxForwardInstrument(
+            var fxForward = new FxForward(
                 domAmount: -1m,
                 fgnAmount: usdJpyFxRate,
                 domCcy: "USD",
@@ -45,7 +45,7 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
             // CAN NOW QUERY FROM LUSID
             var retrieved = QueryOtcFromLusid(uniqueId);
             Assert.That(retrieved.InstrumentType == LusidInstrument.InstrumentTypeEnum.FxForward);
-            var retrFxFwd = retrieved as FxForwardInstrument;
+            var retrFxFwd = retrieved as FxForward;
             Assert.That(retrFxFwd, Is.Not.Null);
             Assert.That(retrFxFwd.DomAmount, Is.EqualTo(fxForward.DomAmount));
             Assert.That(retrFxFwd.FgnAmount, Is.EqualTo(fxForward.FgnAmount));
@@ -118,7 +118,7 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
                 instrumentType: LusidInstrument.InstrumentTypeEnum.FloatingRateLeg
             );
 
-            var irs = new SwapInstrument(
+            var irs = new InterestRateSwap(
                 startDate: startDate,
                 maturityDate: maturityDate,
                 legs: new List<InstrumentLeg>
@@ -139,8 +139,74 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
             // CAN NOW QUERY FROM LUSID
             var retrieved = QueryOtcFromLusid(uniqueId);
             Assert.That(retrieved.InstrumentType == LusidInstrument.InstrumentTypeEnum.InterestRateSwap);
-            var retrSwap = retrieved as SwapInstrument;
+            var retrSwap = retrieved as InterestRateSwap;
             Assert.That(retrSwap, Is.Not.Null);
+        }
+        
+        [Test]
+        public void DemonstrateCreationOfExotic()
+        {
+            // CREATE an exotic instrument (that can then be upserted into LUSID)
+            var exotic = new ExoticInstrument(
+                instrumentFormat: new InstrumentDefinitionFormat("source", "someVendor", "1.1"),
+                content: "exoticInstrument",
+                instrumentType: LusidInstrument.InstrumentTypeEnum.ExoticInstrument
+            );
+
+            // ASSERT that it was created
+            Assert.That(exotic, Is.Not.Null);
+
+            // CAN NOW UPSERT TO LUSID
+            string uniqueId = "id-exotic-1";
+            UpsertOtcToLusid(exotic, "some-name-for-this-exotic", uniqueId);
+
+            // CAN NOW QUERY FROM LUSID
+            var retrieved = QueryOtcFromLusid(uniqueId);
+            Assert.That(retrieved.InstrumentType == LusidInstrument.InstrumentTypeEnum.ExoticInstrument);
+            var roundTripExotic = retrieved as ExoticInstrument;
+            Assert.That(roundTripExotic, Is.Not.Null);
+            Assert.That(roundTripExotic.Content, Is.EqualTo(exotic.Content));
+            Assert.That(roundTripExotic.InstrumentFormat, Is.EqualTo(exotic.InstrumentFormat)); 
+        }
+        
+        [Test]
+        public void DemonstrateCreationOfEquityOption()
+        {
+            // CREATE an exotic instrument (that can then be upserted into LUSID)
+            var equityOption = new EquityOption(
+                startDate: new DateTimeOffset(2020, 2, 7, 0, 0, 0, TimeSpan.Zero),
+                optionMaturityDate: new DateTimeOffset(2020, 9, 18, 0, 0, 0, TimeSpan.Zero),
+                optionSettlementDate: new DateTimeOffset(2020, 9, 20, 0, 0, 0, TimeSpan.Zero),
+                deliveryType: EquityOption.DeliveryTypeEnum.Physical,
+                optionType: EquityOption.OptionTypeEnum.Call,
+                strike: 100m,
+                domCcy: "GBP",
+                underlyingIdentifier: EquityOption.UnderlyingIdentifierEnum.Isin,
+                code: "code",
+                instrumentType: LusidInstrument.InstrumentTypeEnum.EquityOption
+            );
+
+            // ASSERT that it was created
+            Assert.That(equityOption, Is.Not.Null);
+
+            // CAN NOW UPSERT TO LUSID
+            string uniqueId = "id-equityOption-1";
+            UpsertOtcToLusid(equityOption, "some-name-for-this-equityOption", uniqueId);
+
+            // CAN NOW QUERY FROM LUSID
+            var retrieved = QueryOtcFromLusid(uniqueId);
+            Assert.That(retrieved.InstrumentType == LusidInstrument.InstrumentTypeEnum.EquityOption);
+            var roundTripEquityOption = retrieved as EquityOption;
+            Assert.That(roundTripEquityOption, Is.Not.Null);
+            Assert.That(roundTripEquityOption.Code, Is.EqualTo(roundTripEquityOption.Code));
+            Assert.That(roundTripEquityOption.Strike, Is.EqualTo(roundTripEquityOption.Strike));
+            Assert.That(roundTripEquityOption.DeliveryType, Is.EqualTo(roundTripEquityOption.DeliveryType));
+            Assert.That(roundTripEquityOption.DomCcy, Is.EqualTo(roundTripEquityOption.DomCcy));
+            Assert.That(roundTripEquityOption.OptionType, Is.EqualTo(roundTripEquityOption.OptionType));
+            Assert.That(roundTripEquityOption.StartDate, Is.EqualTo(roundTripEquityOption.StartDate));
+            Assert.That(roundTripEquityOption.OptionMaturityDate, Is.EqualTo(roundTripEquityOption.OptionMaturityDate));
+            Assert.That(roundTripEquityOption.OptionSettlementDate, Is.EqualTo(roundTripEquityOption.OptionSettlementDate));
+            Assert.That(roundTripEquityOption.UnderlyingIdentifier, Is.EqualTo(roundTripEquityOption.UnderlyingIdentifier));
         }
 
         private void UpsertOtcToLusid(LusidInstrument instrument, string name, string idUniqueToInstrument)
@@ -183,4 +249,3 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
         }
     }
 }
-
