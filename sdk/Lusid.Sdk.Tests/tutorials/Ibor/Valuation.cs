@@ -80,18 +80,18 @@ namespace Lusid.Sdk.Tests.Tutorials.Ibor
             //    Create the quotes
             var recipe = new ConfigurationRecipe
             (
-				scope: "User",
+                scope: "User",
                 code: "DataScope_Recipe",
                 market: new MarketContext
                 {
                     Suppliers = new MarketContextSuppliers
                     {
-                        Equity = ResourceSupplier.DataScope
+                        Equity = "DataScope"
                     },
                     Options = new MarketOptions
                     {
-                        DefaultSupplier = MarketOptions.DefaultSupplierEnum.DataScope,
-                        DefaultInstrumentCodeType = MarketOptions.DefaultInstrumentCodeTypeEnum.LusidInstrumentId,
+                        DefaultSupplier = "DataScope",
+                        DefaultInstrumentCodeType = "LusidInstrumentId",
                         DefaultScope = scope
                     }
                 }
