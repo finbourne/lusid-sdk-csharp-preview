@@ -149,7 +149,7 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
             // CREATE an exotic instrument (that can then be upserted into LUSID)
             var exotic = new ExoticInstrument(
                 instrumentFormat: new InstrumentDefinitionFormat("source", "someVendor", "1.1"),
-                content: "exoticInstrument",
+                content: "{\"data\":\"exoticInstrument\"}",
                 instrumentType: LusidInstrument.InstrumentTypeEnum.ExoticInstrument
             );
 
@@ -212,7 +212,7 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
         private void UpsertOtcToLusid(LusidInstrument instrument, string name, string idUniqueToInstrument)
         {
             // PACKAGE instrument for upsert
-            var instrumentDefinition = new LusidInstrumentDefinition(
+            var instrumentDefinition = new InstrumentDefinition(
                 name: name,
                 identifiers: new Dictionary<string, InstrumentIdValue>
                 {
@@ -222,7 +222,7 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
                 );
 
             // put instrument into Lusid
-            var response = _instrumentsApi.UpsertLusidInstruments(new Dictionary<string, LusidInstrumentDefinition>
+            var response = _instrumentsApi.UpsertInstruments(new Dictionary<string, InstrumentDefinition>
             {
                 ["someId1"] = instrumentDefinition
             });
@@ -234,7 +234,7 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
 
         private LusidInstrument QueryOtcFromLusid(string idUniqueToInstrument)
         {
-            var response = _instrumentsApi.GetLusidInstruments("ClientInternal",
+            var response = _instrumentsApi.GetInstruments("ClientInternal",
                 new List<string>
                 {
                     idUniqueToInstrument

@@ -268,11 +268,12 @@ namespace Lusid.Sdk.Tests.Tutorials.MarketData
                 },
                 
                 //  The details for valuing the instrument
-                definition: new InstrumentEconomicDefinition(
+                definition: new ExoticInstrument(
                     
                     //  Identifies which valuation engine to use
-                    instrumentFormat: "CustomFormat",
-                    content: "<customFormat>upload in custom xml or JSON format</customFormat>"
+                    instrumentFormat: new InstrumentDefinitionFormat("CustomSource", "CustomFormat", "0.1.2"),
+                    content: "<customFormat>upload in custom xml or JSON format</customFormat>",
+                    instrumentType: LusidInstrument.InstrumentTypeEnum.ExoticInstrument
                 ));
             
             //    create the swap
