@@ -1,6 +1,6 @@
 # Lusid.Sdk.Api.InstrumentsApi
 
-All URIs are relative to *https://fbn-prd.lusid.com/api*
+All URIs are relative to *http://localhost:38415*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
@@ -9,12 +9,10 @@ Method | HTTP request | Description
 [**GetInstrument**](InstrumentsApi.md#getinstrument) | **GET** /api/instruments/{identifierType}/{identifier} | Get instrument
 [**GetInstrumentIdentifierTypes**](InstrumentsApi.md#getinstrumentidentifiertypes) | **GET** /api/instruments/identifierTypes | [EARLY ACCESS] Get instrument identifier types
 [**GetInstruments**](InstrumentsApi.md#getinstruments) | **POST** /api/instruments/$get | Get instruments
-[**GetLusidInstruments**](InstrumentsApi.md#getlusidinstruments) | **POST** /api/instruments/otc/$get | [EXPERIMENTAL] Get instruments
 [**ListInstruments**](InstrumentsApi.md#listinstruments) | **GET** /api/instruments | [EARLY ACCESS] List instruments
 [**UpdateInstrumentIdentifier**](InstrumentsApi.md#updateinstrumentidentifier) | **POST** /api/instruments/{identifierType}/{identifier} | [EARLY ACCESS] Update instrument identifier
 [**UpsertInstruments**](InstrumentsApi.md#upsertinstruments) | **POST** /api/instruments | Upsert instruments
 [**UpsertInstrumentsProperties**](InstrumentsApi.md#upsertinstrumentsproperties) | **POST** /api/instruments/$upsertproperties | Upsert instruments properties
-[**UpsertLusidInstruments**](InstrumentsApi.md#upsertlusidinstruments) | **POST** /api/instruments/otc | [EXPERIMENTAL] Upsert instruments
 
 
 
@@ -41,7 +39,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "https://fbn-prd.lusid.com/api";
+            Configuration.Default.BasePath = "http://localhost:38415";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -123,7 +121,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "https://fbn-prd.lusid.com/api";
+            Configuration.Default.BasePath = "http://localhost:38415";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -209,7 +207,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "https://fbn-prd.lusid.com/api";
+            Configuration.Default.BasePath = "http://localhost:38415";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -297,7 +295,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "https://fbn-prd.lusid.com/api";
+            Configuration.Default.BasePath = "http://localhost:38415";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -372,7 +370,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "https://fbn-prd.lusid.com/api";
+            Configuration.Default.BasePath = "http://localhost:38415";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -437,94 +435,6 @@ Name | Type | Description  | Notes
 [[Back to README]](../README.md)
 
 
-## GetLusidInstruments
-
-> GetExpandedInstrumentsResponse GetLusidInstruments (string identifierType, List<string> requestBody, DateTimeOrCutLabel effectiveAt = null, DateTimeOffset? asAt = null, List<string> propertyKeys = null)
-
-[EXPERIMENTAL] Get instruments
-
-Get the definition of one or more Lusid (OTC) instruments identified by a collection of unique instrument identifiers.
-
-### Example
-
-```csharp
-using System.Collections.Generic;
-using System.Diagnostics;
-using Lusid.Sdk.Api;
-using Lusid.Sdk.Client;
-using Lusid.Sdk.Model;
-
-namespace Example
-{
-    public class GetLusidInstrumentsExample
-    {
-        public static void Main()
-        {
-            Configuration.Default.BasePath = "https://fbn-prd.lusid.com/api";
-            // Configure OAuth2 access token for authorization: oauth2
-            Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
-
-            var apiInstance = new InstrumentsApi(Configuration.Default);
-            var identifierType = identifierType_example;  // string | The identifier being supplied e.g. \"Figi\".
-            var requestBody = new List<string>(); // List<string> | The values of the identifier for the requested instruments.
-            var effectiveAt = effectiveAt_example;  // DateTimeOrCutLabel | The effective datetime or cut label at which to retrieve the instrument definitions.              Defaults to the current LUSID system datetime if not specified. (optional) 
-            var asAt = 2013-10-20T19:20:30+01:00;  // DateTimeOffset? | The asAt datetime at which to retrieve the instrument definitions.              Defaults to return the latest version of each instrument definition if not specified. (optional) 
-            var propertyKeys = new List<string>(); // List<string> | A list of property keys from the \"Instrument\" domain to decorate onto the instrument.              These take the format {domain}/{scope}/{code} e.g. \"Instrument/system/Name\". (optional) 
-
-            try
-            {
-                // [EXPERIMENTAL] Get instruments
-                GetExpandedInstrumentsResponse result = apiInstance.GetLusidInstruments(identifierType, requestBody, effectiveAt, asAt, propertyKeys);
-                Debug.WriteLine(result);
-            }
-            catch (ApiException e)
-            {
-                Debug.Print("Exception when calling InstrumentsApi.GetLusidInstruments: " + e.Message );
-                Debug.Print("Status Code: "+ e.ErrorCode);
-                Debug.Print(e.StackTrace);
-            }
-        }
-    }
-}
-```
-
-### Parameters
-
-
-Name | Type | Description  | Notes
-------------- | ------------- | ------------- | -------------
- **identifierType** | **string**| The identifier being supplied e.g. \&quot;Figi\&quot;. | 
- **requestBody** | [**List&lt;string&gt;**](string.md)| The values of the identifier for the requested instruments. | 
- **effectiveAt** | **DateTimeOrCutLabel**| The effective datetime or cut label at which to retrieve the instrument definitions.              Defaults to the current LUSID system datetime if not specified. | [optional] 
- **asAt** | **DateTimeOffset?**| The asAt datetime at which to retrieve the instrument definitions.              Defaults to return the latest version of each instrument definition if not specified. | [optional] 
- **propertyKeys** | [**List&lt;string&gt;**](string.md)| A list of property keys from the \&quot;Instrument\&quot; domain to decorate onto the instrument.              These take the format {domain}/{scope}/{code} e.g. \&quot;Instrument/system/Name\&quot;. | [optional] 
-
-### Return type
-
-[**GetExpandedInstrumentsResponse**](GetExpandedInstrumentsResponse.md)
-
-### Authorization
-
-[oauth2](../README.md#oauth2)
-
-### HTTP request headers
-
-- **Content-Type**: application/json-patch+json, application/json, text/json, application/_*+json
-- **Accept**: text/plain, application/json, text/json
-
-### HTTP response details
-| Status code | Description | Response headers |
-|-------------|-------------|------------------|
-| **200** | The requested instruments which could be identified along with any failures |  -  |
-| **400** | The details of the input related failure |  -  |
-| **0** | Error response |  -  |
-
-[[Back to top]](#)
-[[Back to API list]](../README.md#documentation-for-api-endpoints)
-[[Back to Model list]](../README.md#documentation-for-models)
-[[Back to README]](../README.md)
-
-
 ## ListInstruments
 
 > PagedResourceListOfInstrument ListInstruments (DateTimeOffset? asAt = null, DateTimeOrCutLabel effectiveAt = null, string page = null, List<string> sortBy = null, int? start = null, int? limit = null, string filter = null, List<string> instrumentPropertyKeys = null)
@@ -548,7 +458,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "https://fbn-prd.lusid.com/api";
+            Configuration.Default.BasePath = "http://localhost:38415";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -642,7 +552,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "https://fbn-prd.lusid.com/api";
+            Configuration.Default.BasePath = "http://localhost:38415";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -726,7 +636,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "https://fbn-prd.lusid.com/api";
+            Configuration.Default.BasePath = "http://localhost:38415";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -806,7 +716,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "https://fbn-prd.lusid.com/api";
+            Configuration.Default.BasePath = "http://localhost:38415";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -854,86 +764,6 @@ Name | Type | Description  | Notes
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
 | **201** | The asAt time at which the properties were updated, inserted or deleted |  -  |
-| **400** | The details of the input related failure |  -  |
-| **0** | Error response |  -  |
-
-[[Back to top]](#)
-[[Back to API list]](../README.md#documentation-for-api-endpoints)
-[[Back to Model list]](../README.md#documentation-for-models)
-[[Back to README]](../README.md)
-
-
-## UpsertLusidInstruments
-
-> UpsertInstrumentsResponse UpsertLusidInstruments (Dictionary<string, LusidInstrumentDefinition> requestBody)
-
-[EXPERIMENTAL] Upsert instruments
-
-Update or insert one or more instruments into the LUSID instrument master. An instrument will be updated  if it already exists and inserted if it does not.                In the request each instrument definition should be keyed by a unique correlation id. This id is ephemeral  and is not stored by LUSID. It serves only as a way to easily identify each instrument in the response.                The response will return both the collection of successfully updated or inserted instruments, as well as those that failed.  For the failures a reason will be provided explaining why the instrument could not be updated or inserted.                It is important to always check the failed set for any unsuccessful results.
-
-### Example
-
-```csharp
-using System.Collections.Generic;
-using System.Diagnostics;
-using Lusid.Sdk.Api;
-using Lusid.Sdk.Client;
-using Lusid.Sdk.Model;
-
-namespace Example
-{
-    public class UpsertLusidInstrumentsExample
-    {
-        public static void Main()
-        {
-            Configuration.Default.BasePath = "https://fbn-prd.lusid.com/api";
-            // Configure OAuth2 access token for authorization: oauth2
-            Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
-
-            var apiInstance = new InstrumentsApi(Configuration.Default);
-            var requestBody = new Dictionary<string, LusidInstrumentDefinition>(); // Dictionary<string, LusidInstrumentDefinition> | The definitions of the instruments to update or insert.
-
-            try
-            {
-                // [EXPERIMENTAL] Upsert instruments
-                UpsertInstrumentsResponse result = apiInstance.UpsertLusidInstruments(requestBody);
-                Debug.WriteLine(result);
-            }
-            catch (ApiException e)
-            {
-                Debug.Print("Exception when calling InstrumentsApi.UpsertLusidInstruments: " + e.Message );
-                Debug.Print("Status Code: "+ e.ErrorCode);
-                Debug.Print(e.StackTrace);
-            }
-        }
-    }
-}
-```
-
-### Parameters
-
-
-Name | Type | Description  | Notes
-------------- | ------------- | ------------- | -------------
- **requestBody** | [**Dictionary&lt;string, LusidInstrumentDefinition&gt;**](LusidInstrumentDefinition.md)| The definitions of the instruments to update or insert. | 
-
-### Return type
-
-[**UpsertInstrumentsResponse**](UpsertInstrumentsResponse.md)
-
-### Authorization
-
-[oauth2](../README.md#oauth2)
-
-### HTTP request headers
-
-- **Content-Type**: application/json-patch+json, application/json, text/json, application/_*+json
-- **Accept**: text/plain, application/json, text/json
-
-### HTTP response details
-| Status code | Description | Response headers |
-|-------------|-------------|------------------|
-| **201** | The successfully updated or inserted instruments along with any failures |  -  |
 | **400** | The details of the input related failure |  -  |
 | **0** | Error response |  -  |
 
