@@ -52,6 +52,207 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
             Assert.That(retrFxFwd.DomCcy, Is.EqualTo(fxForward.DomCcy));
             Assert.That(retrFxFwd.FgnCcy, Is.EqualTo(fxForward.FgnCcy));
         }
+        
+        [Test]
+        public void DemonstrateCreationOfFxOption()
+        {
+            // CREATE an Fx-Option (that can then be upserted into LUSID)
+            var fxOption = new FxOption(
+                strike: 100m,
+                domCcy: "USD",
+                fgnCcy: "JPY",
+                startDate: new DateTimeOffset(2020, 2, 7, 0, 0, 0, TimeSpan.Zero),
+                optionMaturityDate: new DateTimeOffset(2020, 12, 18, 0, 0, 0, TimeSpan.Zero),
+                optionSettlementDate: new DateTimeOffset(2020, 12, 21, 0, 0, 0, TimeSpan.Zero),
+                isCallNotPut: true,
+                isDeliveryNotCash: true,
+                instrumentType: LusidInstrument.InstrumentTypeEnum.FxOption
+            );
+
+            // ASSERT that it was created
+            Assert.That(fxOption, Is.Not.Null);
+
+            // CAN NOW UPSERT TO LUSID
+            string uniqueId = "id-fxfwd-1";
+            UpsertOtcToLusid(fxOption, "some-name-for-this-fxOption", uniqueId);
+
+            // CAN NOW QUERY FROM LUSID
+            var retrieved = QueryOtcFromLusid(uniqueId);
+            Assert.That(retrieved.InstrumentType == LusidInstrument.InstrumentTypeEnum.FxOption);
+            var roundTripFxOption = retrieved as FxOption;
+            Assert.That(roundTripFxOption, Is.Not.Null);
+            Assert.That(roundTripFxOption.DomCcy, Is.EqualTo(fxOption.DomCcy));
+            Assert.That(roundTripFxOption.FgnCcy, Is.EqualTo(fxOption.FgnCcy));
+            Assert.That(roundTripFxOption.Strike, Is.EqualTo(fxOption.Strike));
+            Assert.That(roundTripFxOption.StartDate, Is.EqualTo(fxOption.StartDate));
+            Assert.That(roundTripFxOption.OptionMaturityDate, Is.EqualTo(fxOption.OptionMaturityDate));
+            Assert.That(roundTripFxOption.OptionSettlementDate, Is.EqualTo(fxOption.OptionSettlementDate));
+            Assert.That(roundTripFxOption.IsCallNotPut, Is.EqualTo(fxOption.IsCallNotPut));
+            Assert.That(roundTripFxOption.IsDeliveryNotCash, Is.EqualTo(fxOption.IsDeliveryNotCash));
+        }
+        
+        [Test]
+        public void DemonstrateCreationOfFuture()
+        {
+            // CREATE an future (that can then be upserted into LUSID)
+            var contractDetails = new FuturesContractDetails(
+                domCcy: "USD",
+                contractCode: "CL",
+                contractMonth: "F",
+                contractSize: 42000,
+                convention: FuturesContractDetails.ConventionEnum.Act365,
+                country: "US",
+                description: "Crude Oil Nymex future Jan21",
+                exchangeCode: "NYM",
+                exchangeName: "NYM",
+                tickerStep: 0.01m,
+                unitValue: 4.2m
+            );
+            
+            var futureDefinition = new Future(
+                startDate: new DateTimeOffset(2020, 09, 11, 0, 0, 0, TimeSpan.Zero),
+                maturityDate: new DateTimeOffset(2020, 12, 31, 0, 0, 0, TimeSpan.Zero),
+                identifiers : new Dictionary<string, string>(),
+                contractDetails: contractDetails,
+                contracts: 1,
+                refSpotPrice: 100,
+                underlying: new ExoticInstrument(
+                    new InstrumentDefinitionFormat("custom", "custom", "0.0.0"),
+                    content: "{}",
+                    LusidInstrument.InstrumentTypeEnum.ExoticInstrument),
+                instrumentType: LusidInstrument.InstrumentTypeEnum.Future 
+                );  
+            
+            // ASSERT that it was created
+            Assert.That(futureDefinition, Is.Not.Null);
+
+            // CAN NOW UPSERT TO LUSID
+            string uniqueId = "id-future-1";
+            UpsertOtcToLusid(futureDefinition, "some-name-for-this-future", uniqueId);
+
+            // CAN NOW QUERY FROM LUSID
+            var retrieved = QueryOtcFromLusid(uniqueId);
+            Assert.That(retrieved.InstrumentType == LusidInstrument.InstrumentTypeEnum.Future);
+            var roundTripFuture = retrieved as Future;
+            Assert.That(roundTripFuture, Is.Not.Null);
+            Assert.That(roundTripFuture.StartDate, Is.EqualTo(futureDefinition.StartDate));
+            Assert.That(roundTripFuture.RefSpotPrice, Is.EqualTo(futureDefinition.RefSpotPrice));
+            Assert.That(roundTripFuture.MaturityDate, Is.EqualTo(futureDefinition.MaturityDate));
+            Assert.That(roundTripFuture.Contracts, Is.EqualTo(futureDefinition.Contracts));
+            Assert.That(roundTripFuture.ContractDetails.Description, Is.EqualTo(futureDefinition.ContractDetails.Description));
+            Assert.That(roundTripFuture.ContractDetails.ContractMonth, Is.EqualTo(futureDefinition.ContractDetails.ContractMonth));
+            Assert.That(roundTripFuture.Underlying.InstrumentType, Is.EqualTo(futureDefinition.Underlying.InstrumentType));
+            Assert.That(roundTripFuture.Underlying.InstrumentType, Is.EqualTo(LusidInstrument.InstrumentTypeEnum.ExoticInstrument));
+        }
+        
+        [Test]
+        public void DemonstrateCreationOfBond()
+        {
+            // CREATE the flow conventions for bond
+            var flowConventions = new FlowConventions(
+                scope: null,
+                code: null,
+                currency: "GBP",
+                paymentFrequency: "6M",
+                rollConvention: FlowConventions.RollConventionEnum.MF,
+                dayCountConvention: FlowConventions.DayCountConventionEnum.Act365,
+                holidayCalendars:new List<string>(),
+                settleDays: 2,
+                resetDays: 2
+            );
+
+            var bond = new Bond(
+                startDate: new DateTimeOffset(2020, 2, 7, 0, 0, 0, TimeSpan.Zero),
+                maturityDate: new DateTimeOffset(2020, 9, 18, 0, 0, 0, TimeSpan.Zero),
+                domCcy: "GBP",
+                principal: 100m,
+                couponRate: 0.05m,
+                flowConventions: flowConventions,
+                identifiers: new Dictionary<string, string>(),
+                instrumentType: LusidInstrument.InstrumentTypeEnum.Bond
+            );
+
+            // ASSERT that it was created
+            Assert.That(bond, Is.Not.Null);
+
+            // CAN NOW UPSERT TO LUSID
+            string uniqueId = "id-bond-1";
+            UpsertOtcToLusid(bond, "some-name-for-this-bond", uniqueId);
+
+            // CAN NOW QUERY FROM LUSID
+            var retrieved = QueryOtcFromLusid(uniqueId);
+            Assert.That(retrieved.InstrumentType == LusidInstrument.InstrumentTypeEnum.Bond);
+            var roundTripBond = retrieved as Bond;
+            Assert.That(roundTripBond, Is.Not.Null);
+            Assert.That(roundTripBond.Principal, Is.EqualTo(bond.Principal));
+            Assert.That(roundTripBond.CouponRate, Is.EqualTo(bond.CouponRate));
+            Assert.That(roundTripBond.DomCcy, Is.EqualTo(bond.DomCcy));
+            Assert.That(roundTripBond.MaturityDate, Is.EqualTo(bond.MaturityDate));
+            Assert.That(roundTripBond.StartDate, Is.EqualTo(bond.StartDate));
+            Assert.That(roundTripBond.FlowConventions.Currency, Is.EqualTo(bond.FlowConventions.Currency));
+            Assert.That(roundTripBond.FlowConventions.PaymentFrequency, Is.EqualTo(bond.FlowConventions.PaymentFrequency));
+            Assert.That(roundTripBond.FlowConventions.ResetDays, Is.EqualTo(bond.FlowConventions.ResetDays));
+            Assert.That(roundTripBond.FlowConventions.SettleDays, Is.EqualTo(bond.FlowConventions.SettleDays));
+            Assert.That(roundTripBond.FlowConventions.HolidayCalendars.Count, Is.EqualTo(bond.FlowConventions.HolidayCalendars.Count));
+            Assert.That(roundTripBond.FlowConventions.HolidayCalendars, Is.EquivalentTo(bond.FlowConventions.HolidayCalendars));
+        }
+        
+        [Test]
+        public void DemonstrateCreationOfCreditDefaultSwap()
+        {
+            // CREATE the cds flow conventions for credit default swap
+            var cdsFlowConventions = new CdsFlowConventions(
+                scope: null,
+                code: null,
+                currency: "GBP",
+                paymentFrequency: "6M",
+                rollConvention: CdsFlowConventions.RollConventionEnum.MF,
+                dayCountConvention: CdsFlowConventions.DayCountConventionEnum.Act365,
+                holidayCalendars:new List<string>(),
+                rollFrequency: "6M",
+                settleDays: 2,
+                resetDays: 2
+            );
+            
+            var cdsProtectionDetailSpecification = new CdsProtectionDetailSpecification(
+                seniority: CdsProtectionDetailSpecification.SeniorityEnum.SNR,
+                restructuringType: CdsProtectionDetailSpecification.RestructuringTypeEnum.CR,
+                protectStartDay: true,
+                payAccruedInterestOnDefault: false);
+
+            var cds = new CreditDefaultSwap(
+                ticker: "ACME",
+                startDate: new DateTimeOffset(2020, 2, 7, 0, 0, 0, TimeSpan.Zero),
+                maturityDate: new DateTimeOffset(2020, 9, 18, 0, 0, 0, TimeSpan.Zero),
+                flowConventions: cdsFlowConventions,
+                couponRate: 0.5m,
+                protectionDetailSpecification: cdsProtectionDetailSpecification,
+                instrumentType: LusidInstrument.InstrumentTypeEnum.CreditDefaultSwap
+            );
+            // ASSERT that it was created
+            Assert.That(cds, Is.Not.Null);
+
+            // CAN NOW UPSERT TO LUSID
+            string uniqueId = "id-cds-1";
+            UpsertOtcToLusid(cds, "some-name-for-this-cds", uniqueId);
+
+            // CAN NOW QUERY FROM LUSID
+            var retrieved = QueryOtcFromLusid(uniqueId);
+            Assert.That(retrieved.InstrumentType == LusidInstrument.InstrumentTypeEnum.CreditDefaultSwap);
+            var roundTripCds = retrieved as CreditDefaultSwap;
+            Assert.That(roundTripCds, Is.Not.Null);
+            Assert.That(roundTripCds.CouponRate, Is.EqualTo(cds.CouponRate));
+            Assert.That(roundTripCds.Ticker, Is.EqualTo(cds.Ticker));
+            Assert.That(roundTripCds.MaturityDate, Is.EqualTo(cds.MaturityDate));
+            Assert.That(roundTripCds.StartDate, Is.EqualTo(cds.StartDate));
+            Assert.That(roundTripCds.FlowConventions.Currency, Is.EqualTo(cds.FlowConventions.Currency));
+            Assert.That(roundTripCds.FlowConventions.PaymentFrequency, Is.EqualTo(cds.FlowConventions.PaymentFrequency));
+            Assert.That(roundTripCds.FlowConventions.ResetDays, Is.EqualTo(cds.FlowConventions.ResetDays));
+            Assert.That(roundTripCds.FlowConventions.SettleDays, Is.EqualTo(cds.FlowConventions.SettleDays));
+            Assert.That(roundTripCds.FlowConventions.HolidayCalendars.Count, Is.EqualTo(cds.FlowConventions.HolidayCalendars.Count));
+            Assert.That(roundTripCds.FlowConventions.HolidayCalendars, Is.EquivalentTo(cds.FlowConventions.HolidayCalendars));
+        }
+        
 
         [Test]
         public void DemonstrateCreationOfSwap()
@@ -106,7 +307,7 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
                 startDate: startDate,
                 maturityDate: maturityDate,
                 legDefinition: fixedLegDef,
-                instrumentType: LusidInstrument.InstrumentTypeEnum.FixedRateLeg
+                instrumentType: LusidInstrument.InstrumentTypeEnum.FixedLeg
                 );
 
             // CREATE the floating leg
@@ -115,7 +316,7 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
                 startDate: startDate,
                 maturityDate: maturityDate,
                 legDefinition: floatLegDef,
-                instrumentType: LusidInstrument.InstrumentTypeEnum.FloatingRateLeg
+                instrumentType: LusidInstrument.InstrumentTypeEnum.FloatingLeg
             );
 
             var irs = new InterestRateSwap(
@@ -141,8 +342,115 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
             Assert.That(retrieved.InstrumentType == LusidInstrument.InstrumentTypeEnum.InterestRateSwap);
             var retrSwap = retrieved as InterestRateSwap;
             Assert.That(retrSwap, Is.Not.Null);
+            Assert.That(retrSwap.MaturityDate, Is.EqualTo(irs.MaturityDate));
+            Assert.That(retrSwap.StartDate, Is.EqualTo(irs.StartDate));
+            Assert.That(retrSwap.Legs.Count, Is.EqualTo(irs.Legs.Count));
         }
         
+        [Test]
+        public void DemonstrateCreationOfSwaption()
+        {
+            // CREATE an Interest Rate Swap (IRS)
+            var startDate = new DateTimeOffset(2020, 2, 7, 0, 0, 0, TimeSpan.Zero);
+            var maturityDate = new DateTimeOffset(2030, 2, 7, 0, 0, 0, TimeSpan.Zero);
+
+            // CREATE the flow conventions, index convention for swap
+            var flowConventions = new FlowConventions(
+                scope: null,
+                code: null,
+                currency: "GBP",
+                paymentFrequency: "6M",
+                rollConvention: FlowConventions.RollConventionEnum.MF,
+                dayCountConvention: FlowConventions.DayCountConventionEnum.Act365,
+                holidayCalendars:new List<string>(),
+                settleDays: 2,
+                resetDays: 2
+                );
+
+            var idxConvention = new IndexConvention(
+                code: "GbpLibor6m",
+                publicationDayLag: 0,
+                currency: "GBP",
+                paymentTenor: "6M",
+                dayCountConvention: IndexConvention.DayCountConventionEnum.Act365,
+                fixingReference: "BP00"
+            );
+
+            // CREATE the leg definitions
+            var fixedLegDef = new LegDefinition(
+                rateOrSpread: 0.05m, // fixed leg rate (swap rate)
+                stubType: LegDefinition.StubTypeEnum.Front,
+                payReceive: LegDefinition.PayReceiveEnum.Pay,
+                notionalExchangeType: LegDefinition.NotionalExchangeTypeEnum.None,
+                conventions: flowConventions
+            );
+
+            var floatLegDef = new LegDefinition(
+                rateOrSpread: 0.002m, // float leg spread over curve rate, often zero
+                stubType: LegDefinition.StubTypeEnum.Front,
+                payReceive: LegDefinition.PayReceiveEnum.Pay,
+                notionalExchangeType: LegDefinition.NotionalExchangeTypeEnum.None,
+                conventions: flowConventions,
+                indexConvention: idxConvention
+            );
+
+            // CREATE the fixed leg
+            var fixedLeg = new FixedLeg(
+                notional: 100m,
+                startDate: startDate,
+                maturityDate: maturityDate,
+                legDefinition: fixedLegDef,
+                instrumentType: LusidInstrument.InstrumentTypeEnum.FixedLeg
+                );
+
+            // CREATE the floating leg
+            var floatLeg = new FloatingLeg(
+                notional: 100m,
+                startDate: startDate,
+                maturityDate: maturityDate,
+                legDefinition: floatLegDef,
+                instrumentType: LusidInstrument.InstrumentTypeEnum.FloatingLeg
+            );
+
+            var swap = new InterestRateSwap(
+                startDate: startDate,
+                maturityDate: maturityDate,
+                legs: new List<InstrumentLeg>
+                {
+                    floatLeg,
+                    fixedLeg
+                },
+                instrumentType: LusidInstrument.InstrumentTypeEnum.InterestRateSwap
+            );
+            
+            // CREATE swaption to upsert to LUSID
+            var swaption = new InterestRateSwaption(
+                startDate: new DateTimeOffset(2020, 1, 15, 0, 0, 0, TimeSpan.Zero),
+                payOrReceiveFixed: InterestRateSwaption.PayOrReceiveFixedEnum.Pay,
+                deliveryMethod: InterestRateSwaption.DeliveryMethodEnum.Cash,
+                swap: swap,
+                instrumentType: LusidInstrument.InstrumentTypeEnum.InterestRateSwaption);
+
+            // ASSERT that it was created
+            Assert.That(swaption, Is.Not.Null);
+            Assert.That(swaption.Swap, Is.Not.Null);
+
+            // CAN NOW UPSERT TO LUSID
+            string uniqueId = "id-swaption-1";
+            UpsertOtcToLusid(swaption, "some-name-for-this-swaption", uniqueId);
+
+            // CAN NOW QUERY FROM LUSID
+            var retrieved = QueryOtcFromLusid(uniqueId);
+            Assert.That(retrieved.InstrumentType == LusidInstrument.InstrumentTypeEnum.InterestRateSwaption);
+            var roundTripSwaption = retrieved as InterestRateSwaption;
+            Assert.That(roundTripSwaption, Is.Not.Null);
+            Assert.That(roundTripSwaption.DeliveryMethod, Is.EqualTo(swaption.DeliveryMethod));
+            Assert.That(roundTripSwaption.StartDate, Is.EqualTo(swaption.StartDate));
+            Assert.That(roundTripSwaption.PayOrReceiveFixed, Is.EqualTo(swaption.PayOrReceiveFixed));
+            Assert.That(roundTripSwaption.Swap, Is.Not.Null);
+            Assert.That(roundTripSwaption.Swap.InstrumentType, Is.EqualTo(LusidInstrument.InstrumentTypeEnum.InterestRateSwap));
+        }
+
         [Test]
         public void DemonstrateCreationOfExotic()
         {
