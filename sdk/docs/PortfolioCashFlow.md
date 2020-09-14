@@ -6,7 +6,7 @@
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **SequenceNumber** | **int?** |  | 
-**SubHoldings** | [**Dictionary&lt;string, PerpetualProperty&gt;**](PerpetualProperty.md) |  | [optional] 
+**SubHoldingKeys** | [**Dictionary&lt;string, PerpetualProperty&gt;**](PerpetualProperty.md) |  | [optional] 
 **Type** | **string** |  | 
 **MovementName** | **string** |  | 
 **Cashflow** | [**CurrencyAndAmount**](CurrencyAndAmount.md) |  | 
