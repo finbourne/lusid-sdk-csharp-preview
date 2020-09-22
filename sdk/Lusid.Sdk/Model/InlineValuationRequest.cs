@@ -23,60 +23,124 @@ using OpenAPIDateConverter = Lusid.Sdk.Client.OpenAPIDateConverter;
 namespace Lusid.Sdk.Model
 {
     /// <summary>
-    /// TransactionPropertyMappingRequest
+    /// Specification object for the parameters of an inline valuation
     /// </summary>
     [DataContract]
-    public partial class TransactionPropertyMappingRequest :  IEquatable<TransactionPropertyMappingRequest>
+    public partial class InlineValuationRequest :  IEquatable<InlineValuationRequest>
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="TransactionPropertyMappingRequest" /> class.
+        /// Initializes a new instance of the <see cref="InlineValuationRequest" /> class.
         /// </summary>
         [JsonConstructorAttribute]
-        protected TransactionPropertyMappingRequest() { }
+        protected InlineValuationRequest() { }
         /// <summary>
-        /// Initializes a new instance of the <see cref="TransactionPropertyMappingRequest" /> class.
+        /// Initializes a new instance of the <see cref="InlineValuationRequest" /> class.
         /// </summary>
-        /// <param name="propertyKey">The Side (required).</param>
-        /// <param name="mapFrom">The Side.</param>
-        /// <param name="setTo">The Side.</param>
-        public TransactionPropertyMappingRequest(string propertyKey = default(string), string mapFrom = default(string), Object setTo = default(Object))
+        /// <param name="recipeId">recipeId.</param>
+        /// <param name="asAt">The asAt date to use.</param>
+        /// <param name="metrics">The set of specifications for items to calculate or retrieve during the aggregation and present in the results.  This is logically equivalent to the set of operations in a Sql select statement  select [operation1(field1), operation2(field2), ... ] from results (required).</param>
+        /// <param name="groupBy">The set of items by which to perform grouping. This primarily matters when one or more of the metric operators is a mapping  that reduces set size, e.g. sum or proportion. The group-by statement determines the set of keys by which to break the results out..</param>
+        /// <param name="filters">A set of filters to use to reduce the data found in a request. Equivalent to the &#39;where ...&#39; part of a Sql select statement.  For example, filter a set of values within a given range or matching a particular value..</param>
+        /// <param name="sort">A (possibly empty/null) set of specifications for how to order the results..</param>
+        /// <param name="reportCurrency">Three letter ISO currency string indicating what currency to report in for ReportCurrency denominated queries.  If not present then the currency of the relevant portfolio will be used in its place where relevant..</param>
+        /// <param name="valuationSchedule">valuationSchedule.</param>
+        /// <param name="instruments">The set of instruments, weighted by the quantities held that are required.  It is identified by an identifier tag that can be used to identify it externally.  For a single, unique trade or transaction this can be thought of as equivalent to the transaction identifier, or  a composite of the sub-holding keys for a regular sub-holding. When there are multiple transactions sharing the same underlying instrument  such as purchase of shares on multiple dates where tax implications are different this would not be the case. (required).</param>
+        public InlineValuationRequest(ResourceId recipeId = default(ResourceId), DateTimeOffset? asAt = default(DateTimeOffset?), List<AggregateSpec> metrics = default(List<AggregateSpec>), List<string> groupBy = default(List<string>), List<PropertyFilter> filters = default(List<PropertyFilter>), List<OrderBySpec> sort = default(List<OrderBySpec>), string reportCurrency = default(string), ValuationSchedule valuationSchedule = default(ValuationSchedule), List<WeightedInstrument> instruments = default(List<WeightedInstrument>))
         {
-            // to ensure "propertyKey" is required (not null)
-            if (propertyKey == null)
+            this.AsAt = asAt;
+            // to ensure "metrics" is required (not null)
+            if (metrics == null)
             {
-                throw new InvalidDataException("propertyKey is a required property for TransactionPropertyMappingRequest and cannot be null");
+                throw new InvalidDataException("metrics is a required property for InlineValuationRequest and cannot be null");
             }
             else
             {
-                this.PropertyKey = propertyKey;
+                this.Metrics = metrics;
             }
             
-            this.MapFrom = mapFrom;
-            this.SetTo = setTo;
-            this.MapFrom = mapFrom;
-            this.SetTo = setTo;
+            this.GroupBy = groupBy;
+            this.Filters = filters;
+            this.Sort = sort;
+            this.ReportCurrency = reportCurrency;
+            // to ensure "instruments" is required (not null)
+            if (instruments == null)
+            {
+                throw new InvalidDataException("instruments is a required property for InlineValuationRequest and cannot be null");
+            }
+            else
+            {
+                this.Instruments = instruments;
+            }
+            
+            this.RecipeId = recipeId;
+            this.AsAt = asAt;
+            this.GroupBy = groupBy;
+            this.Filters = filters;
+            this.Sort = sort;
+            this.ReportCurrency = reportCurrency;
+            this.ValuationSchedule = valuationSchedule;
         }
         
         /// <summary>
-        /// The Side
+        /// Gets or Sets RecipeId
         /// </summary>
-        /// <value>The Side</value>
-        [DataMember(Name="propertyKey", EmitDefaultValue=false)]
-        public string PropertyKey { get; set; }
+        [DataMember(Name="recipeId", EmitDefaultValue=false)]
+        public ResourceId RecipeId { get; set; }
 
         /// <summary>
-        /// The Side
+        /// The asAt date to use
         /// </summary>
-        /// <value>The Side</value>
-        [DataMember(Name="mapFrom", EmitDefaultValue=true)]
-        public string MapFrom { get; set; }
+        /// <value>The asAt date to use</value>
+        [DataMember(Name="asAt", EmitDefaultValue=true)]
+        public DateTimeOffset? AsAt { get; set; }
 
         /// <summary>
-        /// The Side
+        /// The set of specifications for items to calculate or retrieve during the aggregation and present in the results.  This is logically equivalent to the set of operations in a Sql select statement  select [operation1(field1), operation2(field2), ... ] from results
         /// </summary>
-        /// <value>The Side</value>
-        [DataMember(Name="setTo", EmitDefaultValue=true)]
-        public Object SetTo { get; set; }
+        /// <value>The set of specifications for items to calculate or retrieve during the aggregation and present in the results.  This is logically equivalent to the set of operations in a Sql select statement  select [operation1(field1), operation2(field2), ... ] from results</value>
+        [DataMember(Name="metrics", EmitDefaultValue=false)]
+        public List<AggregateSpec> Metrics { get; set; }
+
+        /// <summary>
+        /// The set of items by which to perform grouping. This primarily matters when one or more of the metric operators is a mapping  that reduces set size, e.g. sum or proportion. The group-by statement determines the set of keys by which to break the results out.
+        /// </summary>
+        /// <value>The set of items by which to perform grouping. This primarily matters when one or more of the metric operators is a mapping  that reduces set size, e.g. sum or proportion. The group-by statement determines the set of keys by which to break the results out.</value>
+        [DataMember(Name="groupBy", EmitDefaultValue=true)]
+        public List<string> GroupBy { get; set; }
+
+        /// <summary>
+        /// A set of filters to use to reduce the data found in a request. Equivalent to the &#39;where ...&#39; part of a Sql select statement.  For example, filter a set of values within a given range or matching a particular value.
+        /// </summary>
+        /// <value>A set of filters to use to reduce the data found in a request. Equivalent to the &#39;where ...&#39; part of a Sql select statement.  For example, filter a set of values within a given range or matching a particular value.</value>
+        [DataMember(Name="filters", EmitDefaultValue=true)]
+        public List<PropertyFilter> Filters { get; set; }
+
+        /// <summary>
+        /// A (possibly empty/null) set of specifications for how to order the results.
+        /// </summary>
+        /// <value>A (possibly empty/null) set of specifications for how to order the results.</value>
+        [DataMember(Name="sort", EmitDefaultValue=true)]
+        public List<OrderBySpec> Sort { get; set; }
+
+        /// <summary>
+        /// Three letter ISO currency string indicating what currency to report in for ReportCurrency denominated queries.  If not present then the currency of the relevant portfolio will be used in its place where relevant.
+        /// </summary>
+        /// <value>Three letter ISO currency string indicating what currency to report in for ReportCurrency denominated queries.  If not present then the currency of the relevant portfolio will be used in its place where relevant.</value>
+        [DataMember(Name="reportCurrency", EmitDefaultValue=true)]
+        public string ReportCurrency { get; set; }
+
+        /// <summary>
+        /// Gets or Sets ValuationSchedule
+        /// </summary>
+        [DataMember(Name="valuationSchedule", EmitDefaultValue=false)]
+        public ValuationSchedule ValuationSchedule { get; set; }
+
+        /// <summary>
+        /// The set of instruments, weighted by the quantities held that are required.  It is identified by an identifier tag that can be used to identify it externally.  For a single, unique trade or transaction this can be thought of as equivalent to the transaction identifier, or  a composite of the sub-holding keys for a regular sub-holding. When there are multiple transactions sharing the same underlying instrument  such as purchase of shares on multiple dates where tax implications are different this would not be the case.
+        /// </summary>
+        /// <value>The set of instruments, weighted by the quantities held that are required.  It is identified by an identifier tag that can be used to identify it externally.  For a single, unique trade or transaction this can be thought of as equivalent to the transaction identifier, or  a composite of the sub-holding keys for a regular sub-holding. When there are multiple transactions sharing the same underlying instrument  such as purchase of shares on multiple dates where tax implications are different this would not be the case.</value>
+        [DataMember(Name="instruments", EmitDefaultValue=false)]
+        public List<WeightedInstrument> Instruments { get; set; }
 
         /// <summary>
         /// Returns the string presentation of the object
@@ -85,10 +149,16 @@ namespace Lusid.Sdk.Model
         public override string ToString()
         {
             var sb = new StringBuilder();
-            sb.Append("class TransactionPropertyMappingRequest {\n");
-            sb.Append("  PropertyKey: ").Append(PropertyKey).Append("\n");
-            sb.Append("  MapFrom: ").Append(MapFrom).Append("\n");
-            sb.Append("  SetTo: ").Append(SetTo).Append("\n");
+            sb.Append("class InlineValuationRequest {\n");
+            sb.Append("  RecipeId: ").Append(RecipeId).Append("\n");
+            sb.Append("  AsAt: ").Append(AsAt).Append("\n");
+            sb.Append("  Metrics: ").Append(Metrics).Append("\n");
+            sb.Append("  GroupBy: ").Append(GroupBy).Append("\n");
+            sb.Append("  Filters: ").Append(Filters).Append("\n");
+            sb.Append("  Sort: ").Append(Sort).Append("\n");
+            sb.Append("  ReportCurrency: ").Append(ReportCurrency).Append("\n");
+            sb.Append("  ValuationSchedule: ").Append(ValuationSchedule).Append("\n");
+            sb.Append("  Instruments: ").Append(Instruments).Append("\n");
             sb.Append("}\n");
             return sb.ToString();
         }
@@ -109,34 +179,69 @@ namespace Lusid.Sdk.Model
         /// <returns>Boolean</returns>
         public override bool Equals(object input)
         {
-            return this.Equals(input as TransactionPropertyMappingRequest);
+            return this.Equals(input as InlineValuationRequest);
         }
 
         /// <summary>
-        /// Returns true if TransactionPropertyMappingRequest instances are equal
+        /// Returns true if InlineValuationRequest instances are equal
         /// </summary>
-        /// <param name="input">Instance of TransactionPropertyMappingRequest to be compared</param>
+        /// <param name="input">Instance of InlineValuationRequest to be compared</param>
         /// <returns>Boolean</returns>
-        public bool Equals(TransactionPropertyMappingRequest input)
+        public bool Equals(InlineValuationRequest input)
         {
             if (input == null)
                 return false;
 
             return 
                 (
-                    this.PropertyKey == input.PropertyKey ||
-                    (this.PropertyKey != null &&
-                    this.PropertyKey.Equals(input.PropertyKey))
+                    this.RecipeId == input.RecipeId ||
+                    (this.RecipeId != null &&
+                    this.RecipeId.Equals(input.RecipeId))
                 ) && 
                 (
-                    this.MapFrom == input.MapFrom ||
-                    (this.MapFrom != null &&
-                    this.MapFrom.Equals(input.MapFrom))
+                    this.AsAt == input.AsAt ||
+                    (this.AsAt != null &&
+                    this.AsAt.Equals(input.AsAt))
                 ) && 
                 (
-                    this.SetTo == input.SetTo ||
-                    (this.SetTo != null &&
-                    this.SetTo.Equals(input.SetTo))
+                    this.Metrics == input.Metrics ||
+                    this.Metrics != null &&
+                    input.Metrics != null &&
+                    this.Metrics.SequenceEqual(input.Metrics)
+                ) && 
+                (
+                    this.GroupBy == input.GroupBy ||
+                    this.GroupBy != null &&
+                    input.GroupBy != null &&
+                    this.GroupBy.SequenceEqual(input.GroupBy)
+                ) && 
+                (
+                    this.Filters == input.Filters ||
+                    this.Filters != null &&
+                    input.Filters != null &&
+                    this.Filters.SequenceEqual(input.Filters)
+                ) && 
+                (
+                    this.Sort == input.Sort ||
+                    this.Sort != null &&
+                    input.Sort != null &&
+                    this.Sort.SequenceEqual(input.Sort)
+                ) && 
+                (
+                    this.ReportCurrency == input.ReportCurrency ||
+                    (this.ReportCurrency != null &&
+                    this.ReportCurrency.Equals(input.ReportCurrency))
+                ) && 
+                (
+                    this.ValuationSchedule == input.ValuationSchedule ||
+                    (this.ValuationSchedule != null &&
+                    this.ValuationSchedule.Equals(input.ValuationSchedule))
+                ) && 
+                (
+                    this.Instruments == input.Instruments ||
+                    this.Instruments != null &&
+                    input.Instruments != null &&
+                    this.Instruments.SequenceEqual(input.Instruments)
                 );
         }
 
@@ -149,12 +254,24 @@ namespace Lusid.Sdk.Model
             unchecked // Overflow is fine, just wrap
             {
                 int hashCode = 41;
-                if (this.PropertyKey != null)
-                    hashCode = hashCode * 59 + this.PropertyKey.GetHashCode();
-                if (this.MapFrom != null)
-                    hashCode = hashCode * 59 + this.MapFrom.GetHashCode();
-                if (this.SetTo != null)
-                    hashCode = hashCode * 59 + this.SetTo.GetHashCode();
+                if (this.RecipeId != null)
+                    hashCode = hashCode * 59 + this.RecipeId.GetHashCode();
+                if (this.AsAt != null)
+                    hashCode = hashCode * 59 + this.AsAt.GetHashCode();
+                if (this.Metrics != null)
+                    hashCode = hashCode * 59 + this.Metrics.GetHashCode();
+                if (this.GroupBy != null)
+                    hashCode = hashCode * 59 + this.GroupBy.GetHashCode();
+                if (this.Filters != null)
+                    hashCode = hashCode * 59 + this.Filters.GetHashCode();
+                if (this.Sort != null)
+                    hashCode = hashCode * 59 + this.Sort.GetHashCode();
+                if (this.ReportCurrency != null)
+                    hashCode = hashCode * 59 + this.ReportCurrency.GetHashCode();
+                if (this.ValuationSchedule != null)
+                    hashCode = hashCode * 59 + this.ValuationSchedule.GetHashCode();
+                if (this.Instruments != null)
+                    hashCode = hashCode * 59 + this.Instruments.GetHashCode();
                 return hashCode;
             }
         }
