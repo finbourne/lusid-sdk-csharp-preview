@@ -517,6 +517,50 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
             Assert.That(roundTripEquityOption.UnderlyingIdentifier, Is.EqualTo(roundTripEquityOption.UnderlyingIdentifier));
         }
 
+        [Test]
+        public void DemonstrateCreationOfTermDeposit()
+        {
+            // CREATE a new TermDeposit
+            var termDeposit = new TermDeposit(
+                startDate: new DateTimeOffset(2020, 2, 5, 0, 0, 0, TimeSpan.Zero),
+                maturityDate: new DateTimeOffset(2020, 8, 5, 0, 0, 0, TimeSpan.Zero),
+                contractSize: 1_000_000m,
+                flowConvention: new FlowConventions(
+                    scope: null,
+                    code: null,
+                    currency: "GBP",
+                    paymentFrequency: "6M",
+                    rollConvention: FlowConventions.RollConventionEnum.MF,
+                    dayCountConvention: FlowConventions.DayCountConventionEnum.Act365,
+                    holidayCalendars: new List<string>(),
+                    settleDays: 1,
+                    resetDays: 0
+                ),
+                rate: 0.03m,
+                instrumentType: LusidInstrument.InstrumentTypeEnum.TermDeposit
+            );
+
+            // CAN NOW UPSERT TO LUSID
+            string uniqueId = "id-termDeposit-1";
+            UpsertOtcToLusid(termDeposit, "some-name-for-this-termDeposit", uniqueId);
+
+            // CAN NOW QUERY FROM LUSID
+            var retrieved = QueryOtcFromLusid(uniqueId);
+            Assert.That(retrieved.InstrumentType == LusidInstrument.InstrumentTypeEnum.TermDeposit);
+            var roundTripTermDeposit = retrieved as TermDeposit;
+            Assert.That(roundTripTermDeposit, Is.Not.Null);
+            Assert.That(roundTripTermDeposit.ContractSize, Is.EqualTo(termDeposit.ContractSize));
+            Assert.That(roundTripTermDeposit.Rate, Is.EqualTo(termDeposit.Rate));
+            Assert.That(roundTripTermDeposit.StartDate, Is.EqualTo(termDeposit.StartDate));
+            Assert.That(roundTripTermDeposit.MaturityDate, Is.EqualTo(termDeposit.MaturityDate));
+            Assert.That(roundTripTermDeposit.FlowConvention.Currency, Is.EqualTo(termDeposit.FlowConvention.Currency));
+            Assert.That(roundTripTermDeposit.FlowConvention.PaymentFrequency, Is.EqualTo(termDeposit.FlowConvention.PaymentFrequency));
+            Assert.That(roundTripTermDeposit.FlowConvention.ResetDays, Is.EqualTo(termDeposit.FlowConvention.ResetDays));
+            Assert.That(roundTripTermDeposit.FlowConvention.SettleDays, Is.EqualTo(termDeposit.FlowConvention.SettleDays));
+            Assert.That(roundTripTermDeposit.FlowConvention.HolidayCalendars.Count, Is.EqualTo(termDeposit.FlowConvention.HolidayCalendars.Count));
+            Assert.That(roundTripTermDeposit.FlowConvention.HolidayCalendars, Is.EquivalentTo(termDeposit.FlowConvention.HolidayCalendars));
+        }
+
         private void UpsertOtcToLusid(LusidInstrument instrument, string name, string idUniqueToInstrument)
         {
             // PACKAGE instrument for upsert
