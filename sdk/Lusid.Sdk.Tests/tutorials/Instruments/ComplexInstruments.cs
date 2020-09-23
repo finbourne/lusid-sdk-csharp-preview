@@ -540,9 +540,6 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
                 instrumentType: LusidInstrument.InstrumentTypeEnum.TermDeposit
             );
 
-            // ASSERT that it was created
-            Assert.That(termDeposit, Is.Not.Null);
-
             // CAN NOW UPSERT TO LUSID
             string uniqueId = "id-termDeposit-1";
             UpsertOtcToLusid(termDeposit, "some-name-for-this-termDeposit", uniqueId);
