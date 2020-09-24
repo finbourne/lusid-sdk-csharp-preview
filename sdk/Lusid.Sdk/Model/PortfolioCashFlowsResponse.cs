@@ -23,319 +23,43 @@ using OpenAPIDateConverter = Lusid.Sdk.Client.OpenAPIDateConverter;
 namespace Lusid.Sdk.Model
 {
     /// <summary>
-    /// DataType
+    /// The response object which contains the cashflows for a given portfolio.
     /// </summary>
     [DataContract]
-    public partial class DataType :  IEquatable<DataType>
+    public partial class PortfolioCashFlowsResponse :  IEquatable<PortfolioCashFlowsResponse>
     {
         /// <summary>
-        /// The available values are: Open, Closed
-        /// </summary>
-        /// <value>The available values are: Open, Closed</value>
-        [JsonConverter(typeof(StringEnumConverter))]
-        public enum TypeValueRangeEnum
-        {
-            /// <summary>
-            /// Enum Open for value: Open
-            /// </summary>
-            [EnumMember(Value = "Open")]
-            Open = 1,
-
-            /// <summary>
-            /// Enum Closed for value: Closed
-            /// </summary>
-            [EnumMember(Value = "Closed")]
-            Closed = 2
-
-        }
-
-        /// <summary>
-        /// The available values are: Open, Closed
-        /// </summary>
-        /// <value>The available values are: Open, Closed</value>
-        [DataMember(Name="typeValueRange", EmitDefaultValue=false)]
-        public TypeValueRangeEnum TypeValueRange { get; set; }
-        /// <summary>
-        /// The available values are: String, Int, Decimal, DateTime, Boolean, Map, List, PropertyArray, Percentage, Code, Id, Uri, CurrencyAndAmount, Currency, MetricValue, ResourceId, ResultValue, CutLocalTime, DateOrCutLabel
-        /// </summary>
-        /// <value>The available values are: String, Int, Decimal, DateTime, Boolean, Map, List, PropertyArray, Percentage, Code, Id, Uri, CurrencyAndAmount, Currency, MetricValue, ResourceId, ResultValue, CutLocalTime, DateOrCutLabel</value>
-        [JsonConverter(typeof(StringEnumConverter))]
-        public enum ValueTypeEnum
-        {
-            /// <summary>
-            /// Enum String for value: String
-            /// </summary>
-            [EnumMember(Value = "String")]
-            String = 1,
-
-            /// <summary>
-            /// Enum Int for value: Int
-            /// </summary>
-            [EnumMember(Value = "Int")]
-            Int = 2,
-
-            /// <summary>
-            /// Enum Decimal for value: Decimal
-            /// </summary>
-            [EnumMember(Value = "Decimal")]
-            Decimal = 3,
-
-            /// <summary>
-            /// Enum DateTime for value: DateTime
-            /// </summary>
-            [EnumMember(Value = "DateTime")]
-            DateTime = 4,
-
-            /// <summary>
-            /// Enum Boolean for value: Boolean
-            /// </summary>
-            [EnumMember(Value = "Boolean")]
-            Boolean = 5,
-
-            /// <summary>
-            /// Enum Map for value: Map
-            /// </summary>
-            [EnumMember(Value = "Map")]
-            Map = 6,
-
-            /// <summary>
-            /// Enum List for value: List
-            /// </summary>
-            [EnumMember(Value = "List")]
-            List = 7,
-
-            /// <summary>
-            /// Enum PropertyArray for value: PropertyArray
-            /// </summary>
-            [EnumMember(Value = "PropertyArray")]
-            PropertyArray = 8,
-
-            /// <summary>
-            /// Enum Percentage for value: Percentage
-            /// </summary>
-            [EnumMember(Value = "Percentage")]
-            Percentage = 9,
-
-            /// <summary>
-            /// Enum Code for value: Code
-            /// </summary>
-            [EnumMember(Value = "Code")]
-            Code = 10,
-
-            /// <summary>
-            /// Enum Id for value: Id
-            /// </summary>
-            [EnumMember(Value = "Id")]
-            Id = 11,
-
-            /// <summary>
-            /// Enum Uri for value: Uri
-            /// </summary>
-            [EnumMember(Value = "Uri")]
-            Uri = 12,
-
-            /// <summary>
-            /// Enum CurrencyAndAmount for value: CurrencyAndAmount
-            /// </summary>
-            [EnumMember(Value = "CurrencyAndAmount")]
-            CurrencyAndAmount = 13,
-
-            /// <summary>
-            /// Enum Currency for value: Currency
-            /// </summary>
-            [EnumMember(Value = "Currency")]
-            Currency = 14,
-
-            /// <summary>
-            /// Enum MetricValue for value: MetricValue
-            /// </summary>
-            [EnumMember(Value = "MetricValue")]
-            MetricValue = 15,
-
-            /// <summary>
-            /// Enum ResourceId for value: ResourceId
-            /// </summary>
-            [EnumMember(Value = "ResourceId")]
-            ResourceId = 16,
-
-            /// <summary>
-            /// Enum ResultValue for value: ResultValue
-            /// </summary>
-            [EnumMember(Value = "ResultValue")]
-            ResultValue = 17,
-
-            /// <summary>
-            /// Enum CutLocalTime for value: CutLocalTime
-            /// </summary>
-            [EnumMember(Value = "CutLocalTime")]
-            CutLocalTime = 18,
-
-            /// <summary>
-            /// Enum DateOrCutLabel for value: DateOrCutLabel
-            /// </summary>
-            [EnumMember(Value = "DateOrCutLabel")]
-            DateOrCutLabel = 19
-
-        }
-
-        /// <summary>
-        /// The available values are: String, Int, Decimal, DateTime, Boolean, Map, List, PropertyArray, Percentage, Code, Id, Uri, CurrencyAndAmount, Currency, MetricValue, ResourceId, ResultValue, CutLocalTime, DateOrCutLabel
-        /// </summary>
-        /// <value>The available values are: String, Int, Decimal, DateTime, Boolean, Map, List, PropertyArray, Percentage, Code, Id, Uri, CurrencyAndAmount, Currency, MetricValue, ResourceId, ResultValue, CutLocalTime, DateOrCutLabel</value>
-        [DataMember(Name="valueType", EmitDefaultValue=false)]
-        public ValueTypeEnum ValueType { get; set; }
-        /// <summary>
-        /// The available values are: NoUnits, Basic, Iso4217Currency
-        /// </summary>
-        /// <value>The available values are: NoUnits, Basic, Iso4217Currency</value>
-        [JsonConverter(typeof(StringEnumConverter))]
-        public enum UnitSchemaEnum
-        {
-            /// <summary>
-            /// Enum NoUnits for value: NoUnits
-            /// </summary>
-            [EnumMember(Value = "NoUnits")]
-            NoUnits = 1,
-
-            /// <summary>
-            /// Enum Basic for value: Basic
-            /// </summary>
-            [EnumMember(Value = "Basic")]
-            Basic = 2,
-
-            /// <summary>
-            /// Enum Iso4217Currency for value: Iso4217Currency
-            /// </summary>
-            [EnumMember(Value = "Iso4217Currency")]
-            Iso4217Currency = 3
-
-        }
-
-        /// <summary>
-        /// The available values are: NoUnits, Basic, Iso4217Currency
-        /// </summary>
-        /// <value>The available values are: NoUnits, Basic, Iso4217Currency</value>
-        [DataMember(Name="unitSchema", EmitDefaultValue=false)]
-        public UnitSchemaEnum? UnitSchema { get; set; }
-        /// <summary>
-        /// Initializes a new instance of the <see cref="DataType" /> class.
+        /// Initializes a new instance of the <see cref="PortfolioCashFlowsResponse" /> class.
         /// </summary>
         [JsonConstructorAttribute]
-        protected DataType() { }
+        protected PortfolioCashFlowsResponse() { }
         /// <summary>
-        /// Initializes a new instance of the <see cref="DataType" /> class.
+        /// Initializes a new instance of the <see cref="PortfolioCashFlowsResponse" /> class.
         /// </summary>
-        /// <param name="href">href.</param>
-        /// <param name="typeValueRange">The available values are: Open, Closed (required).</param>
-        /// <param name="id">id (required).</param>
-        /// <param name="displayName">displayName (required).</param>
-        /// <param name="description">description (required).</param>
-        /// <param name="valueType">The available values are: String, Int, Decimal, DateTime, Boolean, Map, List, PropertyArray, Percentage, Code, Id, Uri, CurrencyAndAmount, Currency, MetricValue, ResourceId, ResultValue, CutLocalTime, DateOrCutLabel (required).</param>
-        /// <param name="acceptableValues">acceptableValues.</param>
-        /// <param name="unitSchema">The available values are: NoUnits, Basic, Iso4217Currency.</param>
-        /// <param name="acceptableUnits">acceptableUnits.</param>
+        /// <param name="portfolioCashFlows">The cash flow details for the given portfolio. (required).</param>
         /// <param name="links">links.</param>
-        public DataType(string href = default(string), TypeValueRangeEnum typeValueRange = default(TypeValueRangeEnum), ResourceId id = default(ResourceId), string displayName = default(string), string description = default(string), ValueTypeEnum valueType = default(ValueTypeEnum), List<string> acceptableValues = default(List<string>), UnitSchemaEnum? unitSchema = default(UnitSchemaEnum?), List<IUnitDefinitionDto> acceptableUnits = default(List<IUnitDefinitionDto>), List<Link> links = default(List<Link>))
+        public PortfolioCashFlowsResponse(List<PortfolioCashFlow> portfolioCashFlows = default(List<PortfolioCashFlow>), List<Link> links = default(List<Link>))
         {
-            this.Href = href;
-            // to ensure "typeValueRange" is required (not null)
-            if (typeValueRange == null)
+            // to ensure "portfolioCashFlows" is required (not null)
+            if (portfolioCashFlows == null)
             {
-                throw new InvalidDataException("typeValueRange is a required property for DataType and cannot be null");
+                throw new InvalidDataException("portfolioCashFlows is a required property for PortfolioCashFlowsResponse and cannot be null");
             }
             else
             {
-                this.TypeValueRange = typeValueRange;
+                this.PortfolioCashFlows = portfolioCashFlows;
             }
             
-            // to ensure "id" is required (not null)
-            if (id == null)
-            {
-                throw new InvalidDataException("id is a required property for DataType and cannot be null");
-            }
-            else
-            {
-                this.Id = id;
-            }
-            
-            // to ensure "displayName" is required (not null)
-            if (displayName == null)
-            {
-                throw new InvalidDataException("displayName is a required property for DataType and cannot be null");
-            }
-            else
-            {
-                this.DisplayName = displayName;
-            }
-            
-            // to ensure "description" is required (not null)
-            if (description == null)
-            {
-                throw new InvalidDataException("description is a required property for DataType and cannot be null");
-            }
-            else
-            {
-                this.Description = description;
-            }
-            
-            // to ensure "valueType" is required (not null)
-            if (valueType == null)
-            {
-                throw new InvalidDataException("valueType is a required property for DataType and cannot be null");
-            }
-            else
-            {
-                this.ValueType = valueType;
-            }
-            
-            this.AcceptableValues = acceptableValues;
-            this.AcceptableUnits = acceptableUnits;
             this.Links = links;
-            this.Href = href;
-            this.AcceptableValues = acceptableValues;
-            this.UnitSchema = unitSchema;
-            this.AcceptableUnits = acceptableUnits;
             this.Links = links;
         }
         
         /// <summary>
-        /// Gets or Sets Href
+        /// The cash flow details for the given portfolio.
         /// </summary>
-        [DataMember(Name="href", EmitDefaultValue=true)]
-        public string Href { get; set; }
-
-
-        /// <summary>
-        /// Gets or Sets Id
-        /// </summary>
-        [DataMember(Name="id", EmitDefaultValue=false)]
-        public ResourceId Id { get; set; }
-
-        /// <summary>
-        /// Gets or Sets DisplayName
-        /// </summary>
-        [DataMember(Name="displayName", EmitDefaultValue=false)]
-        public string DisplayName { get; set; }
-
-        /// <summary>
-        /// Gets or Sets Description
-        /// </summary>
-        [DataMember(Name="description", EmitDefaultValue=false)]
-        public string Description { get; set; }
-
-
-        /// <summary>
-        /// Gets or Sets AcceptableValues
-        /// </summary>
-        [DataMember(Name="acceptableValues", EmitDefaultValue=true)]
-        public List<string> AcceptableValues { get; set; }
-
-
-        /// <summary>
-        /// Gets or Sets AcceptableUnits
-        /// </summary>
-        [DataMember(Name="acceptableUnits", EmitDefaultValue=true)]
-        public List<IUnitDefinitionDto> AcceptableUnits { get; set; }
+        /// <value>The cash flow details for the given portfolio.</value>
+        [DataMember(Name="portfolioCashFlows", EmitDefaultValue=false)]
+        public List<PortfolioCashFlow> PortfolioCashFlows { get; set; }
 
         /// <summary>
         /// Gets or Sets Links
@@ -350,16 +74,8 @@ namespace Lusid.Sdk.Model
         public override string ToString()
         {
             var sb = new StringBuilder();
-            sb.Append("class DataType {\n");
-            sb.Append("  Href: ").Append(Href).Append("\n");
-            sb.Append("  TypeValueRange: ").Append(TypeValueRange).Append("\n");
-            sb.Append("  Id: ").Append(Id).Append("\n");
-            sb.Append("  DisplayName: ").Append(DisplayName).Append("\n");
-            sb.Append("  Description: ").Append(Description).Append("\n");
-            sb.Append("  ValueType: ").Append(ValueType).Append("\n");
-            sb.Append("  AcceptableValues: ").Append(AcceptableValues).Append("\n");
-            sb.Append("  UnitSchema: ").Append(UnitSchema).Append("\n");
-            sb.Append("  AcceptableUnits: ").Append(AcceptableUnits).Append("\n");
+            sb.Append("class PortfolioCashFlowsResponse {\n");
+            sb.Append("  PortfolioCashFlows: ").Append(PortfolioCashFlows).Append("\n");
             sb.Append("  Links: ").Append(Links).Append("\n");
             sb.Append("}\n");
             return sb.ToString();
@@ -381,66 +97,25 @@ namespace Lusid.Sdk.Model
         /// <returns>Boolean</returns>
         public override bool Equals(object input)
         {
-            return this.Equals(input as DataType);
+            return this.Equals(input as PortfolioCashFlowsResponse);
         }
 
         /// <summary>
-        /// Returns true if DataType instances are equal
+        /// Returns true if PortfolioCashFlowsResponse instances are equal
         /// </summary>
-        /// <param name="input">Instance of DataType to be compared</param>
+        /// <param name="input">Instance of PortfolioCashFlowsResponse to be compared</param>
         /// <returns>Boolean</returns>
-        public bool Equals(DataType input)
+        public bool Equals(PortfolioCashFlowsResponse input)
         {
             if (input == null)
                 return false;
 
             return 
                 (
-                    this.Href == input.Href ||
-                    (this.Href != null &&
-                    this.Href.Equals(input.Href))
-                ) && 
-                (
-                    this.TypeValueRange == input.TypeValueRange ||
-                    (this.TypeValueRange != null &&
-                    this.TypeValueRange.Equals(input.TypeValueRange))
-                ) && 
-                (
-                    this.Id == input.Id ||
-                    (this.Id != null &&
-                    this.Id.Equals(input.Id))
-                ) && 
-                (
-                    this.DisplayName == input.DisplayName ||
-                    (this.DisplayName != null &&
-                    this.DisplayName.Equals(input.DisplayName))
-                ) && 
-                (
-                    this.Description == input.Description ||
-                    (this.Description != null &&
-                    this.Description.Equals(input.Description))
-                ) && 
-                (
-                    this.ValueType == input.ValueType ||
-                    (this.ValueType != null &&
-                    this.ValueType.Equals(input.ValueType))
-                ) && 
-                (
-                    this.AcceptableValues == input.AcceptableValues ||
-                    this.AcceptableValues != null &&
-                    input.AcceptableValues != null &&
-                    this.AcceptableValues.SequenceEqual(input.AcceptableValues)
-                ) && 
-                (
-                    this.UnitSchema == input.UnitSchema ||
-                    (this.UnitSchema != null &&
-                    this.UnitSchema.Equals(input.UnitSchema))
-                ) && 
-                (
-                    this.AcceptableUnits == input.AcceptableUnits ||
-                    this.AcceptableUnits != null &&
-                    input.AcceptableUnits != null &&
-                    this.AcceptableUnits.SequenceEqual(input.AcceptableUnits)
+                    this.PortfolioCashFlows == input.PortfolioCashFlows ||
+                    this.PortfolioCashFlows != null &&
+                    input.PortfolioCashFlows != null &&
+                    this.PortfolioCashFlows.SequenceEqual(input.PortfolioCashFlows)
                 ) && 
                 (
                     this.Links == input.Links ||
@@ -459,24 +134,8 @@ namespace Lusid.Sdk.Model
             unchecked // Overflow is fine, just wrap
             {
                 int hashCode = 41;
-                if (this.Href != null)
-                    hashCode = hashCode * 59 + this.Href.GetHashCode();
-                if (this.TypeValueRange != null)
-                    hashCode = hashCode * 59 + this.TypeValueRange.GetHashCode();
-                if (this.Id != null)
-                    hashCode = hashCode * 59 + this.Id.GetHashCode();
-                if (this.DisplayName != null)
-                    hashCode = hashCode * 59 + this.DisplayName.GetHashCode();
-                if (this.Description != null)
-                    hashCode = hashCode * 59 + this.Description.GetHashCode();
-                if (this.ValueType != null)
-                    hashCode = hashCode * 59 + this.ValueType.GetHashCode();
-                if (this.AcceptableValues != null)
-                    hashCode = hashCode * 59 + this.AcceptableValues.GetHashCode();
-                if (this.UnitSchema != null)
-                    hashCode = hashCode * 59 + this.UnitSchema.GetHashCode();
-                if (this.AcceptableUnits != null)
-                    hashCode = hashCode * 59 + this.AcceptableUnits.GetHashCode();
+                if (this.PortfolioCashFlows != null)
+                    hashCode = hashCode * 59 + this.PortfolioCashFlows.GetHashCode();
                 if (this.Links != null)
                     hashCode = hashCode * 59 + this.Links.GetHashCode();
                 return hashCode;
