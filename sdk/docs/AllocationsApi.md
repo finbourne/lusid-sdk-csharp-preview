@@ -1,6 +1,6 @@
 # Lusid.Sdk.Api.AllocationsApi
 
-All URIs are relative to *http://localhost:60372*
+All URIs are relative to *http://localhost:57317*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
@@ -31,7 +31,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://localhost:60372";
+            Configuration.Default.BasePath = "http://localhost:57317";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -115,7 +115,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://localhost:60372";
+            Configuration.Default.BasePath = "http://localhost:57317";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -205,7 +205,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://localhost:60372";
+            Configuration.Default.BasePath = "http://localhost:57317";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
