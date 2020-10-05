@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Runtime.CompilerServices;
@@ -45,7 +46,7 @@ namespace Lusid.Sdk.Utilities
             }
             public string Token { get; }
             public DateTimeOffset ExpiresOn { get; internal set; }
-            public string RefreshToken { get; }
+            public string RefreshToken { get; internal set; }
         }
 
         
@@ -185,6 +186,11 @@ namespace Lusid.Sdk.Utilities
                 var response = await httpClient.SendAsync(tokenRequest);
                 var body = await response.Content.ReadAsStringAsync();
 
+                if (response.StatusCode == HttpStatusCode.BadRequest)
+                {
+                    // Unable to refresh token so obtain a brand new one using username/password 
+                    return await GetNewToken(apiConfig);
+                } 
                 if (!response.IsSuccessStatusCode)
                 {
                     throw new HttpRequestException(
@@ -231,5 +237,6 @@ namespace Lusid.Sdk.Utilities
         {
             _lastIssuedToken.ExpiresOn = DateTimeOffset.UtcNow.AddSeconds(-1);
         }
+
     }
 }
