@@ -6,7 +6,7 @@
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **GroupById** | **int?** | The groupBy subHoldings and currency. | 
-**SequenceNumber** | **int?** | Sequence number determing the order of the cash flow records. | 
+**SequenceNumber** | **int?** | Sequence number determining the order of the cash flow records. | 
 **EffectiveDate** | **DateTimeOffset?** | Indicates the date when the cash-flow settles. | [optional] 
 **SubHoldingKeys** | [**Dictionary&lt;string, PerpetualProperty&gt;**](PerpetualProperty.md) | The sub-holding properties which identify the holding. Each property will be from the &#39;Transaction&#39; domain. These are configured when a transaction portfolio is created. | [optional] 
 **Type** | **string** | Indicates the record type (Closed, Open, Activity). | 
