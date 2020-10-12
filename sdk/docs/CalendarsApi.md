@@ -1,17 +1,17 @@
 # Lusid.Sdk.Api.CalendarsApi
 
-All URIs are relative to *http://localhost:50714*
+All URIs are relative to *http://localhost:33283*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
-[**AddDateToCalendar**](CalendarsApi.md#adddatetocalendar) | **POST** /api/calendars/generic/{scope}/{code}/dates | [EXPERIMENTAL] Add a date to a calendar
+[**AddDateToCalendar**](CalendarsApi.md#adddatetocalendar) | **PUT** /api/calendars/generic/{scope}/{code}/dates | [EXPERIMENTAL] Add a date to a calendar
 [**CreateCalendar**](CalendarsApi.md#createcalendar) | **POST** /api/calendars/generic | [EXPERIMENTAL] Create a calendar in its generic form
 [**DeleteCalendar**](CalendarsApi.md#deletecalendar) | **DELETE** /api/calendars/generic/{scope}/{code} | [EXPERIMENTAL] Delete a calendar
 [**DeleteDateFromCalendar**](CalendarsApi.md#deletedatefromcalendar) | **DELETE** /api/calendars/generic/{scope}/{code}/dates/{dateId} | [EXPERIMENTAL] Remove a date from a calendar
 [**GetCalendar**](CalendarsApi.md#getcalendar) | **GET** /api/calendars/generic/{scope}/{code} | [EXPERIMENTAL] Get a calendar in its generic form
 [**GetDates**](CalendarsApi.md#getdates) | **GET** /api/calendars/generic/{scope}/{code}/dates | [EXPERIMENTAL] Get dates for a specific calendar
 [**IsBusinessDateTime**](CalendarsApi.md#isbusinessdatetime) | **GET** /api/calendars/businessday/{scope}/{code} | [EXPERIMENTAL] Check whether a DateTime is a \&quot;Business DateTime\&quot;
-[**ListCalendars**](CalendarsApi.md#listcalendars) | **GET** /api/calendars/generic | [EXPERIMENTAL] List all calenders
+[**ListCalendars**](CalendarsApi.md#listcalendars) | **GET** /api/calendars/generic/{scope} | [EXPERIMENTAL] List all calenders in a specified scope
 [**UpdateCalendar**](CalendarsApi.md#updatecalendar) | **PUT** /api/calendars/generic/{scope}/{code} | [EXPERIMENTAL] Update a calendar
 
 
@@ -39,7 +39,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://localhost:50714";
+            Configuration.Default.BasePath = "http://localhost:33283";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -123,7 +123,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://localhost:50714";
+            Configuration.Default.BasePath = "http://localhost:33283";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -203,7 +203,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://localhost:50714";
+            Configuration.Default.BasePath = "http://localhost:33283";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -285,7 +285,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://localhost:50714";
+            Configuration.Default.BasePath = "http://localhost:33283";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -369,7 +369,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://localhost:50714";
+            Configuration.Default.BasePath = "http://localhost:33283";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -453,7 +453,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://localhost:50714";
+            Configuration.Default.BasePath = "http://localhost:33283";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -526,7 +526,7 @@ Name | Type | Description  | Notes
 
 [EXPERIMENTAL] Check whether a DateTime is a \"Business DateTime\"
 
-A Business DateTime is defined as a point in time that: <br />      * Does not represent a day that overlaps with the calendars WeekendMask <br />      * If the calendar is a \"Holiday Calendar\" Does not overlap with any dates in the calendar <br />      * If the calendar is a \"TradingHours Calendar\" Does overlap with a date in the calendar <br />                All dates specified must be UTC and the upper bound of a calendar is not inclusive <br />  e.g. From: 2020-12-25-00-00-00        To: 2020-12-26-00-00-00 <br />  IsBusinessDay(2020-12-26-00-00-00) == false
+A Business DateTime is defined as a point in time that:      * Does not represent a day that overlaps with the calendars WeekendMask      * If the calendar is a \"Holiday Calendar\" Does not overlap with any dates in the calendar      * If the calendar is a \"TradingHours Calendar\" Does overlap with a date in the calendar                All dates specified must be UTC and the upper bound of a calendar is not inclusive   e.g. From: 2020-12-25-00-00-00        To: 2020-12-26-00-00-00  IsBusinessDay(2020-12-26-00-00-00) == false
 
 ### Example
 
@@ -543,7 +543,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://localhost:50714";
+            Configuration.Default.BasePath = "http://localhost:33283";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -608,9 +608,9 @@ Name | Type | Description  | Notes
 
 ## ListCalendars
 
-> PagedResourceListOfCalendar ListCalendars (string scope = null, DateTimeOffset? asAt = null, string page = null, int? start = null, int? limit = null, string filter = null)
+> PagedResourceListOfCalendar ListCalendars (string scope, DateTimeOffset? asAt = null, string page = null, int? start = null, int? limit = null, string filter = null)
 
-[EXPERIMENTAL] List all calenders
+[EXPERIMENTAL] List all calenders in a specified scope
 
 List calendars within a specific scope and a specific window of effective time, at a point in AsAt time.
 
@@ -629,12 +629,12 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://localhost:50714";
+            Configuration.Default.BasePath = "http://localhost:33283";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
             var apiInstance = new CalendarsApi(Configuration.Default);
-            var scope = scope_example;  // string | Scope of the calendars (optional) 
+            var scope = scope_example;  // string | Scope of the calendars
             var asAt = 2013-10-20T19:20:30+01:00;  // DateTimeOffset? | The AsAt datetime at which to retrieve the calendars (optional) 
             var page = page_example;  // string | The pagination token to use to continue listing calendars from a previous call to list calendars.              This value is returned from the previous call. If a pagination token is provided the sortBy, filter, and asAt fields              must not have changed since the original request. Also, if set, a start value cannot be provided. (optional) 
             var start = 56;  // int? | When paginating, skip this number of results. (optional) 
@@ -643,7 +643,7 @@ namespace Example
 
             try
             {
-                // [EXPERIMENTAL] List all calenders
+                // [EXPERIMENTAL] List all calenders in a specified scope
                 PagedResourceListOfCalendar result = apiInstance.ListCalendars(scope, asAt, page, start, limit, filter);
                 Debug.WriteLine(result);
             }
@@ -663,7 +663,7 @@ namespace Example
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **scope** | **string**| Scope of the calendars | [optional] 
+ **scope** | **string**| Scope of the calendars | 
  **asAt** | **DateTimeOffset?**| The AsAt datetime at which to retrieve the calendars | [optional] 
  **page** | **string**| The pagination token to use to continue listing calendars from a previous call to list calendars.              This value is returned from the previous call. If a pagination token is provided the sortBy, filter, and asAt fields              must not have changed since the original request. Also, if set, a start value cannot be provided. | [optional] 
  **start** | **int?**| When paginating, skip this number of results. | [optional] 
@@ -686,7 +686,7 @@ Name | Type | Description  | Notes
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
-| **200** | Get calendars |  -  |
+| **200** | Calendars in the requested scope |  -  |
 | **400** | The details of the input related failure |  -  |
 | **0** | Error response |  -  |
 
@@ -719,7 +719,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://localhost:50714";
+            Configuration.Default.BasePath = "http://localhost:33283";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 

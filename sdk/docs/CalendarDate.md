@@ -6,10 +6,11 @@
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **Href** | **string** |  | [optional] 
+**CalendarIdentifier** | [**ResourceId**](ResourceId.md) |  | 
 **DateIdentifier** | **string** |  | 
 **FromUtc** | **DateTimeOffset?** |  | 
 **ToUtc** | **DateTimeOffset?** |  | 
-**LocalStartDate** | **string** |  | 
+**LocalDate** | **string** |  | 
 **Timezone** | **string** |  | 
 **Description** | **string** |  | 
 **Type** | **string** |  | 
