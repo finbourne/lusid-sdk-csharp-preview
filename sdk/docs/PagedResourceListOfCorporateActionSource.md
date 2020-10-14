@@ -1,15 +1,14 @@
 
-# Lusid.Sdk.Model.CorporateActionSource
+# Lusid.Sdk.Model.PagedResourceListOfCorporateActionSource
 
 ## Properties
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
+**NextPage** | **string** |  | [optional] 
+**PreviousPage** | **string** |  | [optional] 
+**Values** | [**List&lt;CorporateActionSource&gt;**](CorporateActionSource.md) |  | 
 **Href** | **string** |  | [optional] 
-**Id** | [**ResourceId**](ResourceId.md) |  | [optional] 
-**Version** | [**Version**](Version.md) |  | [optional] 
-**DisplayName** | **string** |  | [optional] 
-**Description** | **string** |  | [optional] 
 **Links** | [**List&lt;Link&gt;**](Link.md) |  | [optional] 
 
 [[Back to Model list]](../README.md#documentation-for-models)
