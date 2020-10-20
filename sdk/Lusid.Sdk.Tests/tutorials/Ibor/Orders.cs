@@ -314,9 +314,9 @@ namespace Lusid.Sdk.Tests.Tutorials.Ibor
 
             var t = upsertResult.Values.First().Version.AsAtDate;
 
-            var order1Filter = $"{testScope}/{order1}";
-            var order2Filter = $"{testScope}/{order2}";
-            var order3Filter = $"{testScope}/{order3}";
+            var order1Filter = $"{order1}";
+            var order2Filter = $"{order2}";
+            var order3Filter = $"{order3}";
 
             var quantityFilter = _ordersApi.ListOrders(asAt:
                 t,
@@ -344,7 +344,7 @@ namespace Lusid.Sdk.Tests.Tutorials.Ibor
             Assert.That(sideFilter.Values.Count, Is.EqualTo(1));
             Assert.That(sideFilter.Values.All(rl => rl.Side.Equals("Sell")));
 
-            var orderBookFilter = _ordersApi.ListOrders(asAt: t, filter: $"OrderBookId.Code eq '{testScope}'");
+            var orderBookFilter = _ordersApi.ListOrders(asAt: t, filter: $"OrderBookId.Code eq 'AnotherOrdersTestBook'");
 
             Assert.That(orderBookFilter.Values.Count, Is.EqualTo(1));
             Assert.That(orderBookFilter.Values.All(rl => rl.OrderBookId.Code.Equals("AnotherOrdersTestBook")));
