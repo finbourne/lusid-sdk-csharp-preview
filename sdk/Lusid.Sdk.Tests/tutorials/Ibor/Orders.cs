@@ -320,7 +320,7 @@ namespace Lusid.Sdk.Tests.Tutorials.Ibor
 
             var quantityFilter = _ordersApi.ListOrders(asAt:
                 t,
-                filter: $"Quantity gt 100 and Id.Scope eq '{testScope}' and Id.Code in ('{order1Filter}', '{order2Filter}', '{order3Filter}')");
+                filter: $"Quantity gt 100 and Id.Scope eq '{testScope}' and Id.Code in ('{order1}', '{order2}', '{order3}')");
 
             Assert.That(quantityFilter.Values.Count, Is.EqualTo(2));
             Assert.That(quantityFilter.Values.All(rl => rl.Quantity > 100));
