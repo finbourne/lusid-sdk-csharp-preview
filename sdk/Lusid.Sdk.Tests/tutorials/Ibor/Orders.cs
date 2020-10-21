@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using Lusid.Sdk.Api;
 using Lusid.Sdk.Model;
-using Lusid.Sdk.Tests.Utilities;
 using Lusid.Sdk.Utilities;
 using NUnit.Framework;
 
@@ -315,40 +314,41 @@ namespace Lusid.Sdk.Tests.Tutorials.Ibor
 
             var t = upsertResult.Values.First().Version.AsAtDate;
 
-            var order1Filter = $"{testScope}/{order1}";
-            var order2Filter = $"{testScope}/{order2}";
-            var order3Filter = $"{testScope}/{order3}";
+            var order1Filter = $"{order1}";
+            var order2Filter = $"{order2}";
+            var order3Filter = $"{order3}";
 
             var quantityFilter = _ordersApi.ListOrders(asAt:
                 t,
-                filter: $"Quantity gt 100 and Scope eq '{testScope}' and Id in '{order1Filter}', '{order2Filter}', '{order3Filter}'");
+                filter: $"Quantity gt 100 and Id.Scope eq '{testScope}' and Id.Code in ('{order1}', '{order2}', '{order3}')");
 
             Assert.That(quantityFilter.Values.Count, Is.EqualTo(2));
             Assert.That(quantityFilter.Values.All(rl => rl.Quantity > 100));
 
-            /*
-             * Other filters are also possible:
-             *
-            var propertyFilter = _ordersApi.ListOrders(asAt: t, filter: $"Properties[{testScope}/OrderGroup] eq 'UK Test Orders 2'");
+
+ //Other filters are also possible:
+
+
+            var propertyFilter = _ordersApi.ListOrders(asAt: t, filter: $"Properties[Order/{testScope}/OrderGroup] eq 'UK Test Orders 2'");
 
             Assert.That(propertyFilter.Values.Count, Is.EqualTo(1));
             Assert.That(propertyFilter.Values.Single(rl => rl.Id.Code.Equals(order3)).Properties[$"Order/{testScope}/OrderGroup"].Value.LabelValue, Is.EqualTo("UK Test Orders 2"));
-            
-            var instrumentFilter = _ordersApi.ListOrders(asAt: t, filter: $"LusidInstrumentId eq '{_instrumentIds.First()}' and Scope eq '{testScope}'");
-            
+
+            var instrumentFilter = _ordersApi.ListOrders(asAt: t, filter: $"LusidInstrumentId eq '{_instrumentIds.First()}' and Id.Scope eq '{testScope}'");
+
             Assert.That(instrumentFilter.Values.Count, Is.EqualTo(2));
             Assert.That(instrumentFilter.Values.All(rl => rl.LusidInstrumentId.Equals(_instrumentIds[0])));
 
-            var sideFilter = _ordersApi.ListOrders(asAt: t, filter: $"Side eq 'Sell' and Scope eq '{testScope}'");
+            var sideFilter = _ordersApi.ListOrders(asAt: t, filter: $"Side eq 'Sell' and Id.Scope eq '{testScope}'");
 
             Assert.That(sideFilter.Values.Count, Is.EqualTo(1));
             Assert.That(sideFilter.Values.All(rl => rl.Side.Equals("Sell")));
 
-            var orderBookFilter = _ordersApi.ListOrders(asAt: t, filter: $"OrderBook eq '{testScope}/AnotherOrdersTestBook'");
+            var orderBookFilter = _ordersApi.ListOrders(asAt: t, filter: $"OrderBookId.Code eq 'AnotherOrdersTestBook'");
 
             Assert.That(orderBookFilter.Values.Count, Is.EqualTo(1));
             Assert.That(orderBookFilter.Values.All(rl => rl.OrderBookId.Code.Equals("AnotherOrdersTestBook")));
-            */
-        }
-    }
+
+        } 
+    } 
 }
