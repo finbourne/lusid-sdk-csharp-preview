@@ -1,6 +1,6 @@
 # Lusid.Sdk.Api.RelationsApi
 
-All URIs are relative to *http://localhost:40851*
+All URIs are relative to *https://fbn-prd.lusid.com/api*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
@@ -10,7 +10,7 @@ Method | HTTP request | Description
 
 ## CreateRelation
 
-> CompleteRelation CreateRelation (string scope, string code, CreateRelationRequest createRelationRequest, DateTimeOrCutLabel effectiveAt = null)
+> Relation CreateRelation (string scope, string code, CreateRelationRequest createRelationRequest, DateTimeOrCutLabel effectiveAt = null)
 
 [EXPERIMENTAL] Create Relation
 
@@ -31,7 +31,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://localhost:40851";
+            Configuration.Default.BasePath = "https://fbn-prd.lusid.com/api";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -44,7 +44,7 @@ namespace Example
             try
             {
                 // [EXPERIMENTAL] Create Relation
-                CompleteRelation result = apiInstance.CreateRelation(scope, code, createRelationRequest, effectiveAt);
+                Relation result = apiInstance.CreateRelation(scope, code, createRelationRequest, effectiveAt);
                 Debug.WriteLine(result);
             }
             catch (ApiException e)
@@ -70,7 +70,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**CompleteRelation**](CompleteRelation.md)
+[**Relation**](Relation.md)
 
 ### Authorization
 
