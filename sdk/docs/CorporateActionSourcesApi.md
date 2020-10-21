@@ -1,6 +1,6 @@
 # Lusid.Sdk.Api.CorporateActionSourcesApi
 
-All URIs are relative to *http://localhost:47859*
+All URIs are relative to *http://localhost:35065*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
@@ -35,7 +35,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://localhost:47859";
+            Configuration.Default.BasePath = "http://localhost:35065";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -119,7 +119,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://localhost:47859";
+            Configuration.Default.BasePath = "http://localhost:35065";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -199,7 +199,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://localhost:47859";
+            Configuration.Default.BasePath = "http://localhost:35065";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -281,7 +281,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://localhost:47859";
+            Configuration.Default.BasePath = "http://localhost:35065";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -375,16 +375,16 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://localhost:47859";
+            Configuration.Default.BasePath = "http://localhost:35065";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
             var apiInstance = new CorporateActionSourcesApi(Configuration.Default);
             var asAt = 2013-10-20T19:20:30+01:00;  // DateTimeOffset? | Optional. The AsAt date of the data (optional) 
             var sortBy = new List<string>(); // List<string> | Optional. Order the results by these fields. Use use the '-' sign to denote descending order e.g. -MyFieldName (optional) 
-            var limit = 56;  // int? | Optional. When paginating, limit the number of returned results to this many (optional) 
-            var filter = filter_example;  // string | Optional. Expression to filter the result set.                  For example, to filter on the Display Name, use \"displayName eq 'string'\"                  Read more about filtering results from LUSID here https://support.lusid.com/filtering-results-from-lusid. (optional) 
-            var page = page_example;  // string | the page or whatever (optional) 
+            var limit = 56;  // int? | Optional. When paginating, limit the number of returned results to this many. If not specified, a default  of 100 is used. (optional)  (default to 100)
+            var filter = filter_example;  // string | Optional. Expression to filter the result set. For example, to  filter on the Display Name, use \"displayName eq 'string'\"  Read more about filtering results from LUSID here https://support.lusid.com/filtering-results-from-lusid. (optional) 
+            var page = page_example;  // string | Optional. The pagination token to use to continue listing items from a previous call. Page values are  return from list calls, and must be supplied exactly as returned. Additionally, when specifying this  value, the filter, asAt, and limit must not  be modified. (optional) 
 
             try
             {
@@ -410,9 +410,9 @@ Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **asAt** | **DateTimeOffset?**| Optional. The AsAt date of the data | [optional] 
  **sortBy** | [**List&lt;string&gt;**](string.md)| Optional. Order the results by these fields. Use use the &#39;-&#39; sign to denote descending order e.g. -MyFieldName | [optional] 
- **limit** | **int?**| Optional. When paginating, limit the number of returned results to this many | [optional] 
- **filter** | **string**| Optional. Expression to filter the result set.                  For example, to filter on the Display Name, use \&quot;displayName eq &#39;string&#39;\&quot;                  Read more about filtering results from LUSID here https://support.lusid.com/filtering-results-from-lusid. | [optional] 
- **page** | **string**| the page or whatever | [optional] 
+ **limit** | **int?**| Optional. When paginating, limit the number of returned results to this many. If not specified, a default  of 100 is used. | [optional] [default to 100]
+ **filter** | **string**| Optional. Expression to filter the result set. For example, to  filter on the Display Name, use \&quot;displayName eq &#39;string&#39;\&quot;  Read more about filtering results from LUSID here https://support.lusid.com/filtering-results-from-lusid. | [optional] 
+ **page** | **string**| Optional. The pagination token to use to continue listing items from a previous call. Page values are  return from list calls, and must be supplied exactly as returned. Additionally, when specifying this  value, the filter, asAt, and limit must not  be modified. | [optional] 
 
 ### Return type
 
