@@ -324,15 +324,15 @@ namespace Lusid.Sdk.Tests.Tutorials.Ibor
 
             Assert.That(quantityFilter.Values.Count, Is.EqualTo(2));
             Assert.That(quantityFilter.Values.All(rl => rl.Quantity > 100));
-
-
- //Other filters are also possible:
-
-
-            var propertyFilter = _ordersApi.ListOrders(asAt: t, filter: $"Properties[Order/{testScope}/OrderGroup] eq 'UK Test Orders 2'");
+            
+            /*
+             * Other filters are also possible:
+             *
+            
+            var propertyFilter = _ordersApi.ListOrders(asAt: t, filter: $"Properties[Order/{testScope}/OrderBook] eq 'UK Test Orders 2'");
 
             Assert.That(propertyFilter.Values.Count, Is.EqualTo(1));
-            Assert.That(propertyFilter.Values.Single(rl => rl.Id.Code.Equals(order3)).Properties[$"Order/{testScope}/OrderGroup"].Value.LabelValue, Is.EqualTo("UK Test Orders 2"));
+            Assert.That(propertyFilter.Values.Single(rl => rl.Id.Code.Equals(order3)).Properties[$"Order/{testScope}/OrderBook"].Value.LabelValue, Is.EqualTo("UK Test Orders 2"));
 
             var instrumentFilter = _ordersApi.ListOrders(asAt: t, filter: $"LusidInstrumentId eq '{_instrumentIds.First()}' and Id.Scope eq '{testScope}'");
 
@@ -348,6 +348,7 @@ namespace Lusid.Sdk.Tests.Tutorials.Ibor
 
             Assert.That(orderBookFilter.Values.Count, Is.EqualTo(1));
             Assert.That(orderBookFilter.Values.All(rl => rl.OrderBookId.Code.Equals("AnotherOrdersTestBook")));
+            */
 
         } 
     } 
