@@ -1,6 +1,6 @@
 # Lusid.Sdk.Api.AggregationApi
 
-All URIs are relative to *http://localhost:37452*
+All URIs are relative to *http://localhost:40851*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
@@ -38,7 +38,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://localhost:37452";
+            Configuration.Default.BasePath = "http://localhost:40851";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -122,7 +122,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://localhost:37452";
+            Configuration.Default.BasePath = "http://localhost:40851";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -212,7 +212,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://localhost:37452";
+            Configuration.Default.BasePath = "http://localhost:40851";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -302,7 +302,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://localhost:37452";
+            Configuration.Default.BasePath = "http://localhost:40851";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -390,7 +390,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://localhost:37452";
+            Configuration.Default.BasePath = "http://localhost:40851";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -474,7 +474,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://localhost:37452";
+            Configuration.Default.BasePath = "http://localhost:40851";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -560,7 +560,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://localhost:37452";
+            Configuration.Default.BasePath = "http://localhost:40851";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -640,7 +640,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://localhost:37452";
+            Configuration.Default.BasePath = "http://localhost:40851";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
