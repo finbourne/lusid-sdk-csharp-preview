@@ -1,12 +1,12 @@
 # Lusid.Sdk.Api.AllocationsApi
 
-All URIs are relative to *https://fbn-prd.lusid.com/api*
+All URIs are relative to *http://localhost:31061*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
-[**GetAllocation**](AllocationsApi.md#getallocation) | **GET** /api/allocations/{scope}/{code} | [EXPERIMENTAL] Fetch a given allocation.
-[**ListAllocations**](AllocationsApi.md#listallocations) | **GET** /api/allocations | [EXPERIMENTAL] Fetch the last pre-AsAt date version of each allocation in scope (does not fetch the entire history).
-[**UpsertAllocations**](AllocationsApi.md#upsertallocations) | **POST** /api/allocations | [EXPERIMENTAL] Upsert; update existing allocations with given ids, or create new allocations otherwise.
+[**GetAllocation**](AllocationsApi.md#getallocation) | **GET** /api/allocations/{scope}/{code} | [EXPERIMENTAL] Get Allocation
+[**ListAllocations**](AllocationsApi.md#listallocations) | **GET** /api/allocations | [EXPERIMENTAL] List Allocations
+[**UpsertAllocations**](AllocationsApi.md#upsertallocations) | **POST** /api/allocations | [EXPERIMENTAL] Upsert Allocations
 
 
 
@@ -14,7 +14,9 @@ Method | HTTP request | Description
 
 > Allocation GetAllocation (string scope, string code, DateTimeOffset? asAt = null, List<string> propertyKeys = null)
 
-[EXPERIMENTAL] Fetch a given allocation.
+[EXPERIMENTAL] Get Allocation
+
+Fetch an Allocation matching the provided identifier
 
 ### Example
 
@@ -31,7 +33,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "https://fbn-prd.lusid.com/api";
+            Configuration.Default.BasePath = "http://localhost:31061";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -43,7 +45,7 @@ namespace Example
 
             try
             {
-                // [EXPERIMENTAL] Fetch a given allocation.
+                // [EXPERIMENTAL] Get Allocation
                 Allocation result = apiInstance.GetAllocation(scope, code, asAt, propertyKeys);
                 Debug.WriteLine(result);
             }
@@ -98,7 +100,9 @@ Name | Type | Description  | Notes
 
 > PagedResourceListOfAllocation ListAllocations (DateTimeOffset? asAt = null, string page = null, List<string> sortBy = null, int? start = null, int? limit = null, string filter = null, List<string> propertyKeys = null)
 
-[EXPERIMENTAL] Fetch the last pre-AsAt date version of each allocation in scope (does not fetch the entire history).
+[EXPERIMENTAL] List Allocations
+
+Fetch the last pre-AsAt date version of each allocation in scope (does not fetch the entire history).
 
 ### Example
 
@@ -115,7 +119,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "https://fbn-prd.lusid.com/api";
+            Configuration.Default.BasePath = "http://localhost:31061";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -130,7 +134,7 @@ namespace Example
 
             try
             {
-                // [EXPERIMENTAL] Fetch the last pre-AsAt date version of each allocation in scope (does not fetch the entire history).
+                // [EXPERIMENTAL] List Allocations
                 PagedResourceListOfAllocation result = apiInstance.ListAllocations(asAt, page, sortBy, start, limit, filter, propertyKeys);
                 Debug.WriteLine(result);
             }
@@ -174,7 +178,7 @@ Name | Type | Description  | Notes
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
-| **200** | Allocations in scope. |  -  |
+| **200** | Allocations. |  -  |
 | **400** | The details of the input related failure |  -  |
 | **0** | Error response |  -  |
 
@@ -188,7 +192,9 @@ Name | Type | Description  | Notes
 
 > ResourceListOfAllocation UpsertAllocations (AllocationSetRequest allocationSetRequest = null)
 
-[EXPERIMENTAL] Upsert; update existing allocations with given ids, or create new allocations otherwise.
+[EXPERIMENTAL] Upsert Allocations
+
+Upsert; update existing allocations with given ids, or create new allocations otherwise.
 
 ### Example
 
@@ -205,7 +211,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "https://fbn-prd.lusid.com/api";
+            Configuration.Default.BasePath = "http://localhost:31061";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -214,7 +220,7 @@ namespace Example
 
             try
             {
-                // [EXPERIMENTAL] Upsert; update existing allocations with given ids, or create new allocations otherwise.
+                // [EXPERIMENTAL] Upsert Allocations
                 ResourceListOfAllocation result = apiInstance.UpsertAllocations(allocationSetRequest);
                 Debug.WriteLine(result);
             }

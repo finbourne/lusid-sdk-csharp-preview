@@ -1,13 +1,13 @@
 # Lusid.Sdk.Api.OrdersApi
 
-All URIs are relative to *https://fbn-prd.lusid.com/api*
+All URIs are relative to *http://localhost:31061*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
-[**GetOrder**](OrdersApi.md#getorder) | **GET** /api/orders/{scope}/{code} | [EXPERIMENTAL] Fetch a given order.
-[**ListOrders**](OrdersApi.md#listorders) | **GET** /api/orders | [EXPERIMENTAL] Fetch the last pre-AsAt date version of each order in scope (does not fetch the entire history).
-[**UpsertOrderProperties**](OrdersApi.md#upsertorderproperties) | **POST** /api/orders/{scope}/properties | [EXPERIMENTAL] Upsert; update properties on existing Orders with given ids.
-[**UpsertOrders**](OrdersApi.md#upsertorders) | **POST** /api/orders | [EXPERIMENTAL] Upsert; update existing orders with given ids, or create new orders otherwise.
+[**GetOrder**](OrdersApi.md#getorder) | **GET** /api/orders/{scope}/{code} | [EXPERIMENTAL] Get Order
+[**ListOrders**](OrdersApi.md#listorders) | **GET** /api/orders | [EXPERIMENTAL] List Orders
+[**UpsertOrderProperties**](OrdersApi.md#upsertorderproperties) | **POST** /api/orders/{scope}/properties | [EXPERIMENTAL] Upsert Order Properties
+[**UpsertOrders**](OrdersApi.md#upsertorders) | **POST** /api/orders | [EXPERIMENTAL] Upsert Order
 
 
 
@@ -15,7 +15,9 @@ Method | HTTP request | Description
 
 > Order GetOrder (string scope, string code, DateTimeOffset? asAt = null, List<string> propertyKeys = null)
 
-[EXPERIMENTAL] Fetch a given order.
+[EXPERIMENTAL] Get Order
+
+Fetch an Order that matches the specified identifier
 
 ### Example
 
@@ -32,7 +34,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "https://fbn-prd.lusid.com/api";
+            Configuration.Default.BasePath = "http://localhost:31061";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -44,7 +46,7 @@ namespace Example
 
             try
             {
-                // [EXPERIMENTAL] Fetch a given order.
+                // [EXPERIMENTAL] Get Order
                 Order result = apiInstance.GetOrder(scope, code, asAt, propertyKeys);
                 Debug.WriteLine(result);
             }
@@ -99,7 +101,9 @@ Name | Type | Description  | Notes
 
 > PagedResourceListOfOrder ListOrders (DateTimeOffset? asAt = null, string page = null, List<string> sortBy = null, int? start = null, int? limit = null, string filter = null, List<string> propertyKeys = null)
 
-[EXPERIMENTAL] Fetch the last pre-AsAt date version of each order in scope (does not fetch the entire history).
+[EXPERIMENTAL] List Orders
+
+Fetch the last pre-AsAt date version of each order in scope (does not fetch the entire history).
 
 ### Example
 
@@ -116,7 +120,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "https://fbn-prd.lusid.com/api";
+            Configuration.Default.BasePath = "http://localhost:31061";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -131,7 +135,7 @@ namespace Example
 
             try
             {
-                // [EXPERIMENTAL] Fetch the last pre-AsAt date version of each order in scope (does not fetch the entire history).
+                // [EXPERIMENTAL] List Orders
                 PagedResourceListOfOrder result = apiInstance.ListOrders(asAt, page, sortBy, start, limit, filter, propertyKeys);
                 Debug.WriteLine(result);
             }
@@ -189,7 +193,9 @@ Name | Type | Description  | Notes
 
 > UpsertOrderPropertiesResponse UpsertOrderProperties (string scope, List<UpsertOrderPropertiesRequest> upsertOrderPropertiesRequest = null)
 
-[EXPERIMENTAL] Upsert; update properties on existing Orders with given ids.
+[EXPERIMENTAL] Upsert Order Properties
+
+Upsert; update properties on existing Orders with given ids.
 
 ### Example
 
@@ -206,7 +212,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "https://fbn-prd.lusid.com/api";
+            Configuration.Default.BasePath = "http://localhost:31061";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -216,7 +222,7 @@ namespace Example
 
             try
             {
-                // [EXPERIMENTAL] Upsert; update properties on existing Orders with given ids.
+                // [EXPERIMENTAL] Upsert Order Properties
                 UpsertOrderPropertiesResponse result = apiInstance.UpsertOrderProperties(scope, upsertOrderPropertiesRequest);
                 Debug.WriteLine(result);
             }
@@ -269,7 +275,9 @@ Name | Type | Description  | Notes
 
 > ResourceListOfOrder UpsertOrders (OrderSetRequest orderSetRequest = null)
 
-[EXPERIMENTAL] Upsert; update existing orders with given ids, or create new orders otherwise.
+[EXPERIMENTAL] Upsert Order
+
+Upsert; update existing orders with given ids, or create new orders otherwise.
 
 ### Example
 
@@ -286,7 +294,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "https://fbn-prd.lusid.com/api";
+            Configuration.Default.BasePath = "http://localhost:31061";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -295,7 +303,7 @@ namespace Example
 
             try
             {
-                // [EXPERIMENTAL] Upsert; update existing orders with given ids, or create new orders otherwise.
+                // [EXPERIMENTAL] Upsert Order
                 ResourceListOfOrder result = apiInstance.UpsertOrders(orderSetRequest);
                 Debug.WriteLine(result);
             }
