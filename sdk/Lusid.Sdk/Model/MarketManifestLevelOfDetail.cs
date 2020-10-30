@@ -23,197 +23,25 @@ using OpenAPIDateConverter = Lusid.Sdk.Client.OpenAPIDateConverter;
 namespace Lusid.Sdk.Model
 {
     /// <summary>
-    /// Specification object for the valuation schedule, how do we determine which days we wish to perform a valuation upon.
+    /// Defines MarketManifestLevelOfDetail
     /// </summary>
-    [DataContract]
-    public partial class ValuationSchedule :  IEquatable<ValuationSchedule>
+    
+    [JsonConverter(typeof(StringEnumConverter))]
+    
+    public enum MarketManifestLevelOfDetail
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="ValuationSchedule" /> class.
+        /// Enum None for value: None
         /// </summary>
-        [JsonConstructorAttribute]
-        protected ValuationSchedule() { }
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ValuationSchedule" /> class.
-        /// </summary>
-        /// <param name="effectiveFrom">If present, the EffectiveFrom and EffectiveAt dates are interpreted as a range of dates for which to perform a valuation.  In this case, valuation is calculated for the portfolio(s) for each business day in the given range..</param>
-        /// <param name="effectiveAt">The market data time, i.e. the time to run the valuation request effective of. (required).</param>
-        /// <param name="tenor">Tenor, e.g \&quot;1D\&quot;, \&quot;1M\&quot; to be used in generating the date schedule when effectiveFrom and effectiveAt are both given and are not the same..</param>
-        /// <param name="rollConvention">When Tenor is given and is not equal to \&quot;1D\&quot;, there may be cases where \&quot;date + tenor\&quot; land on non-business days around month end.  In that case, the RollConvention, e.g. modified following \&quot;MF\&quot; would be applied to determine the next GBD..</param>
-        /// <param name="holidayCalendars">The holiday calendar(s) that should be used in determining the date schedule.  Holiday calendar(s) are supplied by their names, for example, \&quot;CoppClarke\&quot;.   Note that when the calendars are not available (e.g. when the user has insufficient permissions),   a recipe setting will be used to determine whether the whole batch should then fail or whether the calendar not being available should simply be ignored..</param>
-        /// <param name="valuationDateTimes">If given, this is the exact set of dates on which to perform a valuation. This will replace/override all other specified values if given..</param>
-        public ValuationSchedule(DateTimeOrCutLabel effectiveFrom = default(DateTimeOrCutLabel), DateTimeOrCutLabel effectiveAt = default(DateTimeOrCutLabel), string tenor = default(string), string rollConvention = default(string), List<string> holidayCalendars = default(List<string>), List<string> valuationDateTimes = default(List<string>))
-        {
-            this.EffectiveFrom = effectiveFrom;
-            // to ensure "effectiveAt" is required (not null)
-            if (effectiveAt == null)
-            {
-                throw new InvalidDataException("effectiveAt is a required property for ValuationSchedule and cannot be null");
-            }
-            else
-            {
-                this.EffectiveAt = effectiveAt;
-            }
-            
-            this.Tenor = tenor;
-            this.RollConvention = rollConvention;
-            this.HolidayCalendars = holidayCalendars;
-            this.ValuationDateTimes = valuationDateTimes;
-            this.EffectiveFrom = effectiveFrom;
-            this.Tenor = tenor;
-            this.RollConvention = rollConvention;
-            this.HolidayCalendars = holidayCalendars;
-            this.ValuationDateTimes = valuationDateTimes;
-        }
-        
-        /// <summary>
-        /// If present, the EffectiveFrom and EffectiveAt dates are interpreted as a range of dates for which to perform a valuation.  In this case, valuation is calculated for the portfolio(s) for each business day in the given range.
-        /// </summary>
-        /// <value>If present, the EffectiveFrom and EffectiveAt dates are interpreted as a range of dates for which to perform a valuation.  In this case, valuation is calculated for the portfolio(s) for each business day in the given range.</value>
-        [DataMember(Name="effectiveFrom", EmitDefaultValue=true)]
-        public DateTimeOrCutLabel EffectiveFrom { get; set; }
+        [EnumMember(Value = "None")]
+        None = 1,
 
         /// <summary>
-        /// The market data time, i.e. the time to run the valuation request effective of.
+        /// Enum Full for value: Full
         /// </summary>
-        /// <value>The market data time, i.e. the time to run the valuation request effective of.</value>
-        [DataMember(Name="effectiveAt", EmitDefaultValue=false)]
-        public DateTimeOrCutLabel EffectiveAt { get; set; }
+        [EnumMember(Value = "Full")]
+        Full = 2
 
-        /// <summary>
-        /// Tenor, e.g \&quot;1D\&quot;, \&quot;1M\&quot; to be used in generating the date schedule when effectiveFrom and effectiveAt are both given and are not the same.
-        /// </summary>
-        /// <value>Tenor, e.g \&quot;1D\&quot;, \&quot;1M\&quot; to be used in generating the date schedule when effectiveFrom and effectiveAt are both given and are not the same.</value>
-        [DataMember(Name="tenor", EmitDefaultValue=true)]
-        public string Tenor { get; set; }
-
-        /// <summary>
-        /// When Tenor is given and is not equal to \&quot;1D\&quot;, there may be cases where \&quot;date + tenor\&quot; land on non-business days around month end.  In that case, the RollConvention, e.g. modified following \&quot;MF\&quot; would be applied to determine the next GBD.
-        /// </summary>
-        /// <value>When Tenor is given and is not equal to \&quot;1D\&quot;, there may be cases where \&quot;date + tenor\&quot; land on non-business days around month end.  In that case, the RollConvention, e.g. modified following \&quot;MF\&quot; would be applied to determine the next GBD.</value>
-        [DataMember(Name="rollConvention", EmitDefaultValue=true)]
-        public string RollConvention { get; set; }
-
-        /// <summary>
-        /// The holiday calendar(s) that should be used in determining the date schedule.  Holiday calendar(s) are supplied by their names, for example, \&quot;CoppClarke\&quot;.   Note that when the calendars are not available (e.g. when the user has insufficient permissions),   a recipe setting will be used to determine whether the whole batch should then fail or whether the calendar not being available should simply be ignored.
-        /// </summary>
-        /// <value>The holiday calendar(s) that should be used in determining the date schedule.  Holiday calendar(s) are supplied by their names, for example, \&quot;CoppClarke\&quot;.   Note that when the calendars are not available (e.g. when the user has insufficient permissions),   a recipe setting will be used to determine whether the whole batch should then fail or whether the calendar not being available should simply be ignored.</value>
-        [DataMember(Name="holidayCalendars", EmitDefaultValue=true)]
-        public List<string> HolidayCalendars { get; set; }
-
-        /// <summary>
-        /// If given, this is the exact set of dates on which to perform a valuation. This will replace/override all other specified values if given.
-        /// </summary>
-        /// <value>If given, this is the exact set of dates on which to perform a valuation. This will replace/override all other specified values if given.</value>
-        [DataMember(Name="valuationDateTimes", EmitDefaultValue=true)]
-        public List<string> ValuationDateTimes { get; set; }
-
-        /// <summary>
-        /// Returns the string presentation of the object
-        /// </summary>
-        /// <returns>String presentation of the object</returns>
-        public override string ToString()
-        {
-            var sb = new StringBuilder();
-            sb.Append("class ValuationSchedule {\n");
-            sb.Append("  EffectiveFrom: ").Append(EffectiveFrom).Append("\n");
-            sb.Append("  EffectiveAt: ").Append(EffectiveAt).Append("\n");
-            sb.Append("  Tenor: ").Append(Tenor).Append("\n");
-            sb.Append("  RollConvention: ").Append(RollConvention).Append("\n");
-            sb.Append("  HolidayCalendars: ").Append(HolidayCalendars).Append("\n");
-            sb.Append("  ValuationDateTimes: ").Append(ValuationDateTimes).Append("\n");
-            sb.Append("}\n");
-            return sb.ToString();
-        }
-  
-        /// <summary>
-        /// Returns the JSON string presentation of the object
-        /// </summary>
-        /// <returns>JSON string presentation of the object</returns>
-        public virtual string ToJson()
-        {
-            return JsonConvert.SerializeObject(this, Formatting.Indented);
-        }
-
-        /// <summary>
-        /// Returns true if objects are equal
-        /// </summary>
-        /// <param name="input">Object to be compared</param>
-        /// <returns>Boolean</returns>
-        public override bool Equals(object input)
-        {
-            return this.Equals(input as ValuationSchedule);
-        }
-
-        /// <summary>
-        /// Returns true if ValuationSchedule instances are equal
-        /// </summary>
-        /// <param name="input">Instance of ValuationSchedule to be compared</param>
-        /// <returns>Boolean</returns>
-        public bool Equals(ValuationSchedule input)
-        {
-            if (input == null)
-                return false;
-
-            return 
-                (
-                    this.EffectiveFrom == input.EffectiveFrom ||
-                    (this.EffectiveFrom != null &&
-                    this.EffectiveFrom.Equals(input.EffectiveFrom))
-                ) && 
-                (
-                    this.EffectiveAt == input.EffectiveAt ||
-                    (this.EffectiveAt != null &&
-                    this.EffectiveAt.Equals(input.EffectiveAt))
-                ) && 
-                (
-                    this.Tenor == input.Tenor ||
-                    (this.Tenor != null &&
-                    this.Tenor.Equals(input.Tenor))
-                ) && 
-                (
-                    this.RollConvention == input.RollConvention ||
-                    (this.RollConvention != null &&
-                    this.RollConvention.Equals(input.RollConvention))
-                ) && 
-                (
-                    this.HolidayCalendars == input.HolidayCalendars ||
-                    this.HolidayCalendars != null &&
-                    input.HolidayCalendars != null &&
-                    this.HolidayCalendars.SequenceEqual(input.HolidayCalendars)
-                ) && 
-                (
-                    this.ValuationDateTimes == input.ValuationDateTimes ||
-                    this.ValuationDateTimes != null &&
-                    input.ValuationDateTimes != null &&
-                    this.ValuationDateTimes.SequenceEqual(input.ValuationDateTimes)
-                );
-        }
-
-        /// <summary>
-        /// Gets the hash code
-        /// </summary>
-        /// <returns>Hash code</returns>
-        public override int GetHashCode()
-        {
-            unchecked // Overflow is fine, just wrap
-            {
-                int hashCode = 41;
-                if (this.EffectiveFrom != null)
-                    hashCode = hashCode * 59 + this.EffectiveFrom.GetHashCode();
-                if (this.EffectiveAt != null)
-                    hashCode = hashCode * 59 + this.EffectiveAt.GetHashCode();
-                if (this.Tenor != null)
-                    hashCode = hashCode * 59 + this.Tenor.GetHashCode();
-                if (this.RollConvention != null)
-                    hashCode = hashCode * 59 + this.RollConvention.GetHashCode();
-                if (this.HolidayCalendars != null)
-                    hashCode = hashCode * 59 + this.HolidayCalendars.GetHashCode();
-                if (this.ValuationDateTimes != null)
-                    hashCode = hashCode * 59 + this.ValuationDateTimes.GetHashCode();
-                return hashCode;
-            }
-        }
     }
 
 }
