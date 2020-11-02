@@ -85,9 +85,7 @@ namespace Lusid.Sdk.Tests.Tutorials.Valuation
             ListAggregationResponse bondValuationResult = _apiFactory.Api<IAggregationApi>().GetValuationOfWeightedInstruments(
                 new InlineValuationRequest(recipeId: new ResourceId(scope: scope, code: "DiscountingRecipe"),
                     valuationSchedule: new ValuationSchedule(
-                        effectiveFrom: new DateTimeOrCutLabel("2020-10-01"),
-                        effectiveAt: new DateTimeOrCutLabel("2020-10-01"),
-                        tenor: "1D"
+                        effectiveAt: new DateTimeOrCutLabel("2020-10-01")
                     ),
                     
                     metrics: new List<AggregateSpec>
