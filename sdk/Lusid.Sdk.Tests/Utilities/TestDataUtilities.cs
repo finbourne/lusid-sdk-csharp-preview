@@ -325,7 +325,8 @@ namespace Lusid.Sdk.Tests.Utilities
             {
                 {$"usd_6m_rate", CreateUpsertUsdRateCurve(effectiveAt)},
                 {$"usd_ois", CreateUpsertOisCurve(effectiveAt, "USD")},
-                {$"jpy_ois", CreateUpsertOisCurve(effectiveAt, "JPY")}
+                {$"jpy_ois", CreateUpsertOisCurve(effectiveAt, "JPY")},
+                {$"gbp_ois", CreateUpsertOisCurve(effectiveAt, "GBP")}
             };
 
             // CHECK upsert was successful
