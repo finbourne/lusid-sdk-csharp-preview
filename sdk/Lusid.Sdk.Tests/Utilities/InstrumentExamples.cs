@@ -51,9 +51,10 @@ namespace Lusid.Sdk.Tests.Utilities
                 code: null,
                 currency: "USD",
                 paymentFrequency: "6M",
-                rollConvention: FlowConventions.RollConventionEnum.MF,
-                dayCountConvention: FlowConventions.DayCountConventionEnum.Act365,
-                holidayCalendars: new List<string>(),
+                rollConvention: "MF",
+                dayCountConvention: "Act365",
+                paymentCalendars: new List<string>(),
+                resetCalendars: new List<string>(),
                 settleDays: 2,
                 resetDays: 2
             );
@@ -89,17 +90,17 @@ namespace Lusid.Sdk.Tests.Utilities
             // CREATE the leg definitions
             var fixedLegDef = new LegDefinition(
                 rateOrSpread: 0.02m, // fixed leg rate (swap rate)
-                stubType: LegDefinition.StubTypeEnum.Front,
-                payReceive: LegDefinition.PayReceiveEnum.Pay,
-                notionalExchangeType: LegDefinition.NotionalExchangeTypeEnum.None,
+                stubType: "Front",
+                payReceive: "Pay",
+                notionalExchangeType: "None",
                 conventions: CreateExampleFlowConventions()
             );
 
             var floatLegDef = new LegDefinition(
                 rateOrSpread: 0.05m, // float leg spread over curve rate, often zero
-                stubType: LegDefinition.StubTypeEnum.Front,
-                payReceive: LegDefinition.PayReceiveEnum.Pay,
-                notionalExchangeType: LegDefinition.NotionalExchangeTypeEnum.None,
+                stubType: "Front",
+                payReceive: "Pay",
+                notionalExchangeType: "None",
                 conventions: CreateExampleFlowConventions(),
                 indexConvention: idxConvention
             );

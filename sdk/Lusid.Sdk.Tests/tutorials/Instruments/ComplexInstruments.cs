@@ -154,9 +154,10 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
                 code: null,
                 currency: "GBP",
                 paymentFrequency: "6M",
-                rollConvention: FlowConventions.RollConventionEnum.MF,
-                dayCountConvention: FlowConventions.DayCountConventionEnum.Act365,
-                holidayCalendars:new List<string>(),
+                rollConvention: "MF",
+                dayCountConvention: "Act365",
+                paymentCalendars:new List<string>(),
+                resetCalendars:new List<string>(),
                 settleDays: 2,
                 resetDays: 2
             );
@@ -193,8 +194,8 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
             Assert.That(roundTripBond.FlowConventions.PaymentFrequency, Is.EqualTo(bond.FlowConventions.PaymentFrequency));
             Assert.That(roundTripBond.FlowConventions.ResetDays, Is.EqualTo(bond.FlowConventions.ResetDays));
             Assert.That(roundTripBond.FlowConventions.SettleDays, Is.EqualTo(bond.FlowConventions.SettleDays));
-            Assert.That(roundTripBond.FlowConventions.HolidayCalendars.Count, Is.EqualTo(bond.FlowConventions.HolidayCalendars.Count));
-            Assert.That(roundTripBond.FlowConventions.HolidayCalendars, Is.EquivalentTo(bond.FlowConventions.HolidayCalendars));
+            Assert.That(roundTripBond.FlowConventions.PaymentCalendars.Count, Is.EqualTo(bond.FlowConventions.PaymentCalendars.Count));
+            Assert.That(roundTripBond.FlowConventions.PaymentCalendars, Is.EquivalentTo(bond.FlowConventions.PaymentCalendars));
         }
         
         [Test]
@@ -206,9 +207,10 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
                 code: null,
                 currency: "GBP",
                 paymentFrequency: "6M",
-                rollConvention: CdsFlowConventions.RollConventionEnum.MF,
-                dayCountConvention: CdsFlowConventions.DayCountConventionEnum.Act365,
-                holidayCalendars:new List<string>(),
+                rollConvention: "MF",
+                dayCountConvention: "Act365",
+                paymentCalendars: new List<string>(),
+                resetCalendars: new List<string>(),
                 rollFrequency: "6M",
                 settleDays: 2,
                 resetDays: 2
@@ -249,8 +251,8 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
             Assert.That(roundTripCds.FlowConventions.PaymentFrequency, Is.EqualTo(cds.FlowConventions.PaymentFrequency));
             Assert.That(roundTripCds.FlowConventions.ResetDays, Is.EqualTo(cds.FlowConventions.ResetDays));
             Assert.That(roundTripCds.FlowConventions.SettleDays, Is.EqualTo(cds.FlowConventions.SettleDays));
-            Assert.That(roundTripCds.FlowConventions.HolidayCalendars.Count, Is.EqualTo(cds.FlowConventions.HolidayCalendars.Count));
-            Assert.That(roundTripCds.FlowConventions.HolidayCalendars, Is.EquivalentTo(cds.FlowConventions.HolidayCalendars));
+            Assert.That(roundTripCds.FlowConventions.PaymentCalendars.Count, Is.EqualTo(cds.FlowConventions.PaymentCalendars.Count));
+            Assert.That(roundTripCds.FlowConventions.PaymentCalendars, Is.EquivalentTo(cds.FlowConventions.PaymentCalendars));
         }
         
 
@@ -267,9 +269,10 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
                 code: null,
                 currency: "GBP",
                 paymentFrequency: "6M",
-                rollConvention: FlowConventions.RollConventionEnum.MF,
-                dayCountConvention: FlowConventions.DayCountConventionEnum.Act365,
-                holidayCalendars:new List<string>(),
+                rollConvention: "MF",
+                dayCountConvention: "Act365",
+                paymentCalendars: new List<string>(),
+                resetCalendars: new List<string>(),
                 settleDays: 2,
                 resetDays: 2
                 );
@@ -286,17 +289,17 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
             // CREATE the leg definitions
             var fixedLegDef = new LegDefinition(
                 rateOrSpread: 0.05m, // fixed leg rate (swap rate)
-                stubType: LegDefinition.StubTypeEnum.Front,
-                payReceive: LegDefinition.PayReceiveEnum.Pay,
-                notionalExchangeType: LegDefinition.NotionalExchangeTypeEnum.None,
+                stubType: "Front",
+                payReceive: "Pay",
+                notionalExchangeType: "None",
                 conventions: flowConventions
             );
 
             var floatLegDef = new LegDefinition(
                 rateOrSpread: 0.002m, // float leg spread over curve rate, often zero
-                stubType: LegDefinition.StubTypeEnum.Front,
-                payReceive: LegDefinition.PayReceiveEnum.Pay,
-                notionalExchangeType: LegDefinition.NotionalExchangeTypeEnum.None,
+                stubType: "Front",
+                payReceive: "Pay",
+                notionalExchangeType: "None",
                 conventions: flowConventions,
                 indexConvention: idxConvention
             );
@@ -360,9 +363,10 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
                 code: null,
                 currency: "GBP",
                 paymentFrequency: "6M",
-                rollConvention: FlowConventions.RollConventionEnum.MF,
-                dayCountConvention: FlowConventions.DayCountConventionEnum.Act365,
-                holidayCalendars:new List<string>(),
+                rollConvention: "MF",
+                dayCountConvention: "Act365",
+                paymentCalendars: new List<string>(),
+                resetCalendars: new List<string>(),
                 settleDays: 2,
                 resetDays: 2
                 );
@@ -379,17 +383,17 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
             // CREATE the leg definitions
             var fixedLegDef = new LegDefinition(
                 rateOrSpread: 0.05m, // fixed leg rate (swap rate)
-                stubType: LegDefinition.StubTypeEnum.Front,
-                payReceive: LegDefinition.PayReceiveEnum.Pay,
-                notionalExchangeType: LegDefinition.NotionalExchangeTypeEnum.None,
+                stubType: "Front",
+                payReceive: "Pay",
+                notionalExchangeType: "None",
                 conventions: flowConventions
             );
 
             var floatLegDef = new LegDefinition(
                 rateOrSpread: 0.002m, // float leg spread over curve rate, often zero
-                stubType: LegDefinition.StubTypeEnum.Front,
-                payReceive: LegDefinition.PayReceiveEnum.Pay,
-                notionalExchangeType: LegDefinition.NotionalExchangeTypeEnum.None,
+                stubType: "Front",
+                payReceive: "Pay",
+                notionalExchangeType: "None",
                 conventions: flowConventions,
                 indexConvention: idxConvention
             );
@@ -530,9 +534,10 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
                     code: null,
                     currency: "GBP",
                     paymentFrequency: "6M",
-                    rollConvention: FlowConventions.RollConventionEnum.MF,
-                    dayCountConvention: FlowConventions.DayCountConventionEnum.Act365,
-                    holidayCalendars: new List<string>(),
+                    rollConvention: "MF",
+                    dayCountConvention: "Act365",
+                    paymentCalendars: new List<string>(),
+                    resetCalendars: new List<string>(),
                     settleDays: 1,
                     resetDays: 0
                 ),
@@ -557,8 +562,8 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
             Assert.That(roundTripTermDeposit.FlowConvention.PaymentFrequency, Is.EqualTo(termDeposit.FlowConvention.PaymentFrequency));
             Assert.That(roundTripTermDeposit.FlowConvention.ResetDays, Is.EqualTo(termDeposit.FlowConvention.ResetDays));
             Assert.That(roundTripTermDeposit.FlowConvention.SettleDays, Is.EqualTo(termDeposit.FlowConvention.SettleDays));
-            Assert.That(roundTripTermDeposit.FlowConvention.HolidayCalendars.Count, Is.EqualTo(termDeposit.FlowConvention.HolidayCalendars.Count));
-            Assert.That(roundTripTermDeposit.FlowConvention.HolidayCalendars, Is.EquivalentTo(termDeposit.FlowConvention.HolidayCalendars));
+            Assert.That(roundTripTermDeposit.FlowConvention.PaymentCalendars.Count, Is.EqualTo(termDeposit.FlowConvention.PaymentCalendars.Count));
+            Assert.That(roundTripTermDeposit.FlowConvention.PaymentCalendars, Is.EquivalentTo(termDeposit.FlowConvention.PaymentCalendars));
         }
 
         private void UpsertOtcToLusid(LusidInstrument instrument, string name, string idUniqueToInstrument)
