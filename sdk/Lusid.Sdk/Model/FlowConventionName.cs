@@ -23,50 +23,76 @@ using OpenAPIDateConverter = Lusid.Sdk.Client.OpenAPIDateConverter;
 namespace Lusid.Sdk.Model
 {
     /// <summary>
-    /// UpdatePortfolioRequest
+    /// Representation of an abstract definition of a flow convention set consisting of currency, tenor and an index name (arbitrary string but likely something like \&quot;IBOR\&quot;)
     /// </summary>
     [DataContract]
-    public partial class UpdatePortfolioRequest :  IEquatable<UpdatePortfolioRequest>
+    public partial class FlowConventionName :  IEquatable<FlowConventionName>
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="UpdatePortfolioRequest" /> class.
+        /// Initializes a new instance of the <see cref="FlowConventionName" /> class.
         /// </summary>
         [JsonConstructorAttribute]
-        protected UpdatePortfolioRequest() { }
+        protected FlowConventionName() { }
         /// <summary>
-        /// Initializes a new instance of the <see cref="UpdatePortfolioRequest" /> class.
+        /// Initializes a new instance of the <see cref="FlowConventionName" /> class.
         /// </summary>
-        /// <param name="displayName">The name of the transaction portfolio. (required).</param>
-        /// <param name="description">A long form description of the transaction portfolio..</param>
-        public UpdatePortfolioRequest(string displayName = default(string), string description = default(string))
+        /// <param name="currency">Currency of the flow convention name. (required).</param>
+        /// <param name="indexName">The index, if present, that is required. e.g. \&quot;IBOR\&quot;, \&quot;OIS\&quot; or \&quot;SONIA\&quot;. (required).</param>
+        /// <param name="tenor">Tenor for the convention name (required).</param>
+        public FlowConventionName(string currency = default(string), string indexName = default(string), string tenor = default(string))
         {
-            // to ensure "displayName" is required (not null)
-            if (displayName == null)
+            // to ensure "currency" is required (not null)
+            if (currency == null)
             {
-                throw new InvalidDataException("displayName is a required property for UpdatePortfolioRequest and cannot be null");
+                throw new InvalidDataException("currency is a required property for FlowConventionName and cannot be null");
             }
             else
             {
-                this.DisplayName = displayName;
+                this.Currency = currency;
             }
             
-            this.Description = description;
-            this.Description = description;
+            // to ensure "indexName" is required (not null)
+            if (indexName == null)
+            {
+                throw new InvalidDataException("indexName is a required property for FlowConventionName and cannot be null");
+            }
+            else
+            {
+                this.IndexName = indexName;
+            }
+            
+            // to ensure "tenor" is required (not null)
+            if (tenor == null)
+            {
+                throw new InvalidDataException("tenor is a required property for FlowConventionName and cannot be null");
+            }
+            else
+            {
+                this.Tenor = tenor;
+            }
+            
         }
         
         /// <summary>
-        /// The name of the transaction portfolio.
+        /// Currency of the flow convention name.
         /// </summary>
-        /// <value>The name of the transaction portfolio.</value>
-        [DataMember(Name="displayName", EmitDefaultValue=false)]
-        public string DisplayName { get; set; }
+        /// <value>Currency of the flow convention name.</value>
+        [DataMember(Name="currency", EmitDefaultValue=false)]
+        public string Currency { get; set; }
 
         /// <summary>
-        /// A long form description of the transaction portfolio.
+        /// The index, if present, that is required. e.g. \&quot;IBOR\&quot;, \&quot;OIS\&quot; or \&quot;SONIA\&quot;.
         /// </summary>
-        /// <value>A long form description of the transaction portfolio.</value>
-        [DataMember(Name="description", EmitDefaultValue=true)]
-        public string Description { get; set; }
+        /// <value>The index, if present, that is required. e.g. \&quot;IBOR\&quot;, \&quot;OIS\&quot; or \&quot;SONIA\&quot;.</value>
+        [DataMember(Name="indexName", EmitDefaultValue=false)]
+        public string IndexName { get; set; }
+
+        /// <summary>
+        /// Tenor for the convention name
+        /// </summary>
+        /// <value>Tenor for the convention name</value>
+        [DataMember(Name="tenor", EmitDefaultValue=false)]
+        public string Tenor { get; set; }
 
         /// <summary>
         /// Returns the string presentation of the object
@@ -75,9 +101,10 @@ namespace Lusid.Sdk.Model
         public override string ToString()
         {
             var sb = new StringBuilder();
-            sb.Append("class UpdatePortfolioRequest {\n");
-            sb.Append("  DisplayName: ").Append(DisplayName).Append("\n");
-            sb.Append("  Description: ").Append(Description).Append("\n");
+            sb.Append("class FlowConventionName {\n");
+            sb.Append("  Currency: ").Append(Currency).Append("\n");
+            sb.Append("  IndexName: ").Append(IndexName).Append("\n");
+            sb.Append("  Tenor: ").Append(Tenor).Append("\n");
             sb.Append("}\n");
             return sb.ToString();
         }
@@ -98,29 +125,34 @@ namespace Lusid.Sdk.Model
         /// <returns>Boolean</returns>
         public override bool Equals(object input)
         {
-            return this.Equals(input as UpdatePortfolioRequest);
+            return this.Equals(input as FlowConventionName);
         }
 
         /// <summary>
-        /// Returns true if UpdatePortfolioRequest instances are equal
+        /// Returns true if FlowConventionName instances are equal
         /// </summary>
-        /// <param name="input">Instance of UpdatePortfolioRequest to be compared</param>
+        /// <param name="input">Instance of FlowConventionName to be compared</param>
         /// <returns>Boolean</returns>
-        public bool Equals(UpdatePortfolioRequest input)
+        public bool Equals(FlowConventionName input)
         {
             if (input == null)
                 return false;
 
             return 
                 (
-                    this.DisplayName == input.DisplayName ||
-                    (this.DisplayName != null &&
-                    this.DisplayName.Equals(input.DisplayName))
+                    this.Currency == input.Currency ||
+                    (this.Currency != null &&
+                    this.Currency.Equals(input.Currency))
                 ) && 
                 (
-                    this.Description == input.Description ||
-                    (this.Description != null &&
-                    this.Description.Equals(input.Description))
+                    this.IndexName == input.IndexName ||
+                    (this.IndexName != null &&
+                    this.IndexName.Equals(input.IndexName))
+                ) && 
+                (
+                    this.Tenor == input.Tenor ||
+                    (this.Tenor != null &&
+                    this.Tenor.Equals(input.Tenor))
                 );
         }
 
@@ -133,10 +165,12 @@ namespace Lusid.Sdk.Model
             unchecked // Overflow is fine, just wrap
             {
                 int hashCode = 41;
-                if (this.DisplayName != null)
-                    hashCode = hashCode * 59 + this.DisplayName.GetHashCode();
-                if (this.Description != null)
-                    hashCode = hashCode * 59 + this.Description.GetHashCode();
+                if (this.Currency != null)
+                    hashCode = hashCode * 59 + this.Currency.GetHashCode();
+                if (this.IndexName != null)
+                    hashCode = hashCode * 59 + this.IndexName.GetHashCode();
+                if (this.Tenor != null)
+                    hashCode = hashCode * 59 + this.Tenor.GetHashCode();
                 return hashCode;
             }
         }
