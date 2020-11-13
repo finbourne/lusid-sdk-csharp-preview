@@ -110,7 +110,11 @@ namespace Lusid.Sdk.Client
         /// </summary>
         public Configuration()
         {
+<<<<<<< HEAD
             UserAgent = "OpenAPI-Generator/0.11.2297/csharp";
+=======
+            UserAgent = "OpenAPI-Generator/0.11.2285/csharp";
+>>>>>>> Update SDK 0.11.2285
             BasePath = "https://fbn-prd.lusid.com/api";
             DefaultHeader = new ConcurrentDictionary<string, string>();
             ApiKey = new ConcurrentDictionary<string, string>();
