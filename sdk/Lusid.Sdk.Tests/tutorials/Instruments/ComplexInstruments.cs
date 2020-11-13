@@ -349,7 +349,38 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
             Assert.That(retrSwap.StartDate, Is.EqualTo(irs.StartDate));
             Assert.That(retrSwap.Legs.Count, Is.EqualTo(irs.Legs.Count));
         }
-        
+
+        [Test]
+        public void DemonstrateCreationOfSwapWithNamedConventions()
+        {
+            // CREATE an Interest Rate Swap (IRS) (that can then be upserted into LUSID)
+            var startDate = new DateTimeOffset(2020, 2, 7, 0, 0, 0, TimeSpan.Zero);
+            var maturityDate = new DateTimeOffset(2030, 2, 7, 0, 0, 0, TimeSpan.Zero);
+
+            // CREATE the flow conventions, index convention
+            FlowConventionName flowConventionName = new FlowConventionName(currency: "GBP", tenor: "3M");
+            FlowConventionName indexConventionName = new FlowConventionName(currency: "GBP", tenor: "3M", indexName:"LIBOR");
+
+            // CREATE the swap
+            var irs = CreateSwap(startDate, maturityDate, 0.02m, flowConventionName, indexConventionName);
+
+            // ASSERT that it was created
+            Assert.That(irs, Is.Not.Null);
+
+            // CAN NOW UPSERT TO LUSID
+            string uniqueId = "id-swap-1";
+            UpsertOtcToLusid(irs, "some-name-for-this-swap", uniqueId);
+
+            // CAN NOW QUERY FROM LUSID
+            var retrieved = QueryOtcFromLusid(uniqueId);
+            Assert.That(retrieved.InstrumentType == LusidInstrument.InstrumentTypeEnum.InterestRateSwap);
+            var retrSwap = retrieved as InterestRateSwap;
+            Assert.That(retrSwap, Is.Not.Null);
+            Assert.That(retrSwap.MaturityDate, Is.EqualTo(irs.MaturityDate));
+            Assert.That(retrSwap.StartDate, Is.EqualTo(irs.StartDate));
+            Assert.That(retrSwap.Legs.Count, Is.EqualTo(irs.Legs.Count));
+        }
+
         [Test]
         public void DemonstrateCreationOfSwaption()
         {
@@ -392,7 +423,7 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
             var floatLegDef = new LegDefinition(
                 rateOrSpread: 0.002m, // float leg spread over curve rate, often zero
                 stubType: "Front",
-                payReceive: "Pay",
+                payReceive: "Receive",
                 notionalExchangeType: "None",
                 conventions: flowConventions,
                 indexConvention: idxConvention
@@ -603,6 +634,59 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
 
             Assert.That(response.Values.First().Key, Is.EqualTo(idUniqueToInstrument));
             return response.Values.First().Value.InstrumentDefinition;
+        }
+
+        private InterestRateSwap CreateSwap(DateTimeOffset startDate, DateTimeOffset maturityDate, decimal fixedRate, FlowConventionName flowConventionName, FlowConventionName indexConventionName, string fixedLegDirection = "Pay", decimal notional=100m)
+        {
+            string floatingLegDirection = fixedLegDirection == "Pay" ? "Receive" : "Pay";
+
+            // CREATE the leg definitions
+            var fixedLegDef = new LegDefinition(
+                rateOrSpread: fixedRate, // fixed leg rate (swap rate)
+                stubType: "Front",
+                payReceive: fixedLegDirection,
+                notionalExchangeType: "None",
+                conventionName: flowConventionName
+            );
+
+            var floatLegDef = new LegDefinition(
+                rateOrSpread: 0,
+                stubType: "Front",
+                payReceive: floatingLegDirection,
+                notionalExchangeType: "None",
+                conventionName: flowConventionName,
+                indexConventionName: indexConventionName
+            );
+
+            // CREATE the fixed leg
+            var fixedLeg = new FixedLeg(
+                notional: notional,
+                startDate: startDate,
+                maturityDate: maturityDate,
+                legDefinition: fixedLegDef,
+                instrumentType: LusidInstrument.InstrumentTypeEnum.FixedLeg
+                );
+
+            // CREATE the floating leg
+            var floatLeg = new FloatingLeg(
+                notional: notional,
+                startDate: startDate,
+                maturityDate: maturityDate,
+                legDefinition: floatLegDef,
+                instrumentType: LusidInstrument.InstrumentTypeEnum.FloatingLeg
+            );
+
+            var irs = new InterestRateSwap(
+                startDate: startDate,
+                maturityDate: maturityDate,
+                legs: new List<InstrumentLeg>
+                {
+                    floatLeg,
+                    fixedLeg
+                },
+                instrumentType: LusidInstrument.InstrumentTypeEnum.InterestRateSwap
+            );
+            return irs;
         }
     }
 }

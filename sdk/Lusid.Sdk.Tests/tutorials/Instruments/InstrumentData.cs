@@ -20,8 +20,8 @@ namespace Lusid.Sdk.Tests.Tutorials.MarketData
         public void UpsertConventions()
         {
             string scope = "TestConventionsScope";
-            string flowConventionsCode = "GBP-6m";
-            string indexConventionCode = "Gbp-Libor-6m";
+            string flowConventionsCode = "GBP-6M";
+            string indexConventionCode = "GBP-6M-Libor";
 
             // CREATE the flow conventions, index convention for swap
             var flowConventions = new FlowConventions(
