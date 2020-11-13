@@ -83,7 +83,7 @@ namespace Lusid.Sdk.Tests.Utilities
                 publicationDayLag: 0,
                 currency: "USD",
                 paymentTenor: "6M",
-                dayCountConvention: IndexConvention.DayCountConventionEnum.Act365,
+                dayCountConvention: "Act365",
                 fixingReference: "BP00"
             );
 
