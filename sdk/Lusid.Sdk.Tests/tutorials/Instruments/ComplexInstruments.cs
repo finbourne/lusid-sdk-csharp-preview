@@ -282,7 +282,7 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
                 publicationDayLag: 0,
                 currency: "GBP",
                 paymentTenor: "6M",
-                dayCountConvention: IndexConvention.DayCountConventionEnum.Act365,
+                dayCountConvention: "Act365",
                 fixingReference: "BP00"
             );
 
@@ -376,7 +376,7 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
                 publicationDayLag: 0,
                 currency: "GBP",
                 paymentTenor: "6M",
-                dayCountConvention: IndexConvention.DayCountConventionEnum.Act365,
+                dayCountConvention: "Act365",
                 fixingReference: "BP00"
             );
 
