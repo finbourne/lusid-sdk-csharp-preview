@@ -1,6 +1,6 @@
 # Lusid.Sdk.Api.PortfoliosApi
 
-All URIs are relative to *http://localhost:64636*
+All URIs are relative to *http://localhost:48475*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
@@ -12,12 +12,14 @@ Method | HTTP request | Description
 [**GetPortfolioMetadata**](PortfoliosApi.md#getportfoliometadata) | **GET** /api/portfolios/{scope}/{code}/metadata | [EXPERIMENTAL] Get access metadata rules for a portfolio
 [**GetPortfolioProperties**](PortfoliosApi.md#getportfolioproperties) | **GET** /api/portfolios/{scope}/{code}/properties | Get portfolio properties
 [**GetPortfolioRelations**](PortfoliosApi.md#getportfoliorelations) | **GET** /api/portfolios/{scope}/{code}/relations | [EXPERIMENTAL] Get Relations for Portfolio
+[**GetPortfolioReturns**](PortfoliosApi.md#getportfolioreturns) | **GET** /api/portfolios/{scope}/{code}/returns/{returnScope}/{returnCode} | [EXPERIMENTAL] Get Returns
 [**GetPortfoliosAccessMetadataByKey**](PortfoliosApi.md#getportfoliosaccessmetadatabykey) | **GET** /api/portfolios/{scope}/{code}/metadata/{metadataKey} | [EXPERIMENTAL] Get an entry identified by a metadataKey in the access metadata object
 [**ListPortfolios**](PortfoliosApi.md#listportfolios) | **GET** /api/portfolios | List portfolios
 [**ListPortfoliosForScope**](PortfoliosApi.md#listportfoliosforscope) | **GET** /api/portfolios/{scope} | List portfolios for scope
 [**UpdatePortfolio**](PortfoliosApi.md#updateportfolio) | **PUT** /api/portfolios/{scope}/{code} | Update portfolio
 [**UpsertPortfolioAccessMetadata**](PortfoliosApi.md#upsertportfolioaccessmetadata) | **PUT** /api/portfolios/{scope}/{code}/metadata/{metadataKey} | [EXPERIMENTAL] Upsert a Portfolio Access Metadata Rule associated with specific metadataKey. This creates or updates the data in LUSID.
 [**UpsertPortfolioProperties**](PortfoliosApi.md#upsertportfolioproperties) | **POST** /api/portfolios/{scope}/{code}/properties | Upsert portfolio properties
+[**UpsertPortfolioReturns**](PortfoliosApi.md#upsertportfolioreturns) | **POST** /api/portfolios/{scope}/{code}/returns/{returnScope}/{returnCode} | [EXPERIMENTAL] Upsert Returns
 
 
 
@@ -44,7 +46,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://localhost:64636";
+            Configuration.Default.BasePath = "http://localhost:48475";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -130,7 +132,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://localhost:64636";
+            Configuration.Default.BasePath = "http://localhost:48475";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -212,7 +214,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://localhost:64636";
+            Configuration.Default.BasePath = "http://localhost:48475";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -298,7 +300,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://localhost:64636";
+            Configuration.Default.BasePath = "http://localhost:48475";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -386,7 +388,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://localhost:64636";
+            Configuration.Default.BasePath = "http://localhost:48475";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -474,7 +476,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://localhost:64636";
+            Configuration.Default.BasePath = "http://localhost:48475";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -560,7 +562,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://localhost:64636";
+            Configuration.Default.BasePath = "http://localhost:48475";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -646,7 +648,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://localhost:64636";
+            Configuration.Default.BasePath = "http://localhost:48475";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -713,6 +715,100 @@ Name | Type | Description  | Notes
 [[Back to README]](../README.md)
 
 
+## GetPortfolioReturns
+
+> ResourceListOfReturn GetPortfolioReturns (string scope, string code, string returnScope, string returnCode, DateTimeOrCutLabel fromEffectiveAt = null, DateTimeOrCutLabel toEffectiveAt = null, string period = null, DateTimeOffset? asAt = null)
+
+[EXPERIMENTAL] Get Returns
+
+Get Returns which are on the specified portfolio.
+
+### Example
+
+```csharp
+using System.Collections.Generic;
+using System.Diagnostics;
+using Lusid.Sdk.Api;
+using Lusid.Sdk.Client;
+using Lusid.Sdk.Model;
+
+namespace Example
+{
+    public class GetPortfolioReturnsExample
+    {
+        public static void Main()
+        {
+            Configuration.Default.BasePath = "http://localhost:48475";
+            // Configure OAuth2 access token for authorization: oauth2
+            Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
+
+            var apiInstance = new PortfoliosApi(Configuration.Default);
+            var scope = scope_example;  // string | The scope of the Portfolio.
+            var code = code_example;  // string | The code of the  Portfolio.
+            var returnScope = returnScope_example;  // string | The scope of the Returns.
+            var returnCode = returnCode_example;  // string | The code of the Returns.
+            var fromEffectiveAt = fromEffectiveAt_example;  // DateTimeOrCutLabel | The start date from which to delete the Returns. (optional) 
+            var toEffectiveAt = toEffectiveAt_example;  // DateTimeOrCutLabel | The end date from which to delete the Returns (optional) 
+            var period = period_example;  // string | Show the Returns on a Daily or Monthly period. (optional) 
+            var asAt = 2013-10-20T19:20:30+01:00;  // DateTimeOffset? | The asAt datetime at which to retrieve the Returns. Defaults to the latest. (optional) 
+
+            try
+            {
+                // [EXPERIMENTAL] Get Returns
+                ResourceListOfReturn result = apiInstance.GetPortfolioReturns(scope, code, returnScope, returnCode, fromEffectiveAt, toEffectiveAt, period, asAt);
+                Debug.WriteLine(result);
+            }
+            catch (ApiException e)
+            {
+                Debug.Print("Exception when calling PortfoliosApi.GetPortfolioReturns: " + e.Message );
+                Debug.Print("Status Code: "+ e.ErrorCode);
+                Debug.Print(e.StackTrace);
+            }
+        }
+    }
+}
+```
+
+### Parameters
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **scope** | **string**| The scope of the Portfolio. | 
+ **code** | **string**| The code of the  Portfolio. | 
+ **returnScope** | **string**| The scope of the Returns. | 
+ **returnCode** | **string**| The code of the Returns. | 
+ **fromEffectiveAt** | **DateTimeOrCutLabel**| The start date from which to delete the Returns. | [optional] 
+ **toEffectiveAt** | **DateTimeOrCutLabel**| The end date from which to delete the Returns | [optional] 
+ **period** | **string**| Show the Returns on a Daily or Monthly period. | [optional] 
+ **asAt** | **DateTimeOffset?**| The asAt datetime at which to retrieve the Returns. Defaults to the latest. | [optional] 
+
+### Return type
+
+[**ResourceListOfReturn**](ResourceListOfReturn.md)
+
+### Authorization
+
+[oauth2](../README.md#oauth2)
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: text/plain, application/json, text/json
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+| **200** | The Returns on the given time period. |  -  |
+| **400** | The details of the input related failure |  -  |
+| **0** | Error response |  -  |
+
+[[Back to top]](#)
+[[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
+
+
 ## GetPortfoliosAccessMetadataByKey
 
 > ICollection&lt;AccessMetadataValue&gt; GetPortfoliosAccessMetadataByKey (string scope, string code, string metadataKey, DateTimeOrCutLabel effectiveAt = null, DateTimeOffset? asAt = null)
@@ -736,7 +832,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://localhost:64636";
+            Configuration.Default.BasePath = "http://localhost:48475";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -824,7 +920,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://localhost:64636";
+            Configuration.Default.BasePath = "http://localhost:48475";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -918,7 +1014,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://localhost:64636";
+            Configuration.Default.BasePath = "http://localhost:48475";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -1012,7 +1108,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://localhost:64636";
+            Configuration.Default.BasePath = "http://localhost:48475";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -1098,7 +1194,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://localhost:64636";
+            Configuration.Default.BasePath = "http://localhost:48475";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -1186,7 +1282,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://localhost:64636";
+            Configuration.Default.BasePath = "http://localhost:48475";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -1238,6 +1334,94 @@ Name | Type | Description  | Notes
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
 | **200** | The updated or inserted properties |  -  |
+| **400** | The details of the input related failure |  -  |
+| **0** | Error response |  -  |
+
+[[Back to top]](#)
+[[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
+
+
+## UpsertPortfolioReturns
+
+> UpsertReturnsResponse UpsertPortfolioReturns (string scope, string code, string returnScope, string returnCode, List<Return> _return)
+
+[EXPERIMENTAL] Upsert Returns
+
+Update or insert returns into the specified portfolio.
+
+### Example
+
+```csharp
+using System.Collections.Generic;
+using System.Diagnostics;
+using Lusid.Sdk.Api;
+using Lusid.Sdk.Client;
+using Lusid.Sdk.Model;
+
+namespace Example
+{
+    public class UpsertPortfolioReturnsExample
+    {
+        public static void Main()
+        {
+            Configuration.Default.BasePath = "http://localhost:48475";
+            // Configure OAuth2 access token for authorization: oauth2
+            Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
+
+            var apiInstance = new PortfoliosApi(Configuration.Default);
+            var scope = scope_example;  // string | The scope of the Portfolio.
+            var code = code_example;  // string | The code of the  Portfolio.
+            var returnScope = returnScope_example;  // string | The scope of the Returns.
+            var returnCode = returnCode_example;  // string | The code of the Returns.
+            var _return = new List<Return>(); // List<Return> | This contains the Returns which need to be upsert.
+
+            try
+            {
+                // [EXPERIMENTAL] Upsert Returns
+                UpsertReturnsResponse result = apiInstance.UpsertPortfolioReturns(scope, code, returnScope, returnCode, _return);
+                Debug.WriteLine(result);
+            }
+            catch (ApiException e)
+            {
+                Debug.Print("Exception when calling PortfoliosApi.UpsertPortfolioReturns: " + e.Message );
+                Debug.Print("Status Code: "+ e.ErrorCode);
+                Debug.Print(e.StackTrace);
+            }
+        }
+    }
+}
+```
+
+### Parameters
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **scope** | **string**| The scope of the Portfolio. | 
+ **code** | **string**| The code of the  Portfolio. | 
+ **returnScope** | **string**| The scope of the Returns. | 
+ **returnCode** | **string**| The code of the Returns. | 
+ **_return** | [**List&lt;Return&gt;**](Return.md)| This contains the Returns which need to be upsert. | 
+
+### Return type
+
+[**UpsertReturnsResponse**](UpsertReturnsResponse.md)
+
+### Authorization
+
+[oauth2](../README.md#oauth2)
+
+### HTTP request headers
+
+- **Content-Type**: application/json-patch+json, application/json, text/json, application/_*+json
+- **Accept**: text/plain, application/json, text/json
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+| **200** | The version of the portfolio that contains the newly updated or inserted Returns. |  -  |
 | **400** | The details of the input related failure |  -  |
 | **0** | Error response |  -  |
 
