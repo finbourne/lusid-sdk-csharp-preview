@@ -166,7 +166,8 @@ namespace Lusid.Sdk.Tests.Tutorials.Ibor
             // Values the bond for each day in between 2020-02-16 and 2020-02-23 (inclusive)
             var valuation = _apiFactory.Api<IAggregationApi>().GetValuationOfWeightedInstruments(inlineValuationRequest);
             Assert.That(valuation, Is.Not.Null);
-            Assert.That(valuation.Data.Count, Is.EqualTo(8));
+            // 6 valuation days (Given Sun-Sun (see effectiveFrom|To), rolls forward to Monday and generates schedule, rolling to appropriate GBD) 
+            Assert.That(valuation.Data.Count, Is.EqualTo(6));
 
             // GET the present values of the bond
             var presentValues = valuation.Data
