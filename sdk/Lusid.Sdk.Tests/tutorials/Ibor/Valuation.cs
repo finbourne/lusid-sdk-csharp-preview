@@ -166,7 +166,8 @@ namespace Lusid.Sdk.Tests.Tutorials.Ibor
             // Values the bond for each day in between 2020-02-16 and 2020-02-23 (inclusive)
             var valuation = _apiFactory.Api<IAggregationApi>().GetValuationOfWeightedInstruments(inlineValuationRequest);
             Assert.That(valuation, Is.Not.Null);
-            Assert.That(valuation.Data.Count, Is.EqualTo(8));
+            // 6 valuation days (Given Sun-Sun (see effectiveFrom|To), rolls forward to Monday and generates schedule, rolling to appropriate GBD) 
+            Assert.That(valuation.Data.Count, Is.EqualTo(6));
 
             // GET the present values of the bond
             var presentValues = valuation.Data
@@ -179,7 +180,8 @@ namespace Lusid.Sdk.Tests.Tutorials.Ibor
 
             // CHECK pvs are unique as they are valued everyday
             var uniquePvs = presentValues.Distinct().Count();
-            Assert.That(uniquePvs, Is.EqualTo(8));
+            // 6 valuation days (Given Sun-Sun (see effectiveFrom|To), rolls forward to Monday and generates schedule, rolling to appropriate GBD) 
+            Assert.That(uniquePvs, Is.EqualTo(6));
         }
 
         [Test]
@@ -455,7 +457,10 @@ namespace Lusid.Sdk.Tests.Tutorials.Ibor
             // CALL valuation
             var valuation = _apiFactory.Api<IAggregationApi>().GetValuation(valuationRequest);
             Assert.That(valuation, Is.Not.Null);
-            Assert.That(valuation.Data.Count, Is.EqualTo(24)); // 8 valuation days of 3 instruments: bond, fx option, equity
+            // 6 valuation days (Given Sun-Sun (see effectiveFrom|To), rolls forward to Monday and generates schedule, rolling to appropriate GBD) 
+            // 3 instruments: bond, fx option, equity
+            // So 6x3.
+            Assert.That(valuation.Data.Count, Is.EqualTo(18)); 
 
             // CHECK PV makes sense
             foreach (var result in valuation.Data)
