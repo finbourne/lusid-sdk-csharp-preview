@@ -2,7 +2,7 @@
 
 | branch | status |
 | --- | --- |
-| `master` |  ![Nuget](https://img.shields.io/nuget/v/Lusid.Sdk.Preview?color=blue) ![Build and test](https://github.com/finbourne/lusid-sdk-csharp-preview/workflows/Build%20and%20test/badge.svg?branch=master) |
+| `master` |  ![Nuget](https://img.shields.io/nuget/v/Lusid.Sdk.Preview?color=blue) ![Build and test](https://github.com/finbourne/lusid-sdk-csharp-preview/workflows/Build%20and%20test/badge.svg) |
 | `develop` | ![Build and test](https://github.com/finbourne/lusid-sdk-csharp-preview/workflows/Build%20and%20test/badge.svg?branch=develop) |
 
 # LUSID<sup>®</sup> C# SDK
