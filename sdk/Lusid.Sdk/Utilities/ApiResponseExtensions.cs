@@ -36,6 +36,8 @@ namespace Lusid.Sdk.Utilities
             {
                 return null;
             }
+            
+            
             return headerDateValue;
         }
     }

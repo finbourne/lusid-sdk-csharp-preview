@@ -342,5 +342,15 @@ namespace Lusid.Sdk.Tests
             var date = apiResponse.GetDate();
             Assert.IsNotNull(date);
         }
+
+        [Test]
+        public void ApiResponseMissingHeader_ReturnsNull_DateHeader()
+        {
+            var apiResponse = _factory.Api<ApplicationMetadataApi>().GetLusidVersionsWithHttpInfo();
+            // Remove header containing access token
+            apiResponse.Headers.Remove(ApiResponseExtensions.DateHeader);
+            var date = apiResponse.GetDate();
+            Assert.IsNull(date);
+        }
     }
 }
