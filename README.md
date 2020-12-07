@@ -2,7 +2,7 @@
 
 | branch | status |
 | --- | --- |
-| `master` |  ![Nuget](https://img.shields.io/nuget/v/Lusid.Sdk.Preview?color=blue) ![run-sdk-tests](https://github.com/finbourne/lusid-sdk-csharp-preview/workflows/run-sdk-tests/badge.svg?branch=master) |
+| `master` |  ![Nuget](https://img.shields.io/nuget/v/Lusid.Sdk.Preview?color=blue) ![Build and test](https://github.com/finbourne/lusid-sdk-csharp-preview/workflows/Build%20and%20test/badge.svg?branch=master) |
 | `develop` | ![Build and test](https://github.com/finbourne/lusid-sdk-csharp-preview/workflows/Build%20and%20test/badge.svg?branch=develop) |
 
 # LUSID<sup>®</sup> C# SDK
@@ -14,4 +14,3 @@ $ dotnet add package Lusid.Sdk.Preview
 ```
 
 For further documentation on building the SDK, running the tutorials and using the SDK please see the [wiki](https://github.com/finbourne/lusid-sdk-csharp-preview/wiki).
-
