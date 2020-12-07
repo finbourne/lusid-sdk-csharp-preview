@@ -17,7 +17,7 @@ namespace Lusid.Sdk.Tests
         private ILusidApiFactory _factory;
         private const string RequestIdRegexPattern = "[a-zA-Z0-9]{13}:[0-9a-fA-F]{8}";
         
-        
+
         [OneTimeSetUp]
         public void SetUp()
         {
@@ -333,6 +333,14 @@ namespace Lusid.Sdk.Tests
                 IPortfolioGroupsApi api = factory.Api<IPortfolioGroupsApi>();
                 return api;
             }
+        }
+        
+        [Test]
+        public void ApiResponse_CanExtract_DateHeader()
+        {
+            var apiResponse = _factory.Api<ApplicationMetadataApi>().GetLusidVersionsWithHttpInfo();
+            var date = apiResponse.GetDate();
+            Assert.IsNotNull(date);
         }
     }
 }

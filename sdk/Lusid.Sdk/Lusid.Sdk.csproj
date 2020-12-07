@@ -32,4 +32,10 @@
     <PackageReference Include="JsonSubTypes" Version="1.7.0" />
   </ItemGroup>
   
+  <ItemGroup>    
+    <None Update="secrets.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+  
 </Project>
