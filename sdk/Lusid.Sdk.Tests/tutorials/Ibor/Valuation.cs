@@ -5,6 +5,7 @@ using Lusid.Sdk.Api;
 using Lusid.Sdk.Model;
 using Lusid.Sdk.Tests.Utilities;
 using Lusid.Sdk.Utilities;
+using LusidFeatures;
 using NUnit.Framework;
 
 namespace Lusid.Sdk.Tests.Tutorials.Ibor
@@ -52,7 +53,8 @@ namespace Lusid.Sdk.Tests.Tutorials.Ibor
                 _apiFactory.Api<IQuotesApi>(),
                 _apiFactory.Api<IStructuredMarketDataApi>());
         }
-
+        
+        [LusidFeature("F36")]
         [Test]
         public void Run_Valuation()
         {
