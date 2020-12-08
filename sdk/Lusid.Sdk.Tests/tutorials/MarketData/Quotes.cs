@@ -5,6 +5,7 @@ using Lusid.Sdk.Api;
 using Lusid.Sdk.Model;
 using Lusid.Sdk.Tests.Utilities;
 using Lusid.Sdk.Utilities;
+using LusidFeatures;
 using NUnit.Framework;
 
 namespace Lusid.Sdk.Tests.Tutorials.MarketData
@@ -20,7 +21,8 @@ namespace Lusid.Sdk.Tests.Tutorials.MarketData
             var apiFactory = LusidApiFactoryBuilder.Build("secrets.json");
             _quotesApi = apiFactory.Api<IQuotesApi>();
         }
-
+        
+        [LusidFeature("F28")]
         [Test]
         public void Add_Quote()
         {
@@ -41,7 +43,8 @@ namespace Lusid.Sdk.Tests.Tutorials.MarketData
 
             _quotesApi.UpsertQuotes(TestDataUtilities.TutorialScope, new Dictionary<string, UpsertQuoteRequest> { { "correlationId", request} });
         }
-
+        
+        [LusidFeature("F29")]
         [Test]
         public void Get_Quote_For_Instrument_For_Single_Day()
         {
@@ -66,7 +69,8 @@ namespace Lusid.Sdk.Tests.Tutorials.MarketData
             
             Assert.That(quote.MetricValue.Value, Is.EqualTo(199.23));
         }
-
+        
+        [LusidFeature("F30")]
         [Test]
         public void Get_Timeseries_Quotes()
         {
@@ -79,6 +83,8 @@ namespace Lusid.Sdk.Tests.Tutorials.MarketData
                 instrumentIdType: QuoteSeriesId.InstrumentIdTypeEnum.Figi,
                 quoteType: QuoteSeriesId.QuoteTypeEnum.Price,
                 field: "mid");
+            
+            Console.WriteLine(quoteSeriesId);
 
             //    Get the quotes for each day in the date range
             var quoteResponses = dateRange
@@ -90,6 +96,8 @@ namespace Lusid.Sdk.Tests.Tutorials.MarketData
                         new Dictionary<string, QuoteSeriesId> {{"correlationId", quoteSeriesId}}))
                 .SelectMany(q => q.Values)
                 .ToList();
+            
+            Console.WriteLine(quoteResponses);
             
             Assert.That(quoteResponses, Has.Count.EqualTo(30));
         }
