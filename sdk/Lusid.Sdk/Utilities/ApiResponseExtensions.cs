@@ -12,6 +12,7 @@ namespace Lusid.Sdk.Utilities
         /// The header that the LUSID request id is contained within.
         /// </summary>
         public const string RequestIdHeader = "lusid-meta-requestId";
+        
         /// <summary>
         /// The header that the LUSID Date Time Offset is contained within.
         /// </summary>
@@ -27,7 +28,7 @@ namespace Lusid.Sdk.Utilities
         }
         
         /// <summary>
-        /// Extracts the requestId from an ApiResponse
+        /// Extracts the Date from an ApiResponse
         /// </summary>
         public static DateTimeOffset? GetDate <T>(this ApiResponse<T> apiResponse)
         {
@@ -36,8 +37,6 @@ namespace Lusid.Sdk.Utilities
             {
                 return null;
             }
-            
-            
             return headerDateValue;
         }
     }
