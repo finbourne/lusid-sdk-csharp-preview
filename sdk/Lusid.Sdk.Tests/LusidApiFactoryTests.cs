@@ -17,7 +17,7 @@ namespace Lusid.Sdk.Tests
         private ILusidApiFactory _factory;
         private const string RequestIdRegexPattern = "[a-zA-Z0-9]{13}:[0-9a-fA-F]{8}";
         
-        
+
         [OneTimeSetUp]
         public void SetUp()
         {
@@ -342,6 +342,34 @@ namespace Lusid.Sdk.Tests
                 IPortfolioGroupsApi api = factory.Api<IPortfolioGroupsApi>();
                 return api;
             }
+        }
+        
+        [Test]
+        public void ApiResponse_CanExtract_DateHeader()
+        {
+            var apiResponse = _factory.Api<ApplicationMetadataApi>().GetLusidVersionsWithHttpInfo();
+            var date = apiResponse.GetDate();
+            Assert.IsNotNull(date);
+        }
+
+        [Test]
+        public void ApiResponseMissingHeader_ReturnsNull_DateHeader()
+        {
+            var apiResponse = _factory.Api<ApplicationMetadataApi>().GetLusidVersionsWithHttpInfo();
+            // Remove header containing access token
+            apiResponse.Headers.Remove(ApiResponseExtensions.DateHeader);
+            var date = apiResponse.GetDate();
+            Assert.IsNull(date);
+        }
+        
+        [Test]
+        public void ApiResponseInvalidDateHeader_ReturnsNull_DateHeader()
+        {
+            var apiResponse = _factory.Api<ApplicationMetadataApi>().GetLusidVersionsWithHttpInfo();
+            // Invalidate header containing access token
+            apiResponse.Headers[ApiResponseExtensions.DateHeader] = "invalid";
+            var date = apiResponse.GetDate();
+            Assert.IsNull(date);
         }
     }
 }
