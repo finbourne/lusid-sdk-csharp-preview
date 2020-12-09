@@ -198,11 +198,15 @@ namespace Lusid.Sdk.Tests.Tutorials.Ibor
             // POPULATE with required market data for valuation of the instruments
             var scope = Guid.NewGuid().ToString();
             _testDataUtilities.UpsertFxRate(scope, TestEffectiveAt);
+            
+            // CREATE and upsert recipe for pricing the portfolio of instruments 
+            var constantTimeValueOfMoneyRecipeCode = "ConstantTimeValueOfMoneyRecipe";
+            CreateAndUpsertRecipe(constantTimeValueOfMoneyRecipeCode, scope, ModelSelection.ModelEnum.ConstantTimeValueOfMoney);
 
             // CREATE inline valuation request asking for the inline instruments' PV
             var valuationSchedule = new ValuationSchedule(effectiveAt: TestEffectiveAt);
             var inlineValuationRequest = new InlineValuationRequest(
-                recipeId: new ResourceId(scope, "default"),
+                recipeId: new ResourceId(scope, constantTimeValueOfMoneyRecipeCode),
                 metrics: ValuationSpec,
                 sort: new List<OrderBySpec> {new OrderBySpec(ValuationDateKey, OrderBySpec.SortOrderEnum.Ascending)},
                 valuationSchedule: valuationSchedule,
@@ -228,32 +232,14 @@ namespace Lusid.Sdk.Tests.Tutorials.Ibor
         [Test]
         public void TestDemonstratingFxForwardPricingWithDifferentPricingModels()
         {
-            // CREATE two recipe to price Fx-Forward - one by Simple Static and one by Discounting 
+            // CREATE and upset two recipe to price Fx-Forward - one by ConstantTimeValueOfMoney and one by Discounting 
             var scope = Guid.NewGuid().ToString();
 
             var discountingRecipeCode = "DiscountingRecipe";
-            var discountingPricingOptions = new PricingOptions(
-                new ModelSelection(ModelSelection.LibraryEnum.Lusid, ModelSelection.ModelEnum.Discounting));
-            var discountingRecipe = new ConfigurationRecipe(
-                scope,
-                discountingRecipeCode,
-                market: new MarketContext(options: new MarketOptions(defaultScope: scope)),
-                pricing: new PricingContext(options: discountingPricingOptions),
-                description: "Recipe for Discount pricing");
+            CreateAndUpsertRecipe(discountingRecipeCode, scope, ModelSelection.ModelEnum.Discounting);
 
-            var simpleStaticRecipeCode = "SimpleStaticRecipe";
-            var pricingOptions = new PricingOptions(
-                new ModelSelection(ModelSelection.LibraryEnum.Lusid, ModelSelection.ModelEnum.SimpleStatic));
-            var simpleStaticRecipe = new ConfigurationRecipe(
-                scope,
-                simpleStaticRecipeCode,
-                market: new MarketContext(options: new MarketOptions(defaultScope: scope)),
-                pricing: new PricingContext(options: pricingOptions),
-                description: "Recipe for Simple Static pricing");
-
-            // UPSERT both recipes
-            UpsertRecipe(discountingRecipe);
-            UpsertRecipe(simpleStaticRecipe);
+            var constantTimeValueOfMoneyRecipeCode = "ConstantTimeValueOfMoneyRecipe";
+            CreateAndUpsertRecipe(constantTimeValueOfMoneyRecipeCode, scope, ModelSelection.ModelEnum.ConstantTimeValueOfMoney);
 
             // POPULATE stores with required market data to value Fx-Forward using discounting model
             // Fx rates are upserted for both models
@@ -261,7 +247,7 @@ namespace Lusid.Sdk.Tests.Tutorials.Ibor
             _testDataUtilities.UpsertFxRate(scope, TestEffectiveAt);
             _testDataUtilities.UpsertRateCurves(scope, TestEffectiveAt);
 
-            // CREATE a Fx-Forward inline instrument 
+            // CREATE a Fx-Forward as an inline instrument 
             var instruments = new List<WeightedInstrument>
             {
                 new WeightedInstrument(100, "fx-forward", InstrumentExamples.CreateExampleFxForward())
@@ -278,8 +264,8 @@ namespace Lusid.Sdk.Tests.Tutorials.Ibor
                 valuationSchedule: valuationSchedule,
                 instruments: instruments);
 
-            var simpleStaticInlineValuationRequest = new InlineValuationRequest(
-                recipeId: new ResourceId(scope, simpleStaticRecipeCode),
+            var constantTimeValueOfMoneyValuationRequest = new InlineValuationRequest(
+                recipeId: new ResourceId(scope, constantTimeValueOfMoneyRecipeCode),
                 metrics: ValuationSpec,
                 sort: new List<OrderBySpec> {new OrderBySpec(ValuationDateKey, OrderBySpec.SortOrderEnum.Ascending)},
                 valuationSchedule: valuationSchedule,
@@ -288,14 +274,14 @@ namespace Lusid.Sdk.Tests.Tutorials.Ibor
             // CALL valuation for Fx-Forward with each recipe
             var discountingValuation = _apiFactory.Api<IAggregationApi>()
                 .GetValuationOfWeightedInstruments(discountingInlineValuationRequest);
-            var simpleStaticValuation = _apiFactory.Api<IAggregationApi>()
-                .GetValuationOfWeightedInstruments(simpleStaticInlineValuationRequest);
+            var constantTimeValueOfMoneyValuation = _apiFactory.Api<IAggregationApi>()
+                .GetValuationOfWeightedInstruments(constantTimeValueOfMoneyValuationRequest);
 
             // ASSERT that the PV differs between the models and are not null
             Assert.That(discountingValuation, Is.Not.Null);
-            Assert.That(simpleStaticValuation, Is.Not.Null);
+            Assert.That(constantTimeValueOfMoneyValuation, Is.Not.Null);
             var diff = (double) discountingValuation.Data.First()[HoldingPvKey]
-                       - (double) simpleStaticValuation.Data.First()[HoldingPvKey];
+                       - (double) constantTimeValueOfMoneyValuation.Data.First()[HoldingPvKey];
             Assert.That(diff, Is.Not.EqualTo(0).Within(1e-3));
         }
 
@@ -318,19 +304,9 @@ namespace Lusid.Sdk.Tests.Tutorials.Ibor
                 TestEffectiveAt,
                 instrument);
 
-            // CREATE recipe specifying discount pricing model
+            // CREATE and upsert recipe specifying discount pricing model
             var discountingRecipeCode = "DiscountingRecipe";
-            var discountingPricingOptions = new PricingOptions(
-                new ModelSelection(ModelSelection.LibraryEnum.Lusid, ModelSelection.ModelEnum.Discounting));
-            var discountingRecipe = new ConfigurationRecipe(
-                scope,
-                discountingRecipeCode,
-                market: new MarketContext(options: new MarketOptions(defaultScope: scope)),
-                pricing: new PricingContext(options: discountingPricingOptions),
-                description: "Recipe for Discount pricing");
-            
-            // UPSERT the recipe for valuation request/call below
-            UpsertRecipe(discountingRecipe);
+            CreateAndUpsertRecipe(discountingRecipeCode, scope, ModelSelection.ModelEnum.Discounting);
 
             // CREATE valuation request
             var valuationSchedule = new ValuationSchedule(effectiveAt: TestEffectiveAt);
@@ -380,20 +356,10 @@ namespace Lusid.Sdk.Tests.Tutorials.Ibor
                 TestEffectiveAt,
                 instruments);
 
-            // CREATE recipe specifying discount pricing model
+            // CREATE and upsert recipe specifying discount pricing model
             var discountingRecipeCode = "DiscountingRecipe";
-            var discountingPricingOptions = new PricingOptions(
-                new ModelSelection(ModelSelection.LibraryEnum.Lusid, ModelSelection.ModelEnum.Discounting));
-            var discountingRecipe = new ConfigurationRecipe(
-                scope,
-                discountingRecipeCode,
-                market: new MarketContext(options: new MarketOptions(defaultScope: scope)),
-                pricing: new PricingContext(options: discountingPricingOptions),
-                description: "Recipe for Discount pricing");
+            CreateAndUpsertRecipe(discountingRecipeCode, scope, ModelSelection.ModelEnum.Discounting);
             
-            // UPSERT the recipe for valuation request/call below
-            UpsertRecipe(discountingRecipe);
-
             var valuationSchedule = new ValuationSchedule(effectiveAt: TestEffectiveAt);
             var valuationRequest = new ValuationRequest(
                 recipeId: new ResourceId(scope, discountingRecipeCode),
@@ -443,11 +409,15 @@ namespace Lusid.Sdk.Tests.Tutorials.Ibor
                 TestEffectiveAt,
                 instruments,
                 equityIdentifier: "ABC Corporation");
+            
+            // CREATE and upsert recipe for pricing the portfolio of instruments 
+            var constantTimeValueOfMoneyRecipeCode = "ConstantTimeValueOfMoneyRecipe";
+            CreateAndUpsertRecipe(constantTimeValueOfMoneyRecipeCode, scope, ModelSelection.ModelEnum.ConstantTimeValueOfMoney);
 
             // CREATE valuation schedule and request
             var valuationSchedule = new ValuationSchedule(effectiveFrom: TestEffectiveFrom, effectiveAt: TestEffectiveAt);
             var valuationRequest = new ValuationRequest(
-                recipeId: new ResourceId(scope, "default"),
+                recipeId: new ResourceId(scope, constantTimeValueOfMoneyRecipeCode),
                 metrics: ValuationSpec,
                 valuationSchedule: valuationSchedule,
                 sort: new List<OrderBySpec> {new OrderBySpec(ValuationDateKey, OrderBySpec.SortOrderEnum.Ascending)},
@@ -467,6 +437,20 @@ namespace Lusid.Sdk.Tests.Tutorials.Ibor
             {
                 Assert.That(result[HoldingPvKey], Is.GreaterThanOrEqualTo(0));
             }
+        }
+
+        private void CreateAndUpsertRecipe(string code, string scope, ModelSelection.ModelEnum model)
+        {
+            // CREATE recipe for pricing
+            var pricingOptions = new PricingOptions(new ModelSelection(ModelSelection.LibraryEnum.Lusid, model));
+            var recipe = new ConfigurationRecipe(
+                scope,
+                code,
+                market: new MarketContext(options: new MarketOptions(defaultScope: scope)),
+                pricing: new PricingContext(options: pricingOptions),
+                description: $"Recipe for {model} pricing");
+            
+            UpsertRecipe(recipe);
         }
 
         private void UpsertRecipe(ConfigurationRecipe recipe)
