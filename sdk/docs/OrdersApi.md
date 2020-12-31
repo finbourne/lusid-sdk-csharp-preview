@@ -1,14 +1,97 @@
 # Lusid.Sdk.Api.OrdersApi
 
-All URIs are relative to *http://localhost:39183*
+All URIs are relative to *http://localhost:62772*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
+[**DeleteOrder**](OrdersApi.md#deleteorder) | **DELETE** /api/orders/{scope}/{code} | [EXPERIMENTAL] Delete order
 [**GetOrder**](OrdersApi.md#getorder) | **GET** /api/orders/{scope}/{code} | [EXPERIMENTAL] Get Order
 [**ListOrders**](OrdersApi.md#listorders) | **GET** /api/orders | [EXPERIMENTAL] List Orders
 [**UpsertOrderProperties**](OrdersApi.md#upsertorderproperties) | **POST** /api/orders/{scope}/properties | [EXPERIMENTAL] Upsert Order Properties
 [**UpsertOrders**](OrdersApi.md#upsertorders) | **POST** /api/orders | [EXPERIMENTAL] Upsert Order
 
+
+
+## DeleteOrder
+
+> DeletedEntityResponse DeleteOrder (string scope, string code)
+
+[EXPERIMENTAL] Delete order
+
+Delete an order. Deletion will be valid from the order's creation datetime.  This means that the order will no longer exist at any effective datetime from the asAt datetime of deletion.
+
+### Example
+
+```csharp
+using System.Collections.Generic;
+using System.Diagnostics;
+using Lusid.Sdk.Api;
+using Lusid.Sdk.Client;
+using Lusid.Sdk.Model;
+
+namespace Example
+{
+    public class DeleteOrderExample
+    {
+        public static void Main()
+        {
+            Configuration.Default.BasePath = "http://localhost:62772";
+            // Configure OAuth2 access token for authorization: oauth2
+            Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
+
+            var apiInstance = new OrdersApi(Configuration.Default);
+            var scope = scope_example;  // string | The order scope.
+            var code = code_example;  // string | The order's code. This, together with the scope uniquely identifies the order to delete.
+
+            try
+            {
+                // [EXPERIMENTAL] Delete order
+                DeletedEntityResponse result = apiInstance.DeleteOrder(scope, code);
+                Debug.WriteLine(result);
+            }
+            catch (ApiException e)
+            {
+                Debug.Print("Exception when calling OrdersApi.DeleteOrder: " + e.Message );
+                Debug.Print("Status Code: "+ e.ErrorCode);
+                Debug.Print(e.StackTrace);
+            }
+        }
+    }
+}
+```
+
+### Parameters
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **scope** | **string**| The order scope. | 
+ **code** | **string**| The order&#39;s code. This, together with the scope uniquely identifies the order to delete. | 
+
+### Return type
+
+[**DeletedEntityResponse**](DeletedEntityResponse.md)
+
+### Authorization
+
+[oauth2](../README.md#oauth2)
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: text/plain, application/json, text/json
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+| **200** | The response from deleting an order. |  -  |
+| **400** | The details of the input related failure |  -  |
+| **0** | Error response |  -  |
+
+[[Back to top]](#)
+[[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
 
 
 ## GetOrder
@@ -34,7 +117,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://localhost:39183";
+            Configuration.Default.BasePath = "http://localhost:62772";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -120,7 +203,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://localhost:39183";
+            Configuration.Default.BasePath = "http://localhost:62772";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -212,7 +295,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://localhost:39183";
+            Configuration.Default.BasePath = "http://localhost:62772";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -294,7 +377,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://localhost:39183";
+            Configuration.Default.BasePath = "http://localhost:62772";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 

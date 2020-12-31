@@ -1,13 +1,96 @@
 # Lusid.Sdk.Api.AllocationsApi
 
-All URIs are relative to *http://localhost:39183*
+All URIs are relative to *http://localhost:62772*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
+[**DeleteAllocation**](AllocationsApi.md#deleteallocation) | **DELETE** /api/allocations/{scope}/{code} | [EXPERIMENTAL] Delete allocation
 [**GetAllocation**](AllocationsApi.md#getallocation) | **GET** /api/allocations/{scope}/{code} | [EXPERIMENTAL] Get Allocation
 [**ListAllocations**](AllocationsApi.md#listallocations) | **GET** /api/allocations | [EXPERIMENTAL] List Allocations
 [**UpsertAllocations**](AllocationsApi.md#upsertallocations) | **POST** /api/allocations | [EXPERIMENTAL] Upsert Allocations
 
+
+
+## DeleteAllocation
+
+> DeletedEntityResponse DeleteAllocation (string scope, string code)
+
+[EXPERIMENTAL] Delete allocation
+
+Delete an allocation. Deletion will be valid from the allocation's creation datetime.  This means that the allocation will no longer exist at any effective datetime from the asAt datetime of deletion.
+
+### Example
+
+```csharp
+using System.Collections.Generic;
+using System.Diagnostics;
+using Lusid.Sdk.Api;
+using Lusid.Sdk.Client;
+using Lusid.Sdk.Model;
+
+namespace Example
+{
+    public class DeleteAllocationExample
+    {
+        public static void Main()
+        {
+            Configuration.Default.BasePath = "http://localhost:62772";
+            // Configure OAuth2 access token for authorization: oauth2
+            Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
+
+            var apiInstance = new AllocationsApi(Configuration.Default);
+            var scope = scope_example;  // string | The allocation scope.
+            var code = code_example;  // string | The allocation's code. This, together with the scope uniquely identifies the allocation to delete.
+
+            try
+            {
+                // [EXPERIMENTAL] Delete allocation
+                DeletedEntityResponse result = apiInstance.DeleteAllocation(scope, code);
+                Debug.WriteLine(result);
+            }
+            catch (ApiException e)
+            {
+                Debug.Print("Exception when calling AllocationsApi.DeleteAllocation: " + e.Message );
+                Debug.Print("Status Code: "+ e.ErrorCode);
+                Debug.Print(e.StackTrace);
+            }
+        }
+    }
+}
+```
+
+### Parameters
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **scope** | **string**| The allocation scope. | 
+ **code** | **string**| The allocation&#39;s code. This, together with the scope uniquely identifies the allocation to delete. | 
+
+### Return type
+
+[**DeletedEntityResponse**](DeletedEntityResponse.md)
+
+### Authorization
+
+[oauth2](../README.md#oauth2)
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: text/plain, application/json, text/json
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+| **200** | The response from deleting an allocation. |  -  |
+| **400** | The details of the input related failure |  -  |
+| **0** | Error response |  -  |
+
+[[Back to top]](#)
+[[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
 
 
 ## GetAllocation
@@ -33,7 +116,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://localhost:39183";
+            Configuration.Default.BasePath = "http://localhost:62772";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -119,7 +202,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://localhost:39183";
+            Configuration.Default.BasePath = "http://localhost:62772";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -211,7 +294,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://localhost:39183";
+            Configuration.Default.BasePath = "http://localhost:62772";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
