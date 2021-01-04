@@ -1,6 +1,6 @@
 # Lusid.Sdk.Api.PortfoliosApi
 
-All URIs are relative to *http://localhost:59361*
+All URIs are relative to *http://localhost:59789*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
@@ -8,6 +8,7 @@ Method | HTTP request | Description
 [**DeletePortfolio**](PortfoliosApi.md#deleteportfolio) | **DELETE** /api/portfolios/{scope}/{code} | Delete portfolio
 [**DeletePortfolioProperties**](PortfoliosApi.md#deleteportfolioproperties) | **DELETE** /api/portfolios/{scope}/{code}/properties | Delete portfolio properties
 [**GetPortfolio**](PortfoliosApi.md#getportfolio) | **GET** /api/portfolios/{scope}/{code} | Get portfolio
+[**GetPortfolioAggregateReturns**](PortfoliosApi.md#getportfolioaggregatereturns) | **GET** /api/portfolios/{scope}/{code}/returns/{returnScope}/{returnCode}/aggregated | [EXPERIMENTAL] Aggregate Returns
 [**GetPortfolioCommands**](PortfoliosApi.md#getportfoliocommands) | **GET** /api/portfolios/{scope}/{code}/commands | [EARLY ACCESS] Get portfolio commands
 [**GetPortfolioMetadata**](PortfoliosApi.md#getportfoliometadata) | **GET** /api/portfolios/{scope}/{code}/metadata | [EXPERIMENTAL] Get access metadata rules for a portfolio
 [**GetPortfolioProperties**](PortfoliosApi.md#getportfolioproperties) | **GET** /api/portfolios/{scope}/{code}/properties | Get portfolio properties
@@ -46,7 +47,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://localhost:59361";
+            Configuration.Default.BasePath = "http://localhost:59789";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -132,7 +133,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://localhost:59361";
+            Configuration.Default.BasePath = "http://localhost:59789";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -214,7 +215,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://localhost:59361";
+            Configuration.Default.BasePath = "http://localhost:59789";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -300,7 +301,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://localhost:59361";
+            Configuration.Default.BasePath = "http://localhost:59789";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -365,6 +366,106 @@ Name | Type | Description  | Notes
 [[Back to README]](../README.md)
 
 
+## GetPortfolioAggregateReturns
+
+> ResourceListOfAggregatedReturn GetPortfolioAggregateReturns (string scope, string code, string returnScope, string returnCode, DateTimeOrCutLabel fromEffectiveAt = null, DateTimeOrCutLabel toEffectiveAt = null, string compositeMethod = null, string period = null, string outputFrequency = null, List<string> metrics = null, DateTimeOffset? asAt = null)
+
+[EXPERIMENTAL] Aggregate Returns
+
+Aggregate Returns which are on the specified portfolio.
+
+### Example
+
+```csharp
+using System.Collections.Generic;
+using System.Diagnostics;
+using Lusid.Sdk.Api;
+using Lusid.Sdk.Client;
+using Lusid.Sdk.Model;
+
+namespace Example
+{
+    public class GetPortfolioAggregateReturnsExample
+    {
+        public static void Main()
+        {
+            Configuration.Default.BasePath = "http://localhost:59789";
+            // Configure OAuth2 access token for authorization: oauth2
+            Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
+
+            var apiInstance = new PortfoliosApi(Configuration.Default);
+            var scope = scope_example;  // string | The scope of the Portfolio.
+            var code = code_example;  // string | The code of the  Portfolio.
+            var returnScope = returnScope_example;  // string | The scope of the Returns.
+            var returnCode = returnCode_example;  // string | The code of the Returns.
+            var fromEffectiveAt = fromEffectiveAt_example;  // DateTimeOrCutLabel | The start date from which to delete the Returns. (optional) 
+            var toEffectiveAt = toEffectiveAt_example;  // DateTimeOrCutLabel | The end date from which to delete the Returns (optional) 
+            var compositeMethod = compositeMethod_example;  // string | The method used to calculate the Portfolio performance:              Equal/Asset. (optional) 
+            var period = period_example;  // string | the type of the returns used to calculate the aggregation result. (optional) 
+            var outputFrequency = outputFrequency_example;  // string | The type of calculated output. (optional) 
+            var metrics = new List<string>(); // List<string> | The period time to calculate the aggregate return. (optional) 
+            var asAt = 2013-10-20T19:20:30+01:00;  // DateTimeOffset? | The asAt datetime at which to retrieve the Returns. Defaults to the latest. (optional) 
+
+            try
+            {
+                // [EXPERIMENTAL] Aggregate Returns
+                ResourceListOfAggregatedReturn result = apiInstance.GetPortfolioAggregateReturns(scope, code, returnScope, returnCode, fromEffectiveAt, toEffectiveAt, compositeMethod, period, outputFrequency, metrics, asAt);
+                Debug.WriteLine(result);
+            }
+            catch (ApiException e)
+            {
+                Debug.Print("Exception when calling PortfoliosApi.GetPortfolioAggregateReturns: " + e.Message );
+                Debug.Print("Status Code: "+ e.ErrorCode);
+                Debug.Print(e.StackTrace);
+            }
+        }
+    }
+}
+```
+
+### Parameters
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **scope** | **string**| The scope of the Portfolio. | 
+ **code** | **string**| The code of the  Portfolio. | 
+ **returnScope** | **string**| The scope of the Returns. | 
+ **returnCode** | **string**| The code of the Returns. | 
+ **fromEffectiveAt** | **DateTimeOrCutLabel**| The start date from which to delete the Returns. | [optional] 
+ **toEffectiveAt** | **DateTimeOrCutLabel**| The end date from which to delete the Returns | [optional] 
+ **compositeMethod** | **string**| The method used to calculate the Portfolio performance:              Equal/Asset. | [optional] 
+ **period** | **string**| the type of the returns used to calculate the aggregation result. | [optional] 
+ **outputFrequency** | **string**| The type of calculated output. | [optional] 
+ **metrics** | [**List&lt;string&gt;**](string.md)| The period time to calculate the aggregate return. | [optional] 
+ **asAt** | **DateTimeOffset?**| The asAt datetime at which to retrieve the Returns. Defaults to the latest. | [optional] 
+
+### Return type
+
+[**ResourceListOfAggregatedReturn**](ResourceListOfAggregatedReturn.md)
+
+### Authorization
+
+[oauth2](../README.md#oauth2)
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: text/plain, application/json, text/json
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+| **200** | The aggregated returns. |  -  |
+| **400** | The details of the input related failure |  -  |
+| **0** | Error response |  -  |
+
+[[Back to top]](#)
+[[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
+
+
 ## GetPortfolioCommands
 
 > ResourceListOfProcessedCommand GetPortfolioCommands (string scope, string code, DateTimeOffset? fromAsAt = null, DateTimeOffset? toAsAt = null, string filter = null)
@@ -388,7 +489,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://localhost:59361";
+            Configuration.Default.BasePath = "http://localhost:59789";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -476,7 +577,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://localhost:59361";
+            Configuration.Default.BasePath = "http://localhost:59789";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -562,7 +663,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://localhost:59361";
+            Configuration.Default.BasePath = "http://localhost:59789";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -648,7 +749,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://localhost:59361";
+            Configuration.Default.BasePath = "http://localhost:59789";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -738,7 +839,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://localhost:59361";
+            Configuration.Default.BasePath = "http://localhost:59789";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -832,7 +933,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://localhost:59361";
+            Configuration.Default.BasePath = "http://localhost:59789";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -920,7 +1021,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://localhost:59361";
+            Configuration.Default.BasePath = "http://localhost:59789";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -1014,7 +1115,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://localhost:59361";
+            Configuration.Default.BasePath = "http://localhost:59789";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -1108,7 +1209,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://localhost:59361";
+            Configuration.Default.BasePath = "http://localhost:59789";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -1194,7 +1295,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://localhost:59361";
+            Configuration.Default.BasePath = "http://localhost:59789";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -1282,7 +1383,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://localhost:59361";
+            Configuration.Default.BasePath = "http://localhost:59789";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -1366,7 +1467,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://localhost:59361";
+            Configuration.Default.BasePath = "http://localhost:59789";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
