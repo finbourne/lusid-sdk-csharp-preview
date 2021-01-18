@@ -5,6 +5,8 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
+**DisplayName** | **string** | The display name of the Person | [optional] 
+**Description** | **string** | The description of the Person | [optional] 
 **Href** | **string** | The specifc Uniform Resource Identifier (URI) for this resource at the requested effective and asAt datetime. | [optional] 
 **LusidPersonId** | **string** | The unique LUSID Person Identifier (LUPID) of the Person. | [optional] 
 **Identifiers** | [**Dictionary&lt;string, Property&gt;**](Property.md) | Unique client-defined identifiers of the Person. | [optional] 
