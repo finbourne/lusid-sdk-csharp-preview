@@ -23,296 +23,54 @@ using OpenAPIDateConverter = Lusid.Sdk.Client.OpenAPIDateConverter;
 namespace Lusid.Sdk.Model
 {
     /// <summary>
-    /// UpdateDataTypeRequest
+    /// InstrumentProperties
     /// </summary>
     [DataContract]
-    public partial class UpdateDataTypeRequest :  IEquatable<UpdateDataTypeRequest>
+    public partial class InstrumentProperties :  IEquatable<InstrumentProperties>
     {
         /// <summary>
-        /// The available values are: Open, Closed
+        /// Initializes a new instance of the <see cref="InstrumentProperties" /> class.
         /// </summary>
-        /// <value>The available values are: Open, Closed</value>
-        [JsonConverter(typeof(StringEnumConverter))]
-        public enum TypeValueRangeEnum
+        /// <param name="href">The specific Uniform Resource Identifier (URI) for this resource at the requested effective and asAt datetime..</param>
+        /// <param name="properties">The instrument properties. These will be from the &#39;Instrument&#39; domain..</param>
+        /// <param name="version">version.</param>
+        /// <param name="links">links.</param>
+        public InstrumentProperties(string href = default(string), Dictionary<string, Property> properties = default(Dictionary<string, Property>), Version version = default(Version), List<Link> links = default(List<Link>))
         {
-            /// <summary>
-            /// Enum Open for value: Open
-            /// </summary>
-            [EnumMember(Value = "Open")]
-            Open = 1,
-
-            /// <summary>
-            /// Enum Closed for value: Closed
-            /// </summary>
-            [EnumMember(Value = "Closed")]
-            Closed = 2
-
-        }
-
-        /// <summary>
-        /// The available values are: Open, Closed
-        /// </summary>
-        /// <value>The available values are: Open, Closed</value>
-        [DataMember(Name="typeValueRange", EmitDefaultValue=false)]
-        public TypeValueRangeEnum TypeValueRange { get; set; }
-        /// <summary>
-        /// The available values are: String, Int, Decimal, DateTime, Boolean, Map, List, PropertyArray, Percentage, Code, Id, Uri, CurrencyAndAmount, TradePrice, Currency, MetricValue, ResourceId, ResultValue, CutLocalTime, DateOrCutLabel
-        /// </summary>
-        /// <value>The available values are: String, Int, Decimal, DateTime, Boolean, Map, List, PropertyArray, Percentage, Code, Id, Uri, CurrencyAndAmount, TradePrice, Currency, MetricValue, ResourceId, ResultValue, CutLocalTime, DateOrCutLabel</value>
-        [JsonConverter(typeof(StringEnumConverter))]
-        public enum ValueTypeEnum
-        {
-            /// <summary>
-            /// Enum String for value: String
-            /// </summary>
-            [EnumMember(Value = "String")]
-            String = 1,
-
-            /// <summary>
-            /// Enum Int for value: Int
-            /// </summary>
-            [EnumMember(Value = "Int")]
-            Int = 2,
-
-            /// <summary>
-            /// Enum Decimal for value: Decimal
-            /// </summary>
-            [EnumMember(Value = "Decimal")]
-            Decimal = 3,
-
-            /// <summary>
-            /// Enum DateTime for value: DateTime
-            /// </summary>
-            [EnumMember(Value = "DateTime")]
-            DateTime = 4,
-
-            /// <summary>
-            /// Enum Boolean for value: Boolean
-            /// </summary>
-            [EnumMember(Value = "Boolean")]
-            Boolean = 5,
-
-            /// <summary>
-            /// Enum Map for value: Map
-            /// </summary>
-            [EnumMember(Value = "Map")]
-            Map = 6,
-
-            /// <summary>
-            /// Enum List for value: List
-            /// </summary>
-            [EnumMember(Value = "List")]
-            List = 7,
-
-            /// <summary>
-            /// Enum PropertyArray for value: PropertyArray
-            /// </summary>
-            [EnumMember(Value = "PropertyArray")]
-            PropertyArray = 8,
-
-            /// <summary>
-            /// Enum Percentage for value: Percentage
-            /// </summary>
-            [EnumMember(Value = "Percentage")]
-            Percentage = 9,
-
-            /// <summary>
-            /// Enum Code for value: Code
-            /// </summary>
-            [EnumMember(Value = "Code")]
-            Code = 10,
-
-            /// <summary>
-            /// Enum Id for value: Id
-            /// </summary>
-            [EnumMember(Value = "Id")]
-            Id = 11,
-
-            /// <summary>
-            /// Enum Uri for value: Uri
-            /// </summary>
-            [EnumMember(Value = "Uri")]
-            Uri = 12,
-
-            /// <summary>
-            /// Enum CurrencyAndAmount for value: CurrencyAndAmount
-            /// </summary>
-            [EnumMember(Value = "CurrencyAndAmount")]
-            CurrencyAndAmount = 13,
-
-            /// <summary>
-            /// Enum TradePrice for value: TradePrice
-            /// </summary>
-            [EnumMember(Value = "TradePrice")]
-            TradePrice = 14,
-
-            /// <summary>
-            /// Enum Currency for value: Currency
-            /// </summary>
-            [EnumMember(Value = "Currency")]
-            Currency = 15,
-
-            /// <summary>
-            /// Enum MetricValue for value: MetricValue
-            /// </summary>
-            [EnumMember(Value = "MetricValue")]
-            MetricValue = 16,
-
-            /// <summary>
-            /// Enum ResourceId for value: ResourceId
-            /// </summary>
-            [EnumMember(Value = "ResourceId")]
-            ResourceId = 17,
-
-            /// <summary>
-            /// Enum ResultValue for value: ResultValue
-            /// </summary>
-            [EnumMember(Value = "ResultValue")]
-            ResultValue = 18,
-
-            /// <summary>
-            /// Enum CutLocalTime for value: CutLocalTime
-            /// </summary>
-            [EnumMember(Value = "CutLocalTime")]
-            CutLocalTime = 19,
-
-            /// <summary>
-            /// Enum DateOrCutLabel for value: DateOrCutLabel
-            /// </summary>
-            [EnumMember(Value = "DateOrCutLabel")]
-            DateOrCutLabel = 20
-
-        }
-
-        /// <summary>
-        /// The available values are: String, Int, Decimal, DateTime, Boolean, Map, List, PropertyArray, Percentage, Code, Id, Uri, CurrencyAndAmount, TradePrice, Currency, MetricValue, ResourceId, ResultValue, CutLocalTime, DateOrCutLabel
-        /// </summary>
-        /// <value>The available values are: String, Int, Decimal, DateTime, Boolean, Map, List, PropertyArray, Percentage, Code, Id, Uri, CurrencyAndAmount, TradePrice, Currency, MetricValue, ResourceId, ResultValue, CutLocalTime, DateOrCutLabel</value>
-        [DataMember(Name="valueType", EmitDefaultValue=false)]
-        public ValueTypeEnum ValueType { get; set; }
-        /// <summary>
-        /// The available values are: NoUnits, Basic, Iso4217Currency
-        /// </summary>
-        /// <value>The available values are: NoUnits, Basic, Iso4217Currency</value>
-        [JsonConverter(typeof(StringEnumConverter))]
-        public enum UnitSchemaEnum
-        {
-            /// <summary>
-            /// Enum NoUnits for value: NoUnits
-            /// </summary>
-            [EnumMember(Value = "NoUnits")]
-            NoUnits = 1,
-
-            /// <summary>
-            /// Enum Basic for value: Basic
-            /// </summary>
-            [EnumMember(Value = "Basic")]
-            Basic = 2,
-
-            /// <summary>
-            /// Enum Iso4217Currency for value: Iso4217Currency
-            /// </summary>
-            [EnumMember(Value = "Iso4217Currency")]
-            Iso4217Currency = 3
-
-        }
-
-        /// <summary>
-        /// The available values are: NoUnits, Basic, Iso4217Currency
-        /// </summary>
-        /// <value>The available values are: NoUnits, Basic, Iso4217Currency</value>
-        [DataMember(Name="unitSchema", EmitDefaultValue=false)]
-        public UnitSchemaEnum? UnitSchema { get; set; }
-        /// <summary>
-        /// Initializes a new instance of the <see cref="UpdateDataTypeRequest" /> class.
-        /// </summary>
-        [JsonConstructorAttribute]
-        protected UpdateDataTypeRequest() { }
-        /// <summary>
-        /// Initializes a new instance of the <see cref="UpdateDataTypeRequest" /> class.
-        /// </summary>
-        /// <param name="typeValueRange">The available values are: Open, Closed (required).</param>
-        /// <param name="displayName">displayName (required).</param>
-        /// <param name="description">description (required).</param>
-        /// <param name="valueType">The available values are: String, Int, Decimal, DateTime, Boolean, Map, List, PropertyArray, Percentage, Code, Id, Uri, CurrencyAndAmount, TradePrice, Currency, MetricValue, ResourceId, ResultValue, CutLocalTime, DateOrCutLabel (required).</param>
-        /// <param name="acceptableValues">acceptableValues.</param>
-        /// <param name="unitSchema">The available values are: NoUnits, Basic, Iso4217Currency.</param>
-        /// <param name="acceptableUnits">acceptableUnits.</param>
-        public UpdateDataTypeRequest(TypeValueRangeEnum typeValueRange = default(TypeValueRangeEnum), string displayName = default(string), string description = default(string), ValueTypeEnum valueType = default(ValueTypeEnum), List<string> acceptableValues = default(List<string>), UnitSchemaEnum? unitSchema = default(UnitSchemaEnum?), List<CreateUnitDefinition> acceptableUnits = default(List<CreateUnitDefinition>))
-        {
-            // to ensure "typeValueRange" is required (not null)
-            if (typeValueRange == null)
-            {
-                throw new InvalidDataException("typeValueRange is a required property for UpdateDataTypeRequest and cannot be null");
-            }
-            else
-            {
-                this.TypeValueRange = typeValueRange;
-            }
-            
-            // to ensure "displayName" is required (not null)
-            if (displayName == null)
-            {
-                throw new InvalidDataException("displayName is a required property for UpdateDataTypeRequest and cannot be null");
-            }
-            else
-            {
-                this.DisplayName = displayName;
-            }
-            
-            // to ensure "description" is required (not null)
-            if (description == null)
-            {
-                throw new InvalidDataException("description is a required property for UpdateDataTypeRequest and cannot be null");
-            }
-            else
-            {
-                this.Description = description;
-            }
-            
-            // to ensure "valueType" is required (not null)
-            if (valueType == null)
-            {
-                throw new InvalidDataException("valueType is a required property for UpdateDataTypeRequest and cannot be null");
-            }
-            else
-            {
-                this.ValueType = valueType;
-            }
-            
-            this.AcceptableValues = acceptableValues;
-            this.AcceptableUnits = acceptableUnits;
-            this.AcceptableValues = acceptableValues;
-            this.UnitSchema = unitSchema;
-            this.AcceptableUnits = acceptableUnits;
+            this.Href = href;
+            this.Properties = properties;
+            this.Links = links;
+            this.Href = href;
+            this.Properties = properties;
+            this.Version = version;
+            this.Links = links;
         }
         
+        /// <summary>
+        /// The specific Uniform Resource Identifier (URI) for this resource at the requested effective and asAt datetime.
+        /// </summary>
+        /// <value>The specific Uniform Resource Identifier (URI) for this resource at the requested effective and asAt datetime.</value>
+        [DataMember(Name="href", EmitDefaultValue=true)]
+        public string Href { get; set; }
 
         /// <summary>
-        /// Gets or Sets DisplayName
+        /// The instrument properties. These will be from the &#39;Instrument&#39; domain.
         /// </summary>
-        [DataMember(Name="displayName", EmitDefaultValue=false)]
-        public string DisplayName { get; set; }
+        /// <value>The instrument properties. These will be from the &#39;Instrument&#39; domain.</value>
+        [DataMember(Name="properties", EmitDefaultValue=true)]
+        public Dictionary<string, Property> Properties { get; set; }
 
         /// <summary>
-        /// Gets or Sets Description
+        /// Gets or Sets Version
         /// </summary>
-        [DataMember(Name="description", EmitDefaultValue=false)]
-        public string Description { get; set; }
-
+        [DataMember(Name="version", EmitDefaultValue=false)]
+        public Version Version { get; set; }
 
         /// <summary>
-        /// Gets or Sets AcceptableValues
+        /// Gets or Sets Links
         /// </summary>
-        [DataMember(Name="acceptableValues", EmitDefaultValue=true)]
-        public List<string> AcceptableValues { get; set; }
-
-
-        /// <summary>
-        /// Gets or Sets AcceptableUnits
-        /// </summary>
-        [DataMember(Name="acceptableUnits", EmitDefaultValue=true)]
-        public List<CreateUnitDefinition> AcceptableUnits { get; set; }
+        [DataMember(Name="links", EmitDefaultValue=true)]
+        public List<Link> Links { get; set; }
 
         /// <summary>
         /// Returns the string presentation of the object
@@ -321,14 +79,11 @@ namespace Lusid.Sdk.Model
         public override string ToString()
         {
             var sb = new StringBuilder();
-            sb.Append("class UpdateDataTypeRequest {\n");
-            sb.Append("  TypeValueRange: ").Append(TypeValueRange).Append("\n");
-            sb.Append("  DisplayName: ").Append(DisplayName).Append("\n");
-            sb.Append("  Description: ").Append(Description).Append("\n");
-            sb.Append("  ValueType: ").Append(ValueType).Append("\n");
-            sb.Append("  AcceptableValues: ").Append(AcceptableValues).Append("\n");
-            sb.Append("  UnitSchema: ").Append(UnitSchema).Append("\n");
-            sb.Append("  AcceptableUnits: ").Append(AcceptableUnits).Append("\n");
+            sb.Append("class InstrumentProperties {\n");
+            sb.Append("  Href: ").Append(Href).Append("\n");
+            sb.Append("  Properties: ").Append(Properties).Append("\n");
+            sb.Append("  Version: ").Append(Version).Append("\n");
+            sb.Append("  Links: ").Append(Links).Append("\n");
             sb.Append("}\n");
             return sb.ToString();
         }
@@ -349,56 +104,41 @@ namespace Lusid.Sdk.Model
         /// <returns>Boolean</returns>
         public override bool Equals(object input)
         {
-            return this.Equals(input as UpdateDataTypeRequest);
+            return this.Equals(input as InstrumentProperties);
         }
 
         /// <summary>
-        /// Returns true if UpdateDataTypeRequest instances are equal
+        /// Returns true if InstrumentProperties instances are equal
         /// </summary>
-        /// <param name="input">Instance of UpdateDataTypeRequest to be compared</param>
+        /// <param name="input">Instance of InstrumentProperties to be compared</param>
         /// <returns>Boolean</returns>
-        public bool Equals(UpdateDataTypeRequest input)
+        public bool Equals(InstrumentProperties input)
         {
             if (input == null)
                 return false;
 
             return 
                 (
-                    this.TypeValueRange == input.TypeValueRange ||
-                    (this.TypeValueRange != null &&
-                    this.TypeValueRange.Equals(input.TypeValueRange))
+                    this.Href == input.Href ||
+                    (this.Href != null &&
+                    this.Href.Equals(input.Href))
                 ) && 
                 (
-                    this.DisplayName == input.DisplayName ||
-                    (this.DisplayName != null &&
-                    this.DisplayName.Equals(input.DisplayName))
+                    this.Properties == input.Properties ||
+                    this.Properties != null &&
+                    input.Properties != null &&
+                    this.Properties.SequenceEqual(input.Properties)
                 ) && 
                 (
-                    this.Description == input.Description ||
-                    (this.Description != null &&
-                    this.Description.Equals(input.Description))
+                    this.Version == input.Version ||
+                    (this.Version != null &&
+                    this.Version.Equals(input.Version))
                 ) && 
                 (
-                    this.ValueType == input.ValueType ||
-                    (this.ValueType != null &&
-                    this.ValueType.Equals(input.ValueType))
-                ) && 
-                (
-                    this.AcceptableValues == input.AcceptableValues ||
-                    this.AcceptableValues != null &&
-                    input.AcceptableValues != null &&
-                    this.AcceptableValues.SequenceEqual(input.AcceptableValues)
-                ) && 
-                (
-                    this.UnitSchema == input.UnitSchema ||
-                    (this.UnitSchema != null &&
-                    this.UnitSchema.Equals(input.UnitSchema))
-                ) && 
-                (
-                    this.AcceptableUnits == input.AcceptableUnits ||
-                    this.AcceptableUnits != null &&
-                    input.AcceptableUnits != null &&
-                    this.AcceptableUnits.SequenceEqual(input.AcceptableUnits)
+                    this.Links == input.Links ||
+                    this.Links != null &&
+                    input.Links != null &&
+                    this.Links.SequenceEqual(input.Links)
                 );
         }
 
@@ -411,20 +151,14 @@ namespace Lusid.Sdk.Model
             unchecked // Overflow is fine, just wrap
             {
                 int hashCode = 41;
-                if (this.TypeValueRange != null)
-                    hashCode = hashCode * 59 + this.TypeValueRange.GetHashCode();
-                if (this.DisplayName != null)
-                    hashCode = hashCode * 59 + this.DisplayName.GetHashCode();
-                if (this.Description != null)
-                    hashCode = hashCode * 59 + this.Description.GetHashCode();
-                if (this.ValueType != null)
-                    hashCode = hashCode * 59 + this.ValueType.GetHashCode();
-                if (this.AcceptableValues != null)
-                    hashCode = hashCode * 59 + this.AcceptableValues.GetHashCode();
-                if (this.UnitSchema != null)
-                    hashCode = hashCode * 59 + this.UnitSchema.GetHashCode();
-                if (this.AcceptableUnits != null)
-                    hashCode = hashCode * 59 + this.AcceptableUnits.GetHashCode();
+                if (this.Href != null)
+                    hashCode = hashCode * 59 + this.Href.GetHashCode();
+                if (this.Properties != null)
+                    hashCode = hashCode * 59 + this.Properties.GetHashCode();
+                if (this.Version != null)
+                    hashCode = hashCode * 59 + this.Version.GetHashCode();
+                if (this.Links != null)
+                    hashCode = hashCode * 59 + this.Links.GetHashCode();
                 return hashCode;
             }
         }
