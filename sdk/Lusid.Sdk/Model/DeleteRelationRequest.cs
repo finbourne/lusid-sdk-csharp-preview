@@ -23,33 +23,58 @@ using OpenAPIDateConverter = Lusid.Sdk.Client.OpenAPIDateConverter;
 namespace Lusid.Sdk.Model
 {
     /// <summary>
-    /// Any overriding data for notionals, spreads or rates that would affect generation of a leg.              This supports the case where an amortization schedule is given but otherwise generation is allowed as usual.
+    /// DeleteRelationRequest
     /// </summary>
     [DataContract]
-    public partial class FixedLegAllOfOverrides :  IEquatable<FixedLegAllOfOverrides>
+    public partial class DeleteRelationRequest :  IEquatable<DeleteRelationRequest>
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="FixedLegAllOfOverrides" /> class.
+        /// Initializes a new instance of the <see cref="DeleteRelationRequest" /> class.
         /// </summary>
-        /// <param name="amortization">amortization.</param>
-        /// <param name="spreads">spreads.</param>
-        public FixedLegAllOfOverrides(List<decimal?> amortization = default(List<decimal?>), List<decimal?> spreads = default(List<decimal?>))
+        [JsonConstructorAttribute]
+        protected DeleteRelationRequest() { }
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DeleteRelationRequest" /> class.
+        /// </summary>
+        /// <param name="sourceEntityId">The identifier of the source entity of the relation to be deleted. (required).</param>
+        /// <param name="targetEntityId">The identifier of the target entity of the relation to be deleted. (required).</param>
+        public DeleteRelationRequest(Dictionary<string, string> sourceEntityId = default(Dictionary<string, string>), Dictionary<string, string> targetEntityId = default(Dictionary<string, string>))
         {
-            this.Amortization = amortization;
-            this.Spreads = spreads;
+            // to ensure "sourceEntityId" is required (not null)
+            if (sourceEntityId == null)
+            {
+                throw new InvalidDataException("sourceEntityId is a required property for DeleteRelationRequest and cannot be null");
+            }
+            else
+            {
+                this.SourceEntityId = sourceEntityId;
+            }
+            
+            // to ensure "targetEntityId" is required (not null)
+            if (targetEntityId == null)
+            {
+                throw new InvalidDataException("targetEntityId is a required property for DeleteRelationRequest and cannot be null");
+            }
+            else
+            {
+                this.TargetEntityId = targetEntityId;
+            }
+            
         }
         
         /// <summary>
-        /// Gets or Sets Amortization
+        /// The identifier of the source entity of the relation to be deleted.
         /// </summary>
-        [DataMember(Name="Amortization", EmitDefaultValue=false)]
-        public List<decimal?> Amortization { get; set; }
+        /// <value>The identifier of the source entity of the relation to be deleted.</value>
+        [DataMember(Name="sourceEntityId", EmitDefaultValue=false)]
+        public Dictionary<string, string> SourceEntityId { get; set; }
 
         /// <summary>
-        /// Gets or Sets Spreads
+        /// The identifier of the target entity of the relation to be deleted.
         /// </summary>
-        [DataMember(Name="Spreads", EmitDefaultValue=false)]
-        public List<decimal?> Spreads { get; set; }
+        /// <value>The identifier of the target entity of the relation to be deleted.</value>
+        [DataMember(Name="targetEntityId", EmitDefaultValue=false)]
+        public Dictionary<string, string> TargetEntityId { get; set; }
 
         /// <summary>
         /// Returns the string presentation of the object
@@ -58,9 +83,9 @@ namespace Lusid.Sdk.Model
         public override string ToString()
         {
             var sb = new StringBuilder();
-            sb.Append("class FixedLegAllOfOverrides {\n");
-            sb.Append("  Amortization: ").Append(Amortization).Append("\n");
-            sb.Append("  Spreads: ").Append(Spreads).Append("\n");
+            sb.Append("class DeleteRelationRequest {\n");
+            sb.Append("  SourceEntityId: ").Append(SourceEntityId).Append("\n");
+            sb.Append("  TargetEntityId: ").Append(TargetEntityId).Append("\n");
             sb.Append("}\n");
             return sb.ToString();
         }
@@ -81,31 +106,31 @@ namespace Lusid.Sdk.Model
         /// <returns>Boolean</returns>
         public override bool Equals(object input)
         {
-            return this.Equals(input as FixedLegAllOfOverrides);
+            return this.Equals(input as DeleteRelationRequest);
         }
 
         /// <summary>
-        /// Returns true if FixedLegAllOfOverrides instances are equal
+        /// Returns true if DeleteRelationRequest instances are equal
         /// </summary>
-        /// <param name="input">Instance of FixedLegAllOfOverrides to be compared</param>
+        /// <param name="input">Instance of DeleteRelationRequest to be compared</param>
         /// <returns>Boolean</returns>
-        public bool Equals(FixedLegAllOfOverrides input)
+        public bool Equals(DeleteRelationRequest input)
         {
             if (input == null)
                 return false;
 
             return 
                 (
-                    this.Amortization == input.Amortization ||
-                    this.Amortization != null &&
-                    input.Amortization != null &&
-                    this.Amortization.SequenceEqual(input.Amortization)
+                    this.SourceEntityId == input.SourceEntityId ||
+                    this.SourceEntityId != null &&
+                    input.SourceEntityId != null &&
+                    this.SourceEntityId.SequenceEqual(input.SourceEntityId)
                 ) && 
                 (
-                    this.Spreads == input.Spreads ||
-                    this.Spreads != null &&
-                    input.Spreads != null &&
-                    this.Spreads.SequenceEqual(input.Spreads)
+                    this.TargetEntityId == input.TargetEntityId ||
+                    this.TargetEntityId != null &&
+                    input.TargetEntityId != null &&
+                    this.TargetEntityId.SequenceEqual(input.TargetEntityId)
                 );
         }
 
@@ -118,10 +143,10 @@ namespace Lusid.Sdk.Model
             unchecked // Overflow is fine, just wrap
             {
                 int hashCode = 41;
-                if (this.Amortization != null)
-                    hashCode = hashCode * 59 + this.Amortization.GetHashCode();
-                if (this.Spreads != null)
-                    hashCode = hashCode * 59 + this.Spreads.GetHashCode();
+                if (this.SourceEntityId != null)
+                    hashCode = hashCode * 59 + this.SourceEntityId.GetHashCode();
+                if (this.TargetEntityId != null)
+                    hashCode = hashCode * 59 + this.TargetEntityId.GetHashCode();
                 return hashCode;
             }
         }
