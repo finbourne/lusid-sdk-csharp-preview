@@ -1,14 +1,14 @@
 # Lusid.Sdk.Api.AggregationApi
 
-All URIs are relative to *https://fbn-prd.lusid.com/api*
+All URIs are relative to *http://local-unit-test-server.lusid.com:58425*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
 [**GenerateConfigurationRecipe**](AggregationApi.md#generateconfigurationrecipe) | **POST** /api/aggregation/{scope}/{code}/$generateconfigurationrecipe | [EXPERIMENTAL] Generates a recipe sufficient to perform valuations for the given portfolio.
-[**GetAggregation**](AggregationApi.md#getaggregation) | **POST** /api/aggregation/{scope}/{code}/$aggregate | [EXPERIMENTAL] Aggregate data in a portfolio or portfolio group
+[**GetAggregation**](AggregationApi.md#getaggregation) | **POST** /api/aggregation/{scope}/{code}/$aggregate | [EXPERIMENTAL] Aggregate data in a portfolio or portfolio group  Deprecated: Please use the GetValuation endpoint. It is aimed at a simpler set of requirements now deemed stable.  Aggregation will shortly be modified to include experimental features such as Simulation and XVA
 [**GetAggregationByResultSet**](AggregationApi.md#getaggregationbyresultset) | **POST** /api/results/{scope}/{resultsKey}/$aggregate | [EXPERIMENTAL] Aggregate using result data
 [**GetAggregationOfWeightedInstruments**](AggregationApi.md#getaggregationofweightedinstruments) | **POST** /api/portfolios/{scope}/$aggregateinlined | [EXPERIMENTAL] Aggregate data in an inlined portfolio
-[**GetNestedAggregation**](AggregationApi.md#getnestedaggregation) | **POST** /api/aggregation/{scope}/{code}/$aggregatenested | [EXPERIMENTAL] Aggregate data in a portfolio or portfolio group, as nested
+[**GetNestedAggregation**](AggregationApi.md#getnestedaggregation) | **POST** /api/aggregation/{scope}/{code}/$aggregatenested | [EXPERIMENTAL] Aggregate data in a portfolio or portfolio group, as nested                Deprecated: Endpoint is being retired. The nested functionality is supported on the valuation endpoint through use of an &#39;include subtotals&#39; flag.
 [**GetQueryableKeys**](AggregationApi.md#getqueryablekeys) | **GET** /api/results/queryable/keys | [EXPERIMENTAL] Query the set of supported \&quot;addresses\&quot; that can be queried from the aggregation endpoint.
 [**GetValuation**](AggregationApi.md#getvaluation) | **POST** /api/aggregation/$valuation | [EXPERIMENTAL] Perform valuation for a list of portfolios and/or portfolio groups
 [**GetValuationOfWeightedInstruments**](AggregationApi.md#getvaluationofweightedinstruments) | **POST** /api/aggregation/$valuationinlined | [EXPERIMENTAL] Perform valuation for an inlined portfolio
@@ -38,7 +38,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "https://fbn-prd.lusid.com/api";
+            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:58425";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -103,7 +103,7 @@ Name | Type | Description  | Notes
 
 > ListAggregationResponse GetAggregation (string scope, string code, List<string> sortBy = null, int? start = null, int? limit = null, AggregationRequest aggregationRequest = null)
 
-[EXPERIMENTAL] Aggregate data in a portfolio or portfolio group
+[EXPERIMENTAL] Aggregate data in a portfolio or portfolio group  Deprecated: Please use the GetValuation endpoint. It is aimed at a simpler set of requirements now deemed stable.  Aggregation will shortly be modified to include experimental features such as Simulation and XVA
 
 Aggregate data sourced from the specified portfolio or portfolio group
 
@@ -122,7 +122,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "https://fbn-prd.lusid.com/api";
+            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:58425";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -136,7 +136,7 @@ namespace Example
 
             try
             {
-                // [EXPERIMENTAL] Aggregate data in a portfolio or portfolio group
+                // [EXPERIMENTAL] Aggregate data in a portfolio or portfolio group  Deprecated: Please use the GetValuation endpoint. It is aimed at a simpler set of requirements now deemed stable.  Aggregation will shortly be modified to include experimental features such as Simulation and XVA
                 ListAggregationResponse result = apiInstance.GetAggregation(scope, code, sortBy, start, limit, aggregationRequest);
                 Debug.WriteLine(result);
             }
@@ -212,7 +212,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "https://fbn-prd.lusid.com/api";
+            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:58425";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -285,7 +285,7 @@ Name | Type | Description  | Notes
 
 [EXPERIMENTAL] Aggregate data in an inlined portfolio
 
-Aggregate data sourced from the portfolio that is defined by the weighted set of instruments passed to the request.
+Aggregate data sourced from the portfolio that is defined by the weighted set of instruments passed to the request.  Deprecated: Please use the (inline) GetValuation endpoint. It is aimed at a simpler set of requirements now deemed stable.  Aggregation will shortly be modified to include experimental features such as Simulation and XVA
 
 ### Example
 
@@ -302,7 +302,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "https://fbn-prd.lusid.com/api";
+            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:58425";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -371,7 +371,7 @@ Name | Type | Description  | Notes
 
 > NestedAggregationResponse GetNestedAggregation (string scope, string code, AggregationRequest aggregationRequest = null)
 
-[EXPERIMENTAL] Aggregate data in a portfolio or portfolio group, as nested
+[EXPERIMENTAL] Aggregate data in a portfolio or portfolio group, as nested                Deprecated: Endpoint is being retired. The nested functionality is supported on the valuation endpoint through use of an 'include subtotals' flag.
 
 Aggregate data sourced from the specified portfolio or portfolio group into a nested structure. Data is nested following the group-by specifications.
 
@@ -390,7 +390,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "https://fbn-prd.lusid.com/api";
+            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:58425";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -401,7 +401,7 @@ namespace Example
 
             try
             {
-                // [EXPERIMENTAL] Aggregate data in a portfolio or portfolio group, as nested
+                // [EXPERIMENTAL] Aggregate data in a portfolio or portfolio group, as nested                Deprecated: Endpoint is being retired. The nested functionality is supported on the valuation endpoint through use of an 'include subtotals' flag.
                 NestedAggregationResponse result = apiInstance.GetNestedAggregation(scope, code, aggregationRequest);
                 Debug.WriteLine(result);
             }
@@ -474,7 +474,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "https://fbn-prd.lusid.com/api";
+            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:58425";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -560,7 +560,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "https://fbn-prd.lusid.com/api";
+            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:58425";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -640,7 +640,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "https://fbn-prd.lusid.com/api";
+            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:58425";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
