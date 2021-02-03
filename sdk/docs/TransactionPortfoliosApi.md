@@ -1,6 +1,6 @@
 # Lusid.Sdk.Api.TransactionPortfoliosApi
 
-All URIs are relative to *http://local-unit-test-server.lusid.com:62700*
+All URIs are relative to *http://local-unit-test-server.lusid.com:63278*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
@@ -15,9 +15,10 @@ Method | HTTP request | Description
 [**GetHoldings**](TransactionPortfoliosApi.md#getholdings) | **GET** /api/transactionportfolios/{scope}/{code}/holdings | Get holdings
 [**GetHoldingsAdjustment**](TransactionPortfoliosApi.md#getholdingsadjustment) | **GET** /api/transactionportfolios/{scope}/{code}/holdingsadjustments/{effectiveAt} | Get holdings adjustment
 [**GetHoldingsWithOrders**](TransactionPortfoliosApi.md#getholdingswithorders) | **GET** /api/transactionportfolios/{scope}/{code}/holdingsWithOrders | [EXPERIMENTAL] Get holdings. Treat outstanding orders (and related records) as if they had been realised at moment of query.
-[**GetPortfolioCashFlows**](TransactionPortfoliosApi.md#getportfoliocashflows) | **GET** /api/transactionportfolios/{scope}/{code}/cashflows | [EXPERIMENTAL] Get cashflow for the given portfolio.
+[**GetPortfolioCashFlows**](TransactionPortfoliosApi.md#getportfoliocashflows) | **GET** /api/transactionportfolios/{scope}/{code}/cashflows | [EXPERIMENTAL] Get the set of cash flows that occur in a window for the given portfolio instruments.
 [**GetPortfolioCashStatements**](TransactionPortfoliosApi.md#getportfoliocashstatements) | **GET** /api/transactionportfolios/{scope}/{code}/cashstatements | [EXPERIMENTAL] Get CashStatements for the given portfolio.
 [**GetTransactions**](TransactionPortfoliosApi.md#gettransactions) | **GET** /api/transactionportfolios/{scope}/{code}/transactions | Get transactions
+[**GetUpsertablePortfolioCashFlows**](TransactionPortfoliosApi.md#getupsertableportfoliocashflows) | **GET** /api/transactionportfolios/{scope}/{code}/upsertablecashflows | [EXPERIMENTAL] Get the set of cash flows that occur in a window for the given portfolio instruments as a set of upsertable transactions (DTOs).
 [**ListHoldingsAdjustments**](TransactionPortfoliosApi.md#listholdingsadjustments) | **GET** /api/transactionportfolios/{scope}/{code}/holdingsadjustments | List holdings adjustments
 [**ResolveInstrument**](TransactionPortfoliosApi.md#resolveinstrument) | **POST** /api/transactionportfolios/{scope}/{code}/$resolve | [EXPERIMENTAL] Resolve Instrument
 [**SetHoldings**](TransactionPortfoliosApi.md#setholdings) | **PUT** /api/transactionportfolios/{scope}/{code}/holdings | Set holdings
@@ -51,7 +52,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:62700";
+            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:63278";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -139,7 +140,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:62700";
+            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:63278";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -229,7 +230,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:62700";
+            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:63278";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -313,7 +314,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:62700";
+            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:63278";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -397,7 +398,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:62700";
+            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:63278";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -481,7 +482,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:62700";
+            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:63278";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -563,7 +564,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:62700";
+            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:63278";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -649,7 +650,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:62700";
+            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:63278";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -735,7 +736,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:62700";
+            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:63278";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -827,7 +828,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:62700";
+            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:63278";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -913,7 +914,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:62700";
+            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:63278";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -984,11 +985,11 @@ Name | Type | Description  | Notes
 
 ## GetPortfolioCashFlows
 
-> ResourceListOfPortfolioCashFlow GetPortfolioCashFlows (string scope, string code, DateTimeOrCutLabel fromEffectiveAt, DateTimeOrCutLabel toEffectiveAt, DateTimeOffset? asAt = null, string filter = null, string recipeIdScope = null, string recipeIdCode = null)
+> ResourceListOfInstrumentCashFlow GetPortfolioCashFlows (string scope, string code, DateTimeOrCutLabel fromEffectiveAt, DateTimeOrCutLabel toEffectiveAt, DateTimeOffset? asAt = null, string filter = null, string recipeIdScope = null, string recipeIdCode = null)
 
-[EXPERIMENTAL] Get cashflow for the given portfolio.
+[EXPERIMENTAL] Get the set of cash flows that occur in a window for the given portfolio instruments.
 
-Get cashflow for the given portfolio.
+Get the set of cash flows that occur in a window for the given portfolio instruments.                Note that grouping can affect the quantity of information returned; where a holding is an amalgamation of one or more (e.g. cash) instruments, a unique  transaction identifier will not be available. The same may go for diagnostic information (e.g. multiple sources of an aggregate cash amount on a date that is  not split out. Grouping at the transaction and instrument level is recommended for those seeking to attribute individual flows.
 
 ### Example
 
@@ -1005,24 +1006,24 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:62700";
+            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:63278";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
             var apiInstance = new TransactionPortfoliosApi(Configuration.Default);
             var scope = scope_example;  // string | The scope of the portfolio to retrieve the cashflow for.
-            var code = code_example;  // string | The code of the portfolio to retrieve the cashflow for. Together with the scope this              uniquely identifies the portfolio.
-            var fromEffectiveAt = fromEffectiveAt_example;  // DateTimeOrCutLabel | The lower bound effective datetime or cut label (inclusive) from which to retrieve the data.              There is no lower bound if this is not specified.
-            var toEffectiveAt = toEffectiveAt_example;  // DateTimeOrCutLabel | The upper bound effective datetime or cut label (inclusive) from which to retrieve the data.              There is no upper bound if this is not specified.
-            var asAt = 2013-10-20T19:20:30+01:00;  // DateTimeOffset? | The asAt datetime at which to retrieve the portfolio. Defaults to return the latest version              of each transaction if not specified. (optional) 
-            var filter = filter_example;  // string | Expression to filter the result set.               For example, to filter on the Transaction Type, use \"type eq 'Buy'\"              Read more about filtering results from LUSID here https://support.lusid.com/filtering-results-from-lusid. (optional) 
+            var code = code_example;  // string | The code of the portfolio to retrieve the cashflow for. Together with the scope this               uniquely identifies the portfolio.
+            var fromEffectiveAt = fromEffectiveAt_example;  // DateTimeOrCutLabel | The lower bound effective datetime or cut label (inclusive) from which to retrieve the data.               There is no lower bound if this is not specified.
+            var toEffectiveAt = toEffectiveAt_example;  // DateTimeOrCutLabel | The upper bound effective datetime or cut label (inclusive) from which to retrieve the data.               The upper bound defaults to 'today' if it is not specified
+            var asAt = 2013-10-20T19:20:30+01:00;  // DateTimeOffset? | The asAt datetime at which to retrieve the portfolio. Defaults to return the latest version               of each transaction if not specified. (optional) 
+            var filter = filter_example;  // string | Expression to filter the result set.                For example, to filter on the Transaction Type, use \"type eq 'Buy'\"               Read more about filtering results from LUSID here https://support.lusid.com/filtering-results-from-lusid. (optional) 
             var recipeIdScope = recipeIdScope_example;  // string | The scope of the given recipeId (optional) 
             var recipeIdCode = recipeIdCode_example;  // string | The code of the given recipeID (optional) 
 
             try
             {
-                // [EXPERIMENTAL] Get cashflow for the given portfolio.
-                ResourceListOfPortfolioCashFlow result = apiInstance.GetPortfolioCashFlows(scope, code, fromEffectiveAt, toEffectiveAt, asAt, filter, recipeIdScope, recipeIdCode);
+                // [EXPERIMENTAL] Get the set of cash flows that occur in a window for the given portfolio instruments.
+                ResourceListOfInstrumentCashFlow result = apiInstance.GetPortfolioCashFlows(scope, code, fromEffectiveAt, toEffectiveAt, asAt, filter, recipeIdScope, recipeIdCode);
                 Debug.WriteLine(result);
             }
             catch (ApiException e)
@@ -1042,17 +1043,17 @@ namespace Example
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **scope** | **string**| The scope of the portfolio to retrieve the cashflow for. | 
- **code** | **string**| The code of the portfolio to retrieve the cashflow for. Together with the scope this              uniquely identifies the portfolio. | 
- **fromEffectiveAt** | **DateTimeOrCutLabel**| The lower bound effective datetime or cut label (inclusive) from which to retrieve the data.              There is no lower bound if this is not specified. | 
- **toEffectiveAt** | **DateTimeOrCutLabel**| The upper bound effective datetime or cut label (inclusive) from which to retrieve the data.              There is no upper bound if this is not specified. | 
- **asAt** | **DateTimeOffset?**| The asAt datetime at which to retrieve the portfolio. Defaults to return the latest version              of each transaction if not specified. | [optional] 
- **filter** | **string**| Expression to filter the result set.               For example, to filter on the Transaction Type, use \&quot;type eq &#39;Buy&#39;\&quot;              Read more about filtering results from LUSID here https://support.lusid.com/filtering-results-from-lusid. | [optional] 
+ **code** | **string**| The code of the portfolio to retrieve the cashflow for. Together with the scope this               uniquely identifies the portfolio. | 
+ **fromEffectiveAt** | **DateTimeOrCutLabel**| The lower bound effective datetime or cut label (inclusive) from which to retrieve the data.               There is no lower bound if this is not specified. | 
+ **toEffectiveAt** | **DateTimeOrCutLabel**| The upper bound effective datetime or cut label (inclusive) from which to retrieve the data.               The upper bound defaults to &#39;today&#39; if it is not specified | 
+ **asAt** | **DateTimeOffset?**| The asAt datetime at which to retrieve the portfolio. Defaults to return the latest version               of each transaction if not specified. | [optional] 
+ **filter** | **string**| Expression to filter the result set.                For example, to filter on the Transaction Type, use \&quot;type eq &#39;Buy&#39;\&quot;               Read more about filtering results from LUSID here https://support.lusid.com/filtering-results-from-lusid. | [optional] 
  **recipeIdScope** | **string**| The scope of the given recipeId | [optional] 
  **recipeIdCode** | **string**| The code of the given recipeID | [optional] 
 
 ### Return type
 
-[**ResourceListOfPortfolioCashFlow**](ResourceListOfPortfolioCashFlow.md)
+[**ResourceListOfInstrumentCashFlow**](ResourceListOfInstrumentCashFlow.md)
 
 ### Authorization
 
@@ -1066,7 +1067,7 @@ Name | Type | Description  | Notes
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
-| **200** | The requested portfolio cash flow data |  -  |
+| **200** | The requested portfolio instruments&#39; cash flow data |  -  |
 | **400** | The details of the input related failure |  -  |
 | **0** | Error response |  -  |
 
@@ -1099,7 +1100,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:62700";
+            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:63278";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -1193,7 +1194,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:62700";
+            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:63278";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -1262,6 +1263,100 @@ Name | Type | Description  | Notes
 [[Back to README]](../README.md)
 
 
+## GetUpsertablePortfolioCashFlows
+
+> ResourceListOfTransaction GetUpsertablePortfolioCashFlows (string scope, string code, DateTimeOrCutLabel fromEffectiveAt, DateTimeOrCutLabel toEffectiveAt, DateTimeOffset? asAt = null, string filter = null, string recipeIdScope = null, string recipeIdCode = null)
+
+[EXPERIMENTAL] Get the set of cash flows that occur in a window for the given portfolio instruments as a set of upsertable transactions (DTOs).
+
+Get the set of cash flows that occur in a window for the given portfolio instruments as a set of upsertable transactions (DTOs).                Note that grouping can affect the quantity of information returned; where a holding is an amalgamation of one or more (e.g. cash) instruments, a unique  transaction identifier will not be available. The same may go for diagnostic information (e.g. multiple sources of an aggregate cash amount on a date that is  not split out. Grouping at the transaction and instrument level is recommended for those seeking to attribute individual flows.                In essence this is identical to the 'GetCashFlows' endpoint but returns the cash flows as a set of transactions suitable for directly putting back into LUSID.  There are a couple of important points:  (1) Internally it can not be fully known where the user wishes to insert these transactions, e.g. portfolio and movement type.      These are therefore defaulted to a sensible option; the user will likely need to change these.  (2) Similarly, knowledge of any properties the user might wish to add to a transaction are unknown and consequently left empty.  (3) The transaction id that is added is simply a concatenation of the original transaction id, instrument id and payment date and direction. The user can happily override this.
+
+### Example
+
+```csharp
+using System.Collections.Generic;
+using System.Diagnostics;
+using Lusid.Sdk.Api;
+using Lusid.Sdk.Client;
+using Lusid.Sdk.Model;
+
+namespace Example
+{
+    public class GetUpsertablePortfolioCashFlowsExample
+    {
+        public static void Main()
+        {
+            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:63278";
+            // Configure OAuth2 access token for authorization: oauth2
+            Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
+
+            var apiInstance = new TransactionPortfoliosApi(Configuration.Default);
+            var scope = scope_example;  // string | The scope of the portfolio to retrieve the cashflow for.
+            var code = code_example;  // string | The code of the portfolio to retrieve the cashflow for. Together with the scope this               uniquely identifies the portfolio.
+            var fromEffectiveAt = fromEffectiveAt_example;  // DateTimeOrCutLabel | The lower bound effective datetime or cut label (inclusive) from which to retrieve the data.               There is no lower bound if this is not specified.
+            var toEffectiveAt = toEffectiveAt_example;  // DateTimeOrCutLabel | The upper bound effective datetime or cut label (inclusive) from which to retrieve the data.               The upper bound defaults to 'today' if it is not specified
+            var asAt = 2013-10-20T19:20:30+01:00;  // DateTimeOffset? | The asAt datetime at which to retrieve the portfolio. Defaults to return the latest version               of each transaction if not specified. (optional) 
+            var filter = filter_example;  // string | Expression to filter the result set.                For example, to filter on the Transaction Type, use \"type eq 'Buy'\"               Read more about filtering results from LUSID here https://support.lusid.com/filtering-results-from-lusid. (optional) 
+            var recipeIdScope = recipeIdScope_example;  // string | The scope of the given recipeId (optional) 
+            var recipeIdCode = recipeIdCode_example;  // string | The code of the given recipeID (optional) 
+
+            try
+            {
+                // [EXPERIMENTAL] Get the set of cash flows that occur in a window for the given portfolio instruments as a set of upsertable transactions (DTOs).
+                ResourceListOfTransaction result = apiInstance.GetUpsertablePortfolioCashFlows(scope, code, fromEffectiveAt, toEffectiveAt, asAt, filter, recipeIdScope, recipeIdCode);
+                Debug.WriteLine(result);
+            }
+            catch (ApiException e)
+            {
+                Debug.Print("Exception when calling TransactionPortfoliosApi.GetUpsertablePortfolioCashFlows: " + e.Message );
+                Debug.Print("Status Code: "+ e.ErrorCode);
+                Debug.Print(e.StackTrace);
+            }
+        }
+    }
+}
+```
+
+### Parameters
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **scope** | **string**| The scope of the portfolio to retrieve the cashflow for. | 
+ **code** | **string**| The code of the portfolio to retrieve the cashflow for. Together with the scope this               uniquely identifies the portfolio. | 
+ **fromEffectiveAt** | **DateTimeOrCutLabel**| The lower bound effective datetime or cut label (inclusive) from which to retrieve the data.               There is no lower bound if this is not specified. | 
+ **toEffectiveAt** | **DateTimeOrCutLabel**| The upper bound effective datetime or cut label (inclusive) from which to retrieve the data.               The upper bound defaults to &#39;today&#39; if it is not specified | 
+ **asAt** | **DateTimeOffset?**| The asAt datetime at which to retrieve the portfolio. Defaults to return the latest version               of each transaction if not specified. | [optional] 
+ **filter** | **string**| Expression to filter the result set.                For example, to filter on the Transaction Type, use \&quot;type eq &#39;Buy&#39;\&quot;               Read more about filtering results from LUSID here https://support.lusid.com/filtering-results-from-lusid. | [optional] 
+ **recipeIdScope** | **string**| The scope of the given recipeId | [optional] 
+ **recipeIdCode** | **string**| The code of the given recipeID | [optional] 
+
+### Return type
+
+[**ResourceListOfTransaction**](ResourceListOfTransaction.md)
+
+### Authorization
+
+[oauth2](../README.md#oauth2)
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: text/plain, application/json, text/json
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+| **200** | The requested portfolio instruments&#39; cash flow data as a set of upsertable transactions |  -  |
+| **400** | The details of the input related failure |  -  |
+| **0** | Error response |  -  |
+
+[[Back to top]](#)
+[[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
+
+
 ## ListHoldingsAdjustments
 
 > ResourceListOfHoldingsAdjustmentHeader ListHoldingsAdjustments (string scope, string code, DateTimeOrCutLabel fromEffectiveAt = null, DateTimeOrCutLabel toEffectiveAt = null, DateTimeOffset? asAt = null)
@@ -1285,7 +1380,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:62700";
+            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:63278";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -1373,7 +1468,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:62700";
+            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:63278";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -1463,7 +1558,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:62700";
+            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:63278";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -1551,7 +1646,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:62700";
+            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:63278";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -1635,7 +1730,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:62700";
+            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:63278";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -1721,7 +1816,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:62700";
+            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:63278";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -1807,7 +1902,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:62700";
+            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:63278";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
