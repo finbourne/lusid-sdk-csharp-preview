@@ -30,7 +30,7 @@ namespace Lusid.Sdk.Utilities
         /// <summary>
         /// Extracts the Date from an ApiResponse
         /// </summary>
-        public static DateTimeOffset? GetDate <T>(this ApiResponse<T> apiResponse)
+        public static DateTimeOffset? GetRequestDateTime <T>(this ApiResponse<T> apiResponse)
         {
             if (!apiResponse.Headers.ContainsKey(DateHeader) ||
                 !DateTimeOffset.TryParse(apiResponse.Headers[DateHeader], out var headerDateValue))
