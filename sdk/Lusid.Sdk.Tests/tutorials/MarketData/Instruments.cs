@@ -120,6 +120,12 @@ namespace Lusid.Sdk.Tests.Tutorials.MarketData
                     }
                 )
             });
+
+            // ASSERT no errors. If there are any, returns back in the failed assertion below
+            var upsertErrors = upsertInstrumentsResponse.Failed
+                .Select(failed => $"Failed key: {failed.Key}. Details: {failed.Value.Detail}")
+                .ToList();
+            Assert.That(upsertErrors.Any(), Is.False, String.Join("\n", upsertErrors));
             
             Assert.That(upsertInstrumentsResponse.Values, Has.Count.EqualTo(5));
         }
