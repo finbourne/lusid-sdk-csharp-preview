@@ -23,133 +23,69 @@ using OpenAPIDateConverter = Lusid.Sdk.Client.OpenAPIDateConverter;
 namespace Lusid.Sdk.Model
 {
     /// <summary>
-    /// Configuration needed to define a side. Sides are referenced by Label. Beyond that, other properties  can be used to reference either transaction fields, or transaction properties.
+    /// PagedResourceListOfLegalEntity
     /// </summary>
     [DataContract]
-    public partial class SideConfigurationData :  IEquatable<SideConfigurationData>
+    public partial class PagedResourceListOfLegalEntity :  IEquatable<PagedResourceListOfLegalEntity>
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="SideConfigurationData" /> class.
+        /// Initializes a new instance of the <see cref="PagedResourceListOfLegalEntity" /> class.
         /// </summary>
         [JsonConstructorAttribute]
-        protected SideConfigurationData() { }
+        protected PagedResourceListOfLegalEntity() { }
         /// <summary>
-        /// Initializes a new instance of the <see cref="SideConfigurationData" /> class.
+        /// Initializes a new instance of the <see cref="PagedResourceListOfLegalEntity" /> class.
         /// </summary>
-        /// <param name="side">The side&#39;s label. (required).</param>
-        /// <param name="security">The security, or instrument. (required).</param>
-        /// <param name="currency">The currency. (required).</param>
-        /// <param name="rate">The rate. (required).</param>
-        /// <param name="units">The units. (required).</param>
-        /// <param name="amount">The amount. (required).</param>
+        /// <param name="nextPage">nextPage.</param>
+        /// <param name="previousPage">previousPage.</param>
+        /// <param name="values">values (required).</param>
+        /// <param name="href">href.</param>
         /// <param name="links">links.</param>
-        public SideConfigurationData(string side = default(string), string security = default(string), string currency = default(string), string rate = default(string), string units = default(string), string amount = default(string), List<Link> links = default(List<Link>))
+        public PagedResourceListOfLegalEntity(string nextPage = default(string), string previousPage = default(string), List<LegalEntity> values = default(List<LegalEntity>), string href = default(string), List<Link> links = default(List<Link>))
         {
-            // to ensure "side" is required (not null)
-            if (side == null)
+            this.NextPage = nextPage;
+            this.PreviousPage = previousPage;
+            // to ensure "values" is required (not null)
+            if (values == null)
             {
-                throw new InvalidDataException("side is a required property for SideConfigurationData and cannot be null");
+                throw new InvalidDataException("values is a required property for PagedResourceListOfLegalEntity and cannot be null");
             }
             else
             {
-                this.Side = side;
+                this.Values = values;
             }
             
-            // to ensure "security" is required (not null)
-            if (security == null)
-            {
-                throw new InvalidDataException("security is a required property for SideConfigurationData and cannot be null");
-            }
-            else
-            {
-                this.Security = security;
-            }
-            
-            // to ensure "currency" is required (not null)
-            if (currency == null)
-            {
-                throw new InvalidDataException("currency is a required property for SideConfigurationData and cannot be null");
-            }
-            else
-            {
-                this.Currency = currency;
-            }
-            
-            // to ensure "rate" is required (not null)
-            if (rate == null)
-            {
-                throw new InvalidDataException("rate is a required property for SideConfigurationData and cannot be null");
-            }
-            else
-            {
-                this.Rate = rate;
-            }
-            
-            // to ensure "units" is required (not null)
-            if (units == null)
-            {
-                throw new InvalidDataException("units is a required property for SideConfigurationData and cannot be null");
-            }
-            else
-            {
-                this.Units = units;
-            }
-            
-            // to ensure "amount" is required (not null)
-            if (amount == null)
-            {
-                throw new InvalidDataException("amount is a required property for SideConfigurationData and cannot be null");
-            }
-            else
-            {
-                this.Amount = amount;
-            }
-            
+            this.Href = href;
             this.Links = links;
+            this.NextPage = nextPage;
+            this.PreviousPage = previousPage;
+            this.Href = href;
             this.Links = links;
         }
         
         /// <summary>
-        /// The side&#39;s label.
+        /// Gets or Sets NextPage
         /// </summary>
-        /// <value>The side&#39;s label.</value>
-        [DataMember(Name="side", EmitDefaultValue=false)]
-        public string Side { get; set; }
+        [DataMember(Name="nextPage", EmitDefaultValue=true)]
+        public string NextPage { get; set; }
 
         /// <summary>
-        /// The security, or instrument.
+        /// Gets or Sets PreviousPage
         /// </summary>
-        /// <value>The security, or instrument.</value>
-        [DataMember(Name="security", EmitDefaultValue=false)]
-        public string Security { get; set; }
+        [DataMember(Name="previousPage", EmitDefaultValue=true)]
+        public string PreviousPage { get; set; }
 
         /// <summary>
-        /// The currency.
+        /// Gets or Sets Values
         /// </summary>
-        /// <value>The currency.</value>
-        [DataMember(Name="currency", EmitDefaultValue=false)]
-        public string Currency { get; set; }
+        [DataMember(Name="values", EmitDefaultValue=false)]
+        public List<LegalEntity> Values { get; set; }
 
         /// <summary>
-        /// The rate.
+        /// Gets or Sets Href
         /// </summary>
-        /// <value>The rate.</value>
-        [DataMember(Name="rate", EmitDefaultValue=false)]
-        public string Rate { get; set; }
-
-        /// <summary>
-        /// The units.
-        /// </summary>
-        /// <value>The units.</value>
-        [DataMember(Name="units", EmitDefaultValue=false)]
-        public string Units { get; set; }
-
-        /// <summary>
-        /// The amount.
-        /// </summary>
-        /// <value>The amount.</value>
-        [DataMember(Name="amount", EmitDefaultValue=false)]
-        public string Amount { get; set; }
+        [DataMember(Name="href", EmitDefaultValue=true)]
+        public string Href { get; set; }
 
         /// <summary>
         /// Gets or Sets Links
@@ -164,13 +100,11 @@ namespace Lusid.Sdk.Model
         public override string ToString()
         {
             var sb = new StringBuilder();
-            sb.Append("class SideConfigurationData {\n");
-            sb.Append("  Side: ").Append(Side).Append("\n");
-            sb.Append("  Security: ").Append(Security).Append("\n");
-            sb.Append("  Currency: ").Append(Currency).Append("\n");
-            sb.Append("  Rate: ").Append(Rate).Append("\n");
-            sb.Append("  Units: ").Append(Units).Append("\n");
-            sb.Append("  Amount: ").Append(Amount).Append("\n");
+            sb.Append("class PagedResourceListOfLegalEntity {\n");
+            sb.Append("  NextPage: ").Append(NextPage).Append("\n");
+            sb.Append("  PreviousPage: ").Append(PreviousPage).Append("\n");
+            sb.Append("  Values: ").Append(Values).Append("\n");
+            sb.Append("  Href: ").Append(Href).Append("\n");
             sb.Append("  Links: ").Append(Links).Append("\n");
             sb.Append("}\n");
             return sb.ToString();
@@ -192,49 +126,40 @@ namespace Lusid.Sdk.Model
         /// <returns>Boolean</returns>
         public override bool Equals(object input)
         {
-            return this.Equals(input as SideConfigurationData);
+            return this.Equals(input as PagedResourceListOfLegalEntity);
         }
 
         /// <summary>
-        /// Returns true if SideConfigurationData instances are equal
+        /// Returns true if PagedResourceListOfLegalEntity instances are equal
         /// </summary>
-        /// <param name="input">Instance of SideConfigurationData to be compared</param>
+        /// <param name="input">Instance of PagedResourceListOfLegalEntity to be compared</param>
         /// <returns>Boolean</returns>
-        public bool Equals(SideConfigurationData input)
+        public bool Equals(PagedResourceListOfLegalEntity input)
         {
             if (input == null)
                 return false;
 
             return 
                 (
-                    this.Side == input.Side ||
-                    (this.Side != null &&
-                    this.Side.Equals(input.Side))
+                    this.NextPage == input.NextPage ||
+                    (this.NextPage != null &&
+                    this.NextPage.Equals(input.NextPage))
                 ) && 
                 (
-                    this.Security == input.Security ||
-                    (this.Security != null &&
-                    this.Security.Equals(input.Security))
+                    this.PreviousPage == input.PreviousPage ||
+                    (this.PreviousPage != null &&
+                    this.PreviousPage.Equals(input.PreviousPage))
                 ) && 
                 (
-                    this.Currency == input.Currency ||
-                    (this.Currency != null &&
-                    this.Currency.Equals(input.Currency))
+                    this.Values == input.Values ||
+                    this.Values != null &&
+                    input.Values != null &&
+                    this.Values.SequenceEqual(input.Values)
                 ) && 
                 (
-                    this.Rate == input.Rate ||
-                    (this.Rate != null &&
-                    this.Rate.Equals(input.Rate))
-                ) && 
-                (
-                    this.Units == input.Units ||
-                    (this.Units != null &&
-                    this.Units.Equals(input.Units))
-                ) && 
-                (
-                    this.Amount == input.Amount ||
-                    (this.Amount != null &&
-                    this.Amount.Equals(input.Amount))
+                    this.Href == input.Href ||
+                    (this.Href != null &&
+                    this.Href.Equals(input.Href))
                 ) && 
                 (
                     this.Links == input.Links ||
@@ -253,18 +178,14 @@ namespace Lusid.Sdk.Model
             unchecked // Overflow is fine, just wrap
             {
                 int hashCode = 41;
-                if (this.Side != null)
-                    hashCode = hashCode * 59 + this.Side.GetHashCode();
-                if (this.Security != null)
-                    hashCode = hashCode * 59 + this.Security.GetHashCode();
-                if (this.Currency != null)
-                    hashCode = hashCode * 59 + this.Currency.GetHashCode();
-                if (this.Rate != null)
-                    hashCode = hashCode * 59 + this.Rate.GetHashCode();
-                if (this.Units != null)
-                    hashCode = hashCode * 59 + this.Units.GetHashCode();
-                if (this.Amount != null)
-                    hashCode = hashCode * 59 + this.Amount.GetHashCode();
+                if (this.NextPage != null)
+                    hashCode = hashCode * 59 + this.NextPage.GetHashCode();
+                if (this.PreviousPage != null)
+                    hashCode = hashCode * 59 + this.PreviousPage.GetHashCode();
+                if (this.Values != null)
+                    hashCode = hashCode * 59 + this.Values.GetHashCode();
+                if (this.Href != null)
+                    hashCode = hashCode * 59 + this.Href.GetHashCode();
                 if (this.Links != null)
                     hashCode = hashCode * 59 + this.Links.GetHashCode();
                 return hashCode;
