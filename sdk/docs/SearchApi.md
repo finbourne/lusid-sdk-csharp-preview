@@ -1,6 +1,6 @@
 # Lusid.Sdk.Api.SearchApi
 
-All URIs are relative to *http://local-unit-test-server.lusid.com:62171*
+All URIs are relative to *http://local-unit-test-server.lusid.com:54308*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
@@ -37,7 +37,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:62171";
+            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:54308";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -121,7 +121,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:62171";
+            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:54308";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -203,7 +203,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:62171";
+            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:54308";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -285,7 +285,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:62171";
+            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:54308";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -346,7 +346,7 @@ Name | Type | Description  | Notes
 
 ## SearchPortfolioGroups
 
-> PagedResourceListOfPortfolioGroup SearchPortfolioGroups (string search = null, string filter = null, string sortBy = null, int? limit = null, string page = null)
+> PagedResourceListOfPortfolioGroupSearchResult SearchPortfolioGroups (string search = null, string filter = null, string sortBy = null, int? limit = null, string page = null)
 
 [EXPERIMENTAL] Search Portfolio Groups
 
@@ -367,7 +367,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:62171";
+            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:54308";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -381,7 +381,7 @@ namespace Example
             try
             {
                 // [EXPERIMENTAL] Search Portfolio Groups
-                PagedResourceListOfPortfolioGroup result = apiInstance.SearchPortfolioGroups(search, filter, sortBy, limit, page);
+                PagedResourceListOfPortfolioGroupSearchResult result = apiInstance.SearchPortfolioGroups(search, filter, sortBy, limit, page);
                 Debug.WriteLine(result);
             }
             catch (ApiException e)
@@ -408,7 +408,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**PagedResourceListOfPortfolioGroup**](PagedResourceListOfPortfolioGroup.md)
+[**PagedResourceListOfPortfolioGroupSearchResult**](PagedResourceListOfPortfolioGroupSearchResult.md)
 
 ### Authorization
 
@@ -455,7 +455,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:62171";
+            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:54308";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -543,7 +543,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:62171";
+            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:54308";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 

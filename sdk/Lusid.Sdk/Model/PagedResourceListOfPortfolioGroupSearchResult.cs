@@ -23,95 +23,75 @@ using OpenAPIDateConverter = Lusid.Sdk.Client.OpenAPIDateConverter;
 namespace Lusid.Sdk.Model
 {
     /// <summary>
-    /// A corporate action
+    /// PagedResourceListOfPortfolioGroupSearchResult
     /// </summary>
     [DataContract]
-    public partial class CorporateAction :  IEquatable<CorporateAction>
+    public partial class PagedResourceListOfPortfolioGroupSearchResult :  IEquatable<PagedResourceListOfPortfolioGroupSearchResult>
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="CorporateAction" /> class.
+        /// Initializes a new instance of the <see cref="PagedResourceListOfPortfolioGroupSearchResult" /> class.
         /// </summary>
         [JsonConstructorAttribute]
-        protected CorporateAction() { }
+        protected PagedResourceListOfPortfolioGroupSearchResult() { }
         /// <summary>
-        /// Initializes a new instance of the <see cref="CorporateAction" /> class.
+        /// Initializes a new instance of the <see cref="PagedResourceListOfPortfolioGroupSearchResult" /> class.
         /// </summary>
-        /// <param name="corporateActionCode">The unique identifier of this corporate action (required).</param>
-        /// <param name="description">description.</param>
-        /// <param name="announcementDate">The announcement date of the corporate action.</param>
-        /// <param name="exDate">The ex date of the corporate action.</param>
-        /// <param name="recordDate">The record date of the corporate action.</param>
-        /// <param name="paymentDate">The payment date of the corporate action.</param>
-        /// <param name="transitions">The transitions that result from this corporate action.</param>
-        public CorporateAction(string corporateActionCode = default(string), string description = default(string), DateTimeOffset? announcementDate = default(DateTimeOffset?), DateTimeOffset? exDate = default(DateTimeOffset?), DateTimeOffset? recordDate = default(DateTimeOffset?), DateTimeOffset? paymentDate = default(DateTimeOffset?), List<CorporateActionTransition> transitions = default(List<CorporateActionTransition>))
+        /// <param name="nextPage">nextPage.</param>
+        /// <param name="previousPage">previousPage.</param>
+        /// <param name="values">values (required).</param>
+        /// <param name="href">href.</param>
+        /// <param name="links">links.</param>
+        public PagedResourceListOfPortfolioGroupSearchResult(string nextPage = default(string), string previousPage = default(string), List<PortfolioGroupSearchResult> values = default(List<PortfolioGroupSearchResult>), string href = default(string), List<Link> links = default(List<Link>))
         {
-            // to ensure "corporateActionCode" is required (not null)
-            if (corporateActionCode == null)
+            this.NextPage = nextPage;
+            this.PreviousPage = previousPage;
+            // to ensure "values" is required (not null)
+            if (values == null)
             {
-                throw new InvalidDataException("corporateActionCode is a required property for CorporateAction and cannot be null");
+                throw new InvalidDataException("values is a required property for PagedResourceListOfPortfolioGroupSearchResult and cannot be null");
             }
             else
             {
-                this.CorporateActionCode = corporateActionCode;
+                this.Values = values;
             }
             
-            this.Description = description;
-            this.Transitions = transitions;
-            this.Description = description;
-            this.AnnouncementDate = announcementDate;
-            this.ExDate = exDate;
-            this.RecordDate = recordDate;
-            this.PaymentDate = paymentDate;
-            this.Transitions = transitions;
+            this.Href = href;
+            this.Links = links;
+            this.NextPage = nextPage;
+            this.PreviousPage = previousPage;
+            this.Href = href;
+            this.Links = links;
         }
         
         /// <summary>
-        /// The unique identifier of this corporate action
+        /// Gets or Sets NextPage
         /// </summary>
-        /// <value>The unique identifier of this corporate action</value>
-        [DataMember(Name="corporateActionCode", EmitDefaultValue=false)]
-        public string CorporateActionCode { get; set; }
+        [DataMember(Name="nextPage", EmitDefaultValue=true)]
+        public string NextPage { get; set; }
 
         /// <summary>
-        /// Gets or Sets Description
+        /// Gets or Sets PreviousPage
         /// </summary>
-        [DataMember(Name="description", EmitDefaultValue=true)]
-        public string Description { get; set; }
+        [DataMember(Name="previousPage", EmitDefaultValue=true)]
+        public string PreviousPage { get; set; }
 
         /// <summary>
-        /// The announcement date of the corporate action
+        /// Gets or Sets Values
         /// </summary>
-        /// <value>The announcement date of the corporate action</value>
-        [DataMember(Name="announcementDate", EmitDefaultValue=false)]
-        public DateTimeOffset? AnnouncementDate { get; set; }
+        [DataMember(Name="values", EmitDefaultValue=false)]
+        public List<PortfolioGroupSearchResult> Values { get; set; }
 
         /// <summary>
-        /// The ex date of the corporate action
+        /// Gets or Sets Href
         /// </summary>
-        /// <value>The ex date of the corporate action</value>
-        [DataMember(Name="exDate", EmitDefaultValue=false)]
-        public DateTimeOffset? ExDate { get; set; }
+        [DataMember(Name="href", EmitDefaultValue=true)]
+        public string Href { get; set; }
 
         /// <summary>
-        /// The record date of the corporate action
+        /// Gets or Sets Links
         /// </summary>
-        /// <value>The record date of the corporate action</value>
-        [DataMember(Name="recordDate", EmitDefaultValue=false)]
-        public DateTimeOffset? RecordDate { get; set; }
-
-        /// <summary>
-        /// The payment date of the corporate action
-        /// </summary>
-        /// <value>The payment date of the corporate action</value>
-        [DataMember(Name="paymentDate", EmitDefaultValue=false)]
-        public DateTimeOffset? PaymentDate { get; set; }
-
-        /// <summary>
-        /// The transitions that result from this corporate action
-        /// </summary>
-        /// <value>The transitions that result from this corporate action</value>
-        [DataMember(Name="transitions", EmitDefaultValue=true)]
-        public List<CorporateActionTransition> Transitions { get; set; }
+        [DataMember(Name="links", EmitDefaultValue=true)]
+        public List<Link> Links { get; set; }
 
         /// <summary>
         /// Returns the string presentation of the object
@@ -120,14 +100,12 @@ namespace Lusid.Sdk.Model
         public override string ToString()
         {
             var sb = new StringBuilder();
-            sb.Append("class CorporateAction {\n");
-            sb.Append("  CorporateActionCode: ").Append(CorporateActionCode).Append("\n");
-            sb.Append("  Description: ").Append(Description).Append("\n");
-            sb.Append("  AnnouncementDate: ").Append(AnnouncementDate).Append("\n");
-            sb.Append("  ExDate: ").Append(ExDate).Append("\n");
-            sb.Append("  RecordDate: ").Append(RecordDate).Append("\n");
-            sb.Append("  PaymentDate: ").Append(PaymentDate).Append("\n");
-            sb.Append("  Transitions: ").Append(Transitions).Append("\n");
+            sb.Append("class PagedResourceListOfPortfolioGroupSearchResult {\n");
+            sb.Append("  NextPage: ").Append(NextPage).Append("\n");
+            sb.Append("  PreviousPage: ").Append(PreviousPage).Append("\n");
+            sb.Append("  Values: ").Append(Values).Append("\n");
+            sb.Append("  Href: ").Append(Href).Append("\n");
+            sb.Append("  Links: ").Append(Links).Append("\n");
             sb.Append("}\n");
             return sb.ToString();
         }
@@ -148,55 +126,46 @@ namespace Lusid.Sdk.Model
         /// <returns>Boolean</returns>
         public override bool Equals(object input)
         {
-            return this.Equals(input as CorporateAction);
+            return this.Equals(input as PagedResourceListOfPortfolioGroupSearchResult);
         }
 
         /// <summary>
-        /// Returns true if CorporateAction instances are equal
+        /// Returns true if PagedResourceListOfPortfolioGroupSearchResult instances are equal
         /// </summary>
-        /// <param name="input">Instance of CorporateAction to be compared</param>
+        /// <param name="input">Instance of PagedResourceListOfPortfolioGroupSearchResult to be compared</param>
         /// <returns>Boolean</returns>
-        public bool Equals(CorporateAction input)
+        public bool Equals(PagedResourceListOfPortfolioGroupSearchResult input)
         {
             if (input == null)
                 return false;
 
             return 
                 (
-                    this.CorporateActionCode == input.CorporateActionCode ||
-                    (this.CorporateActionCode != null &&
-                    this.CorporateActionCode.Equals(input.CorporateActionCode))
+                    this.NextPage == input.NextPage ||
+                    (this.NextPage != null &&
+                    this.NextPage.Equals(input.NextPage))
                 ) && 
                 (
-                    this.Description == input.Description ||
-                    (this.Description != null &&
-                    this.Description.Equals(input.Description))
+                    this.PreviousPage == input.PreviousPage ||
+                    (this.PreviousPage != null &&
+                    this.PreviousPage.Equals(input.PreviousPage))
                 ) && 
                 (
-                    this.AnnouncementDate == input.AnnouncementDate ||
-                    (this.AnnouncementDate != null &&
-                    this.AnnouncementDate.Equals(input.AnnouncementDate))
+                    this.Values == input.Values ||
+                    this.Values != null &&
+                    input.Values != null &&
+                    this.Values.SequenceEqual(input.Values)
                 ) && 
                 (
-                    this.ExDate == input.ExDate ||
-                    (this.ExDate != null &&
-                    this.ExDate.Equals(input.ExDate))
+                    this.Href == input.Href ||
+                    (this.Href != null &&
+                    this.Href.Equals(input.Href))
                 ) && 
                 (
-                    this.RecordDate == input.RecordDate ||
-                    (this.RecordDate != null &&
-                    this.RecordDate.Equals(input.RecordDate))
-                ) && 
-                (
-                    this.PaymentDate == input.PaymentDate ||
-                    (this.PaymentDate != null &&
-                    this.PaymentDate.Equals(input.PaymentDate))
-                ) && 
-                (
-                    this.Transitions == input.Transitions ||
-                    this.Transitions != null &&
-                    input.Transitions != null &&
-                    this.Transitions.SequenceEqual(input.Transitions)
+                    this.Links == input.Links ||
+                    this.Links != null &&
+                    input.Links != null &&
+                    this.Links.SequenceEqual(input.Links)
                 );
         }
 
@@ -209,20 +178,16 @@ namespace Lusid.Sdk.Model
             unchecked // Overflow is fine, just wrap
             {
                 int hashCode = 41;
-                if (this.CorporateActionCode != null)
-                    hashCode = hashCode * 59 + this.CorporateActionCode.GetHashCode();
-                if (this.Description != null)
-                    hashCode = hashCode * 59 + this.Description.GetHashCode();
-                if (this.AnnouncementDate != null)
-                    hashCode = hashCode * 59 + this.AnnouncementDate.GetHashCode();
-                if (this.ExDate != null)
-                    hashCode = hashCode * 59 + this.ExDate.GetHashCode();
-                if (this.RecordDate != null)
-                    hashCode = hashCode * 59 + this.RecordDate.GetHashCode();
-                if (this.PaymentDate != null)
-                    hashCode = hashCode * 59 + this.PaymentDate.GetHashCode();
-                if (this.Transitions != null)
-                    hashCode = hashCode * 59 + this.Transitions.GetHashCode();
+                if (this.NextPage != null)
+                    hashCode = hashCode * 59 + this.NextPage.GetHashCode();
+                if (this.PreviousPage != null)
+                    hashCode = hashCode * 59 + this.PreviousPage.GetHashCode();
+                if (this.Values != null)
+                    hashCode = hashCode * 59 + this.Values.GetHashCode();
+                if (this.Href != null)
+                    hashCode = hashCode * 59 + this.Href.GetHashCode();
+                if (this.Links != null)
+                    hashCode = hashCode * 59 + this.Links.GetHashCode();
                 return hashCode;
             }
         }
