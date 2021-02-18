@@ -1,6 +1,6 @@
 # Lusid.Sdk.Api.InstrumentsApi
 
-All URIs are relative to *http://local-unit-test-server.lusid.com:45581*
+All URIs are relative to *http://local-unit-test-server.lusid.com:62171*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
@@ -9,6 +9,7 @@ Method | HTTP request | Description
 [**GetInstrument**](InstrumentsApi.md#getinstrument) | **GET** /api/instruments/{identifierType}/{identifier} | Get instrument
 [**GetInstrumentIdentifierTypes**](InstrumentsApi.md#getinstrumentidentifiertypes) | **GET** /api/instruments/identifierTypes | [EARLY ACCESS] Get instrument identifier types
 [**GetInstrumentProperties**](InstrumentsApi.md#getinstrumentproperties) | **GET** /api/instruments/{identifierType}/{identifier}/properties | [EXPERIMENTAL] Get instrument properties
+[**GetInstrumentPropertyTimeSeries**](InstrumentsApi.md#getinstrumentpropertytimeseries) | **GET** /api/instruments/{identifierType}/{identifier}/properties/time-series | [EXPERIMENTAL] Get the time series of an instrument property
 [**GetInstruments**](InstrumentsApi.md#getinstruments) | **POST** /api/instruments/$get | Get instruments
 [**ListInstruments**](InstrumentsApi.md#listinstruments) | **GET** /api/instruments | [EARLY ACCESS] List instruments
 [**UpdateInstrumentIdentifier**](InstrumentsApi.md#updateinstrumentidentifier) | **POST** /api/instruments/{identifierType}/{identifier} | [EARLY ACCESS] Update instrument identifier
@@ -40,7 +41,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:45581";
+            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:62171";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -122,7 +123,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:45581";
+            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:62171";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -208,7 +209,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:45581";
+            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:62171";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -296,7 +297,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:45581";
+            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:62171";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -371,7 +372,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:45581";
+            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:62171";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -434,6 +435,100 @@ Name | Type | Description  | Notes
 [[Back to README]](../README.md)
 
 
+## GetInstrumentPropertyTimeSeries
+
+> ResourceListOfPropertyInterval GetInstrumentPropertyTimeSeries (string identifierType, string identifier, string propertyKey = null, string identifierEffectiveAt = null, DateTimeOffset? asAt = null, string filter = null, string page = null, int? limit = null)
+
+[EXPERIMENTAL] Get the time series of an instrument property
+
+List the complete time series of an instrument property, ordered by effective datetime.
+
+### Example
+
+```csharp
+using System.Collections.Generic;
+using System.Diagnostics;
+using Lusid.Sdk.Api;
+using Lusid.Sdk.Client;
+using Lusid.Sdk.Model;
+
+namespace Example
+{
+    public class GetInstrumentPropertyTimeSeriesExample
+    {
+        public static void Main()
+        {
+            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:62171";
+            // Configure OAuth2 access token for authorization: oauth2
+            Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
+
+            var apiInstance = new InstrumentsApi(Configuration.Default);
+            var identifierType = identifierType_example;  // string | The identifier type of the instrument, e.g., \"Figi\"
+            var identifier = identifier_example;  // string | The identifier of the instrument to delete properties from.
+            var propertyKey = propertyKey_example;  // string | The property key of the property that will have its history shown. (optional) 
+            var identifierEffectiveAt = identifierEffectiveAt_example;  // string | The effective datetime at which to list the property history. Defaults to the current LUSID system datetime if not specified. (optional) 
+            var asAt = 2013-10-20T19:20:30+01:00;  // DateTimeOffset? | The asAt datetime at which to list the instrument's property history. Defaults to return the current datetime if not supplied. (optional) 
+            var filter = filter_example;  // string | Expression to filter the result set. Read more about filtering results from LUSID here https://support.lusid.com/filtering-results-from-lusid. (optional) 
+            var page = page_example;  // string | The pagination token to use to continue listing properties from a previous call to get property timeseries.              This value is returned from the previous call. If a pagination token is provided the filter, effectiveAt, and asAt fields              must not have changed since the original request. (optional) 
+            var limit = 56;  // int? | When paginating, limit the number of returned results to this many. (optional) 
+
+            try
+            {
+                // [EXPERIMENTAL] Get the time series of an instrument property
+                ResourceListOfPropertyInterval result = apiInstance.GetInstrumentPropertyTimeSeries(identifierType, identifier, propertyKey, identifierEffectiveAt, asAt, filter, page, limit);
+                Debug.WriteLine(result);
+            }
+            catch (ApiException e)
+            {
+                Debug.Print("Exception when calling InstrumentsApi.GetInstrumentPropertyTimeSeries: " + e.Message );
+                Debug.Print("Status Code: "+ e.ErrorCode);
+                Debug.Print(e.StackTrace);
+            }
+        }
+    }
+}
+```
+
+### Parameters
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **identifierType** | **string**| The identifier type of the instrument, e.g., \&quot;Figi\&quot; | 
+ **identifier** | **string**| The identifier of the instrument to delete properties from. | 
+ **propertyKey** | **string**| The property key of the property that will have its history shown. | [optional] 
+ **identifierEffectiveAt** | **string**| The effective datetime at which to list the property history. Defaults to the current LUSID system datetime if not specified. | [optional] 
+ **asAt** | **DateTimeOffset?**| The asAt datetime at which to list the instrument&#39;s property history. Defaults to return the current datetime if not supplied. | [optional] 
+ **filter** | **string**| Expression to filter the result set. Read more about filtering results from LUSID here https://support.lusid.com/filtering-results-from-lusid. | [optional] 
+ **page** | **string**| The pagination token to use to continue listing properties from a previous call to get property timeseries.              This value is returned from the previous call. If a pagination token is provided the filter, effectiveAt, and asAt fields              must not have changed since the original request. | [optional] 
+ **limit** | **int?**| When paginating, limit the number of returned results to this many. | [optional] 
+
+### Return type
+
+[**ResourceListOfPropertyInterval**](ResourceListOfPropertyInterval.md)
+
+### Authorization
+
+[oauth2](../README.md#oauth2)
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: text/plain, application/json, text/json
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+| **200** | The time-series of the property |  -  |
+| **400** | The details of the input related failure |  -  |
+| **0** | Error response |  -  |
+
+[[Back to top]](#)
+[[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
+
+
 ## GetInstruments
 
 > GetInstrumentsResponse GetInstruments (string identifierType, List<string> requestBody, DateTimeOrCutLabel effectiveAt = null, DateTimeOffset? asAt = null, List<string> propertyKeys = null)
@@ -457,7 +552,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:45581";
+            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:62171";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -545,7 +640,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:45581";
+            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:62171";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -639,7 +734,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:45581";
+            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:62171";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -723,7 +818,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:45581";
+            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:62171";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -803,7 +898,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:45581";
+            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:62171";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
