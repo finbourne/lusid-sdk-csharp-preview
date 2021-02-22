@@ -1,6 +1,6 @@
 # Lusid.Sdk.Api.SearchApi
 
-All URIs are relative to *http://local-unit-test-server.lusid.com:46545*
+All URIs are relative to *http://local-unit-test-server.lusid.com:57381*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
@@ -37,7 +37,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:46545";
+            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:57381";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -121,7 +121,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:46545";
+            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:57381";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -203,7 +203,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:46545";
+            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:57381";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -285,7 +285,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:46545";
+            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:57381";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -367,7 +367,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:46545";
+            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:57381";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -455,7 +455,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:46545";
+            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:57381";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -522,7 +522,7 @@ Name | Type | Description  | Notes
 
 ## SearchProperties
 
-> PagedResourceListOfPropertyDefinition SearchProperties (string search = null, string filter = null, string sortBy = null, int? limit = null, string page = null)
+> PagedResourceListOfPropertyDefinitionSearchResult SearchProperties (string search = null, string filter = null, string sortBy = null, int? limit = null, string page = null)
 
 [EXPERIMENTAL] Search Property Definitions
 
@@ -543,7 +543,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:46545";
+            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:57381";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -557,7 +557,7 @@ namespace Example
             try
             {
                 // [EXPERIMENTAL] Search Property Definitions
-                PagedResourceListOfPropertyDefinition result = apiInstance.SearchProperties(search, filter, sortBy, limit, page);
+                PagedResourceListOfPropertyDefinitionSearchResult result = apiInstance.SearchProperties(search, filter, sortBy, limit, page);
                 Debug.WriteLine(result);
             }
             catch (ApiException e)
@@ -584,7 +584,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**PagedResourceListOfPropertyDefinition**](PagedResourceListOfPropertyDefinition.md)
+[**PagedResourceListOfPropertyDefinitionSearchResult**](PagedResourceListOfPropertyDefinitionSearchResult.md)
 
 ### Authorization
 
