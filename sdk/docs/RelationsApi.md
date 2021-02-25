@@ -1,6 +1,6 @@
 # Lusid.Sdk.Api.RelationsApi
 
-All URIs are relative to *http://local-unit-test-server.lusid.com:56661*
+All URIs are relative to *http://local-unit-test-server.lusid.com:51891*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
@@ -32,13 +32,13 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:56661";
+            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:51891";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
             var apiInstance = new RelationsApi(Configuration.Default);
-            var scope = scope_example;  // string | Scope of the relation to create.
-            var code = code_example;  // string | Code of the relation to create.
+            var scope = scope_example;  // string | The scope of the relation definition
+            var code = code_example;  // string | The code of the relation definition
             var createRelationRequest = new CreateRelationRequest(); // CreateRelationRequest | The details of the relation to create.
             var effectiveAt = effectiveAt_example;  // DateTimeOrCutLabel | The effective datetime or cut label at which the relation should be effective from. Defaults to the current LUSID system datetime if not specified. (optional) 
 
@@ -64,8 +64,8 @@ namespace Example
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **scope** | **string**| Scope of the relation to create. | 
- **code** | **string**| Code of the relation to create. | 
+ **scope** | **string**| The scope of the relation definition | 
+ **code** | **string**| The code of the relation definition | 
  **createRelationRequest** | [**CreateRelationRequest**](CreateRelationRequest.md)| The details of the relation to create. | 
  **effectiveAt** | **DateTimeOrCutLabel**| The effective datetime or cut label at which the relation should be effective from. Defaults to the current LUSID system datetime if not specified. | [optional] 
 
@@ -118,13 +118,13 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:56661";
+            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:51891";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
             var apiInstance = new RelationsApi(Configuration.Default);
-            var scope = scope_example;  // string | Scope of the relation to delete.
-            var code = code_example;  // string | Code of the relation to delete.
+            var scope = scope_example;  // string | The scope of the relation definition
+            var code = code_example;  // string | The code of the relation definition
             var deleteRelationRequest = new DeleteRelationRequest(); // DeleteRelationRequest | The details of the relation to delete.
             var effectiveAt = effectiveAt_example;  // DateTimeOrCutLabel | The effective datetime or cut label at which the relation should the deletion be effective from. Defaults to the current LUSID system datetime if not specified. (optional) 
 
@@ -150,8 +150,8 @@ namespace Example
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **scope** | **string**| Scope of the relation to delete. | 
- **code** | **string**| Code of the relation to delete. | 
+ **scope** | **string**| The scope of the relation definition | 
+ **code** | **string**| The code of the relation definition | 
  **deleteRelationRequest** | [**DeleteRelationRequest**](DeleteRelationRequest.md)| The details of the relation to delete. | 
  **effectiveAt** | **DateTimeOrCutLabel**| The effective datetime or cut label at which the relation should the deletion be effective from. Defaults to the current LUSID system datetime if not specified. | [optional] 
 
