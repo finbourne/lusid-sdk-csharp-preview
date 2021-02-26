@@ -1,12 +1,13 @@
 # Lusid.Sdk.Api.CorporateActionSourcesApi
 
-All URIs are relative to *http://local-unit-test-server.lusid.com:40537*
+All URIs are relative to *http://local-unit-test-server.lusid.com:61132*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
 [**BatchUpsertCorporateActions**](CorporateActionSourcesApi.md#batchupsertcorporateactions) | **POST** /api/corporateactionsources/{scope}/{code}/corporateactions | [BETA] Upsert corporate actions
 [**CreateCorporateActionSource**](CorporateActionSourcesApi.md#createcorporateactionsource) | **POST** /api/corporateactionsources | [BETA] Create Corporate Action Source
 [**DeleteCorporateActionSource**](CorporateActionSourcesApi.md#deletecorporateactionsource) | **DELETE** /api/corporateactionsources/{scope}/{code} | [BETA] Delete a corporate action source
+[**DeleteCorporateActions**](CorporateActionSourcesApi.md#deletecorporateactions) | **DELETE** /api/corporateactionsources/{scope}/{code}/corporateactions | [EXPERIMENTAL] Delete one or more corporate actions
 [**GetCorporateActions**](CorporateActionSourcesApi.md#getcorporateactions) | **GET** /api/corporateactionsources/{scope}/{code}/corporateactions | [BETA] Get corporate actions
 [**ListCorporateActionSources**](CorporateActionSourcesApi.md#listcorporateactionsources) | **GET** /api/corporateactionsources | [BETA] List corporate action sources
 
@@ -35,7 +36,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:40537";
+            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:61132";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -119,7 +120,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:40537";
+            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:61132";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -199,7 +200,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:40537";
+            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:61132";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -258,6 +259,90 @@ Name | Type | Description  | Notes
 [[Back to README]](../README.md)
 
 
+## DeleteCorporateActions
+
+> DeletedEntityResponse DeleteCorporateActions (string scope, string code, List<string> corporateActionIds)
+
+[EXPERIMENTAL] Delete one or more corporate actions
+
+Deletes one or more corporate actions from the specified corporate action source
+
+### Example
+
+```csharp
+using System.Collections.Generic;
+using System.Diagnostics;
+using Lusid.Sdk.Api;
+using Lusid.Sdk.Client;
+using Lusid.Sdk.Model;
+
+namespace Example
+{
+    public class DeleteCorporateActionsExample
+    {
+        public static void Main()
+        {
+            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:61132";
+            // Configure OAuth2 access token for authorization: oauth2
+            Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
+
+            var apiInstance = new CorporateActionSourcesApi(Configuration.Default);
+            var scope = scope_example;  // string | The scope of the corporate action source
+            var code = code_example;  // string | The code of the corporate action source
+            var corporateActionIds = new List<string>(); // List<string> | The ids of the corporate actions to delete
+
+            try
+            {
+                // [EXPERIMENTAL] Delete one or more corporate actions
+                DeletedEntityResponse result = apiInstance.DeleteCorporateActions(scope, code, corporateActionIds);
+                Debug.WriteLine(result);
+            }
+            catch (ApiException e)
+            {
+                Debug.Print("Exception when calling CorporateActionSourcesApi.DeleteCorporateActions: " + e.Message );
+                Debug.Print("Status Code: "+ e.ErrorCode);
+                Debug.Print(e.StackTrace);
+            }
+        }
+    }
+}
+```
+
+### Parameters
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **scope** | **string**| The scope of the corporate action source | 
+ **code** | **string**| The code of the corporate action source | 
+ **corporateActionIds** | [**List&lt;string&gt;**](string.md)| The ids of the corporate actions to delete | 
+
+### Return type
+
+[**DeletedEntityResponse**](DeletedEntityResponse.md)
+
+### Authorization
+
+[oauth2](../README.md#oauth2)
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: text/plain, application/json, text/json
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+| **200** | Corporate Actions Deleted |  -  |
+| **400** | The details of the input related failure |  -  |
+| **0** | Error response |  -  |
+
+[[Back to top]](#)
+[[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
+
+
 ## GetCorporateActions
 
 > ResourceListOfCorporateAction GetCorporateActions (string scope, string code, DateTimeOrCutLabel fromEffectiveAt = null, DateTimeOrCutLabel toEffectiveAt = null, DateTimeOffset? asAt = null, List<string> sortBy = null, int? limit = null, string filter = null)
@@ -281,7 +366,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:40537";
+            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:61132";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -375,7 +460,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:40537";
+            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:61132";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
