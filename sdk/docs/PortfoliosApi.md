@@ -1,6 +1,6 @@
 # Lusid.Sdk.Api.PortfoliosApi
 
-All URIs are relative to *https://fbn-prd.lusid.com/api*
+All URIs are relative to *http://local-unit-test-server.lusid.com:50743*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
@@ -12,6 +12,7 @@ Method | HTTP request | Description
 [**GetPortfolioCommands**](PortfoliosApi.md#getportfoliocommands) | **GET** /api/portfolios/{scope}/{code}/commands | [EARLY ACCESS] Get portfolio commands
 [**GetPortfolioMetadata**](PortfoliosApi.md#getportfoliometadata) | **GET** /api/portfolios/{scope}/{code}/metadata | [EXPERIMENTAL] Get access metadata rules for a portfolio
 [**GetPortfolioProperties**](PortfoliosApi.md#getportfolioproperties) | **GET** /api/portfolios/{scope}/{code}/properties | Get portfolio properties
+[**GetPortfolioPropertyTimeSeries**](PortfoliosApi.md#getportfoliopropertytimeseries) | **GET** /api/portfolios/{scope}/{code}/properties/time-series | [EXPERIMENTAL] Get the time series of a portfolio property
 [**GetPortfolioRelations**](PortfoliosApi.md#getportfoliorelations) | **GET** /api/portfolios/{scope}/{code}/relations | [EXPERIMENTAL] Get Relations for Portfolio
 [**GetPortfolioReturns**](PortfoliosApi.md#getportfolioreturns) | **GET** /api/portfolios/{scope}/{code}/returns/{returnScope}/{returnCode} | [EXPERIMENTAL] Get Returns
 [**GetPortfoliosAccessMetadataByKey**](PortfoliosApi.md#getportfoliosaccessmetadatabykey) | **GET** /api/portfolios/{scope}/{code}/metadata/{metadataKey} | [EXPERIMENTAL] Get an entry identified by a metadataKey in the access metadata object
@@ -47,7 +48,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "https://fbn-prd.lusid.com/api";
+            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:50743";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -133,7 +134,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "https://fbn-prd.lusid.com/api";
+            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:50743";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -215,7 +216,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "https://fbn-prd.lusid.com/api";
+            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:50743";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -301,7 +302,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "https://fbn-prd.lusid.com/api";
+            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:50743";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -389,7 +390,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "https://fbn-prd.lusid.com/api";
+            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:50743";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -489,7 +490,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "https://fbn-prd.lusid.com/api";
+            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:50743";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -577,7 +578,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "https://fbn-prd.lusid.com/api";
+            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:50743";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -663,7 +664,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "https://fbn-prd.lusid.com/api";
+            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:50743";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -726,6 +727,100 @@ Name | Type | Description  | Notes
 [[Back to README]](../README.md)
 
 
+## GetPortfolioPropertyTimeSeries
+
+> ResourceListOfPropertyInterval GetPortfolioPropertyTimeSeries (string scope, string code, string propertyKey = null, string effectiveAt = null, DateTimeOffset? asAt = null, string filter = null, string page = null, int? limit = null)
+
+[EXPERIMENTAL] Get the time series of a portfolio property
+
+List the complete time series of a portfolio property.
+
+### Example
+
+```csharp
+using System.Collections.Generic;
+using System.Diagnostics;
+using Lusid.Sdk.Api;
+using Lusid.Sdk.Client;
+using Lusid.Sdk.Model;
+
+namespace Example
+{
+    public class GetPortfolioPropertyTimeSeriesExample
+    {
+        public static void Main()
+        {
+            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:50743";
+            // Configure OAuth2 access token for authorization: oauth2
+            Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
+
+            var apiInstance = new PortfoliosApi(Configuration.Default);
+            var scope = scope_example;  // string | The scope of the portfolio.
+            var code = code_example;  // string | The code of the portfolio. Together with the scope this uniquely identifies              the portfolio.
+            var propertyKey = propertyKey_example;  // string | The property key of the property that will have its history shown. (optional) 
+            var effectiveAt = effectiveAt_example;  // string | The effective datetime at which to list the property history. Defaults to the current LUSID system datetime if not specified. (optional) 
+            var asAt = 2013-10-20T19:20:30+01:00;  // DateTimeOffset? | The asAt datetime at which to list the portfolio's property history. Defaults to return the current datetime if not supplied. (optional) 
+            var filter = filter_example;  // string | Expression to filter the result set. Read more about filtering results from LUSID here https://support.lusid.com/filtering-results-from-lusid. (optional) 
+            var page = page_example;  // string | The pagination token to use to continue listing properties from a previous call to get property time series.              This value is returned from the previous call. If a pagination token is provided the filter, effectiveAt, and asAt fields              must not have changed since the original request. (optional) 
+            var limit = 56;  // int? | When paginating, limit the number of returned results to this many. (optional) 
+
+            try
+            {
+                // [EXPERIMENTAL] Get the time series of a portfolio property
+                ResourceListOfPropertyInterval result = apiInstance.GetPortfolioPropertyTimeSeries(scope, code, propertyKey, effectiveAt, asAt, filter, page, limit);
+                Debug.WriteLine(result);
+            }
+            catch (ApiException e)
+            {
+                Debug.Print("Exception when calling PortfoliosApi.GetPortfolioPropertyTimeSeries: " + e.Message );
+                Debug.Print("Status Code: "+ e.ErrorCode);
+                Debug.Print(e.StackTrace);
+            }
+        }
+    }
+}
+```
+
+### Parameters
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **scope** | **string**| The scope of the portfolio. | 
+ **code** | **string**| The code of the portfolio. Together with the scope this uniquely identifies              the portfolio. | 
+ **propertyKey** | **string**| The property key of the property that will have its history shown. | [optional] 
+ **effectiveAt** | **string**| The effective datetime at which to list the property history. Defaults to the current LUSID system datetime if not specified. | [optional] 
+ **asAt** | **DateTimeOffset?**| The asAt datetime at which to list the portfolio&#39;s property history. Defaults to return the current datetime if not supplied. | [optional] 
+ **filter** | **string**| Expression to filter the result set. Read more about filtering results from LUSID here https://support.lusid.com/filtering-results-from-lusid. | [optional] 
+ **page** | **string**| The pagination token to use to continue listing properties from a previous call to get property time series.              This value is returned from the previous call. If a pagination token is provided the filter, effectiveAt, and asAt fields              must not have changed since the original request. | [optional] 
+ **limit** | **int?**| When paginating, limit the number of returned results to this many. | [optional] 
+
+### Return type
+
+[**ResourceListOfPropertyInterval**](ResourceListOfPropertyInterval.md)
+
+### Authorization
+
+[oauth2](../README.md#oauth2)
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: text/plain, application/json, text/json
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+| **200** | The time series of the property |  -  |
+| **400** | The details of the input related failure |  -  |
+| **0** | Error response |  -  |
+
+[[Back to top]](#)
+[[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
+
+
 ## GetPortfolioRelations
 
 > ResourceListOfRelation GetPortfolioRelations (string scope, string code, DateTimeOrCutLabel effectiveAt = null, DateTimeOffset? asAt = null, string filter = null, List<string> identifierTypes = null)
@@ -749,7 +844,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "https://fbn-prd.lusid.com/api";
+            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:50743";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -839,7 +934,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "https://fbn-prd.lusid.com/api";
+            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:50743";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -933,7 +1028,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "https://fbn-prd.lusid.com/api";
+            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:50743";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -1021,7 +1116,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "https://fbn-prd.lusid.com/api";
+            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:50743";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -1115,7 +1210,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "https://fbn-prd.lusid.com/api";
+            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:50743";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -1209,7 +1304,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "https://fbn-prd.lusid.com/api";
+            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:50743";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -1295,7 +1390,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "https://fbn-prd.lusid.com/api";
+            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:50743";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -1383,7 +1478,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "https://fbn-prd.lusid.com/api";
+            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:50743";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -1467,7 +1562,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "https://fbn-prd.lusid.com/api";
+            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:50743";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 

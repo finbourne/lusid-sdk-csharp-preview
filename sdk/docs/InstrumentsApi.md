@@ -1,6 +1,6 @@
 # Lusid.Sdk.Api.InstrumentsApi
 
-All URIs are relative to *https://fbn-prd.lusid.com/api*
+All URIs are relative to *http://local-unit-test-server.lusid.com:50743*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
@@ -41,7 +41,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "https://fbn-prd.lusid.com/api";
+            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:50743";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -123,7 +123,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "https://fbn-prd.lusid.com/api";
+            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:50743";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -209,7 +209,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "https://fbn-prd.lusid.com/api";
+            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:50743";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -297,7 +297,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "https://fbn-prd.lusid.com/api";
+            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:50743";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -372,7 +372,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "https://fbn-prd.lusid.com/api";
+            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:50743";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -441,7 +441,7 @@ Name | Type | Description  | Notes
 
 [EXPERIMENTAL] Get the time series of an instrument property
 
-List the complete time series of an instrument property, ordered by effective datetime.
+List the complete time series of an instrument property.
 
 ### Example
 
@@ -458,7 +458,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "https://fbn-prd.lusid.com/api";
+            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:50743";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -466,10 +466,10 @@ namespace Example
             var identifierType = identifierType_example;  // string | The identifier type of the instrument, e.g., \"Figi\"
             var identifier = identifier_example;  // string | The identifier of the instrument to delete properties from.
             var propertyKey = propertyKey_example;  // string | The property key of the property that will have its history shown. (optional) 
-            var identifierEffectiveAt = identifierEffectiveAt_example;  // string | The effective datetime at which to list the property history. Defaults to the current LUSID system datetime if not specified. (optional) 
+            var identifierEffectiveAt = identifierEffectiveAt_example;  // string | The effective datetime of the instrument identifier. The property history of a property belonging to the associated instrument is listed. Defaults to the current LUSID system datetime if not specified. (optional) 
             var asAt = 2013-10-20T19:20:30+01:00;  // DateTimeOffset? | The asAt datetime at which to list the instrument's property history. Defaults to return the current datetime if not supplied. (optional) 
             var filter = filter_example;  // string | Expression to filter the result set. Read more about filtering results from LUSID here https://support.lusid.com/filtering-results-from-lusid. (optional) 
-            var page = page_example;  // string | The pagination token to use to continue listing properties from a previous call to get property timeseries.              This value is returned from the previous call. If a pagination token is provided the filter, effectiveAt, and asAt fields              must not have changed since the original request. (optional) 
+            var page = page_example;  // string | The pagination token to use to continue listing properties from a previous call to get property time series.              This value is returned from the previous call. If a pagination token is provided the filter, effectiveAt, and asAt fields              must not have changed since the original request. (optional) 
             var limit = 56;  // int? | When paginating, limit the number of returned results to this many. (optional) 
 
             try
@@ -497,10 +497,10 @@ Name | Type | Description  | Notes
  **identifierType** | **string**| The identifier type of the instrument, e.g., \&quot;Figi\&quot; | 
  **identifier** | **string**| The identifier of the instrument to delete properties from. | 
  **propertyKey** | **string**| The property key of the property that will have its history shown. | [optional] 
- **identifierEffectiveAt** | **string**| The effective datetime at which to list the property history. Defaults to the current LUSID system datetime if not specified. | [optional] 
+ **identifierEffectiveAt** | **string**| The effective datetime of the instrument identifier. The property history of a property belonging to the associated instrument is listed. Defaults to the current LUSID system datetime if not specified. | [optional] 
  **asAt** | **DateTimeOffset?**| The asAt datetime at which to list the instrument&#39;s property history. Defaults to return the current datetime if not supplied. | [optional] 
  **filter** | **string**| Expression to filter the result set. Read more about filtering results from LUSID here https://support.lusid.com/filtering-results-from-lusid. | [optional] 
- **page** | **string**| The pagination token to use to continue listing properties from a previous call to get property timeseries.              This value is returned from the previous call. If a pagination token is provided the filter, effectiveAt, and asAt fields              must not have changed since the original request. | [optional] 
+ **page** | **string**| The pagination token to use to continue listing properties from a previous call to get property time series.              This value is returned from the previous call. If a pagination token is provided the filter, effectiveAt, and asAt fields              must not have changed since the original request. | [optional] 
  **limit** | **int?**| When paginating, limit the number of returned results to this many. | [optional] 
 
 ### Return type
@@ -519,7 +519,7 @@ Name | Type | Description  | Notes
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
-| **200** | The time-series of the property |  -  |
+| **200** | The time series of the property |  -  |
 | **400** | The details of the input related failure |  -  |
 | **0** | Error response |  -  |
 
@@ -552,7 +552,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "https://fbn-prd.lusid.com/api";
+            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:50743";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -640,7 +640,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "https://fbn-prd.lusid.com/api";
+            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:50743";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -734,7 +734,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "https://fbn-prd.lusid.com/api";
+            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:50743";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -818,7 +818,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "https://fbn-prd.lusid.com/api";
+            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:50743";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -898,7 +898,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "https://fbn-prd.lusid.com/api";
+            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:50743";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
