@@ -464,9 +464,9 @@ namespace Example
 
             var apiInstance = new InstrumentsApi(Configuration.Default);
             var identifierType = identifierType_example;  // string | The identifier type of the instrument, e.g., \"Figi\"
-            var identifier = identifier_example;  // string | The identifier of the instrument to delete properties from.
+            var identifier = identifier_example;  // string | The value of the identifier for the requested instrument.
             var propertyKey = propertyKey_example;  // string | The property key of the property that will have its history shown. (optional) 
-            var identifierEffectiveAt = identifierEffectiveAt_example;  // string | The effective datetime of the instrument identifier. The property history of a property belonging to the associated instrument is listed. Defaults to the current LUSID system datetime if not specified. (optional) 
+            var identifierEffectiveAt = identifierEffectiveAt_example;  // string | The effective datetime used to resolve the instrument from the provided identifier. Defaults to the current LUSID system datetime if not specified. (optional) 
             var asAt = 2013-10-20T19:20:30+01:00;  // DateTimeOffset? | The asAt datetime at which to list the instrument's property history. Defaults to return the current datetime if not supplied. (optional) 
             var filter = filter_example;  // string | Expression to filter the result set. Read more about filtering results from LUSID here https://support.lusid.com/filtering-results-from-lusid. (optional) 
             var page = page_example;  // string | The pagination token to use to continue listing properties from a previous call to get property time series.              This value is returned from the previous call. If a pagination token is provided the filter, effectiveAt, and asAt fields              must not have changed since the original request. (optional) 
@@ -495,9 +495,9 @@ namespace Example
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **identifierType** | **string**| The identifier type of the instrument, e.g., \&quot;Figi\&quot; | 
- **identifier** | **string**| The identifier of the instrument to delete properties from. | 
+ **identifier** | **string**| The value of the identifier for the requested instrument. | 
  **propertyKey** | **string**| The property key of the property that will have its history shown. | [optional] 
- **identifierEffectiveAt** | **string**| The effective datetime of the instrument identifier. The property history of a property belonging to the associated instrument is listed. Defaults to the current LUSID system datetime if not specified. | [optional] 
+ **identifierEffectiveAt** | **string**| The effective datetime used to resolve the instrument from the provided identifier. Defaults to the current LUSID system datetime if not specified. | [optional] 
  **asAt** | **DateTimeOffset?**| The asAt datetime at which to list the instrument&#39;s property history. Defaults to return the current datetime if not supplied. | [optional] 
  **filter** | **string**| Expression to filter the result set. Read more about filtering results from LUSID here https://support.lusid.com/filtering-results-from-lusid. | [optional] 
  **page** | **string**| The pagination token to use to continue listing properties from a previous call to get property time series.              This value is returned from the previous call. If a pagination token is provided the filter, effectiveAt, and asAt fields              must not have changed since the original request. | [optional] 
