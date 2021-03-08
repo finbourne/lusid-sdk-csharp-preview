@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Lusid.Sdk.Api;
+using Lusid.Sdk.Client;
 using Lusid.Sdk.Model;
 using Lusid.Sdk.Utilities;
 using LusidFeatures;
@@ -356,5 +357,117 @@ namespace Lusid.Sdk.Tests.Tutorials.Ibor
             */
 
         } 
+        [LusidFeature("F8")]
+        [Test]
+        public void Upsert_And_Delete_Simple_Orders()
+        {
+            var testScope = $"Orders-Filter-TestScope";
+            var order1 = $"Order-{Guid.NewGuid().ToString()}";
+            var orderId1 = new ResourceId(testScope, order1);
+
+            // We want to make a request to upsert an order.
+            var request = new OrderSetRequest(
+                orderRequests: new List<OrderRequest>
+                {
+                    new OrderRequest(
+                        id: orderId1,
+                        quantity: 99,
+                        // These instrument identifiers should all map to the same instrument. If the instance of
+                        // LUSID has the specified instruments registered these identifiers will get resolved to
+                        // an actual internal instrument on upsert; otherwise, they'll be resolved to instrument or
+                        // currency unknown.
+                        instrumentIdentifiers: new Dictionary<string, string>()
+                        {
+                            ["Instrument/default/LusidInstrumentId"] = _instrumentIds.First()
+                        },
+                        // [Experimental] Currently this portfolio doesn't need to exist. As the domain model evolves
+                        // this reference might disappear, or might become a strict reference to an existing portfolio
+                        portfolioId: new ResourceId(testScope, "OrdersTestPortfolio"),
+                        properties: new Dictionary<string, PerpetualProperty>
+                        {
+                            { $"Order/{testScope}/TIF", new PerpetualProperty($"Order/{testScope}/TIF", new PropertyValue("GTC")) },
+                            { $"Order/{testScope}/OrderBook", new PerpetualProperty($"Order/{testScope}/OrderBook", new PropertyValue("UK Test Orders")) },
+                            { $"Order/{testScope}/PortfolioManager", new PerpetualProperty($"Order/{testScope}/PortfolioManager", new PropertyValue("F Bar")) },
+                            { $"Order/{testScope}/Account", new PerpetualProperty($"Order/{testScope}/Account", new PropertyValue("ZB123")) },
+                            { $"Order/{testScope}/Strategy", new PerpetualProperty($"Order/{testScope}/Strategy", new PropertyValue("RiskArb")) },
+                        },
+                        side: "Buy",
+                        orderBookId: new ResourceId(testScope, "OrdersTestBook")
+                    )
+                });
+
+            // We can ask the Orders API to upsert the order for us
+            var upsertResult = _ordersApi.UpsertOrders(request);
+
+            var firstGet = _ordersApi.GetOrder(testScope, order1);
+
+            // And then ask it delete it
+            var deleteResult = _ordersApi.DeleteOrder(testScope, order1);
+
+            // So when we try to fetch it again - at the latest asAt time - the order no longer exists
+            Assert.Throws<ApiException>(() => _ordersApi.GetOrder(testScope, order1));
+
+            // If we try at the first fetch asat time then we can find it again
+            var thirdGet = _ordersApi.GetOrder(testScope, order1, firstGet.Version.AsAtDate);
+
+            Assert.That(AreEqual(firstGet, thirdGet));
+        }
+
+        // Compare two orders. Note that although Order implements IEquatable<Order>, the generated method
+        // also compares Links - and these vary from request to request.
+        private bool AreEqual(Order lhs, Order rhs)
+        {
+            if (rhs == null)
+                return false;
+
+            return
+                (
+                    lhs.Properties == rhs.Properties ||
+                    lhs.Properties != null &&
+                    rhs.Properties != null &&
+                    lhs.Properties.SequenceEqual(rhs.Properties)
+                ) &&
+                (
+                    lhs.Version == rhs.Version ||
+                    (lhs.Version != null &&
+                     lhs.Version.Equals(rhs.Version))
+                ) &&
+                (
+                    lhs.InstrumentIdentifiers == rhs.InstrumentIdentifiers ||
+                    lhs.InstrumentIdentifiers != null &&
+                    rhs.InstrumentIdentifiers != null &&
+                    lhs.InstrumentIdentifiers.SequenceEqual(rhs.InstrumentIdentifiers)
+                ) &&
+                (
+                    lhs.Quantity == rhs.Quantity ||
+                    (lhs.Quantity != null &&
+                     lhs.Quantity.Equals(rhs.Quantity))
+                ) &&
+                (
+                    lhs.Side == rhs.Side ||
+                    (lhs.Side != null &&
+                     lhs.Side.Equals(rhs.Side))
+                ) &&
+                (
+                    lhs.OrderBookId == rhs.OrderBookId ||
+                    (lhs.OrderBookId != null &&
+                     lhs.OrderBookId.Equals(rhs.OrderBookId))
+                ) &&
+                (
+                    lhs.PortfolioId == rhs.PortfolioId ||
+                    (lhs.PortfolioId != null &&
+                     lhs.PortfolioId.Equals(rhs.PortfolioId))
+                ) &&
+                (
+                    lhs.Id == rhs.Id ||
+                    (lhs.Id != null &&
+                     lhs.Id.Equals(rhs.Id))
+                ) &&
+                (
+                    lhs.LusidInstrumentId == rhs.LusidInstrumentId ||
+                    (lhs.LusidInstrumentId != null &&
+                     lhs.LusidInstrumentId.Equals(rhs.LusidInstrumentId))
+                );
+        }
     } 
 }
