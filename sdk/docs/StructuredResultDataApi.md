@@ -1,6 +1,6 @@
 # Lusid.Sdk.Api.StructuredResultDataApi
 
-All URIs are relative to *http://local-unit-test-server.lusid.com:58116*
+All URIs are relative to *http://local-unit-test-server.lusid.com:41790*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
@@ -33,7 +33,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:58116";
+            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:41790";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -115,7 +115,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:58116";
+            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:41790";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -201,7 +201,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:58116";
+            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:41790";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
