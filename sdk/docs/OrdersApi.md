@@ -1,13 +1,12 @@
 # Lusid.Sdk.Api.OrdersApi
 
-All URIs are relative to *https://fbn-prd.lusid.com/api*
+All URIs are relative to *http://local-unit-test-server.lusid.com:58521*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
 [**DeleteOrder**](OrdersApi.md#deleteorder) | **DELETE** /api/orders/{scope}/{code} | [EXPERIMENTAL] Delete order
 [**GetOrder**](OrdersApi.md#getorder) | **GET** /api/orders/{scope}/{code} | [EXPERIMENTAL] Get Order
 [**ListOrders**](OrdersApi.md#listorders) | **GET** /api/orders | [EXPERIMENTAL] List Orders
-[**UpsertOrderProperties**](OrdersApi.md#upsertorderproperties) | **POST** /api/orders/{scope}/properties | [EXPERIMENTAL] Upsert Order Properties
 [**UpsertOrders**](OrdersApi.md#upsertorders) | **POST** /api/orders | [EXPERIMENTAL] Upsert Order
 
 
@@ -35,7 +34,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "https://fbn-prd.lusid.com/api";
+            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:58521";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -117,7 +116,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "https://fbn-prd.lusid.com/api";
+            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:58521";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -203,7 +202,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "https://fbn-prd.lusid.com/api";
+            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:58521";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -272,88 +271,6 @@ Name | Type | Description  | Notes
 [[Back to README]](../README.md)
 
 
-## UpsertOrderProperties
-
-> UpsertOrderPropertiesResponse UpsertOrderProperties (string scope, List<UpsertOrderPropertiesRequest> upsertOrderPropertiesRequest = null)
-
-[EXPERIMENTAL] Upsert Order Properties
-
-Update or insert one or more order properties for existing orders with given ids. Each order property will be updated  if it already exists and inserted if it does not. If any properties fail to be updated or inserted, none will be updated or inserted and  the reason for the failure will be returned.                Properties have an <i>effectiveFrom</i> datetime for which the property is valid, and an <i>effectiveUntil</i>  datetime until which the property is valid. Not supplying an <i>effectiveUntil</i> datetime results in the property being  valid indefinitely, or until the next <i>effectiveFrom</i> datetime of the property.
-
-### Example
-
-```csharp
-using System.Collections.Generic;
-using System.Diagnostics;
-using Lusid.Sdk.Api;
-using Lusid.Sdk.Client;
-using Lusid.Sdk.Model;
-
-namespace Example
-{
-    public class UpsertOrderPropertiesExample
-    {
-        public static void Main()
-        {
-            Configuration.Default.BasePath = "https://fbn-prd.lusid.com/api";
-            // Configure OAuth2 access token for authorization: oauth2
-            Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
-
-            var apiInstance = new OrdersApi(Configuration.Default);
-            var scope = scope_example;  // string | The scope to which the orders belong.
-            var upsertOrderPropertiesRequest = new List<UpsertOrderPropertiesRequest>(); // List<UpsertOrderPropertiesRequest> | A collection of order property upsert requests. (optional) 
-
-            try
-            {
-                // [EXPERIMENTAL] Upsert Order Properties
-                UpsertOrderPropertiesResponse result = apiInstance.UpsertOrderProperties(scope, upsertOrderPropertiesRequest);
-                Debug.WriteLine(result);
-            }
-            catch (ApiException e)
-            {
-                Debug.Print("Exception when calling OrdersApi.UpsertOrderProperties: " + e.Message );
-                Debug.Print("Status Code: "+ e.ErrorCode);
-                Debug.Print(e.StackTrace);
-            }
-        }
-    }
-}
-```
-
-### Parameters
-
-
-Name | Type | Description  | Notes
-------------- | ------------- | ------------- | -------------
- **scope** | **string**| The scope to which the orders belong. | 
- **upsertOrderPropertiesRequest** | [**List&lt;UpsertOrderPropertiesRequest&gt;**](UpsertOrderPropertiesRequest.md)| A collection of order property upsert requests. | [optional] 
-
-### Return type
-
-[**UpsertOrderPropertiesResponse**](UpsertOrderPropertiesResponse.md)
-
-### Authorization
-
-[oauth2](../README.md#oauth2)
-
-### HTTP request headers
-
-- **Content-Type**: application/json-patch+json, application/json, text/json, application/_*+json
-- **Accept**: text/plain, application/json, text/json
-
-### HTTP response details
-| Status code | Description | Response headers |
-|-------------|-------------|------------------|
-| **201** | An upsert order properties response. |  -  |
-| **400** | The details of the input related failure |  -  |
-| **0** | Error response |  -  |
-
-[[Back to top]](#)
-[[Back to API list]](../README.md#documentation-for-api-endpoints)
-[[Back to Model list]](../README.md#documentation-for-models)
-[[Back to README]](../README.md)
-
-
 ## UpsertOrders
 
 > ResourceListOfOrder UpsertOrders (OrderSetRequest orderSetRequest = null)
@@ -377,7 +294,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "https://fbn-prd.lusid.com/api";
+            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:58521";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
