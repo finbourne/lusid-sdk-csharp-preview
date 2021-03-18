@@ -11,6 +11,7 @@ Method | HTTP request | Description
 [**GetAllPersonAccessMetadata**](PersonsApi.md#getallpersonaccessmetadata) | **GET** /api/persons/{idTypeScope}/{idTypeCode}/{code}/metadata | [EXPERIMENTAL] Get Access Metadata rules for a Person
 [**GetPerson**](PersonsApi.md#getperson) | **GET** /api/persons/{idTypeScope}/{idTypeCode}/{code} | [EXPERIMENTAL] Get Person
 [**GetPersonAccessMetadataByKey**](PersonsApi.md#getpersonaccessmetadatabykey) | **GET** /api/persons/{idTypeScope}/{idTypeCode}/{code}/metadata/{metadataKey} | [EXPERIMENTAL] Get an entry identified by a metadataKey in the Access Metadata of a Person
+[**GetPersonPropertyTimeSeries**](PersonsApi.md#getpersonpropertytimeseries) | **GET** /api/persons/{idTypeScope}/{idTypeCode}/{code}/properties/time-series | [EXPERIMENTAL] Get Person Property Time Series
 [**GetPersonRelations**](PersonsApi.md#getpersonrelations) | **GET** /api/persons/{idTypeScope}/{idTypeCode}/{code}/relations | [EXPERIMENTAL] Get Relations for Person
 [**ListPersons**](PersonsApi.md#listpersons) | **GET** /api/persons/{idTypeScope}/{idTypeCode} | [EXPERIMENTAL] List Persons
 [**SetPersonIdentifiers**](PersonsApi.md#setpersonidentifiers) | **POST** /api/persons/{idTypeScope}/{idTypeCode}/{code}/identifiers | [EXPERIMENTAL] Set Person Identifiers
@@ -198,7 +199,7 @@ Name | Type | Description  | Notes
 
 [EXPERIMENTAL] Delete Person Identifiers
 
-Delete identifiers belong to the given property keys of the person
+Delete identifiers that belong to the given property keys of the person.
 
 ### Example
 
@@ -286,7 +287,7 @@ Name | Type | Description  | Notes
 
 [EXPERIMENTAL] Delete Person Properties
 
-Delete all properties belong to the given property keys of the person
+Delete all properties that belong to the given property keys of the person.
 
 ### Example
 
@@ -636,13 +637,107 @@ Name | Type | Description  | Notes
 [[Back to README]](../README.md)
 
 
+## GetPersonPropertyTimeSeries
+
+> ResourceListOfPropertyInterval GetPersonPropertyTimeSeries (string idTypeScope, string idTypeCode, string code, string propertyKey = null, DateTimeOffset? asAt = null, string filter = null, string page = null, int? limit = null)
+
+[EXPERIMENTAL] Get Person Property Time Series
+
+List the complete time series of a person property.
+
+### Example
+
+```csharp
+using System.Collections.Generic;
+using System.Diagnostics;
+using Lusid.Sdk.Api;
+using Lusid.Sdk.Client;
+using Lusid.Sdk.Model;
+
+namespace Example
+{
+    public class GetPersonPropertyTimeSeriesExample
+    {
+        public static void Main()
+        {
+            Configuration.Default.BasePath = "https://fbn-prd.lusid.com/api";
+            // Configure OAuth2 access token for authorization: oauth2
+            Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
+
+            var apiInstance = new PersonsApi(Configuration.Default);
+            var idTypeScope = idTypeScope_example;  // string | Scope of the person identifier type.
+            var idTypeCode = idTypeCode_example;  // string | Code of the person identifier type.
+            var code = code_example;  // string | Code of the person under specified identifier type's scope and code. This together with stated identifier type uniquely identifies the person.
+            var propertyKey = propertyKey_example;  // string | The property key of the property that will have its history shown. These must be in the format {domain}/{scope}/{code} e.g. \"Person/CompanyDetails/Role\".              Each property must be from the \"Person\" domain. (optional) 
+            var asAt = 2013-10-20T19:20:30+01:00;  // DateTimeOffset? | The asAt datetime at which to list the person's property history. Defaults to return the current datetime if not supplied. (optional) 
+            var filter = filter_example;  // string | Expression to filter the result set. Read more about filtering results from LUSID here https://support.lusid.com/filtering-results-from-lusid. (optional) 
+            var page = page_example;  // string | The pagination token to use to continue listing properties from a previous call to get property time series.              This value is returned from the previous call. If a pagination token is provided the filter, effectiveAt, and asAt fields              must not have changed since the original request. (optional) 
+            var limit = 56;  // int? | When paginating, limit the number of returned results to this many. (optional) 
+
+            try
+            {
+                // [EXPERIMENTAL] Get Person Property Time Series
+                ResourceListOfPropertyInterval result = apiInstance.GetPersonPropertyTimeSeries(idTypeScope, idTypeCode, code, propertyKey, asAt, filter, page, limit);
+                Debug.WriteLine(result);
+            }
+            catch (ApiException e)
+            {
+                Debug.Print("Exception when calling PersonsApi.GetPersonPropertyTimeSeries: " + e.Message );
+                Debug.Print("Status Code: "+ e.ErrorCode);
+                Debug.Print(e.StackTrace);
+            }
+        }
+    }
+}
+```
+
+### Parameters
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **idTypeScope** | **string**| Scope of the person identifier type. | 
+ **idTypeCode** | **string**| Code of the person identifier type. | 
+ **code** | **string**| Code of the person under specified identifier type&#39;s scope and code. This together with stated identifier type uniquely identifies the person. | 
+ **propertyKey** | **string**| The property key of the property that will have its history shown. These must be in the format {domain}/{scope}/{code} e.g. \&quot;Person/CompanyDetails/Role\&quot;.              Each property must be from the \&quot;Person\&quot; domain. | [optional] 
+ **asAt** | **DateTimeOffset?**| The asAt datetime at which to list the person&#39;s property history. Defaults to return the current datetime if not supplied. | [optional] 
+ **filter** | **string**| Expression to filter the result set. Read more about filtering results from LUSID here https://support.lusid.com/filtering-results-from-lusid. | [optional] 
+ **page** | **string**| The pagination token to use to continue listing properties from a previous call to get property time series.              This value is returned from the previous call. If a pagination token is provided the filter, effectiveAt, and asAt fields              must not have changed since the original request. | [optional] 
+ **limit** | **int?**| When paginating, limit the number of returned results to this many. | [optional] 
+
+### Return type
+
+[**ResourceListOfPropertyInterval**](ResourceListOfPropertyInterval.md)
+
+### Authorization
+
+[oauth2](../README.md#oauth2)
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: text/plain, application/json, text/json
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+| **200** | The time series of the property |  -  |
+| **400** | The details of the input related failure |  -  |
+| **0** | Error response |  -  |
+
+[[Back to top]](#)
+[[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
+
+
 ## GetPersonRelations
 
 > ResourceListOfRelation GetPersonRelations (string idTypeScope, string idTypeCode, string code, DateTimeOrCutLabel effectiveAt = null, DateTimeOffset? asAt = null, string filter = null, List<string> identifierTypes = null)
 
 [EXPERIMENTAL] Get Relations for Person
 
-Get relations for the specified Person
+Get relations for the specified person.
 
 ### Example
 
@@ -734,7 +829,7 @@ Name | Type | Description  | Notes
 
 [EXPERIMENTAL] List Persons
 
-List persons which has identifier of specific identifier type's scope and code, and satisfies filter criteria.
+List persons which have identifiers of a specific identifier type's scope and code, and satisfies filter criteria.
 
 ### Example
 
@@ -830,7 +925,7 @@ Name | Type | Description  | Notes
 
 [EXPERIMENTAL] Set Person Identifiers
 
-Set identifiers of the person
+Set identifiers of the person.
 
 ### Example
 
@@ -916,7 +1011,7 @@ Name | Type | Description  | Notes
 
 [EXPERIMENTAL] Set Person Properties
 
-Set properties of the person
+Set properties of the person.
 
 ### Example
 
@@ -1002,7 +1097,7 @@ Name | Type | Description  | Notes
 
 [EXPERIMENTAL] Upsert Person
 
-Create or update new person under specified scope
+Create or update a new person under the specified scope.
 
 ### Example
 
