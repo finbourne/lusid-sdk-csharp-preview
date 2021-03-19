@@ -1,17 +1,17 @@
 # Lusid.Sdk.Api.LegalEntitiesApi
 
-All URIs are relative to *http://local-unit-test-server.lusid.com:38898*
+All URIs are relative to *http://local-unit-test-server.lusid.com:45599*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
-[**DeleteLegalEntity**](LegalEntitiesApi.md#deletelegalentity) | **DELETE** /api/legalentities/{idTypeScope}/{idTypeCode}/{code} | [EXPERIMENTAL] Delete legal entity
+[**DeleteLegalEntity**](LegalEntitiesApi.md#deletelegalentity) | **DELETE** /api/legalentities/{idTypeScope}/{idTypeCode}/{code} | [EARLY ACCESS] Delete legal entity
 [**DeleteLegalEntityAccessMetadata**](LegalEntitiesApi.md#deletelegalentityaccessmetadata) | **DELETE** /api/legalentities/{idTypeScope}/{idTypeCode}/{code}/metadata/{metadataKey} | [EXPERIMENTAL] Delete a Legal Entity Access Metadata entry
 [**GetAllLegalEntityAccessMetadata**](LegalEntitiesApi.md#getalllegalentityaccessmetadata) | **GET** /api/legalentities/{idTypeScope}/{idTypeCode}/{code}/metadata | [EXPERIMENTAL] Get Access Metadata rules for a Legal Entity
-[**GetLegalEntity**](LegalEntitiesApi.md#getlegalentity) | **GET** /api/legalentities/{idTypeScope}/{idTypeCode}/{code} | [EXPERIMENTAL] Get Legal Entity
+[**GetLegalEntity**](LegalEntitiesApi.md#getlegalentity) | **GET** /api/legalentities/{idTypeScope}/{idTypeCode}/{code} | [EARLY ACCESS] Get Legal Entity
 [**GetLegalEntityAccessMetadataByKey**](LegalEntitiesApi.md#getlegalentityaccessmetadatabykey) | **GET** /api/legalentities/{idTypeScope}/{idTypeCode}/{code}/metadata/{metadataKey} | [EXPERIMENTAL] Get an entry identified by a metadataKey in the Access Metadata of a Legal Entity
 [**GetLegalEntityRelations**](LegalEntitiesApi.md#getlegalentityrelations) | **GET** /api/legalentities/{idTypeScope}/{idTypeCode}/{code}/relations | [EXPERIMENTAL] Get Relations for Legal Entity
-[**ListLegalEntities**](LegalEntitiesApi.md#listlegalentities) | **GET** /api/legalentities/{idTypeScope}/{idTypeCode} | [EXPERIMENTAL] List Legal Entities
-[**UpsertLegalEntity**](LegalEntitiesApi.md#upsertlegalentity) | **POST** /api/legalentities | [EXPERIMENTAL] Upsert Legal Entity
+[**ListLegalEntities**](LegalEntitiesApi.md#listlegalentities) | **GET** /api/legalentities/{idTypeScope}/{idTypeCode} | [EARLY ACCESS] List Legal Entities
+[**UpsertLegalEntity**](LegalEntitiesApi.md#upsertlegalentity) | **POST** /api/legalentities | [EARLY ACCESS] Upsert Legal Entity
 [**UpsertLegalEntityAccessMetadata**](LegalEntitiesApi.md#upsertlegalentityaccessmetadata) | **PUT** /api/legalentities/{idTypeScope}/{idTypeCode}/{code}/metadata/{metadataKey} | [EXPERIMENTAL] Upsert a Legal Entity Access Metadata entry associated with a specific metadataKey. This creates or updates the data in LUSID.
 
 
@@ -20,7 +20,7 @@ Method | HTTP request | Description
 
 > DeletedEntityResponse DeleteLegalEntity (string idTypeScope, string idTypeCode, string code)
 
-[EXPERIMENTAL] Delete legal entity
+[EARLY ACCESS] Delete legal entity
 
 Delete a legal entity. Deletion will be valid from the legal entity's creation datetime.  This means that the legal entity will no longer exist at any effective datetime from the asAt datetime of deletion.
 
@@ -39,18 +39,18 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:38898";
+            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:45599";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
             var apiInstance = new LegalEntitiesApi(Configuration.Default);
             var idTypeScope = idTypeScope_example;  // string | The scope of the legal entity identifier type.
             var idTypeCode = idTypeCode_example;  // string | The code of the legal entity identifier type.
-            var code = code_example;  // string | Code of the legal entity under specified identifier type scope and code. This together with defined              identifier type uniquely identifies the legal entity to delete.
+            var code = code_example;  // string | Code of the legal entity under specified identifier type's scope and code. This together with defined              identifier type uniquely identifies the legal entity to delete.
 
             try
             {
-                // [EXPERIMENTAL] Delete legal entity
+                // [EARLY ACCESS] Delete legal entity
                 DeletedEntityResponse result = apiInstance.DeleteLegalEntity(idTypeScope, idTypeCode, code);
                 Debug.WriteLine(result);
             }
@@ -72,7 +72,7 @@ Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **idTypeScope** | **string**| The scope of the legal entity identifier type. | 
  **idTypeCode** | **string**| The code of the legal entity identifier type. | 
- **code** | **string**| Code of the legal entity under specified identifier type scope and code. This together with defined              identifier type uniquely identifies the legal entity to delete. | 
+ **code** | **string**| Code of the legal entity under specified identifier type&#39;s scope and code. This together with defined              identifier type uniquely identifies the legal entity to delete. | 
 
 ### Return type
 
@@ -123,7 +123,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:38898";
+            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:45599";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -211,7 +211,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:38898";
+            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:45599";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -280,7 +280,7 @@ Name | Type | Description  | Notes
 
 > LegalEntity GetLegalEntity (string idTypeScope, string idTypeCode, string code, List<string> propertyKeys = null, DateTimeOrCutLabel effectiveAt = null, DateTimeOffset? asAt = null)
 
-[EXPERIMENTAL] Get Legal Entity
+[EARLY ACCESS] Get Legal Entity
 
 Retrieve the definition of a legal entity.
 
@@ -299,21 +299,21 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:38898";
+            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:45599";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
             var apiInstance = new LegalEntitiesApi(Configuration.Default);
             var idTypeScope = idTypeScope_example;  // string | Scope of the legal entity identifier type.
             var idTypeCode = idTypeCode_example;  // string | Code of the legal entity identifier type.
-            var code = code_example;  // string | Code of the legal entity under specified scope and code. This together with stated identifier type uniquely              identifies the legal entity.
-            var propertyKeys = new List<string>(); // List<string> | A list of property keys from the \"LegalEntity\" domain to decorate onto each legal entity.              These take the format {domain}/{scope}/{code} e.g. \"LegalEntity/ContactDetails/Address\". Defaults to include all properties if not specified. (optional) 
+            var code = code_example;  // string | Code of the legal entity under specified identifier type's scope and code. This together with stated identifier type uniquely              identifies the legal entity.
+            var propertyKeys = new List<string>(); // List<string> | A list of property keys or identifier types (as property keys) from the \"LegalEntity\" domain to include for found legal entity.              These take the format {domain}/{scope}/{code} e.g. \"LegalEntity/ContactDetails/Address\". (optional) 
             var effectiveAt = effectiveAt_example;  // DateTimeOrCutLabel | The effective datetime or cut label at which to retrieve the legal entity. Defaults to the current LUSID system datetime if not specified. (optional) 
             var asAt = 2013-10-20T19:20:30+01:00;  // DateTimeOffset? | The asAt datetime at which to retrieve the legal entity. Defaults to return the latest version of the legal entity if not specified. (optional) 
 
             try
             {
-                // [EXPERIMENTAL] Get Legal Entity
+                // [EARLY ACCESS] Get Legal Entity
                 LegalEntity result = apiInstance.GetLegalEntity(idTypeScope, idTypeCode, code, propertyKeys, effectiveAt, asAt);
                 Debug.WriteLine(result);
             }
@@ -335,8 +335,8 @@ Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **idTypeScope** | **string**| Scope of the legal entity identifier type. | 
  **idTypeCode** | **string**| Code of the legal entity identifier type. | 
- **code** | **string**| Code of the legal entity under specified scope and code. This together with stated identifier type uniquely              identifies the legal entity. | 
- **propertyKeys** | [**List&lt;string&gt;**](string.md)| A list of property keys from the \&quot;LegalEntity\&quot; domain to decorate onto each legal entity.              These take the format {domain}/{scope}/{code} e.g. \&quot;LegalEntity/ContactDetails/Address\&quot;. Defaults to include all properties if not specified. | [optional] 
+ **code** | **string**| Code of the legal entity under specified identifier type&#39;s scope and code. This together with stated identifier type uniquely              identifies the legal entity. | 
+ **propertyKeys** | [**List&lt;string&gt;**](string.md)| A list of property keys or identifier types (as property keys) from the \&quot;LegalEntity\&quot; domain to include for found legal entity.              These take the format {domain}/{scope}/{code} e.g. \&quot;LegalEntity/ContactDetails/Address\&quot;. | [optional] 
  **effectiveAt** | **DateTimeOrCutLabel**| The effective datetime or cut label at which to retrieve the legal entity. Defaults to the current LUSID system datetime if not specified. | [optional] 
  **asAt** | **DateTimeOffset?**| The asAt datetime at which to retrieve the legal entity. Defaults to return the latest version of the legal entity if not specified. | [optional] 
 
@@ -356,7 +356,7 @@ Name | Type | Description  | Notes
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
-| **200** | The requested legal entity definition |  -  |
+| **200** | The requested legal entity |  -  |
 | **400** | The details of the input related failure |  -  |
 | **0** | Error response |  -  |
 
@@ -389,7 +389,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:38898";
+            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:45599";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -479,7 +479,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:38898";
+            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:45599";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -550,9 +550,9 @@ Name | Type | Description  | Notes
 
 ## ListLegalEntities
 
-> PagedResourceListOfLegalEntity ListLegalEntities (string idTypeScope, string idTypeCode, DateTimeOrCutLabel effectiveAt = null, DateTimeOffset? asAt = null, string page = null, int? start = null, int? limit = null, string filter = null, List<string> propertyKeys = null)
+> PagedResourceListOfLegalEntity ListLegalEntities (string idTypeScope, string idTypeCode, DateTimeOrCutLabel effectiveAt = null, DateTimeOffset? asAt = null, string page = null, int? limit = null, string filter = null, List<string> propertyKeys = null)
 
-[EXPERIMENTAL] List Legal Entities
+[EARLY ACCESS] List Legal Entities
 
 List legal entities which has identifier of specific identifier type's scope and code, and satisfies filter criteria.
 
@@ -571,7 +571,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:38898";
+            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:45599";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -580,16 +580,15 @@ namespace Example
             var idTypeCode = idTypeCode_example;  // string | Code of the legal entity identifier type.
             var effectiveAt = effectiveAt_example;  // DateTimeOrCutLabel | The effective datetime or cut label at which to list the people. Defaults to the current LUSID              system datetime if not specified. (optional) 
             var asAt = 2013-10-20T19:20:30+01:00;  // DateTimeOffset? | The asAt datetime at which to list the people. Defaults to return the latest version              of each people if not specified. (optional) 
-            var page = page_example;  // string | The pagination token to use to continue listing legal entities from a previous call to list legal entities. This  value is returned from the previous call. If a pagination token is provided the filter, effectiveAt  and asAt fields must not have changed since the original request. Also, if set, a start value cannot be provided. (optional) 
-            var start = 56;  // int? | When paginating, skip this number of results. (optional) 
+            var page = page_example;  // string | The pagination token to use to continue listing legal entities from a previous call to list legal entities. This  value is returned from the previous call. If a pagination token is provided the filter, effectiveAt  and asAt fields must not have changed since the original request. (optional) 
             var limit = 56;  // int? | When paginating, limit the number of returned results to this many. Defaults to 65,535 if not specified. (optional) 
             var filter = filter_example;  // string | Expression to filter the result set.               Read more about filtering results from LUSID here https://support.lusid.com/filtering-results-from-lusid. (optional) 
-            var propertyKeys = new List<string>(); // List<string> | A list of property keys from the \"LegalEntity\" domain to decorate onto each legal entity.              These take the format {domain}/{scope}/{code} e.g. \"LegalEntity/ContactDetails/Address\". (optional) 
+            var propertyKeys = new List<string>(); // List<string> | A list of property keys or identifier types (as property keys) from the \"LegalEntity\" domain to include for each legal entity.              These take the format {domain}/{scope}/{code} e.g. \"LegalEntity/ContactDetails/Address\". (optional) 
 
             try
             {
-                // [EXPERIMENTAL] List Legal Entities
-                PagedResourceListOfLegalEntity result = apiInstance.ListLegalEntities(idTypeScope, idTypeCode, effectiveAt, asAt, page, start, limit, filter, propertyKeys);
+                // [EARLY ACCESS] List Legal Entities
+                PagedResourceListOfLegalEntity result = apiInstance.ListLegalEntities(idTypeScope, idTypeCode, effectiveAt, asAt, page, limit, filter, propertyKeys);
                 Debug.WriteLine(result);
             }
             catch (ApiException e)
@@ -612,11 +611,10 @@ Name | Type | Description  | Notes
  **idTypeCode** | **string**| Code of the legal entity identifier type. | 
  **effectiveAt** | **DateTimeOrCutLabel**| The effective datetime or cut label at which to list the people. Defaults to the current LUSID              system datetime if not specified. | [optional] 
  **asAt** | **DateTimeOffset?**| The asAt datetime at which to list the people. Defaults to return the latest version              of each people if not specified. | [optional] 
- **page** | **string**| The pagination token to use to continue listing legal entities from a previous call to list legal entities. This  value is returned from the previous call. If a pagination token is provided the filter, effectiveAt  and asAt fields must not have changed since the original request. Also, if set, a start value cannot be provided. | [optional] 
- **start** | **int?**| When paginating, skip this number of results. | [optional] 
+ **page** | **string**| The pagination token to use to continue listing legal entities from a previous call to list legal entities. This  value is returned from the previous call. If a pagination token is provided the filter, effectiveAt  and asAt fields must not have changed since the original request. | [optional] 
  **limit** | **int?**| When paginating, limit the number of returned results to this many. Defaults to 65,535 if not specified. | [optional] 
  **filter** | **string**| Expression to filter the result set.               Read more about filtering results from LUSID here https://support.lusid.com/filtering-results-from-lusid. | [optional] 
- **propertyKeys** | [**List&lt;string&gt;**](string.md)| A list of property keys from the \&quot;LegalEntity\&quot; domain to decorate onto each legal entity.              These take the format {domain}/{scope}/{code} e.g. \&quot;LegalEntity/ContactDetails/Address\&quot;. | [optional] 
+ **propertyKeys** | [**List&lt;string&gt;**](string.md)| A list of property keys or identifier types (as property keys) from the \&quot;LegalEntity\&quot; domain to include for each legal entity.              These take the format {domain}/{scope}/{code} e.g. \&quot;LegalEntity/ContactDetails/Address\&quot;. | [optional] 
 
 ### Return type
 
@@ -634,7 +632,7 @@ Name | Type | Description  | Notes
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
-| **200** | Legal Entities in specified scope |  -  |
+| **200** | Legal Entities with specified identifier type |  -  |
 | **400** | The details of the input related failure |  -  |
 | **0** | Error response |  -  |
 
@@ -648,9 +646,9 @@ Name | Type | Description  | Notes
 
 > LegalEntity UpsertLegalEntity (UpsertLegalEntityRequest upsertLegalEntityRequest)
 
-[EXPERIMENTAL] Upsert Legal Entity
+[EARLY ACCESS] Upsert Legal Entity
 
-Create or update new legal entity under specified scope
+Create or update a legal entity
 
 ### Example
 
@@ -667,7 +665,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:38898";
+            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:45599";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -676,7 +674,7 @@ namespace Example
 
             try
             {
-                // [EXPERIMENTAL] Upsert Legal Entity
+                // [EARLY ACCESS] Upsert Legal Entity
                 LegalEntity result = apiInstance.UpsertLegalEntity(upsertLegalEntityRequest);
                 Debug.WriteLine(result);
             }
@@ -747,7 +745,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:38898";
+            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:45599";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
