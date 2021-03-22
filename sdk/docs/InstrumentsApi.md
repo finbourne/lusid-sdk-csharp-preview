@@ -1,6 +1,6 @@
 # Lusid.Sdk.Api.InstrumentsApi
 
-All URIs are relative to *http://local-unit-test-server.lusid.com:33720*
+All URIs are relative to *https://fbn-prd.lusid.com/api*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
@@ -9,7 +9,7 @@ Method | HTTP request | Description
 [**GetInstrument**](InstrumentsApi.md#getinstrument) | **GET** /api/instruments/{identifierType}/{identifier} | Get instrument
 [**GetInstrumentIdentifierTypes**](InstrumentsApi.md#getinstrumentidentifiertypes) | **GET** /api/instruments/identifierTypes | [EARLY ACCESS] Get instrument identifier types
 [**GetInstrumentProperties**](InstrumentsApi.md#getinstrumentproperties) | **GET** /api/instruments/{identifierType}/{identifier}/properties | [EXPERIMENTAL] Get instrument properties
-[**GetInstrumentPropertyTimeSeries**](InstrumentsApi.md#getinstrumentpropertytimeseries) | **GET** /api/instruments/{identifierType}/{identifier}/properties/time-series | [EARLY ACCESS] Get the time series of an instrument property
+[**GetInstrumentPropertyTimeSeries**](InstrumentsApi.md#getinstrumentpropertytimeseries) | **GET** /api/instruments/{identifierType}/{identifier}/properties/time-series | [EXPERIMENTAL] Get the time series of an instrument property
 [**GetInstruments**](InstrumentsApi.md#getinstruments) | **POST** /api/instruments/$get | Get instruments
 [**ListInstruments**](InstrumentsApi.md#listinstruments) | **GET** /api/instruments | [EARLY ACCESS] List instruments
 [**UpdateInstrumentIdentifier**](InstrumentsApi.md#updateinstrumentidentifier) | **POST** /api/instruments/{identifierType}/{identifier} | [EARLY ACCESS] Update instrument identifier
@@ -41,7 +41,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:33720";
+            Configuration.Default.BasePath = "https://fbn-prd.lusid.com/api";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -123,7 +123,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:33720";
+            Configuration.Default.BasePath = "https://fbn-prd.lusid.com/api";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -209,7 +209,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:33720";
+            Configuration.Default.BasePath = "https://fbn-prd.lusid.com/api";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -297,7 +297,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:33720";
+            Configuration.Default.BasePath = "https://fbn-prd.lusid.com/api";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -372,7 +372,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:33720";
+            Configuration.Default.BasePath = "https://fbn-prd.lusid.com/api";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -439,7 +439,7 @@ Name | Type | Description  | Notes
 
 > ResourceListOfPropertyInterval GetInstrumentPropertyTimeSeries (string identifierType, string identifier, string propertyKey = null, string identifierEffectiveAt = null, DateTimeOffset? asAt = null, string filter = null, string page = null, int? limit = null)
 
-[EARLY ACCESS] Get the time series of an instrument property
+[EXPERIMENTAL] Get the time series of an instrument property
 
 List the complete time series of an instrument property.
 
@@ -458,7 +458,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:33720";
+            Configuration.Default.BasePath = "https://fbn-prd.lusid.com/api";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -474,7 +474,7 @@ namespace Example
 
             try
             {
-                // [EARLY ACCESS] Get the time series of an instrument property
+                // [EXPERIMENTAL] Get the time series of an instrument property
                 ResourceListOfPropertyInterval result = apiInstance.GetInstrumentPropertyTimeSeries(identifierType, identifier, propertyKey, identifierEffectiveAt, asAt, filter, page, limit);
                 Debug.WriteLine(result);
             }
@@ -552,7 +552,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:33720";
+            Configuration.Default.BasePath = "https://fbn-prd.lusid.com/api";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -640,7 +640,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:33720";
+            Configuration.Default.BasePath = "https://fbn-prd.lusid.com/api";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -734,7 +734,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:33720";
+            Configuration.Default.BasePath = "https://fbn-prd.lusid.com/api";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -818,7 +818,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:33720";
+            Configuration.Default.BasePath = "https://fbn-prd.lusid.com/api";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -898,7 +898,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:33720";
+            Configuration.Default.BasePath = "https://fbn-prd.lusid.com/api";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
