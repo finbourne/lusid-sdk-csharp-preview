@@ -10,6 +10,7 @@ Name | Type | Description | Notes
 **Code** | **string** | The code of the property. Together with the domain and scope this uniquely identifies the property. | 
 **DisplayName** | **string** | The display name of the property. | 
 **DataTypeId** | [**ResourceId**](ResourceId.md) |  | 
+**PropertyDescription** | **string** | Describes the property | [optional] 
 **DerivationFormula** | **string** | The rule that defines how data is composed for a derived property. | [optional] 
 
 [[Back to Model list]](../README.md#documentation-for-models)
