@@ -100,7 +100,7 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
                 contractCode: "CL",
                 contractMonth: "F",
                 contractSize: 42000,
-                convention: FuturesContractDetails.ConventionEnum.Act365,
+                convention: "Actual365",
                 country: "US",
                 description: "Crude Oil Nymex future Jan21",
                 exchangeCode: "NYM",
