@@ -9,7 +9,7 @@ Name | Type | Description | Notes
 **ContractCode** | **string** | The two letter contract code abbreviation. e.g. CL &#x3D;&gt; Crude Oil. | 
 **ContractMonth** | **string** | which month does the contract trade for. | 
 **ContractSize** | **decimal?** | Size of a single contract. By default this should be set to 1000 if otherwise unknown and is defaulted to such. | 
-**Convention** | **string** | The available values are: Actual360, Act360, MoneyMarket, Actual365, Act365, Thirty360, ThirtyU360, Bond, ThirtyE360, EuroBond, ActAct, ActualActual, ActActIsda, ActActIsma, ActActIcma, Invalid | 
+**Convention** | **string** | If appropriate, the day count convention method used in pricing (rates futures) | 
 **Country** | **string** | Country (code) for the exchange. | 
 **Description** | **string** | Description of contract | 
 **ExchangeCode** | **string** | Exchange code for contract | 
