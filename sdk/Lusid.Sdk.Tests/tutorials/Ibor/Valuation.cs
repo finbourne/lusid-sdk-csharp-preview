@@ -102,9 +102,10 @@ namespace Lusid.Sdk.Tests.Tutorials.Ibor
                 .ToDictionary(k => Guid.NewGuid().ToString());
 
             //    Create the quotes
+            string recipeScope = "some-recipe-scope";
             var recipe = new ConfigurationRecipe
             (
-                scope: "User",
+                scope: recipeScope,
                 code: "DataScope_Recipe",
                 market: new MarketContext
                 {
@@ -121,24 +122,28 @@ namespace Lusid.Sdk.Tests.Tutorials.Ibor
                 }
             );
 
+            //    Upload recipe to Lusid (only need to do once, i.e. no need to repeat in non-demo code.)
+            UpsertRecipe(recipe);
+
             //    Upload the quote
             _apiFactory.Api<IQuotesApi>().UpsertQuotes(scope, quotes);
 
-            //    Create the aggregation request, this example calculates the percentage of total portfolio value and value by instrument 
-            var aggregationRequest = new AggregationRequest(
-                inlineRecipe: recipe,
+            //    Create the valuation request, this example calculates the percentage of total portfolio value and value by instrument 
+            var valuationRequest = new ValuationRequest(
+                recipeId: new ResourceId(recipeScope, "DataScope_Recipe"),
                 metrics: new List<AggregateSpec>
                 {
                     new AggregateSpec(InstrumentName, AggregateSpec.OpEnum.Value),
                     new AggregateSpec(HoldingPvKey, AggregateSpec.OpEnum.Proportion),
                     new AggregateSpec(HoldingPvKey, AggregateSpec.OpEnum.Sum)
                 },
-                groupBy: new List<string> {"Instrument/default/Name"},
-                effectiveAt: effectiveDate
-            );
+                valuationSchedule: new ValuationSchedule(effectiveAt: effectiveDate),
+                groupBy: new List<string> { "Instrument/default/Name" },
+                portfolioEntityIds: new List<PortfolioEntityId> { new PortfolioEntityId(TutorialScope, portfolioId) }
+                );
 
             //    Do the aggregation
-            var results = _apiFactory.Api<IAggregationApi>().GetAggregation(TutorialScope, portfolioId, aggregationRequest: aggregationRequest);
+            var results = _apiFactory.Api<IAggregationApi>().GetValuation(valuationRequest);
 
             Assert.That(results.Data, Has.Count.EqualTo(4));
             Assert.That(results.Data[0]["Sum(Holding/default/PV)"], Is.EqualTo(10000));
