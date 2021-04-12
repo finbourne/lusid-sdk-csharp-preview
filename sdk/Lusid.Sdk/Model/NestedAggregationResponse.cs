@@ -23,77 +23,85 @@ using OpenAPIDateConverter = Lusid.Sdk.Client.OpenAPIDateConverter;
 namespace Lusid.Sdk.Model
 {
     /// <summary>
-    /// An identifier that uniquely identifies a set of Quote access control metadata.
+    /// NestedAggregationResponse
     /// </summary>
     [DataContract]
-    public partial class QuoteAccessMetadataRuleId :  IEquatable<QuoteAccessMetadataRuleId>
+    public partial class NestedAggregationResponse :  IEquatable<NestedAggregationResponse>
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="QuoteAccessMetadataRuleId" /> class.
+        /// Initializes a new instance of the <see cref="NestedAggregationResponse" /> class.
         /// </summary>
-        /// <param name="provider">The platform or vendor that provided the quote, e.g. &#39;DataScope&#39;, &#39;LUSID&#39; etc..</param>
-        /// <param name="priceSource">The source or originator of the quote, e.g. a bank or financial institution..</param>
-        /// <param name="instrumentId">The value of the instrument identifier that uniquely identifies the instrument that the quote is for, e.g. &#39;BBG00JX0P539&#39;..</param>
-        /// <param name="instrumentIdType">The type of instrument identifier used to uniquely identify the instrument that the quote is for, e.g. &#39;Figi&#39;..</param>
-        /// <param name="quoteType">The type of the quote. This allows for quotes other than prices e.g. rates or spreads to be used..</param>
-        /// <param name="field">The field of the quote e.g. bid, mid, ask etc. This should be consistent across a time series of quotes. The allowed values are dependant on the specified Provider..</param>
-        public QuoteAccessMetadataRuleId(string provider = default(string), string priceSource = default(string), string instrumentId = default(string), string instrumentIdType = default(string), string quoteType = default(string), string field = default(string))
+        /// <param name="aggregationEffectiveAt">aggregationEffectiveAt.</param>
+        /// <param name="aggregationAsAt">aggregationAsAt.</param>
+        /// <param name="href">href.</param>
+        /// <param name="data">data.</param>
+        /// <param name="aggregationCurrency">aggregationCurrency.</param>
+        /// <param name="dataSchema">dataSchema.</param>
+        /// <param name="aggregationFailures">aggregationFailures.</param>
+        /// <param name="links">links.</param>
+        public NestedAggregationResponse(DateTimeOffset? aggregationEffectiveAt = default(DateTimeOffset?), DateTimeOffset? aggregationAsAt = default(DateTimeOffset?), string href = default(string), AggregationResponseNode data = default(AggregationResponseNode), string aggregationCurrency = default(string), ResultDataSchema dataSchema = default(ResultDataSchema), List<AggregationMeasureFailureDetail> aggregationFailures = default(List<AggregationMeasureFailureDetail>), List<Link> links = default(List<Link>))
         {
-            this.Provider = provider;
-            this.PriceSource = priceSource;
-            this.InstrumentId = instrumentId;
-            this.InstrumentIdType = instrumentIdType;
-            this.QuoteType = quoteType;
-            this.Field = field;
-            this.Provider = provider;
-            this.PriceSource = priceSource;
-            this.InstrumentId = instrumentId;
-            this.InstrumentIdType = instrumentIdType;
-            this.QuoteType = quoteType;
-            this.Field = field;
+            this.Href = href;
+            this.AggregationCurrency = aggregationCurrency;
+            this.AggregationFailures = aggregationFailures;
+            this.Links = links;
+            this.AggregationEffectiveAt = aggregationEffectiveAt;
+            this.AggregationAsAt = aggregationAsAt;
+            this.Href = href;
+            this.Data = data;
+            this.AggregationCurrency = aggregationCurrency;
+            this.DataSchema = dataSchema;
+            this.AggregationFailures = aggregationFailures;
+            this.Links = links;
         }
         
         /// <summary>
-        /// The platform or vendor that provided the quote, e.g. &#39;DataScope&#39;, &#39;LUSID&#39; etc.
+        /// Gets or Sets AggregationEffectiveAt
         /// </summary>
-        /// <value>The platform or vendor that provided the quote, e.g. &#39;DataScope&#39;, &#39;LUSID&#39; etc.</value>
-        [DataMember(Name="provider", EmitDefaultValue=true)]
-        public string Provider { get; set; }
+        [DataMember(Name="aggregationEffectiveAt", EmitDefaultValue=false)]
+        public DateTimeOffset? AggregationEffectiveAt { get; set; }
 
         /// <summary>
-        /// The source or originator of the quote, e.g. a bank or financial institution.
+        /// Gets or Sets AggregationAsAt
         /// </summary>
-        /// <value>The source or originator of the quote, e.g. a bank or financial institution.</value>
-        [DataMember(Name="priceSource", EmitDefaultValue=true)]
-        public string PriceSource { get; set; }
+        [DataMember(Name="aggregationAsAt", EmitDefaultValue=false)]
+        public DateTimeOffset? AggregationAsAt { get; set; }
 
         /// <summary>
-        /// The value of the instrument identifier that uniquely identifies the instrument that the quote is for, e.g. &#39;BBG00JX0P539&#39;.
+        /// Gets or Sets Href
         /// </summary>
-        /// <value>The value of the instrument identifier that uniquely identifies the instrument that the quote is for, e.g. &#39;BBG00JX0P539&#39;.</value>
-        [DataMember(Name="instrumentId", EmitDefaultValue=true)]
-        public string InstrumentId { get; set; }
+        [DataMember(Name="href", EmitDefaultValue=true)]
+        public string Href { get; set; }
 
         /// <summary>
-        /// The type of instrument identifier used to uniquely identify the instrument that the quote is for, e.g. &#39;Figi&#39;.
+        /// Gets or Sets Data
         /// </summary>
-        /// <value>The type of instrument identifier used to uniquely identify the instrument that the quote is for, e.g. &#39;Figi&#39;.</value>
-        [DataMember(Name="instrumentIdType", EmitDefaultValue=true)]
-        public string InstrumentIdType { get; set; }
+        [DataMember(Name="data", EmitDefaultValue=false)]
+        public AggregationResponseNode Data { get; set; }
 
         /// <summary>
-        /// The type of the quote. This allows for quotes other than prices e.g. rates or spreads to be used.
+        /// Gets or Sets AggregationCurrency
         /// </summary>
-        /// <value>The type of the quote. This allows for quotes other than prices e.g. rates or spreads to be used.</value>
-        [DataMember(Name="quoteType", EmitDefaultValue=true)]
-        public string QuoteType { get; set; }
+        [DataMember(Name="aggregationCurrency", EmitDefaultValue=true)]
+        public string AggregationCurrency { get; set; }
 
         /// <summary>
-        /// The field of the quote e.g. bid, mid, ask etc. This should be consistent across a time series of quotes. The allowed values are dependant on the specified Provider.
+        /// Gets or Sets DataSchema
         /// </summary>
-        /// <value>The field of the quote e.g. bid, mid, ask etc. This should be consistent across a time series of quotes. The allowed values are dependant on the specified Provider.</value>
-        [DataMember(Name="field", EmitDefaultValue=true)]
-        public string Field { get; set; }
+        [DataMember(Name="dataSchema", EmitDefaultValue=false)]
+        public ResultDataSchema DataSchema { get; set; }
+
+        /// <summary>
+        /// Gets or Sets AggregationFailures
+        /// </summary>
+        [DataMember(Name="aggregationFailures", EmitDefaultValue=true)]
+        public List<AggregationMeasureFailureDetail> AggregationFailures { get; set; }
+
+        /// <summary>
+        /// Gets or Sets Links
+        /// </summary>
+        [DataMember(Name="links", EmitDefaultValue=true)]
+        public List<Link> Links { get; set; }
 
         /// <summary>
         /// Returns the string presentation of the object
@@ -102,13 +110,15 @@ namespace Lusid.Sdk.Model
         public override string ToString()
         {
             var sb = new StringBuilder();
-            sb.Append("class QuoteAccessMetadataRuleId {\n");
-            sb.Append("  Provider: ").Append(Provider).Append("\n");
-            sb.Append("  PriceSource: ").Append(PriceSource).Append("\n");
-            sb.Append("  InstrumentId: ").Append(InstrumentId).Append("\n");
-            sb.Append("  InstrumentIdType: ").Append(InstrumentIdType).Append("\n");
-            sb.Append("  QuoteType: ").Append(QuoteType).Append("\n");
-            sb.Append("  Field: ").Append(Field).Append("\n");
+            sb.Append("class NestedAggregationResponse {\n");
+            sb.Append("  AggregationEffectiveAt: ").Append(AggregationEffectiveAt).Append("\n");
+            sb.Append("  AggregationAsAt: ").Append(AggregationAsAt).Append("\n");
+            sb.Append("  Href: ").Append(Href).Append("\n");
+            sb.Append("  Data: ").Append(Data).Append("\n");
+            sb.Append("  AggregationCurrency: ").Append(AggregationCurrency).Append("\n");
+            sb.Append("  DataSchema: ").Append(DataSchema).Append("\n");
+            sb.Append("  AggregationFailures: ").Append(AggregationFailures).Append("\n");
+            sb.Append("  Links: ").Append(Links).Append("\n");
             sb.Append("}\n");
             return sb.ToString();
         }
@@ -129,49 +139,61 @@ namespace Lusid.Sdk.Model
         /// <returns>Boolean</returns>
         public override bool Equals(object input)
         {
-            return this.Equals(input as QuoteAccessMetadataRuleId);
+            return this.Equals(input as NestedAggregationResponse);
         }
 
         /// <summary>
-        /// Returns true if QuoteAccessMetadataRuleId instances are equal
+        /// Returns true if NestedAggregationResponse instances are equal
         /// </summary>
-        /// <param name="input">Instance of QuoteAccessMetadataRuleId to be compared</param>
+        /// <param name="input">Instance of NestedAggregationResponse to be compared</param>
         /// <returns>Boolean</returns>
-        public bool Equals(QuoteAccessMetadataRuleId input)
+        public bool Equals(NestedAggregationResponse input)
         {
             if (input == null)
                 return false;
 
             return 
                 (
-                    this.Provider == input.Provider ||
-                    (this.Provider != null &&
-                    this.Provider.Equals(input.Provider))
+                    this.AggregationEffectiveAt == input.AggregationEffectiveAt ||
+                    (this.AggregationEffectiveAt != null &&
+                    this.AggregationEffectiveAt.Equals(input.AggregationEffectiveAt))
                 ) && 
                 (
-                    this.PriceSource == input.PriceSource ||
-                    (this.PriceSource != null &&
-                    this.PriceSource.Equals(input.PriceSource))
+                    this.AggregationAsAt == input.AggregationAsAt ||
+                    (this.AggregationAsAt != null &&
+                    this.AggregationAsAt.Equals(input.AggregationAsAt))
                 ) && 
                 (
-                    this.InstrumentId == input.InstrumentId ||
-                    (this.InstrumentId != null &&
-                    this.InstrumentId.Equals(input.InstrumentId))
+                    this.Href == input.Href ||
+                    (this.Href != null &&
+                    this.Href.Equals(input.Href))
                 ) && 
                 (
-                    this.InstrumentIdType == input.InstrumentIdType ||
-                    (this.InstrumentIdType != null &&
-                    this.InstrumentIdType.Equals(input.InstrumentIdType))
+                    this.Data == input.Data ||
+                    (this.Data != null &&
+                    this.Data.Equals(input.Data))
                 ) && 
                 (
-                    this.QuoteType == input.QuoteType ||
-                    (this.QuoteType != null &&
-                    this.QuoteType.Equals(input.QuoteType))
+                    this.AggregationCurrency == input.AggregationCurrency ||
+                    (this.AggregationCurrency != null &&
+                    this.AggregationCurrency.Equals(input.AggregationCurrency))
                 ) && 
                 (
-                    this.Field == input.Field ||
-                    (this.Field != null &&
-                    this.Field.Equals(input.Field))
+                    this.DataSchema == input.DataSchema ||
+                    (this.DataSchema != null &&
+                    this.DataSchema.Equals(input.DataSchema))
+                ) && 
+                (
+                    this.AggregationFailures == input.AggregationFailures ||
+                    this.AggregationFailures != null &&
+                    input.AggregationFailures != null &&
+                    this.AggregationFailures.SequenceEqual(input.AggregationFailures)
+                ) && 
+                (
+                    this.Links == input.Links ||
+                    this.Links != null &&
+                    input.Links != null &&
+                    this.Links.SequenceEqual(input.Links)
                 );
         }
 
@@ -184,18 +206,22 @@ namespace Lusid.Sdk.Model
             unchecked // Overflow is fine, just wrap
             {
                 int hashCode = 41;
-                if (this.Provider != null)
-                    hashCode = hashCode * 59 + this.Provider.GetHashCode();
-                if (this.PriceSource != null)
-                    hashCode = hashCode * 59 + this.PriceSource.GetHashCode();
-                if (this.InstrumentId != null)
-                    hashCode = hashCode * 59 + this.InstrumentId.GetHashCode();
-                if (this.InstrumentIdType != null)
-                    hashCode = hashCode * 59 + this.InstrumentIdType.GetHashCode();
-                if (this.QuoteType != null)
-                    hashCode = hashCode * 59 + this.QuoteType.GetHashCode();
-                if (this.Field != null)
-                    hashCode = hashCode * 59 + this.Field.GetHashCode();
+                if (this.AggregationEffectiveAt != null)
+                    hashCode = hashCode * 59 + this.AggregationEffectiveAt.GetHashCode();
+                if (this.AggregationAsAt != null)
+                    hashCode = hashCode * 59 + this.AggregationAsAt.GetHashCode();
+                if (this.Href != null)
+                    hashCode = hashCode * 59 + this.Href.GetHashCode();
+                if (this.Data != null)
+                    hashCode = hashCode * 59 + this.Data.GetHashCode();
+                if (this.AggregationCurrency != null)
+                    hashCode = hashCode * 59 + this.AggregationCurrency.GetHashCode();
+                if (this.DataSchema != null)
+                    hashCode = hashCode * 59 + this.DataSchema.GetHashCode();
+                if (this.AggregationFailures != null)
+                    hashCode = hashCode * 59 + this.AggregationFailures.GetHashCode();
+                if (this.Links != null)
+                    hashCode = hashCode * 59 + this.Links.GetHashCode();
                 return hashCode;
             }
         }

@@ -23,77 +23,60 @@ using OpenAPIDateConverter = Lusid.Sdk.Client.OpenAPIDateConverter;
 namespace Lusid.Sdk.Model
 {
     /// <summary>
-    /// An identifier that uniquely identifies a set of Quote access control metadata.
+    /// AggregationResponseNode
     /// </summary>
     [DataContract]
-    public partial class QuoteAccessMetadataRuleId :  IEquatable<QuoteAccessMetadataRuleId>
+    public partial class AggregationResponseNode :  IEquatable<AggregationResponseNode>
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="QuoteAccessMetadataRuleId" /> class.
+        /// Initializes a new instance of the <see cref="AggregationResponseNode" /> class.
         /// </summary>
-        /// <param name="provider">The platform or vendor that provided the quote, e.g. &#39;DataScope&#39;, &#39;LUSID&#39; etc..</param>
-        /// <param name="priceSource">The source or originator of the quote, e.g. a bank or financial institution..</param>
-        /// <param name="instrumentId">The value of the instrument identifier that uniquely identifies the instrument that the quote is for, e.g. &#39;BBG00JX0P539&#39;..</param>
-        /// <param name="instrumentIdType">The type of instrument identifier used to uniquely identify the instrument that the quote is for, e.g. &#39;Figi&#39;..</param>
-        /// <param name="quoteType">The type of the quote. This allows for quotes other than prices e.g. rates or spreads to be used..</param>
-        /// <param name="field">The field of the quote e.g. bid, mid, ask etc. This should be consistent across a time series of quotes. The allowed values are dependant on the specified Provider..</param>
-        public QuoteAccessMetadataRuleId(string provider = default(string), string priceSource = default(string), string instrumentId = default(string), string instrumentIdType = default(string), string quoteType = default(string), string field = default(string))
+        /// <param name="key">key.</param>
+        /// <param name="value">value.</param>
+        /// <param name="depth">depth.</param>
+        /// <param name="properties">properties.</param>
+        /// <param name="children">children.</param>
+        public AggregationResponseNode(AggregateSpec key = default(AggregateSpec), string value = default(string), int? depth = default(int?), Dictionary<string, Object> properties = default(Dictionary<string, Object>), List<AggregationResponseNode> children = default(List<AggregationResponseNode>))
         {
-            this.Provider = provider;
-            this.PriceSource = priceSource;
-            this.InstrumentId = instrumentId;
-            this.InstrumentIdType = instrumentIdType;
-            this.QuoteType = quoteType;
-            this.Field = field;
-            this.Provider = provider;
-            this.PriceSource = priceSource;
-            this.InstrumentId = instrumentId;
-            this.InstrumentIdType = instrumentIdType;
-            this.QuoteType = quoteType;
-            this.Field = field;
+            this.Value = value;
+            this.Properties = properties;
+            this.Children = children;
+            this.Key = key;
+            this.Value = value;
+            this.Depth = depth;
+            this.Properties = properties;
+            this.Children = children;
         }
         
         /// <summary>
-        /// The platform or vendor that provided the quote, e.g. &#39;DataScope&#39;, &#39;LUSID&#39; etc.
+        /// Gets or Sets Key
         /// </summary>
-        /// <value>The platform or vendor that provided the quote, e.g. &#39;DataScope&#39;, &#39;LUSID&#39; etc.</value>
-        [DataMember(Name="provider", EmitDefaultValue=true)]
-        public string Provider { get; set; }
+        [DataMember(Name="key", EmitDefaultValue=false)]
+        public AggregateSpec Key { get; set; }
 
         /// <summary>
-        /// The source or originator of the quote, e.g. a bank or financial institution.
+        /// Gets or Sets Value
         /// </summary>
-        /// <value>The source or originator of the quote, e.g. a bank or financial institution.</value>
-        [DataMember(Name="priceSource", EmitDefaultValue=true)]
-        public string PriceSource { get; set; }
+        [DataMember(Name="value", EmitDefaultValue=true)]
+        public string Value { get; set; }
 
         /// <summary>
-        /// The value of the instrument identifier that uniquely identifies the instrument that the quote is for, e.g. &#39;BBG00JX0P539&#39;.
+        /// Gets or Sets Depth
         /// </summary>
-        /// <value>The value of the instrument identifier that uniquely identifies the instrument that the quote is for, e.g. &#39;BBG00JX0P539&#39;.</value>
-        [DataMember(Name="instrumentId", EmitDefaultValue=true)]
-        public string InstrumentId { get; set; }
+        [DataMember(Name="depth", EmitDefaultValue=false)]
+        public int? Depth { get; set; }
 
         /// <summary>
-        /// The type of instrument identifier used to uniquely identify the instrument that the quote is for, e.g. &#39;Figi&#39;.
+        /// Gets or Sets Properties
         /// </summary>
-        /// <value>The type of instrument identifier used to uniquely identify the instrument that the quote is for, e.g. &#39;Figi&#39;.</value>
-        [DataMember(Name="instrumentIdType", EmitDefaultValue=true)]
-        public string InstrumentIdType { get; set; }
+        [DataMember(Name="properties", EmitDefaultValue=true)]
+        public Dictionary<string, Object> Properties { get; set; }
 
         /// <summary>
-        /// The type of the quote. This allows for quotes other than prices e.g. rates or spreads to be used.
+        /// Gets or Sets Children
         /// </summary>
-        /// <value>The type of the quote. This allows for quotes other than prices e.g. rates or spreads to be used.</value>
-        [DataMember(Name="quoteType", EmitDefaultValue=true)]
-        public string QuoteType { get; set; }
-
-        /// <summary>
-        /// The field of the quote e.g. bid, mid, ask etc. This should be consistent across a time series of quotes. The allowed values are dependant on the specified Provider.
-        /// </summary>
-        /// <value>The field of the quote e.g. bid, mid, ask etc. This should be consistent across a time series of quotes. The allowed values are dependant on the specified Provider.</value>
-        [DataMember(Name="field", EmitDefaultValue=true)]
-        public string Field { get; set; }
+        [DataMember(Name="children", EmitDefaultValue=true)]
+        public List<AggregationResponseNode> Children { get; set; }
 
         /// <summary>
         /// Returns the string presentation of the object
@@ -102,13 +85,12 @@ namespace Lusid.Sdk.Model
         public override string ToString()
         {
             var sb = new StringBuilder();
-            sb.Append("class QuoteAccessMetadataRuleId {\n");
-            sb.Append("  Provider: ").Append(Provider).Append("\n");
-            sb.Append("  PriceSource: ").Append(PriceSource).Append("\n");
-            sb.Append("  InstrumentId: ").Append(InstrumentId).Append("\n");
-            sb.Append("  InstrumentIdType: ").Append(InstrumentIdType).Append("\n");
-            sb.Append("  QuoteType: ").Append(QuoteType).Append("\n");
-            sb.Append("  Field: ").Append(Field).Append("\n");
+            sb.Append("class AggregationResponseNode {\n");
+            sb.Append("  Key: ").Append(Key).Append("\n");
+            sb.Append("  Value: ").Append(Value).Append("\n");
+            sb.Append("  Depth: ").Append(Depth).Append("\n");
+            sb.Append("  Properties: ").Append(Properties).Append("\n");
+            sb.Append("  Children: ").Append(Children).Append("\n");
             sb.Append("}\n");
             return sb.ToString();
         }
@@ -129,49 +111,46 @@ namespace Lusid.Sdk.Model
         /// <returns>Boolean</returns>
         public override bool Equals(object input)
         {
-            return this.Equals(input as QuoteAccessMetadataRuleId);
+            return this.Equals(input as AggregationResponseNode);
         }
 
         /// <summary>
-        /// Returns true if QuoteAccessMetadataRuleId instances are equal
+        /// Returns true if AggregationResponseNode instances are equal
         /// </summary>
-        /// <param name="input">Instance of QuoteAccessMetadataRuleId to be compared</param>
+        /// <param name="input">Instance of AggregationResponseNode to be compared</param>
         /// <returns>Boolean</returns>
-        public bool Equals(QuoteAccessMetadataRuleId input)
+        public bool Equals(AggregationResponseNode input)
         {
             if (input == null)
                 return false;
 
             return 
                 (
-                    this.Provider == input.Provider ||
-                    (this.Provider != null &&
-                    this.Provider.Equals(input.Provider))
+                    this.Key == input.Key ||
+                    (this.Key != null &&
+                    this.Key.Equals(input.Key))
                 ) && 
                 (
-                    this.PriceSource == input.PriceSource ||
-                    (this.PriceSource != null &&
-                    this.PriceSource.Equals(input.PriceSource))
+                    this.Value == input.Value ||
+                    (this.Value != null &&
+                    this.Value.Equals(input.Value))
                 ) && 
                 (
-                    this.InstrumentId == input.InstrumentId ||
-                    (this.InstrumentId != null &&
-                    this.InstrumentId.Equals(input.InstrumentId))
+                    this.Depth == input.Depth ||
+                    (this.Depth != null &&
+                    this.Depth.Equals(input.Depth))
                 ) && 
                 (
-                    this.InstrumentIdType == input.InstrumentIdType ||
-                    (this.InstrumentIdType != null &&
-                    this.InstrumentIdType.Equals(input.InstrumentIdType))
+                    this.Properties == input.Properties ||
+                    this.Properties != null &&
+                    input.Properties != null &&
+                    this.Properties.SequenceEqual(input.Properties)
                 ) && 
                 (
-                    this.QuoteType == input.QuoteType ||
-                    (this.QuoteType != null &&
-                    this.QuoteType.Equals(input.QuoteType))
-                ) && 
-                (
-                    this.Field == input.Field ||
-                    (this.Field != null &&
-                    this.Field.Equals(input.Field))
+                    this.Children == input.Children ||
+                    this.Children != null &&
+                    input.Children != null &&
+                    this.Children.SequenceEqual(input.Children)
                 );
         }
 
@@ -184,18 +163,16 @@ namespace Lusid.Sdk.Model
             unchecked // Overflow is fine, just wrap
             {
                 int hashCode = 41;
-                if (this.Provider != null)
-                    hashCode = hashCode * 59 + this.Provider.GetHashCode();
-                if (this.PriceSource != null)
-                    hashCode = hashCode * 59 + this.PriceSource.GetHashCode();
-                if (this.InstrumentId != null)
-                    hashCode = hashCode * 59 + this.InstrumentId.GetHashCode();
-                if (this.InstrumentIdType != null)
-                    hashCode = hashCode * 59 + this.InstrumentIdType.GetHashCode();
-                if (this.QuoteType != null)
-                    hashCode = hashCode * 59 + this.QuoteType.GetHashCode();
-                if (this.Field != null)
-                    hashCode = hashCode * 59 + this.Field.GetHashCode();
+                if (this.Key != null)
+                    hashCode = hashCode * 59 + this.Key.GetHashCode();
+                if (this.Value != null)
+                    hashCode = hashCode * 59 + this.Value.GetHashCode();
+                if (this.Depth != null)
+                    hashCode = hashCode * 59 + this.Depth.GetHashCode();
+                if (this.Properties != null)
+                    hashCode = hashCode * 59 + this.Properties.GetHashCode();
+                if (this.Children != null)
+                    hashCode = hashCode * 59 + this.Children.GetHashCode();
                 return hashCode;
             }
         }
