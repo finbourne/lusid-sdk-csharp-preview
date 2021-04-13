@@ -1,5 +1,5 @@
-
 # Lusid.Sdk.Model.AggregationRequest
+Specification object for the parameters of an aggregation
 
 ## Properties
 
@@ -18,7 +18,5 @@ Name | Type | Description | Notes
 **ReportCcy** | **string** | Three letter ISO currency string indicating what currency to report in for ReportCcy denominated queries.  If not present then the currency of the relevant portfolio will be used in its place where relevant. | [optional] 
 **PortfolioIdentifierCode** | **string** | String identifier for portfolio e.g. \&quot;SinglePortfolio\&quot; and \&quot;GroupPortfolio\&quot; | [optional] 
 
-[[Back to Model list]](../README.md#documentation-for-models)
-[[Back to API list]](../README.md#documentation-for-api-endpoints)
-[[Back to README]](../README.md)
+[[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 

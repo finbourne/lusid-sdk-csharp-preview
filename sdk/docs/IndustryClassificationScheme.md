@@ -1,5 +1,5 @@
-
 # Lusid.Sdk.Model.IndustryClassificationScheme
+Various schemes exist to classify the business sector within which a company operates.  They divide it into various categories around business, economic and sub-sectors (e.g. coal within energy)  These commonly include  ICB https://en.wikipedia.org/wiki/Industry_Classification_Benchmark  TRBC https://en.wikipedia.org/wiki/The_Refinitiv_Business_Classification  GICS https://en.wikipedia.org/wiki/Global_Industry_Classification_Standard.  These links are not intended as a complete reference but are freely available as a starting point.
 
 ## Properties
 
@@ -12,7 +12,5 @@ Name | Type | Description | Notes
 **Industry** | **string** | Various schemes exist to classify the business sector within which a company operates.  They divide it into various categories around business, economic and sub-sectors (e.g. coal within energy)  Under ICB, TRBC, GICS which business sector is the counterparty assigned to. This is Lvl 3 of that scheme (3rd coarsest)  e.g. Coal or Oil within Fossil Fuels. | 
 **IndustryActivity** | **string** | Various schemes exist to classify the business sector within which a company operates.  They divide it into various categories around business, economic and sub-sectors (e.g. coal within energy)  Under ICB, TRBC, GICS which business sector is the counterparty assigned to. This is Lvl 4 of the scheme (finest)  e.g. Petroleum Refining within Oil within Fossil Fuels. | 
 
-[[Back to Model list]](../README.md#documentation-for-models)
-[[Back to API list]](../README.md#documentation-for-api-endpoints)
-[[Back to README]](../README.md)
+[[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 

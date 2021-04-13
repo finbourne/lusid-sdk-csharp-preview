@@ -51,7 +51,7 @@ namespace Lusid.Sdk.Utilities
                 BasePath = apiConfiguration.ApiUrl,
             };
             
-            configuration.AddDefaultHeader("X-LUSID-Application", apiConfiguration.ApplicationName);
+            configuration.DefaultHeaders.Add("X-LUSID-Application", apiConfiguration.ApplicationName);
 
             _apis = Init(configuration);
         }
@@ -83,7 +83,7 @@ namespace Lusid.Sdk.Utilities
             //
             // Calling SuppressFinalize ensures ~RestClient() never runs, so ApiClient.DisposeImpl can
             // then call RestClient.Dispose, which does the correct cleanup.
-            GC.SuppressFinalize(configuration.ApiClient.RestClient);
+            // GC.SuppressFinalize(configuration.ApiClient.RestClient);
 
 
             var dict = new Dictionary<Type, IApiAccessor>();

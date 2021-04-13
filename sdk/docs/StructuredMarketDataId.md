@@ -1,5 +1,5 @@
-
 # Lusid.Sdk.Model.StructuredMarketDataId
+An identifier that uniquely describes an item of structured market data such as an interest rate curve or volatility surface.
 
 ## Properties
 
@@ -12,7 +12,5 @@ Name | Type | Description | Notes
 **MarketElementType** | **string** | The type of the market element that the market entity represents, e.g. a vol surface or credit curve | [optional] 
 **MarketAsset** | **string** | The name of the market entity that the document represents | [optional] 
 
-[[Back to Model list]](../README.md#documentation-for-models)
-[[Back to API list]](../README.md#documentation-for-api-endpoints)
-[[Back to README]](../README.md)
+[[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 
