@@ -84,7 +84,7 @@ namespace Lusid.Sdk.Tests.Utilities
                 settlementDate: tradeDate,
                 units: units ?? default(decimal),
                 transactionPrice: new TransactionPrice(price ?? default(decimal), TransactionPrice.TypeEnum.Price),
-                totalConsideration: new CurrencyAndAmount(price ?? default(decimal)*units ?? default(decimal), currency),
+                totalConsideration: new CurrencyAndAmount((price ?? default(decimal))*(units ?? default(decimal)), currency),
                 source: "Broker");
         }
 

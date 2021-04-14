@@ -384,7 +384,7 @@ namespace Lusid.Sdk.Tests
         {
             var apiResponse = _factory.Api<ApplicationMetadataApi>().GetLusidVersionsWithHttpInfo();
             // Invalidate header containing access token
-            apiResponse.Headers.Add(ApiResponseExtensions.DateHeader, "invalid");
+            apiResponse.Headers[ApiResponseExtensions.DateHeader] =  new List<string>() {"invalid"};
             var date = apiResponse.GetRequestDateTime();
             Assert.IsNull(date);
         }
