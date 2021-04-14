@@ -1,13 +1,8 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-<<<<<<< HEAD
-    <TargetFramework>netstandard2.0</TargetFramework>
-    <Version>0.11.2843</Version>
-=======
     <TargetFramework>netcoreapp2.0</TargetFramework>
     <Version>0.11.2843</Version>
->>>>>>> Open API upgrade
     <PackageId>Lusid.Sdk.Preview</PackageId>
     <Authors>engineering@finbourne.com</Authors>
     <Company>FINBOURNE Technology Limited</Company>
