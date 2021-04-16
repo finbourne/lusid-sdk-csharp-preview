@@ -82,9 +82,10 @@ namespace Lusid.Sdk.Tests.Utilities
                 },
                 transactionDate: tradeDate,
                 settlementDate: tradeDate,
-                units: units,
-                transactionPrice: new TransactionPrice(price, TransactionPrice.TypeEnum.Price),
-                totalConsideration: new CurrencyAndAmount(price*units, currency),
+                units: units ?? default(decimal),
+                transactionPrice: new TransactionPrice(price ?? default(decimal), TransactionPrice.TypeEnum.Price),
+                totalConsideration: new CurrencyAndAmount((
+                        price ?? default(decimal)) * (units ?? default(decimal)), currency),
                 source: "Broker");
         }
 
@@ -104,7 +105,7 @@ namespace Lusid.Sdk.Tests.Utilities
                 },
                 transactionDate: tradeDate,
                 settlementDate: tradeDate,
-                units: units,
+                units: units.Value,
                 totalConsideration: new CurrencyAndAmount(0, "GBP"),
                 transactionPrice: new TransactionPrice(0.0M),
                 source: "Client");
