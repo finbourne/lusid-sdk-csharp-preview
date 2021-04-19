@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Lusid.Sdk.Api;
+using Lusid.Sdk.Client;
 using Lusid.Sdk.Model;
 using Lusid.Sdk.Utilities;
 using LusidFeatures;
@@ -20,6 +21,20 @@ namespace Lusid.Sdk.Tests.Tutorials.Ibor
         private InstrumentLoader _instrumentLoader;
         private IOrdersApi _ordersApi;
         private IList<string> _instrumentIds;
+        
+        private readonly IDictionary<string, string> TutorialScopes = new Dictionary<string, string> {
+            {"simple-upsert", "Orders-SimpleUpsert-TestScope"},
+            {"unknown-instrument", "Orders-UnknownInstrument-TestScope"},
+            {"filtering", "Orders-Filter-TestScope"}
+        };
+        
+        private readonly IList<string> TutorialPropertyCodes = new List<string> {
+            "TIF",
+            "OrderBook",
+            "PortfolioManager",
+            "Account",
+            "Strategy"
+        };
 
         [OneTimeSetUp]
         public void SetUp()
@@ -28,13 +43,51 @@ namespace Lusid.Sdk.Tests.Tutorials.Ibor
             _instrumentLoader = new InstrumentLoader(_apiFactory);
             _instrumentIds = _instrumentLoader.LoadInstruments();
             _ordersApi = _apiFactory.Api<IOrdersApi>();
+            LoadProperties();
+        }
+
+        private void LoadProperties()
+        {
+            foreach (var scope in TutorialScopes.Values)
+            {
+                foreach (var code in TutorialPropertyCodes)
+                {
+                    //    Create the property definitions
+                    try
+                    {
+                        _apiFactory
+                            .Api<IPropertyDefinitionsApi>()
+                            .CreatePropertyDefinition(
+                                createPropertyDefinitionRequest: MakePropertyDefinition(propertyScope: scope,
+                                    propertyCode: code));
+                    }
+                    catch (ApiException apiException) when (apiException.Message.Contains("PropertyAlreadyExists")) 
+                    {
+                        // Ignore if it already exists
+                    }
+
+                }   
+            }
+            
+            CreatePropertyDefinitionRequest MakePropertyDefinition(string propertyScope, string propertyCode)
+                // Details of the property to be created
+                => new CreatePropertyDefinitionRequest(
+                    domain: CreatePropertyDefinitionRequest.DomainEnum.Order,
+                    scope: propertyScope,
+                    lifeTime: CreatePropertyDefinitionRequest.LifeTimeEnum.Perpetual,
+                    code: propertyCode,
+                    valueRequired: false,
+                    displayName: $"Order {propertyCode}",
+                    dataTypeId: new ResourceId("system", "string")
+                );
+            
         }
         
         [LusidFeature("F4")]
         [Test]
         public void Upsert_Simple_Order()
         {
-            var testScope = $"Orders-SimpleUpsert-TestScope";
+            var testScope = TutorialScopes["simple-upsert"];
             var order = $"Order-{Guid.NewGuid().ToString()}";
             var orderId = new ResourceId(testScope, order);
 
@@ -84,7 +137,7 @@ namespace Lusid.Sdk.Tests.Tutorials.Ibor
         [Test]
         public void Upsert_Simple_Order_With_Unknown_Instrument()
         {
-            var testScope = $"Orders-UnknownInstrument-TestScope";
+            var testScope = TutorialScopes["unknown-instrument"];
             var order = $"Order-{Guid.NewGuid().ToString()}";
             var orderId = new ResourceId(testScope, order);
 
@@ -134,7 +187,7 @@ namespace Lusid.Sdk.Tests.Tutorials.Ibor
         [Test]
         public void Update_Simple_Order()
         {
-            var testScope = $"Orders-Simple-TestScope";
+            var testScope = TutorialScopes["simple-upsert"];
             var order = $"Order-{Guid.NewGuid().ToString()}";
             var orderId = new ResourceId(testScope, order);
 
@@ -219,7 +272,7 @@ namespace Lusid.Sdk.Tests.Tutorials.Ibor
         [Test]
         public void Upsert_And_Retrieve_Simple_Orders()
         {
-            var testScope = $"Orders-Filter-TestScope";
+            var testScope = TutorialScopes["filtering"];
             var order1 = $"Order-{Guid.NewGuid().ToString()}";
             var order2 = $"Order-{Guid.NewGuid().ToString()}";
             var order3 = $"Order-{Guid.NewGuid().ToString()}";
