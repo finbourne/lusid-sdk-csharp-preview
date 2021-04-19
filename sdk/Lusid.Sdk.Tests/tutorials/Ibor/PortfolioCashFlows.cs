@@ -100,7 +100,7 @@ namespace Lusid.Sdk.Tests.tutorials.Ibor
             
             // CALL api to get upsertable cashflows at maturity            
             var maturity = fxForward.MaturityDate.Value;
-            var cashFlowsAtMaturity = _transactionPortfoliosApi.GetUpsertablePortfolioCashFlows(
+            var cashFlows = _transactionPortfoliosApi.GetUpsertablePortfolioCashFlows(
                 portfolioScope,
                 portfolioId,
                 maturity.AddMilliseconds(-1),
@@ -108,8 +108,8 @@ namespace Lusid.Sdk.Tests.tutorials.Ibor
 
             // CHECK correct number of cashflow at maturity
             var expectedNumber = isNdf ? 1 : 2;
-            Assert.That(cashFlowsAtMaturity.Values.Count, Is.EqualTo(expectedNumber));
-            var currencyAndAmounts = cashFlowsAtMaturity.Values.Select(t => t.TotalConsideration).ToList();
+            Assert.That(cashFlows.Values.Count, Is.EqualTo(expectedNumber));
+            var currencyAndAmounts = cashFlows.Values.Select(t => t.TotalConsideration).ToList();
 
             var expectedCashFlows = isNdf
                 ? new List<CurrencyAndAmount>
@@ -123,6 +123,34 @@ namespace Lusid.Sdk.Tests.tutorials.Ibor
                     };
 
             Assert.That(currencyAndAmounts, Is.EquivalentTo(expectedCashFlows)); 
+            
+            // Given the cashflow transactions, we create from them transaction requests and upsert them.
+            var upsertCashFlowTransactions = cashFlows.Values
+                .Select(c => CreateCashFlowTransactionRequest(c))
+                .ToList();
+            _transactionPortfoliosApi.UpsertTransactions(portfolioScope, portfolioId, upsertCashFlowTransactions);
+        }
+        
+        // Given a transaction, this method creates a TransactionRequest so that it can be upserted back into LUSID.
+        // InstrumentUid is additionally added to identify where the cashflow came from.
+        private static TransactionRequest CreateCashFlowTransactionRequest(Transaction transaction)
+        {
+            transaction.InstrumentIdentifiers.Add("Instrument/default/ClientInternal", transaction.InstrumentUid);
+
+            return new TransactionRequest(
+                transaction.TransactionId,
+                transaction.Type,
+                transaction.InstrumentIdentifiers,
+                transaction.TransactionDate,
+                transaction.SettlementDate,
+                transaction.Units,
+                transaction.TransactionPrice,
+                transaction.TotalConsideration,
+                transaction.ExchangeRate,
+                transaction.TransactionCurrency,
+                transaction.Properties,
+                transaction.CounterpartyId,
+                transaction.Source);
         }
     }
 }
