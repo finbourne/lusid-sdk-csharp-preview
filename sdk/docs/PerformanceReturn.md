@@ -6,7 +6,7 @@
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **EffectiveAt** | **DateTimeOffset?** | The effectiveAt for the return. | 
-**RoR** | **decimal?** | The return number. | 
+**RateOfReturn** | **decimal?** | The return number. | 
 **OpeningMarketValue** | **decimal?** | The opening market value. | 
 **Period** | **string** | Show the returns on a Daily or Monthly period. | [optional] 
 
