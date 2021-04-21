@@ -1,6 +1,6 @@
 # Lusid.Sdk.Api.PortfolioGroupsApi
 
-All URIs are relative to *http://local-unit-test-server.lusid.com:58694*
+All URIs are relative to *http://local-unit-test-server.lusid.com:45930*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
@@ -21,7 +21,7 @@ Method | HTTP request | Description
 [**GetPortfolioGroupExpansion**](PortfolioGroupsApi.md#getportfoliogroupexpansion) | **GET** /api/portfoliogroups/{scope}/{code}/expansion | [EARLY ACCESS] Get portfolio group expansion
 [**GetPortfolioGroupMetadata**](PortfolioGroupsApi.md#getportfoliogroupmetadata) | **GET** /api/portfoliogroups/{scope}/{code}/metadata | [EXPERIMENTAL] Get Access Metadata rules for Portfolio Group
 [**GetPortfolioGroupPropertyTimeSeries**](PortfolioGroupsApi.md#getportfoliogrouppropertytimeseries) | **GET** /api/portfoliogroups/{scope}/{code}/properties/time-series | [EXPERIMENTAL] Get the time series of a portfolio group property
-[**GetPortfolioGroupRelations**](PortfolioGroupsApi.md#getportfoliogrouprelations) | **GET** /api/portfoliogroups/{scope}/{code}/relations | [DEPRECATED] Get Relations for Portfolio Group
+[**GetPortfolioGroupRelations**](PortfolioGroupsApi.md#getportfoliogrouprelations) | **GET** /api/portfoliogroups/{scope}/{code}/relations | [EXPERIMENTAL] Get Relations for Portfolio Group
 [**GetPortfolioGroupRelationships**](PortfolioGroupsApi.md#getportfoliogrouprelationships) | **GET** /api/portfoliogroups/{scope}/{code}/relationships | [EXPERIMENTAL] Get Relationships for Portfolio Group
 [**GetTransactionsForPortfolioGroup**](PortfolioGroupsApi.md#gettransactionsforportfoliogroup) | **GET** /api/portfoliogroups/{scope}/{code}/transactions | [EARLY ACCESS] Get transactions for transaction portfolios in a portfolio group
 [**ListPortfolioGroups**](PortfolioGroupsApi.md#listportfoliogroups) | **GET** /api/portfoliogroups/{scope} | [EARLY ACCESS] List portfolio groups
@@ -54,7 +54,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:58694";
+            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:45930";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -140,7 +140,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:58694";
+            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:45930";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -226,7 +226,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:58694";
+            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:45930";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -316,7 +316,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:58694";
+            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:45930";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -398,7 +398,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:58694";
+            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:45930";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -484,7 +484,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:58694";
+            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:45930";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -570,7 +570,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:58694";
+            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:45930";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -658,7 +658,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:58694";
+            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:45930";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -740,7 +740,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:58694";
+            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:45930";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -828,7 +828,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:58694";
+            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:45930";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -914,7 +914,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:58694";
+            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:45930";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -1006,7 +1006,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:58694";
+            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:45930";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -1092,7 +1092,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:58694";
+            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:45930";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -1180,7 +1180,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:58694";
+            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:45930";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -1268,7 +1268,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:58694";
+            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:45930";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -1356,7 +1356,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:58694";
+            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:45930";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -1442,7 +1442,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:58694";
+            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:45930";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -1517,7 +1517,7 @@ Name | Type | Description  | Notes
 
 > ResourceListOfRelation GetPortfolioGroupRelations (string scope, string code, DateTimeOrCutLabel effectiveAt = null, DateTimeOffset? asAt = null, string filter = null, List<string> identifierTypes = null)
 
-[DEPRECATED] Get Relations for Portfolio Group
+[EXPERIMENTAL] Get Relations for Portfolio Group
 
 Get relations for the specified Portfolio Group
 
@@ -1536,7 +1536,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:58694";
+            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:45930";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -1550,7 +1550,7 @@ namespace Example
 
             try
             {
-                // [DEPRECATED] Get Relations for Portfolio Group
+                // [EXPERIMENTAL] Get Relations for Portfolio Group
                 ResourceListOfRelation result = apiInstance.GetPortfolioGroupRelations(scope, code, effectiveAt, asAt, filter, identifierTypes);
                 Debug.WriteLine(result);
             }
@@ -1626,7 +1626,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:58694";
+            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:45930";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -1716,7 +1716,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:58694";
+            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:45930";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -1808,7 +1808,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:58694";
+            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:45930";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -1894,7 +1894,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:58694";
+            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:45930";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -1980,7 +1980,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:58694";
+            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:45930";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -2064,7 +2064,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:58694";
+            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:45930";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 

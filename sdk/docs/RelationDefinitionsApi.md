@@ -1,11 +1,11 @@
 # Lusid.Sdk.Api.RelationDefinitionsApi
 
-All URIs are relative to *http://local-unit-test-server.lusid.com:58694*
+All URIs are relative to *http://local-unit-test-server.lusid.com:45930*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
-[**CreateRelationDefinition**](RelationDefinitionsApi.md#createrelationdefinition) | **POST** /api/relationdefinitions | [DEPRECATED] Create a relation definition
-[**GetRelationDefinition**](RelationDefinitionsApi.md#getrelationdefinition) | **GET** /api/relationdefinitions/{scope}/{code} | [DEPRECATED] Get relation definition
+[**CreateRelationDefinition**](RelationDefinitionsApi.md#createrelationdefinition) | **POST** /api/relationdefinitions | [EXPERIMENTAL] Create a relation definition
+[**GetRelationDefinition**](RelationDefinitionsApi.md#getrelationdefinition) | **GET** /api/relationdefinitions/{scope}/{code} | [EXPERIMENTAL] Get relation definition
 
 
 
@@ -13,7 +13,7 @@ Method | HTTP request | Description
 
 > RelationDefinition CreateRelationDefinition (CreateRelationDefinitionRequest createRelationDefinitionRequest)
 
-[DEPRECATED] Create a relation definition
+[EXPERIMENTAL] Create a relation definition
 
 Define a new relation.
 
@@ -32,7 +32,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:58694";
+            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:45930";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -41,7 +41,7 @@ namespace Example
 
             try
             {
-                // [DEPRECATED] Create a relation definition
+                // [EXPERIMENTAL] Create a relation definition
                 RelationDefinition result = apiInstance.CreateRelationDefinition(createRelationDefinitionRequest);
                 Debug.WriteLine(result);
             }
@@ -93,7 +93,7 @@ Name | Type | Description  | Notes
 
 > RelationDefinition GetRelationDefinition (string scope, string code, DateTimeOffset? asAt = null)
 
-[DEPRECATED] Get relation definition
+[EXPERIMENTAL] Get relation definition
 
 Retrieve the definition of a specified relation.
 
@@ -112,7 +112,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:58694";
+            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:45930";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -123,7 +123,7 @@ namespace Example
 
             try
             {
-                // [DEPRECATED] Get relation definition
+                // [EXPERIMENTAL] Get relation definition
                 RelationDefinition result = apiInstance.GetRelationDefinition(scope, code, asAt);
                 Debug.WriteLine(result);
             }
