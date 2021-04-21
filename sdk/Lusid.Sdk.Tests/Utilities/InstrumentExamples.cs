@@ -21,14 +21,17 @@ namespace Lusid.Sdk.Tests.Utilities
             };
         }
 
-        internal static LusidInstrument CreateExampleFxForward()
+        internal static LusidInstrument CreateExampleFxForward(bool isNdf = true)
             => new FxForward(
-                domAmount: -1m,
-                fgnAmount: 123m,
+                domAmount: 1m,
+                fgnAmount: -123m,
                 domCcy: "USD",
                 fgnCcy: "JPY",
+                refSpotRate: 100m,
                 startDate: new DateTimeOffset(2020, 2, 7, 0, 0, 0, TimeSpan.Zero),
                 maturityDate: new DateTimeOffset(2020, 9, 18, 0, 0, 0, TimeSpan.Zero),
+                fixingDate: new DateTimeOffset(2020, 8, 18, 0, 0, 0, TimeSpan.Zero),
+                isNdf: isNdf,
                 instrumentType: LusidInstrument.InstrumentTypeEnum.FxForward
             );
 
