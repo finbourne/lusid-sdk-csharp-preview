@@ -1,6 +1,6 @@
 # Lusid.Sdk.Api.RelationshipsApi
 
-All URIs are relative to *https://fbn-prd.lusid.com/api*
+All URIs are relative to *http://local-unit-test-server.lusid.com:40346*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
@@ -11,7 +11,7 @@ Method | HTTP request | Description
 
 ## CreateRelationship
 
-> CompleteRelationship CreateRelationship (string scope, string code, CreateRelationshipRequest createRelationshipRequest, DateTimeOrCutLabel effectiveAt = null)
+> CompleteRelationship CreateRelationship (string scope, string code, CreateRelationshipRequest createRelationshipRequest)
 
 [EXPERIMENTAL] Create Relationship
 
@@ -32,7 +32,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "https://fbn-prd.lusid.com/api";
+            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:40346";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -40,12 +40,11 @@ namespace Example
             var scope = scope_example;  // string | The scope of the relationship
             var code = code_example;  // string | The code of the relationship
             var createRelationshipRequest = new CreateRelationshipRequest(); // CreateRelationshipRequest | The details of the relationship to create.
-            var effectiveAt = effectiveAt_example;  // DateTimeOrCutLabel | The effective datetime or cut label at which the relationship should be effective from. Defaults to the current LUSID system datetime if not specified. (optional) 
 
             try
             {
                 // [EXPERIMENTAL] Create Relationship
-                CompleteRelationship result = apiInstance.CreateRelationship(scope, code, createRelationshipRequest, effectiveAt);
+                CompleteRelationship result = apiInstance.CreateRelationship(scope, code, createRelationshipRequest);
                 Debug.WriteLine(result);
             }
             catch (ApiException e)
@@ -67,7 +66,6 @@ Name | Type | Description  | Notes
  **scope** | **string**| The scope of the relationship | 
  **code** | **string**| The code of the relationship | 
  **createRelationshipRequest** | [**CreateRelationshipRequest**](CreateRelationshipRequest.md)| The details of the relationship to create. | 
- **effectiveAt** | **DateTimeOrCutLabel**| The effective datetime or cut label at which the relationship should be effective from. Defaults to the current LUSID system datetime if not specified. | [optional] 
 
 ### Return type
 
@@ -97,7 +95,7 @@ Name | Type | Description  | Notes
 
 ## DeleteRelationship
 
-> DeletedEntityResponse DeleteRelationship (string scope, string code, DeleteRelationshipRequest deleteRelationshipRequest, DateTimeOrCutLabel effectiveAt = null)
+> DeletedEntityResponse DeleteRelationship (string scope, string code, DeleteRelationshipRequest deleteRelationshipRequest)
 
 [EXPERIMENTAL] Delete Relationship
 
@@ -118,7 +116,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "https://fbn-prd.lusid.com/api";
+            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:40346";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -126,12 +124,11 @@ namespace Example
             var scope = scope_example;  // string | The scope of the relationship
             var code = code_example;  // string | The code of the relationship
             var deleteRelationshipRequest = new DeleteRelationshipRequest(); // DeleteRelationshipRequest | The details of the relationship to delete.
-            var effectiveAt = effectiveAt_example;  // DateTimeOrCutLabel | The effective datetime or cut label at which the relationship should the deletion be effective from. Defaults to the current LUSID system datetime if not specified. (optional) 
 
             try
             {
                 // [EXPERIMENTAL] Delete Relationship
-                DeletedEntityResponse result = apiInstance.DeleteRelationship(scope, code, deleteRelationshipRequest, effectiveAt);
+                DeletedEntityResponse result = apiInstance.DeleteRelationship(scope, code, deleteRelationshipRequest);
                 Debug.WriteLine(result);
             }
             catch (ApiException e)
@@ -153,7 +150,6 @@ Name | Type | Description  | Notes
  **scope** | **string**| The scope of the relationship | 
  **code** | **string**| The code of the relationship | 
  **deleteRelationshipRequest** | [**DeleteRelationshipRequest**](DeleteRelationshipRequest.md)| The details of the relationship to delete. | 
- **effectiveAt** | **DateTimeOrCutLabel**| The effective datetime or cut label at which the relationship should the deletion be effective from. Defaults to the current LUSID system datetime if not specified. | [optional] 
 
 ### Return type
 
