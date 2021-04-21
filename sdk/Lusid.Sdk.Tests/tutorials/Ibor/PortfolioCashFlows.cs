@@ -15,12 +15,14 @@ namespace Lusid.Sdk.Tests.tutorials.Ibor
         private ILusidApiFactory _apiFactory;
         private TestDataUtilities _testDataUtilities;
         private ITransactionPortfoliosApi _transactionPortfoliosApi;
+        private IPortfoliosApi _portfoliosApi;
 
         [OneTimeSetUp]
         public void SetUp()
         {
             _apiFactory = LusidApiFactoryBuilder.Build("secrets.json"); ;
             _transactionPortfoliosApi = _apiFactory.Api<ITransactionPortfoliosApi>();
+            _portfoliosApi = _apiFactory.Api<IPortfoliosApi>();
             _testDataUtilities = new TestDataUtilities(
                 _apiFactory.Api<ITransactionPortfoliosApi>(),
                 _apiFactory.Api<IInstrumentsApi>(),
@@ -76,6 +78,8 @@ namespace Lusid.Sdk.Tests.tutorials.Ibor
                 };
 
             Assert.That(cashFlows, Is.EquivalentTo(expectedCashFlows)); 
+            
+            _portfoliosApi.DeletePortfolio(portfolioScope, portfolioId);
         }
         
         [TestCase(true)]
@@ -129,6 +133,8 @@ namespace Lusid.Sdk.Tests.tutorials.Ibor
                 .Select(c => CreateCashFlowTransactionRequest(c))
                 .ToList();
             _transactionPortfoliosApi.UpsertTransactions(portfolioScope, portfolioId, upsertCashFlowTransactions);
+
+            _portfoliosApi.DeletePortfolio(portfolioScope, portfolioId);
         }
         
         // Given a transaction, this method creates a TransactionRequest so that it can be upserted back into LUSID.
