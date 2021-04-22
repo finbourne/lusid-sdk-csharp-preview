@@ -57,7 +57,7 @@ namespace Lusid.Sdk.Tests.tutorials.Ibor
                 maturity.AddMilliseconds(-1),
                 maturity.AddMilliseconds(1));
             
-            // CHECK correct number of cashflow at maturity
+            // CHECK correct number of cashflow at bond maturity: There are 2 cash flows corresponding to the last coupon amount and the principal.
             var expectedNumber = 2;
             Assert.That(cashFlowsAtMaturity.Values.Count, Is.EqualTo(expectedNumber));
             
@@ -65,7 +65,7 @@ namespace Lusid.Sdk.Tests.tutorials.Ibor
                 .Select(cf => (cf.PaymentDate, cf.Amount, cf.Currency))
                 .ToList();
             
-            // Check that expected cash flows at maturity are not 0
+            // CHECK that expected cash flows at maturity are not 0.
             var allCashFlowsPositive = cashFlows.All(cf => cf.Amount > 0);
             Assert.That(allCashFlowsPositive, Is.True);
             
@@ -124,7 +124,7 @@ namespace Lusid.Sdk.Tests.tutorials.Ibor
         }
         
         [Test]
-        public void ExampleUpsertablePortfolioCashFlowsFoBonds()
+        public void ExampleUpsertablePortfolioCashFlowsForBonds()
         {
             // CREATE portfolio
             var portfolioScope = Guid.NewGuid().ToString();
@@ -150,20 +150,38 @@ namespace Lusid.Sdk.Tests.tutorials.Ibor
                 maturity.AddMilliseconds(-1),
                 maturity.AddMilliseconds(1));
 
-            // CHECK correct number of cashflow at maturity
+            // CHECK correct number of cashflow at bond maturity: There are 2 cash flows corresponding to the last coupon amount and the principal.
             var expectedNumber = 2;
             Assert.That(cashFlows.Values.Count, Is.EqualTo(expectedNumber));
             
             // CHECK correct currency and amount of cashflows
             var currencyAndAmounts = cashFlows.Values.Select(t => t.TotalConsideration).ToList();
-            var currency = currencyAndAmounts.All(t => t.Currency == bond.DomCcy);
+            var matchingCurrency = currencyAndAmounts.All(t => t.Currency == bond.DomCcy);
             var amountsPositive = currencyAndAmounts.All(t => t.Amount > 0);
-            Assert.That(currency, Is.True);
+            Assert.That(matchingCurrency, Is.True);
             Assert.That(amountsPositive, Is.True);
             
-            // Given the cashflow transactions, we create from them transaction requests and upsert them.
-            var upsertCashFlowTransactions = cashFlows.Values;
-            _transactionPortfoliosApi.UpsertTransactions(portfolioScope, portfolioId, CreateCashFlowTransactionRequest(upsertCashFlowTransactions));
+            // GIVEN the cashflow transactions, we create from them transaction requests and upsert them.
+            var upsertCashFlowTransactions = PopulateCashFlowTransactionWithUniqueIds(cashFlows.Values);
+            _transactionPortfoliosApi.UpsertTransactions(portfolioScope, portfolioId, MapToCashFlowTransactionRequest(upsertCashFlowTransactions));
+
+            var expectedPortfolioTransactions = _transactionPortfoliosApi.GetTransactions(
+                    portfolioScope, 
+                    portfolioId, 
+                    maturity.AddMilliseconds(-1), 
+                    maturity.AddMilliseconds(1), 
+                    DateTimeOffset.Now)
+                .Values;
+            
+            foreach (var transaction in upsertCashFlowTransactions)
+            {
+                var getExpectedTransactions = expectedPortfolioTransactions.FirstOrDefault(t => t.TransactionId == transaction.TransactionId);
+                
+                Assert.That(getExpectedTransactions, Is.Not.Null);
+                Assert.That(getExpectedTransactions.TransactionCurrency, Is.EqualTo(transaction.TransactionCurrency));
+                Assert.That(getExpectedTransactions.Type, Is.EqualTo(transaction.Type));
+                Assert.That(getExpectedTransactions.Units, Is.EqualTo(transaction.Units));
+            }
 
             _portfoliosApi.DeletePortfolio(portfolioScope, portfolioId);
         }
@@ -214,24 +232,18 @@ namespace Lusid.Sdk.Tests.tutorials.Ibor
 
             Assert.That(currencyAndAmounts, Is.EquivalentTo(expectedCashFlows)); 
             
-            // Given the cashflow transactions, we create from them transaction requests and upsert them.
-            var upsertCashFlowTransactions = cashFlows.Values;
-            _transactionPortfoliosApi.UpsertTransactions(portfolioScope, portfolioId, CreateCashFlowTransactionRequest(upsertCashFlowTransactions));
+            // GIVEN the cashflow transactions, we create from them transaction requests and upsert them.
+            var upsertCashFlowTransactions = PopulateCashFlowTransactionWithUniqueIds(cashFlows.Values);
+            _transactionPortfoliosApi.UpsertTransactions(portfolioScope, portfolioId, MapToCashFlowTransactionRequest(upsertCashFlowTransactions));
 
             _portfoliosApi.DeletePortfolio(portfolioScope, portfolioId);
         }
         
-        // Given a transaction, this method creates a TransactionRequest so that it can be upserted back into LUSID.
-        // InstrumentUid is additionally added to identify where the cashflow came from.
-        private static List<TransactionRequest> CreateCashFlowTransactionRequest(IEnumerable<Transaction> transactions)
+        // This method maps a list of Transactions to a list of TransactionRequests so that they can be upserted back into LUSID.
+        private static List<TransactionRequest> MapToCashFlowTransactionRequest(IEnumerable<Transaction> transactions)
         {
-            foreach (var transaction in transactions)
-            {
-                transaction.InstrumentIdentifiers.Add("Instrument/default/ClientInternal", transaction.InstrumentUid);
-            }
-            
-            return transactions.Select((transaction , i) => new TransactionRequest(
-                transaction.TransactionId + $"{i}",
+            return transactions.Select(transaction => new TransactionRequest(
+                transaction.TransactionId,
                 transaction.Type,
                 transaction.InstrumentIdentifiers,
                 transaction.TransactionDate,
@@ -245,6 +257,34 @@ namespace Lusid.Sdk.Tests.tutorials.Ibor
                 transaction.CounterpartyId,
                 transaction.Source)
             ).ToList();
+        }
+        
+        // Given a transaction, this method creates a TransactionRequest so that it can be upserted back into LUSID.
+        // InstrumentUid is additionally added to identify where the cashflow came from. The transaction ID needs to
+        // be unique.
+        private static IEnumerable<Transaction> PopulateCashFlowTransactionWithUniqueIds(IEnumerable<Transaction> transactions)
+        {
+            foreach (var transaction in transactions)
+            {
+                transaction.InstrumentIdentifiers.Add("Instrument/default/ClientInternal", transaction.InstrumentUid);
+            }
+            
+            return transactions.Select((transaction , i) => new Transaction(
+                transaction.TransactionId + $"{i}",
+                transaction.Type,
+                transaction.InstrumentIdentifiers,
+                transaction.InstrumentUid,
+                transaction.TransactionDate,
+                transaction.SettlementDate,
+                transaction.Units,
+                transaction.TransactionPrice,
+                transaction.TotalConsideration,
+                transaction.ExchangeRate,
+                transaction.TransactionCurrency,
+                transaction.Properties,
+                transaction.CounterpartyId,
+                transaction.Source)
+            );
         }
     }
 }
