@@ -162,7 +162,7 @@ namespace Lusid.Sdk.Tests.tutorials.Ibor
             Assert.That(amountsPositive, Is.True);
             
             // GIVEN the cashflow transactions, we create from them transaction requests and upsert them.
-            var upsertCashFlowTransactions = PopulateCashFlowTransactionWithUniqueIds(cashFlows.Values);
+            var upsertCashFlowTransactions = PopulateCashFlowTransactionWithUniqueIds(cashFlows.Values, bond.DomCcy);
             _transactionPortfoliosApi.UpsertTransactions(portfolioScope, portfolioId, MapToCashFlowTransactionRequest(upsertCashFlowTransactions));
 
             var expectedPortfolioTransactions = _transactionPortfoliosApi.GetTransactions(
@@ -178,6 +178,7 @@ namespace Lusid.Sdk.Tests.tutorials.Ibor
                 var getExpectedTransactions = expectedPortfolioTransactions.FirstOrDefault(t => t.TransactionId == transaction.TransactionId);
                 
                 Assert.That(getExpectedTransactions, Is.Not.Null);
+                Assert.That(getExpectedTransactions.InstrumentUid, Is.EqualTo($"CCY_USD"));
                 Assert.That(getExpectedTransactions.TransactionCurrency, Is.EqualTo(transaction.TransactionCurrency));
                 Assert.That(getExpectedTransactions.Type, Is.EqualTo(transaction.Type));
                 Assert.That(getExpectedTransactions.Units, Is.EqualTo(transaction.Units));
@@ -233,7 +234,7 @@ namespace Lusid.Sdk.Tests.tutorials.Ibor
             Assert.That(currencyAndAmounts, Is.EquivalentTo(expectedCashFlows)); 
             
             // GIVEN the cashflow transactions, we create from them transaction requests and upsert them.
-            var upsertCashFlowTransactions = PopulateCashFlowTransactionWithUniqueIds(cashFlows.Values);
+            var upsertCashFlowTransactions = PopulateCashFlowTransactionWithUniqueIds(cashFlows.Values, fxForward.DomCcy);
             _transactionPortfoliosApi.UpsertTransactions(portfolioScope, portfolioId, MapToCashFlowTransactionRequest(upsertCashFlowTransactions));
 
             _portfoliosApi.DeletePortfolio(portfolioScope, portfolioId);
@@ -262,11 +263,11 @@ namespace Lusid.Sdk.Tests.tutorials.Ibor
         // Given a transaction, this method creates a TransactionRequest so that it can be upserted back into LUSID.
         // InstrumentUid is additionally added to identify where the cashflow came from. The transaction ID needs to
         // be unique.
-        private static IEnumerable<Transaction> PopulateCashFlowTransactionWithUniqueIds(IEnumerable<Transaction> transactions)
+        private static IEnumerable<Transaction> PopulateCashFlowTransactionWithUniqueIds(IEnumerable<Transaction> transactions, string cashFlowCurrency)
         {
             foreach (var transaction in transactions)
             {
-                transaction.InstrumentIdentifiers.Add("Instrument/default/ClientInternal", transaction.InstrumentUid);
+                transaction.InstrumentIdentifiers.Add("Instrument/default/Currency", cashFlowCurrency);
             }
             
             return transactions.Select((transaction , i) => new Transaction(
