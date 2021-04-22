@@ -10,7 +10,7 @@ Name | Type | Description | Notes
 **InstrumentIdentifiers** | **Dictionary&lt;string, string&gt;** | The instrument ordered. | 
 **Quantity** | **int?** | The quantity of given instrument ordered. | 
 **Side** | **string** | The client&#39;s representation of the order&#39;s side (buy, sell, short, etc) | 
-**OrderBookId** | [**ResourceId**](ResourceId.md) |  | 
+**OrderBookId** | [**ResourceId**](ResourceId.md) |  | [optional] 
 **PortfolioId** | [**ResourceId**](ResourceId.md) |  | 
 **Id** | [**ResourceId**](ResourceId.md) |  | 
 **LusidInstrumentId** | **string** | The LUSID instrument id for the instrument ordered. | 
