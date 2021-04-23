@@ -20,7 +20,7 @@ namespace Lusid.Sdk.Tests.Tutorials.Ibor
         [OneTimeSetUp]
         public void SetUp()
         {
-            _apiFactory = TestLusidApiFactoryBuilder.CreateApiFactory();
+            _apiFactory = TestLusidApiFactoryBuilder.CreateApiFactory("secret.json");
             
             var instrumentLoader = new InstrumentLoader(_apiFactory);
             _instrumentIds = instrumentLoader.LoadInstruments();

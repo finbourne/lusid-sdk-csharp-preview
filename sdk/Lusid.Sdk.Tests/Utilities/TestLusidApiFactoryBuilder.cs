@@ -5,11 +5,18 @@ namespace Lusid.Sdk.Tests.Utilities
 {
     public class TestLusidApiFactoryBuilder
     {
-        public static ILusidApiFactory CreateApiFactory()
+        public static ILusidApiFactory CreateApiFactory(string secretsFile)
         {
-            return File.Exists("secret.json")
-                ? LusidApiFactoryBuilder.Build("secrets.json")
+            return File.Exists(secretsFile)
+                ? LusidApiFactoryBuilder.Build(secretsFile)
                 : LusidApiFactoryBuilder.Build(null);
+        }
+        
+        public static ApiConfiguration CreateApiConfiguration(string secretsFile)
+        {
+            return File.Exists(secretsFile)
+                ? ApiConfigurationBuilder.Build("file")
+                : ApiConfigurationBuilder.Build(null);
         }
     }
 }

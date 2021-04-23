@@ -12,7 +12,7 @@ namespace Lusid.Sdk.Tests.Tutorials.MarketData
         [OneTimeSetUp]
         public void SetUp()
         {
-            var apiFactory = TestLusidApiFactoryBuilder.CreateApiFactory();
+            var apiFactory = TestLusidApiFactoryBuilder.CreateApiFactory("secret.json");
             _conventionsApi = apiFactory.Api<IConventionsApi>();
         }
 

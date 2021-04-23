@@ -29,7 +29,7 @@ namespace Lusid.Sdk.Tests.Tutorials.MarketData
         [OneTimeSetUp]
         public void SetUp()
         {
-            _apiFactory = TestLusidApiFactoryBuilder.CreateApiFactory();
+            _apiFactory = TestLusidApiFactoryBuilder.CreateApiFactory("secret.json");
             _instrumentsApi = _apiFactory.Api<IInstrumentsApi>();
 
             EnsurePropertyDefinition("CustomSector");

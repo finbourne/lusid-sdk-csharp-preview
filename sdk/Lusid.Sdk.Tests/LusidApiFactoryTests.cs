@@ -24,7 +24,7 @@ namespace Lusid.Sdk.Tests
         [OneTimeSetUp]
         public void SetUp()
         {
-            _factory = TestLusidApiFactoryBuilder.CreateApiFactory();
+            _factory = TestLusidApiFactoryBuilder.CreateApiFactory("secret.json");
         }
 
         [Test]
@@ -277,7 +277,7 @@ namespace Lusid.Sdk.Tests
         [TestCase(100, 25, Explicit = true)]
         public void Multi_Threaded_ApiFactory_Tasks(int quoteCount, int threadCount)
         {
-            var config = ApiConfigurationBuilder.Build("secrets.json");
+            var config = TestLusidApiFactoryBuilder.CreateApiConfiguration("secrets.json");
             var provider = new ClientCredentialsFlowTokenProvider(config);
             
             var date = new DateTimeOffset(2018, 1, 1, 0, 0, 0, TimeSpan.Zero);
@@ -312,7 +312,7 @@ namespace Lusid.Sdk.Tests
         [Test, Explicit("Only an issue on .NET Core 2.2 on Linux / MacOS")]
         public void LinuxSocketLeakTest() // See DEV-7152
         {
-            ApiConfiguration config = ApiConfigurationBuilder.Build("secrets.json");
+            ApiConfiguration config = TestLusidApiFactoryBuilder.CreateApiConfiguration("secrets.json");
             var provider = new ClientCredentialsFlowTokenProvider(config);
 
             var api = BuildApi();

@@ -20,7 +20,7 @@ namespace Lusid.Sdk.Tests
         [OneTimeSetUp]
         public void SetUp()
         {
-            _apiFactory = TestLusidApiFactoryBuilder.CreateApiFactory();
+            _apiFactory = TestLusidApiFactoryBuilder.CreateApiFactory("secret.json");
         }
 
         [Test]
