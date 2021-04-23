@@ -40,6 +40,8 @@ namespace Lusid.Sdk.Tests.Utilities
             Assert.That(apiConfiguration.ApiUrl, Is.EqualTo("<apiUrl>"));
 
             StringAssert.Contains($"Loaded values from {secretsFile}", console.GetOutput());
+            
+            File.Delete(secretsFile);
         }
 
         [Test]
@@ -60,6 +62,8 @@ namespace Lusid.Sdk.Tests.Utilities
             Assert.That(exception.Message,
                 Is.EqualTo(
                     "The provided secrets file is missing the following required values: ['username', 'clientId']"));
+            
+            File.Delete(secretsFile);
         }
 
         [Test]
