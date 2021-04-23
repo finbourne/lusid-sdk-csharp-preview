@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -22,7 +23,9 @@ namespace Lusid.Sdk.Tests
         [OneTimeSetUp]
         public void SetUp()
         {
-            _factory = LusidApiFactoryBuilder.Build("secrets.json");
+            _factory = File.Exists("secret.json")
+                ? LusidApiFactoryBuilder.Build("secrets.json")
+                : LusidApiFactoryBuilder.Build(null);
         }
 
         [Test]
