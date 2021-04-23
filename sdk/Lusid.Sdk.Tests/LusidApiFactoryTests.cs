@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using Lusid.Sdk.Api;
 using Lusid.Sdk.Client;
 using Lusid.Sdk.Model;
+using Lusid.Sdk.Tests.Utilities;
 using Lusid.Sdk.Utilities;
 using Newtonsoft.Json;
 using NUnit.Framework;
@@ -23,9 +24,7 @@ namespace Lusid.Sdk.Tests
         [OneTimeSetUp]
         public void SetUp()
         {
-            _factory = File.Exists("secret.json")
-                ? LusidApiFactoryBuilder.Build("secrets.json")
-                : LusidApiFactoryBuilder.Build(null);
+            _factory = TestLusidApiFactoryBuilder.CreateApiFactory();
         }
 
         [Test]

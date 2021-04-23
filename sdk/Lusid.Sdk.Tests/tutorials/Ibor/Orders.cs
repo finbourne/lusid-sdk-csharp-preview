@@ -4,7 +4,8 @@ using System.Linq;
 using Lusid.Sdk.Api;
 using Lusid.Sdk.Client;
 using Lusid.Sdk.Model;
-using Lusid.Sdk.Utilities;
+ using Lusid.Sdk.Tests.Utilities;
+ using Lusid.Sdk.Utilities;
 using LusidFeatures;
 using NUnit.Framework;
 
@@ -39,7 +40,7 @@ namespace Lusid.Sdk.Tests.Tutorials.Ibor
         [OneTimeSetUp]
         public void SetUp()
         {
-            _apiFactory = LusidApiFactoryBuilder.Build("secrets.json");
+            _apiFactory = TestLusidApiFactoryBuilder.CreateApiFactory();
             _instrumentLoader = new InstrumentLoader(_apiFactory);
             _instrumentIds = _instrumentLoader.LoadInstruments();
             _ordersApi = _apiFactory.Api<IOrdersApi>();

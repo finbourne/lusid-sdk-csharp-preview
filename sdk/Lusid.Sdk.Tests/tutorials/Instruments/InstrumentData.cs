@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using Lusid.Sdk.Api;
 using Lusid.Sdk.Model;
-using Lusid.Sdk.Utilities;
+using Lusid.Sdk.Tests.Utilities;
 using NUnit.Framework;
 
 namespace Lusid.Sdk.Tests.Tutorials.MarketData
@@ -12,7 +12,7 @@ namespace Lusid.Sdk.Tests.Tutorials.MarketData
         [OneTimeSetUp]
         public void SetUp()
         {
-            var apiFactory = LusidApiFactoryBuilder.Build("secrets.json");
+            var apiFactory = TestLusidApiFactoryBuilder.CreateApiFactory();
             _conventionsApi = apiFactory.Api<IConventionsApi>();
         }
 

@@ -23,7 +23,7 @@ namespace Lusid.Sdk.Tests.tutorials.Ibor
         [OneTimeSetUp]
         public void SetUp()
         {
-            _apiFactory = LusidApiFactoryBuilder.Build("secrets.json");
+            _apiFactory = TestLusidApiFactoryBuilder.CreateApiFactory();
         }
         
         [LusidFeature("F14")]

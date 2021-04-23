@@ -4,7 +4,6 @@ using System.Linq;
 using Lusid.Sdk.Api;
 using Lusid.Sdk.Model;
 using Lusid.Sdk.Tests.Utilities;
-using Lusid.Sdk.Utilities;
 using LusidFeatures;
 using NUnit.Framework;
 
@@ -18,7 +17,7 @@ namespace Lusid.Sdk.Tests.Tutorials.MarketData
         [OneTimeSetUp]
         public void SetUp()
         {
-            var apiFactory = LusidApiFactoryBuilder.Build("secrets.json");
+            var apiFactory = TestLusidApiFactoryBuilder.CreateApiFactory();
             _quotesApi = apiFactory.Api<IQuotesApi>();
         }
         
