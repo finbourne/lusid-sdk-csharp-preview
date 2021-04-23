@@ -10,16 +10,46 @@ namespace Lusid.Sdk.Tests.Utilities
     public class ApiConfigurationBuilderTest
     {
         private string _secretsFile;
+        
+        private string _cachedTokenUrl;
+        private string _cachedApiUrl;
+        private string _cachedClientId;
+        private string _cachedClientSecret;
+        private string _cachedUsername;
+        private string _cachedPassword;
+        private string _cachedApplicationName;
 
         [OneTimeSetUp]
         public void Setup()
         {
             _secretsFile = Path.GetTempFileName();
+
+            _cachedTokenUrl = Environment.GetEnvironmentVariable("FBN_TOKEN_URL") ??
+                              Environment.GetEnvironmentVariable("fbn_token_url");
+            _cachedApiUrl = Environment.GetEnvironmentVariable("FBN_LUSID_API_URL") ??
+                            Environment.GetEnvironmentVariable("fbn_lusid_api_url");
+            _cachedClientId = Environment.GetEnvironmentVariable("FBN_CLIENT_ID") ??
+                              Environment.GetEnvironmentVariable("fbn_client_id");
+            _cachedClientSecret = Environment.GetEnvironmentVariable("FBN_CLIENT_SECRET") ??
+                                  Environment.GetEnvironmentVariable("fbn_client_secret");
+            _cachedUsername = Environment.GetEnvironmentVariable("FBN_USERNAME") ??
+                              Environment.GetEnvironmentVariable("fbn_username");
+            _cachedPassword = Environment.GetEnvironmentVariable("FBN_PASSWORD") ??
+                              Environment.GetEnvironmentVariable("fbn_password");
+            _cachedApplicationName = Environment.GetEnvironmentVariable("FBN_APP_NAME") ??
+                                     Environment.GetEnvironmentVariable("fbn_app_name");
         }
 
         [OneTimeTearDown]
         public void TearDown()
         {
+            Environment.SetEnvironmentVariable("FBN_TOKEN_URL", _cachedTokenUrl);
+            Environment.SetEnvironmentVariable("FBN_LUSID_API_URL", _cachedApiUrl);
+            Environment.SetEnvironmentVariable("FBN_CLIENT_ID", _cachedClientId);
+            Environment.SetEnvironmentVariable("FBN_CLIENT_SECRET", _cachedClientSecret);
+            Environment.SetEnvironmentVariable("FBN_USERNAME", _cachedUsername);
+            Environment.SetEnvironmentVariable("FBN_PASSWORD", _cachedPassword);
+            Environment.SetEnvironmentVariable("FBN_APP_NAME", _cachedApplicationName);
             File.Delete(_secretsFile);
         }
         
