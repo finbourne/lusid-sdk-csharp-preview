@@ -9,6 +9,20 @@ namespace Lusid.Sdk.Tests.Utilities
 {
     public class ApiConfigurationBuilderTest
     {
+        private string _secretsFile;
+
+        [OneTimeSetUp]
+        public void Setup()
+        {
+            _secretsFile = Path.GetTempFileName();
+        }
+
+        [OneTimeTearDown]
+        public void TearDown()
+        {
+            File.Delete(_secretsFile);
+        }
+        
         [Test]
         public void Throw_Exception_For_Missing_Secrets_File()
         {
@@ -18,8 +32,7 @@ namespace Lusid.Sdk.Tests.Utilities
         [Test]
         public void Use_Secrets_File_If_It_Exists()
         {
-            var secretsFile = Path.GetTempFileName();
-            PopulateDummySecretsFile(secretsFile, new Dictionary<string, string>
+            PopulateDummySecretsFile(new Dictionary<string, string>
             {
                 {"tokenUrl", "<tokenUrl>"},
                 {"username", "<username>"},
@@ -28,9 +41,9 @@ namespace Lusid.Sdk.Tests.Utilities
                 {"clientSecret", "<clientSecret>"},
                 {"apiUrl", "<apiUrl>"},
             });
-
+            
             using var console = new InMemoryConsole();
-            var apiConfiguration = ApiConfigurationBuilder.Build(secretsFile);
+            var apiConfiguration = ApiConfigurationBuilder.Build(_secretsFile);
 
             Assert.That(apiConfiguration.TokenUrl, Is.EqualTo("<tokenUrl>"));
             Assert.That(apiConfiguration.Username, Is.EqualTo("<username>"));
@@ -39,16 +52,13 @@ namespace Lusid.Sdk.Tests.Utilities
             Assert.That(apiConfiguration.ClientSecret, Is.EqualTo("<clientSecret>"));
             Assert.That(apiConfiguration.ApiUrl, Is.EqualTo("<apiUrl>"));
 
-            StringAssert.Contains($"Loaded values from {secretsFile}", console.GetOutput());
-            
-            File.Delete(secretsFile);
+            StringAssert.Contains($"Loaded values from {_secretsFile}", console.GetOutput());
         }
 
         [Test]
         public void Throw_Exception_If_Secrets_File_Incomplete()
         {
-            var secretsFile = Path.GetTempFileName();
-            PopulateDummySecretsFile(secretsFile, new Dictionary<string, string>
+            PopulateDummySecretsFile(new Dictionary<string, string>
             {
                 {"tokenUrl", "<tokenUrl>"},
                 // {"username", "<username>"},
@@ -58,12 +68,10 @@ namespace Lusid.Sdk.Tests.Utilities
                 {"apiUrl", "<apiUrl>"},
             });
 
-            var exception = Assert.Throws<MissingConfigException>(() => ApiConfigurationBuilder.Build(secretsFile));
+            var exception = Assert.Throws<MissingConfigException>(() => ApiConfigurationBuilder.Build(_secretsFile));
             Assert.That(exception.Message,
                 Is.EqualTo(
                     "The provided secrets file is missing the following required values: ['username', 'clientId']"));
-            
-            File.Delete(secretsFile);
         }
 
         [Test]
@@ -95,9 +103,9 @@ namespace Lusid.Sdk.Tests.Utilities
             Environment.SetEnvironmentVariable("FBN_TOKEN_URL", "<env.tokenUrl>");
             Environment.SetEnvironmentVariable("FBN_LUSID_API_URL", "<env.apiUrl>");
             Environment.SetEnvironmentVariable("FBN_CLIENT_ID", "<env.clientId>");
-            // Environment.SetEnvironmentVariable("FBN_CLIENT_SECRET", "<env.clientSecret>");
+            Environment.SetEnvironmentVariable("FBN_CLIENT_SECRET", "");
             Environment.SetEnvironmentVariable("FBN_USERNAME", "<env.username>");
-            // Environment.SetEnvironmentVariable("FBN_PASSWORD", "<env.password>");
+            Environment.SetEnvironmentVariable("FBN_PASSWORD", "");
             Environment.SetEnvironmentVariable("FBN_APP_NAME", "<env.app_name>");
 
             var exception = Assert.Throws<MissingConfigException>(() => ApiConfigurationBuilder.Build(null));
@@ -106,14 +114,14 @@ namespace Lusid.Sdk.Tests.Utilities
                     "The following required environment variables are not set: ['FBN_PASSWORD', 'FBN_CLIENT_SECRET']"));
         }
 
-        private static void PopulateDummySecretsFile(string secretsFile, Dictionary<string, string> config)
+        private void PopulateDummySecretsFile(Dictionary<string, string> config)
         {
-            using var createStream = File.Create(secretsFile);
             var secrets = new Dictionary<string, object>
             {
                 ["api"] = config
             };
-            JsonSerializer.SerializeAsync(createStream, secrets);
+            var json = JsonSerializer.Serialize(secrets);
+            File.WriteAllText(_secretsFile, json);
         }
 
         class InMemoryConsole : IDisposable
