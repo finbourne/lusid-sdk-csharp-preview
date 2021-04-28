@@ -1,6 +1,6 @@
 # Lusid.Sdk.Api.PortfoliosApi
 
-All URIs are relative to *http://local-unit-test-server.lusid.com:49184*
+All URIs are relative to *http://local-unit-test-server.lusid.com:42815*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
@@ -49,7 +49,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:49184";
+            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:42815";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -135,7 +135,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:49184";
+            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:42815";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -217,7 +217,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:49184";
+            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:42815";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -303,7 +303,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:49184";
+            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:42815";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -391,7 +391,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:49184";
+            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:42815";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -403,8 +403,8 @@ namespace Example
             var fromEffectiveAt = fromEffectiveAt_example;  // DateTimeOrCutLabel | The start date from which to delete the Returns. (optional) 
             var toEffectiveAt = toEffectiveAt_example;  // DateTimeOrCutLabel | The end date from which to delete the Returns (optional) 
             var compositeMethod = compositeMethod_example;  // string | The method used to calculate the Portfolio performance:              Equal/Asset. (optional) 
-            var period = period_example;  // string | the type of the returns used to calculate the aggregation result. (optional) 
-            var outputFrequency = outputFrequency_example;  // string | The type of calculated output. (optional) 
+            var period = period_example;  // string | The type of the returns used to calculate the aggregation result: Daily/Monthly. (optional) 
+            var outputFrequency = outputFrequency_example;  // string | The type of calculated output: Daily/Monthly/Yearly. (optional) 
             var metrics = new List<string>(); // List<string> | The period time to calculate the aggregate return. (optional) 
             var asAt = 2013-10-20T19:20:30+01:00;  // DateTimeOffset? | The asAt datetime at which to retrieve the Returns. Defaults to the latest. (optional) 
 
@@ -437,8 +437,8 @@ Name | Type | Description  | Notes
  **fromEffectiveAt** | **DateTimeOrCutLabel**| The start date from which to delete the Returns. | [optional] 
  **toEffectiveAt** | **DateTimeOrCutLabel**| The end date from which to delete the Returns | [optional] 
  **compositeMethod** | **string**| The method used to calculate the Portfolio performance:              Equal/Asset. | [optional] 
- **period** | **string**| the type of the returns used to calculate the aggregation result. | [optional] 
- **outputFrequency** | **string**| The type of calculated output. | [optional] 
+ **period** | **string**| The type of the returns used to calculate the aggregation result: Daily/Monthly. | [optional] 
+ **outputFrequency** | **string**| The type of calculated output: Daily/Monthly/Yearly. | [optional] 
  **metrics** | [**List&lt;string&gt;**](string.md)| The period time to calculate the aggregate return. | [optional] 
  **asAt** | **DateTimeOffset?**| The asAt datetime at which to retrieve the Returns. Defaults to the latest. | [optional] 
 
@@ -491,7 +491,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:49184";
+            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:42815";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -579,7 +579,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:49184";
+            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:42815";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -665,7 +665,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:49184";
+            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:42815";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -751,7 +751,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:49184";
+            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:42815";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -845,7 +845,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:49184";
+            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:42815";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -935,7 +935,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:49184";
+            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:42815";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -1025,7 +1025,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:49184";
+            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:42815";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -1119,7 +1119,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:49184";
+            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:42815";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -1207,7 +1207,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:49184";
+            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:42815";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -1301,7 +1301,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:49184";
+            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:42815";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -1395,7 +1395,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:49184";
+            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:42815";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -1481,7 +1481,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:49184";
+            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:42815";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -1569,7 +1569,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:49184";
+            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:42815";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -1653,7 +1653,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:49184";
+            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:42815";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
