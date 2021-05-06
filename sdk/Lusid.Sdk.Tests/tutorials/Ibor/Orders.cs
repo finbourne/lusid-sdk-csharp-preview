@@ -268,6 +268,10 @@ namespace Lusid.Sdk.Tests.Tutorials.Ibor
         [Test]
         public void Upsert_And_Retrieve_Simple_Orders()
         {
+            // DEV-: this is a long-runner until we get PropertyWarehouse and entity index changes in
+            var originalTimeout = _ordersApi.Configuration.Timeout;
+            _ordersApi.Configuration.Timeout = 200000;
+
             var testScope = TutorialScopes["filtering"];
             var order1 = $"Order-{Guid.NewGuid().ToString()}";
             var order2 = $"Order-{Guid.NewGuid().ToString()}";
@@ -396,6 +400,7 @@ namespace Lusid.Sdk.Tests.Tutorials.Ibor
             Assert.That(sideFilter.Values.All(rl => rl.Side.Equals("Sell")));
             */
 
+            _ordersApi.Configuration.Timeout = originalTimeout;
         } 
     } 
 }

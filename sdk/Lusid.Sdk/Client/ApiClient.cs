@@ -17,6 +17,7 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Text;
+using System.Threading;
 using Newtonsoft.Json;
 using RestSharp.Portable;
 using RestSharp.Portable.HttpClient;
@@ -174,13 +175,16 @@ namespace Lusid.Sdk.Client
                 pathParams, contentType);
 
             // set timeout
-            RestClient.Timeout = TimeSpan.FromMilliseconds(Configuration.Timeout);
+            // RestSharp seems to suffer from ignored timeouts (google: "restsharp timeout ignored")
+            // And this is a derived lib (FubarCoder); this approach taken from:
+            // https://github.com/FubarDevelopment/restsharp.portable/issues/13
+            var cts = new CancellationTokenSource(TimeSpan.FromMilliseconds(Configuration.Timeout));
             
             // set user agent
             RestClient.UserAgent = Configuration.UserAgent;
 
             InterceptRequest(request);
-            var response = RestClient.Execute(request).Result;
+            var response = RestClient.Execute(request, cts.Token).Result;
             InterceptResponse(request, response);
 
             return (Object) response;
