@@ -5,6 +5,7 @@ All URIs are relative to *https://fbn-prd.lusid.com/api*
 Method | HTTP request | Description
 ------------- | ------------- | -------------
 [**DeleteAllocation**](AllocationsApi.md#deleteallocation) | **DELETE** /api/allocations/{scope}/{code} | [EXPERIMENTAL] Delete allocation
+[**DeleteAllocations**](AllocationsApi.md#deleteallocations) | **POST** /api/allocations/$delete | [EXPERIMENTAL] Delete Allocations.
 [**GetAllocation**](AllocationsApi.md#getallocation) | **GET** /api/allocations/{scope}/{code} | [EXPERIMENTAL] Get Allocation
 [**ListAllocations**](AllocationsApi.md#listallocations) | **GET** /api/allocations | [EXPERIMENTAL] List Allocations
 [**UpsertAllocations**](AllocationsApi.md#upsertallocations) | **POST** /api/allocations | [EXPERIMENTAL] Upsert Allocations
@@ -84,6 +85,86 @@ Name | Type | Description  | Notes
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
 | **200** | The response from deleting an allocation. |  -  |
+| **400** | The details of the input related failure |  -  |
+| **0** | Error response |  -  |
+
+[[Back to top]](#)
+[[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
+
+
+## DeleteAllocations
+
+> DeletedOrdersEntitiesResponse DeleteAllocations (List<ResourceId> resourceId)
+
+[EXPERIMENTAL] Delete Allocations.
+
+Use this method to delete a collection of Allocations, each defined by ResourceId. Each delete will be attempted  independently, and the method will return lists of successful and failed attempts.
+
+### Example
+
+```csharp
+using System.Collections.Generic;
+using System.Diagnostics;
+using Lusid.Sdk.Api;
+using Lusid.Sdk.Client;
+using Lusid.Sdk.Model;
+
+namespace Example
+{
+    public class DeleteAllocationsExample
+    {
+        public static void Main()
+        {
+            Configuration.Default.BasePath = "https://fbn-prd.lusid.com/api";
+            // Configure OAuth2 access token for authorization: oauth2
+            Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
+
+            var apiInstance = new AllocationsApi(Configuration.Default);
+            var resourceId = new List<ResourceId>(); // List<ResourceId> | The IDs of the allocations to delete.
+
+            try
+            {
+                // [EXPERIMENTAL] Delete Allocations.
+                DeletedOrdersEntitiesResponse result = apiInstance.DeleteAllocations(resourceId);
+                Debug.WriteLine(result);
+            }
+            catch (ApiException e)
+            {
+                Debug.Print("Exception when calling AllocationsApi.DeleteAllocations: " + e.Message );
+                Debug.Print("Status Code: "+ e.ErrorCode);
+                Debug.Print(e.StackTrace);
+            }
+        }
+    }
+}
+```
+
+### Parameters
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **resourceId** | [**List&lt;ResourceId&gt;**](ResourceId.md)| The IDs of the allocations to delete. | 
+
+### Return type
+
+[**DeletedOrdersEntitiesResponse**](DeletedOrdersEntitiesResponse.md)
+
+### Authorization
+
+[oauth2](../README.md#oauth2)
+
+### HTTP request headers
+
+- **Content-Type**: application/json-patch+json, application/json, text/json, application/_*+json
+- **Accept**: text/plain, application/json, text/json
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+| **200** | The successfully deleted Allocations along with any failures |  -  |
 | **400** | The details of the input related failure |  -  |
 | **0** | Error response |  -  |
 
