@@ -1,11 +1,10 @@
 # Lusid.Sdk.Api.OrdersApi
 
-All URIs are relative to *http://local-unit-test-server.lusid.com:47365*
+All URIs are relative to *http://local-unit-test-server.lusid.com:31593*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
 [**DeleteOrder**](OrdersApi.md#deleteorder) | **DELETE** /api/orders/{scope}/{code} | [EXPERIMENTAL] Delete order
-[**DeleteOrders**](OrdersApi.md#deleteorders) | **POST** /api/orders/$delete | [EXPERIMENTAL] Delete Orders.
 [**GetOrder**](OrdersApi.md#getorder) | **GET** /api/orders/{scope}/{code} | [EXPERIMENTAL] Get Order
 [**ListOrders**](OrdersApi.md#listorders) | **GET** /api/orders | [EXPERIMENTAL] List Orders
 [**UpsertOrders**](OrdersApi.md#upsertorders) | **POST** /api/orders | [EXPERIMENTAL] Upsert Order
@@ -35,7 +34,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:47365";
+            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:31593";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -94,86 +93,6 @@ Name | Type | Description  | Notes
 [[Back to README]](../README.md)
 
 
-## DeleteOrders
-
-> DeletedOrdersEntitiesResponse DeleteOrders (List<ResourceId> resourceId)
-
-[EXPERIMENTAL] Delete Orders.
-
-Use this method to delete a collection of Orders, each defined by ResourceId. Each delete will be attempted  independently, and the method will return lists of successful and failed attempts.
-
-### Example
-
-```csharp
-using System.Collections.Generic;
-using System.Diagnostics;
-using Lusid.Sdk.Api;
-using Lusid.Sdk.Client;
-using Lusid.Sdk.Model;
-
-namespace Example
-{
-    public class DeleteOrdersExample
-    {
-        public static void Main()
-        {
-            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:47365";
-            // Configure OAuth2 access token for authorization: oauth2
-            Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
-
-            var apiInstance = new OrdersApi(Configuration.Default);
-            var resourceId = new List<ResourceId>(); // List<ResourceId> | The IDs of the orders to delete.
-
-            try
-            {
-                // [EXPERIMENTAL] Delete Orders.
-                DeletedOrdersEntitiesResponse result = apiInstance.DeleteOrders(resourceId);
-                Debug.WriteLine(result);
-            }
-            catch (ApiException e)
-            {
-                Debug.Print("Exception when calling OrdersApi.DeleteOrders: " + e.Message );
-                Debug.Print("Status Code: "+ e.ErrorCode);
-                Debug.Print(e.StackTrace);
-            }
-        }
-    }
-}
-```
-
-### Parameters
-
-
-Name | Type | Description  | Notes
-------------- | ------------- | ------------- | -------------
- **resourceId** | [**List&lt;ResourceId&gt;**](ResourceId.md)| The IDs of the orders to delete. | 
-
-### Return type
-
-[**DeletedOrdersEntitiesResponse**](DeletedOrdersEntitiesResponse.md)
-
-### Authorization
-
-[oauth2](../README.md#oauth2)
-
-### HTTP request headers
-
-- **Content-Type**: application/json-patch+json, application/json, text/json, application/_*+json
-- **Accept**: text/plain, application/json, text/json
-
-### HTTP response details
-| Status code | Description | Response headers |
-|-------------|-------------|------------------|
-| **200** | The successfully deleted Orders along with any failures |  -  |
-| **400** | The details of the input related failure |  -  |
-| **0** | Error response |  -  |
-
-[[Back to top]](#)
-[[Back to API list]](../README.md#documentation-for-api-endpoints)
-[[Back to Model list]](../README.md#documentation-for-models)
-[[Back to README]](../README.md)
-
-
 ## GetOrder
 
 > Order GetOrder (string scope, string code, DateTimeOffset? asAt = null, List<string> propertyKeys = null)
@@ -197,7 +116,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:47365";
+            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:31593";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -283,7 +202,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:47365";
+            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:31593";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -375,7 +294,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:47365";
+            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:31593";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
