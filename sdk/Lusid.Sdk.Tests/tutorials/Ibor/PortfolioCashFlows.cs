@@ -16,6 +16,7 @@ namespace Lusid.Sdk.Tests.tutorials.Ibor
         private TestDataUtilities _testDataUtilities;
         private ITransactionPortfoliosApi _transactionPortfoliosApi;
         private IPortfoliosApi _portfoliosApi;
+        private IConfigurationRecipeApi _recipeApi;
 
         [OneTimeSetUp]
         public void SetUp()
@@ -23,6 +24,7 @@ namespace Lusid.Sdk.Tests.tutorials.Ibor
             _apiFactory = LusidApiFactoryBuilder.Build("secrets.json"); ;
             _transactionPortfoliosApi = _apiFactory.Api<ITransactionPortfoliosApi>();
             _portfoliosApi = _apiFactory.Api<IPortfoliosApi>();
+            _recipeApi = _apiFactory.Api<IConfigurationRecipeApi>();
             _testDataUtilities = new TestDataUtilities(
                 _apiFactory.Api<ITransactionPortfoliosApi>(),
                 _apiFactory.Api<IInstrumentsApi>(),
@@ -54,6 +56,7 @@ namespace Lusid.Sdk.Tests.tutorials.Ibor
             var cashFlowsAtMaturity = _transactionPortfoliosApi.GetPortfolioCashFlows(
                 portfolioScope,
                 portfolioId,
+                maturity.AddMilliseconds(-1),
                 maturity.AddMilliseconds(-1),
                 maturity.AddMilliseconds(1));
             
@@ -91,14 +94,24 @@ namespace Lusid.Sdk.Tests.tutorials.Ibor
                 effectiveAt,
                 effectiveAt,
                 fxForward);
-            
+
+            // CREATE and upsert CTVoM recipe specifying discount pricing model
+            var modelRecipeCode = "CTVoMRecipe";
+            CreateAndUpsertRecipe(modelRecipeCode, portfolioScope, ModelSelection.ModelEnum.ConstantTimeValueOfMoney);
+
             // CALL api to get cashflows at maturity
             var maturity = fxForward.MaturityDate.Value;
             var cashFlowsAtMaturity = _transactionPortfoliosApi.GetPortfolioCashFlows(
                 portfolioScope,
                 portfolioId,
+                effectiveAt,
                 maturity.AddMilliseconds(-1),
-                maturity.AddMilliseconds(1));
+                maturity.AddMilliseconds(1),
+                null,
+                null,
+                portfolioScope,
+                modelRecipeCode
+                );
             
             // CHECK correct number of cashflow at maturity
             var expectedNumber = isNdf ? 1 : 2;
@@ -147,6 +160,7 @@ namespace Lusid.Sdk.Tests.tutorials.Ibor
             var cashFlows = _transactionPortfoliosApi.GetUpsertablePortfolioCashFlows(
                 portfolioScope,
                 portfolioId,
+                maturity.AddMilliseconds(-1),
                 maturity.AddMilliseconds(-1),
                 maturity.AddMilliseconds(1));
 
@@ -206,14 +220,23 @@ namespace Lusid.Sdk.Tests.tutorials.Ibor
                 effectiveAt,
                 effectiveAt,
                 fxForward);
-            
+
+            // CREATE and upsert CTVoM recipe specifying discount pricing model
+            var modelRecipeCode = "CTVoMRecipe";
+            CreateAndUpsertRecipe(modelRecipeCode, portfolioScope, ModelSelection.ModelEnum.ConstantTimeValueOfMoney);
+
             // CALL api to get upsertable cashflows at maturity            
             var maturity = fxForward.MaturityDate.Value;
             var cashFlows = _transactionPortfoliosApi.GetUpsertablePortfolioCashFlows(
                 portfolioScope,
                 portfolioId,
+                effectiveAt,
                 maturity.AddMilliseconds(-1),
-                maturity.AddMilliseconds(1));
+                maturity.AddMilliseconds(1),
+                null,
+                null,
+                portfolioScope,
+                modelRecipeCode);
 
             // CHECK correct number of cashflow at maturity
             var expectedNumber = isNdf ? 1 : 2;
@@ -286,6 +309,28 @@ namespace Lusid.Sdk.Tests.tutorials.Ibor
                 transaction.CounterpartyId,
                 transaction.Source)
             );
+        }
+
+        private void CreateAndUpsertRecipe(string code, string scope, ModelSelection.ModelEnum model)
+        {
+            // CREATE recipe for pricing
+            var pricingOptions = new PricingOptions(new ModelSelection(ModelSelection.LibraryEnum.Lusid, model));
+            var recipe = new ConfigurationRecipe(
+                scope,
+                code,
+                market: new MarketContext(options: new MarketOptions(defaultScope: scope)),
+                pricing: new PricingContext(options: pricingOptions),
+                description: $"Recipe for {model} pricing");
+
+            UpsertRecipe(recipe);
+        }
+
+        private void UpsertRecipe(ConfigurationRecipe recipe)
+        {
+            // UPSERT recipe and check upsert was successful
+            var upsertRecipeRequest = new UpsertRecipeRequest(recipe);
+            var response = _recipeApi.UpsertConfigurationRecipe(upsertRecipeRequest);
+            Assert.That(response.Value, Is.Not.Null);
         }
     }
 }
