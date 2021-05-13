@@ -183,10 +183,8 @@ namespace Lusid.Sdk.Api
         /// <param name="fromAsAt">The lower bound asAt datetime (inclusive) from which to retrieve commands. There is no lower bound if this is not specified. (optional)</param>
         /// <param name="toAsAt">The upper bound asAt datetime (inclusive) from which to retrieve commands. There is no upper bound if this is not specified. (optional)</param>
         /// <param name="filter">Expression to filter the result set.              For example, to filter on the User ID, use \&quot;userId.id eq &#39;string&#39;\&quot;              Read more about filtering results from LUSID here https://support.lusid.com/filtering-results-from-lusid. (optional)</param>
-        /// <param name="page">The pagination token to use to continue listing commands from a previous call to GetPortfolioCommands. (optional)</param>
-        /// <param name="limit">When paginating, limit the number of returned results to this many. Defaults to 500 if not specified. (optional)</param>
         /// <returns>ResourceListOfProcessedCommand</returns>
-        ResourceListOfProcessedCommand GetPortfolioCommands (string scope, string code, DateTimeOffset? fromAsAt = null, DateTimeOffset? toAsAt = null, string filter = null, string page = null, int? limit = null);
+        ResourceListOfProcessedCommand GetPortfolioCommands (string scope, string code, DateTimeOffset? fromAsAt = null, DateTimeOffset? toAsAt = null, string filter = null);
 
         /// <summary>
         /// [EARLY ACCESS] Get portfolio commands
@@ -200,10 +198,8 @@ namespace Lusid.Sdk.Api
         /// <param name="fromAsAt">The lower bound asAt datetime (inclusive) from which to retrieve commands. There is no lower bound if this is not specified. (optional)</param>
         /// <param name="toAsAt">The upper bound asAt datetime (inclusive) from which to retrieve commands. There is no upper bound if this is not specified. (optional)</param>
         /// <param name="filter">Expression to filter the result set.              For example, to filter on the User ID, use \&quot;userId.id eq &#39;string&#39;\&quot;              Read more about filtering results from LUSID here https://support.lusid.com/filtering-results-from-lusid. (optional)</param>
-        /// <param name="page">The pagination token to use to continue listing commands from a previous call to GetPortfolioCommands. (optional)</param>
-        /// <param name="limit">When paginating, limit the number of returned results to this many. Defaults to 500 if not specified. (optional)</param>
         /// <returns>ApiResponse of ResourceListOfProcessedCommand</returns>
-        ApiResponse<ResourceListOfProcessedCommand> GetPortfolioCommandsWithHttpInfo (string scope, string code, DateTimeOffset? fromAsAt = null, DateTimeOffset? toAsAt = null, string filter = null, string page = null, int? limit = null);
+        ApiResponse<ResourceListOfProcessedCommand> GetPortfolioCommandsWithHttpInfo (string scope, string code, DateTimeOffset? fromAsAt = null, DateTimeOffset? toAsAt = null, string filter = null);
         /// <summary>
         /// [EXPERIMENTAL] Get access metadata rules for a portfolio
         /// </summary>
@@ -760,10 +756,8 @@ namespace Lusid.Sdk.Api
         /// <param name="fromAsAt">The lower bound asAt datetime (inclusive) from which to retrieve commands. There is no lower bound if this is not specified. (optional)</param>
         /// <param name="toAsAt">The upper bound asAt datetime (inclusive) from which to retrieve commands. There is no upper bound if this is not specified. (optional)</param>
         /// <param name="filter">Expression to filter the result set.              For example, to filter on the User ID, use \&quot;userId.id eq &#39;string&#39;\&quot;              Read more about filtering results from LUSID here https://support.lusid.com/filtering-results-from-lusid. (optional)</param>
-        /// <param name="page">The pagination token to use to continue listing commands from a previous call to GetPortfolioCommands. (optional)</param>
-        /// <param name="limit">When paginating, limit the number of returned results to this many. Defaults to 500 if not specified. (optional)</param>
         /// <returns>Task of ResourceListOfProcessedCommand</returns>
-        System.Threading.Tasks.Task<ResourceListOfProcessedCommand> GetPortfolioCommandsAsync (string scope, string code, DateTimeOffset? fromAsAt = null, DateTimeOffset? toAsAt = null, string filter = null, string page = null, int? limit = null);
+        System.Threading.Tasks.Task<ResourceListOfProcessedCommand> GetPortfolioCommandsAsync (string scope, string code, DateTimeOffset? fromAsAt = null, DateTimeOffset? toAsAt = null, string filter = null);
 
         /// <summary>
         /// [EARLY ACCESS] Get portfolio commands
@@ -777,10 +771,8 @@ namespace Lusid.Sdk.Api
         /// <param name="fromAsAt">The lower bound asAt datetime (inclusive) from which to retrieve commands. There is no lower bound if this is not specified. (optional)</param>
         /// <param name="toAsAt">The upper bound asAt datetime (inclusive) from which to retrieve commands. There is no upper bound if this is not specified. (optional)</param>
         /// <param name="filter">Expression to filter the result set.              For example, to filter on the User ID, use \&quot;userId.id eq &#39;string&#39;\&quot;              Read more about filtering results from LUSID here https://support.lusid.com/filtering-results-from-lusid. (optional)</param>
-        /// <param name="page">The pagination token to use to continue listing commands from a previous call to GetPortfolioCommands. (optional)</param>
-        /// <param name="limit">When paginating, limit the number of returned results to this many. Defaults to 500 if not specified. (optional)</param>
         /// <returns>Task of ApiResponse (ResourceListOfProcessedCommand)</returns>
-        System.Threading.Tasks.Task<ApiResponse<ResourceListOfProcessedCommand>> GetPortfolioCommandsAsyncWithHttpInfo (string scope, string code, DateTimeOffset? fromAsAt = null, DateTimeOffset? toAsAt = null, string filter = null, string page = null, int? limit = null);
+        System.Threading.Tasks.Task<ApiResponse<ResourceListOfProcessedCommand>> GetPortfolioCommandsAsyncWithHttpInfo (string scope, string code, DateTimeOffset? fromAsAt = null, DateTimeOffset? toAsAt = null, string filter = null);
         /// <summary>
         /// [EXPERIMENTAL] Get access metadata rules for a portfolio
         /// </summary>
@@ -2261,12 +2253,10 @@ namespace Lusid.Sdk.Api
         /// <param name="fromAsAt">The lower bound asAt datetime (inclusive) from which to retrieve commands. There is no lower bound if this is not specified. (optional)</param>
         /// <param name="toAsAt">The upper bound asAt datetime (inclusive) from which to retrieve commands. There is no upper bound if this is not specified. (optional)</param>
         /// <param name="filter">Expression to filter the result set.              For example, to filter on the User ID, use \&quot;userId.id eq &#39;string&#39;\&quot;              Read more about filtering results from LUSID here https://support.lusid.com/filtering-results-from-lusid. (optional)</param>
-        /// <param name="page">The pagination token to use to continue listing commands from a previous call to GetPortfolioCommands. (optional)</param>
-        /// <param name="limit">When paginating, limit the number of returned results to this many. Defaults to 500 if not specified. (optional)</param>
         /// <returns>ResourceListOfProcessedCommand</returns>
-        public ResourceListOfProcessedCommand GetPortfolioCommands (string scope, string code, DateTimeOffset? fromAsAt = null, DateTimeOffset? toAsAt = null, string filter = null, string page = null, int? limit = null)
+        public ResourceListOfProcessedCommand GetPortfolioCommands (string scope, string code, DateTimeOffset? fromAsAt = null, DateTimeOffset? toAsAt = null, string filter = null)
         {
-             ApiResponse<ResourceListOfProcessedCommand> localVarResponse = GetPortfolioCommandsWithHttpInfo(scope, code, fromAsAt, toAsAt, filter, page, limit);
+             ApiResponse<ResourceListOfProcessedCommand> localVarResponse = GetPortfolioCommandsWithHttpInfo(scope, code, fromAsAt, toAsAt, filter);
              return localVarResponse.Data;
         }
 
@@ -2279,10 +2269,8 @@ namespace Lusid.Sdk.Api
         /// <param name="fromAsAt">The lower bound asAt datetime (inclusive) from which to retrieve commands. There is no lower bound if this is not specified. (optional)</param>
         /// <param name="toAsAt">The upper bound asAt datetime (inclusive) from which to retrieve commands. There is no upper bound if this is not specified. (optional)</param>
         /// <param name="filter">Expression to filter the result set.              For example, to filter on the User ID, use \&quot;userId.id eq &#39;string&#39;\&quot;              Read more about filtering results from LUSID here https://support.lusid.com/filtering-results-from-lusid. (optional)</param>
-        /// <param name="page">The pagination token to use to continue listing commands from a previous call to GetPortfolioCommands. (optional)</param>
-        /// <param name="limit">When paginating, limit the number of returned results to this many. Defaults to 500 if not specified. (optional)</param>
         /// <returns>ApiResponse of ResourceListOfProcessedCommand</returns>
-        public ApiResponse< ResourceListOfProcessedCommand > GetPortfolioCommandsWithHttpInfo (string scope, string code, DateTimeOffset? fromAsAt = null, DateTimeOffset? toAsAt = null, string filter = null, string page = null, int? limit = null)
+        public ApiResponse< ResourceListOfProcessedCommand > GetPortfolioCommandsWithHttpInfo (string scope, string code, DateTimeOffset? fromAsAt = null, DateTimeOffset? toAsAt = null, string filter = null)
         {
             // verify the required parameter 'scope' is set
             if (scope == null)
@@ -2319,8 +2307,6 @@ namespace Lusid.Sdk.Api
             if (fromAsAt != null) localVarQueryParams.AddRange(this.Configuration.ApiClient.ParameterToKeyValuePairs("", "fromAsAt", fromAsAt)); // query parameter
             if (toAsAt != null) localVarQueryParams.AddRange(this.Configuration.ApiClient.ParameterToKeyValuePairs("", "toAsAt", toAsAt)); // query parameter
             if (filter != null) localVarQueryParams.AddRange(this.Configuration.ApiClient.ParameterToKeyValuePairs("", "filter", filter)); // query parameter
-            if (page != null) localVarQueryParams.AddRange(this.Configuration.ApiClient.ParameterToKeyValuePairs("", "page", page)); // query parameter
-            if (limit != null) localVarQueryParams.AddRange(this.Configuration.ApiClient.ParameterToKeyValuePairs("", "limit", limit)); // query parameter
 
             // authentication (oauth2) required
             // oauth required
@@ -2360,12 +2346,10 @@ namespace Lusid.Sdk.Api
         /// <param name="fromAsAt">The lower bound asAt datetime (inclusive) from which to retrieve commands. There is no lower bound if this is not specified. (optional)</param>
         /// <param name="toAsAt">The upper bound asAt datetime (inclusive) from which to retrieve commands. There is no upper bound if this is not specified. (optional)</param>
         /// <param name="filter">Expression to filter the result set.              For example, to filter on the User ID, use \&quot;userId.id eq &#39;string&#39;\&quot;              Read more about filtering results from LUSID here https://support.lusid.com/filtering-results-from-lusid. (optional)</param>
-        /// <param name="page">The pagination token to use to continue listing commands from a previous call to GetPortfolioCommands. (optional)</param>
-        /// <param name="limit">When paginating, limit the number of returned results to this many. Defaults to 500 if not specified. (optional)</param>
         /// <returns>Task of ResourceListOfProcessedCommand</returns>
-        public async System.Threading.Tasks.Task<ResourceListOfProcessedCommand> GetPortfolioCommandsAsync (string scope, string code, DateTimeOffset? fromAsAt = null, DateTimeOffset? toAsAt = null, string filter = null, string page = null, int? limit = null)
+        public async System.Threading.Tasks.Task<ResourceListOfProcessedCommand> GetPortfolioCommandsAsync (string scope, string code, DateTimeOffset? fromAsAt = null, DateTimeOffset? toAsAt = null, string filter = null)
         {
-             ApiResponse<ResourceListOfProcessedCommand> localVarResponse = await GetPortfolioCommandsAsyncWithHttpInfo(scope, code, fromAsAt, toAsAt, filter, page, limit);
+             ApiResponse<ResourceListOfProcessedCommand> localVarResponse = await GetPortfolioCommandsAsyncWithHttpInfo(scope, code, fromAsAt, toAsAt, filter);
              return localVarResponse.Data;
 
         }
@@ -2379,10 +2363,8 @@ namespace Lusid.Sdk.Api
         /// <param name="fromAsAt">The lower bound asAt datetime (inclusive) from which to retrieve commands. There is no lower bound if this is not specified. (optional)</param>
         /// <param name="toAsAt">The upper bound asAt datetime (inclusive) from which to retrieve commands. There is no upper bound if this is not specified. (optional)</param>
         /// <param name="filter">Expression to filter the result set.              For example, to filter on the User ID, use \&quot;userId.id eq &#39;string&#39;\&quot;              Read more about filtering results from LUSID here https://support.lusid.com/filtering-results-from-lusid. (optional)</param>
-        /// <param name="page">The pagination token to use to continue listing commands from a previous call to GetPortfolioCommands. (optional)</param>
-        /// <param name="limit">When paginating, limit the number of returned results to this many. Defaults to 500 if not specified. (optional)</param>
         /// <returns>Task of ApiResponse (ResourceListOfProcessedCommand)</returns>
-        public async System.Threading.Tasks.Task<ApiResponse<ResourceListOfProcessedCommand>> GetPortfolioCommandsAsyncWithHttpInfo (string scope, string code, DateTimeOffset? fromAsAt = null, DateTimeOffset? toAsAt = null, string filter = null, string page = null, int? limit = null)
+        public async System.Threading.Tasks.Task<ApiResponse<ResourceListOfProcessedCommand>> GetPortfolioCommandsAsyncWithHttpInfo (string scope, string code, DateTimeOffset? fromAsAt = null, DateTimeOffset? toAsAt = null, string filter = null)
         {
             // verify the required parameter 'scope' is set
             if (scope == null)
@@ -2419,8 +2401,6 @@ namespace Lusid.Sdk.Api
             if (fromAsAt != null) localVarQueryParams.AddRange(this.Configuration.ApiClient.ParameterToKeyValuePairs("", "fromAsAt", fromAsAt)); // query parameter
             if (toAsAt != null) localVarQueryParams.AddRange(this.Configuration.ApiClient.ParameterToKeyValuePairs("", "toAsAt", toAsAt)); // query parameter
             if (filter != null) localVarQueryParams.AddRange(this.Configuration.ApiClient.ParameterToKeyValuePairs("", "filter", filter)); // query parameter
-            if (page != null) localVarQueryParams.AddRange(this.Configuration.ApiClient.ParameterToKeyValuePairs("", "page", page)); // query parameter
-            if (limit != null) localVarQueryParams.AddRange(this.Configuration.ApiClient.ParameterToKeyValuePairs("", "limit", limit)); // query parameter
 
             // authentication (oauth2) required
             // oauth required
