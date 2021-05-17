@@ -1,5 +1,3 @@
-using System.Collections.Generic;
-
 namespace Lusid.Sdk.Utilities
 {
     /// <summary>
@@ -43,17 +41,28 @@ namespace Lusid.Sdk.Utilities
         public string ApplicationName { get; set; }
         
         /// <summary>
+        /// Configurable via FBN_ACCESS_TOKEN env variable - get the value from LUSID web 'Your Profile'->'Personal access tokens'.
+        /// Takes precedence over other authentication factors if set.
+        /// </summary>
+        public string PersonalAccessToken { get; set; }
+        
+        /// <summary>
         /// Checks if any of the required configuration values are missing
         /// </summary>
         /// <returns></returns>
         public bool HasMissingConfig()
         {
-            return string.IsNullOrEmpty(TokenUrl) ||
-                   string.IsNullOrEmpty(Username) ||
-                   string.IsNullOrEmpty(Password) ||
-                   string.IsNullOrEmpty(ClientId) ||
-                   string.IsNullOrEmpty(ClientSecret) ||
-                   string.IsNullOrEmpty(ApiUrl);
+            var noPersonalAccessTokenVariablesPresent = string.IsNullOrEmpty(PersonalAccessToken) ||
+                                                        string.IsNullOrEmpty(ApiUrl);
+            
+            var noEnvironmentVariablesPresent =  string.IsNullOrEmpty(TokenUrl) ||
+                                                 string.IsNullOrEmpty(Username) ||
+                                                 string.IsNullOrEmpty(Password) ||
+                                                 string.IsNullOrEmpty(ClientId) ||
+                                                 string.IsNullOrEmpty(ClientSecret) ||
+                                                 string.IsNullOrEmpty(ApiUrl);
+
+            return noPersonalAccessTokenVariablesPresent && noEnvironmentVariablesPresent;
         }
 
         /// <summary>
@@ -86,6 +95,10 @@ namespace Lusid.Sdk.Utilities
             if (string.IsNullOrEmpty(ApiUrl))
             {
                 missingConfig.Add("ApiUrl");
+            }
+            if (string.IsNullOrEmpty(PersonalAccessToken))
+            {
+                missingConfig.Add("PersonalAccessToken");
             }
             return missingConfig;
         }
