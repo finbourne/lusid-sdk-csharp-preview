@@ -20,7 +20,7 @@ namespace Lusid.Sdk.Tests.Tutorials.Ibor
         [OneTimeSetUp]
         public void SetUp()
         {
-            var apiFactory = LusidApiFactoryBuilder.Build("secrets.json");
+            var apiFactory = TestLusidApiFactoryBuilder.CreateApiFactory("secret.json");
             _transactionPortfoliosApi = apiFactory.Api<ITransactionPortfoliosApi>();
             
             _testDataUtilities = new TestDataUtilities(_transactionPortfoliosApi);

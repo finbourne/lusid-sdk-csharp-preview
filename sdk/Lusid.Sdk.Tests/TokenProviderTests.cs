@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using Lusid.Sdk.Tests.Utilities;
 using Lusid.Sdk.Utilities;
 using Microsoft.Extensions.Configuration;
 using Moq;
@@ -13,7 +14,7 @@ namespace Lusid.Sdk.Tests
     public class TokenProviderTests
     {
         private static readonly Lazy<ApiConfiguration> ApiConfig =
-            new Lazy<ApiConfiguration>(() => ApiConfigurationBuilder.Build("secrets.json"));
+            new Lazy<ApiConfiguration>(() => TestLusidApiFactoryBuilder.CreateApiConfiguration("secret.json"));
 
         [Test]
         public async Task CanGetToken()
