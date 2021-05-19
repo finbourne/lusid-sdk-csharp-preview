@@ -16,7 +16,7 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
         [OneTimeSetUp]
         public void SetUp()
         {
-            var apiFactory = TestLusidApiFactoryBuilder.CreateApiFactory("secret.json");
+            var apiFactory = TestLusidApiFactoryBuilder.CreateApiFactory("secrets.json");
             _instrumentsApi = apiFactory.Api<IInstrumentsApi>();
         }
 
