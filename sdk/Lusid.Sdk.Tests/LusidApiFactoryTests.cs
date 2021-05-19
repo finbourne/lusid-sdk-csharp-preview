@@ -314,7 +314,7 @@ namespace Lusid.Sdk.Tests
         [TestCase(100, 25, Explicit = true)]
         public void Multi_Threaded_ApiFactory_Tasks_WithPACToken(int quoteCount, int threadCount)
         {
-            var config = ApiConfigurationBuilder.Build("secrets.json");
+            var config = ApiConfigurationBuilder.Build(null);
             var provider = new PersonalAccessTokenProvider(config.PersonalAccessToken);
             
             var date = new DateTimeOffset(2018, 1, 1, 0, 0, 0, TimeSpan.Zero);
