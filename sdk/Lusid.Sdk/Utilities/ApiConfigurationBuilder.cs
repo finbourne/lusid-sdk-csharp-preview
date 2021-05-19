@@ -64,7 +64,9 @@ namespace Lusid.Sdk.Utilities
                 Password = Environment.GetEnvironmentVariable("FBN_PASSWORD") ??
                            Environment.GetEnvironmentVariable("fbn_password"),
                 ApplicationName = Environment.GetEnvironmentVariable("FBN_APP_NAME") ??
-                                  Environment.GetEnvironmentVariable("fbn_app_name")
+                                  Environment.GetEnvironmentVariable("fbn_app_name"),
+                PersonalAccessToken = Environment.GetEnvironmentVariable("FBN_ACCESS_TOKEN") ?? 
+                                Environment.GetEnvironmentVariable("fbn_access_token")
             };
             
             if (apiConfig.HasMissingConfig())
