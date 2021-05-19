@@ -42,7 +42,7 @@ namespace Lusid.Sdk.Utilities
         /// <returns></returns>
         public static ApiConfiguration Build(string apiSecretsFilename)
         {
-            return apiSecretsFilename == null || !File.Exists(apiSecretsFilename)
+            return apiSecretsFilename == null
                 ? BuildFromEnvironmentVariables()
                 : BuildFromSecretsFile(apiSecretsFilename);
         }
