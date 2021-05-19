@@ -14,7 +14,7 @@ namespace Lusid.Sdk.Tests
     public class TokenProviderTests
     {
         private static readonly Lazy<ApiConfiguration> ApiConfig =
-            new Lazy<ApiConfiguration>(() => TestLusidApiFactoryBuilder.CreateApiConfiguration("secret.json"));
+            new Lazy<ApiConfiguration>(() => TestLusidApiFactoryBuilder.CreateApiConfiguration("secrets.json"));
 
         [Test]
         public async Task CanGetToken()
