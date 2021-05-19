@@ -1,4 +1,3 @@
-
 # Lusid.Sdk.Model.UpsertPersonRequest
 
 ## Properties
@@ -10,7 +9,5 @@ Name | Type | Description | Notes
 **DisplayName** | **string** | The display name of the Person | 
 **Description** | **string** | The description of the Person | [optional] 
 
-[[Back to Model list]](../README.md#documentation-for-models)
-[[Back to API list]](../README.md#documentation-for-api-endpoints)
-[[Back to README]](../README.md)
+[[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 
