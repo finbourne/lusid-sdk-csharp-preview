@@ -19,6 +19,7 @@ namespace Lusid.Sdk.Utilities
             {"ClientSecret", "FBN_CLIENT_SECRET"},
             {"Username", "FBN_USERNAME"},
             {"Password", "FBN_PASSWORD"},
+            {"PersonalAccessToken", "FBN_ACCESS_TOKEN"}
         };
         
         private static readonly Dictionary<string, string> ConfigNamesToSecrets = new Dictionary<string, string>()
@@ -28,7 +29,7 @@ namespace Lusid.Sdk.Utilities
             {"ClientId", "clientId"},
             {"ClientSecret", "clientSecret"},
             {"Username", "username"},
-            {"Password", "password"},
+            {"Password", "password"}
         };
         
         /// <summary>
@@ -41,7 +42,7 @@ namespace Lusid.Sdk.Utilities
         /// <returns></returns>
         public static ApiConfiguration Build(string apiSecretsFilename)
         {
-            return apiSecretsFilename == null
+            return apiSecretsFilename == null || !File.Exists(apiSecretsFilename)
                 ? BuildFromEnvironmentVariables()
                 : BuildFromSecretsFile(apiSecretsFilename);
         }
@@ -71,7 +72,7 @@ namespace Lusid.Sdk.Utilities
             
             if (apiConfig.HasMissingConfig())
             {
-                var missingValues = apiConfig.MissingConfig()
+                var missingValues = apiConfig.GetMissingConfig()
                     .Select(value => $"'{ConfigNamesToEnvVariables[value]}'");
                 var message = $"[{string.Join(", ", missingValues)}]";
                 throw new MissingConfigException($"The following required environment variables are not set: {message}");
@@ -93,7 +94,7 @@ namespace Lusid.Sdk.Utilities
 
             if (apiConfig.HasMissingConfig())
             {
-                var missingValues = apiConfig.MissingConfig()
+                var missingValues = apiConfig.GetMissingConfig()
                     .Select(value => $"'{ConfigNamesToSecrets[value]}'");
                 var message = $"[{string.Join(", ", missingValues)}]";
                 throw new MissingConfigException($"The provided secrets file is missing the following required values: {message}");
