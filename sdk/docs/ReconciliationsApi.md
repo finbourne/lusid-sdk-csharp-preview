@@ -1,13 +1,13 @@
 # Lusid.Sdk.Api.ReconciliationsApi
 
-All URIs are relative to *http://local-unit-test-server.lusid.com:39219*
+All URIs are relative to *http://local-unit-test-server.lusid.com:55139*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
 [**ReconcileHoldings**](ReconciliationsApi.md#reconcileholdings) | **POST** /api/portfolios/$reconcileholdings | [EARLY ACCESS] Reconcile portfolio holdings
 [**ReconcileHoldingsPreview**](ReconciliationsApi.md#reconcileholdingspreview) | **POST** /api/portfolios/preview/$reconcileholdings | [EXPERIMENTAL] Reconcile portfolio holdings with given tolerance
-[**ReconcileInline**](ReconciliationsApi.md#reconcileinline) | **POST** /api/portfolios/$reconcileInline | [EXPERIMENTAL] Reconcile valuations performed on one or two sets of inline instruments using one or two configuration recipes.
-[**ReconcileValuation**](ReconciliationsApi.md#reconcilevaluation) | **POST** /api/portfolios/$reconcileValuation | [EXPERIMENTAL] Reconcile valuations performed on one or two sets of holdings using one or two configuration recipes.
+[**ReconcileInline**](ReconciliationsApi.md#reconcileinline) | **POST** /api/portfolios/$reconcileInline | [BETA] Reconcile valuations performed on one or two sets of inline instruments using one or two configuration recipes.
+[**ReconcileValuation**](ReconciliationsApi.md#reconcilevaluation) | **POST** /api/portfolios/$reconcileValuation | [BETA] Reconcile valuations performed on one or two sets of holdings using one or two configuration recipes.
 
 
 
@@ -34,7 +34,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:39219";
+            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:55139";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -122,7 +122,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:39219";
+            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:55139";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -191,7 +191,7 @@ Name | Type | Description  | Notes
 
 > ListAggregationReconciliation ReconcileInline (InlineValuationsReconciliationRequest inlineValuationsReconciliationRequest = null)
 
-[EXPERIMENTAL] Reconcile valuations performed on one or two sets of inline instruments using one or two configuration recipes.
+[BETA] Reconcile valuations performed on one or two sets of inline instruments using one or two configuration recipes.
 
 Perform valuation of one or two set of inline instruments using different one or two configuration recipes. Produce a breakdown of the resulting differences in valuation.
 
@@ -210,7 +210,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:39219";
+            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:55139";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -219,7 +219,7 @@ namespace Example
 
             try
             {
-                // [EXPERIMENTAL] Reconcile valuations performed on one or two sets of inline instruments using one or two configuration recipes.
+                // [BETA] Reconcile valuations performed on one or two sets of inline instruments using one or two configuration recipes.
                 ListAggregationReconciliation result = apiInstance.ReconcileInline(inlineValuationsReconciliationRequest);
                 Debug.WriteLine(result);
             }
@@ -271,7 +271,7 @@ Name | Type | Description  | Notes
 
 > ListAggregationReconciliation ReconcileValuation (ValuationsReconciliationRequest valuationsReconciliationRequest = null)
 
-[EXPERIMENTAL] Reconcile valuations performed on one or two sets of holdings using one or two configuration recipes.
+[BETA] Reconcile valuations performed on one or two sets of holdings using one or two configuration recipes.
 
 Perform valuation of one or two set of holdings using different one or two configuration recipes. Produce a breakdown of the resulting differences in valuation.
 
@@ -290,7 +290,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:39219";
+            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:55139";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -299,7 +299,7 @@ namespace Example
 
             try
             {
-                // [EXPERIMENTAL] Reconcile valuations performed on one or two sets of holdings using one or two configuration recipes.
+                // [BETA] Reconcile valuations performed on one or two sets of holdings using one or two configuration recipes.
                 ListAggregationReconciliation result = apiInstance.ReconcileValuation(valuationsReconciliationRequest);
                 Debug.WriteLine(result);
             }
