@@ -6,8 +6,8 @@ Method | HTTP request | Description
 ------------- | ------------- | -------------
 [**GenerateConfigurationRecipe**](AggregationApi.md#generateconfigurationrecipe) | **POST** /api/aggregation/{scope}/{code}/$generateconfigurationrecipe | [EXPERIMENTAL] Generates a recipe sufficient to perform valuations for the given portfolio.
 [**GetQueryableKeys**](AggregationApi.md#getqueryablekeys) | **GET** /api/results/queryable/keys | [EXPERIMENTAL] Query the set of supported \&quot;addresses\&quot; that can be queried from the aggregation endpoint.
-[**GetValuation**](AggregationApi.md#getvaluation) | **POST** /api/aggregation/$valuation | [BETA] Perform valuation for a list of portfolios and/or portfolio groups
-[**GetValuationOfWeightedInstruments**](AggregationApi.md#getvaluationofweightedinstruments) | **POST** /api/aggregation/$valuationinlined | [BETA] Perform valuation for an inlined portfolio
+[**GetValuation**](AggregationApi.md#getvaluation) | **POST** /api/aggregation/$valuation | [EXPERIMENTAL] Perform valuation for a list of portfolios and/or portfolio groups
+[**GetValuationOfWeightedInstruments**](AggregationApi.md#getvaluationofweightedinstruments) | **POST** /api/aggregation/$valuationinlined | [EXPERIMENTAL] Perform valuation for an inlined portfolio
 
 
 <a name="generateconfigurationrecipe"></a>
@@ -174,7 +174,7 @@ Name | Type | Description  | Notes
 # **GetValuation**
 > ListAggregationResponse GetValuation (ValuationRequest valuationRequest = null)
 
-[BETA] Perform valuation for a list of portfolios and/or portfolio groups
+[EXPERIMENTAL] Perform valuation for a list of portfolios and/or portfolio groups
 
 Perform valuation on specified list of portfolio and/or portfolio groups for a set of dates.
 
@@ -202,7 +202,7 @@ namespace Example
 
             try
             {
-                // [BETA] Perform valuation for a list of portfolios and/or portfolio groups
+                // [EXPERIMENTAL] Perform valuation for a list of portfolios and/or portfolio groups
                 ListAggregationResponse result = apiInstance.GetValuation(valuationRequest);
                 Debug.WriteLine(result);
             }
@@ -250,7 +250,7 @@ Name | Type | Description  | Notes
 # **GetValuationOfWeightedInstruments**
 > ListAggregationResponse GetValuationOfWeightedInstruments (InlineValuationRequest inlineValuationRequest = null)
 
-[BETA] Perform valuation for an inlined portfolio
+[EXPERIMENTAL] Perform valuation for an inlined portfolio
 
 Perform valuation on the portfolio that is defined by the weighted set of instruments passed to the request.
 
@@ -278,7 +278,7 @@ namespace Example
 
             try
             {
-                // [BETA] Perform valuation for an inlined portfolio
+                // [EXPERIMENTAL] Perform valuation for an inlined portfolio
                 ListAggregationResponse result = apiInstance.GetValuationOfWeightedInstruments(inlineValuationRequest);
                 Debug.WriteLine(result);
             }
