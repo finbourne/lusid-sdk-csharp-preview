@@ -35,7 +35,7 @@ namespace Lusid.Sdk.Tests.Utilities
         {
             var config = new ApiConfiguration() {ApiUrl = "http://bla.com", Username = "un", Password = "pwd", ClientId = "cid", ClientSecret = "cs", TokenUrl = "tu"};
             Assert.IsFalse(config.HasMissingConfig());
-            Assert.AreEqual("", string.Join(",", config.GetMissingConfig()));
+            Assert.AreEqual(string.Empty, string.Join(",", config.GetMissingConfig()));
         }
     }
 }

@@ -30,7 +30,7 @@ namespace Lusid.Sdk.Tests
         }
         
         [Test]
-        public async Task CanGetPACToken()
+        public async Task CanGetPersonalAccessToken()
         {
             // GIVEN a token provider initialised with required secrets
             var provider = new PersonalAccessTokenProvider(ApiConfig.Value.PersonalAccessToken);
@@ -124,7 +124,7 @@ namespace Lusid.Sdk.Tests
         }
         
         [Test]
-        public void Can_Retrieve_Same_PACToken_From_Multiple_Threads()
+        public void Can_Retrieve_Same_PersonalAccessToken_From_Multiple_Threads()
         {
             const int threadCount = 100;
             
