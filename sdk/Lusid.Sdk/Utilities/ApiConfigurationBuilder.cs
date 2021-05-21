@@ -19,6 +19,7 @@ namespace Lusid.Sdk.Utilities
             {"ClientSecret", "FBN_CLIENT_SECRET"},
             {"Username", "FBN_USERNAME"},
             {"Password", "FBN_PASSWORD"},
+            {"PersonalAccessToken", "FBN_ACCESS_TOKEN"}
         };
         
         private static readonly Dictionary<string, string> ConfigNamesToSecrets = new Dictionary<string, string>()
@@ -28,7 +29,7 @@ namespace Lusid.Sdk.Utilities
             {"ClientId", "clientId"},
             {"ClientSecret", "clientSecret"},
             {"Username", "username"},
-            {"Password", "password"},
+            {"Password", "password"}
         };
         
         /// <summary>
@@ -64,12 +65,14 @@ namespace Lusid.Sdk.Utilities
                 Password = Environment.GetEnvironmentVariable("FBN_PASSWORD") ??
                            Environment.GetEnvironmentVariable("fbn_password"),
                 ApplicationName = Environment.GetEnvironmentVariable("FBN_APP_NAME") ??
-                                  Environment.GetEnvironmentVariable("fbn_app_name")
+                                  Environment.GetEnvironmentVariable("fbn_app_name"),
+                PersonalAccessToken = Environment.GetEnvironmentVariable("FBN_ACCESS_TOKEN") ?? 
+                                Environment.GetEnvironmentVariable("fbn_access_token")
             };
             
             if (apiConfig.HasMissingConfig())
             {
-                var missingValues = apiConfig.MissingConfig()
+                var missingValues = apiConfig.GetMissingConfig()
                     .Select(value => $"'{ConfigNamesToEnvVariables[value]}'");
                 var message = $"[{string.Join(", ", missingValues)}]";
                 throw new MissingConfigException($"The following required environment variables are not set: {message}");
@@ -91,7 +94,7 @@ namespace Lusid.Sdk.Utilities
 
             if (apiConfig.HasMissingConfig())
             {
-                var missingValues = apiConfig.MissingConfig()
+                var missingValues = apiConfig.GetMissingConfig()
                     .Select(value => $"'{ConfigNamesToSecrets[value]}'");
                 var message = $"[{string.Join(", ", missingValues)}]";
                 throw new MissingConfigException($"The provided secrets file is missing the following required values: {message}");
