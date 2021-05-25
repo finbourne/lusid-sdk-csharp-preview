@@ -67,8 +67,8 @@ namespace Lusid.Sdk.Tests.Utilities
         
         public TransactionRequest BuildTransactionRequest(
             string instrumentId,
-            decimal? units, 
-            decimal? price,
+            decimal units, 
+            decimal price,
             string currency,
             DateTimeOffset tradeDate, 
             string transactionType)
@@ -82,10 +82,9 @@ namespace Lusid.Sdk.Tests.Utilities
                 },
                 transactionDate: tradeDate,
                 settlementDate: tradeDate,
-                units: units ?? default(decimal),
-                transactionPrice: new TransactionPrice(price ?? default(decimal), TransactionPrice.TypeEnum.Price),
-                totalConsideration: new CurrencyAndAmount((
-                        price ?? default(decimal)) * (units ?? default(decimal)), currency),
+                units: units,
+                transactionPrice: new TransactionPrice(price, TransactionPrice.TypeEnum.Price),
+                totalConsideration: new CurrencyAndAmount(price * units, currency),
                 source: "Broker");
         }
 
@@ -238,7 +237,7 @@ namespace Lusid.Sdk.Tests.Utilities
         {
             // CREATE instrument transaction request
             var transactionRequests = luids.Select(luid => 
-                    BuildTransactionRequest(luid, 1, null, "USD", effectiveAt, "StockIn"))
+                    BuildTransactionRequest(luid, 1, 0.0m, "USD", effectiveAt, "StockIn"))
                 .ToList();
             
             // UPSERT instruments to portfolio
