@@ -413,6 +413,10 @@ namespace Lusid.Sdk.Api
                 localVarRequestOptions.HeaderParameters.Add("Authorization", "Bearer " + this.Configuration.AccessToken);
             }
 
+            //  set the LUSID header
+            localVarRequestOptions.HeaderParameters.Add("X-LUSID-Sdk-Language", "C#");
+            localVarRequestOptions.HeaderParameters.Add("X-LUSID-Sdk-Version", "0.11.3028-MARK");
+
             // make the HTTP request
             var localVarResponse = this.Client.Post<ConfigurationRecipe>("/api/aggregation/{scope}/{code}/$generateconfigurationrecipe", localVarRequestOptions, this.Configuration);
 
@@ -573,6 +577,10 @@ namespace Lusid.Sdk.Api
                 localVarRequestOptions.HeaderParameters.Add("Authorization", "Bearer " + this.Configuration.AccessToken);
             }
 
+            //  set the LUSID header
+            localVarRequestOptions.HeaderParameters.Add("X-LUSID-Sdk-Language", "C#");
+            localVarRequestOptions.HeaderParameters.Add("X-LUSID-Sdk-Version", "0.11.3028-MARK");
+
             // make the HTTP request
             var localVarResponse = this.Client.Get<ResourceListOfAggregationQuery>("/api/results/queryable/keys", localVarRequestOptions, this.Configuration);
 
@@ -719,6 +727,10 @@ namespace Lusid.Sdk.Api
                 localVarRequestOptions.HeaderParameters.Add("Authorization", "Bearer " + this.Configuration.AccessToken);
             }
 
+            //  set the LUSID header
+            localVarRequestOptions.HeaderParameters.Add("X-LUSID-Sdk-Language", "C#");
+            localVarRequestOptions.HeaderParameters.Add("X-LUSID-Sdk-Version", "0.11.3028-MARK");
+
             // make the HTTP request
             var localVarResponse = this.Client.Post<ListAggregationResponse>("/api/aggregation/$valuation", localVarRequestOptions, this.Configuration);
 
@@ -853,6 +865,10 @@ namespace Lusid.Sdk.Api
             {
                 localVarRequestOptions.HeaderParameters.Add("Authorization", "Bearer " + this.Configuration.AccessToken);
             }
+
+            //  set the LUSID header
+            localVarRequestOptions.HeaderParameters.Add("X-LUSID-Sdk-Language", "C#");
+            localVarRequestOptions.HeaderParameters.Add("X-LUSID-Sdk-Version", "0.11.3028-MARK");
 
             // make the HTTP request
             var localVarResponse = this.Client.Post<ListAggregationResponse>("/api/aggregation/$valuationinlined", localVarRequestOptions, this.Configuration);

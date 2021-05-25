@@ -781,6 +781,10 @@ namespace Lusid.Sdk.Api
                 localVarRequestOptions.HeaderParameters.Add("Authorization", "Bearer " + this.Configuration.AccessToken);
             }
 
+            //  set the LUSID header
+            localVarRequestOptions.HeaderParameters.Add("X-LUSID-Sdk-Language", "C#");
+            localVarRequestOptions.HeaderParameters.Add("X-LUSID-Sdk-Version", "0.11.3028-MARK");
+
             // make the HTTP request
             var localVarResponse = this.Client.Delete<QuoteAccessMetadataRule>("/api/metadata/quotes/rules/{scope}", localVarRequestOptions, this.Configuration);
 
@@ -965,6 +969,10 @@ namespace Lusid.Sdk.Api
                 localVarRequestOptions.HeaderParameters.Add("Authorization", "Bearer " + this.Configuration.AccessToken);
             }
 
+            //  set the LUSID header
+            localVarRequestOptions.HeaderParameters.Add("X-LUSID-Sdk-Language", "C#");
+            localVarRequestOptions.HeaderParameters.Add("X-LUSID-Sdk-Version", "0.11.3028-MARK");
+
             // make the HTTP request
             var localVarResponse = this.Client.Post<AnnulQuotesResponse>("/api/quotes/{scope}/$delete", localVarRequestOptions, this.Configuration);
 
@@ -1131,6 +1139,10 @@ namespace Lusid.Sdk.Api
             {
                 localVarRequestOptions.HeaderParameters.Add("Authorization", "Bearer " + this.Configuration.AccessToken);
             }
+
+            //  set the LUSID header
+            localVarRequestOptions.HeaderParameters.Add("X-LUSID-Sdk-Language", "C#");
+            localVarRequestOptions.HeaderParameters.Add("X-LUSID-Sdk-Version", "0.11.3028-MARK");
 
             // make the HTTP request
             var localVarResponse = this.Client.Post<GetQuotesResponse>("/api/quotes/{scope}/$get", localVarRequestOptions, this.Configuration);
@@ -1339,6 +1351,10 @@ namespace Lusid.Sdk.Api
             {
                 localVarRequestOptions.HeaderParameters.Add("Authorization", "Bearer " + this.Configuration.AccessToken);
             }
+
+            //  set the LUSID header
+            localVarRequestOptions.HeaderParameters.Add("X-LUSID-Sdk-Language", "C#");
+            localVarRequestOptions.HeaderParameters.Add("X-LUSID-Sdk-Version", "0.11.3028-MARK");
 
             // make the HTTP request
             var localVarResponse = this.Client.Get<QuoteAccessMetadataRule>("/api/metadata/quotes/rules", localVarRequestOptions, this.Configuration);
@@ -1553,6 +1569,10 @@ namespace Lusid.Sdk.Api
                 localVarRequestOptions.HeaderParameters.Add("Authorization", "Bearer " + this.Configuration.AccessToken);
             }
 
+            //  set the LUSID header
+            localVarRequestOptions.HeaderParameters.Add("X-LUSID-Sdk-Language", "C#");
+            localVarRequestOptions.HeaderParameters.Add("X-LUSID-Sdk-Version", "0.11.3028-MARK");
+
             // make the HTTP request
             var localVarResponse = this.Client.Get<ResourceListOfQuote>("/api/quotes/{scope}/$deprecated", localVarRequestOptions, this.Configuration);
 
@@ -1724,6 +1744,10 @@ namespace Lusid.Sdk.Api
                 localVarRequestOptions.HeaderParameters.Add("Authorization", "Bearer " + this.Configuration.AccessToken);
             }
 
+            //  set the LUSID header
+            localVarRequestOptions.HeaderParameters.Add("X-LUSID-Sdk-Language", "C#");
+            localVarRequestOptions.HeaderParameters.Add("X-LUSID-Sdk-Version", "0.11.3028-MARK");
+
             // make the HTTP request
             var localVarResponse = this.Client.Get<ResourceListOfQuoteAccessMetadataRule>("/api/metadata/quotes/rules/{scope}", localVarRequestOptions, this.Configuration);
 
@@ -1894,6 +1918,10 @@ namespace Lusid.Sdk.Api
             {
                 localVarRequestOptions.HeaderParameters.Add("Authorization", "Bearer " + this.Configuration.AccessToken);
             }
+
+            //  set the LUSID header
+            localVarRequestOptions.HeaderParameters.Add("X-LUSID-Sdk-Language", "C#");
+            localVarRequestOptions.HeaderParameters.Add("X-LUSID-Sdk-Version", "0.11.3028-MARK");
 
             // make the HTTP request
             var localVarResponse = this.Client.Get<ResourceListOfQuote>("/api/quotes/{scope}", localVarRequestOptions, this.Configuration);
@@ -2077,6 +2105,10 @@ namespace Lusid.Sdk.Api
                 localVarRequestOptions.HeaderParameters.Add("Authorization", "Bearer " + this.Configuration.AccessToken);
             }
 
+            //  set the LUSID header
+            localVarRequestOptions.HeaderParameters.Add("X-LUSID-Sdk-Language", "C#");
+            localVarRequestOptions.HeaderParameters.Add("X-LUSID-Sdk-Version", "0.11.3028-MARK");
+
             // make the HTTP request
             var localVarResponse = this.Client.Post<QuoteAccessMetadataRule>("/api/metadata/quotes/rules/{scope}", localVarRequestOptions, this.Configuration);
 
@@ -2235,6 +2267,10 @@ namespace Lusid.Sdk.Api
             {
                 localVarRequestOptions.HeaderParameters.Add("Authorization", "Bearer " + this.Configuration.AccessToken);
             }
+
+            //  set the LUSID header
+            localVarRequestOptions.HeaderParameters.Add("X-LUSID-Sdk-Language", "C#");
+            localVarRequestOptions.HeaderParameters.Add("X-LUSID-Sdk-Version", "0.11.3028-MARK");
 
             // make the HTTP request
             var localVarResponse = this.Client.Post<UpsertQuotesResponse>("/api/quotes/{scope}", localVarRequestOptions, this.Configuration);

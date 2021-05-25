@@ -1145,6 +1145,10 @@ namespace Lusid.Sdk.Api
                 localVarRequestOptions.HeaderParameters.Add("Authorization", "Bearer " + this.Configuration.AccessToken);
             }
 
+            //  set the LUSID header
+            localVarRequestOptions.HeaderParameters.Add("X-LUSID-Sdk-Language", "C#");
+            localVarRequestOptions.HeaderParameters.Add("X-LUSID-Sdk-Version", "0.11.3028-MARK");
+
             // make the HTTP request
             var localVarResponse = this.Client.Delete<DeletedEntityResponse>("/api/persons/{idTypeScope}/{idTypeCode}/{code}", localVarRequestOptions, this.Configuration);
 
@@ -1320,6 +1324,10 @@ namespace Lusid.Sdk.Api
             {
                 localVarRequestOptions.HeaderParameters.Add("Authorization", "Bearer " + this.Configuration.AccessToken);
             }
+
+            //  set the LUSID header
+            localVarRequestOptions.HeaderParameters.Add("X-LUSID-Sdk-Language", "C#");
+            localVarRequestOptions.HeaderParameters.Add("X-LUSID-Sdk-Version", "0.11.3028-MARK");
 
             // make the HTTP request
             var localVarResponse = this.Client.Delete<DeletedEntityResponse>("/api/persons/{idTypeScope}/{idTypeCode}/{code}/metadata/{metadataKey}", localVarRequestOptions, this.Configuration);
@@ -1510,6 +1518,10 @@ namespace Lusid.Sdk.Api
                 localVarRequestOptions.HeaderParameters.Add("Authorization", "Bearer " + this.Configuration.AccessToken);
             }
 
+            //  set the LUSID header
+            localVarRequestOptions.HeaderParameters.Add("X-LUSID-Sdk-Language", "C#");
+            localVarRequestOptions.HeaderParameters.Add("X-LUSID-Sdk-Version", "0.11.3028-MARK");
+
             // make the HTTP request
             var localVarResponse = this.Client.Delete<DeletedEntityResponse>("/api/persons/{idTypeScope}/{idTypeCode}/{code}/identifiers", localVarRequestOptions, this.Configuration);
 
@@ -1699,6 +1711,10 @@ namespace Lusid.Sdk.Api
                 localVarRequestOptions.HeaderParameters.Add("Authorization", "Bearer " + this.Configuration.AccessToken);
             }
 
+            //  set the LUSID header
+            localVarRequestOptions.HeaderParameters.Add("X-LUSID-Sdk-Language", "C#");
+            localVarRequestOptions.HeaderParameters.Add("X-LUSID-Sdk-Version", "0.11.3028-MARK");
+
             // make the HTTP request
             var localVarResponse = this.Client.Delete<DeletedEntityResponse>("/api/persons/{idTypeScope}/{idTypeCode}/{code}/properties", localVarRequestOptions, this.Configuration);
 
@@ -1886,6 +1902,10 @@ namespace Lusid.Sdk.Api
             {
                 localVarRequestOptions.HeaderParameters.Add("Authorization", "Bearer " + this.Configuration.AccessToken);
             }
+
+            //  set the LUSID header
+            localVarRequestOptions.HeaderParameters.Add("X-LUSID-Sdk-Language", "C#");
+            localVarRequestOptions.HeaderParameters.Add("X-LUSID-Sdk-Version", "0.11.3028-MARK");
 
             // make the HTTP request
             var localVarResponse = this.Client.Get<Dictionary<string, List<AccessMetadataValue>>>("/api/persons/{idTypeScope}/{idTypeCode}/{code}/metadata", localVarRequestOptions, this.Configuration);
@@ -2079,6 +2099,10 @@ namespace Lusid.Sdk.Api
             {
                 localVarRequestOptions.HeaderParameters.Add("Authorization", "Bearer " + this.Configuration.AccessToken);
             }
+
+            //  set the LUSID header
+            localVarRequestOptions.HeaderParameters.Add("X-LUSID-Sdk-Language", "C#");
+            localVarRequestOptions.HeaderParameters.Add("X-LUSID-Sdk-Version", "0.11.3028-MARK");
 
             // make the HTTP request
             var localVarResponse = this.Client.Get<Person>("/api/persons/{idTypeScope}/{idTypeCode}/{code}", localVarRequestOptions, this.Configuration);
@@ -2279,6 +2303,10 @@ namespace Lusid.Sdk.Api
             {
                 localVarRequestOptions.HeaderParameters.Add("Authorization", "Bearer " + this.Configuration.AccessToken);
             }
+
+            //  set the LUSID header
+            localVarRequestOptions.HeaderParameters.Add("X-LUSID-Sdk-Language", "C#");
+            localVarRequestOptions.HeaderParameters.Add("X-LUSID-Sdk-Version", "0.11.3028-MARK");
 
             // make the HTTP request
             var localVarResponse = this.Client.Get<ICollection<AccessMetadataValue>>("/api/persons/{idTypeScope}/{idTypeCode}/{code}/metadata/{metadataKey}", localVarRequestOptions, this.Configuration);
@@ -2491,6 +2519,10 @@ namespace Lusid.Sdk.Api
             {
                 localVarRequestOptions.HeaderParameters.Add("Authorization", "Bearer " + this.Configuration.AccessToken);
             }
+
+            //  set the LUSID header
+            localVarRequestOptions.HeaderParameters.Add("X-LUSID-Sdk-Language", "C#");
+            localVarRequestOptions.HeaderParameters.Add("X-LUSID-Sdk-Version", "0.11.3028-MARK");
 
             // make the HTTP request
             var localVarResponse = this.Client.Get<ResourceListOfPropertyInterval>("/api/persons/{idTypeScope}/{idTypeCode}/{code}/properties/time-series", localVarRequestOptions, this.Configuration);
@@ -2709,6 +2741,10 @@ namespace Lusid.Sdk.Api
                 localVarRequestOptions.HeaderParameters.Add("Authorization", "Bearer " + this.Configuration.AccessToken);
             }
 
+            //  set the LUSID header
+            localVarRequestOptions.HeaderParameters.Add("X-LUSID-Sdk-Language", "C#");
+            localVarRequestOptions.HeaderParameters.Add("X-LUSID-Sdk-Version", "0.11.3028-MARK");
+
             // make the HTTP request
             var localVarResponse = this.Client.Get<ResourceListOfRelation>("/api/persons/{idTypeScope}/{idTypeCode}/{code}/relations", localVarRequestOptions, this.Configuration);
 
@@ -2919,6 +2955,10 @@ namespace Lusid.Sdk.Api
             {
                 localVarRequestOptions.HeaderParameters.Add("Authorization", "Bearer " + this.Configuration.AccessToken);
             }
+
+            //  set the LUSID header
+            localVarRequestOptions.HeaderParameters.Add("X-LUSID-Sdk-Language", "C#");
+            localVarRequestOptions.HeaderParameters.Add("X-LUSID-Sdk-Version", "0.11.3028-MARK");
 
             // make the HTTP request
             var localVarResponse = this.Client.Get<ResourceListOfRelationship>("/api/persons/{idTypeScope}/{idTypeCode}/{code}/relationships", localVarRequestOptions, this.Configuration);
@@ -3142,6 +3182,10 @@ namespace Lusid.Sdk.Api
                 localVarRequestOptions.HeaderParameters.Add("Authorization", "Bearer " + this.Configuration.AccessToken);
             }
 
+            //  set the LUSID header
+            localVarRequestOptions.HeaderParameters.Add("X-LUSID-Sdk-Language", "C#");
+            localVarRequestOptions.HeaderParameters.Add("X-LUSID-Sdk-Version", "0.11.3028-MARK");
+
             // make the HTTP request
             var localVarResponse = this.Client.Get<PagedResourceListOfPerson>("/api/persons/{idTypeScope}/{idTypeCode}", localVarRequestOptions, this.Configuration);
 
@@ -3351,6 +3395,10 @@ namespace Lusid.Sdk.Api
                 localVarRequestOptions.HeaderParameters.Add("Authorization", "Bearer " + this.Configuration.AccessToken);
             }
 
+            //  set the LUSID header
+            localVarRequestOptions.HeaderParameters.Add("X-LUSID-Sdk-Language", "C#");
+            localVarRequestOptions.HeaderParameters.Add("X-LUSID-Sdk-Version", "0.11.3028-MARK");
+
             // make the HTTP request
             var localVarResponse = this.Client.Post<Person>("/api/persons/{idTypeScope}/{idTypeCode}/{code}/identifiers", localVarRequestOptions, this.Configuration);
 
@@ -3536,6 +3584,10 @@ namespace Lusid.Sdk.Api
                 localVarRequestOptions.HeaderParameters.Add("Authorization", "Bearer " + this.Configuration.AccessToken);
             }
 
+            //  set the LUSID header
+            localVarRequestOptions.HeaderParameters.Add("X-LUSID-Sdk-Language", "C#");
+            localVarRequestOptions.HeaderParameters.Add("X-LUSID-Sdk-Version", "0.11.3028-MARK");
+
             // make the HTTP request
             var localVarResponse = this.Client.Post<Person>("/api/persons/{idTypeScope}/{idTypeCode}/{code}/properties", localVarRequestOptions, this.Configuration);
 
@@ -3699,6 +3751,10 @@ namespace Lusid.Sdk.Api
             {
                 localVarRequestOptions.HeaderParameters.Add("Authorization", "Bearer " + this.Configuration.AccessToken);
             }
+
+            //  set the LUSID header
+            localVarRequestOptions.HeaderParameters.Add("X-LUSID-Sdk-Language", "C#");
+            localVarRequestOptions.HeaderParameters.Add("X-LUSID-Sdk-Version", "0.11.3028-MARK");
 
             // make the HTTP request
             var localVarResponse = this.Client.Post<Person>("/api/persons", localVarRequestOptions, this.Configuration);
@@ -3876,6 +3932,10 @@ namespace Lusid.Sdk.Api
             {
                 localVarRequestOptions.HeaderParameters.Add("Authorization", "Bearer " + this.Configuration.AccessToken);
             }
+
+            //  set the LUSID header
+            localVarRequestOptions.HeaderParameters.Add("X-LUSID-Sdk-Language", "C#");
+            localVarRequestOptions.HeaderParameters.Add("X-LUSID-Sdk-Version", "0.11.3028-MARK");
 
             // make the HTTP request
             var localVarResponse = this.Client.Put<ResourceListOfAccessMetadataValueOf>("/api/persons/{idTypeScope}/{idTypeCode}/{code}/metadata/{metadataKey}", localVarRequestOptions, this.Configuration);
