@@ -14,6 +14,13 @@ Name | Type | Description | Notes
 **PortfolioId** | [**ResourceId**](ResourceId.md) |  | 
 **Id** | [**ResourceId**](ResourceId.md) |  | 
 **LusidInstrumentId** | **string** | The LUSID instrument id for the instrument ordered. | 
+**State** | **string** | The order&#39;s state (examples: New, PartiallyFilled, ...) | [optional] 
+**Type** | **string** | The order&#39;s type (examples: Limit, Market, ...) | [optional] 
+**TimeInForce** | **string** | The order&#39;s time in force (examples: Day, GoodTilCancel, ...) | [optional] 
+**Date** | **DateTimeOffset?** | The date on which the order was made | [optional] 
+**Price** | [**CurrencyAndAmount**](CurrencyAndAmount.md) |  | [optional] 
+**OrderInstructionId** | [**ResourceId**](ResourceId.md) |  | [optional] 
+**PackageId** | [**ResourceId**](ResourceId.md) |  | [optional] 
 **Links** | [**List&lt;Link&gt;**](Link.md) |  | [optional] 
 
 [[Back to Model list]](../README.md#documentation-for-models)
