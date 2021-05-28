@@ -12,6 +12,13 @@ Name | Type | Description | Notes
 **OrderBookId** | [**ResourceId**](ResourceId.md) |  | [optional] 
 **PortfolioId** | [**ResourceId**](ResourceId.md) |  | 
 **Id** | [**ResourceId**](ResourceId.md) |  | 
+**State** | **string** | The order&#39;s state (examples: New, PartiallyFilled, ...) | [optional] 
+**Type** | **string** | The order&#39;s type (examples: Limit, Market, ...) | [optional] 
+**TimeInForce** | **string** | The order&#39;s time in force (examples: Day, GoodTilCancel, ...) | [optional] 
+**Date** | **DateTimeOffset?** | The date on which the order was made | [optional] 
+**Price** | [**CurrencyAndAmount**](CurrencyAndAmount.md) |  | [optional] 
+**OrderInstruction** | [**ResourceId**](ResourceId.md) |  | [optional] 
+**Package** | [**ResourceId**](ResourceId.md) |  | [optional] 
 
 [[Back to Model list]](../README.md#documentation-for-models)
 [[Back to API list]](../README.md#documentation-for-api-endpoints)
