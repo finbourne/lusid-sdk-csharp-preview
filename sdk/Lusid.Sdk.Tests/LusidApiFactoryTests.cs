@@ -11,6 +11,7 @@ using Lusid.Sdk.Tests.Utilities;
 using Lusid.Sdk.Utilities;
 using Newtonsoft.Json;
 using NUnit.Framework;
+using System.Net;
 
 namespace Lusid.Sdk.Tests
 {
@@ -47,7 +48,7 @@ namespace Lusid.Sdk.Tests
 
         class InvalidApi : IApiAccessor
         {
-            public Configuration Configuration { get; set; }
+            public IReadableConfiguration Configuration { get; set; }
             public string GetBasePath()
             {
                 throw new NotImplementedException();
@@ -359,8 +360,8 @@ namespace Lusid.Sdk.Tests
         public void ApiResponse_CanExtractAndParseAccurately_DateHeader()
         {
             var apiResponse = new ApiResponse<VersionSummaryDto>(
-                statusCode: 200,
-                headers: new Dictionary<string, string>()
+                statusCode: HttpStatusCode.OK,
+                headers: new Multimap<string, string>()
                 {
                     {"Date", "Tue, 09 Feb 2021 05:18:41 GMT"},
                 },
@@ -385,7 +386,7 @@ namespace Lusid.Sdk.Tests
         {
             var apiResponse = _factory.Api<ApplicationMetadataApi>().GetLusidVersionsWithHttpInfo();
             // Invalidate header containing access token
-            apiResponse.Headers[ApiResponseExtensions.DateHeader] = "invalid";
+            apiResponse.Headers[ApiResponseExtensions.DateHeader] = new[] {"invalid"};
             var date = apiResponse.GetRequestDateTime();
             Assert.IsNull(date);
         }

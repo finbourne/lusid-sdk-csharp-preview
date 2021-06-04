@@ -68,8 +68,8 @@ namespace Lusid.Sdk.Tests.Utilities
         
         public TransactionRequest BuildTransactionRequest(
             string instrumentId,
-            decimal? units, 
-            decimal? price,
+            decimal units, 
+            decimal price,
             string currency,
             DateTimeOrCutLabel tradeDate, 
             string transactionType)
@@ -90,7 +90,7 @@ namespace Lusid.Sdk.Tests.Utilities
         }
 
         public TransactionRequest BuildCashFundsInTransactionRequest(
-            decimal? units,
+            decimal units,
             string currency,
             DateTimeOffset tradeDate)
         {
@@ -111,7 +111,7 @@ namespace Lusid.Sdk.Tests.Utilities
                 source: "Client");
         }
 
-        public AdjustHoldingRequest BuildAdjustHoldingsRequst(string instrumentId, decimal? units, decimal? price, string currency, DateTimeOffset? tradeDate)
+        public AdjustHoldingRequest BuildAdjustHoldingsRequst(string instrumentId, decimal units, decimal price, string currency, DateTimeOffset? tradeDate)
         {
             return new AdjustHoldingRequest(
                 instrumentIdentifiers: new Dictionary<string, string>
@@ -135,7 +135,7 @@ namespace Lusid.Sdk.Tests.Utilities
            );
         }
 
-        public AdjustHoldingRequest BuildCashFundsInAdjustHoldingsRequest(string currency, decimal? units)
+        public AdjustHoldingRequest BuildCashFundsInAdjustHoldingsRequest(string currency, decimal units)
         {
             return new AdjustHoldingRequest(
                 instrumentIdentifiers: new Dictionary<string, string>
@@ -310,7 +310,7 @@ namespace Lusid.Sdk.Tests.Utilities
         {
             // CREATE instrument transaction request
             var transactionRequests = luids.Select(luid => 
-                    BuildTransactionRequest(luid, 1, null, "USD", effectiveAt, "StockIn"))
+                    BuildTransactionRequest(luid, 1, 0.0m, "USD", effectiveAt, "StockIn"))
                 .ToList();
             
             // UPSERT instruments to portfolio
