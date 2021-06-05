@@ -5,7 +5,7 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**AsAt** | **DateTimeOffset?** | The asAt datetime at which the properties were removed from the specified instruments. | 
+**AsAt** | **DateTimeOffset?** | The as-at datetime at which properties were deleted. | 
 **Links** | [**List&lt;Link&gt;**](Link.md) |  | [optional] 
 
 [[Back to Model list]](../README.md#documentation-for-models)
