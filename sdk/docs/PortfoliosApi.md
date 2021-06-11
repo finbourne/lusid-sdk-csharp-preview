@@ -370,7 +370,7 @@ Name | Type | Description  | Notes
 
 ## GetPortfolioAggregateReturns
 
-> ResourceListOfAggregatedReturn GetPortfolioAggregateReturns (string scope, string code, string returnScope, string returnCode, DateTimeOrCutLabel fromEffectiveAt = null, DateTimeOrCutLabel toEffectiveAt = null, string compositeMethod = null, string period = null, string outputFrequency = null, List<string> metrics = null, DateTimeOffset? asAt = null)
+> ResourceListOfAggregatedReturn GetPortfolioAggregateReturns (string scope, string code, string returnScope, string returnCode, string recipeIdScope = null, string recipeIdCode = null, DateTimeOrCutLabel fromEffectiveAt = null, DateTimeOrCutLabel toEffectiveAt = null, string compositeMethod = null, string period = null, string outputFrequency = null, List<string> metrics = null, DateTimeOffset? asAt = null)
 
 [EXPERIMENTAL] Aggregate Returns
 
@@ -400,6 +400,8 @@ namespace Example
             var code = code_example;  // string | The code of the  Portfolio.
             var returnScope = returnScope_example;  // string | The scope of the Returns.
             var returnCode = returnCode_example;  // string | The code of the Returns.
+            var recipeIdScope = recipeIdScope_example;  // string | The Recipe Scope for getting the fx rates (optional) 
+            var recipeIdCode = recipeIdCode_example;  // string | The Recipe Code for getting the fx rates (optional) 
             var fromEffectiveAt = fromEffectiveAt_example;  // DateTimeOrCutLabel | The start date from which to delete the Returns. (optional) 
             var toEffectiveAt = toEffectiveAt_example;  // DateTimeOrCutLabel | The end date from which to delete the Returns (optional) 
             var compositeMethod = compositeMethod_example;  // string | The method used to calculate the Portfolio performance:              Equal/Asset. (optional) 
@@ -411,7 +413,7 @@ namespace Example
             try
             {
                 // [EXPERIMENTAL] Aggregate Returns
-                ResourceListOfAggregatedReturn result = apiInstance.GetPortfolioAggregateReturns(scope, code, returnScope, returnCode, fromEffectiveAt, toEffectiveAt, compositeMethod, period, outputFrequency, metrics, asAt);
+                ResourceListOfAggregatedReturn result = apiInstance.GetPortfolioAggregateReturns(scope, code, returnScope, returnCode, recipeIdScope, recipeIdCode, fromEffectiveAt, toEffectiveAt, compositeMethod, period, outputFrequency, metrics, asAt);
                 Debug.WriteLine(result);
             }
             catch (ApiException e)
@@ -434,6 +436,8 @@ Name | Type | Description  | Notes
  **code** | **string**| The code of the  Portfolio. | 
  **returnScope** | **string**| The scope of the Returns. | 
  **returnCode** | **string**| The code of the Returns. | 
+ **recipeIdScope** | **string**| The Recipe Scope for getting the fx rates | [optional] 
+ **recipeIdCode** | **string**| The Recipe Code for getting the fx rates | [optional] 
  **fromEffectiveAt** | **DateTimeOrCutLabel**| The start date from which to delete the Returns. | [optional] 
  **toEffectiveAt** | **DateTimeOrCutLabel**| The end date from which to delete the Returns | [optional] 
  **compositeMethod** | **string**| The method used to calculate the Portfolio performance:              Equal/Asset. | [optional] 
