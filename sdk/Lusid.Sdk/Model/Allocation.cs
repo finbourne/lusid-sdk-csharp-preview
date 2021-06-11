@@ -44,18 +44,8 @@ namespace Lusid.Sdk.Model
         /// <param name="version">version.</param>
         /// <param name="properties">Client-defined properties associated with this allocation..</param>
         /// <param name="lusidInstrumentId">The LUSID instrument id for the instrument allocated. (required).</param>
-        /// <param name="placementIds">A placement - also known as an order placed in the market - associated with this allocation..</param>
-        /// <param name="state">The state of this allocation..</param>
-        /// <param name="side">The side of this allocation (examples: Buy, Sell, ...)..</param>
-        /// <param name="type">The type of order associated with this allocation (examples: Limit, Market, ...)..</param>
-        /// <param name="settlementDate">The settlement date for this allocation..</param>
-        /// <param name="date">The date of this allocation..</param>
-        /// <param name="price">price.</param>
-        /// <param name="settlementCurrency">The settlement currency of this allocation..</param>
-        /// <param name="settlementCurrencyFxRate">The settlement currency to allocation currency FX rate..</param>
-        /// <param name="counterparty">The counterparty for this allocation..</param>
         /// <param name="links">links.</param>
-        public Allocation(ResourceId id = default(ResourceId), ResourceId allocatedOrderId = default(ResourceId), ResourceId portfolioId = default(ResourceId), int? quantity = default(int?), Dictionary<string, string> instrumentIdentifiers = default(Dictionary<string, string>), Version version = default(Version), Dictionary<string, PerpetualProperty> properties = default(Dictionary<string, PerpetualProperty>), string lusidInstrumentId = default(string), List<ResourceId> placementIds = default(List<ResourceId>), string state = default(string), string side = default(string), string type = default(string), DateTimeOffset? settlementDate = default(DateTimeOffset?), DateTimeOffset? date = default(DateTimeOffset?), CurrencyAndAmount price = default(CurrencyAndAmount), string settlementCurrency = default(string), decimal? settlementCurrencyFxRate = default(decimal?), string counterparty = default(string), List<Link> links = default(List<Link>))
+        public Allocation(ResourceId id = default(ResourceId), ResourceId allocatedOrderId = default(ResourceId), ResourceId portfolioId = default(ResourceId), int? quantity = default(int?), Dictionary<string, string> instrumentIdentifiers = default(Dictionary<string, string>), Version version = default(Version), Dictionary<string, PerpetualProperty> properties = default(Dictionary<string, PerpetualProperty>), string lusidInstrumentId = default(string), List<Link> links = default(List<Link>))
         {
             // to ensure "id" is required (not null)
             if (id == null)
@@ -118,25 +108,9 @@ namespace Lusid.Sdk.Model
                 this.LusidInstrumentId = lusidInstrumentId;
             }
             
-            this.PlacementIds = placementIds;
-            this.State = state;
-            this.Side = side;
-            this.Type = type;
-            this.SettlementCurrency = settlementCurrency;
-            this.Counterparty = counterparty;
             this.Links = links;
             this.Version = version;
             this.Properties = properties;
-            this.PlacementIds = placementIds;
-            this.State = state;
-            this.Side = side;
-            this.Type = type;
-            this.SettlementDate = settlementDate;
-            this.Date = date;
-            this.Price = price;
-            this.SettlementCurrency = settlementCurrency;
-            this.SettlementCurrencyFxRate = settlementCurrencyFxRate;
-            this.Counterparty = counterparty;
             this.Links = links;
         }
         
@@ -193,75 +167,6 @@ namespace Lusid.Sdk.Model
         public string LusidInstrumentId { get; set; }
 
         /// <summary>
-        /// A placement - also known as an order placed in the market - associated with this allocation.
-        /// </summary>
-        /// <value>A placement - also known as an order placed in the market - associated with this allocation.</value>
-        [DataMember(Name="placementIds", EmitDefaultValue=true)]
-        public List<ResourceId> PlacementIds { get; set; }
-
-        /// <summary>
-        /// The state of this allocation.
-        /// </summary>
-        /// <value>The state of this allocation.</value>
-        [DataMember(Name="state", EmitDefaultValue=true)]
-        public string State { get; set; }
-
-        /// <summary>
-        /// The side of this allocation (examples: Buy, Sell, ...).
-        /// </summary>
-        /// <value>The side of this allocation (examples: Buy, Sell, ...).</value>
-        [DataMember(Name="side", EmitDefaultValue=true)]
-        public string Side { get; set; }
-
-        /// <summary>
-        /// The type of order associated with this allocation (examples: Limit, Market, ...).
-        /// </summary>
-        /// <value>The type of order associated with this allocation (examples: Limit, Market, ...).</value>
-        [DataMember(Name="type", EmitDefaultValue=true)]
-        public string Type { get; set; }
-
-        /// <summary>
-        /// The settlement date for this allocation.
-        /// </summary>
-        /// <value>The settlement date for this allocation.</value>
-        [DataMember(Name="settlementDate", EmitDefaultValue=false)]
-        public DateTimeOffset? SettlementDate { get; set; }
-
-        /// <summary>
-        /// The date of this allocation.
-        /// </summary>
-        /// <value>The date of this allocation.</value>
-        [DataMember(Name="date", EmitDefaultValue=false)]
-        public DateTimeOffset? Date { get; set; }
-
-        /// <summary>
-        /// Gets or Sets Price
-        /// </summary>
-        [DataMember(Name="price", EmitDefaultValue=false)]
-        public CurrencyAndAmount Price { get; set; }
-
-        /// <summary>
-        /// The settlement currency of this allocation.
-        /// </summary>
-        /// <value>The settlement currency of this allocation.</value>
-        [DataMember(Name="settlementCurrency", EmitDefaultValue=true)]
-        public string SettlementCurrency { get; set; }
-
-        /// <summary>
-        /// The settlement currency to allocation currency FX rate.
-        /// </summary>
-        /// <value>The settlement currency to allocation currency FX rate.</value>
-        [DataMember(Name="settlementCurrencyFxRate", EmitDefaultValue=false)]
-        public decimal? SettlementCurrencyFxRate { get; set; }
-
-        /// <summary>
-        /// The counterparty for this allocation.
-        /// </summary>
-        /// <value>The counterparty for this allocation.</value>
-        [DataMember(Name="counterparty", EmitDefaultValue=true)]
-        public string Counterparty { get; set; }
-
-        /// <summary>
         /// Gets or Sets Links
         /// </summary>
         [DataMember(Name="links", EmitDefaultValue=true)]
@@ -283,16 +188,6 @@ namespace Lusid.Sdk.Model
             sb.Append("  Version: ").Append(Version).Append("\n");
             sb.Append("  Properties: ").Append(Properties).Append("\n");
             sb.Append("  LusidInstrumentId: ").Append(LusidInstrumentId).Append("\n");
-            sb.Append("  PlacementIds: ").Append(PlacementIds).Append("\n");
-            sb.Append("  State: ").Append(State).Append("\n");
-            sb.Append("  Side: ").Append(Side).Append("\n");
-            sb.Append("  Type: ").Append(Type).Append("\n");
-            sb.Append("  SettlementDate: ").Append(SettlementDate).Append("\n");
-            sb.Append("  Date: ").Append(Date).Append("\n");
-            sb.Append("  Price: ").Append(Price).Append("\n");
-            sb.Append("  SettlementCurrency: ").Append(SettlementCurrency).Append("\n");
-            sb.Append("  SettlementCurrencyFxRate: ").Append(SettlementCurrencyFxRate).Append("\n");
-            sb.Append("  Counterparty: ").Append(Counterparty).Append("\n");
             sb.Append("  Links: ").Append(Links).Append("\n");
             sb.Append("}\n");
             return sb.ToString();
@@ -371,57 +266,6 @@ namespace Lusid.Sdk.Model
                     this.LusidInstrumentId.Equals(input.LusidInstrumentId))
                 ) && 
                 (
-                    this.PlacementIds == input.PlacementIds ||
-                    this.PlacementIds != null &&
-                    input.PlacementIds != null &&
-                    this.PlacementIds.SequenceEqual(input.PlacementIds)
-                ) && 
-                (
-                    this.State == input.State ||
-                    (this.State != null &&
-                    this.State.Equals(input.State))
-                ) && 
-                (
-                    this.Side == input.Side ||
-                    (this.Side != null &&
-                    this.Side.Equals(input.Side))
-                ) && 
-                (
-                    this.Type == input.Type ||
-                    (this.Type != null &&
-                    this.Type.Equals(input.Type))
-                ) && 
-                (
-                    this.SettlementDate == input.SettlementDate ||
-                    (this.SettlementDate != null &&
-                    this.SettlementDate.Equals(input.SettlementDate))
-                ) && 
-                (
-                    this.Date == input.Date ||
-                    (this.Date != null &&
-                    this.Date.Equals(input.Date))
-                ) && 
-                (
-                    this.Price == input.Price ||
-                    (this.Price != null &&
-                    this.Price.Equals(input.Price))
-                ) && 
-                (
-                    this.SettlementCurrency == input.SettlementCurrency ||
-                    (this.SettlementCurrency != null &&
-                    this.SettlementCurrency.Equals(input.SettlementCurrency))
-                ) && 
-                (
-                    this.SettlementCurrencyFxRate == input.SettlementCurrencyFxRate ||
-                    (this.SettlementCurrencyFxRate != null &&
-                    this.SettlementCurrencyFxRate.Equals(input.SettlementCurrencyFxRate))
-                ) && 
-                (
-                    this.Counterparty == input.Counterparty ||
-                    (this.Counterparty != null &&
-                    this.Counterparty.Equals(input.Counterparty))
-                ) && 
-                (
                     this.Links == input.Links ||
                     this.Links != null &&
                     input.Links != null &&
@@ -454,26 +298,6 @@ namespace Lusid.Sdk.Model
                     hashCode = hashCode * 59 + this.Properties.GetHashCode();
                 if (this.LusidInstrumentId != null)
                     hashCode = hashCode * 59 + this.LusidInstrumentId.GetHashCode();
-                if (this.PlacementIds != null)
-                    hashCode = hashCode * 59 + this.PlacementIds.GetHashCode();
-                if (this.State != null)
-                    hashCode = hashCode * 59 + this.State.GetHashCode();
-                if (this.Side != null)
-                    hashCode = hashCode * 59 + this.Side.GetHashCode();
-                if (this.Type != null)
-                    hashCode = hashCode * 59 + this.Type.GetHashCode();
-                if (this.SettlementDate != null)
-                    hashCode = hashCode * 59 + this.SettlementDate.GetHashCode();
-                if (this.Date != null)
-                    hashCode = hashCode * 59 + this.Date.GetHashCode();
-                if (this.Price != null)
-                    hashCode = hashCode * 59 + this.Price.GetHashCode();
-                if (this.SettlementCurrency != null)
-                    hashCode = hashCode * 59 + this.SettlementCurrency.GetHashCode();
-                if (this.SettlementCurrencyFxRate != null)
-                    hashCode = hashCode * 59 + this.SettlementCurrencyFxRate.GetHashCode();
-                if (this.Counterparty != null)
-                    hashCode = hashCode * 59 + this.Counterparty.GetHashCode();
                 if (this.Links != null)
                     hashCode = hashCode * 59 + this.Links.GetHashCode();
                 return hashCode;
