@@ -9,7 +9,7 @@ assignees: ''
 
 ## Bug Report Checklist
 
-- [ ] I have checked the existing [documentation](../../wiki) for this SDK
+- [ ] I have checked the existing [documentation](../wiki) for this SDK
 - [ ] I have searched for any related issues/PRs
 - [ ] I have read the [LUISD contribution guidelines](../blob/master/docs/CONTRIBUTING.md)
 - [ ] I have read the [LUSID Code of Conduct](../blob/master/docs/CODE_OF_CONDUCT.md)
