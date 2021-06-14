@@ -244,7 +244,7 @@ namespace Lusid.Sdk.Tests.Tutorials.Ibor
             Assert.That(transactions.Values[0].Properties[propertyDefinitionResult.Key].Value.LabelValue, Is.EqualTo(labelValue));
         }
         
-        [LusidFeature("F13")]
+        [LusidFeature("F2-4")]
         [Test]
         public void List_Portfolios()
         {
