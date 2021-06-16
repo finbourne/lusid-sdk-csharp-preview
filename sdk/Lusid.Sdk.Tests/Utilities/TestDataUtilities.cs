@@ -70,7 +70,7 @@ namespace Lusid.Sdk.Tests.Utilities
             decimal? units, 
             decimal? price,
             string currency,
-            DateTimeOffset tradeDate, 
+            DateTimeOrCutLabel tradeDate, 
             string transactionType)
         {
             return new TransactionRequest(
@@ -109,7 +109,65 @@ namespace Lusid.Sdk.Tests.Utilities
                 transactionPrice: new TransactionPrice(0.0M),
                 source: "Client");
         }
-        
+
+        public AdjustHoldingRequest BuildAdjustHoldingsRequst(string instrumentId, decimal? units, decimal? price, string currency, DateTimeOffset? tradeDate)
+        {
+            return new AdjustHoldingRequest(
+                instrumentIdentifiers: new Dictionary<string, string>
+                {
+                    [LusidCashIdentifier] = instrumentId
+                },
+                taxLots: new List<TargetTaxLotRequest>
+                {
+                    new TargetTaxLotRequest(
+                        units: units,
+                        price: price,
+                        cost: new CurrencyAndAmount(
+                            amount: price * units,
+                            currency: currency
+                        ),
+                        portfolioCost: price * units,
+                        purchaseDate: tradeDate,
+                        settlementDate: tradeDate
+                    )
+                }
+           );
+        }
+
+        public AdjustHoldingRequest BuildCashFundsInAdjustHoldingsRequest(string currency, decimal? units)
+        {
+            return new AdjustHoldingRequest(
+                instrumentIdentifiers: new Dictionary<string, string>
+                {
+                    [LusidCashIdentifier] = currency
+                },
+                taxLots: new List<TargetTaxLotRequest>
+                {
+                    new TargetTaxLotRequest(
+                        units: units,
+                        price: null,
+                        cost: null,
+                        portfolioCost: null,
+                        purchaseDate: null,
+                        settlementDate: null
+                    )
+                }
+            );
+        }
+
+        public void AssertHoldings(VersionedResourceListOfPortfolioHolding holdings, int index, string instrumentId, decimal? units, decimal? costAmount)
+        {
+            Assert.That(holdings.Values[index].InstrumentUid, Is.EqualTo(instrumentId));
+            Assert.That(holdings.Values[index].Units, Is.EqualTo(units));
+            Assert.That(holdings.Values[index].Cost.Amount, Is.EqualTo(costAmount));
+        }
+
+        public void AssertCashHoldings(VersionedResourceListOfPortfolioHolding holdings, int index, string instrumentId, decimal? units)
+        {
+            Assert.That(holdings.Values[index].InstrumentUid, Is.EqualTo(instrumentId));
+            Assert.That(holdings.Values[index].Units, Is.EqualTo(units));
+        }
+
         public void AddInstrumentsTransactionPortfolioAndPopulateRequiredMarketData(
             string portfolioScope,
             string portfolioCode,
