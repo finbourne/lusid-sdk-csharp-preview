@@ -98,7 +98,7 @@ namespace Lusid.Sdk.Tests.tutorials.Ibor
 
                 // instrument 3
                 _testDataUtilities.BuildAdjustHoldingsRequst(
-                    instrumentId: instrument1,
+                    instrumentId: instrument3,
                     units: (decimal)100.0,
                     price: (decimal)99.0,
                     currency: currency,

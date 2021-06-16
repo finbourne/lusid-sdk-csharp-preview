@@ -115,7 +115,7 @@ namespace Lusid.Sdk.Tests.Utilities
             return new AdjustHoldingRequest(
                 instrumentIdentifiers: new Dictionary<string, string>
                 {
-                    [LusidCashIdentifier] = instrumentId
+                    [LusidInstrumentIdentifier] = instrumentId
                 },
                 taxLots: new List<TargetTaxLotRequest>
                 {
