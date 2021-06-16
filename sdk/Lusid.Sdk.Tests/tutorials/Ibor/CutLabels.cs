@@ -252,7 +252,7 @@ namespace Lusid.Sdk.Tests.tutorials.Ibor
 
         private string Cut_Label_Formatter(DateTime date, string cutLabelCode)
         {
-            return date.Date.ToString() + "N" + cutLabelCode;
+            return date.ToString("yyyy-MM-dd") + "N" + cutLabelCode;
         }
 
         private void Create_Cut_Label(int hours, int minutes, string displayName, string description, string timeZone, Dictionary<string, string> codeDict)
