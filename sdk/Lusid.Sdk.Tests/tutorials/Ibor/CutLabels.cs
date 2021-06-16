@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Lusid.Sdk.Api;
 using Lusid.Sdk.Model;
 using Lusid.Sdk.Tests.Utilities;
@@ -261,12 +262,12 @@ namespace Lusid.Sdk.Tests.tutorials.Ibor
 
             // Define the parameters of the cut label in a request
             var request = new CreateCutLabelDefinitionRequest(
-                code: displayName + "-" + Guid.NewGuid().ToString(),
+                code: displayName + "-" + Guid.NewGuid().ToString().Take(4),
                 displayName: displayName,
                 description: description,
                 cutLocalTime: time,
                 timeZone: timeZone
-            );
+            ); ;
 
             // Add the codes of our cut labels to our dictionary
             codeDict[request.DisplayName] = request.Code;
