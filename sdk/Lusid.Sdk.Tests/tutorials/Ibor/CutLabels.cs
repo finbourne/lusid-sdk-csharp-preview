@@ -43,17 +43,17 @@ namespace Lusid.Sdk.Tests.tutorials.Ibor
             var code = new Dictionary<string, string>();
 
             // Create cut labels for different time zones
-            Create_Cut_Label(hours: 9, minutes: 0, displayName: "LDNOpen", description: "London Opening Time, 9am in UK",
+            CreateCutLabel(hours: 9, minutes: 0, displayName: "LDNOpen", description: "London Opening Time, 9am in UK",
                              timeZone: "GB", codeDict: code);
-            Create_Cut_Label(hours: 17, minutes: 0, displayName: "LDNClose", description: "London Closing Time, 5pm in UK",
+            CreateCutLabel(hours: 17, minutes: 0, displayName: "LDNClose", description: "London Closing Time, 5pm in UK",
                              timeZone: "GB", codeDict: code);
-            Create_Cut_Label(hours: 9, minutes: 0, displayName: "SGPOpen", description: "", timeZone: "Singapore",
+            CreateCutLabel(hours: 9, minutes: 0, displayName: "SGPOpen", description: "", timeZone: "Singapore",
                              codeDict: code);
-            Create_Cut_Label(hours: 17, minutes: 0, displayName: "SGPClose", description: "", timeZone: "Singapore",
+            CreateCutLabel(hours: 17, minutes: 0, displayName: "SGPClose", description: "", timeZone: "Singapore",
                              codeDict: code);
-            Create_Cut_Label(hours: 9, minutes: 0, displayName: "NYOpen", description: "", timeZone: "America/New_York",
+            CreateCutLabel(hours: 9, minutes: 0, displayName: "NYOpen", description: "", timeZone: "America/New_York",
                              codeDict: code);
-            Create_Cut_Label(hours: 17, minutes: 0, displayName: "NYClose", description: "", timeZone: "America/New_York",
+            CreateCutLabel(hours: 17, minutes: 0, displayName: "NYClose", description: "", timeZone: "America/New_York",
                              codeDict: code);
 
             // Create portfolio
@@ -72,7 +72,7 @@ namespace Lusid.Sdk.Tests.tutorials.Ibor
 
             // Set initial holdings for each instrument from LondonOpen 5 days ago 
             var fiveDaysAgo = _currentDate.AddDays(-5);
-            var initialHoldingsCutLabel = Cut_Label_Formatter(fiveDaysAgo, code["LDNOpen"]);
+            var initialHoldingsCutLabel = CutLabelFormatter(fiveDaysAgo, code["LDNOpen"]);
             var initialHoldings = new List<AdjustHoldingRequest> {
                 // cash balance
                 _testDataUtilities.BuildCashFundsInAdjustHoldingsRequest(
@@ -113,7 +113,7 @@ namespace Lusid.Sdk.Tests.tutorials.Ibor
 
             // Check initial holdings
             // get holdings at LondonOpen today, before transactions occur
-            var getHoldingsCutLabel = Cut_Label_Formatter(_currentDate, code["LDNOpen"]);
+            var getHoldingsCutLabel = CutLabelFormatter(_currentDate, code["LDNOpen"]);
             var holdings = _transactionPortfoliosApi.GetHoldings(
                 scope: scope,
                 code: portfolioCode,
@@ -155,10 +155,10 @@ namespace Lusid.Sdk.Tests.tutorials.Ibor
             );
 
             // Add transactions at different times in different time zones during the day with cut labels
-            var transaction1CutLabel = Cut_Label_Formatter(_currentDate, code["LDNOpen"]);
-            var transaction2CutLabel = Cut_Label_Formatter(_currentDate, code["SGPClose"]);
-            var transaction3CutLabel = Cut_Label_Formatter(_currentDate, code["NYOpen"]);
-            var transaction4CutLabel = Cut_Label_Formatter(_currentDate, code["NYClose"]);
+            var transaction1CutLabel = CutLabelFormatter(_currentDate, code["LDNOpen"]);
+            var transaction2CutLabel = CutLabelFormatter(_currentDate, code["SGPClose"]);
+            var transaction3CutLabel = CutLabelFormatter(_currentDate, code["NYOpen"]);
+            var transaction4CutLabel = CutLabelFormatter(_currentDate, code["NYClose"]);
             var transactions = new List<TransactionRequest> {
                 // Instrument 1
                 _testDataUtilities.BuildTransactionRequest(
@@ -210,7 +210,7 @@ namespace Lusid.Sdk.Tests.tutorials.Ibor
 
             // Retrieve holdings at LondonClose today (5pm local time)
             // This will mean that the 4th transaction will not be included, demonstrating how cut labels work across time zones
-            getHoldingsCutLabel = Cut_Label_Formatter(_currentDate, code["LDNClose"]);
+            getHoldingsCutLabel = CutLabelFormatter(_currentDate, code["LDNClose"]);
             holdings = _transactionPortfoliosApi.GetHoldings(
                 scope: scope,
                 code: portfolioCode,
@@ -254,12 +254,12 @@ namespace Lusid.Sdk.Tests.tutorials.Ibor
             _portfoliosApi.DeletePortfolio(scope, portfolioCode);
         }
 
-        private string Cut_Label_Formatter(DateTime date, string cutLabelCode)
+        private string CutLabelFormatter(DateTime date, string cutLabelCode)
         {
-            return date.ToString("yyyy-MM-dd") + "N" + cutLabelCode;
+            return $"{date.ToString("yyyy-MM-dd")}N{cutLabelCode}";
         }
 
-        private void Create_Cut_Label(int hours, int minutes, string displayName, string description, string timeZone, Dictionary<string, string> codeDict)
+        private void CreateCutLabel(int hours, int minutes, string displayName, string description, string timeZone, Dictionary<string, string> codeDict)
         {
             // Create the time for the cut label
             var time = new CutLocalTime(hours, minutes);
