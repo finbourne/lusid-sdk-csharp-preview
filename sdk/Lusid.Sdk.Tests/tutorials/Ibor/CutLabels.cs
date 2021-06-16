@@ -262,7 +262,7 @@ namespace Lusid.Sdk.Tests.tutorials.Ibor
 
             // Define the parameters of the cut label in a request
             var request = new CreateCutLabelDefinitionRequest(
-                code: displayName + "-" + Guid.NewGuid().ToString().Take(4),
+                code: displayName + "-" + Guid.NewGuid().ToString().Substring(0, 4),
                 displayName: displayName,
                 description: description,
                 cutLocalTime: time,
