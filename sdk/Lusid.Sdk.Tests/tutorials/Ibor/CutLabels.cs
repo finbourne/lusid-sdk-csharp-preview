@@ -269,8 +269,6 @@ namespace Lusid.Sdk.Tests.tutorials.Ibor
                 timeZone: timeZone
             );
 
-            throw new Exception($"Created a cut label with code {request.Code}");
-            /*
             // Add the codes of our cut labels to our dictionary
             codeDict[request.DisplayName] = request.Code;
 
@@ -282,7 +280,6 @@ namespace Lusid.Sdk.Tests.tutorials.Ibor
             Assert.That(result.Description, Is.EqualTo(description));
             Assert.That(result.CutLocalTime, Is.EqualTo(time));
             Assert.That(result.TimeZone, Is.EqualTo(timeZone));
-            */
         }
     }
 }
