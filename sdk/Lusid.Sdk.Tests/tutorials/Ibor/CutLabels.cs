@@ -20,6 +20,7 @@ namespace Lusid.Sdk.Tests.tutorials.Ibor
         private IPortfoliosApi _portfoliosApi;
         private TestDataUtilities _testDataUtilities;
         private IList<string> _instrumentIds;
+        private string _portfolioCode;
 
         private readonly DateTime _currentDate = DateTime.Now.Date;
 
@@ -41,12 +42,20 @@ namespace Lusid.Sdk.Tests.tutorials.Ibor
             _portfoliosApi = _apiFactory.Api<IPortfoliosApi>();
             _testDataUtilities = new TestDataUtilities(_transactionPortfoliosApi);
 
+            // Create portfolio for the demo
+            _portfolioCode = _testDataUtilities.CreateTransactionPortfolio(TutorialScope);
+
+            // Clear up old labels from previous demos
             ClearCutLabels();
         }
 
         [OneTimeTearDown]
         public void TearDown()
         {
+            // Clean up the demo portfolio
+            _portfoliosApi.DeletePortfolio(TutorialScope, _portfolioCode);
+
+            // Clear up labels created by the demo
             ClearCutLabels();
         }
 
@@ -70,9 +79,6 @@ namespace Lusid.Sdk.Tests.tutorials.Ibor
                             timeZone: "America/New_York", codeDict: code);
             CreateCutLabel(hours: 17, minutes: 0, displayName: "NYClose", description: "New York Closing Time, 10pm in UK",
                             timeZone: "America/New_York", codeDict: code);
-
-            // Create portfolio
-            var portfolioCode = _testDataUtilities.CreateTransactionPortfolio(TutorialScope);
 
             // Get the instrument identifiers
             var instrument1 = _instrumentIds[0];
@@ -121,7 +127,7 @@ namespace Lusid.Sdk.Tests.tutorials.Ibor
             };
 
             // add initial holdings to our portfolio from LDNOpen 5 days ago
-            _transactionPortfoliosApi.SetHoldings(TutorialScope, portfolioCode, LdnOpenHoldingsCutLabel, LdnOpenHoldings);
+            _transactionPortfoliosApi.SetHoldings(TutorialScope, _portfolioCode, LdnOpenHoldingsCutLabel, LdnOpenHoldings);
 
             var expectedLdnOpenCashHoldings = _testDataUtilities.BuildCashPortfolioHolding(Currency, currencyLuid, (decimal)100000.0);
             var expectedLdnOpenInstrument1Holdings = _testDataUtilities.BuildPortfolioHolding(Currency, instrument1, (decimal)100.0, (decimal)10100.0);
@@ -132,7 +138,6 @@ namespace Lusid.Sdk.Tests.tutorials.Ibor
             var getHoldingsCutLabel = CutLabelFormatter(_currentDate, code["LDNOpen"]);
             AssertHoldingsAtCutLabel(
                 getHoldingsCutLabel,
-                portfolioCode,
                 new List<PortfolioHolding>
                 {
                     expectedLdnOpenCashHoldings,
@@ -192,7 +197,7 @@ namespace Lusid.Sdk.Tests.tutorials.Ibor
             // Add transactions to the portfolio
             _transactionPortfoliosApi.UpsertTransactions(
                 scope: TutorialScope,
-                code: portfolioCode,
+                code: _portfolioCode,
                 transactionRequest: transactions
             );
 
@@ -205,7 +210,6 @@ namespace Lusid.Sdk.Tests.tutorials.Ibor
             getHoldingsCutLabel = CutLabelFormatter(_currentDate, code["LDNOpen"]);
             AssertHoldingsAtCutLabel(
                 getHoldingsCutLabel,
-                portfolioCode,
                 new List<PortfolioHolding>
                 {
                     _testDataUtilities.BuildCashPortfolioHolding(Currency, currencyLuid, (decimal)90000.0),
@@ -219,7 +223,6 @@ namespace Lusid.Sdk.Tests.tutorials.Ibor
             getHoldingsCutLabel = CutLabelFormatter(_currentDate, code["SGPClose"]);
             AssertHoldingsAtCutLabel(
                 getHoldingsCutLabel,
-                portfolioCode,
                 new List<PortfolioHolding>
                 {
                     _testDataUtilities.BuildCashPortfolioHolding(Currency, currencyLuid, (decimal)80000.0),
@@ -233,7 +236,6 @@ namespace Lusid.Sdk.Tests.tutorials.Ibor
             getHoldingsCutLabel = CutLabelFormatter(_currentDate, code["NYOpen"]);
             AssertHoldingsAtCutLabel(
                 getHoldingsCutLabel,
-                portfolioCode,
                 new List<PortfolioHolding>
                 {
                     expectedLdnCloseCashHoldings,
@@ -246,26 +248,26 @@ namespace Lusid.Sdk.Tests.tutorials.Ibor
             // Retrieve holdings at LDNClose today (5pm local time)
             // This will mean that the 4th transaction will not be included, demonstrating how cut labels work across time zones
             getHoldingsCutLabel = CutLabelFormatter(_currentDate, code["LDNClose"]);
-            AssertHoldingsAtCutLabel(getHoldingsCutLabel, portfolioCode, new List<PortfolioHolding>
+            AssertHoldingsAtCutLabel(
+                getHoldingsCutLabel,
+                new List<PortfolioHolding>
                 {
                     expectedLdnCloseCashHoldings,
                     expectedLdnCloseInstrument1Holdings,
                     expectedLdnCloseInstrument2Holdings,
                     expectedLdnCloseInstrument3Holdings,
-                });
-
-            _portfoliosApi.DeletePortfolio(TutorialScope, portfolioCode);
+                }
+            );
         }
 
         private void AssertHoldingsAtCutLabel(
            string getHoldingsCutLabel,
-           string portfolioCode,
            List<PortfolioHolding> expectedHoldings)
         {
             // check that holdings are as expected after transactions for each instrument
             var holdings = _transactionPortfoliosApi.GetHoldings(
                 scope: TutorialScope,
-                code: portfolioCode,
+                code: _portfolioCode,
                 effectiveAt: getHoldingsCutLabel
             );
 
@@ -327,7 +329,7 @@ namespace Lusid.Sdk.Tests.tutorials.Ibor
 
         private string CutLabelFormatter(DateTime date, string cutLabelCode)
         {
-            return $"{date.ToString("yyyy-MM-dd")}N{cutLabelCode}";
+            return $"{date:yyyy-MM-dd}N{cutLabelCode}";
         }
     }
 }
