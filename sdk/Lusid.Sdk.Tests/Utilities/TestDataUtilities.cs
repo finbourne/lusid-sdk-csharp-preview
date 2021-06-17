@@ -70,7 +70,7 @@ namespace Lusid.Sdk.Tests.Utilities
             decimal? units, 
             decimal? price,
             string currency,
-            DateTimeOffset tradeDate, 
+            DateTimeOrCutLabel tradeDate, 
             string transactionType)
         {
             return new TransactionRequest(
@@ -109,7 +109,78 @@ namespace Lusid.Sdk.Tests.Utilities
                 transactionPrice: new TransactionPrice(0.0M),
                 source: "Client");
         }
-        
+
+        public AdjustHoldingRequest BuildAdjustHoldingsRequst(string instrumentId, decimal? units, decimal? price, string currency, DateTimeOffset? tradeDate)
+        {
+            return new AdjustHoldingRequest(
+                instrumentIdentifiers: new Dictionary<string, string>
+                {
+                    [LusidInstrumentIdentifier] = instrumentId
+                },
+                taxLots: new List<TargetTaxLotRequest>
+                {
+                    new TargetTaxLotRequest(
+                        units: units,
+                        price: price,
+                        cost: new CurrencyAndAmount(
+                            amount: price * units,
+                            currency: currency
+                        ),
+                        portfolioCost: price * units,
+                        purchaseDate: tradeDate,
+                        settlementDate: tradeDate
+                    )
+                }
+           );
+        }
+
+        public AdjustHoldingRequest BuildCashFundsInAdjustHoldingsRequest(string currency, decimal? units)
+        {
+            return new AdjustHoldingRequest(
+                instrumentIdentifiers: new Dictionary<string, string>
+                {
+                    [LusidCashIdentifier] = currency
+                },
+                taxLots: new List<TargetTaxLotRequest>
+                {
+                    new TargetTaxLotRequest(
+                        units: units,
+                        price: null,
+                        cost: null,
+                        portfolioCost: null,
+                        purchaseDate: null,
+                        settlementDate: null
+                    )
+                }
+            );
+        }
+
+        public PortfolioHolding BuildPortfolioHolding(string currency, string instrumentUid, decimal units, decimal cost)
+        {
+            return new PortfolioHolding(
+                    cost: new CurrencyAndAmount(cost, currency),
+                    costPortfolioCcy: new CurrencyAndAmount(cost, currency),
+                    currency: currency,
+                    instrumentUid: instrumentUid,
+                    holdingType: "P",
+                    units: units,
+                    settledUnits: units
+                );
+        }
+
+        public PortfolioHolding BuildCashPortfolioHolding(string currency, string currencyLuid, decimal units)
+        {
+            return new PortfolioHolding(
+                    cost: new CurrencyAndAmount(0, currency),
+                    costPortfolioCcy: new CurrencyAndAmount(0, currency),
+                    currency: currency,
+                    instrumentUid: currencyLuid,
+                    holdingType: "B",
+                    units: units,
+                    settledUnits: units
+                );
+        }
+
         public void AddInstrumentsTransactionPortfolioAndPopulateRequiredMarketData(
             string portfolioScope,
             string portfolioCode,
