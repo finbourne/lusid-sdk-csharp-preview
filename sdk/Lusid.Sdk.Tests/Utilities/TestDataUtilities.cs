@@ -155,17 +155,30 @@ namespace Lusid.Sdk.Tests.Utilities
             );
         }
 
-        public void AssertHoldings(VersionedResourceListOfPortfolioHolding holdings, int index, string instrumentId, decimal? units, decimal? costAmount)
+        public PortfolioHolding BuildPortfolioHolding(string currency, string instrumentUid, decimal units, decimal cost)
         {
-            Assert.That(holdings.Values[index].InstrumentUid, Is.EqualTo(instrumentId));
-            Assert.That(holdings.Values[index].Units, Is.EqualTo(units));
-            Assert.That(holdings.Values[index].Cost.Amount, Is.EqualTo(costAmount));
+            return new PortfolioHolding(
+                    cost: new CurrencyAndAmount(cost, currency),
+                    costPortfolioCcy: new CurrencyAndAmount(cost, currency),
+                    currency: currency,
+                    instrumentUid: instrumentUid,
+                    holdingType: "P",
+                    units: units,
+                    settledUnits: units
+                );
         }
 
-        public void AssertCashHoldings(VersionedResourceListOfPortfolioHolding holdings, int index, string instrumentId, decimal? units)
+        public PortfolioHolding BuildCashPortfolioHolding(string currency, string currencyLuid, decimal units)
         {
-            Assert.That(holdings.Values[index].InstrumentUid, Is.EqualTo(instrumentId));
-            Assert.That(holdings.Values[index].Units, Is.EqualTo(units));
+            return new PortfolioHolding(
+                    cost: new CurrencyAndAmount(0, currency),
+                    costPortfolioCcy: new CurrencyAndAmount(0, currency),
+                    currency: currency,
+                    instrumentUid: currencyLuid,
+                    holdingType: "B",
+                    units: units,
+                    settledUnits: units
+                );
         }
 
         public void AddInstrumentsTransactionPortfolioAndPopulateRequiredMarketData(
