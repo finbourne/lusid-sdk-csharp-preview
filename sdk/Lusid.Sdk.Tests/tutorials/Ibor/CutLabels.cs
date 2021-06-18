@@ -297,11 +297,11 @@ namespace Lusid.Sdk.Tests.tutorials.Ibor
                 timeZone: timeZone
             );
 
-            // Add the codes of our cut labels to our dictionary
-            codeDict[request.DisplayName] = request.Code;
-
             // Send the request to LUSID to create the cut label, if it doesn't already
             var result = _cutLabelDefinitionsApi.CreateCutLabelDefinition(request);
+
+            // Add the codes of our cut labels to our dictionary
+            codeDict[request.DisplayName] = request.Code;
 
             // Check that result gives same details as input
             Assert.That(result.DisplayName, Is.EqualTo(displayName));
