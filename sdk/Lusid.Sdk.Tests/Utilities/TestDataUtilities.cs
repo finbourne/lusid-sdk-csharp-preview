@@ -235,6 +235,7 @@ namespace Lusid.Sdk.Tests.Utilities
             // UPSERT fx quotes and rate curves required pricing instruments
             UpsertFxRate(portfolioScope, effectiveFrom, effectiveAt);
             UpsertRateCurves(portfolioScope, effectiveAt);
+            UpsertResetQuotes(portfolioScope, effectiveAt.AddDays(-4)); // The effective date for the reset quote should start 2 business days prior the accrual start date. Hence the date is adjusted
 
             // UPSERT equity quotes, if an equityIdentifier is present
             if (!equityIdentifier.IsNullOrEmpty())
@@ -337,7 +338,24 @@ namespace Lusid.Sdk.Tests.Utilities
                 upsertQuoteRequests.Add($"day_{days}_fx_rate", fxRate);
                 upsertQuoteRequests.Add($"day_{days}_inverseFx_rate", inverseFxRate);
             }
+
+            // CHECK quotes upsert was successful for all the quotes
+            var upsertResponse = _quotesApi.UpsertQuotes(scope, upsertQuoteRequests);
+            Assert.That(upsertResponse.Failed.Count, Is.EqualTo(0));
+            Assert.That(upsertResponse.Values.Count, Is.EqualTo(upsertQuoteRequests.Count));
+        }
+        
+        /// <summary>
+        /// This method upserts the reset quotes for the floating leg of a swap
+        /// </summary>
+        private void UpsertResetQuotes(string scope, DateTimeOffset effectiveAt)
+        {
+            // CREATE reset quotes in the desired date range
+            var upsertQuoteRequests = new Dictionary<string, UpsertQuoteRequest>();
             
+            var resetQuote = CreateSimpleQuoteUpsertRequest("USD6M", QuoteSeriesId.InstrumentIdTypeEnum.RIC, 150, "USD", effectiveAt);
+            upsertQuoteRequests.Add($"resetQuote", resetQuote);
+
             // CHECK quotes upsert was successful for all the quotes
             var upsertResponse = _quotesApi.UpsertQuotes(scope, upsertQuoteRequests);
             Assert.That(upsertResponse.Failed.Count, Is.EqualTo(0));
