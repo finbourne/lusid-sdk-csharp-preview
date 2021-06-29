@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text.Json;
 using Lusid.Sdk.Utilities;
+using Microsoft.Extensions.Configuration;
 using NUnit.Framework;
 
 namespace Lusid.Sdk.Tests.Utilities
@@ -10,7 +11,7 @@ namespace Lusid.Sdk.Tests.Utilities
     public class ApiConfigurationBuilderTest
     {
         private string _secretsFile;
-        
+
         private string _cachedTokenUrl;
         private string _cachedApiUrl;
         private string _cachedClientId;
@@ -52,7 +53,7 @@ namespace Lusid.Sdk.Tests.Utilities
             Environment.SetEnvironmentVariable("FBN_APP_NAME", _cachedApplicationName);
             File.Delete(_secretsFile);
         }
-        
+
         [Test]
         public void Throw_Exception_For_Missing_Secrets_File()
         {
@@ -71,7 +72,7 @@ namespace Lusid.Sdk.Tests.Utilities
                 {"clientSecret", "<clientSecret>"},
                 {"apiUrl", "<apiUrl>"},
             });
-            
+
             using var console = new InMemoryConsole();
             var apiConfiguration = ApiConfigurationBuilder.Build(_secretsFile);
 
@@ -142,6 +143,69 @@ namespace Lusid.Sdk.Tests.Utilities
             Assert.That(exception.Message,
                 Is.EqualTo(
                     "The following required environment variables are not set: ['FBN_PASSWORD', 'FBN_CLIENT_SECRET']"));
+        }
+
+        [Test]
+        public void Use_Configuration_Section_If_Supplied()
+        {
+            var settings = new Dictionary<string, string>
+            {
+                { "api:TokenUrl", "<tokenUrl>" },
+                { "api:ApiUrl", "<apiUrl>" },
+                { "api:ClientId", "<clientId>" },
+                { "api:ClientSecret", "<clientSecret>" },
+                { "api:Username", "<username>" },
+                { "api:Password", "<password>" },
+                { "api:ApplicationName", "<app_name>" }
+            };
+
+            using var console = new InMemoryConsole();
+
+            var config = new ConfigurationBuilder()
+                .AddInMemoryCollection(settings)
+                .Build();
+            var section = config.GetSection("api");
+            var apiConfiguration = ApiConfigurationBuilder.BuildFromConfiguration(section);
+
+            Assert.That(apiConfiguration.TokenUrl, Is.EqualTo("<tokenUrl>"));
+            Assert.That(apiConfiguration.Username, Is.EqualTo("<username>"));
+            Assert.That(apiConfiguration.Password, Is.EqualTo("<password>"));
+            Assert.That(apiConfiguration.ClientId, Is.EqualTo("<clientId>"));
+            Assert.That(apiConfiguration.ClientSecret, Is.EqualTo("<clientSecret>"));
+            Assert.That(apiConfiguration.ApiUrl, Is.EqualTo("<apiUrl>"));
+
+            StringAssert.Contains($"Loaded values from configuration", console.GetOutput());
+        }
+
+        [Test]
+        public void Throw_Exception_If_Configuration_Section_Is_Null()
+        {
+            var exception = Assert.Throws<ArgumentNullException>(() => ApiConfigurationBuilder.BuildFromConfiguration(null));
+            Assert.That(exception.Message, Is.EqualTo("Value cannot be null. (Parameter 'config')"));
+        }
+
+        [Test]
+        public void Throw_Exception_If_Configuration_Section_Incomplete()
+        {
+            var settings = new Dictionary<string, string>
+            {
+                { "api:TokenUrl", "<tokenUrl>" },
+                { "api:ApiUrl", "<apiUrl>" },
+                { "api:ClientId", "<clientId>" },
+                { "api:ClientSecret", "" },
+                { "api:Username", "<username>" },
+                { "api:Password", "" },
+                { "api:ApplicationName", "<app_name>" }
+            };
+
+            var config = new ConfigurationBuilder()
+                .AddInMemoryCollection(settings)
+                .Build();
+            var section = config.GetSection("api");
+            var exception = Assert.Throws<MissingConfigException>(() => ApiConfigurationBuilder.BuildFromConfiguration(section));
+            Assert.That(exception.Message,
+                Is.EqualTo(
+                    "The provided configuration section is missing the following required values: ['Password', 'ClientSecret']"));
         }
 
         private void PopulateDummySecretsFile(Dictionary<string, string> config)
