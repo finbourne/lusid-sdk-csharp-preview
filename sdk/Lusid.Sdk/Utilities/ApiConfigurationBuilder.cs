@@ -99,5 +99,31 @@ namespace Lusid.Sdk.Utilities
             
             return apiConfig;
         }
+
+        /// <summary>
+        /// Builds an ApiConfiguration using the supplied configuration section.
+        ///
+        /// For further details refer to https://github.com/finbourne/lusid-sdk-csharp/wiki/API-credentials
+        /// </summary>
+        /// <param name="config">section of ASP Core configuration with required fields</param>
+        /// <returns></returns>
+        public static ApiConfiguration BuildFromConfiguration(IConfigurationSection config)
+        {
+            if (config == null) throw new ArgumentNullException(nameof(config));
+            Console.WriteLine($"Loaded values from configuration");
+
+            var apiConfig = new ApiConfiguration();
+            config.Bind(apiConfig);
+
+            if(apiConfig.HasMissingConfig())
+            {
+                var missingValues = apiConfig.MissingConfig()
+                    .Select(value => $"'{value}'");
+                var message = $"[{string.Join(", ", missingValues)}]";
+                throw new MissingConfigException($"The provided configuration section is missing the following required values: {message}");
+            }
+
+            return apiConfig;
+        }
     }
 }
