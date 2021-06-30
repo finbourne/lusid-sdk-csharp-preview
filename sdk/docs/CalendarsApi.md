@@ -1,19 +1,19 @@
 # Lusid.Sdk.Api.CalendarsApi
 
-All URIs are relative to *http://local-unit-test-server.lusid.com:42436*
+All URIs are relative to *http://local-unit-test-server.lusid.com:45022*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
-[**AddDateToCalendar**](CalendarsApi.md#adddatetocalendar) | **PUT** /api/calendars/generic/{scope}/{code}/dates | [EXPERIMENTAL] Add a date to a calendar
-[**CreateCalendar**](CalendarsApi.md#createcalendar) | **POST** /api/calendars/generic | [EXPERIMENTAL] Create a calendar in its generic form
-[**DeleteCalendar**](CalendarsApi.md#deletecalendar) | **DELETE** /api/calendars/generic/{scope}/{code} | [EXPERIMENTAL] Delete a calendar
-[**DeleteDateFromCalendar**](CalendarsApi.md#deletedatefromcalendar) | **DELETE** /api/calendars/generic/{scope}/{code}/dates/{dateId} | [EXPERIMENTAL] Remove a date from a calendar
-[**GetCalendar**](CalendarsApi.md#getcalendar) | **GET** /api/calendars/generic/{scope}/{code} | [EXPERIMENTAL] Get a calendar in its generic form
-[**GetDates**](CalendarsApi.md#getdates) | **GET** /api/calendars/generic/{scope}/{code}/dates | [EXPERIMENTAL] Get dates for a specific calendar
-[**IsBusinessDateTime**](CalendarsApi.md#isbusinessdatetime) | **GET** /api/calendars/businessday/{scope}/{code} | [EXPERIMENTAL] Check whether a DateTime is a \&quot;Business DateTime\&quot;
-[**ListCalendars**](CalendarsApi.md#listcalendars) | **GET** /api/calendars/generic | [EXPERIMENTAL] List Calenders
-[**ListCalendarsInScope**](CalendarsApi.md#listcalendarsinscope) | **GET** /api/calendars/generic/{scope} | [EXPERIMENTAL] List all calenders in a specified scope
-[**UpdateCalendar**](CalendarsApi.md#updatecalendar) | **POST** /api/calendars/generic/{scope}/{code} | [EXPERIMENTAL] Update a calendar
+[**AddDateToCalendar**](CalendarsApi.md#adddatetocalendar) | **PUT** /api/calendars/generic/{scope}/{code}/dates | [BETA] Add a date to a calendar
+[**CreateCalendar**](CalendarsApi.md#createcalendar) | **POST** /api/calendars/generic | [BETA] Create a calendar in its generic form
+[**DeleteCalendar**](CalendarsApi.md#deletecalendar) | **DELETE** /api/calendars/generic/{scope}/{code} | [BETA] Delete a calendar
+[**DeleteDateFromCalendar**](CalendarsApi.md#deletedatefromcalendar) | **DELETE** /api/calendars/generic/{scope}/{code}/dates/{dateId} | [BETA] Remove a date from a calendar
+[**GetCalendar**](CalendarsApi.md#getcalendar) | **GET** /api/calendars/generic/{scope}/{code} | [BETA] Get a calendar in its generic form
+[**GetDates**](CalendarsApi.md#getdates) | **GET** /api/calendars/generic/{scope}/{code}/dates | [BETA] Get dates for a specific calendar
+[**IsBusinessDateTime**](CalendarsApi.md#isbusinessdatetime) | **GET** /api/calendars/businessday/{scope}/{code} | [BETA] Check whether a DateTime is a \&quot;Business DateTime\&quot;
+[**ListCalendars**](CalendarsApi.md#listcalendars) | **GET** /api/calendars/generic | [BETA] List Calenders
+[**ListCalendarsInScope**](CalendarsApi.md#listcalendarsinscope) | **GET** /api/calendars/generic/{scope} | [BETA] List all calenders in a specified scope
+[**UpdateCalendar**](CalendarsApi.md#updatecalendar) | **POST** /api/calendars/generic/{scope}/{code} | [BETA] Update a calendar
 
 
 
@@ -21,7 +21,7 @@ Method | HTTP request | Description
 
 > CalendarDate AddDateToCalendar (string scope, string code, CreateDateRequest createDateRequest)
 
-[EXPERIMENTAL] Add a date to a calendar
+[BETA] Add a date to a calendar
 
 Add an event to the calendar. These Events can be a maximum of 24 hours and must be specified in UTC.  A local date will be calculated by the system and applied to the calendar before processing.
 
@@ -40,7 +40,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:42436";
+            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:45022";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -51,7 +51,7 @@ namespace Example
 
             try
             {
-                // [EXPERIMENTAL] Add a date to a calendar
+                // [BETA] Add a date to a calendar
                 CalendarDate result = apiInstance.AddDateToCalendar(scope, code, createDateRequest);
                 Debug.WriteLine(result);
             }
@@ -105,7 +105,7 @@ Name | Type | Description  | Notes
 
 > Calendar CreateCalendar (CreateCalendarRequest createCalendarRequest)
 
-[EXPERIMENTAL] Create a calendar in its generic form
+[BETA] Create a calendar in its generic form
 
 Create a calendar in a generic form which can be used to store date events.
 
@@ -124,7 +124,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:42436";
+            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:45022";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -133,7 +133,7 @@ namespace Example
 
             try
             {
-                // [EXPERIMENTAL] Create a calendar in its generic form
+                // [BETA] Create a calendar in its generic form
                 Calendar result = apiInstance.CreateCalendar(createCalendarRequest);
                 Debug.WriteLine(result);
             }
@@ -185,7 +185,7 @@ Name | Type | Description  | Notes
 
 > Calendar DeleteCalendar (string scope, string code)
 
-[EXPERIMENTAL] Delete a calendar
+[BETA] Delete a calendar
 
 Delete a calendar and all of its respective dates
 
@@ -204,7 +204,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:42436";
+            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:45022";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -214,7 +214,7 @@ namespace Example
 
             try
             {
-                // [EXPERIMENTAL] Delete a calendar
+                // [BETA] Delete a calendar
                 Calendar result = apiInstance.DeleteCalendar(scope, code);
                 Debug.WriteLine(result);
             }
@@ -267,7 +267,7 @@ Name | Type | Description  | Notes
 
 > CalendarDate DeleteDateFromCalendar (string scope, string code, string dateId)
 
-[EXPERIMENTAL] Remove a date from a calendar
+[BETA] Remove a date from a calendar
 
 Remove a date from a calendar.
 
@@ -286,7 +286,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:42436";
+            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:45022";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -297,7 +297,7 @@ namespace Example
 
             try
             {
-                // [EXPERIMENTAL] Remove a date from a calendar
+                // [BETA] Remove a date from a calendar
                 CalendarDate result = apiInstance.DeleteDateFromCalendar(scope, code, dateId);
                 Debug.WriteLine(result);
             }
@@ -351,7 +351,7 @@ Name | Type | Description  | Notes
 
 > Calendar GetCalendar (string scope, string code, DateTimeOffset? asAt = null)
 
-[EXPERIMENTAL] Get a calendar in its generic form
+[BETA] Get a calendar in its generic form
 
 Retrieve a generic calendar by a specific ID at a point in AsAt time
 
@@ -370,7 +370,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:42436";
+            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:45022";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -381,7 +381,7 @@ namespace Example
 
             try
             {
-                // [EXPERIMENTAL] Get a calendar in its generic form
+                // [BETA] Get a calendar in its generic form
                 Calendar result = apiInstance.GetCalendar(scope, code, asAt);
                 Debug.WriteLine(result);
             }
@@ -435,7 +435,7 @@ Name | Type | Description  | Notes
 
 > ResourceListOfCalendarDate GetDates (string scope, string code, DateTimeOrCutLabel fromEffectiveAt = null, DateTimeOrCutLabel toEffectiveAt = null, DateTimeOffset? asAt = null, List<string> idFilter = null)
 
-[EXPERIMENTAL] Get dates for a specific calendar
+[BETA] Get dates for a specific calendar
 
 Get dates from a specific calendar within a specific window of effective time, at a point in AsAt time.  Providing an id filter can further refine the results.
 
@@ -454,7 +454,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:42436";
+            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:45022";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -468,7 +468,7 @@ namespace Example
 
             try
             {
-                // [EXPERIMENTAL] Get dates for a specific calendar
+                // [BETA] Get dates for a specific calendar
                 ResourceListOfCalendarDate result = apiInstance.GetDates(scope, code, fromEffectiveAt, toEffectiveAt, asAt, idFilter);
                 Debug.WriteLine(result);
             }
@@ -525,7 +525,7 @@ Name | Type | Description  | Notes
 
 > IsBusinessDayResponse IsBusinessDateTime (DateTimeOffset? dateTime, string scope, string code, DateTimeOffset? asAt = null)
 
-[EXPERIMENTAL] Check whether a DateTime is a \"Business DateTime\"
+[BETA] Check whether a DateTime is a \"Business DateTime\"
 
 A Business DateTime is defined as a point in time that:      * Does not represent a day that overlaps with the calendars WeekendMask      * If the calendar is a \"Holiday Calendar\" Does not overlap with any dates in the calendar      * If the calendar is a \"TradingHours Calendar\" Does overlap with a date in the calendar                All dates specified must be UTC and the upper bound of a calendar is not inclusive   e.g. From: 2020-12-25-00-00-00        To: 2020-12-26-00-00-00  IsBusinessDay(2020-12-26-00-00-00) == false
 
@@ -544,7 +544,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:42436";
+            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:45022";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -556,7 +556,7 @@ namespace Example
 
             try
             {
-                // [EXPERIMENTAL] Check whether a DateTime is a \"Business DateTime\"
+                // [BETA] Check whether a DateTime is a \"Business DateTime\"
                 IsBusinessDayResponse result = apiInstance.IsBusinessDateTime(dateTime, scope, code, asAt);
                 Debug.WriteLine(result);
             }
@@ -611,7 +611,7 @@ Name | Type | Description  | Notes
 
 > PagedResourceListOfCalendar ListCalendars (DateTimeOffset? asAt = null, string page = null, int? limit = null, string filter = null)
 
-[EXPERIMENTAL] List Calenders
+[BETA] List Calenders
 
 List calendars at a point in AsAt time.
 
@@ -630,7 +630,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:42436";
+            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:45022";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -642,7 +642,7 @@ namespace Example
 
             try
             {
-                // [EXPERIMENTAL] List Calenders
+                // [BETA] List Calenders
                 PagedResourceListOfCalendar result = apiInstance.ListCalendars(asAt, page, limit, filter);
                 Debug.WriteLine(result);
             }
@@ -697,7 +697,7 @@ Name | Type | Description  | Notes
 
 > PagedResourceListOfCalendar ListCalendarsInScope (string scope, DateTimeOffset? asAt = null, string page = null, int? start = null, int? limit = null, string filter = null)
 
-[EXPERIMENTAL] List all calenders in a specified scope
+[BETA] List all calenders in a specified scope
 
 List calendars at a point in AsAt time.
 
@@ -716,7 +716,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:42436";
+            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:45022";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -730,7 +730,7 @@ namespace Example
 
             try
             {
-                // [EXPERIMENTAL] List all calenders in a specified scope
+                // [BETA] List all calenders in a specified scope
                 PagedResourceListOfCalendar result = apiInstance.ListCalendarsInScope(scope, asAt, page, start, limit, filter);
                 Debug.WriteLine(result);
             }
@@ -787,7 +787,7 @@ Name | Type | Description  | Notes
 
 > Calendar UpdateCalendar (string scope, string code, UpdateCalendarRequest updateCalendarRequest)
 
-[EXPERIMENTAL] Update a calendar
+[BETA] Update a calendar
 
 Update the calendars WeekendMask, SourceProvider or Properties
 
@@ -806,7 +806,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:42436";
+            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:45022";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -817,7 +817,7 @@ namespace Example
 
             try
             {
-                // [EXPERIMENTAL] Update a calendar
+                // [BETA] Update a calendar
                 Calendar result = apiInstance.UpdateCalendar(scope, code, updateCalendarRequest);
                 Debug.WriteLine(result);
             }
