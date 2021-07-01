@@ -6,7 +6,8 @@
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **EffectiveAt** | **DateTimeOffset?** | The effectiveAt for the return. | 
-**OpeningMarketValue** | **decimal?** | The opening market value. | 
+**OpeningMarketValue** | **decimal?** | The opening market value. | [optional] 
+**ClosingMarketValue** | **decimal?** | The closing market value. | [optional] 
 **MetricsValue** | **Dictionary&lt;string, decimal?&gt;** | The value for the specified metric. | 
 **Frequency** | **string** | Show the aggregated output returns on a Daily or Monthly period. | [optional] 
 

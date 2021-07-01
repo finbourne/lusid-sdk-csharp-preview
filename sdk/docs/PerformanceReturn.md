@@ -7,7 +7,8 @@ Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **EffectiveAt** | **DateTimeOffset?** | The effectiveAt for the return. | 
 **RateOfReturn** | **decimal?** | The return number. | 
-**OpeningMarketValue** | **decimal?** | The opening market value. | 
+**OpeningMarketValue** | **decimal?** | The opening market value. | [optional] 
+**ClosingMarketValue** | **decimal?** | The closing market value. | [optional] 
 **Period** | **string** | Show the returns on a Daily or Monthly period. | [optional] 
 
 [[Back to Model list]](../README.md#documentation-for-models)
