@@ -1,13 +1,13 @@
 # Lusid.Sdk.Api.OrdersApi
 
-All URIs are relative to *https://fbn-prd.lusid.com/api*
+All URIs are relative to *http://local-unit-test-server.lusid.com:51724*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
-[**DeleteOrder**](OrdersApi.md#deleteorder) | **DELETE** /api/orders/{scope}/{code} | [EXPERIMENTAL] Delete order
-[**GetOrder**](OrdersApi.md#getorder) | **GET** /api/orders/{scope}/{code} | [EXPERIMENTAL] Get Order
-[**ListOrders**](OrdersApi.md#listorders) | **GET** /api/orders | [EXPERIMENTAL] List Orders
-[**UpsertOrders**](OrdersApi.md#upsertorders) | **POST** /api/orders | [EXPERIMENTAL] Upsert Order
+[**DeleteOrder**](OrdersApi.md#deleteorder) | **DELETE** /api/orders/{scope}/{code} | [EARLY ACCESS] Delete order
+[**GetOrder**](OrdersApi.md#getorder) | **GET** /api/orders/{scope}/{code} | [EARLY ACCESS] Get Order
+[**ListOrders**](OrdersApi.md#listorders) | **GET** /api/orders | [EARLY ACCESS] List Orders
+[**UpsertOrders**](OrdersApi.md#upsertorders) | **POST** /api/orders | [EARLY ACCESS] Upsert Order
 
 
 
@@ -15,7 +15,7 @@ Method | HTTP request | Description
 
 > DeletedEntityResponse DeleteOrder (string scope, string code)
 
-[EXPERIMENTAL] Delete order
+[EARLY ACCESS] Delete order
 
 Delete an order. Deletion will be valid from the order's creation datetime.  This means that the order will no longer exist at any effective datetime from the asAt datetime of deletion.
 
@@ -34,7 +34,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "https://fbn-prd.lusid.com/api";
+            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:51724";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -44,7 +44,7 @@ namespace Example
 
             try
             {
-                // [EXPERIMENTAL] Delete order
+                // [EARLY ACCESS] Delete order
                 DeletedEntityResponse result = apiInstance.DeleteOrder(scope, code);
                 Debug.WriteLine(result);
             }
@@ -97,7 +97,7 @@ Name | Type | Description  | Notes
 
 > Order GetOrder (string scope, string code, DateTimeOffset? asAt = null, List<string> propertyKeys = null)
 
-[EXPERIMENTAL] Get Order
+[EARLY ACCESS] Get Order
 
 Fetch an Order that matches the specified identifier
 
@@ -116,7 +116,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "https://fbn-prd.lusid.com/api";
+            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:51724";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -128,7 +128,7 @@ namespace Example
 
             try
             {
-                // [EXPERIMENTAL] Get Order
+                // [EARLY ACCESS] Get Order
                 Order result = apiInstance.GetOrder(scope, code, asAt, propertyKeys);
                 Debug.WriteLine(result);
             }
@@ -183,7 +183,7 @@ Name | Type | Description  | Notes
 
 > PagedResourceListOfOrder ListOrders (DateTimeOffset? asAt = null, string page = null, List<string> sortBy = null, int? start = null, int? limit = null, string filter = null, List<string> propertyKeys = null)
 
-[EXPERIMENTAL] List Orders
+[EARLY ACCESS] List Orders
 
 Fetch the last pre-AsAt date version of each order in scope (does not fetch the entire history).
 
@@ -202,7 +202,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "https://fbn-prd.lusid.com/api";
+            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:51724";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -217,7 +217,7 @@ namespace Example
 
             try
             {
-                // [EXPERIMENTAL] List Orders
+                // [EARLY ACCESS] List Orders
                 PagedResourceListOfOrder result = apiInstance.ListOrders(asAt, page, sortBy, start, limit, filter, propertyKeys);
                 Debug.WriteLine(result);
             }
@@ -275,7 +275,7 @@ Name | Type | Description  | Notes
 
 > ResourceListOfOrder UpsertOrders (OrderSetRequest orderSetRequest = null)
 
-[EXPERIMENTAL] Upsert Order
+[EARLY ACCESS] Upsert Order
 
 Upsert; update existing orders with given ids, or create new orders otherwise.
 
@@ -294,7 +294,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "https://fbn-prd.lusid.com/api";
+            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:51724";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -303,7 +303,7 @@ namespace Example
 
             try
             {
-                // [EXPERIMENTAL] Upsert Order
+                // [EARLY ACCESS] Upsert Order
                 ResourceListOfOrder result = apiInstance.UpsertOrders(orderSetRequest);
                 Debug.WriteLine(result);
             }
