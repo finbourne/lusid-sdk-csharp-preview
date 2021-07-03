@@ -34,7 +34,7 @@ namespace Lusid.Sdk.Model
         /// <param name="href">href.</param>
         /// <param name="values">values.</param>
         /// <param name="failed">failed.</param>
-        /// <param name="links">Collection of links..</param>
+        /// <param name="links">links.</param>
         public UpsertCorporateActionsResponse(string href = default(string), Dictionary<string, CorporateAction> values = default(Dictionary<string, CorporateAction>), Dictionary<string, ErrorDetail> failed = default(Dictionary<string, ErrorDetail>), List<Link> links = default(List<Link>))
         {
             this.Href = href;
@@ -66,9 +66,8 @@ namespace Lusid.Sdk.Model
         public Dictionary<string, ErrorDetail> Failed { get; set; }
 
         /// <summary>
-        /// Collection of links.
+        /// Gets or Sets Links
         /// </summary>
-        /// <value>Collection of links.</value>
         [DataMember(Name="links", EmitDefaultValue=true)]
         public List<Link> Links { get; set; }
 
