@@ -36,7 +36,7 @@ namespace Lusid.Sdk.Model
         /// <param name="version">version.</param>
         /// <param name="displayName">displayName.</param>
         /// <param name="description">description.</param>
-        /// <param name="links">Collection of links..</param>
+        /// <param name="links">links.</param>
         public CorporateActionSource(string href = default(string), ResourceId id = default(ResourceId), Version version = default(Version), string displayName = default(string), string description = default(string), List<Link> links = default(List<Link>))
         {
             this.Href = href;
@@ -82,9 +82,8 @@ namespace Lusid.Sdk.Model
         public string Description { get; set; }
 
         /// <summary>
-        /// Collection of links.
+        /// Gets or Sets Links
         /// </summary>
-        /// <value>Collection of links.</value>
         [DataMember(Name="links", EmitDefaultValue=true)]
         public List<Link> Links { get; set; }
 
