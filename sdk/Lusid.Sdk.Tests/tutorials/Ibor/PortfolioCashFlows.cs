@@ -29,7 +29,7 @@ namespace Lusid.Sdk.Tests.tutorials.Ibor
                 _apiFactory.Api<ITransactionPortfoliosApi>(),
                 _apiFactory.Api<IInstrumentsApi>(),
                 _apiFactory.Api<IQuotesApi>(),
-                _apiFactory.Api<IStructuredMarketDataApi>());
+                _apiFactory.Api<IComplexMarketDataApi>());
         }
         
         [Test]

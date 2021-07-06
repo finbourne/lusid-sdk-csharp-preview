@@ -5,6 +5,7 @@ using System.Linq;
 using Castle.Core.Internal;
 using Lusid.Sdk.Api;
 using Lusid.Sdk.Model;
+using Newtonsoft.Json;
 using NUnit.Framework;
 
 namespace Lusid.Sdk.Tests.Utilities
@@ -22,7 +23,7 @@ namespace Lusid.Sdk.Tests.Utilities
         private readonly ITransactionPortfoliosApi _transactionPortfoliosApi;
         private readonly IInstrumentsApi _instrumentsApi;
         private readonly IQuotesApi _quotesApi;
-        private readonly IStructuredMarketDataApi _structuredMarketDataApi;
+        private readonly IComplexMarketDataApi _complexMarketDataApi;
 
         public TestDataUtilities(ITransactionPortfoliosApi transactionPortfoliosApi)
         {
@@ -33,12 +34,12 @@ namespace Lusid.Sdk.Tests.Utilities
             ITransactionPortfoliosApi transactionPortfoliosApi,
             IInstrumentsApi instrumentsApi,
             IQuotesApi quotesApi,
-            IStructuredMarketDataApi structuredMarketDataApi)
+            IComplexMarketDataApi complexMarketDataApi)
         {
             _transactionPortfoliosApi = transactionPortfoliosApi;
             _instrumentsApi = instrumentsApi;
             _quotesApi = quotesApi;
-            _structuredMarketDataApi = structuredMarketDataApi;
+            _complexMarketDataApi = complexMarketDataApi;
         }
 
         public string CreateTransactionPortfolio(string scope)
@@ -410,7 +411,7 @@ namespace Lusid.Sdk.Tests.Utilities
         public void UpsertRateCurves(string scope, DateTimeOffset effectiveAt)
         {
             // CREATE dictionary of upsert requests, rates are structured market data
-            var upsertRequest = new Dictionary<string, UpsertStructuredMarketDataRequest>
+            var upsertRequest = new Dictionary<string, UpsertComplexMarketDataRequest>
             {
                 {$"usd_6m_rate", CreateUpsertUsdRateCurve(effectiveAt)},
                 {$"usd_ois", CreateUpsertOisCurve(effectiveAt, "USD")},
@@ -418,51 +419,40 @@ namespace Lusid.Sdk.Tests.Utilities
             };
 
             // CHECK upsert was successful
-            var upsertResponse = _structuredMarketDataApi.UpsertStructuredMarketData(scope, upsertRequest);
+            var upsertResponse = _complexMarketDataApi.UpsertComplexMarketData(scope, upsertRequest);
             Assert.That(upsertResponse.Values.Values, Is.Not.Null);
             Assert.That(upsertResponse.Values.Values.Count, Is.EqualTo(upsertRequest.Count));
         }
         
-        private UpsertStructuredMarketDataRequest CreateUpsertOisCurve(DateTimeOffset effectiveAt, string currency)
+        private UpsertComplexMarketDataRequest CreateUpsertOisCurve(DateTimeOffset effectiveAt, string currency)
         {
-            var json = GetRateCurveJsonFromFile($"{currency}OIS.json");
-            var structuredMarketId = new StructuredMarketDataId(
+            var complexMarketData = GetRateCurveJsonFromFile(($"{currency}OIS.json"));
+            var complexMarketDataId = new ComplexMarketDataId(
                 provider: "Lusid",
                 effectiveAt: effectiveAt.ToString("o"),
                 marketAsset: $"{currency}/{currency}OIS",
-                marketElementType: "ZeroCurve",
                 priceSource: "");
-            var structuredMarketData = new StructuredMarketData(
-                name: $"{currency}OIS_json_file",
-                documentFormat: "json",
-                version: "1.0",
-                document: json);
 
-            return new UpsertStructuredMarketDataRequest(structuredMarketId, structuredMarketData);
+            return new UpsertComplexMarketDataRequest(complexMarketDataId, complexMarketData);
         }
 
-        private UpsertStructuredMarketDataRequest CreateUpsertUsdRateCurve(DateTimeOffset effectiveAt)
+        private UpsertComplexMarketDataRequest CreateUpsertUsdRateCurve(DateTimeOffset effectiveAt)
         {
-            var json = GetRateCurveJsonFromFile("USD6M.json");
-            var structuredMarketId = new StructuredMarketDataId(
+            var complexMarketData = GetRateCurveJsonFromFile("USD6M.json");
+            var complexMarketDataId = new ComplexMarketDataId(
                 provider: "Lusid",
                 effectiveAt: effectiveAt.ToString("o"),
                 marketAsset: "USD/6M",
-                marketElementType: "ZeroCurve",
                 priceSource: "");
-            var structuredMarketData = new StructuredMarketData(
-                name: $"USD_6m_json",
-                documentFormat: "json",
-                version: "1.0",
-                document: json);
 
-            return new UpsertStructuredMarketDataRequest(structuredMarketId, structuredMarketData);
+            return new UpsertComplexMarketDataRequest(complexMarketDataId, complexMarketData);
         }
         
-        private static string GetRateCurveJsonFromFile(string filename)
+        private static ComplexMarketData GetRateCurveJsonFromFile(string filename)
         {
             using var reader = new StreamReader(ExampleMarketDataDirectory + filename);
-            return reader.ReadToEnd();
+            var jsonString = reader.ReadToEnd();
+            return JsonConvert.DeserializeObject<DiscountFactorCurveData>(jsonString);
         }
     }
 }
