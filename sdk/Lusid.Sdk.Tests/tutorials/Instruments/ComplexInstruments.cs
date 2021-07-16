@@ -66,6 +66,7 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
                 optionSettlementDate: new DateTimeOffset(2020, 12, 21, 0, 0, 0, TimeSpan.Zero),
                 isCallNotPut: true,
                 isDeliveryNotCash: true,
+                premium: null,
                 instrumentType: LusidInstrument.InstrumentTypeEnum.FxOption
             );
 
