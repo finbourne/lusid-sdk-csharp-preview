@@ -14,6 +14,7 @@ Name | Type | Description | Notes
 **Strike** | **decimal?** | The strike of the option. | 
 **DomCcy** | **string** | The domestic currency of the instrument. | 
 **FgnCcy** | **string** | The foreign currency of the FX. | 
+**Premium** | [**Premium**](Premium.md) |  | [optional] 
 
 [[Back to Model list]](../README.md#documentation-for-models)
 [[Back to API list]](../README.md#documentation-for-api-endpoints)
