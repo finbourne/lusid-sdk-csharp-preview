@@ -13,6 +13,7 @@ Name | Type | Description | Notes
 **Strike** | **decimal?** | The strike of the option. | 
 **DomCcy** | **string** | The domestic currency of the instrument. | 
 **FgnCcy** | **string** | The foreign currency of the FX. | 
+**Premium** | [**Premium**](Premium.md) |  | [optional] 
 **InstrumentType** | **string** | The available values are: QuotedSecurity, InterestRateSwap, FxForward, Future, ExoticInstrument, FxOption, CreditDefaultSwap, InterestRateSwaption, Bond, EquityOption, FixedLeg, FloatingLeg, BespokeCashFlowsLeg, Unknown, TermDeposit, ContractForDifference, EquitySwap, CashPerpetual, CashSettled, CdsIndex, Basket, FundingLeg, CrossCurrencySwap, FxSwap, ForwardRateAgreement | 
 
 [[Back to Model list]](../README.md#documentation-for-models)
