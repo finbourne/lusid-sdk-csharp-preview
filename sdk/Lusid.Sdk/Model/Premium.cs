@@ -23,60 +23,76 @@ using OpenAPIDateConverter = Lusid.Sdk.Client.OpenAPIDateConverter;
 namespace Lusid.Sdk.Model
 {
     /// <summary>
-    /// TransactionPropertyMapping
+    /// A class containing information for a given premium payment.
     /// </summary>
     [DataContract]
-    public partial class TransactionPropertyMapping :  IEquatable<TransactionPropertyMapping>
+    public partial class Premium :  IEquatable<Premium>
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="TransactionPropertyMapping" /> class.
+        /// Initializes a new instance of the <see cref="Premium" /> class.
         /// </summary>
         [JsonConstructorAttribute]
-        protected TransactionPropertyMapping() { }
+        protected Premium() { }
         /// <summary>
-        /// Initializes a new instance of the <see cref="TransactionPropertyMapping" /> class.
+        /// Initializes a new instance of the <see cref="Premium" /> class.
         /// </summary>
-        /// <param name="propertyKey">The Side (required).</param>
-        /// <param name="mapFrom">The Side.</param>
-        /// <param name="setTo">The Side.</param>
-        public TransactionPropertyMapping(string propertyKey = default(string), string mapFrom = default(string), Object setTo = default(Object))
+        /// <param name="amount">Premium amount (required).</param>
+        /// <param name="currency">Premium currency (required).</param>
+        /// <param name="date">Date when premium paid (required).</param>
+        public Premium(decimal? amount = default(decimal?), string currency = default(string), DateTimeOffset? date = default(DateTimeOffset?))
         {
-            // to ensure "propertyKey" is required (not null)
-            if (propertyKey == null)
+            // to ensure "amount" is required (not null)
+            if (amount == null)
             {
-                throw new InvalidDataException("propertyKey is a required property for TransactionPropertyMapping and cannot be null");
+                throw new InvalidDataException("amount is a required property for Premium and cannot be null");
             }
             else
             {
-                this.PropertyKey = propertyKey;
+                this.Amount = amount;
             }
             
-            this.MapFrom = mapFrom;
-            this.SetTo = setTo;
-            this.MapFrom = mapFrom;
-            this.SetTo = setTo;
+            // to ensure "currency" is required (not null)
+            if (currency == null)
+            {
+                throw new InvalidDataException("currency is a required property for Premium and cannot be null");
+            }
+            else
+            {
+                this.Currency = currency;
+            }
+            
+            // to ensure "date" is required (not null)
+            if (date == null)
+            {
+                throw new InvalidDataException("date is a required property for Premium and cannot be null");
+            }
+            else
+            {
+                this.Date = date;
+            }
+            
         }
         
         /// <summary>
-        /// The Side
+        /// Premium amount
         /// </summary>
-        /// <value>The Side</value>
-        [DataMember(Name="propertyKey", EmitDefaultValue=false)]
-        public string PropertyKey { get; set; }
+        /// <value>Premium amount</value>
+        [DataMember(Name="amount", EmitDefaultValue=false)]
+        public decimal? Amount { get; set; }
 
         /// <summary>
-        /// The Side
+        /// Premium currency
         /// </summary>
-        /// <value>The Side</value>
-        [DataMember(Name="mapFrom", EmitDefaultValue=true)]
-        public string MapFrom { get; set; }
+        /// <value>Premium currency</value>
+        [DataMember(Name="currency", EmitDefaultValue=false)]
+        public string Currency { get; set; }
 
         /// <summary>
-        /// The Side
+        /// Date when premium paid
         /// </summary>
-        /// <value>The Side</value>
-        [DataMember(Name="setTo", EmitDefaultValue=true)]
-        public Object SetTo { get; set; }
+        /// <value>Date when premium paid</value>
+        [DataMember(Name="date", EmitDefaultValue=false)]
+        public DateTimeOffset? Date { get; set; }
 
         /// <summary>
         /// Returns the string presentation of the object
@@ -85,10 +101,10 @@ namespace Lusid.Sdk.Model
         public override string ToString()
         {
             var sb = new StringBuilder();
-            sb.Append("class TransactionPropertyMapping {\n");
-            sb.Append("  PropertyKey: ").Append(PropertyKey).Append("\n");
-            sb.Append("  MapFrom: ").Append(MapFrom).Append("\n");
-            sb.Append("  SetTo: ").Append(SetTo).Append("\n");
+            sb.Append("class Premium {\n");
+            sb.Append("  Amount: ").Append(Amount).Append("\n");
+            sb.Append("  Currency: ").Append(Currency).Append("\n");
+            sb.Append("  Date: ").Append(Date).Append("\n");
             sb.Append("}\n");
             return sb.ToString();
         }
@@ -109,34 +125,34 @@ namespace Lusid.Sdk.Model
         /// <returns>Boolean</returns>
         public override bool Equals(object input)
         {
-            return this.Equals(input as TransactionPropertyMapping);
+            return this.Equals(input as Premium);
         }
 
         /// <summary>
-        /// Returns true if TransactionPropertyMapping instances are equal
+        /// Returns true if Premium instances are equal
         /// </summary>
-        /// <param name="input">Instance of TransactionPropertyMapping to be compared</param>
+        /// <param name="input">Instance of Premium to be compared</param>
         /// <returns>Boolean</returns>
-        public bool Equals(TransactionPropertyMapping input)
+        public bool Equals(Premium input)
         {
             if (input == null)
                 return false;
 
             return 
                 (
-                    this.PropertyKey == input.PropertyKey ||
-                    (this.PropertyKey != null &&
-                    this.PropertyKey.Equals(input.PropertyKey))
+                    this.Amount == input.Amount ||
+                    (this.Amount != null &&
+                    this.Amount.Equals(input.Amount))
                 ) && 
                 (
-                    this.MapFrom == input.MapFrom ||
-                    (this.MapFrom != null &&
-                    this.MapFrom.Equals(input.MapFrom))
+                    this.Currency == input.Currency ||
+                    (this.Currency != null &&
+                    this.Currency.Equals(input.Currency))
                 ) && 
                 (
-                    this.SetTo == input.SetTo ||
-                    (this.SetTo != null &&
-                    this.SetTo.Equals(input.SetTo))
+                    this.Date == input.Date ||
+                    (this.Date != null &&
+                    this.Date.Equals(input.Date))
                 );
         }
 
@@ -149,12 +165,12 @@ namespace Lusid.Sdk.Model
             unchecked // Overflow is fine, just wrap
             {
                 int hashCode = 41;
-                if (this.PropertyKey != null)
-                    hashCode = hashCode * 59 + this.PropertyKey.GetHashCode();
-                if (this.MapFrom != null)
-                    hashCode = hashCode * 59 + this.MapFrom.GetHashCode();
-                if (this.SetTo != null)
-                    hashCode = hashCode * 59 + this.SetTo.GetHashCode();
+                if (this.Amount != null)
+                    hashCode = hashCode * 59 + this.Amount.GetHashCode();
+                if (this.Currency != null)
+                    hashCode = hashCode * 59 + this.Currency.GetHashCode();
+                if (this.Date != null)
+                    hashCode = hashCode * 59 + this.Date.GetHashCode();
                 return hashCode;
             }
         }
