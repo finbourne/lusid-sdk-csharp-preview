@@ -1,6 +1,6 @@
 # Lusid.Sdk.Api.PersonsApi
 
-All URIs are relative to *http://local-unit-test-server.lusid.com:32886*
+All URIs are relative to *http://local-unit-test-server.lusid.com:43074*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
@@ -21,8 +21,9 @@ Method | HTTP request | Description
 [**UpsertPersonAccessMetadata**](PersonsApi.md#upsertpersonaccessmetadata) | **PUT** /api/persons/{idTypeScope}/{idTypeCode}/{code}/metadata/{metadataKey} | [EXPERIMENTAL] Upsert a Person Access Metadata entry associated with a specific metadataKey. This creates or updates the data in LUSID.
 
 
-<a name="deleteperson"></a>
-# **DeletePerson**
+
+## DeletePerson
+
 > DeletedEntityResponse DeletePerson (string idTypeScope, string idTypeCode, string code)
 
 [EXPERIMENTAL] Delete person
@@ -30,6 +31,7 @@ Method | HTTP request | Description
 Delete a person. Deletion will be valid from the person's creation datetime.  This means that the person will no longer exist at any effective datetime from the asAt datetime of deletion.
 
 ### Example
+
 ```csharp
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -43,12 +45,11 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration config = new Configuration();
-            config.BasePath = "http://local-unit-test-server.lusid.com:32886";
+            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:43074";
             // Configure OAuth2 access token for authorization: oauth2
-            config.AccessToken = "YOUR_ACCESS_TOKEN";
+            Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
-            var apiInstance = new PersonsApi(config);
+            var apiInstance = new PersonsApi(Configuration.Default);
             var idTypeScope = idTypeScope_example;  // string | The scope of the person identifier type.
             var idTypeCode = idTypeCode_example;  // string | The code of the person identifier type.
             var code = code_example;  // string | Code of the person under specified identifier type scope and code. This together with defined              identifier type uniquely identifies the person to delete.
@@ -59,7 +60,7 @@ namespace Example
                 DeletedEntityResponse result = apiInstance.DeletePerson(idTypeScope, idTypeCode, code);
                 Debug.WriteLine(result);
             }
-            catch (ApiException  e)
+            catch (ApiException e)
             {
                 Debug.Print("Exception when calling PersonsApi.DeletePerson: " + e.Message );
                 Debug.Print("Status Code: "+ e.ErrorCode);
@@ -71,6 +72,7 @@ namespace Example
 ```
 
 ### Parameters
+
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
@@ -88,9 +90,8 @@ Name | Type | Description  | Notes
 
 ### HTTP request headers
 
- - **Content-Type**: Not defined
- - **Accept**: text/plain, application/json, text/json
-
+- **Content-Type**: Not defined
+- **Accept**: text/plain, application/json, text/json
 
 ### HTTP response details
 | Status code | Description | Response headers |
@@ -99,10 +100,14 @@ Name | Type | Description  | Notes
 | **400** | The details of the input related failure |  -  |
 | **0** | Error response |  -  |
 
-[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+[[Back to top]](#)
+[[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
 
-<a name="deletepersonaccessmetadata"></a>
-# **DeletePersonAccessMetadata**
+
+## DeletePersonAccessMetadata
+
 > DeletedEntityResponse DeletePersonAccessMetadata (string idTypeScope, string idTypeCode, string code, string metadataKey, DateTimeOrCutLabel effectiveAt = null)
 
 [EXPERIMENTAL] Delete a Person Access Metadata entry
@@ -110,6 +115,7 @@ Name | Type | Description  | Notes
 Deletes the Person Access Metadata entry that exactly matches the provided identifier parts.    It is important to always check to verify success (or failure).
 
 ### Example
+
 ```csharp
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -123,12 +129,11 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration config = new Configuration();
-            config.BasePath = "http://local-unit-test-server.lusid.com:32886";
+            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:43074";
             // Configure OAuth2 access token for authorization: oauth2
-            config.AccessToken = "YOUR_ACCESS_TOKEN";
+            Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
-            var apiInstance = new PersonsApi(config);
+            var apiInstance = new PersonsApi(Configuration.Default);
             var idTypeScope = idTypeScope_example;  // string | Scope of the person identifier.
             var idTypeCode = idTypeCode_example;  // string | Code of the person identifier.
             var code = code_example;  // string | Code of the person under specified identifier type's scope and code.
@@ -141,7 +146,7 @@ namespace Example
                 DeletedEntityResponse result = apiInstance.DeletePersonAccessMetadata(idTypeScope, idTypeCode, code, metadataKey, effectiveAt);
                 Debug.WriteLine(result);
             }
-            catch (ApiException  e)
+            catch (ApiException e)
             {
                 Debug.Print("Exception when calling PersonsApi.DeletePersonAccessMetadata: " + e.Message );
                 Debug.Print("Status Code: "+ e.ErrorCode);
@@ -153,6 +158,7 @@ namespace Example
 ```
 
 ### Parameters
+
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
@@ -172,9 +178,8 @@ Name | Type | Description  | Notes
 
 ### HTTP request headers
 
- - **Content-Type**: Not defined
- - **Accept**: text/plain, application/json, text/json
-
+- **Content-Type**: Not defined
+- **Accept**: text/plain, application/json, text/json
 
 ### HTTP response details
 | Status code | Description | Response headers |
@@ -183,10 +188,14 @@ Name | Type | Description  | Notes
 | **400** | The details of the input related failure |  -  |
 | **0** | Error response |  -  |
 
-[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+[[Back to top]](#)
+[[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
 
-<a name="deletepersonidentifiers"></a>
-# **DeletePersonIdentifiers**
+
+## DeletePersonIdentifiers
+
 > DeletedEntityResponse DeletePersonIdentifiers (string idTypeScope, string idTypeCode, string code, List<string> propertyKeys, DateTimeOrCutLabel effectiveAt = null)
 
 [EXPERIMENTAL] Delete Person Identifiers
@@ -194,6 +203,7 @@ Name | Type | Description  | Notes
 Delete identifiers that belong to the given property keys of the person.
 
 ### Example
+
 ```csharp
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -207,12 +217,11 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration config = new Configuration();
-            config.BasePath = "http://local-unit-test-server.lusid.com:32886";
+            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:43074";
             // Configure OAuth2 access token for authorization: oauth2
-            config.AccessToken = "YOUR_ACCESS_TOKEN";
+            Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
-            var apiInstance = new PersonsApi(config);
+            var apiInstance = new PersonsApi(Configuration.Default);
             var idTypeScope = idTypeScope_example;  // string | Scope of the person identifier type.
             var idTypeCode = idTypeCode_example;  // string | Code of the person identifier type.
             var code = code_example;  // string | Code of the person under specified identifier type's scope and code. This together with stated identifier type uniquely              identifies the person.
@@ -225,7 +234,7 @@ namespace Example
                 DeletedEntityResponse result = apiInstance.DeletePersonIdentifiers(idTypeScope, idTypeCode, code, propertyKeys, effectiveAt);
                 Debug.WriteLine(result);
             }
-            catch (ApiException  e)
+            catch (ApiException e)
             {
                 Debug.Print("Exception when calling PersonsApi.DeletePersonIdentifiers: " + e.Message );
                 Debug.Print("Status Code: "+ e.ErrorCode);
@@ -237,6 +246,7 @@ namespace Example
 ```
 
 ### Parameters
+
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
@@ -256,9 +266,8 @@ Name | Type | Description  | Notes
 
 ### HTTP request headers
 
- - **Content-Type**: Not defined
- - **Accept**: text/plain, application/json, text/json
-
+- **Content-Type**: Not defined
+- **Accept**: text/plain, application/json, text/json
 
 ### HTTP response details
 | Status code | Description | Response headers |
@@ -267,10 +276,14 @@ Name | Type | Description  | Notes
 | **400** | The details of the input related failure |  -  |
 | **0** | Error response |  -  |
 
-[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+[[Back to top]](#)
+[[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
 
-<a name="deletepersonproperties"></a>
-# **DeletePersonProperties**
+
+## DeletePersonProperties
+
 > DeletedEntityResponse DeletePersonProperties (string idTypeScope, string idTypeCode, string code, List<string> propertyKeys, DateTimeOrCutLabel effectiveAt = null)
 
 [EXPERIMENTAL] Delete Person Properties
@@ -278,6 +291,7 @@ Name | Type | Description  | Notes
 Delete all properties that belong to the given property keys of the person.
 
 ### Example
+
 ```csharp
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -291,12 +305,11 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration config = new Configuration();
-            config.BasePath = "http://local-unit-test-server.lusid.com:32886";
+            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:43074";
             // Configure OAuth2 access token for authorization: oauth2
-            config.AccessToken = "YOUR_ACCESS_TOKEN";
+            Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
-            var apiInstance = new PersonsApi(config);
+            var apiInstance = new PersonsApi(Configuration.Default);
             var idTypeScope = idTypeScope_example;  // string | Scope of the person identifier type.
             var idTypeCode = idTypeCode_example;  // string | Code of the person identifier type.
             var code = code_example;  // string | Code of the person under specified identifier type's scope and code. This together with stated identifier type uniquely              identifies the person.
@@ -309,7 +322,7 @@ namespace Example
                 DeletedEntityResponse result = apiInstance.DeletePersonProperties(idTypeScope, idTypeCode, code, propertyKeys, effectiveAt);
                 Debug.WriteLine(result);
             }
-            catch (ApiException  e)
+            catch (ApiException e)
             {
                 Debug.Print("Exception when calling PersonsApi.DeletePersonProperties: " + e.Message );
                 Debug.Print("Status Code: "+ e.ErrorCode);
@@ -321,6 +334,7 @@ namespace Example
 ```
 
 ### Parameters
+
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
@@ -340,9 +354,8 @@ Name | Type | Description  | Notes
 
 ### HTTP request headers
 
- - **Content-Type**: Not defined
- - **Accept**: text/plain, application/json, text/json
-
+- **Content-Type**: Not defined
+- **Accept**: text/plain, application/json, text/json
 
 ### HTTP response details
 | Status code | Description | Response headers |
@@ -351,10 +364,14 @@ Name | Type | Description  | Notes
 | **400** | The details of the input related failure |  -  |
 | **0** | Error response |  -  |
 
-[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+[[Back to top]](#)
+[[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
 
-<a name="getallpersonaccessmetadata"></a>
-# **GetAllPersonAccessMetadata**
+
+## GetAllPersonAccessMetadata
+
 > Dictionary&lt;string, List&lt;AccessMetadataValue&gt;&gt; GetAllPersonAccessMetadata (string idTypeScope, string idTypeCode, string code, DateTimeOrCutLabel effectiveAt = null, DateTimeOffset? asAt = null)
 
 [EXPERIMENTAL] Get Access Metadata rules for a Person
@@ -362,6 +379,7 @@ Name | Type | Description  | Notes
 Pass the Scope and Code of the Person identifier along with the person code parameter to retrieve the associated Access Metadata
 
 ### Example
+
 ```csharp
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -375,12 +393,11 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration config = new Configuration();
-            config.BasePath = "http://local-unit-test-server.lusid.com:32886";
+            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:43074";
             // Configure OAuth2 access token for authorization: oauth2
-            config.AccessToken = "YOUR_ACCESS_TOKEN";
+            Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
-            var apiInstance = new PersonsApi(config);
+            var apiInstance = new PersonsApi(Configuration.Default);
             var idTypeScope = idTypeScope_example;  // string | Scope of the person identifier.
             var idTypeCode = idTypeCode_example;  // string | Code of the person identifier.
             var code = code_example;  // string | Code of the person under specified identifier type's scope and code.
@@ -393,7 +410,7 @@ namespace Example
                 Dictionary<string, List<AccessMetadataValue>> result = apiInstance.GetAllPersonAccessMetadata(idTypeScope, idTypeCode, code, effectiveAt, asAt);
                 Debug.WriteLine(result);
             }
-            catch (ApiException  e)
+            catch (ApiException e)
             {
                 Debug.Print("Exception when calling PersonsApi.GetAllPersonAccessMetadata: " + e.Message );
                 Debug.Print("Status Code: "+ e.ErrorCode);
@@ -405,6 +422,7 @@ namespace Example
 ```
 
 ### Parameters
+
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
@@ -424,9 +442,8 @@ Name | Type | Description  | Notes
 
 ### HTTP request headers
 
- - **Content-Type**: Not defined
- - **Accept**: text/plain, application/json, text/json
-
+- **Content-Type**: Not defined
+- **Accept**: text/plain, application/json, text/json
 
 ### HTTP response details
 | Status code | Description | Response headers |
@@ -435,10 +452,14 @@ Name | Type | Description  | Notes
 | **400** | The details of the input related failure |  -  |
 | **0** | Error response |  -  |
 
-[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+[[Back to top]](#)
+[[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
 
-<a name="getperson"></a>
-# **GetPerson**
+
+## GetPerson
+
 > Person GetPerson (string idTypeScope, string idTypeCode, string code, List<string> propertyKeys = null, DateTimeOrCutLabel effectiveAt = null, DateTimeOffset? asAt = null)
 
 [EXPERIMENTAL] Get Person
@@ -446,6 +467,7 @@ Name | Type | Description  | Notes
 Retrieve the definition of a person.
 
 ### Example
+
 ```csharp
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -459,12 +481,11 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration config = new Configuration();
-            config.BasePath = "http://local-unit-test-server.lusid.com:32886";
+            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:43074";
             // Configure OAuth2 access token for authorization: oauth2
-            config.AccessToken = "YOUR_ACCESS_TOKEN";
+            Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
-            var apiInstance = new PersonsApi(config);
+            var apiInstance = new PersonsApi(Configuration.Default);
             var idTypeScope = idTypeScope_example;  // string | Scope of the person identifier type.
             var idTypeCode = idTypeCode_example;  // string | Code of the person identifier type.
             var code = code_example;  // string | Code of the person under specified scope and code. This together with stated identifier type uniquely              identifies the person.
@@ -478,7 +499,7 @@ namespace Example
                 Person result = apiInstance.GetPerson(idTypeScope, idTypeCode, code, propertyKeys, effectiveAt, asAt);
                 Debug.WriteLine(result);
             }
-            catch (ApiException  e)
+            catch (ApiException e)
             {
                 Debug.Print("Exception when calling PersonsApi.GetPerson: " + e.Message );
                 Debug.Print("Status Code: "+ e.ErrorCode);
@@ -490,6 +511,7 @@ namespace Example
 ```
 
 ### Parameters
+
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
@@ -510,9 +532,8 @@ Name | Type | Description  | Notes
 
 ### HTTP request headers
 
- - **Content-Type**: Not defined
- - **Accept**: text/plain, application/json, text/json
-
+- **Content-Type**: Not defined
+- **Accept**: text/plain, application/json, text/json
 
 ### HTTP response details
 | Status code | Description | Response headers |
@@ -521,10 +542,14 @@ Name | Type | Description  | Notes
 | **400** | The details of the input related failure |  -  |
 | **0** | Error response |  -  |
 
-[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+[[Back to top]](#)
+[[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
 
-<a name="getpersonaccessmetadatabykey"></a>
-# **GetPersonAccessMetadataByKey**
+
+## GetPersonAccessMetadataByKey
+
 > ICollection&lt;AccessMetadataValue&gt; GetPersonAccessMetadataByKey (string idTypeScope, string idTypeCode, string code, string metadataKey, DateTimeOrCutLabel effectiveAt = null, DateTimeOffset? asAt = null)
 
 [EXPERIMENTAL] Get an entry identified by a metadataKey in the Access Metadata of a Person
@@ -532,6 +557,7 @@ Name | Type | Description  | Notes
 Get a specific Person Access Metadata by specifying the corresponding identifier parts and Person code                No matching will be performed through this endpoint. To retrieve an entry, it is necessary to specify, exactly, the identifier of the entry
 
 ### Example
+
 ```csharp
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -545,12 +571,11 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration config = new Configuration();
-            config.BasePath = "http://local-unit-test-server.lusid.com:32886";
+            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:43074";
             // Configure OAuth2 access token for authorization: oauth2
-            config.AccessToken = "YOUR_ACCESS_TOKEN";
+            Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
-            var apiInstance = new PersonsApi(config);
+            var apiInstance = new PersonsApi(Configuration.Default);
             var idTypeScope = idTypeScope_example;  // string | Scope of the person identifier.
             var idTypeCode = idTypeCode_example;  // string | Code of the person identifier.
             var code = code_example;  // string | Code of the person under specified identifier type's scope and code.
@@ -564,7 +589,7 @@ namespace Example
                 ICollection<AccessMetadataValue> result = apiInstance.GetPersonAccessMetadataByKey(idTypeScope, idTypeCode, code, metadataKey, effectiveAt, asAt);
                 Debug.WriteLine(result);
             }
-            catch (ApiException  e)
+            catch (ApiException e)
             {
                 Debug.Print("Exception when calling PersonsApi.GetPersonAccessMetadataByKey: " + e.Message );
                 Debug.Print("Status Code: "+ e.ErrorCode);
@@ -576,6 +601,7 @@ namespace Example
 ```
 
 ### Parameters
+
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
@@ -596,9 +622,8 @@ Name | Type | Description  | Notes
 
 ### HTTP request headers
 
- - **Content-Type**: Not defined
- - **Accept**: text/plain, application/json, text/json
-
+- **Content-Type**: Not defined
+- **Accept**: text/plain, application/json, text/json
 
 ### HTTP response details
 | Status code | Description | Response headers |
@@ -607,10 +632,14 @@ Name | Type | Description  | Notes
 | **400** | The details of the input related failure |  -  |
 | **0** | Error response |  -  |
 
-[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+[[Back to top]](#)
+[[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
 
-<a name="getpersonpropertytimeseries"></a>
-# **GetPersonPropertyTimeSeries**
+
+## GetPersonPropertyTimeSeries
+
 > ResourceListOfPropertyInterval GetPersonPropertyTimeSeries (string idTypeScope, string idTypeCode, string code, string propertyKey = null, DateTimeOffset? asAt = null, string filter = null, string page = null, int? limit = null)
 
 [EXPERIMENTAL] Get Person Property Time Series
@@ -618,6 +647,7 @@ Name | Type | Description  | Notes
 List the complete time series of a person property.
 
 ### Example
+
 ```csharp
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -631,12 +661,11 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration config = new Configuration();
-            config.BasePath = "http://local-unit-test-server.lusid.com:32886";
+            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:43074";
             // Configure OAuth2 access token for authorization: oauth2
-            config.AccessToken = "YOUR_ACCESS_TOKEN";
+            Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
-            var apiInstance = new PersonsApi(config);
+            var apiInstance = new PersonsApi(Configuration.Default);
             var idTypeScope = idTypeScope_example;  // string | Scope of the person identifier type.
             var idTypeCode = idTypeCode_example;  // string | Code of the person identifier type.
             var code = code_example;  // string | Code of the person under specified identifier type's scope and code. This together with stated identifier type uniquely identifies the person.
@@ -652,7 +681,7 @@ namespace Example
                 ResourceListOfPropertyInterval result = apiInstance.GetPersonPropertyTimeSeries(idTypeScope, idTypeCode, code, propertyKey, asAt, filter, page, limit);
                 Debug.WriteLine(result);
             }
-            catch (ApiException  e)
+            catch (ApiException e)
             {
                 Debug.Print("Exception when calling PersonsApi.GetPersonPropertyTimeSeries: " + e.Message );
                 Debug.Print("Status Code: "+ e.ErrorCode);
@@ -664,6 +693,7 @@ namespace Example
 ```
 
 ### Parameters
+
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
@@ -686,9 +716,8 @@ Name | Type | Description  | Notes
 
 ### HTTP request headers
 
- - **Content-Type**: Not defined
- - **Accept**: text/plain, application/json, text/json
-
+- **Content-Type**: Not defined
+- **Accept**: text/plain, application/json, text/json
 
 ### HTTP response details
 | Status code | Description | Response headers |
@@ -697,10 +726,14 @@ Name | Type | Description  | Notes
 | **400** | The details of the input related failure |  -  |
 | **0** | Error response |  -  |
 
-[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+[[Back to top]](#)
+[[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
 
-<a name="getpersonrelations"></a>
-# **GetPersonRelations**
+
+## GetPersonRelations
+
 > ResourceListOfRelation GetPersonRelations (string idTypeScope, string idTypeCode, string code, DateTimeOrCutLabel effectiveAt = null, DateTimeOffset? asAt = null, string filter = null, List<string> identifierTypes = null)
 
 [EXPERIMENTAL] Get Relations for Person
@@ -708,6 +741,7 @@ Name | Type | Description  | Notes
 Get relations for the specified person.
 
 ### Example
+
 ```csharp
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -721,12 +755,11 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration config = new Configuration();
-            config.BasePath = "http://local-unit-test-server.lusid.com:32886";
+            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:43074";
             // Configure OAuth2 access token for authorization: oauth2
-            config.AccessToken = "YOUR_ACCESS_TOKEN";
+            Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
-            var apiInstance = new PersonsApi(config);
+            var apiInstance = new PersonsApi(Configuration.Default);
             var idTypeScope = idTypeScope_example;  // string | Scope of the person identifier type.
             var idTypeCode = idTypeCode_example;  // string | Code of the person identifier type.
             var code = code_example;  // string | Code of the person under specified identifier type's scope and code. This together with stated identifier type uniquely              identifies the person.
@@ -741,7 +774,7 @@ namespace Example
                 ResourceListOfRelation result = apiInstance.GetPersonRelations(idTypeScope, idTypeCode, code, effectiveAt, asAt, filter, identifierTypes);
                 Debug.WriteLine(result);
             }
-            catch (ApiException  e)
+            catch (ApiException e)
             {
                 Debug.Print("Exception when calling PersonsApi.GetPersonRelations: " + e.Message );
                 Debug.Print("Status Code: "+ e.ErrorCode);
@@ -753,6 +786,7 @@ namespace Example
 ```
 
 ### Parameters
+
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
@@ -774,9 +808,8 @@ Name | Type | Description  | Notes
 
 ### HTTP request headers
 
- - **Content-Type**: Not defined
- - **Accept**: text/plain, application/json, text/json
-
+- **Content-Type**: Not defined
+- **Accept**: text/plain, application/json, text/json
 
 ### HTTP response details
 | Status code | Description | Response headers |
@@ -785,10 +818,14 @@ Name | Type | Description  | Notes
 | **400** | The details of the input related failure |  -  |
 | **0** | Error response |  -  |
 
-[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+[[Back to top]](#)
+[[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
 
-<a name="getpersonrelationships"></a>
-# **GetPersonRelationships**
+
+## GetPersonRelationships
+
 > ResourceListOfRelationship GetPersonRelationships (string idTypeScope, string idTypeCode, string code, DateTimeOrCutLabel effectiveAt = null, DateTimeOffset? asAt = null, string filter = null, List<string> identifierTypes = null)
 
 [EXPERIMENTAL] Get Relationships for Person
@@ -796,6 +833,7 @@ Name | Type | Description  | Notes
 Get relationships for the specified person.
 
 ### Example
+
 ```csharp
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -809,12 +847,11 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration config = new Configuration();
-            config.BasePath = "http://local-unit-test-server.lusid.com:32886";
+            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:43074";
             // Configure OAuth2 access token for authorization: oauth2
-            config.AccessToken = "YOUR_ACCESS_TOKEN";
+            Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
-            var apiInstance = new PersonsApi(config);
+            var apiInstance = new PersonsApi(Configuration.Default);
             var idTypeScope = idTypeScope_example;  // string | Scope of the person's identifier type.
             var idTypeCode = idTypeCode_example;  // string | Code of the person's identifier type.
             var code = code_example;  // string | Code of the person under specified identifier type's scope and code. This together with stated identifier type uniquely              identifies the person.
@@ -829,7 +866,7 @@ namespace Example
                 ResourceListOfRelationship result = apiInstance.GetPersonRelationships(idTypeScope, idTypeCode, code, effectiveAt, asAt, filter, identifierTypes);
                 Debug.WriteLine(result);
             }
-            catch (ApiException  e)
+            catch (ApiException e)
             {
                 Debug.Print("Exception when calling PersonsApi.GetPersonRelationships: " + e.Message );
                 Debug.Print("Status Code: "+ e.ErrorCode);
@@ -841,6 +878,7 @@ namespace Example
 ```
 
 ### Parameters
+
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
@@ -862,9 +900,8 @@ Name | Type | Description  | Notes
 
 ### HTTP request headers
 
- - **Content-Type**: Not defined
- - **Accept**: text/plain, application/json, text/json
-
+- **Content-Type**: Not defined
+- **Accept**: text/plain, application/json, text/json
 
 ### HTTP response details
 | Status code | Description | Response headers |
@@ -873,10 +910,14 @@ Name | Type | Description  | Notes
 | **400** | The details of the input related failure |  -  |
 | **0** | Error response |  -  |
 
-[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+[[Back to top]](#)
+[[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
 
-<a name="listpersons"></a>
-# **ListPersons**
+
+## ListPersons
+
 > PagedResourceListOfPerson ListPersons (string idTypeScope, string idTypeCode, DateTimeOrCutLabel effectiveAt = null, DateTimeOffset? asAt = null, string page = null, int? start = null, int? limit = null, string filter = null, List<string> propertyKeys = null)
 
 [EXPERIMENTAL] List Persons
@@ -884,6 +925,7 @@ Name | Type | Description  | Notes
 List persons which have identifiers of a specific identifier type's scope and code, and satisfies filter criteria.
 
 ### Example
+
 ```csharp
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -897,12 +939,11 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration config = new Configuration();
-            config.BasePath = "http://local-unit-test-server.lusid.com:32886";
+            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:43074";
             // Configure OAuth2 access token for authorization: oauth2
-            config.AccessToken = "YOUR_ACCESS_TOKEN";
+            Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
-            var apiInstance = new PersonsApi(config);
+            var apiInstance = new PersonsApi(Configuration.Default);
             var idTypeScope = idTypeScope_example;  // string | Scope of the person identifier type.
             var idTypeCode = idTypeCode_example;  // string | Code of the person identifier type.
             var effectiveAt = effectiveAt_example;  // DateTimeOrCutLabel | The effective datetime or cut label at which to list the people. Defaults to the current LUSID              system datetime if not specified. (optional) 
@@ -919,7 +960,7 @@ namespace Example
                 PagedResourceListOfPerson result = apiInstance.ListPersons(idTypeScope, idTypeCode, effectiveAt, asAt, page, start, limit, filter, propertyKeys);
                 Debug.WriteLine(result);
             }
-            catch (ApiException  e)
+            catch (ApiException e)
             {
                 Debug.Print("Exception when calling PersonsApi.ListPersons: " + e.Message );
                 Debug.Print("Status Code: "+ e.ErrorCode);
@@ -931,6 +972,7 @@ namespace Example
 ```
 
 ### Parameters
+
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
@@ -954,9 +996,8 @@ Name | Type | Description  | Notes
 
 ### HTTP request headers
 
- - **Content-Type**: Not defined
- - **Accept**: text/plain, application/json, text/json
-
+- **Content-Type**: Not defined
+- **Accept**: text/plain, application/json, text/json
 
 ### HTTP response details
 | Status code | Description | Response headers |
@@ -965,10 +1006,14 @@ Name | Type | Description  | Notes
 | **400** | The details of the input related failure |  -  |
 | **0** | Error response |  -  |
 
-[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+[[Back to top]](#)
+[[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
 
-<a name="setpersonidentifiers"></a>
-# **SetPersonIdentifiers**
+
+## SetPersonIdentifiers
+
 > Person SetPersonIdentifiers (string idTypeScope, string idTypeCode, string code, SetPersonIdentifiersRequest setPersonIdentifiersRequest)
 
 [EXPERIMENTAL] Set Person Identifiers
@@ -976,6 +1021,7 @@ Name | Type | Description  | Notes
 Set identifiers of the person.
 
 ### Example
+
 ```csharp
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -989,12 +1035,11 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration config = new Configuration();
-            config.BasePath = "http://local-unit-test-server.lusid.com:32886";
+            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:43074";
             // Configure OAuth2 access token for authorization: oauth2
-            config.AccessToken = "YOUR_ACCESS_TOKEN";
+            Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
-            var apiInstance = new PersonsApi(config);
+            var apiInstance = new PersonsApi(Configuration.Default);
             var idTypeScope = idTypeScope_example;  // string | Scope of the person identifier type.
             var idTypeCode = idTypeCode_example;  // string | Code of the person identifier type.
             var code = code_example;  // string | Code of the person under specified identifier type's scope and code. This together with stated identifier type uniquely              identifies the person.
@@ -1006,7 +1051,7 @@ namespace Example
                 Person result = apiInstance.SetPersonIdentifiers(idTypeScope, idTypeCode, code, setPersonIdentifiersRequest);
                 Debug.WriteLine(result);
             }
-            catch (ApiException  e)
+            catch (ApiException e)
             {
                 Debug.Print("Exception when calling PersonsApi.SetPersonIdentifiers: " + e.Message );
                 Debug.Print("Status Code: "+ e.ErrorCode);
@@ -1018,6 +1063,7 @@ namespace Example
 ```
 
 ### Parameters
+
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
@@ -1036,9 +1082,8 @@ Name | Type | Description  | Notes
 
 ### HTTP request headers
 
- - **Content-Type**: application/json-patch+json, application/json, text/json, application/_*+json
- - **Accept**: text/plain, application/json, text/json
-
+- **Content-Type**: application/json-patch+json, application/json, text/json, application/_*+json
+- **Accept**: text/plain, application/json, text/json
 
 ### HTTP response details
 | Status code | Description | Response headers |
@@ -1047,10 +1092,14 @@ Name | Type | Description  | Notes
 | **400** | The details of the input related failure |  -  |
 | **0** | Error response |  -  |
 
-[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+[[Back to top]](#)
+[[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
 
-<a name="setpersonproperties"></a>
-# **SetPersonProperties**
+
+## SetPersonProperties
+
 > Person SetPersonProperties (string idTypeScope, string idTypeCode, string code, SetPersonPropertiesRequest setPersonPropertiesRequest)
 
 [EXPERIMENTAL] Set Person Properties
@@ -1058,6 +1107,7 @@ Name | Type | Description  | Notes
 Set properties of the person.
 
 ### Example
+
 ```csharp
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -1071,12 +1121,11 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration config = new Configuration();
-            config.BasePath = "http://local-unit-test-server.lusid.com:32886";
+            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:43074";
             // Configure OAuth2 access token for authorization: oauth2
-            config.AccessToken = "YOUR_ACCESS_TOKEN";
+            Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
-            var apiInstance = new PersonsApi(config);
+            var apiInstance = new PersonsApi(Configuration.Default);
             var idTypeScope = idTypeScope_example;  // string | Scope of the person identifier type.
             var idTypeCode = idTypeCode_example;  // string | Code of the person identifier type.
             var code = code_example;  // string | Code of the person under specified identifier type's scope and code. This together with stated identifier type uniquely              identifies the person.
@@ -1088,7 +1137,7 @@ namespace Example
                 Person result = apiInstance.SetPersonProperties(idTypeScope, idTypeCode, code, setPersonPropertiesRequest);
                 Debug.WriteLine(result);
             }
-            catch (ApiException  e)
+            catch (ApiException e)
             {
                 Debug.Print("Exception when calling PersonsApi.SetPersonProperties: " + e.Message );
                 Debug.Print("Status Code: "+ e.ErrorCode);
@@ -1100,6 +1149,7 @@ namespace Example
 ```
 
 ### Parameters
+
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
@@ -1118,9 +1168,8 @@ Name | Type | Description  | Notes
 
 ### HTTP request headers
 
- - **Content-Type**: application/json-patch+json, application/json, text/json, application/_*+json
- - **Accept**: text/plain, application/json, text/json
-
+- **Content-Type**: application/json-patch+json, application/json, text/json, application/_*+json
+- **Accept**: text/plain, application/json, text/json
 
 ### HTTP response details
 | Status code | Description | Response headers |
@@ -1129,10 +1178,14 @@ Name | Type | Description  | Notes
 | **400** | The details of the input related failure |  -  |
 | **0** | Error response |  -  |
 
-[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+[[Back to top]](#)
+[[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
 
-<a name="upsertperson"></a>
-# **UpsertPerson**
+
+## UpsertPerson
+
 > Person UpsertPerson (UpsertPersonRequest upsertPersonRequest)
 
 [EXPERIMENTAL] Upsert Person
@@ -1140,6 +1193,7 @@ Name | Type | Description  | Notes
 Create or update a new person under the specified scope.
 
 ### Example
+
 ```csharp
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -1153,12 +1207,11 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration config = new Configuration();
-            config.BasePath = "http://local-unit-test-server.lusid.com:32886";
+            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:43074";
             // Configure OAuth2 access token for authorization: oauth2
-            config.AccessToken = "YOUR_ACCESS_TOKEN";
+            Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
-            var apiInstance = new PersonsApi(config);
+            var apiInstance = new PersonsApi(Configuration.Default);
             var upsertPersonRequest = new UpsertPersonRequest(); // UpsertPersonRequest | Request to create or update a person.
 
             try
@@ -1167,7 +1220,7 @@ namespace Example
                 Person result = apiInstance.UpsertPerson(upsertPersonRequest);
                 Debug.WriteLine(result);
             }
-            catch (ApiException  e)
+            catch (ApiException e)
             {
                 Debug.Print("Exception when calling PersonsApi.UpsertPerson: " + e.Message );
                 Debug.Print("Status Code: "+ e.ErrorCode);
@@ -1179,6 +1232,7 @@ namespace Example
 ```
 
 ### Parameters
+
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
@@ -1194,9 +1248,8 @@ Name | Type | Description  | Notes
 
 ### HTTP request headers
 
- - **Content-Type**: application/json-patch+json, application/json, text/json, application/_*+json
- - **Accept**: text/plain, application/json, text/json
-
+- **Content-Type**: application/json-patch+json, application/json, text/json, application/_*+json
+- **Accept**: text/plain, application/json, text/json
 
 ### HTTP response details
 | Status code | Description | Response headers |
@@ -1205,10 +1258,14 @@ Name | Type | Description  | Notes
 | **400** | The details of the input related failure |  -  |
 | **0** | Error response |  -  |
 
-[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+[[Back to top]](#)
+[[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
 
-<a name="upsertpersonaccessmetadata"></a>
-# **UpsertPersonAccessMetadata**
+
+## UpsertPersonAccessMetadata
+
 > ResourceListOfAccessMetadataValueOf UpsertPersonAccessMetadata (string idTypeScope, string idTypeCode, string code, string metadataKey, UpsertPersonAccessMetadataRequest upsertPersonAccessMetadataRequest, DateTimeOrCutLabel effectiveAt = null)
 
 [EXPERIMENTAL] Upsert a Person Access Metadata entry associated with a specific metadataKey. This creates or updates the data in LUSID.
@@ -1216,6 +1273,7 @@ Name | Type | Description  | Notes
 Update or insert one Person Access Metadata entry in a single scope. An item will be updated if it already exists  and inserted if it does not.                The response will return the successfully updated or inserted Person Access Metadata rule or failure message if unsuccessful.                It is important to always check to verify success (or failure).                Multiple rules for a metadataKey can exist with different effective at dates, when resources are accessed the rule that is active for the current time will be fetched.
 
 ### Example
+
 ```csharp
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -1229,12 +1287,11 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration config = new Configuration();
-            config.BasePath = "http://local-unit-test-server.lusid.com:32886";
+            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:43074";
             // Configure OAuth2 access token for authorization: oauth2
-            config.AccessToken = "YOUR_ACCESS_TOKEN";
+            Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
-            var apiInstance = new PersonsApi(config);
+            var apiInstance = new PersonsApi(Configuration.Default);
             var idTypeScope = idTypeScope_example;  // string | Scope of the person identifier.
             var idTypeCode = idTypeCode_example;  // string | Code of the person identifier.
             var code = code_example;  // string | Code of the person under specified identifier type's scope and code.
@@ -1248,7 +1305,7 @@ namespace Example
                 ResourceListOfAccessMetadataValueOf result = apiInstance.UpsertPersonAccessMetadata(idTypeScope, idTypeCode, code, metadataKey, upsertPersonAccessMetadataRequest, effectiveAt);
                 Debug.WriteLine(result);
             }
-            catch (ApiException  e)
+            catch (ApiException e)
             {
                 Debug.Print("Exception when calling PersonsApi.UpsertPersonAccessMetadata: " + e.Message );
                 Debug.Print("Status Code: "+ e.ErrorCode);
@@ -1260,6 +1317,7 @@ namespace Example
 ```
 
 ### Parameters
+
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
@@ -1280,9 +1338,8 @@ Name | Type | Description  | Notes
 
 ### HTTP request headers
 
- - **Content-Type**: application/json-patch+json, application/json, text/json, application/_*+json
- - **Accept**: text/plain, application/json, text/json
-
+- **Content-Type**: application/json-patch+json, application/json, text/json, application/_*+json
+- **Accept**: text/plain, application/json, text/json
 
 ### HTTP response details
 | Status code | Description | Response headers |
@@ -1291,5 +1348,8 @@ Name | Type | Description  | Notes
 | **400** | The details of the input related failure |  -  |
 | **0** | Error response |  -  |
 
-[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+[[Back to top]](#)
+[[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
 

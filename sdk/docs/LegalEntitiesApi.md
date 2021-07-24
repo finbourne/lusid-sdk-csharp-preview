@@ -1,6 +1,6 @@
 # Lusid.Sdk.Api.LegalEntitiesApi
 
-All URIs are relative to *http://local-unit-test-server.lusid.com:32886*
+All URIs are relative to *http://local-unit-test-server.lusid.com:43074*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
@@ -18,8 +18,9 @@ Method | HTTP request | Description
 [**UpsertLegalEntityAccessMetadata**](LegalEntitiesApi.md#upsertlegalentityaccessmetadata) | **PUT** /api/legalentities/{idTypeScope}/{idTypeCode}/{code}/metadata/{metadataKey} | [EXPERIMENTAL] Upsert a Legal Entity Access Metadata entry associated with a specific metadataKey. This creates or updates the data in LUSID.
 
 
-<a name="deletelegalentity"></a>
-# **DeleteLegalEntity**
+
+## DeleteLegalEntity
+
 > DeletedEntityResponse DeleteLegalEntity (string idTypeScope, string idTypeCode, string code)
 
 [EARLY ACCESS] Delete Legal Entity
@@ -27,6 +28,7 @@ Method | HTTP request | Description
 Delete a legal entity. Deletion will be valid from the legal entity's creation datetime.  This means that the legal entity will no longer exist at any effective datetime from the asAt datetime of deletion.
 
 ### Example
+
 ```csharp
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -40,12 +42,11 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration config = new Configuration();
-            config.BasePath = "http://local-unit-test-server.lusid.com:32886";
+            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:43074";
             // Configure OAuth2 access token for authorization: oauth2
-            config.AccessToken = "YOUR_ACCESS_TOKEN";
+            Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
-            var apiInstance = new LegalEntitiesApi(config);
+            var apiInstance = new LegalEntitiesApi(Configuration.Default);
             var idTypeScope = idTypeScope_example;  // string | The scope of the legal entity identifier type.
             var idTypeCode = idTypeCode_example;  // string | The code of the legal entity identifier type.
             var code = code_example;  // string | Code of the legal entity under specified identifier type's scope and code. This together with defined              identifier type uniquely identifies the legal entity to delete.
@@ -56,7 +57,7 @@ namespace Example
                 DeletedEntityResponse result = apiInstance.DeleteLegalEntity(idTypeScope, idTypeCode, code);
                 Debug.WriteLine(result);
             }
-            catch (ApiException  e)
+            catch (ApiException e)
             {
                 Debug.Print("Exception when calling LegalEntitiesApi.DeleteLegalEntity: " + e.Message );
                 Debug.Print("Status Code: "+ e.ErrorCode);
@@ -68,6 +69,7 @@ namespace Example
 ```
 
 ### Parameters
+
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
@@ -85,9 +87,8 @@ Name | Type | Description  | Notes
 
 ### HTTP request headers
 
- - **Content-Type**: Not defined
- - **Accept**: text/plain, application/json, text/json
-
+- **Content-Type**: Not defined
+- **Accept**: text/plain, application/json, text/json
 
 ### HTTP response details
 | Status code | Description | Response headers |
@@ -96,10 +97,14 @@ Name | Type | Description  | Notes
 | **400** | The details of the input related failure |  -  |
 | **0** | Error response |  -  |
 
-[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+[[Back to top]](#)
+[[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
 
-<a name="deletelegalentityaccessmetadata"></a>
-# **DeleteLegalEntityAccessMetadata**
+
+## DeleteLegalEntityAccessMetadata
+
 > DeletedEntityResponse DeleteLegalEntityAccessMetadata (string idTypeScope, string idTypeCode, string code, string metadataKey, DateTimeOrCutLabel effectiveAt = null)
 
 [EXPERIMENTAL] Delete a Legal Entity Access Metadata entry
@@ -107,6 +112,7 @@ Name | Type | Description  | Notes
 Deletes the Legal Entity Access Metadata entry that exactly matches the provided identifier parts.    It is important to always check to verify success (or failure).
 
 ### Example
+
 ```csharp
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -120,12 +126,11 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration config = new Configuration();
-            config.BasePath = "http://local-unit-test-server.lusid.com:32886";
+            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:43074";
             // Configure OAuth2 access token for authorization: oauth2
-            config.AccessToken = "YOUR_ACCESS_TOKEN";
+            Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
-            var apiInstance = new LegalEntitiesApi(config);
+            var apiInstance = new LegalEntitiesApi(Configuration.Default);
             var idTypeScope = idTypeScope_example;  // string | Scope of the Legal Entity identifier.
             var idTypeCode = idTypeCode_example;  // string | Code of the Legal Entity identifier.
             var code = code_example;  // string | Code of the Legal Entity under specified identifier type's scope and code.
@@ -138,7 +143,7 @@ namespace Example
                 DeletedEntityResponse result = apiInstance.DeleteLegalEntityAccessMetadata(idTypeScope, idTypeCode, code, metadataKey, effectiveAt);
                 Debug.WriteLine(result);
             }
-            catch (ApiException  e)
+            catch (ApiException e)
             {
                 Debug.Print("Exception when calling LegalEntitiesApi.DeleteLegalEntityAccessMetadata: " + e.Message );
                 Debug.Print("Status Code: "+ e.ErrorCode);
@@ -150,6 +155,7 @@ namespace Example
 ```
 
 ### Parameters
+
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
@@ -169,9 +175,8 @@ Name | Type | Description  | Notes
 
 ### HTTP request headers
 
- - **Content-Type**: Not defined
- - **Accept**: text/plain, application/json, text/json
-
+- **Content-Type**: Not defined
+- **Accept**: text/plain, application/json, text/json
 
 ### HTTP response details
 | Status code | Description | Response headers |
@@ -180,10 +185,14 @@ Name | Type | Description  | Notes
 | **400** | The details of the input related failure |  -  |
 | **0** | Error response |  -  |
 
-[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+[[Back to top]](#)
+[[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
 
-<a name="deletelegalentityproperties"></a>
-# **DeleteLegalEntityProperties**
+
+## DeleteLegalEntityProperties
+
 > DeletedEntityResponse DeleteLegalEntityProperties (string idTypeScope, string idTypeCode, string code, List<string> propertyKeys, DateTimeOrCutLabel effectiveAt = null)
 
 [EXPERIMENTAL] Delete Legal Entity Properties
@@ -191,6 +200,7 @@ Name | Type | Description  | Notes
 Delete all properties that belong to the given property keys of the legal entity.
 
 ### Example
+
 ```csharp
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -204,12 +214,11 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration config = new Configuration();
-            config.BasePath = "http://local-unit-test-server.lusid.com:32886";
+            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:43074";
             // Configure OAuth2 access token for authorization: oauth2
-            config.AccessToken = "YOUR_ACCESS_TOKEN";
+            Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
-            var apiInstance = new LegalEntitiesApi(config);
+            var apiInstance = new LegalEntitiesApi(Configuration.Default);
             var idTypeScope = idTypeScope_example;  // string | Scope of the legal entity identifier type.
             var idTypeCode = idTypeCode_example;  // string | Code of the legal entity identifier type.
             var code = code_example;  // string | Code of the legal entity under specified identifier type's scope and code. This together with stated identifier type uniquely              identifies the legal entity.
@@ -222,7 +231,7 @@ namespace Example
                 DeletedEntityResponse result = apiInstance.DeleteLegalEntityProperties(idTypeScope, idTypeCode, code, propertyKeys, effectiveAt);
                 Debug.WriteLine(result);
             }
-            catch (ApiException  e)
+            catch (ApiException e)
             {
                 Debug.Print("Exception when calling LegalEntitiesApi.DeleteLegalEntityProperties: " + e.Message );
                 Debug.Print("Status Code: "+ e.ErrorCode);
@@ -234,6 +243,7 @@ namespace Example
 ```
 
 ### Parameters
+
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
@@ -253,9 +263,8 @@ Name | Type | Description  | Notes
 
 ### HTTP request headers
 
- - **Content-Type**: Not defined
- - **Accept**: text/plain, application/json, text/json
-
+- **Content-Type**: Not defined
+- **Accept**: text/plain, application/json, text/json
 
 ### HTTP response details
 | Status code | Description | Response headers |
@@ -264,10 +273,14 @@ Name | Type | Description  | Notes
 | **400** | The details of the input related failure |  -  |
 | **0** | Error response |  -  |
 
-[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+[[Back to top]](#)
+[[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
 
-<a name="getalllegalentityaccessmetadata"></a>
-# **GetAllLegalEntityAccessMetadata**
+
+## GetAllLegalEntityAccessMetadata
+
 > Dictionary&lt;string, List&lt;AccessMetadataValue&gt;&gt; GetAllLegalEntityAccessMetadata (string idTypeScope, string idTypeCode, string code, DateTimeOrCutLabel effectiveAt = null, DateTimeOffset? asAt = null)
 
 [EXPERIMENTAL] Get Access Metadata rules for a Legal Entity
@@ -275,6 +288,7 @@ Name | Type | Description  | Notes
 Pass the Scope and Code of the Legal Entity identifier along with the Legal Entity code parameter to retrieve the associated Access Metadata
 
 ### Example
+
 ```csharp
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -288,12 +302,11 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration config = new Configuration();
-            config.BasePath = "http://local-unit-test-server.lusid.com:32886";
+            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:43074";
             // Configure OAuth2 access token for authorization: oauth2
-            config.AccessToken = "YOUR_ACCESS_TOKEN";
+            Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
-            var apiInstance = new LegalEntitiesApi(config);
+            var apiInstance = new LegalEntitiesApi(Configuration.Default);
             var idTypeScope = idTypeScope_example;  // string | Scope of the Legal Entity identifier.
             var idTypeCode = idTypeCode_example;  // string | Code of the Legal Entity identifier.
             var code = code_example;  // string | Code of the Legal Entity under specified identifier type's scope and code.
@@ -306,7 +319,7 @@ namespace Example
                 Dictionary<string, List<AccessMetadataValue>> result = apiInstance.GetAllLegalEntityAccessMetadata(idTypeScope, idTypeCode, code, effectiveAt, asAt);
                 Debug.WriteLine(result);
             }
-            catch (ApiException  e)
+            catch (ApiException e)
             {
                 Debug.Print("Exception when calling LegalEntitiesApi.GetAllLegalEntityAccessMetadata: " + e.Message );
                 Debug.Print("Status Code: "+ e.ErrorCode);
@@ -318,6 +331,7 @@ namespace Example
 ```
 
 ### Parameters
+
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
@@ -337,9 +351,8 @@ Name | Type | Description  | Notes
 
 ### HTTP request headers
 
- - **Content-Type**: Not defined
- - **Accept**: text/plain, application/json, text/json
-
+- **Content-Type**: Not defined
+- **Accept**: text/plain, application/json, text/json
 
 ### HTTP response details
 | Status code | Description | Response headers |
@@ -348,10 +361,14 @@ Name | Type | Description  | Notes
 | **400** | The details of the input related failure |  -  |
 | **0** | Error response |  -  |
 
-[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+[[Back to top]](#)
+[[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
 
-<a name="getlegalentity"></a>
-# **GetLegalEntity**
+
+## GetLegalEntity
+
 > LegalEntity GetLegalEntity (string idTypeScope, string idTypeCode, string code, List<string> propertyKeys = null, DateTimeOrCutLabel effectiveAt = null, DateTimeOffset? asAt = null)
 
 [EARLY ACCESS] Get Legal Entity
@@ -359,6 +376,7 @@ Name | Type | Description  | Notes
 Retrieve the definition of a legal entity.
 
 ### Example
+
 ```csharp
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -372,12 +390,11 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration config = new Configuration();
-            config.BasePath = "http://local-unit-test-server.lusid.com:32886";
+            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:43074";
             // Configure OAuth2 access token for authorization: oauth2
-            config.AccessToken = "YOUR_ACCESS_TOKEN";
+            Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
-            var apiInstance = new LegalEntitiesApi(config);
+            var apiInstance = new LegalEntitiesApi(Configuration.Default);
             var idTypeScope = idTypeScope_example;  // string | Scope of the legal entity identifier type.
             var idTypeCode = idTypeCode_example;  // string | Code of the legal entity identifier type.
             var code = code_example;  // string | Code of the legal entity under specified identifier type's scope and code. This together with stated identifier type uniquely              identifies the legal entity.
@@ -391,7 +408,7 @@ namespace Example
                 LegalEntity result = apiInstance.GetLegalEntity(idTypeScope, idTypeCode, code, propertyKeys, effectiveAt, asAt);
                 Debug.WriteLine(result);
             }
-            catch (ApiException  e)
+            catch (ApiException e)
             {
                 Debug.Print("Exception when calling LegalEntitiesApi.GetLegalEntity: " + e.Message );
                 Debug.Print("Status Code: "+ e.ErrorCode);
@@ -403,6 +420,7 @@ namespace Example
 ```
 
 ### Parameters
+
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
@@ -423,9 +441,8 @@ Name | Type | Description  | Notes
 
 ### HTTP request headers
 
- - **Content-Type**: Not defined
- - **Accept**: text/plain, application/json, text/json
-
+- **Content-Type**: Not defined
+- **Accept**: text/plain, application/json, text/json
 
 ### HTTP response details
 | Status code | Description | Response headers |
@@ -434,10 +451,14 @@ Name | Type | Description  | Notes
 | **400** | The details of the input related failure |  -  |
 | **0** | Error response |  -  |
 
-[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+[[Back to top]](#)
+[[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
 
-<a name="getlegalentityaccessmetadatabykey"></a>
-# **GetLegalEntityAccessMetadataByKey**
+
+## GetLegalEntityAccessMetadataByKey
+
 > ICollection&lt;AccessMetadataValue&gt; GetLegalEntityAccessMetadataByKey (string idTypeScope, string idTypeCode, string code, string metadataKey, DateTimeOrCutLabel effectiveAt = null, DateTimeOffset? asAt = null)
 
 [EXPERIMENTAL] Get an entry identified by a metadataKey in the Access Metadata of a Legal Entity
@@ -445,6 +466,7 @@ Name | Type | Description  | Notes
 Get a specific Legal Entity Access Metadata by specifying the corresponding identifier parts and Legal Entity code                No matching will be performed through this endpoint. To retrieve an entry, it is necessary to specify, exactly, the identifier of the entry
 
 ### Example
+
 ```csharp
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -458,12 +480,11 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration config = new Configuration();
-            config.BasePath = "http://local-unit-test-server.lusid.com:32886";
+            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:43074";
             // Configure OAuth2 access token for authorization: oauth2
-            config.AccessToken = "YOUR_ACCESS_TOKEN";
+            Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
-            var apiInstance = new LegalEntitiesApi(config);
+            var apiInstance = new LegalEntitiesApi(Configuration.Default);
             var idTypeScope = idTypeScope_example;  // string | Scope of the Legal Entity identifier.
             var idTypeCode = idTypeCode_example;  // string | Code of the Legal Entity identifier.
             var code = code_example;  // string | Code of the Legal Entity under specified identifier type's scope and code.
@@ -477,7 +498,7 @@ namespace Example
                 ICollection<AccessMetadataValue> result = apiInstance.GetLegalEntityAccessMetadataByKey(idTypeScope, idTypeCode, code, metadataKey, effectiveAt, asAt);
                 Debug.WriteLine(result);
             }
-            catch (ApiException  e)
+            catch (ApiException e)
             {
                 Debug.Print("Exception when calling LegalEntitiesApi.GetLegalEntityAccessMetadataByKey: " + e.Message );
                 Debug.Print("Status Code: "+ e.ErrorCode);
@@ -489,6 +510,7 @@ namespace Example
 ```
 
 ### Parameters
+
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
@@ -509,9 +531,8 @@ Name | Type | Description  | Notes
 
 ### HTTP request headers
 
- - **Content-Type**: Not defined
- - **Accept**: text/plain, application/json, text/json
-
+- **Content-Type**: Not defined
+- **Accept**: text/plain, application/json, text/json
 
 ### HTTP response details
 | Status code | Description | Response headers |
@@ -520,10 +541,14 @@ Name | Type | Description  | Notes
 | **400** | The details of the input related failure |  -  |
 | **0** | Error response |  -  |
 
-[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+[[Back to top]](#)
+[[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
 
-<a name="getlegalentitypropertytimeseries"></a>
-# **GetLegalEntityPropertyTimeSeries**
+
+## GetLegalEntityPropertyTimeSeries
+
 > ResourceListOfPropertyInterval GetLegalEntityPropertyTimeSeries (string idTypeScope, string idTypeCode, string code, string propertyKey = null, DateTimeOffset? asAt = null, string filter = null, string page = null, int? limit = null)
 
 [EXPERIMENTAL] Get Legal Entity Property Time Series
@@ -531,6 +556,7 @@ Name | Type | Description  | Notes
 List the complete time series of a legal entity property.
 
 ### Example
+
 ```csharp
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -544,12 +570,11 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration config = new Configuration();
-            config.BasePath = "http://local-unit-test-server.lusid.com:32886";
+            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:43074";
             // Configure OAuth2 access token for authorization: oauth2
-            config.AccessToken = "YOUR_ACCESS_TOKEN";
+            Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
-            var apiInstance = new LegalEntitiesApi(config);
+            var apiInstance = new LegalEntitiesApi(Configuration.Default);
             var idTypeScope = idTypeScope_example;  // string | Scope of the legal entity identifier type.
             var idTypeCode = idTypeCode_example;  // string | Code of the legal entity identifier type.
             var code = code_example;  // string | Code of the legal entity under specified identifier type's scope and code. This together with stated identifier type uniquely identifies the legal entity.
@@ -565,7 +590,7 @@ namespace Example
                 ResourceListOfPropertyInterval result = apiInstance.GetLegalEntityPropertyTimeSeries(idTypeScope, idTypeCode, code, propertyKey, asAt, filter, page, limit);
                 Debug.WriteLine(result);
             }
-            catch (ApiException  e)
+            catch (ApiException e)
             {
                 Debug.Print("Exception when calling LegalEntitiesApi.GetLegalEntityPropertyTimeSeries: " + e.Message );
                 Debug.Print("Status Code: "+ e.ErrorCode);
@@ -577,6 +602,7 @@ namespace Example
 ```
 
 ### Parameters
+
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
@@ -599,9 +625,8 @@ Name | Type | Description  | Notes
 
 ### HTTP request headers
 
- - **Content-Type**: Not defined
- - **Accept**: text/plain, application/json, text/json
-
+- **Content-Type**: Not defined
+- **Accept**: text/plain, application/json, text/json
 
 ### HTTP response details
 | Status code | Description | Response headers |
@@ -610,10 +635,14 @@ Name | Type | Description  | Notes
 | **400** | The details of the input related failure |  -  |
 | **0** | Error response |  -  |
 
-[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+[[Back to top]](#)
+[[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
 
-<a name="getlegalentityrelations"></a>
-# **GetLegalEntityRelations**
+
+## GetLegalEntityRelations
+
 > ResourceListOfRelation GetLegalEntityRelations (string idTypeScope, string idTypeCode, string code, DateTimeOrCutLabel effectiveAt = null, DateTimeOffset? asAt = null, string filter = null, List<string> identifierTypes = null)
 
 [EXPERIMENTAL] Get Relations for Legal Entity
@@ -621,6 +650,7 @@ Name | Type | Description  | Notes
 Get relations for the specified Legal Entity
 
 ### Example
+
 ```csharp
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -634,12 +664,11 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration config = new Configuration();
-            config.BasePath = "http://local-unit-test-server.lusid.com:32886";
+            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:43074";
             // Configure OAuth2 access token for authorization: oauth2
-            config.AccessToken = "YOUR_ACCESS_TOKEN";
+            Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
-            var apiInstance = new LegalEntitiesApi(config);
+            var apiInstance = new LegalEntitiesApi(Configuration.Default);
             var idTypeScope = idTypeScope_example;  // string | Scope of the legal entity identifier type.
             var idTypeCode = idTypeCode_example;  // string | Code of the legal entity identifier type.
             var code = code_example;  // string | Code of the legal entity under specified identifier type's scope and code. This together with stated identifier type uniquely              identifies the legal entity.
@@ -654,7 +683,7 @@ namespace Example
                 ResourceListOfRelation result = apiInstance.GetLegalEntityRelations(idTypeScope, idTypeCode, code, effectiveAt, asAt, filter, identifierTypes);
                 Debug.WriteLine(result);
             }
-            catch (ApiException  e)
+            catch (ApiException e)
             {
                 Debug.Print("Exception when calling LegalEntitiesApi.GetLegalEntityRelations: " + e.Message );
                 Debug.Print("Status Code: "+ e.ErrorCode);
@@ -666,6 +695,7 @@ namespace Example
 ```
 
 ### Parameters
+
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
@@ -687,9 +717,8 @@ Name | Type | Description  | Notes
 
 ### HTTP request headers
 
- - **Content-Type**: Not defined
- - **Accept**: text/plain, application/json, text/json
-
+- **Content-Type**: Not defined
+- **Accept**: text/plain, application/json, text/json
 
 ### HTTP response details
 | Status code | Description | Response headers |
@@ -698,10 +727,14 @@ Name | Type | Description  | Notes
 | **400** | The details of the input related failure |  -  |
 | **0** | Error response |  -  |
 
-[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+[[Back to top]](#)
+[[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
 
-<a name="getlegalentityrelationships"></a>
-# **GetLegalEntityRelationships**
+
+## GetLegalEntityRelationships
+
 > ResourceListOfRelationship GetLegalEntityRelationships (string idTypeScope, string idTypeCode, string code, DateTimeOrCutLabel effectiveAt = null, DateTimeOffset? asAt = null, string filter = null, List<string> identifierTypes = null)
 
 [EXPERIMENTAL] Get Relationships for Legal Entity
@@ -709,6 +742,7 @@ Name | Type | Description  | Notes
 Get Relationships for the specified Legal Entity
 
 ### Example
+
 ```csharp
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -722,12 +756,11 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration config = new Configuration();
-            config.BasePath = "http://local-unit-test-server.lusid.com:32886";
+            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:43074";
             // Configure OAuth2 access token for authorization: oauth2
-            config.AccessToken = "YOUR_ACCESS_TOKEN";
+            Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
-            var apiInstance = new LegalEntitiesApi(config);
+            var apiInstance = new LegalEntitiesApi(Configuration.Default);
             var idTypeScope = idTypeScope_example;  // string | Scope of the legal entity's identifier type.
             var idTypeCode = idTypeCode_example;  // string | Code of the legal entity's identifier type.
             var code = code_example;  // string | Code of the legal entity under specified identifier type's scope and code. This together with stated identifier type uniquely              identifies the legal entity.
@@ -742,7 +775,7 @@ namespace Example
                 ResourceListOfRelationship result = apiInstance.GetLegalEntityRelationships(idTypeScope, idTypeCode, code, effectiveAt, asAt, filter, identifierTypes);
                 Debug.WriteLine(result);
             }
-            catch (ApiException  e)
+            catch (ApiException e)
             {
                 Debug.Print("Exception when calling LegalEntitiesApi.GetLegalEntityRelationships: " + e.Message );
                 Debug.Print("Status Code: "+ e.ErrorCode);
@@ -754,6 +787,7 @@ namespace Example
 ```
 
 ### Parameters
+
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
@@ -775,9 +809,8 @@ Name | Type | Description  | Notes
 
 ### HTTP request headers
 
- - **Content-Type**: Not defined
- - **Accept**: text/plain, application/json, text/json
-
+- **Content-Type**: Not defined
+- **Accept**: text/plain, application/json, text/json
 
 ### HTTP response details
 | Status code | Description | Response headers |
@@ -786,10 +819,14 @@ Name | Type | Description  | Notes
 | **400** | The details of the input related failure |  -  |
 | **0** | Error response |  -  |
 
-[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+[[Back to top]](#)
+[[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
 
-<a name="listlegalentities"></a>
-# **ListLegalEntities**
+
+## ListLegalEntities
+
 > PagedResourceListOfLegalEntity ListLegalEntities (string idTypeScope, string idTypeCode, DateTimeOrCutLabel effectiveAt = null, DateTimeOffset? asAt = null, string page = null, int? limit = null, string filter = null, List<string> propertyKeys = null)
 
 [EARLY ACCESS] List Legal Entities
@@ -797,6 +834,7 @@ Name | Type | Description  | Notes
 List legal entities which has identifier of specific identifier type's scope and code, and satisfies filter criteria.
 
 ### Example
+
 ```csharp
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -810,12 +848,11 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration config = new Configuration();
-            config.BasePath = "http://local-unit-test-server.lusid.com:32886";
+            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:43074";
             // Configure OAuth2 access token for authorization: oauth2
-            config.AccessToken = "YOUR_ACCESS_TOKEN";
+            Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
-            var apiInstance = new LegalEntitiesApi(config);
+            var apiInstance = new LegalEntitiesApi(Configuration.Default);
             var idTypeScope = idTypeScope_example;  // string | Scope of the legal entity identifier type.
             var idTypeCode = idTypeCode_example;  // string | Code of the legal entity identifier type.
             var effectiveAt = effectiveAt_example;  // DateTimeOrCutLabel | The effective datetime or cut label at which to list the people. Defaults to the current LUSID              system datetime if not specified. (optional) 
@@ -831,7 +868,7 @@ namespace Example
                 PagedResourceListOfLegalEntity result = apiInstance.ListLegalEntities(idTypeScope, idTypeCode, effectiveAt, asAt, page, limit, filter, propertyKeys);
                 Debug.WriteLine(result);
             }
-            catch (ApiException  e)
+            catch (ApiException e)
             {
                 Debug.Print("Exception when calling LegalEntitiesApi.ListLegalEntities: " + e.Message );
                 Debug.Print("Status Code: "+ e.ErrorCode);
@@ -843,6 +880,7 @@ namespace Example
 ```
 
 ### Parameters
+
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
@@ -865,9 +903,8 @@ Name | Type | Description  | Notes
 
 ### HTTP request headers
 
- - **Content-Type**: Not defined
- - **Accept**: text/plain, application/json, text/json
-
+- **Content-Type**: Not defined
+- **Accept**: text/plain, application/json, text/json
 
 ### HTTP response details
 | Status code | Description | Response headers |
@@ -876,10 +913,14 @@ Name | Type | Description  | Notes
 | **400** | The details of the input related failure |  -  |
 | **0** | Error response |  -  |
 
-[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+[[Back to top]](#)
+[[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
 
-<a name="upsertlegalentity"></a>
-# **UpsertLegalEntity**
+
+## UpsertLegalEntity
+
 > LegalEntity UpsertLegalEntity (UpsertLegalEntityRequest upsertLegalEntityRequest)
 
 [EARLY ACCESS] Upsert Legal Entity
@@ -887,6 +928,7 @@ Name | Type | Description  | Notes
 Create or update a legal entity
 
 ### Example
+
 ```csharp
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -900,12 +942,11 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration config = new Configuration();
-            config.BasePath = "http://local-unit-test-server.lusid.com:32886";
+            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:43074";
             // Configure OAuth2 access token for authorization: oauth2
-            config.AccessToken = "YOUR_ACCESS_TOKEN";
+            Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
-            var apiInstance = new LegalEntitiesApi(config);
+            var apiInstance = new LegalEntitiesApi(Configuration.Default);
             var upsertLegalEntityRequest = new UpsertLegalEntityRequest(); // UpsertLegalEntityRequest | Request to create or update a legal entity.
 
             try
@@ -914,7 +955,7 @@ namespace Example
                 LegalEntity result = apiInstance.UpsertLegalEntity(upsertLegalEntityRequest);
                 Debug.WriteLine(result);
             }
-            catch (ApiException  e)
+            catch (ApiException e)
             {
                 Debug.Print("Exception when calling LegalEntitiesApi.UpsertLegalEntity: " + e.Message );
                 Debug.Print("Status Code: "+ e.ErrorCode);
@@ -926,6 +967,7 @@ namespace Example
 ```
 
 ### Parameters
+
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
@@ -941,9 +983,8 @@ Name | Type | Description  | Notes
 
 ### HTTP request headers
 
- - **Content-Type**: application/json-patch+json, application/json, text/json, application/_*+json
- - **Accept**: text/plain, application/json, text/json
-
+- **Content-Type**: application/json-patch+json, application/json, text/json, application/_*+json
+- **Accept**: text/plain, application/json, text/json
 
 ### HTTP response details
 | Status code | Description | Response headers |
@@ -952,10 +993,14 @@ Name | Type | Description  | Notes
 | **400** | The details of the input related failure |  -  |
 | **0** | Error response |  -  |
 
-[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+[[Back to top]](#)
+[[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
 
-<a name="upsertlegalentityaccessmetadata"></a>
-# **UpsertLegalEntityAccessMetadata**
+
+## UpsertLegalEntityAccessMetadata
+
 > ResourceListOfAccessMetadataValueOf UpsertLegalEntityAccessMetadata (string idTypeScope, string idTypeCode, string code, string metadataKey, UpsertLegalEntityAccessMetadataRequest upsertLegalEntityAccessMetadataRequest, DateTimeOrCutLabel effectiveAt = null)
 
 [EXPERIMENTAL] Upsert a Legal Entity Access Metadata entry associated with a specific metadataKey. This creates or updates the data in LUSID.
@@ -963,6 +1008,7 @@ Name | Type | Description  | Notes
 Update or insert one Legal Entity Access Metadata entry in a single scope. An item will be updated if it already exists  and inserted if it does not.                The response will return the successfully updated or inserted Legal Entity Access Metadata rule or failure message if unsuccessful.                It is important to always check to verify success (or failure).                Multiple rules for a metadataKey can exist with different effective at dates, when resources are accessed the rule that is active for the current time will be fetched.
 
 ### Example
+
 ```csharp
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -976,12 +1022,11 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration config = new Configuration();
-            config.BasePath = "http://local-unit-test-server.lusid.com:32886";
+            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:43074";
             // Configure OAuth2 access token for authorization: oauth2
-            config.AccessToken = "YOUR_ACCESS_TOKEN";
+            Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
-            var apiInstance = new LegalEntitiesApi(config);
+            var apiInstance = new LegalEntitiesApi(Configuration.Default);
             var idTypeScope = idTypeScope_example;  // string | Scope of the Legal Entity identifier.
             var idTypeCode = idTypeCode_example;  // string | Code of the Legal Entity identifier.
             var code = code_example;  // string | Code of the Legal Entity under specified identifier type's scope and code.
@@ -995,7 +1040,7 @@ namespace Example
                 ResourceListOfAccessMetadataValueOf result = apiInstance.UpsertLegalEntityAccessMetadata(idTypeScope, idTypeCode, code, metadataKey, upsertLegalEntityAccessMetadataRequest, effectiveAt);
                 Debug.WriteLine(result);
             }
-            catch (ApiException  e)
+            catch (ApiException e)
             {
                 Debug.Print("Exception when calling LegalEntitiesApi.UpsertLegalEntityAccessMetadata: " + e.Message );
                 Debug.Print("Status Code: "+ e.ErrorCode);
@@ -1007,6 +1052,7 @@ namespace Example
 ```
 
 ### Parameters
+
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
@@ -1027,9 +1073,8 @@ Name | Type | Description  | Notes
 
 ### HTTP request headers
 
- - **Content-Type**: application/json-patch+json, application/json, text/json, application/_*+json
- - **Accept**: text/plain, application/json, text/json
-
+- **Content-Type**: application/json-patch+json, application/json, text/json, application/_*+json
+- **Accept**: text/plain, application/json, text/json
 
 ### HTTP response details
 | Status code | Description | Response headers |
@@ -1038,5 +1083,8 @@ Name | Type | Description  | Notes
 | **400** | The details of the input related failure |  -  |
 | **0** | Error response |  -  |
 
-[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+[[Back to top]](#)
+[[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
 

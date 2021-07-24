@@ -1,30 +1,27 @@
-/*
+/* 
  * LUSID API
  *
  * # Introduction  This page documents the [LUSID APIs](https://www.lusid.com/api/swagger), which allows authorised clients to query and update their data within the LUSID platform.  SDKs to interact with the LUSID APIs are available in the following languages and frameworks:  * [C#](https://github.com/finbourne/lusid-sdk-csharp) * [Java](https://github.com/finbourne/lusid-sdk-java) * [JavaScript](https://github.com/finbourne/lusid-sdk-js) * [Python](https://github.com/finbourne/lusid-sdk-python) * [Angular](https://github.com/finbourne/lusid-sdk-angular)  # Data Model  The LUSID API has a relatively lightweight but extremely powerful data model. One of the goals of LUSID was not to enforce on clients a single rigid data model but rather to provide a flexible foundation onto which clients can map their own data models.  The core entities in LUSID provide a minimal structure and set of relationships, and the data model can be extended using Properties.  The LUSID data model is exposed through the LUSID APIs.  The APIs provide access to both business objects and the meta data used to configure the systems behaviours.   The key business entities are: - * **Portfolios** A portfolio is a container for transactions and holdings (a **Transaction Portfolio**) or constituents (a **Reference Portfolio**). * **Derived Portfolios**. Derived Portfolios allow Portfolios to be created based on other Portfolios, by overriding or adding specific items. * **Holdings** A Holding is a quantity of an Instrument or a balance of cash within a Portfolio.  Holdings can only be adjusted via Transactions. * **Transactions** A Transaction is an economic event that occurs in a Portfolio, causing its holdings to change. * **Corporate Actions** A corporate action is a market event which occurs to an Instrument and thus applies to all portfolios which holding the instrument.  Examples are stock splits or mergers. * **Constituents** A constituent is a record in a Reference Portfolio containing an Instrument and an associated weight. * **Instruments**  An instrument represents a currency, tradable instrument or OTC contract that is attached to a transaction and a holding. * **Properties** All major entities allow additional user defined properties to be associated with them.   For example, a Portfolio manager may be associated with a portfolio.  Meta data includes: - * **Transaction Types** Transactions are booked with a specific transaction type.  The types are client defined and are used to map the Transaction to a series of movements which update the portfolio holdings.  * **Properties Types** Types of user defined properties used within the system.  ## Scope  All data in LUSID is segregated at the client level.  Entities in LUSID are identifiable by a unique code.  Every entity lives within a logical data partition known as a Scope.  Scope is an identity namespace allowing two entities with the same unique code to co-exist within individual address spaces.  For example, prices for equities from different vendors may be uploaded into different scopes such as `client/vendor1` and `client/vendor2`.  A portfolio may then be valued using either of the price sources by referencing the appropriate scope.  LUSID Clients cannot access scopes of other clients.  ## Instruments  LUSID has its own built-in instrument master which you can use to master your own instrument universe.  Every instrument must be created with one or more unique market identifiers, such as [FIGI](https://openfigi.com/). For any non-listed instruments (eg OTCs), you can upload an instrument against a custom ID of your choosing.  In addition, LUSID will allocate each instrument a unique 'LUSID instrument identifier'. The LUSID instrument identifier is what is used when uploading transactions, holdings, prices, etc. The API exposes an `instrument/lookup` endpoint which can be used to lookup these LUSID identifiers using their market identifiers.  Cash can be referenced using the ISO currency code prefixed with \"`CCY_`\" e.g. `CCY_GBP`  ## Instrument Data  Instrument data can be uploaded to the system using the [Instrument Properties](#operation/UpsertInstrumentsProperties) endpoint.  | Field|Type|Description | | - --|- --|- -- | | Key|propertykey|The key of the property. This takes the format {domain}/{scope}/{code} e.g. 'Instrument/system/Name' or 'Transaction/strategy/quantsignal'. | | Value|string|The value of the property. | | EffectiveFrom|datetimeoffset|The effective datetime from which the property is valid. | | EffectiveUntil|datetimeoffset|The effective datetime until which the property is valid. If not supplied this will be valid indefinitely, or until the next 'effectiveFrom' datetime of the property. |   ## Transaction Portfolios  Portfolios are the top-level entity containers within LUSID, containing transactions, corporate actions and holdings.    The transactions build up the portfolio holdings on which valuations, analytics profit & loss and risk can be calculated.  Properties can be associated with Portfolios to add in additional data.  Portfolio properties can be changed over time, for example to allow a Portfolio Manager to be linked with a Portfolio.  Additionally, portfolios can be securitised and held by other portfolios, allowing LUSID to perform \"drill-through\" into underlying fund holdings  ### Derived Portfolios  LUSID also allows for a portfolio to be composed of another portfolio via derived portfolios.  A derived portfolio can contain its own transactions and also inherits any transactions from its parent portfolio.  Any changes made to the parent portfolio are automatically reflected in derived portfolio.  Derived portfolios in conjunction with scopes are a powerful construct.  For example, to do pre-trade what-if analysis, a derived portfolio could be created a new namespace linked to the underlying live (parent) portfolio.  Analysis can then be undertaken on the derived portfolio without affecting the live portfolio.  ### Transactions  A transaction represents an economic activity against a Portfolio.  Transactions are processed according to a configuration. This will tell the LUSID engine how to interpret the transaction and correctly update the holdings. LUSID comes with a set of transaction types you can use out of the box, or you can configure your own set(s) of transactions.  For more details see the [LUSID Getting Started Guide for transaction configuration.](https://support.lusid.com/configuring-transaction-types)  | Field|Type|Description | | - --|- --|- -- | | TransactionId|string|The unique identifier of the transaction. | | Type|string|The type of the transaction, for example 'Buy' or 'Sell'. The transaction type must have been pre-configured using the System Configuration API. If not, this operation will succeed but you are not able to calculate holdings for the portfolio that include this transaction. | | InstrumentIdentifiers|map|A set of instrument identifiers that can resolve the transaction to a unique instrument. | | TransactionDate|dateorcutlabel|The date of the transaction. | | SettlementDate|dateorcutlabel|The settlement date of the transaction. | | Units|decimal|The number of units of the transacted instrument. | | TransactionPrice|transactionprice|The price of each instrument unit in the transaction currency. | | TotalConsideration|currencyandamount|The total value of the transaction in the settlement currency. | | ExchangeRate|decimal|The exchange rate between the transaction and settlement currency (settlement currency being represented by TotalConsideration.Currency). For example, if the transaction currency is USD and the settlement currency is GBP, this would be the appropriate USD/GBP rate. | | TransactionCurrency|currency|The transaction currency. | | Properties|map|A list of unique transaction properties and associated values to store for the transaction. Each property must be from the 'Transaction' domain. | | CounterpartyId|string|The identifier for the counterparty of the transaction. | | Source|string|The source of the transaction. This is used to look up the appropriate transaction group set in the transaction type configuration. |   From these fields, the following values can be calculated  * **Transaction value in Transaction currency**: TotalConsideration / ExchangeRate  * **Transaction value in Portfolio currency**: Transaction value in Transaction currency * TradeToPortfolioRate  #### Example Transactions  ##### A Common Purchase Example Three example transactions are shown in the table below.   They represent a purchase of USD denominated IBM shares within a Sterling denominated portfolio.   * The first two transactions are for separate buy and fx trades    * Buying 500 IBM shares for $71,480.00    * A spot foreign exchange conversion to fund the IBM purchase. (Buy $71,480.00 for &#163;54,846.60)  * The third transaction is an alternate version of the above trades. Buying 500 IBM shares and settling directly in Sterling.  | Column |  Buy Trade | Fx Trade | Buy Trade with foreign Settlement | | - -- -- | - -- -- | - -- -- | - -- -- | | TransactionId | FBN00001 | FBN00002 | FBN00003 | | Type | Buy | FxBuy | Buy | | InstrumentIdentifiers | { \"figi\", \"BBG000BLNNH6\" } | { \"CCY\", \"CCY_USD\" } | { \"figi\", \"BBG000BLNNH6\" } | | TransactionDate | 2018-08-02 | 2018-08-02 | 2018-08-02 | | SettlementDate | 2018-08-06 | 2018-08-06 | 2018-08-06 | | Units | 500 | 71480 | 500 | | TransactionPrice | 142.96 | 1 | 142.96 | | TradeCurrency | USD | USD | USD | | ExchangeRate | 1 | 0.7673 | 0.7673 | | TotalConsideration.Amount | 71480.00 | 54846.60 | 54846.60 | | TotalConsideration.Currency | USD | GBP | GBP | | Trade/default/TradeToPortfolioRate&ast; | 0.7673 | 0.7673 | 0.7673 |  [&ast; This is a property field]  ##### A Forward FX Example  LUSID has a flexible transaction modelling system, meaning there are a number of different ways of modelling forward fx trades.  The default LUSID transaction types are FwdFxBuy and FwdFxSell. Using these transaction types, LUSID will generate two holdings for each Forward FX trade, one for each currency in the trade.  An example Forward Fx trade to sell GBP for USD in a JPY-denominated portfolio is shown below:  | Column | Forward 'Sell' Trade | Notes | | - -- -- | - -- -- | - -- - | | TransactionId | FBN00004 | | | Type | FwdFxSell | | | InstrumentIdentifiers | { \"Instrument/default/Currency\", \"GBP\" } | | | TransactionDate | 2018-08-02 | | | SettlementDate | 2019-02-06 | Six month forward | | Units | 10000.00 | Units of GBP | | TransactionPrice | 1 | | | TradeCurrency | GBP | Currency being sold | | ExchangeRate | 1.3142 | Agreed rate between GBP and USD | | TotalConsideration.Amount | 13142.00 | Amount in the settlement currency, USD | | TotalConsideration.Currency | USD | Settlement currency | | Trade/default/TradeToPortfolioRate | 142.88 | Rate between trade currency, GBP and portfolio base currency, JPY |  Please note that exactly the same economic behaviour could be modelled using the FwdFxBuy Transaction Type with the amounts and rates reversed.  ### Holdings  A holding represents a position in an instrument or cash on a given date.  | Field|Type|Description | | - --|- --|- -- | | InstrumentUid|string|The unique Lusid Instrument Id (LUID) of the instrument that the holding is in. | | SubHoldingKeys|map|The sub-holding properties which identify the holding. Each property will be from the 'Transaction' domain. These are configured when a transaction portfolio is created. | | Properties|map|The properties which have been requested to be decorated onto the holding. These will be from the 'Instrument' or 'Holding' domain. | | HoldingType|string|The type of the holding e.g. Position, Balance, CashCommitment, Receivable, ForwardFX etc. | | Units|decimal|The total number of units of the holding. | | SettledUnits|decimal|The total number of settled units of the holding. | | Cost|currencyandamount|The total cost of the holding in the transaction currency. | | CostPortfolioCcy|currencyandamount|The total cost of the holding in the portfolio currency. | | Transaction|transaction|The transaction associated with an unsettled holding. | | Currency|currency|The holding currency. |   ## Corporate Actions  Corporate actions are represented within LUSID in terms of a set of instrument-specific 'transitions'.  These transitions are used to specify the participants of the corporate action, and the effect that the corporate action will have on holdings in those participants.  ### Corporate Action  | Field|Type|Description | | - --|- --|- -- | | CorporateActionCode|code|The unique identifier of this corporate action | | Description|string|  | | AnnouncementDate|datetimeoffset|The announcement date of the corporate action | | ExDate|datetimeoffset|The ex date of the corporate action | | RecordDate|datetimeoffset|The record date of the corporate action | | PaymentDate|datetimeoffset|The payment date of the corporate action | | Transitions|corporateactiontransition[]|The transitions that result from this corporate action |   ### Transition | Field|Type|Description | | - --|- --|- -- | | InputTransition|corporateactiontransitioncomponent|Indicating the basis of the corporate action - which security and how many units | | OutputTransitions|corporateactiontransitioncomponent[]|What will be generated relative to the input transition |   ### Example Corporate Action Transitions  #### A Dividend Action Transition  In this example, for each share of IBM, 0.20 units (or 20 pence) of GBP are generated.  | Column |  Input Transition | Output Transition | | - -- -- | - -- -- | - -- -- | | Instrument Identifiers | { \"figi\" : \"BBG000BLNNH6\" } | { \"ccy\" : \"CCY_GBP\" } | | Units Factor | 1 | 0.20 | | Cost Factor | 1 | 0 |  #### A Split Action Transition  In this example, for each share of IBM, we end up with 2 units (2 shares) of IBM, with total value unchanged.  | Column |  Input Transition | Output Transition | | - -- -- | - -- -- | - -- -- | | Instrument Identifiers | { \"figi\" : \"BBG000BLNNH6\" } | { \"figi\" : \"BBG000BLNNH6\" } | | Units Factor | 1 | 2 | | Cost Factor | 1 | 1 |  #### A Spinoff Action Transition  In this example, for each share of IBM, we end up with 1 unit (1 share) of IBM and 3 units (3 shares) of Celestica, with 85% of the value remaining on the IBM share, and 5% in each Celestica share (15% total).  | Column |  Input Transition | Output Transition 1 | Output Transition 2 | | - -- -- | - -- -- | - -- -- | - -- -- | | Instrument Identifiers | { \"figi\" : \"BBG000BLNNH6\" } | { \"figi\" : \"BBG000BLNNH6\" } | { \"figi\" : \"BBG000HBGRF3\" } | | Units Factor | 1 | 1 | 3 | | Cost Factor | 1 | 0.85 | 0.15 |  ## Reference Portfolios Reference portfolios are portfolios that contain constituents with weights.  They are designed to represent entities such as indices and benchmarks.  ### Constituents | Field|Type|Description | | - --|- --|- -- | | InstrumentIdentifiers|map|Unique instrument identifiers | | InstrumentUid|string|LUSID's internal unique instrument identifier, resolved from the instrument identifiers | | Currency|decimal|  | | Weight|decimal|  | | FloatingWeight|decimal|  |   ## Portfolio Groups Portfolio groups allow the construction of a hierarchy from portfolios and groups.  Portfolio operations on the group are executed on an aggregated set of portfolios in the hierarchy.   For example:   * Global Portfolios _(group)_   * APAC _(group)_     * Hong Kong _(portfolio)_     * Japan _(portfolio)_   * Europe _(group)_     * France _(portfolio)_     * Germany _(portfolio)_   * UK _(portfolio)_   In this example **Global Portfolios** is a group that consists of an aggregate of **Hong Kong**, **Japan**, **France**, **Germany** and **UK** portfolios.  ## Properties  Properties are key-value pairs that can be applied to any entity within a domain (where a domain is `trade`, `portfolio`, `security` etc).  Properties must be defined before use with a `PropertyDefinition` and can then subsequently be added to entities.   ## Schema  A detailed description of the entities used by the API and parameters for endpoints which take a JSON document can be retrieved via the `schema` endpoint.  ## Meta data  The following headers are returned on all responses from LUSID  | Name | Purpose | | - -- | - -- | | lusid-meta-duration | Duration of the request | | lusid-meta-success | Whether or not LUSID considered the request to be successful | | lusid-meta-requestId | The unique identifier for the request | | lusid-schema-url | Url of the schema for the data being returned | | lusid-property-schema-url | Url of the schema for any properties |   # Error Codes  | Code|Name|Description | | - --|- --|- -- | | <a name=\"-10\">-10</a>|Server Configuration Error|  | | <a name=\"-1\">-1</a>|Unknown error|An unexpected error was encountered on our side. | | <a name=\"102\">102</a>|Version Not Found|  | | <a name=\"103\">103</a>|Api Rate Limit Violation|  | | <a name=\"104\">104</a>|Instrument Not Found|  | | <a name=\"105\">105</a>|Property Not Found|  | | <a name=\"106\">106</a>|Portfolio Recursion Depth|  | | <a name=\"108\">108</a>|Group Not Found|  | | <a name=\"109\">109</a>|Portfolio Not Found|  | | <a name=\"110\">110</a>|Property Schema Not Found|  | | <a name=\"111\">111</a>|Portfolio Ancestry Not Found|  | | <a name=\"112\">112</a>|Portfolio With Id Already Exists|  | | <a name=\"113\">113</a>|Orphaned Portfolio|  | | <a name=\"119\">119</a>|Missing Base Claims|  | | <a name=\"121\">121</a>|Property Not Defined|  | | <a name=\"122\">122</a>|Cannot Delete System Property|  | | <a name=\"123\">123</a>|Cannot Modify Immutable Property Field|  | | <a name=\"124\">124</a>|Property Already Exists|  | | <a name=\"125\">125</a>|Invalid Property Life Time|  | | <a name=\"126\">126</a>|Property Constraint Style Excludes Properties|  | | <a name=\"127\">127</a>|Cannot Modify Default Data Type|  | | <a name=\"128\">128</a>|Group Already Exists|  | | <a name=\"129\">129</a>|No Such Data Type|  | | <a name=\"130\">130</a>|Undefined Value For Data Type|  | | <a name=\"131\">131</a>|Unsupported Value Type Defined On Data Type|  | | <a name=\"132\">132</a>|Validation Error|  | | <a name=\"133\">133</a>|Loop Detected In Group Hierarchy|  | | <a name=\"134\">134</a>|Undefined Acceptable Values|  | | <a name=\"135\">135</a>|Sub Group Already Exists|  | | <a name=\"138\">138</a>|Price Source Not Found|  | | <a name=\"139\">139</a>|Analytic Store Not Found|  | | <a name=\"141\">141</a>|Analytic Store Already Exists|  | | <a name=\"143\">143</a>|Client Instrument Already Exists|  | | <a name=\"144\">144</a>|Duplicate In Parameter Set|  | | <a name=\"147\">147</a>|Results Not Found|  | | <a name=\"148\">148</a>|Order Field Not In Result Set|  | | <a name=\"149\">149</a>|Operation Failed|  | | <a name=\"150\">150</a>|Elastic Search Error|  | | <a name=\"151\">151</a>|Invalid Parameter Value|  | | <a name=\"153\">153</a>|Command Processing Failure|  | | <a name=\"154\">154</a>|Entity State Construction Failure|  | | <a name=\"155\">155</a>|Entity Timeline Does Not Exist|  | | <a name=\"156\">156</a>|Concurrency Conflict Failure|  | | <a name=\"157\">157</a>|Invalid Request|  | | <a name=\"158\">158</a>|Event Publish Unknown|  | | <a name=\"159\">159</a>|Event Query Failure|  | | <a name=\"160\">160</a>|Blob Did Not Exist|  | | <a name=\"162\">162</a>|Sub System Request Failure|  | | <a name=\"163\">163</a>|Sub System Configuration Failure|  | | <a name=\"165\">165</a>|Failed To Delete|  | | <a name=\"166\">166</a>|Upsert Client Instrument Failure|  | | <a name=\"167\">167</a>|Illegal As At Interval|  | | <a name=\"168\">168</a>|Illegal Bitemporal Query|  | | <a name=\"169\">169</a>|Invalid Alternate Id|  | | <a name=\"170\">170</a>|Cannot Add Source Portfolio Property Explicitly|  | | <a name=\"171\">171</a>|Entity Already Exists In Group|  | | <a name=\"173\">173</a>|Entity With Id Already Exists|  | | <a name=\"174\">174</a>|Derived Portfolio Details Do Not Exist|  | | <a name=\"176\">176</a>|Portfolio With Name Already Exists|  | | <a name=\"177\">177</a>|Invalid Transactions|  | | <a name=\"178\">178</a>|Reference Portfolio Not Found|  | | <a name=\"179\">179</a>|Duplicate Id|  | | <a name=\"180\">180</a>|Command Retrieval Failure|  | | <a name=\"181\">181</a>|Data Filter Application Failure|  | | <a name=\"182\">182</a>|Search Failed|  | | <a name=\"183\">183</a>|Movements Engine Configuration Key Failure|  | | <a name=\"184\">184</a>|Fx Rate Source Not Found|  | | <a name=\"185\">185</a>|Accrual Source Not Found|  | | <a name=\"186\">186</a>|Access Denied|  | | <a name=\"187\">187</a>|Invalid Identity Token|  | | <a name=\"188\">188</a>|Invalid Request Headers|  | | <a name=\"189\">189</a>|Price Not Found|  | | <a name=\"190\">190</a>|Invalid Sub Holding Keys Provided|  | | <a name=\"191\">191</a>|Duplicate Sub Holding Keys Provided|  | | <a name=\"192\">192</a>|Cut Definition Not Found|  | | <a name=\"193\">193</a>|Cut Definition Invalid|  | | <a name=\"194\">194</a>|Time Variant Property Deletion Date Unspecified|  | | <a name=\"195\">195</a>|Perpetual Property Deletion Date Specified|  | | <a name=\"196\">196</a>|Time Variant Property Upsert Date Unspecified|  | | <a name=\"197\">197</a>|Perpetual Property Upsert Date Specified|  | | <a name=\"200\">200</a>|Invalid Unit For Data Type|  | | <a name=\"201\">201</a>|Invalid Type For Data Type|  | | <a name=\"202\">202</a>|Invalid Value For Data Type|  | | <a name=\"203\">203</a>|Unit Not Defined For Data Type|  | | <a name=\"204\">204</a>|Units Not Supported On Data Type|  | | <a name=\"205\">205</a>|Cannot Specify Units On Data Type|  | | <a name=\"206\">206</a>|Unit Schema Inconsistent With Data Type|  | | <a name=\"207\">207</a>|Unit Definition Not Specified|  | | <a name=\"208\">208</a>|Duplicate Unit Definitions Specified|  | | <a name=\"209\">209</a>|Invalid Units Definition|  | | <a name=\"210\">210</a>|Invalid Instrument Identifier Unit|  | | <a name=\"211\">211</a>|Holdings Adjustment Does Not Exist|  | | <a name=\"212\">212</a>|Could Not Build Excel Url|  | | <a name=\"213\">213</a>|Could Not Get Excel Version|  | | <a name=\"214\">214</a>|Instrument By Code Not Found|  | | <a name=\"215\">215</a>|Entity Schema Does Not Exist|  | | <a name=\"216\">216</a>|Feature Not Supported On Portfolio Type|  | | <a name=\"217\">217</a>|Quote Not Found|  | | <a name=\"218\">218</a>|Invalid Quote Identifier|  | | <a name=\"219\">219</a>|Invalid Metric For Data Type|  | | <a name=\"220\">220</a>|Invalid Instrument Definition|  | | <a name=\"221\">221</a>|Instrument Upsert Failure|  | | <a name=\"222\">222</a>|Reference Portfolio Request Not Supported|  | | <a name=\"223\">223</a>|Transaction Portfolio Request Not Supported|  | | <a name=\"224\">224</a>|Invalid Property Value Assignment|  | | <a name=\"230\">230</a>|Transaction Type Not Found|  | | <a name=\"231\">231</a>|Transaction Type Duplication|  | | <a name=\"232\">232</a>|Portfolio Does Not Exist At Given Date|  | | <a name=\"233\">233</a>|Query Parser Failure|  | | <a name=\"234\">234</a>|Duplicate Constituent|  | | <a name=\"235\">235</a>|Unresolved Instrument Constituent|  | | <a name=\"236\">236</a>|Unresolved Instrument In Transition|  | | <a name=\"237\">237</a>|Missing Side Definitions|  | | <a name=\"299\">299</a>|Invalid Recipe|  | | <a name=\"300\">300</a>|Missing Recipe|  | | <a name=\"301\">301</a>|Dependencies|  | | <a name=\"304\">304</a>|Portfolio Preprocess Failure|  | | <a name=\"310\">310</a>|Valuation Engine Failure|  | | <a name=\"311\">311</a>|Task Factory Failure|  | | <a name=\"312\">312</a>|Task Evaluation Failure|  | | <a name=\"313\">313</a>|Task Generation Failure|  | | <a name=\"314\">314</a>|Engine Configuration Failure|  | | <a name=\"315\">315</a>|Model Specification Failure|  | | <a name=\"320\">320</a>|Market Data Key Failure|  | | <a name=\"321\">321</a>|Market Resolver Failure|  | | <a name=\"322\">322</a>|Market Data Failure|  | | <a name=\"330\">330</a>|Curve Failure|  | | <a name=\"331\">331</a>|Volatility Surface Failure|  | | <a name=\"332\">332</a>|Volatility Cube Failure|  | | <a name=\"350\">350</a>|Instrument Failure|  | | <a name=\"351\">351</a>|Cash Flows Failure|  | | <a name=\"352\">352</a>|Reference Data Failure|  | | <a name=\"360\">360</a>|Aggregation Failure|  | | <a name=\"361\">361</a>|Aggregation Measure Failure|  | | <a name=\"370\">370</a>|Result Retrieval Failure|  | | <a name=\"371\">371</a>|Result Processing Failure|  | | <a name=\"372\">372</a>|Vendor Result Processing Failure|  | | <a name=\"373\">373</a>|Vendor Result Mapping Failure|  | | <a name=\"374\">374</a>|Vendor Library Unauthorised|  | | <a name=\"375\">375</a>|Vendor Connectivity Error|  | | <a name=\"376\">376</a>|Vendor Interface Error|  | | <a name=\"377\">377</a>|Vendor Pricing Failure|  | | <a name=\"378\">378</a>|Vendor Translation Failure|  | | <a name=\"379\">379</a>|Vendor Key Mapping Failure|  | | <a name=\"380\">380</a>|Vendor Reflection Failure|  | | <a name=\"381\">381</a>|Vendor Process Failure|  | | <a name=\"382\">382</a>|Vendor System Failure|  | | <a name=\"390\">390</a>|Attempt To Upsert Duplicate Quotes|  | | <a name=\"391\">391</a>|Corporate Action Source Does Not Exist|  | | <a name=\"392\">392</a>|Corporate Action Source Already Exists|  | | <a name=\"393\">393</a>|Instrument Identifier Already In Use|  | | <a name=\"394\">394</a>|Properties Not Found|  | | <a name=\"395\">395</a>|Batch Operation Aborted|  | | <a name=\"400\">400</a>|Invalid Iso4217 Currency Code|  | | <a name=\"401\">401</a>|Cannot Assign Instrument Identifier To Currency|  | | <a name=\"402\">402</a>|Cannot Assign Currency Identifier To Non Currency|  | | <a name=\"403\">403</a>|Currency Instrument Cannot Be Deleted|  | | <a name=\"404\">404</a>|Currency Instrument Cannot Have Economic Definition|  | | <a name=\"405\">405</a>|Currency Instrument Cannot Have Lookthrough Portfolio|  | | <a name=\"406\">406</a>|Cannot Create Currency Instrument With Multiple Identifiers|  | | <a name=\"407\">407</a>|Specified Currency Is Undefined|  | | <a name=\"410\">410</a>|Index Does Not Exist|  | | <a name=\"411\">411</a>|Sort Field Does Not Exist|  | | <a name=\"413\">413</a>|Negative Pagination Parameters|  | | <a name=\"414\">414</a>|Invalid Search Syntax|  | | <a name=\"415\">415</a>|Filter Execution Timeout|  | | <a name=\"420\">420</a>|Side Definition Inconsistent|  | | <a name=\"450\">450</a>|Invalid Quote Access Metadata Rule|  | | <a name=\"451\">451</a>|Access Metadata Not Found|  | | <a name=\"452\">452</a>|Invalid Access Metadata Identifier|  | | <a name=\"460\">460</a>|Standard Resource Not Found|  | | <a name=\"461\">461</a>|Standard Resource Conflict|  | | <a name=\"462\">462</a>|Calendar Not Found|  | | <a name=\"463\">463</a>|Date In A Calendar Not Found|  | | <a name=\"464\">464</a>|Invalid Date Source Data|  | | <a name=\"465\">465</a>|Invalid Timezone|  | | <a name=\"601\">601</a>|Person Identifier Already In Use|  | | <a name=\"602\">602</a>|Person Not Found|  | | <a name=\"603\">603</a>|Cannot Set Identifier|  | | <a name=\"617\">617</a>|Invalid Recipe Specification In Request|  | | <a name=\"618\">618</a>|Inline Recipe Deserialisation Failure|  | | <a name=\"619\">619</a>|Identifier Types Not Set For Entity|  | | <a name=\"620\">620</a>|Cannot Delete All Client Defined Identifiers|  | | <a name=\"650\">650</a>|The Order requested was not found.|  | | <a name=\"654\">654</a>|The Allocation requested was not found.|  | | <a name=\"655\">655</a>|Cannot build the fx forward target with the given holdings.|  | | <a name=\"656\">656</a>|Group does not contain expected entities.|  | | <a name=\"667\">667</a>|Relation definition already exists|  | | <a name=\"673\">673</a>|Missing entitlements for entities in Group|  | | <a name=\"674\">674</a>|Next Best Action not found|  | | <a name=\"676\">676</a>|Relation definition not defined|  | | <a name=\"677\">677</a>|Invalid entity identifier for relation|  | | <a name=\"681\">681</a>|Sorting by specified field not supported|One or more of the provided fields to order by were either invalid or not supported. | | <a name=\"682\">682</a>|Too many fields to sort by|The number of fields to sort the data by exceeds the number allowed by the endpoint | | <a name=\"684\">684</a>|Sequence Not Found|  | | <a name=\"685\">685</a>|Sequence Already Exists|  | | <a name=\"686\">686</a>|Non-cycling sequence has been exhausted|  | | <a name=\"687\">687</a>|Legal Entity Identifier Already In Use|  | | <a name=\"688\">688</a>|Legal Entity Not Found|  | | <a name=\"689\">689</a>|The supplied pagination token is invalid|  | | <a name=\"690\">690</a>|Property Type Is Not Supported|  | | <a name=\"691\">691</a>|Multiple Tax-lots For Currency Type Is Not Supported|  | | <a name=\"692\">692</a>|This endpoint does not support impersonation|  | | <a name=\"693\">693</a>|Entity type is not supported for Relationship|  | | <a name=\"694\">694</a>|Relationship Validation Failure|  | | <a name=\"695\">695</a>|Relationship Not Found|  | | <a name=\"697\">697</a>|Derived Property Formula No Longer Valid|  | | <a name=\"698\">698</a>|Story is not available|  | | <a name=\"703\">703</a>|Corporate Action Does Not Exist|  | | <a name=\"720\">720</a>|The provided sort and filter combination is not valid|  | | <a name=\"721\">721</a>|A2B generation failed|  | | <a name=\"722\">722</a>|Aggregated Return Calculation Failure|  | | <a name=\"723\">723</a>|Custom Entity Definition Identifier Already In Use|  | | <a name=\"724\">724</a>|Custom Entity Definition Not Found|  | | <a name=\"725\">725</a>|The Placement requested was not found.|  | | <a name=\"726\">726</a>|The Execution requested was not found.|  | | <a name=\"727\">727</a>|The Block requested was not found.|  | | <a name=\"728\">728</a>|The Participation requested was not found.|  | | <a name=\"729\">729</a>|The Package requested was not found.|  | | <a name=\"730\">730</a>|The OrderInstruction requested was not found.|  | | <a name=\"732\">732</a>|Custom Entity not found.|  | | <a name=\"733\">733</a>|Custom Entity Identifier already in use.|  | | <a name=\"735\">735</a>|Calculation Failed.|  | 
  *
- * The version of the OpenAPI document: 0.11.3313
+ * The version of the OpenAPI document: 0.11.3314
  * Contact: info@finbourne.com
  * Generated by: https://github.com/openapitools/openapi-generator.git
  */
-
 
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Net;
-using System.Net.Mime;
+using RestSharp.Portable;
 using Lusid.Sdk.Client;
 using Lusid.Sdk.Model;
 
 namespace Lusid.Sdk.Api
 {
-
     /// <summary>
     /// Represents a collection of functions to interact with the API endpoints
     /// </summary>
-    public interface IPortfoliosApiSync : IApiAccessor
+    public interface IPortfoliosApi : IApiAccessor
     {
         #region Synchronous Operations
         /// <summary>
@@ -39,7 +36,7 @@ namespace Lusid.Sdk.Api
         /// <param name="metadataKey">The metadataKey identifying the access metadata entry to delete</param>
         /// <param name="effectiveAt">The effective date to delete at, if this is not supplied, it will delete all data found (optional)</param>
         /// <returns>DeletedEntityResponse</returns>
-        DeletedEntityResponse DeleteKeyFromPortfolioAccessMetadata(string scope, string code, string metadataKey, DateTimeOrCutLabel effectiveAt = default(DateTimeOrCutLabel));
+        DeletedEntityResponse DeleteKeyFromPortfolioAccessMetadata (string scope, string code, string metadataKey, DateTimeOrCutLabel effectiveAt = null);
 
         /// <summary>
         /// [EXPERIMENTAL] Delete a Portfolio Access Metadata Rule
@@ -53,7 +50,7 @@ namespace Lusid.Sdk.Api
         /// <param name="metadataKey">The metadataKey identifying the access metadata entry to delete</param>
         /// <param name="effectiveAt">The effective date to delete at, if this is not supplied, it will delete all data found (optional)</param>
         /// <returns>ApiResponse of DeletedEntityResponse</returns>
-        ApiResponse<DeletedEntityResponse> DeleteKeyFromPortfolioAccessMetadataWithHttpInfo(string scope, string code, string metadataKey, DateTimeOrCutLabel effectiveAt = default(DateTimeOrCutLabel));
+        ApiResponse<DeletedEntityResponse> DeleteKeyFromPortfolioAccessMetadataWithHttpInfo (string scope, string code, string metadataKey, DateTimeOrCutLabel effectiveAt = null);
         /// <summary>
         /// Delete portfolio
         /// </summary>
@@ -64,7 +61,7 @@ namespace Lusid.Sdk.Api
         /// <param name="scope">The scope of the portfolio.</param>
         /// <param name="code">The code of the portfolio. Together with the scope this uniquely identifies the portfolio.</param>
         /// <returns>DeletedEntityResponse</returns>
-        DeletedEntityResponse DeletePortfolio(string scope, string code);
+        DeletedEntityResponse DeletePortfolio (string scope, string code);
 
         /// <summary>
         /// Delete portfolio
@@ -76,7 +73,7 @@ namespace Lusid.Sdk.Api
         /// <param name="scope">The scope of the portfolio.</param>
         /// <param name="code">The code of the portfolio. Together with the scope this uniquely identifies the portfolio.</param>
         /// <returns>ApiResponse of DeletedEntityResponse</returns>
-        ApiResponse<DeletedEntityResponse> DeletePortfolioWithHttpInfo(string scope, string code);
+        ApiResponse<DeletedEntityResponse> DeletePortfolioWithHttpInfo (string scope, string code);
         /// <summary>
         /// Delete portfolio properties
         /// </summary>
@@ -89,7 +86,7 @@ namespace Lusid.Sdk.Api
         /// <param name="propertyKeys">The property keys of the properties to delete. These must take the format              {domain}/{scope}/{code}, for example &#39;Portfolio/Manager/Id&#39;. Each property must be from the &#39;Portfolio&#39; domain.</param>
         /// <param name="effectiveAt">The effective datetime or cut label at which to delete time-variant properties. (optional)</param>
         /// <returns>DeletedEntityResponse</returns>
-        DeletedEntityResponse DeletePortfolioProperties(string scope, string code, List<string> propertyKeys, DateTimeOrCutLabel effectiveAt = default(DateTimeOrCutLabel));
+        DeletedEntityResponse DeletePortfolioProperties (string scope, string code, List<string> propertyKeys, DateTimeOrCutLabel effectiveAt = null);
 
         /// <summary>
         /// Delete portfolio properties
@@ -103,7 +100,7 @@ namespace Lusid.Sdk.Api
         /// <param name="propertyKeys">The property keys of the properties to delete. These must take the format              {domain}/{scope}/{code}, for example &#39;Portfolio/Manager/Id&#39;. Each property must be from the &#39;Portfolio&#39; domain.</param>
         /// <param name="effectiveAt">The effective datetime or cut label at which to delete time-variant properties. (optional)</param>
         /// <returns>ApiResponse of DeletedEntityResponse</returns>
-        ApiResponse<DeletedEntityResponse> DeletePortfolioPropertiesWithHttpInfo(string scope, string code, List<string> propertyKeys, DateTimeOrCutLabel effectiveAt = default(DateTimeOrCutLabel));
+        ApiResponse<DeletedEntityResponse> DeletePortfolioPropertiesWithHttpInfo (string scope, string code, List<string> propertyKeys, DateTimeOrCutLabel effectiveAt = null);
         /// <summary>
         /// Get portfolio
         /// </summary>
@@ -117,7 +114,7 @@ namespace Lusid.Sdk.Api
         /// <param name="asAt">The asAt datetime at which to retrieve the portfolio definition. Defaults to returning the latest version of the portfolio definition if not specified. (optional)</param>
         /// <param name="propertyKeys">A list of property keys from the &#39;Portfolio&#39; domain to decorate onto the portfolio.              These must take the format {domain}/{scope}/{code}, for example &#39;Portfolio/Manager/Id&#39;. (optional)</param>
         /// <returns>Portfolio</returns>
-        Portfolio GetPortfolio(string scope, string code, DateTimeOrCutLabel effectiveAt = default(DateTimeOrCutLabel), DateTimeOffset? asAt = default(DateTimeOffset?), List<string> propertyKeys = default(List<string>));
+        Portfolio GetPortfolio (string scope, string code, DateTimeOrCutLabel effectiveAt = null, DateTimeOffset? asAt = null, List<string> propertyKeys = null);
 
         /// <summary>
         /// Get portfolio
@@ -132,7 +129,7 @@ namespace Lusid.Sdk.Api
         /// <param name="asAt">The asAt datetime at which to retrieve the portfolio definition. Defaults to returning the latest version of the portfolio definition if not specified. (optional)</param>
         /// <param name="propertyKeys">A list of property keys from the &#39;Portfolio&#39; domain to decorate onto the portfolio.              These must take the format {domain}/{scope}/{code}, for example &#39;Portfolio/Manager/Id&#39;. (optional)</param>
         /// <returns>ApiResponse of Portfolio</returns>
-        ApiResponse<Portfolio> GetPortfolioWithHttpInfo(string scope, string code, DateTimeOrCutLabel effectiveAt = default(DateTimeOrCutLabel), DateTimeOffset? asAt = default(DateTimeOffset?), List<string> propertyKeys = default(List<string>));
+        ApiResponse<Portfolio> GetPortfolioWithHttpInfo (string scope, string code, DateTimeOrCutLabel effectiveAt = null, DateTimeOffset? asAt = null, List<string> propertyKeys = null);
         /// <summary>
         /// [EXPERIMENTAL] Aggregate Returns
         /// </summary>
@@ -154,7 +151,7 @@ namespace Lusid.Sdk.Api
         /// <param name="metrics">The period time to calculate the aggregate return. (optional)</param>
         /// <param name="asAt">The asAt datetime at which to retrieve the Returns. Defaults to the latest. (optional)</param>
         /// <returns>ResourceListOfAggregatedReturn</returns>
-        ResourceListOfAggregatedReturn GetPortfolioAggregateReturns(string scope, string code, string returnScope, string returnCode, string recipeIdScope = default(string), string recipeIdCode = default(string), DateTimeOrCutLabel fromEffectiveAt = default(DateTimeOrCutLabel), DateTimeOrCutLabel toEffectiveAt = default(DateTimeOrCutLabel), string compositeMethod = default(string), string period = default(string), string outputFrequency = default(string), List<string> metrics = default(List<string>), DateTimeOffset? asAt = default(DateTimeOffset?));
+        ResourceListOfAggregatedReturn GetPortfolioAggregateReturns (string scope, string code, string returnScope, string returnCode, string recipeIdScope = null, string recipeIdCode = null, DateTimeOrCutLabel fromEffectiveAt = null, DateTimeOrCutLabel toEffectiveAt = null, string compositeMethod = null, string period = null, string outputFrequency = null, List<string> metrics = null, DateTimeOffset? asAt = null);
 
         /// <summary>
         /// [EXPERIMENTAL] Aggregate Returns
@@ -177,7 +174,7 @@ namespace Lusid.Sdk.Api
         /// <param name="metrics">The period time to calculate the aggregate return. (optional)</param>
         /// <param name="asAt">The asAt datetime at which to retrieve the Returns. Defaults to the latest. (optional)</param>
         /// <returns>ApiResponse of ResourceListOfAggregatedReturn</returns>
-        ApiResponse<ResourceListOfAggregatedReturn> GetPortfolioAggregateReturnsWithHttpInfo(string scope, string code, string returnScope, string returnCode, string recipeIdScope = default(string), string recipeIdCode = default(string), DateTimeOrCutLabel fromEffectiveAt = default(DateTimeOrCutLabel), DateTimeOrCutLabel toEffectiveAt = default(DateTimeOrCutLabel), string compositeMethod = default(string), string period = default(string), string outputFrequency = default(string), List<string> metrics = default(List<string>), DateTimeOffset? asAt = default(DateTimeOffset?));
+        ApiResponse<ResourceListOfAggregatedReturn> GetPortfolioAggregateReturnsWithHttpInfo (string scope, string code, string returnScope, string returnCode, string recipeIdScope = null, string recipeIdCode = null, DateTimeOrCutLabel fromEffectiveAt = null, DateTimeOrCutLabel toEffectiveAt = null, string compositeMethod = null, string period = null, string outputFrequency = null, List<string> metrics = null, DateTimeOffset? asAt = null);
         /// <summary>
         /// [EARLY ACCESS] Get portfolio commands
         /// </summary>
@@ -193,7 +190,7 @@ namespace Lusid.Sdk.Api
         /// <param name="page">The pagination token to use to continue listing commands; this value is returned from the previous call. (optional)</param>
         /// <param name="limit">When paginating, limit the results to this number. Defaults to 500 if not specified. (optional)</param>
         /// <returns>ResourceListOfProcessedCommand</returns>
-        ResourceListOfProcessedCommand GetPortfolioCommands(string scope, string code, DateTimeOffset? fromAsAt = default(DateTimeOffset?), DateTimeOffset? toAsAt = default(DateTimeOffset?), string filter = default(string), string page = default(string), int? limit = default(int?));
+        ResourceListOfProcessedCommand GetPortfolioCommands (string scope, string code, DateTimeOffset? fromAsAt = null, DateTimeOffset? toAsAt = null, string filter = null, string page = null, int? limit = null);
 
         /// <summary>
         /// [EARLY ACCESS] Get portfolio commands
@@ -210,7 +207,7 @@ namespace Lusid.Sdk.Api
         /// <param name="page">The pagination token to use to continue listing commands; this value is returned from the previous call. (optional)</param>
         /// <param name="limit">When paginating, limit the results to this number. Defaults to 500 if not specified. (optional)</param>
         /// <returns>ApiResponse of ResourceListOfProcessedCommand</returns>
-        ApiResponse<ResourceListOfProcessedCommand> GetPortfolioCommandsWithHttpInfo(string scope, string code, DateTimeOffset? fromAsAt = default(DateTimeOffset?), DateTimeOffset? toAsAt = default(DateTimeOffset?), string filter = default(string), string page = default(string), int? limit = default(int?));
+        ApiResponse<ResourceListOfProcessedCommand> GetPortfolioCommandsWithHttpInfo (string scope, string code, DateTimeOffset? fromAsAt = null, DateTimeOffset? toAsAt = null, string filter = null, string page = null, int? limit = null);
         /// <summary>
         /// [EXPERIMENTAL] Get access metadata rules for a portfolio
         /// </summary>
@@ -223,7 +220,7 @@ namespace Lusid.Sdk.Api
         /// <param name="effectiveAt">The effectiveAt datetime at which to retrieve the access metadata rule. (optional)</param>
         /// <param name="asAt">The asAt datetime at which to retrieve the portfolio access metadata. (optional)</param>
         /// <returns>Dictionary&lt;string, List&lt;AccessMetadataValue&gt;&gt;</returns>
-        Dictionary<string, List<AccessMetadataValue>> GetPortfolioMetadata(string scope, string code, string effectiveAt = default(string), DateTimeOffset? asAt = default(DateTimeOffset?));
+        Dictionary<string, List<AccessMetadataValue>> GetPortfolioMetadata (string scope, string code, string effectiveAt = null, DateTimeOffset? asAt = null);
 
         /// <summary>
         /// [EXPERIMENTAL] Get access metadata rules for a portfolio
@@ -237,7 +234,7 @@ namespace Lusid.Sdk.Api
         /// <param name="effectiveAt">The effectiveAt datetime at which to retrieve the access metadata rule. (optional)</param>
         /// <param name="asAt">The asAt datetime at which to retrieve the portfolio access metadata. (optional)</param>
         /// <returns>ApiResponse of Dictionary&lt;string, List&lt;AccessMetadataValue&gt;&gt;</returns>
-        ApiResponse<Dictionary<string, List<AccessMetadataValue>>> GetPortfolioMetadataWithHttpInfo(string scope, string code, string effectiveAt = default(string), DateTimeOffset? asAt = default(DateTimeOffset?));
+        ApiResponse<Dictionary<string, List<AccessMetadataValue>>> GetPortfolioMetadataWithHttpInfo (string scope, string code, string effectiveAt = null, DateTimeOffset? asAt = null);
         /// <summary>
         /// Get portfolio properties
         /// </summary>
@@ -250,7 +247,7 @@ namespace Lusid.Sdk.Api
         /// <param name="effectiveAt">The effective datetime or cut label at which to list the portfolio&#39;s properties. Defaults to the current LUSID system datetime if not specified. (optional)</param>
         /// <param name="asAt">The asAt datetime at which to list the portfolio&#39;s properties. Defaults to returning the latest version of each property if not specified. (optional)</param>
         /// <returns>PortfolioProperties</returns>
-        PortfolioProperties GetPortfolioProperties(string scope, string code, DateTimeOrCutLabel effectiveAt = default(DateTimeOrCutLabel), DateTimeOffset? asAt = default(DateTimeOffset?));
+        PortfolioProperties GetPortfolioProperties (string scope, string code, DateTimeOrCutLabel effectiveAt = null, DateTimeOffset? asAt = null);
 
         /// <summary>
         /// Get portfolio properties
@@ -264,7 +261,7 @@ namespace Lusid.Sdk.Api
         /// <param name="effectiveAt">The effective datetime or cut label at which to list the portfolio&#39;s properties. Defaults to the current LUSID system datetime if not specified. (optional)</param>
         /// <param name="asAt">The asAt datetime at which to list the portfolio&#39;s properties. Defaults to returning the latest version of each property if not specified. (optional)</param>
         /// <returns>ApiResponse of PortfolioProperties</returns>
-        ApiResponse<PortfolioProperties> GetPortfolioPropertiesWithHttpInfo(string scope, string code, DateTimeOrCutLabel effectiveAt = default(DateTimeOrCutLabel), DateTimeOffset? asAt = default(DateTimeOffset?));
+        ApiResponse<PortfolioProperties> GetPortfolioPropertiesWithHttpInfo (string scope, string code, DateTimeOrCutLabel effectiveAt = null, DateTimeOffset? asAt = null);
         /// <summary>
         /// [EXPERIMENTAL] Get portfolio property time series
         /// </summary>
@@ -281,7 +278,7 @@ namespace Lusid.Sdk.Api
         /// <param name="page">The pagination token to use to continue listing properties; this value is returned from              the previous call. If a pagination token is provided, the filter, portfolioEffectiveAt, and asAt fields              must not have changed since the original request. (optional)</param>
         /// <param name="limit">When paginating, limit the results to this number. (optional)</param>
         /// <returns>ResourceListOfPropertyInterval</returns>
-        ResourceListOfPropertyInterval GetPortfolioPropertyTimeSeries(string scope, string code, string propertyKey = default(string), string portfolioEffectiveAt = default(string), DateTimeOffset? asAt = default(DateTimeOffset?), string filter = default(string), string page = default(string), int? limit = default(int?));
+        ResourceListOfPropertyInterval GetPortfolioPropertyTimeSeries (string scope, string code, string propertyKey = null, string portfolioEffectiveAt = null, DateTimeOffset? asAt = null, string filter = null, string page = null, int? limit = null);
 
         /// <summary>
         /// [EXPERIMENTAL] Get portfolio property time series
@@ -299,7 +296,7 @@ namespace Lusid.Sdk.Api
         /// <param name="page">The pagination token to use to continue listing properties; this value is returned from              the previous call. If a pagination token is provided, the filter, portfolioEffectiveAt, and asAt fields              must not have changed since the original request. (optional)</param>
         /// <param name="limit">When paginating, limit the results to this number. (optional)</param>
         /// <returns>ApiResponse of ResourceListOfPropertyInterval</returns>
-        ApiResponse<ResourceListOfPropertyInterval> GetPortfolioPropertyTimeSeriesWithHttpInfo(string scope, string code, string propertyKey = default(string), string portfolioEffectiveAt = default(string), DateTimeOffset? asAt = default(DateTimeOffset?), string filter = default(string), string page = default(string), int? limit = default(int?));
+        ApiResponse<ResourceListOfPropertyInterval> GetPortfolioPropertyTimeSeriesWithHttpInfo (string scope, string code, string propertyKey = null, string portfolioEffectiveAt = null, DateTimeOffset? asAt = null, string filter = null, string page = null, int? limit = null);
         /// <summary>
         /// [EXPERIMENTAL] Get portfolio relations
         /// </summary>
@@ -314,7 +311,7 @@ namespace Lusid.Sdk.Api
         /// <param name="filter">Expression to filter the relations. Provide a null or empty string for this field until further notice. (optional)</param>
         /// <param name="identifierTypes">Identifier types (as property keys) used for referencing Persons or Legal Entities.              These must be from the &#39;Person&#39; or &#39;LegalEntity&#39; domains and have the format {domain}/{scope}/{code}, for example              &#39;Person/CompanyDetails/Role&#39;. Only identifier types provided will be used to look up relevant entities in relations. If not applicable, provide an empty array. (optional)</param>
         /// <returns>ResourceListOfRelation</returns>
-        ResourceListOfRelation GetPortfolioRelations(string scope, string code, DateTimeOrCutLabel effectiveAt = default(DateTimeOrCutLabel), DateTimeOffset? asAt = default(DateTimeOffset?), string filter = default(string), List<string> identifierTypes = default(List<string>));
+        ResourceListOfRelation GetPortfolioRelations (string scope, string code, DateTimeOrCutLabel effectiveAt = null, DateTimeOffset? asAt = null, string filter = null, List<string> identifierTypes = null);
 
         /// <summary>
         /// [EXPERIMENTAL] Get portfolio relations
@@ -330,7 +327,7 @@ namespace Lusid.Sdk.Api
         /// <param name="filter">Expression to filter the relations. Provide a null or empty string for this field until further notice. (optional)</param>
         /// <param name="identifierTypes">Identifier types (as property keys) used for referencing Persons or Legal Entities.              These must be from the &#39;Person&#39; or &#39;LegalEntity&#39; domains and have the format {domain}/{scope}/{code}, for example              &#39;Person/CompanyDetails/Role&#39;. Only identifier types provided will be used to look up relevant entities in relations. If not applicable, provide an empty array. (optional)</param>
         /// <returns>ApiResponse of ResourceListOfRelation</returns>
-        ApiResponse<ResourceListOfRelation> GetPortfolioRelationsWithHttpInfo(string scope, string code, DateTimeOrCutLabel effectiveAt = default(DateTimeOrCutLabel), DateTimeOffset? asAt = default(DateTimeOffset?), string filter = default(string), List<string> identifierTypes = default(List<string>));
+        ApiResponse<ResourceListOfRelation> GetPortfolioRelationsWithHttpInfo (string scope, string code, DateTimeOrCutLabel effectiveAt = null, DateTimeOffset? asAt = null, string filter = null, List<string> identifierTypes = null);
         /// <summary>
         /// [EXPERIMENTAL] Get portfolio relationships
         /// </summary>
@@ -345,7 +342,7 @@ namespace Lusid.Sdk.Api
         /// <param name="filter">Expression to filter the relationships. Provide a null or empty string for this field until further notice. (optional)</param>
         /// <param name="identifierTypes">Identifier types (as property keys) used for referencing Persons or Legal Entities.              These must be from the &#39;Person&#39; or &#39;LegalEntity&#39; domains and have the format {domain}/{scope}/{code}, for example              &#39;Person/CompanyDetails/Role&#39;. Only identifier types provided will be used to look up relevant entities in relationships. If not applicable, provide an empty array. (optional)</param>
         /// <returns>ResourceListOfRelationship</returns>
-        ResourceListOfRelationship GetPortfolioRelationships(string scope, string code, DateTimeOrCutLabel effectiveAt = default(DateTimeOrCutLabel), DateTimeOffset? asAt = default(DateTimeOffset?), string filter = default(string), List<string> identifierTypes = default(List<string>));
+        ResourceListOfRelationship GetPortfolioRelationships (string scope, string code, DateTimeOrCutLabel effectiveAt = null, DateTimeOffset? asAt = null, string filter = null, List<string> identifierTypes = null);
 
         /// <summary>
         /// [EXPERIMENTAL] Get portfolio relationships
@@ -361,7 +358,7 @@ namespace Lusid.Sdk.Api
         /// <param name="filter">Expression to filter the relationships. Provide a null or empty string for this field until further notice. (optional)</param>
         /// <param name="identifierTypes">Identifier types (as property keys) used for referencing Persons or Legal Entities.              These must be from the &#39;Person&#39; or &#39;LegalEntity&#39; domains and have the format {domain}/{scope}/{code}, for example              &#39;Person/CompanyDetails/Role&#39;. Only identifier types provided will be used to look up relevant entities in relationships. If not applicable, provide an empty array. (optional)</param>
         /// <returns>ApiResponse of ResourceListOfRelationship</returns>
-        ApiResponse<ResourceListOfRelationship> GetPortfolioRelationshipsWithHttpInfo(string scope, string code, DateTimeOrCutLabel effectiveAt = default(DateTimeOrCutLabel), DateTimeOffset? asAt = default(DateTimeOffset?), string filter = default(string), List<string> identifierTypes = default(List<string>));
+        ApiResponse<ResourceListOfRelationship> GetPortfolioRelationshipsWithHttpInfo (string scope, string code, DateTimeOrCutLabel effectiveAt = null, DateTimeOffset? asAt = null, string filter = null, List<string> identifierTypes = null);
         /// <summary>
         /// [EXPERIMENTAL] Get Returns
         /// </summary>
@@ -378,7 +375,7 @@ namespace Lusid.Sdk.Api
         /// <param name="period">Show the Returns on a Daily or Monthly period. (optional)</param>
         /// <param name="asAt">The asAt datetime at which to retrieve the Returns. Defaults to the latest. (optional)</param>
         /// <returns>ResourceListOfPerformanceReturn</returns>
-        ResourceListOfPerformanceReturn GetPortfolioReturns(string scope, string code, string returnScope, string returnCode, DateTimeOrCutLabel fromEffectiveAt = default(DateTimeOrCutLabel), DateTimeOrCutLabel toEffectiveAt = default(DateTimeOrCutLabel), string period = default(string), DateTimeOffset? asAt = default(DateTimeOffset?));
+        ResourceListOfPerformanceReturn GetPortfolioReturns (string scope, string code, string returnScope, string returnCode, DateTimeOrCutLabel fromEffectiveAt = null, DateTimeOrCutLabel toEffectiveAt = null, string period = null, DateTimeOffset? asAt = null);
 
         /// <summary>
         /// [EXPERIMENTAL] Get Returns
@@ -396,7 +393,7 @@ namespace Lusid.Sdk.Api
         /// <param name="period">Show the Returns on a Daily or Monthly period. (optional)</param>
         /// <param name="asAt">The asAt datetime at which to retrieve the Returns. Defaults to the latest. (optional)</param>
         /// <returns>ApiResponse of ResourceListOfPerformanceReturn</returns>
-        ApiResponse<ResourceListOfPerformanceReturn> GetPortfolioReturnsWithHttpInfo(string scope, string code, string returnScope, string returnCode, DateTimeOrCutLabel fromEffectiveAt = default(DateTimeOrCutLabel), DateTimeOrCutLabel toEffectiveAt = default(DateTimeOrCutLabel), string period = default(string), DateTimeOffset? asAt = default(DateTimeOffset?));
+        ApiResponse<ResourceListOfPerformanceReturn> GetPortfolioReturnsWithHttpInfo (string scope, string code, string returnScope, string returnCode, DateTimeOrCutLabel fromEffectiveAt = null, DateTimeOrCutLabel toEffectiveAt = null, string period = null, DateTimeOffset? asAt = null);
         /// <summary>
         /// [EXPERIMENTAL] Get an entry identified by a metadataKey in the access metadata object
         /// </summary>
@@ -410,7 +407,7 @@ namespace Lusid.Sdk.Api
         /// <param name="effectiveAt">The effective date of the rule (optional)</param>
         /// <param name="asAt">The asAt datetime at which to retrieve the portfolio access metadata. (optional)</param>
         /// <returns>ICollection&lt;AccessMetadataValue&gt;</returns>
-        ICollection<AccessMetadataValue> GetPortfoliosAccessMetadataByKey(string scope, string code, string metadataKey, DateTimeOrCutLabel effectiveAt = default(DateTimeOrCutLabel), DateTimeOffset? asAt = default(DateTimeOffset?));
+        ICollection<AccessMetadataValue> GetPortfoliosAccessMetadataByKey (string scope, string code, string metadataKey, DateTimeOrCutLabel effectiveAt = null, DateTimeOffset? asAt = null);
 
         /// <summary>
         /// [EXPERIMENTAL] Get an entry identified by a metadataKey in the access metadata object
@@ -425,7 +422,7 @@ namespace Lusid.Sdk.Api
         /// <param name="effectiveAt">The effective date of the rule (optional)</param>
         /// <param name="asAt">The asAt datetime at which to retrieve the portfolio access metadata. (optional)</param>
         /// <returns>ApiResponse of ICollection&lt;AccessMetadataValue&gt;</returns>
-        ApiResponse<ICollection<AccessMetadataValue>> GetPortfoliosAccessMetadataByKeyWithHttpInfo(string scope, string code, string metadataKey, DateTimeOrCutLabel effectiveAt = default(DateTimeOrCutLabel), DateTimeOffset? asAt = default(DateTimeOffset?));
+        ApiResponse<ICollection<AccessMetadataValue>> GetPortfoliosAccessMetadataByKeyWithHttpInfo (string scope, string code, string metadataKey, DateTimeOrCutLabel effectiveAt = null, DateTimeOffset? asAt = null);
         /// <summary>
         /// List portfolios
         /// </summary>
@@ -442,7 +439,7 @@ namespace Lusid.Sdk.Api
         /// <param name="query">Expression specifying the criteria that the returned portfolios must meet. For example, to see which              portfolios have holdings in instruments with a LusidInstrumentId (LUID) of &#39;LUID_PPA8HI6M&#39; or a Figi of &#39;BBG000BLNNH6&#39;,              specify \&quot;instrument.identifiers in ((&#39;LusidInstrumentId&#39;, &#39;LUID_PPA8HI6M&#39;), (&#39;Figi&#39;, &#39;BBG000BLNNH6&#39;))\&quot;. (optional)</param>
         /// <param name="propertyKeys">A list of property keys from the &#39;Portfolio&#39; domain to decorate onto each portfolio.              These must take the format {domain}/{scope}/{code}, for example &#39;Portfolio/Manager/Id&#39;. (optional)</param>
         /// <returns>ResourceListOfPortfolio</returns>
-        ResourceListOfPortfolio ListPortfolios(DateTimeOrCutLabel effectiveAt = default(DateTimeOrCutLabel), DateTimeOffset? asAt = default(DateTimeOffset?), string page = default(string), int? start = default(int?), int? limit = default(int?), string filter = default(string), string query = default(string), List<string> propertyKeys = default(List<string>));
+        ResourceListOfPortfolio ListPortfolios (DateTimeOrCutLabel effectiveAt = null, DateTimeOffset? asAt = null, string page = null, int? start = null, int? limit = null, string filter = null, string query = null, List<string> propertyKeys = null);
 
         /// <summary>
         /// List portfolios
@@ -460,7 +457,7 @@ namespace Lusid.Sdk.Api
         /// <param name="query">Expression specifying the criteria that the returned portfolios must meet. For example, to see which              portfolios have holdings in instruments with a LusidInstrumentId (LUID) of &#39;LUID_PPA8HI6M&#39; or a Figi of &#39;BBG000BLNNH6&#39;,              specify \&quot;instrument.identifiers in ((&#39;LusidInstrumentId&#39;, &#39;LUID_PPA8HI6M&#39;), (&#39;Figi&#39;, &#39;BBG000BLNNH6&#39;))\&quot;. (optional)</param>
         /// <param name="propertyKeys">A list of property keys from the &#39;Portfolio&#39; domain to decorate onto each portfolio.              These must take the format {domain}/{scope}/{code}, for example &#39;Portfolio/Manager/Id&#39;. (optional)</param>
         /// <returns>ApiResponse of ResourceListOfPortfolio</returns>
-        ApiResponse<ResourceListOfPortfolio> ListPortfoliosWithHttpInfo(DateTimeOrCutLabel effectiveAt = default(DateTimeOrCutLabel), DateTimeOffset? asAt = default(DateTimeOffset?), string page = default(string), int? start = default(int?), int? limit = default(int?), string filter = default(string), string query = default(string), List<string> propertyKeys = default(List<string>));
+        ApiResponse<ResourceListOfPortfolio> ListPortfoliosWithHttpInfo (DateTimeOrCutLabel effectiveAt = null, DateTimeOffset? asAt = null, string page = null, int? start = null, int? limit = null, string filter = null, string query = null, List<string> propertyKeys = null);
         /// <summary>
         /// List portfolios for scope
         /// </summary>
@@ -477,7 +474,7 @@ namespace Lusid.Sdk.Api
         /// <param name="filter">Expression to filter the results.              For example, to return only transactions with a transaction type of &#39;Buy&#39;, specify \&quot;type eq &#39;Buy&#39;\&quot;.              For more information about filtering results, see https://support.lusid.com/knowledgebase/article/KA-01914. (optional)</param>
         /// <param name="propertyKeys">A list of property keys from the &#39;Portfolio&#39; domain to decorate onto each portfolio.              These must take the format {domain}/{scope}/{code}, for example &#39;Portfolio/Manager/Id&#39;. (optional)</param>
         /// <returns>ResourceListOfPortfolio</returns>
-        ResourceListOfPortfolio ListPortfoliosForScope(string scope, DateTimeOrCutLabel effectiveAt = default(DateTimeOrCutLabel), DateTimeOffset? asAt = default(DateTimeOffset?), string page = default(string), int? start = default(int?), int? limit = default(int?), string filter = default(string), List<string> propertyKeys = default(List<string>));
+        ResourceListOfPortfolio ListPortfoliosForScope (string scope, DateTimeOrCutLabel effectiveAt = null, DateTimeOffset? asAt = null, string page = null, int? start = null, int? limit = null, string filter = null, List<string> propertyKeys = null);
 
         /// <summary>
         /// List portfolios for scope
@@ -495,7 +492,7 @@ namespace Lusid.Sdk.Api
         /// <param name="filter">Expression to filter the results.              For example, to return only transactions with a transaction type of &#39;Buy&#39;, specify \&quot;type eq &#39;Buy&#39;\&quot;.              For more information about filtering results, see https://support.lusid.com/knowledgebase/article/KA-01914. (optional)</param>
         /// <param name="propertyKeys">A list of property keys from the &#39;Portfolio&#39; domain to decorate onto each portfolio.              These must take the format {domain}/{scope}/{code}, for example &#39;Portfolio/Manager/Id&#39;. (optional)</param>
         /// <returns>ApiResponse of ResourceListOfPortfolio</returns>
-        ApiResponse<ResourceListOfPortfolio> ListPortfoliosForScopeWithHttpInfo(string scope, DateTimeOrCutLabel effectiveAt = default(DateTimeOrCutLabel), DateTimeOffset? asAt = default(DateTimeOffset?), string page = default(string), int? start = default(int?), int? limit = default(int?), string filter = default(string), List<string> propertyKeys = default(List<string>));
+        ApiResponse<ResourceListOfPortfolio> ListPortfoliosForScopeWithHttpInfo (string scope, DateTimeOrCutLabel effectiveAt = null, DateTimeOffset? asAt = null, string page = null, int? start = null, int? limit = null, string filter = null, List<string> propertyKeys = null);
         /// <summary>
         /// Update portfolio
         /// </summary>
@@ -508,7 +505,7 @@ namespace Lusid.Sdk.Api
         /// <param name="updatePortfolioRequest">The updated portfolio definition.</param>
         /// <param name="effectiveAt">The effective datetime or cut label at which to update the definition. Defaults to the current               LUSID system datetime if not specified. (optional)</param>
         /// <returns>Portfolio</returns>
-        Portfolio UpdatePortfolio(string scope, string code, UpdatePortfolioRequest updatePortfolioRequest, DateTimeOrCutLabel effectiveAt = default(DateTimeOrCutLabel));
+        Portfolio UpdatePortfolio (string scope, string code, UpdatePortfolioRequest updatePortfolioRequest, DateTimeOrCutLabel effectiveAt = null);
 
         /// <summary>
         /// Update portfolio
@@ -522,7 +519,7 @@ namespace Lusid.Sdk.Api
         /// <param name="updatePortfolioRequest">The updated portfolio definition.</param>
         /// <param name="effectiveAt">The effective datetime or cut label at which to update the definition. Defaults to the current               LUSID system datetime if not specified. (optional)</param>
         /// <returns>ApiResponse of Portfolio</returns>
-        ApiResponse<Portfolio> UpdatePortfolioWithHttpInfo(string scope, string code, UpdatePortfolioRequest updatePortfolioRequest, DateTimeOrCutLabel effectiveAt = default(DateTimeOrCutLabel));
+        ApiResponse<Portfolio> UpdatePortfolioWithHttpInfo (string scope, string code, UpdatePortfolioRequest updatePortfolioRequest, DateTimeOrCutLabel effectiveAt = null);
         /// <summary>
         /// [EXPERIMENTAL] Upsert a Portfolio Access Metadata Rule associated with specific metadataKey. This creates or updates the data in LUSID.
         /// </summary>
@@ -536,7 +533,7 @@ namespace Lusid.Sdk.Api
         /// <param name="upsertPortfolioAccessMetadataRequest">The Portfolio Access Metadata Rule to update or insert</param>
         /// <param name="effectiveAt">The date this rule will effective from (optional)</param>
         /// <returns>ResourceListOfAccessMetadataValueOf</returns>
-        ResourceListOfAccessMetadataValueOf UpsertPortfolioAccessMetadata(string scope, string code, string metadataKey, UpsertPortfolioAccessMetadataRequest upsertPortfolioAccessMetadataRequest, DateTimeOrCutLabel effectiveAt = default(DateTimeOrCutLabel));
+        ResourceListOfAccessMetadataValueOf UpsertPortfolioAccessMetadata (string scope, string code, string metadataKey, UpsertPortfolioAccessMetadataRequest upsertPortfolioAccessMetadataRequest, DateTimeOrCutLabel effectiveAt = null);
 
         /// <summary>
         /// [EXPERIMENTAL] Upsert a Portfolio Access Metadata Rule associated with specific metadataKey. This creates or updates the data in LUSID.
@@ -551,7 +548,7 @@ namespace Lusid.Sdk.Api
         /// <param name="upsertPortfolioAccessMetadataRequest">The Portfolio Access Metadata Rule to update or insert</param>
         /// <param name="effectiveAt">The date this rule will effective from (optional)</param>
         /// <returns>ApiResponse of ResourceListOfAccessMetadataValueOf</returns>
-        ApiResponse<ResourceListOfAccessMetadataValueOf> UpsertPortfolioAccessMetadataWithHttpInfo(string scope, string code, string metadataKey, UpsertPortfolioAccessMetadataRequest upsertPortfolioAccessMetadataRequest, DateTimeOrCutLabel effectiveAt = default(DateTimeOrCutLabel));
+        ApiResponse<ResourceListOfAccessMetadataValueOf> UpsertPortfolioAccessMetadataWithHttpInfo (string scope, string code, string metadataKey, UpsertPortfolioAccessMetadataRequest upsertPortfolioAccessMetadataRequest, DateTimeOrCutLabel effectiveAt = null);
         /// <summary>
         /// Upsert portfolio properties
         /// </summary>
@@ -563,7 +560,7 @@ namespace Lusid.Sdk.Api
         /// <param name="code">The code of the portfolio. Together with the scope this uniquely identifies the portfolio.</param>
         /// <param name="requestBody">The properties to be created or updated. Each property in               the request must be keyed by its unique property key. This has the format {domain}/{scope}/{code}, for example               &#39;Portfolio/Manager/Id&#39;.</param>
         /// <returns>PortfolioProperties</returns>
-        PortfolioProperties UpsertPortfolioProperties(string scope, string code, Dictionary<string, Property> requestBody);
+        PortfolioProperties UpsertPortfolioProperties (string scope, string code, Dictionary<string, Property> requestBody);
 
         /// <summary>
         /// Upsert portfolio properties
@@ -576,7 +573,7 @@ namespace Lusid.Sdk.Api
         /// <param name="code">The code of the portfolio. Together with the scope this uniquely identifies the portfolio.</param>
         /// <param name="requestBody">The properties to be created or updated. Each property in               the request must be keyed by its unique property key. This has the format {domain}/{scope}/{code}, for example               &#39;Portfolio/Manager/Id&#39;.</param>
         /// <returns>ApiResponse of PortfolioProperties</returns>
-        ApiResponse<PortfolioProperties> UpsertPortfolioPropertiesWithHttpInfo(string scope, string code, Dictionary<string, Property> requestBody);
+        ApiResponse<PortfolioProperties> UpsertPortfolioPropertiesWithHttpInfo (string scope, string code, Dictionary<string, Property> requestBody);
         /// <summary>
         /// [EXPERIMENTAL] Upsert Returns
         /// </summary>
@@ -590,7 +587,7 @@ namespace Lusid.Sdk.Api
         /// <param name="returnCode">The code of the Returns.</param>
         /// <param name="performanceReturn">This contains the Returns which need to be upsert.</param>
         /// <returns>UpsertReturnsResponse</returns>
-        UpsertReturnsResponse UpsertPortfolioReturns(string scope, string code, string returnScope, string returnCode, List<PerformanceReturn> performanceReturn);
+        UpsertReturnsResponse UpsertPortfolioReturns (string scope, string code, string returnScope, string returnCode, List<PerformanceReturn> performanceReturn);
 
         /// <summary>
         /// [EXPERIMENTAL] Upsert Returns
@@ -605,15 +602,8 @@ namespace Lusid.Sdk.Api
         /// <param name="returnCode">The code of the Returns.</param>
         /// <param name="performanceReturn">This contains the Returns which need to be upsert.</param>
         /// <returns>ApiResponse of UpsertReturnsResponse</returns>
-        ApiResponse<UpsertReturnsResponse> UpsertPortfolioReturnsWithHttpInfo(string scope, string code, string returnScope, string returnCode, List<PerformanceReturn> performanceReturn);
+        ApiResponse<UpsertReturnsResponse> UpsertPortfolioReturnsWithHttpInfo (string scope, string code, string returnScope, string returnCode, List<PerformanceReturn> performanceReturn);
         #endregion Synchronous Operations
-    }
-
-    /// <summary>
-    /// Represents a collection of functions to interact with the API endpoints
-    /// </summary>
-    public interface IPortfoliosApiAsync : IApiAccessor
-    {
         #region Asynchronous Operations
         /// <summary>
         /// [EXPERIMENTAL] Delete a Portfolio Access Metadata Rule
@@ -626,9 +616,8 @@ namespace Lusid.Sdk.Api
         /// <param name="code">Portfolio code</param>
         /// <param name="metadataKey">The metadataKey identifying the access metadata entry to delete</param>
         /// <param name="effectiveAt">The effective date to delete at, if this is not supplied, it will delete all data found (optional)</param>
-        /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
         /// <returns>Task of DeletedEntityResponse</returns>
-        System.Threading.Tasks.Task<DeletedEntityResponse> DeleteKeyFromPortfolioAccessMetadataAsync(string scope, string code, string metadataKey, DateTimeOrCutLabel effectiveAt = default(DateTimeOrCutLabel), System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+        System.Threading.Tasks.Task<DeletedEntityResponse> DeleteKeyFromPortfolioAccessMetadataAsync (string scope, string code, string metadataKey, DateTimeOrCutLabel effectiveAt = null);
 
         /// <summary>
         /// [EXPERIMENTAL] Delete a Portfolio Access Metadata Rule
@@ -641,9 +630,8 @@ namespace Lusid.Sdk.Api
         /// <param name="code">Portfolio code</param>
         /// <param name="metadataKey">The metadataKey identifying the access metadata entry to delete</param>
         /// <param name="effectiveAt">The effective date to delete at, if this is not supplied, it will delete all data found (optional)</param>
-        /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
         /// <returns>Task of ApiResponse (DeletedEntityResponse)</returns>
-        System.Threading.Tasks.Task<ApiResponse<DeletedEntityResponse>> DeleteKeyFromPortfolioAccessMetadataWithHttpInfoAsync(string scope, string code, string metadataKey, DateTimeOrCutLabel effectiveAt = default(DateTimeOrCutLabel), System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+        System.Threading.Tasks.Task<ApiResponse<DeletedEntityResponse>> DeleteKeyFromPortfolioAccessMetadataAsyncWithHttpInfo (string scope, string code, string metadataKey, DateTimeOrCutLabel effectiveAt = null);
         /// <summary>
         /// Delete portfolio
         /// </summary>
@@ -653,9 +641,8 @@ namespace Lusid.Sdk.Api
         /// <exception cref="Lusid.Sdk.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="scope">The scope of the portfolio.</param>
         /// <param name="code">The code of the portfolio. Together with the scope this uniquely identifies the portfolio.</param>
-        /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
         /// <returns>Task of DeletedEntityResponse</returns>
-        System.Threading.Tasks.Task<DeletedEntityResponse> DeletePortfolioAsync(string scope, string code, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+        System.Threading.Tasks.Task<DeletedEntityResponse> DeletePortfolioAsync (string scope, string code);
 
         /// <summary>
         /// Delete portfolio
@@ -666,9 +653,8 @@ namespace Lusid.Sdk.Api
         /// <exception cref="Lusid.Sdk.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="scope">The scope of the portfolio.</param>
         /// <param name="code">The code of the portfolio. Together with the scope this uniquely identifies the portfolio.</param>
-        /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
         /// <returns>Task of ApiResponse (DeletedEntityResponse)</returns>
-        System.Threading.Tasks.Task<ApiResponse<DeletedEntityResponse>> DeletePortfolioWithHttpInfoAsync(string scope, string code, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+        System.Threading.Tasks.Task<ApiResponse<DeletedEntityResponse>> DeletePortfolioAsyncWithHttpInfo (string scope, string code);
         /// <summary>
         /// Delete portfolio properties
         /// </summary>
@@ -680,9 +666,8 @@ namespace Lusid.Sdk.Api
         /// <param name="code">The code of the portfolio. Together with the scope this uniquely identifies the portfolio.</param>
         /// <param name="propertyKeys">The property keys of the properties to delete. These must take the format              {domain}/{scope}/{code}, for example &#39;Portfolio/Manager/Id&#39;. Each property must be from the &#39;Portfolio&#39; domain.</param>
         /// <param name="effectiveAt">The effective datetime or cut label at which to delete time-variant properties. (optional)</param>
-        /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
         /// <returns>Task of DeletedEntityResponse</returns>
-        System.Threading.Tasks.Task<DeletedEntityResponse> DeletePortfolioPropertiesAsync(string scope, string code, List<string> propertyKeys, DateTimeOrCutLabel effectiveAt = default(DateTimeOrCutLabel), System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+        System.Threading.Tasks.Task<DeletedEntityResponse> DeletePortfolioPropertiesAsync (string scope, string code, List<string> propertyKeys, DateTimeOrCutLabel effectiveAt = null);
 
         /// <summary>
         /// Delete portfolio properties
@@ -695,9 +680,8 @@ namespace Lusid.Sdk.Api
         /// <param name="code">The code of the portfolio. Together with the scope this uniquely identifies the portfolio.</param>
         /// <param name="propertyKeys">The property keys of the properties to delete. These must take the format              {domain}/{scope}/{code}, for example &#39;Portfolio/Manager/Id&#39;. Each property must be from the &#39;Portfolio&#39; domain.</param>
         /// <param name="effectiveAt">The effective datetime or cut label at which to delete time-variant properties. (optional)</param>
-        /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
         /// <returns>Task of ApiResponse (DeletedEntityResponse)</returns>
-        System.Threading.Tasks.Task<ApiResponse<DeletedEntityResponse>> DeletePortfolioPropertiesWithHttpInfoAsync(string scope, string code, List<string> propertyKeys, DateTimeOrCutLabel effectiveAt = default(DateTimeOrCutLabel), System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+        System.Threading.Tasks.Task<ApiResponse<DeletedEntityResponse>> DeletePortfolioPropertiesAsyncWithHttpInfo (string scope, string code, List<string> propertyKeys, DateTimeOrCutLabel effectiveAt = null);
         /// <summary>
         /// Get portfolio
         /// </summary>
@@ -710,9 +694,8 @@ namespace Lusid.Sdk.Api
         /// <param name="effectiveAt">The effective datetime or cut label at which to retrieve the portfolio definition. Defaults to the current LUSID system datetime if not specified. (optional)</param>
         /// <param name="asAt">The asAt datetime at which to retrieve the portfolio definition. Defaults to returning the latest version of the portfolio definition if not specified. (optional)</param>
         /// <param name="propertyKeys">A list of property keys from the &#39;Portfolio&#39; domain to decorate onto the portfolio.              These must take the format {domain}/{scope}/{code}, for example &#39;Portfolio/Manager/Id&#39;. (optional)</param>
-        /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
         /// <returns>Task of Portfolio</returns>
-        System.Threading.Tasks.Task<Portfolio> GetPortfolioAsync(string scope, string code, DateTimeOrCutLabel effectiveAt = default(DateTimeOrCutLabel), DateTimeOffset? asAt = default(DateTimeOffset?), List<string> propertyKeys = default(List<string>), System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+        System.Threading.Tasks.Task<Portfolio> GetPortfolioAsync (string scope, string code, DateTimeOrCutLabel effectiveAt = null, DateTimeOffset? asAt = null, List<string> propertyKeys = null);
 
         /// <summary>
         /// Get portfolio
@@ -726,9 +709,8 @@ namespace Lusid.Sdk.Api
         /// <param name="effectiveAt">The effective datetime or cut label at which to retrieve the portfolio definition. Defaults to the current LUSID system datetime if not specified. (optional)</param>
         /// <param name="asAt">The asAt datetime at which to retrieve the portfolio definition. Defaults to returning the latest version of the portfolio definition if not specified. (optional)</param>
         /// <param name="propertyKeys">A list of property keys from the &#39;Portfolio&#39; domain to decorate onto the portfolio.              These must take the format {domain}/{scope}/{code}, for example &#39;Portfolio/Manager/Id&#39;. (optional)</param>
-        /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
         /// <returns>Task of ApiResponse (Portfolio)</returns>
-        System.Threading.Tasks.Task<ApiResponse<Portfolio>> GetPortfolioWithHttpInfoAsync(string scope, string code, DateTimeOrCutLabel effectiveAt = default(DateTimeOrCutLabel), DateTimeOffset? asAt = default(DateTimeOffset?), List<string> propertyKeys = default(List<string>), System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+        System.Threading.Tasks.Task<ApiResponse<Portfolio>> GetPortfolioAsyncWithHttpInfo (string scope, string code, DateTimeOrCutLabel effectiveAt = null, DateTimeOffset? asAt = null, List<string> propertyKeys = null);
         /// <summary>
         /// [EXPERIMENTAL] Aggregate Returns
         /// </summary>
@@ -749,9 +731,8 @@ namespace Lusid.Sdk.Api
         /// <param name="outputFrequency">The type of calculated output: Daily/Weekly/Monthly/Quarterly/Half-Yearly/Yearly. (optional)</param>
         /// <param name="metrics">The period time to calculate the aggregate return. (optional)</param>
         /// <param name="asAt">The asAt datetime at which to retrieve the Returns. Defaults to the latest. (optional)</param>
-        /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
         /// <returns>Task of ResourceListOfAggregatedReturn</returns>
-        System.Threading.Tasks.Task<ResourceListOfAggregatedReturn> GetPortfolioAggregateReturnsAsync(string scope, string code, string returnScope, string returnCode, string recipeIdScope = default(string), string recipeIdCode = default(string), DateTimeOrCutLabel fromEffectiveAt = default(DateTimeOrCutLabel), DateTimeOrCutLabel toEffectiveAt = default(DateTimeOrCutLabel), string compositeMethod = default(string), string period = default(string), string outputFrequency = default(string), List<string> metrics = default(List<string>), DateTimeOffset? asAt = default(DateTimeOffset?), System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+        System.Threading.Tasks.Task<ResourceListOfAggregatedReturn> GetPortfolioAggregateReturnsAsync (string scope, string code, string returnScope, string returnCode, string recipeIdScope = null, string recipeIdCode = null, DateTimeOrCutLabel fromEffectiveAt = null, DateTimeOrCutLabel toEffectiveAt = null, string compositeMethod = null, string period = null, string outputFrequency = null, List<string> metrics = null, DateTimeOffset? asAt = null);
 
         /// <summary>
         /// [EXPERIMENTAL] Aggregate Returns
@@ -773,9 +754,8 @@ namespace Lusid.Sdk.Api
         /// <param name="outputFrequency">The type of calculated output: Daily/Weekly/Monthly/Quarterly/Half-Yearly/Yearly. (optional)</param>
         /// <param name="metrics">The period time to calculate the aggregate return. (optional)</param>
         /// <param name="asAt">The asAt datetime at which to retrieve the Returns. Defaults to the latest. (optional)</param>
-        /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
         /// <returns>Task of ApiResponse (ResourceListOfAggregatedReturn)</returns>
-        System.Threading.Tasks.Task<ApiResponse<ResourceListOfAggregatedReturn>> GetPortfolioAggregateReturnsWithHttpInfoAsync(string scope, string code, string returnScope, string returnCode, string recipeIdScope = default(string), string recipeIdCode = default(string), DateTimeOrCutLabel fromEffectiveAt = default(DateTimeOrCutLabel), DateTimeOrCutLabel toEffectiveAt = default(DateTimeOrCutLabel), string compositeMethod = default(string), string period = default(string), string outputFrequency = default(string), List<string> metrics = default(List<string>), DateTimeOffset? asAt = default(DateTimeOffset?), System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+        System.Threading.Tasks.Task<ApiResponse<ResourceListOfAggregatedReturn>> GetPortfolioAggregateReturnsAsyncWithHttpInfo (string scope, string code, string returnScope, string returnCode, string recipeIdScope = null, string recipeIdCode = null, DateTimeOrCutLabel fromEffectiveAt = null, DateTimeOrCutLabel toEffectiveAt = null, string compositeMethod = null, string period = null, string outputFrequency = null, List<string> metrics = null, DateTimeOffset? asAt = null);
         /// <summary>
         /// [EARLY ACCESS] Get portfolio commands
         /// </summary>
@@ -790,9 +770,8 @@ namespace Lusid.Sdk.Api
         /// <param name="filter">Expression to filter the results.              For example, to filter on the User ID, specify \&quot;userId.id eq &#39;string&#39;\&quot;.              For more information about filtering, see https://support.lusid.com/knowledgebase/article/KA-01914. (optional)</param>
         /// <param name="page">The pagination token to use to continue listing commands; this value is returned from the previous call. (optional)</param>
         /// <param name="limit">When paginating, limit the results to this number. Defaults to 500 if not specified. (optional)</param>
-        /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
         /// <returns>Task of ResourceListOfProcessedCommand</returns>
-        System.Threading.Tasks.Task<ResourceListOfProcessedCommand> GetPortfolioCommandsAsync(string scope, string code, DateTimeOffset? fromAsAt = default(DateTimeOffset?), DateTimeOffset? toAsAt = default(DateTimeOffset?), string filter = default(string), string page = default(string), int? limit = default(int?), System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+        System.Threading.Tasks.Task<ResourceListOfProcessedCommand> GetPortfolioCommandsAsync (string scope, string code, DateTimeOffset? fromAsAt = null, DateTimeOffset? toAsAt = null, string filter = null, string page = null, int? limit = null);
 
         /// <summary>
         /// [EARLY ACCESS] Get portfolio commands
@@ -808,9 +787,8 @@ namespace Lusid.Sdk.Api
         /// <param name="filter">Expression to filter the results.              For example, to filter on the User ID, specify \&quot;userId.id eq &#39;string&#39;\&quot;.              For more information about filtering, see https://support.lusid.com/knowledgebase/article/KA-01914. (optional)</param>
         /// <param name="page">The pagination token to use to continue listing commands; this value is returned from the previous call. (optional)</param>
         /// <param name="limit">When paginating, limit the results to this number. Defaults to 500 if not specified. (optional)</param>
-        /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
         /// <returns>Task of ApiResponse (ResourceListOfProcessedCommand)</returns>
-        System.Threading.Tasks.Task<ApiResponse<ResourceListOfProcessedCommand>> GetPortfolioCommandsWithHttpInfoAsync(string scope, string code, DateTimeOffset? fromAsAt = default(DateTimeOffset?), DateTimeOffset? toAsAt = default(DateTimeOffset?), string filter = default(string), string page = default(string), int? limit = default(int?), System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+        System.Threading.Tasks.Task<ApiResponse<ResourceListOfProcessedCommand>> GetPortfolioCommandsAsyncWithHttpInfo (string scope, string code, DateTimeOffset? fromAsAt = null, DateTimeOffset? toAsAt = null, string filter = null, string page = null, int? limit = null);
         /// <summary>
         /// [EXPERIMENTAL] Get access metadata rules for a portfolio
         /// </summary>
@@ -822,9 +800,8 @@ namespace Lusid.Sdk.Api
         /// <param name="code">Portfolio code</param>
         /// <param name="effectiveAt">The effectiveAt datetime at which to retrieve the access metadata rule. (optional)</param>
         /// <param name="asAt">The asAt datetime at which to retrieve the portfolio access metadata. (optional)</param>
-        /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
         /// <returns>Task of Dictionary&lt;string, List&lt;AccessMetadataValue&gt;&gt;</returns>
-        System.Threading.Tasks.Task<Dictionary<string, List<AccessMetadataValue>>> GetPortfolioMetadataAsync(string scope, string code, string effectiveAt = default(string), DateTimeOffset? asAt = default(DateTimeOffset?), System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+        System.Threading.Tasks.Task<Dictionary<string, List<AccessMetadataValue>>> GetPortfolioMetadataAsync (string scope, string code, string effectiveAt = null, DateTimeOffset? asAt = null);
 
         /// <summary>
         /// [EXPERIMENTAL] Get access metadata rules for a portfolio
@@ -837,9 +814,8 @@ namespace Lusid.Sdk.Api
         /// <param name="code">Portfolio code</param>
         /// <param name="effectiveAt">The effectiveAt datetime at which to retrieve the access metadata rule. (optional)</param>
         /// <param name="asAt">The asAt datetime at which to retrieve the portfolio access metadata. (optional)</param>
-        /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
         /// <returns>Task of ApiResponse (Dictionary&lt;string, List&lt;AccessMetadataValue&gt;&gt;)</returns>
-        System.Threading.Tasks.Task<ApiResponse<Dictionary<string, List<AccessMetadataValue>>>> GetPortfolioMetadataWithHttpInfoAsync(string scope, string code, string effectiveAt = default(string), DateTimeOffset? asAt = default(DateTimeOffset?), System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+        System.Threading.Tasks.Task<ApiResponse<Dictionary<string, List<AccessMetadataValue>>>> GetPortfolioMetadataAsyncWithHttpInfo (string scope, string code, string effectiveAt = null, DateTimeOffset? asAt = null);
         /// <summary>
         /// Get portfolio properties
         /// </summary>
@@ -851,9 +827,8 @@ namespace Lusid.Sdk.Api
         /// <param name="code">The code of the portfolio. Together with the scope this uniquely identifies the portfolio.</param>
         /// <param name="effectiveAt">The effective datetime or cut label at which to list the portfolio&#39;s properties. Defaults to the current LUSID system datetime if not specified. (optional)</param>
         /// <param name="asAt">The asAt datetime at which to list the portfolio&#39;s properties. Defaults to returning the latest version of each property if not specified. (optional)</param>
-        /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
         /// <returns>Task of PortfolioProperties</returns>
-        System.Threading.Tasks.Task<PortfolioProperties> GetPortfolioPropertiesAsync(string scope, string code, DateTimeOrCutLabel effectiveAt = default(DateTimeOrCutLabel), DateTimeOffset? asAt = default(DateTimeOffset?), System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+        System.Threading.Tasks.Task<PortfolioProperties> GetPortfolioPropertiesAsync (string scope, string code, DateTimeOrCutLabel effectiveAt = null, DateTimeOffset? asAt = null);
 
         /// <summary>
         /// Get portfolio properties
@@ -866,9 +841,8 @@ namespace Lusid.Sdk.Api
         /// <param name="code">The code of the portfolio. Together with the scope this uniquely identifies the portfolio.</param>
         /// <param name="effectiveAt">The effective datetime or cut label at which to list the portfolio&#39;s properties. Defaults to the current LUSID system datetime if not specified. (optional)</param>
         /// <param name="asAt">The asAt datetime at which to list the portfolio&#39;s properties. Defaults to returning the latest version of each property if not specified. (optional)</param>
-        /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
         /// <returns>Task of ApiResponse (PortfolioProperties)</returns>
-        System.Threading.Tasks.Task<ApiResponse<PortfolioProperties>> GetPortfolioPropertiesWithHttpInfoAsync(string scope, string code, DateTimeOrCutLabel effectiveAt = default(DateTimeOrCutLabel), DateTimeOffset? asAt = default(DateTimeOffset?), System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+        System.Threading.Tasks.Task<ApiResponse<PortfolioProperties>> GetPortfolioPropertiesAsyncWithHttpInfo (string scope, string code, DateTimeOrCutLabel effectiveAt = null, DateTimeOffset? asAt = null);
         /// <summary>
         /// [EXPERIMENTAL] Get portfolio property time series
         /// </summary>
@@ -884,9 +858,8 @@ namespace Lusid.Sdk.Api
         /// <param name="filter">Expression to filter the results. For more information about filtering,              see https://support.lusid.com/knowledgebase/article/KA-01914. (optional)</param>
         /// <param name="page">The pagination token to use to continue listing properties; this value is returned from              the previous call. If a pagination token is provided, the filter, portfolioEffectiveAt, and asAt fields              must not have changed since the original request. (optional)</param>
         /// <param name="limit">When paginating, limit the results to this number. (optional)</param>
-        /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
         /// <returns>Task of ResourceListOfPropertyInterval</returns>
-        System.Threading.Tasks.Task<ResourceListOfPropertyInterval> GetPortfolioPropertyTimeSeriesAsync(string scope, string code, string propertyKey = default(string), string portfolioEffectiveAt = default(string), DateTimeOffset? asAt = default(DateTimeOffset?), string filter = default(string), string page = default(string), int? limit = default(int?), System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+        System.Threading.Tasks.Task<ResourceListOfPropertyInterval> GetPortfolioPropertyTimeSeriesAsync (string scope, string code, string propertyKey = null, string portfolioEffectiveAt = null, DateTimeOffset? asAt = null, string filter = null, string page = null, int? limit = null);
 
         /// <summary>
         /// [EXPERIMENTAL] Get portfolio property time series
@@ -903,9 +876,8 @@ namespace Lusid.Sdk.Api
         /// <param name="filter">Expression to filter the results. For more information about filtering,              see https://support.lusid.com/knowledgebase/article/KA-01914. (optional)</param>
         /// <param name="page">The pagination token to use to continue listing properties; this value is returned from              the previous call. If a pagination token is provided, the filter, portfolioEffectiveAt, and asAt fields              must not have changed since the original request. (optional)</param>
         /// <param name="limit">When paginating, limit the results to this number. (optional)</param>
-        /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
         /// <returns>Task of ApiResponse (ResourceListOfPropertyInterval)</returns>
-        System.Threading.Tasks.Task<ApiResponse<ResourceListOfPropertyInterval>> GetPortfolioPropertyTimeSeriesWithHttpInfoAsync(string scope, string code, string propertyKey = default(string), string portfolioEffectiveAt = default(string), DateTimeOffset? asAt = default(DateTimeOffset?), string filter = default(string), string page = default(string), int? limit = default(int?), System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+        System.Threading.Tasks.Task<ApiResponse<ResourceListOfPropertyInterval>> GetPortfolioPropertyTimeSeriesAsyncWithHttpInfo (string scope, string code, string propertyKey = null, string portfolioEffectiveAt = null, DateTimeOffset? asAt = null, string filter = null, string page = null, int? limit = null);
         /// <summary>
         /// [EXPERIMENTAL] Get portfolio relations
         /// </summary>
@@ -919,9 +891,8 @@ namespace Lusid.Sdk.Api
         /// <param name="asAt">The asAt datetime at which to retrieve relations. Defaults to returning the latest LUSID AsAt time if not specified. (optional)</param>
         /// <param name="filter">Expression to filter the relations. Provide a null or empty string for this field until further notice. (optional)</param>
         /// <param name="identifierTypes">Identifier types (as property keys) used for referencing Persons or Legal Entities.              These must be from the &#39;Person&#39; or &#39;LegalEntity&#39; domains and have the format {domain}/{scope}/{code}, for example              &#39;Person/CompanyDetails/Role&#39;. Only identifier types provided will be used to look up relevant entities in relations. If not applicable, provide an empty array. (optional)</param>
-        /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
         /// <returns>Task of ResourceListOfRelation</returns>
-        System.Threading.Tasks.Task<ResourceListOfRelation> GetPortfolioRelationsAsync(string scope, string code, DateTimeOrCutLabel effectiveAt = default(DateTimeOrCutLabel), DateTimeOffset? asAt = default(DateTimeOffset?), string filter = default(string), List<string> identifierTypes = default(List<string>), System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+        System.Threading.Tasks.Task<ResourceListOfRelation> GetPortfolioRelationsAsync (string scope, string code, DateTimeOrCutLabel effectiveAt = null, DateTimeOffset? asAt = null, string filter = null, List<string> identifierTypes = null);
 
         /// <summary>
         /// [EXPERIMENTAL] Get portfolio relations
@@ -936,9 +907,8 @@ namespace Lusid.Sdk.Api
         /// <param name="asAt">The asAt datetime at which to retrieve relations. Defaults to returning the latest LUSID AsAt time if not specified. (optional)</param>
         /// <param name="filter">Expression to filter the relations. Provide a null or empty string for this field until further notice. (optional)</param>
         /// <param name="identifierTypes">Identifier types (as property keys) used for referencing Persons or Legal Entities.              These must be from the &#39;Person&#39; or &#39;LegalEntity&#39; domains and have the format {domain}/{scope}/{code}, for example              &#39;Person/CompanyDetails/Role&#39;. Only identifier types provided will be used to look up relevant entities in relations. If not applicable, provide an empty array. (optional)</param>
-        /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
         /// <returns>Task of ApiResponse (ResourceListOfRelation)</returns>
-        System.Threading.Tasks.Task<ApiResponse<ResourceListOfRelation>> GetPortfolioRelationsWithHttpInfoAsync(string scope, string code, DateTimeOrCutLabel effectiveAt = default(DateTimeOrCutLabel), DateTimeOffset? asAt = default(DateTimeOffset?), string filter = default(string), List<string> identifierTypes = default(List<string>), System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+        System.Threading.Tasks.Task<ApiResponse<ResourceListOfRelation>> GetPortfolioRelationsAsyncWithHttpInfo (string scope, string code, DateTimeOrCutLabel effectiveAt = null, DateTimeOffset? asAt = null, string filter = null, List<string> identifierTypes = null);
         /// <summary>
         /// [EXPERIMENTAL] Get portfolio relationships
         /// </summary>
@@ -952,9 +922,8 @@ namespace Lusid.Sdk.Api
         /// <param name="asAt">The asAt datetime at which to retrieve relationships. Defaults to returning the latest LUSID AsAt time if not specified. (optional)</param>
         /// <param name="filter">Expression to filter the relationships. Provide a null or empty string for this field until further notice. (optional)</param>
         /// <param name="identifierTypes">Identifier types (as property keys) used for referencing Persons or Legal Entities.              These must be from the &#39;Person&#39; or &#39;LegalEntity&#39; domains and have the format {domain}/{scope}/{code}, for example              &#39;Person/CompanyDetails/Role&#39;. Only identifier types provided will be used to look up relevant entities in relationships. If not applicable, provide an empty array. (optional)</param>
-        /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
         /// <returns>Task of ResourceListOfRelationship</returns>
-        System.Threading.Tasks.Task<ResourceListOfRelationship> GetPortfolioRelationshipsAsync(string scope, string code, DateTimeOrCutLabel effectiveAt = default(DateTimeOrCutLabel), DateTimeOffset? asAt = default(DateTimeOffset?), string filter = default(string), List<string> identifierTypes = default(List<string>), System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+        System.Threading.Tasks.Task<ResourceListOfRelationship> GetPortfolioRelationshipsAsync (string scope, string code, DateTimeOrCutLabel effectiveAt = null, DateTimeOffset? asAt = null, string filter = null, List<string> identifierTypes = null);
 
         /// <summary>
         /// [EXPERIMENTAL] Get portfolio relationships
@@ -969,9 +938,8 @@ namespace Lusid.Sdk.Api
         /// <param name="asAt">The asAt datetime at which to retrieve relationships. Defaults to returning the latest LUSID AsAt time if not specified. (optional)</param>
         /// <param name="filter">Expression to filter the relationships. Provide a null or empty string for this field until further notice. (optional)</param>
         /// <param name="identifierTypes">Identifier types (as property keys) used for referencing Persons or Legal Entities.              These must be from the &#39;Person&#39; or &#39;LegalEntity&#39; domains and have the format {domain}/{scope}/{code}, for example              &#39;Person/CompanyDetails/Role&#39;. Only identifier types provided will be used to look up relevant entities in relationships. If not applicable, provide an empty array. (optional)</param>
-        /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
         /// <returns>Task of ApiResponse (ResourceListOfRelationship)</returns>
-        System.Threading.Tasks.Task<ApiResponse<ResourceListOfRelationship>> GetPortfolioRelationshipsWithHttpInfoAsync(string scope, string code, DateTimeOrCutLabel effectiveAt = default(DateTimeOrCutLabel), DateTimeOffset? asAt = default(DateTimeOffset?), string filter = default(string), List<string> identifierTypes = default(List<string>), System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+        System.Threading.Tasks.Task<ApiResponse<ResourceListOfRelationship>> GetPortfolioRelationshipsAsyncWithHttpInfo (string scope, string code, DateTimeOrCutLabel effectiveAt = null, DateTimeOffset? asAt = null, string filter = null, List<string> identifierTypes = null);
         /// <summary>
         /// [EXPERIMENTAL] Get Returns
         /// </summary>
@@ -987,9 +955,8 @@ namespace Lusid.Sdk.Api
         /// <param name="toEffectiveAt">The end date from which to delete the Returns (optional)</param>
         /// <param name="period">Show the Returns on a Daily or Monthly period. (optional)</param>
         /// <param name="asAt">The asAt datetime at which to retrieve the Returns. Defaults to the latest. (optional)</param>
-        /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
         /// <returns>Task of ResourceListOfPerformanceReturn</returns>
-        System.Threading.Tasks.Task<ResourceListOfPerformanceReturn> GetPortfolioReturnsAsync(string scope, string code, string returnScope, string returnCode, DateTimeOrCutLabel fromEffectiveAt = default(DateTimeOrCutLabel), DateTimeOrCutLabel toEffectiveAt = default(DateTimeOrCutLabel), string period = default(string), DateTimeOffset? asAt = default(DateTimeOffset?), System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+        System.Threading.Tasks.Task<ResourceListOfPerformanceReturn> GetPortfolioReturnsAsync (string scope, string code, string returnScope, string returnCode, DateTimeOrCutLabel fromEffectiveAt = null, DateTimeOrCutLabel toEffectiveAt = null, string period = null, DateTimeOffset? asAt = null);
 
         /// <summary>
         /// [EXPERIMENTAL] Get Returns
@@ -1006,9 +973,8 @@ namespace Lusid.Sdk.Api
         /// <param name="toEffectiveAt">The end date from which to delete the Returns (optional)</param>
         /// <param name="period">Show the Returns on a Daily or Monthly period. (optional)</param>
         /// <param name="asAt">The asAt datetime at which to retrieve the Returns. Defaults to the latest. (optional)</param>
-        /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
         /// <returns>Task of ApiResponse (ResourceListOfPerformanceReturn)</returns>
-        System.Threading.Tasks.Task<ApiResponse<ResourceListOfPerformanceReturn>> GetPortfolioReturnsWithHttpInfoAsync(string scope, string code, string returnScope, string returnCode, DateTimeOrCutLabel fromEffectiveAt = default(DateTimeOrCutLabel), DateTimeOrCutLabel toEffectiveAt = default(DateTimeOrCutLabel), string period = default(string), DateTimeOffset? asAt = default(DateTimeOffset?), System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+        System.Threading.Tasks.Task<ApiResponse<ResourceListOfPerformanceReturn>> GetPortfolioReturnsAsyncWithHttpInfo (string scope, string code, string returnScope, string returnCode, DateTimeOrCutLabel fromEffectiveAt = null, DateTimeOrCutLabel toEffectiveAt = null, string period = null, DateTimeOffset? asAt = null);
         /// <summary>
         /// [EXPERIMENTAL] Get an entry identified by a metadataKey in the access metadata object
         /// </summary>
@@ -1021,9 +987,8 @@ namespace Lusid.Sdk.Api
         /// <param name="metadataKey">Key of the metadata to retrieve</param>
         /// <param name="effectiveAt">The effective date of the rule (optional)</param>
         /// <param name="asAt">The asAt datetime at which to retrieve the portfolio access metadata. (optional)</param>
-        /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
         /// <returns>Task of ICollection&lt;AccessMetadataValue&gt;</returns>
-        System.Threading.Tasks.Task<ICollection<AccessMetadataValue>> GetPortfoliosAccessMetadataByKeyAsync(string scope, string code, string metadataKey, DateTimeOrCutLabel effectiveAt = default(DateTimeOrCutLabel), DateTimeOffset? asAt = default(DateTimeOffset?), System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+        System.Threading.Tasks.Task<ICollection<AccessMetadataValue>> GetPortfoliosAccessMetadataByKeyAsync (string scope, string code, string metadataKey, DateTimeOrCutLabel effectiveAt = null, DateTimeOffset? asAt = null);
 
         /// <summary>
         /// [EXPERIMENTAL] Get an entry identified by a metadataKey in the access metadata object
@@ -1037,9 +1002,8 @@ namespace Lusid.Sdk.Api
         /// <param name="metadataKey">Key of the metadata to retrieve</param>
         /// <param name="effectiveAt">The effective date of the rule (optional)</param>
         /// <param name="asAt">The asAt datetime at which to retrieve the portfolio access metadata. (optional)</param>
-        /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
         /// <returns>Task of ApiResponse (ICollection&lt;AccessMetadataValue&gt;)</returns>
-        System.Threading.Tasks.Task<ApiResponse<ICollection<AccessMetadataValue>>> GetPortfoliosAccessMetadataByKeyWithHttpInfoAsync(string scope, string code, string metadataKey, DateTimeOrCutLabel effectiveAt = default(DateTimeOrCutLabel), DateTimeOffset? asAt = default(DateTimeOffset?), System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+        System.Threading.Tasks.Task<ApiResponse<ICollection<AccessMetadataValue>>> GetPortfoliosAccessMetadataByKeyAsyncWithHttpInfo (string scope, string code, string metadataKey, DateTimeOrCutLabel effectiveAt = null, DateTimeOffset? asAt = null);
         /// <summary>
         /// List portfolios
         /// </summary>
@@ -1055,9 +1019,8 @@ namespace Lusid.Sdk.Api
         /// <param name="filter">Expression to filter the results.              For example, to filter on the transaction type, specify \&quot;type eq &#39;Transaction&#39;\&quot;. For more information about filtering              results, see https://support.lusid.com/knowledgebase/article/KA-01914. (optional)</param>
         /// <param name="query">Expression specifying the criteria that the returned portfolios must meet. For example, to see which              portfolios have holdings in instruments with a LusidInstrumentId (LUID) of &#39;LUID_PPA8HI6M&#39; or a Figi of &#39;BBG000BLNNH6&#39;,              specify \&quot;instrument.identifiers in ((&#39;LusidInstrumentId&#39;, &#39;LUID_PPA8HI6M&#39;), (&#39;Figi&#39;, &#39;BBG000BLNNH6&#39;))\&quot;. (optional)</param>
         /// <param name="propertyKeys">A list of property keys from the &#39;Portfolio&#39; domain to decorate onto each portfolio.              These must take the format {domain}/{scope}/{code}, for example &#39;Portfolio/Manager/Id&#39;. (optional)</param>
-        /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
         /// <returns>Task of ResourceListOfPortfolio</returns>
-        System.Threading.Tasks.Task<ResourceListOfPortfolio> ListPortfoliosAsync(DateTimeOrCutLabel effectiveAt = default(DateTimeOrCutLabel), DateTimeOffset? asAt = default(DateTimeOffset?), string page = default(string), int? start = default(int?), int? limit = default(int?), string filter = default(string), string query = default(string), List<string> propertyKeys = default(List<string>), System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+        System.Threading.Tasks.Task<ResourceListOfPortfolio> ListPortfoliosAsync (DateTimeOrCutLabel effectiveAt = null, DateTimeOffset? asAt = null, string page = null, int? start = null, int? limit = null, string filter = null, string query = null, List<string> propertyKeys = null);
 
         /// <summary>
         /// List portfolios
@@ -1074,9 +1037,8 @@ namespace Lusid.Sdk.Api
         /// <param name="filter">Expression to filter the results.              For example, to filter on the transaction type, specify \&quot;type eq &#39;Transaction&#39;\&quot;. For more information about filtering              results, see https://support.lusid.com/knowledgebase/article/KA-01914. (optional)</param>
         /// <param name="query">Expression specifying the criteria that the returned portfolios must meet. For example, to see which              portfolios have holdings in instruments with a LusidInstrumentId (LUID) of &#39;LUID_PPA8HI6M&#39; or a Figi of &#39;BBG000BLNNH6&#39;,              specify \&quot;instrument.identifiers in ((&#39;LusidInstrumentId&#39;, &#39;LUID_PPA8HI6M&#39;), (&#39;Figi&#39;, &#39;BBG000BLNNH6&#39;))\&quot;. (optional)</param>
         /// <param name="propertyKeys">A list of property keys from the &#39;Portfolio&#39; domain to decorate onto each portfolio.              These must take the format {domain}/{scope}/{code}, for example &#39;Portfolio/Manager/Id&#39;. (optional)</param>
-        /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
         /// <returns>Task of ApiResponse (ResourceListOfPortfolio)</returns>
-        System.Threading.Tasks.Task<ApiResponse<ResourceListOfPortfolio>> ListPortfoliosWithHttpInfoAsync(DateTimeOrCutLabel effectiveAt = default(DateTimeOrCutLabel), DateTimeOffset? asAt = default(DateTimeOffset?), string page = default(string), int? start = default(int?), int? limit = default(int?), string filter = default(string), string query = default(string), List<string> propertyKeys = default(List<string>), System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+        System.Threading.Tasks.Task<ApiResponse<ResourceListOfPortfolio>> ListPortfoliosAsyncWithHttpInfo (DateTimeOrCutLabel effectiveAt = null, DateTimeOffset? asAt = null, string page = null, int? start = null, int? limit = null, string filter = null, string query = null, List<string> propertyKeys = null);
         /// <summary>
         /// List portfolios for scope
         /// </summary>
@@ -1092,9 +1054,8 @@ namespace Lusid.Sdk.Api
         /// <param name="limit">When paginating, limit the results to this number. Defaults to 65,535 if not specified. (optional)</param>
         /// <param name="filter">Expression to filter the results.              For example, to return only transactions with a transaction type of &#39;Buy&#39;, specify \&quot;type eq &#39;Buy&#39;\&quot;.              For more information about filtering results, see https://support.lusid.com/knowledgebase/article/KA-01914. (optional)</param>
         /// <param name="propertyKeys">A list of property keys from the &#39;Portfolio&#39; domain to decorate onto each portfolio.              These must take the format {domain}/{scope}/{code}, for example &#39;Portfolio/Manager/Id&#39;. (optional)</param>
-        /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
         /// <returns>Task of ResourceListOfPortfolio</returns>
-        System.Threading.Tasks.Task<ResourceListOfPortfolio> ListPortfoliosForScopeAsync(string scope, DateTimeOrCutLabel effectiveAt = default(DateTimeOrCutLabel), DateTimeOffset? asAt = default(DateTimeOffset?), string page = default(string), int? start = default(int?), int? limit = default(int?), string filter = default(string), List<string> propertyKeys = default(List<string>), System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+        System.Threading.Tasks.Task<ResourceListOfPortfolio> ListPortfoliosForScopeAsync (string scope, DateTimeOrCutLabel effectiveAt = null, DateTimeOffset? asAt = null, string page = null, int? start = null, int? limit = null, string filter = null, List<string> propertyKeys = null);
 
         /// <summary>
         /// List portfolios for scope
@@ -1111,9 +1072,8 @@ namespace Lusid.Sdk.Api
         /// <param name="limit">When paginating, limit the results to this number. Defaults to 65,535 if not specified. (optional)</param>
         /// <param name="filter">Expression to filter the results.              For example, to return only transactions with a transaction type of &#39;Buy&#39;, specify \&quot;type eq &#39;Buy&#39;\&quot;.              For more information about filtering results, see https://support.lusid.com/knowledgebase/article/KA-01914. (optional)</param>
         /// <param name="propertyKeys">A list of property keys from the &#39;Portfolio&#39; domain to decorate onto each portfolio.              These must take the format {domain}/{scope}/{code}, for example &#39;Portfolio/Manager/Id&#39;. (optional)</param>
-        /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
         /// <returns>Task of ApiResponse (ResourceListOfPortfolio)</returns>
-        System.Threading.Tasks.Task<ApiResponse<ResourceListOfPortfolio>> ListPortfoliosForScopeWithHttpInfoAsync(string scope, DateTimeOrCutLabel effectiveAt = default(DateTimeOrCutLabel), DateTimeOffset? asAt = default(DateTimeOffset?), string page = default(string), int? start = default(int?), int? limit = default(int?), string filter = default(string), List<string> propertyKeys = default(List<string>), System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+        System.Threading.Tasks.Task<ApiResponse<ResourceListOfPortfolio>> ListPortfoliosForScopeAsyncWithHttpInfo (string scope, DateTimeOrCutLabel effectiveAt = null, DateTimeOffset? asAt = null, string page = null, int? start = null, int? limit = null, string filter = null, List<string> propertyKeys = null);
         /// <summary>
         /// Update portfolio
         /// </summary>
@@ -1125,9 +1085,8 @@ namespace Lusid.Sdk.Api
         /// <param name="code">The code of the portfolio. Together with the scope this uniquely identifies the portfolio.</param>
         /// <param name="updatePortfolioRequest">The updated portfolio definition.</param>
         /// <param name="effectiveAt">The effective datetime or cut label at which to update the definition. Defaults to the current               LUSID system datetime if not specified. (optional)</param>
-        /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
         /// <returns>Task of Portfolio</returns>
-        System.Threading.Tasks.Task<Portfolio> UpdatePortfolioAsync(string scope, string code, UpdatePortfolioRequest updatePortfolioRequest, DateTimeOrCutLabel effectiveAt = default(DateTimeOrCutLabel), System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+        System.Threading.Tasks.Task<Portfolio> UpdatePortfolioAsync (string scope, string code, UpdatePortfolioRequest updatePortfolioRequest, DateTimeOrCutLabel effectiveAt = null);
 
         /// <summary>
         /// Update portfolio
@@ -1140,9 +1099,8 @@ namespace Lusid.Sdk.Api
         /// <param name="code">The code of the portfolio. Together with the scope this uniquely identifies the portfolio.</param>
         /// <param name="updatePortfolioRequest">The updated portfolio definition.</param>
         /// <param name="effectiveAt">The effective datetime or cut label at which to update the definition. Defaults to the current               LUSID system datetime if not specified. (optional)</param>
-        /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
         /// <returns>Task of ApiResponse (Portfolio)</returns>
-        System.Threading.Tasks.Task<ApiResponse<Portfolio>> UpdatePortfolioWithHttpInfoAsync(string scope, string code, UpdatePortfolioRequest updatePortfolioRequest, DateTimeOrCutLabel effectiveAt = default(DateTimeOrCutLabel), System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+        System.Threading.Tasks.Task<ApiResponse<Portfolio>> UpdatePortfolioAsyncWithHttpInfo (string scope, string code, UpdatePortfolioRequest updatePortfolioRequest, DateTimeOrCutLabel effectiveAt = null);
         /// <summary>
         /// [EXPERIMENTAL] Upsert a Portfolio Access Metadata Rule associated with specific metadataKey. This creates or updates the data in LUSID.
         /// </summary>
@@ -1155,9 +1113,8 @@ namespace Lusid.Sdk.Api
         /// <param name="metadataKey">Key of the access metadata to upsert</param>
         /// <param name="upsertPortfolioAccessMetadataRequest">The Portfolio Access Metadata Rule to update or insert</param>
         /// <param name="effectiveAt">The date this rule will effective from (optional)</param>
-        /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
         /// <returns>Task of ResourceListOfAccessMetadataValueOf</returns>
-        System.Threading.Tasks.Task<ResourceListOfAccessMetadataValueOf> UpsertPortfolioAccessMetadataAsync(string scope, string code, string metadataKey, UpsertPortfolioAccessMetadataRequest upsertPortfolioAccessMetadataRequest, DateTimeOrCutLabel effectiveAt = default(DateTimeOrCutLabel), System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+        System.Threading.Tasks.Task<ResourceListOfAccessMetadataValueOf> UpsertPortfolioAccessMetadataAsync (string scope, string code, string metadataKey, UpsertPortfolioAccessMetadataRequest upsertPortfolioAccessMetadataRequest, DateTimeOrCutLabel effectiveAt = null);
 
         /// <summary>
         /// [EXPERIMENTAL] Upsert a Portfolio Access Metadata Rule associated with specific metadataKey. This creates or updates the data in LUSID.
@@ -1171,9 +1128,8 @@ namespace Lusid.Sdk.Api
         /// <param name="metadataKey">Key of the access metadata to upsert</param>
         /// <param name="upsertPortfolioAccessMetadataRequest">The Portfolio Access Metadata Rule to update or insert</param>
         /// <param name="effectiveAt">The date this rule will effective from (optional)</param>
-        /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
         /// <returns>Task of ApiResponse (ResourceListOfAccessMetadataValueOf)</returns>
-        System.Threading.Tasks.Task<ApiResponse<ResourceListOfAccessMetadataValueOf>> UpsertPortfolioAccessMetadataWithHttpInfoAsync(string scope, string code, string metadataKey, UpsertPortfolioAccessMetadataRequest upsertPortfolioAccessMetadataRequest, DateTimeOrCutLabel effectiveAt = default(DateTimeOrCutLabel), System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+        System.Threading.Tasks.Task<ApiResponse<ResourceListOfAccessMetadataValueOf>> UpsertPortfolioAccessMetadataAsyncWithHttpInfo (string scope, string code, string metadataKey, UpsertPortfolioAccessMetadataRequest upsertPortfolioAccessMetadataRequest, DateTimeOrCutLabel effectiveAt = null);
         /// <summary>
         /// Upsert portfolio properties
         /// </summary>
@@ -1184,9 +1140,8 @@ namespace Lusid.Sdk.Api
         /// <param name="scope">The scope of the portfolio.</param>
         /// <param name="code">The code of the portfolio. Together with the scope this uniquely identifies the portfolio.</param>
         /// <param name="requestBody">The properties to be created or updated. Each property in               the request must be keyed by its unique property key. This has the format {domain}/{scope}/{code}, for example               &#39;Portfolio/Manager/Id&#39;.</param>
-        /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
         /// <returns>Task of PortfolioProperties</returns>
-        System.Threading.Tasks.Task<PortfolioProperties> UpsertPortfolioPropertiesAsync(string scope, string code, Dictionary<string, Property> requestBody, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+        System.Threading.Tasks.Task<PortfolioProperties> UpsertPortfolioPropertiesAsync (string scope, string code, Dictionary<string, Property> requestBody);
 
         /// <summary>
         /// Upsert portfolio properties
@@ -1198,9 +1153,8 @@ namespace Lusid.Sdk.Api
         /// <param name="scope">The scope of the portfolio.</param>
         /// <param name="code">The code of the portfolio. Together with the scope this uniquely identifies the portfolio.</param>
         /// <param name="requestBody">The properties to be created or updated. Each property in               the request must be keyed by its unique property key. This has the format {domain}/{scope}/{code}, for example               &#39;Portfolio/Manager/Id&#39;.</param>
-        /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
         /// <returns>Task of ApiResponse (PortfolioProperties)</returns>
-        System.Threading.Tasks.Task<ApiResponse<PortfolioProperties>> UpsertPortfolioPropertiesWithHttpInfoAsync(string scope, string code, Dictionary<string, Property> requestBody, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+        System.Threading.Tasks.Task<ApiResponse<PortfolioProperties>> UpsertPortfolioPropertiesAsyncWithHttpInfo (string scope, string code, Dictionary<string, Property> requestBody);
         /// <summary>
         /// [EXPERIMENTAL] Upsert Returns
         /// </summary>
@@ -1213,9 +1167,8 @@ namespace Lusid.Sdk.Api
         /// <param name="returnScope">The scope of the Returns.</param>
         /// <param name="returnCode">The code of the Returns.</param>
         /// <param name="performanceReturn">This contains the Returns which need to be upsert.</param>
-        /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
         /// <returns>Task of UpsertReturnsResponse</returns>
-        System.Threading.Tasks.Task<UpsertReturnsResponse> UpsertPortfolioReturnsAsync(string scope, string code, string returnScope, string returnCode, List<PerformanceReturn> performanceReturn, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+        System.Threading.Tasks.Task<UpsertReturnsResponse> UpsertPortfolioReturnsAsync (string scope, string code, string returnScope, string returnCode, List<PerformanceReturn> performanceReturn);
 
         /// <summary>
         /// [EXPERIMENTAL] Upsert Returns
@@ -1229,18 +1182,9 @@ namespace Lusid.Sdk.Api
         /// <param name="returnScope">The scope of the Returns.</param>
         /// <param name="returnCode">The code of the Returns.</param>
         /// <param name="performanceReturn">This contains the Returns which need to be upsert.</param>
-        /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
         /// <returns>Task of ApiResponse (UpsertReturnsResponse)</returns>
-        System.Threading.Tasks.Task<ApiResponse<UpsertReturnsResponse>> UpsertPortfolioReturnsWithHttpInfoAsync(string scope, string code, string returnScope, string returnCode, List<PerformanceReturn> performanceReturn, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+        System.Threading.Tasks.Task<ApiResponse<UpsertReturnsResponse>> UpsertPortfolioReturnsAsyncWithHttpInfo (string scope, string code, string returnScope, string returnCode, List<PerformanceReturn> performanceReturn);
         #endregion Asynchronous Operations
-    }
-
-    /// <summary>
-    /// Represents a collection of functions to interact with the API endpoints
-    /// </summary>
-    public interface IPortfoliosApi : IPortfoliosApiSync, IPortfoliosApiAsync
-    {
-
     }
 
     /// <summary>
@@ -1254,23 +1198,22 @@ namespace Lusid.Sdk.Api
         /// Initializes a new instance of the <see cref="PortfoliosApi"/> class.
         /// </summary>
         /// <returns></returns>
-        public PortfoliosApi() : this((string)null)
+        public PortfoliosApi(String basePath)
         {
+            this.Configuration = new Lusid.Sdk.Client.Configuration { BasePath = basePath };
+
+            ExceptionFactory = Lusid.Sdk.Client.Configuration.DefaultExceptionFactory;
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="PortfoliosApi"/> class.
+        /// Initializes a new instance of the <see cref="PortfoliosApi"/> class
         /// </summary>
         /// <returns></returns>
-        public PortfoliosApi(String basePath)
+        public PortfoliosApi()
         {
-            this.Configuration = Lusid.Sdk.Client.Configuration.MergeConfigurations(
-                Lusid.Sdk.Client.GlobalConfiguration.Instance,
-                new Lusid.Sdk.Client.Configuration { BasePath = basePath }
-            );
-            this.Client = new Lusid.Sdk.Client.ApiClient(this.Configuration.BasePath);
-            this.AsynchronousClient = new Lusid.Sdk.Client.ApiClient(this.Configuration.BasePath);
-            this.ExceptionFactory = Lusid.Sdk.Client.Configuration.DefaultExceptionFactory;
+            this.Configuration = Lusid.Sdk.Client.Configuration.Default;
+
+            ExceptionFactory = Lusid.Sdk.Client.Configuration.DefaultExceptionFactory;
         }
 
         /// <summary>
@@ -1279,47 +1222,15 @@ namespace Lusid.Sdk.Api
         /// </summary>
         /// <param name="configuration">An instance of Configuration</param>
         /// <returns></returns>
-        public PortfoliosApi(Lusid.Sdk.Client.Configuration configuration)
+        public PortfoliosApi(Lusid.Sdk.Client.Configuration configuration = null)
         {
-            if (configuration == null) throw new ArgumentNullException("configuration");
+            if (configuration == null) // use the default one in Configuration
+                this.Configuration = Lusid.Sdk.Client.Configuration.Default;
+            else
+                this.Configuration = configuration;
 
-            this.Configuration = Lusid.Sdk.Client.Configuration.MergeConfigurations(
-                Lusid.Sdk.Client.GlobalConfiguration.Instance,
-                configuration
-            );
-            this.Client = new Lusid.Sdk.Client.ApiClient(this.Configuration.BasePath);
-            this.AsynchronousClient = new Lusid.Sdk.Client.ApiClient(this.Configuration.BasePath);
             ExceptionFactory = Lusid.Sdk.Client.Configuration.DefaultExceptionFactory;
         }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="PortfoliosApi"/> class
-        /// using a Configuration object and client instance.
-        /// </summary>
-        /// <param name="client">The client interface for synchronous API access.</param>
-        /// <param name="asyncClient">The client interface for asynchronous API access.</param>
-        /// <param name="configuration">The configuration object.</param>
-        public PortfoliosApi(Lusid.Sdk.Client.ISynchronousClient client, Lusid.Sdk.Client.IAsynchronousClient asyncClient, Lusid.Sdk.Client.IReadableConfiguration configuration)
-        {
-            if (client == null) throw new ArgumentNullException("client");
-            if (asyncClient == null) throw new ArgumentNullException("asyncClient");
-            if (configuration == null) throw new ArgumentNullException("configuration");
-
-            this.Client = client;
-            this.AsynchronousClient = asyncClient;
-            this.Configuration = configuration;
-            this.ExceptionFactory = Lusid.Sdk.Client.Configuration.DefaultExceptionFactory;
-        }
-
-        /// <summary>
-        /// The client for accessing this underlying API asynchronously.
-        /// </summary>
-        public Lusid.Sdk.Client.IAsynchronousClient AsynchronousClient { get; set; }
-
-        /// <summary>
-        /// The client for accessing this underlying API synchronously.
-        /// </summary>
-        public Lusid.Sdk.Client.ISynchronousClient Client { get; set; }
 
         /// <summary>
         /// Gets the base path of the API client.
@@ -1327,14 +1238,24 @@ namespace Lusid.Sdk.Api
         /// <value>The base path</value>
         public String GetBasePath()
         {
-            return this.Configuration.BasePath;
+            return this.Configuration.ApiClient.RestClient.BaseUrl.ToString();
+        }
+
+        /// <summary>
+        /// Sets the base path of the API client.
+        /// </summary>
+        /// <value>The base path</value>
+        [Obsolete("SetBasePath is deprecated, please do 'Configuration.ApiClient = new ApiClient(\"http://new-path\")' instead.")]
+        public void SetBasePath(String basePath)
+        {
+            // do nothing
         }
 
         /// <summary>
         /// Gets or sets the configuration object
         /// </summary>
         /// <value>An instance of the Configuration</value>
-        public Lusid.Sdk.Client.IReadableConfiguration Configuration { get; set; }
+        public Lusid.Sdk.Client.Configuration Configuration {get; set;}
 
         /// <summary>
         /// Provides a factory method hook for the creation of exceptions.
@@ -1353,6 +1274,28 @@ namespace Lusid.Sdk.Api
         }
 
         /// <summary>
+        /// Gets the default header.
+        /// </summary>
+        /// <returns>Dictionary of HTTP header</returns>
+        [Obsolete("DefaultHeader is deprecated, please use Configuration.DefaultHeader instead.")]
+        public IDictionary<String, String> DefaultHeader()
+        {
+            return new ReadOnlyDictionary<string, string>(this.Configuration.DefaultHeader);
+        }
+
+        /// <summary>
+        /// Add default header.
+        /// </summary>
+        /// <param name="key">Header field name.</param>
+        /// <param name="value">Header field value.</param>
+        /// <returns></returns>
+        [Obsolete("AddDefaultHeader is deprecated, please use Configuration.AddDefaultHeader instead.")]
+        public void AddDefaultHeader(string key, string value)
+        {
+            this.Configuration.AddDefaultHeader(key, value);
+        }
+
+        /// <summary>
         /// [EXPERIMENTAL] Delete a Portfolio Access Metadata Rule Delete the Portfolio Access Metadata Rule that exactly matches the provided identifier parts
         /// </summary>
         /// <exception cref="Lusid.Sdk.Client.ApiException">Thrown when fails to make API call</exception>
@@ -1361,10 +1304,10 @@ namespace Lusid.Sdk.Api
         /// <param name="metadataKey">The metadataKey identifying the access metadata entry to delete</param>
         /// <param name="effectiveAt">The effective date to delete at, if this is not supplied, it will delete all data found (optional)</param>
         /// <returns>DeletedEntityResponse</returns>
-        public DeletedEntityResponse DeleteKeyFromPortfolioAccessMetadata(string scope, string code, string metadataKey, DateTimeOrCutLabel effectiveAt = default(DateTimeOrCutLabel))
+        public DeletedEntityResponse DeleteKeyFromPortfolioAccessMetadata (string scope, string code, string metadataKey, DateTimeOrCutLabel effectiveAt = null)
         {
-            Lusid.Sdk.Client.ApiResponse<DeletedEntityResponse> localVarResponse = DeleteKeyFromPortfolioAccessMetadataWithHttpInfo(scope, code, metadataKey, effectiveAt);
-            return localVarResponse.Data;
+             ApiResponse<DeletedEntityResponse> localVarResponse = DeleteKeyFromPortfolioAccessMetadataWithHttpInfo(scope, code, metadataKey, effectiveAt);
+             return localVarResponse.Data;
         }
 
         /// <summary>
@@ -1376,67 +1319,73 @@ namespace Lusid.Sdk.Api
         /// <param name="metadataKey">The metadataKey identifying the access metadata entry to delete</param>
         /// <param name="effectiveAt">The effective date to delete at, if this is not supplied, it will delete all data found (optional)</param>
         /// <returns>ApiResponse of DeletedEntityResponse</returns>
-        public Lusid.Sdk.Client.ApiResponse<DeletedEntityResponse> DeleteKeyFromPortfolioAccessMetadataWithHttpInfo(string scope, string code, string metadataKey, DateTimeOrCutLabel effectiveAt = default(DateTimeOrCutLabel))
+        public ApiResponse< DeletedEntityResponse > DeleteKeyFromPortfolioAccessMetadataWithHttpInfo (string scope, string code, string metadataKey, DateTimeOrCutLabel effectiveAt = null)
         {
             // verify the required parameter 'scope' is set
             if (scope == null)
-                throw new Lusid.Sdk.Client.ApiException(400, "Missing required parameter 'scope' when calling PortfoliosApi->DeleteKeyFromPortfolioAccessMetadata");
-
+                throw new ApiException(400, "Missing required parameter 'scope' when calling PortfoliosApi->DeleteKeyFromPortfolioAccessMetadata");
             // verify the required parameter 'code' is set
             if (code == null)
-                throw new Lusid.Sdk.Client.ApiException(400, "Missing required parameter 'code' when calling PortfoliosApi->DeleteKeyFromPortfolioAccessMetadata");
-
+                throw new ApiException(400, "Missing required parameter 'code' when calling PortfoliosApi->DeleteKeyFromPortfolioAccessMetadata");
             // verify the required parameter 'metadataKey' is set
             if (metadataKey == null)
-                throw new Lusid.Sdk.Client.ApiException(400, "Missing required parameter 'metadataKey' when calling PortfoliosApi->DeleteKeyFromPortfolioAccessMetadata");
+                throw new ApiException(400, "Missing required parameter 'metadataKey' when calling PortfoliosApi->DeleteKeyFromPortfolioAccessMetadata");
 
-            Lusid.Sdk.Client.RequestOptions localVarRequestOptions = new Lusid.Sdk.Client.RequestOptions();
+            var localVarPath = "./api/portfolios/{scope}/{code}/metadata/{metadataKey}";
+            var localVarPathParams = new Dictionary<String, String>();
+            var localVarQueryParams = new List<KeyValuePair<String, String>>();
+            var localVarHeaderParams = new Dictionary<String, String>(this.Configuration.DefaultHeader);
+            var localVarFormParams = new Dictionary<String, String>();
+            var localVarFileParams = new Dictionary<String, FileParameter>();
+            Object localVarPostBody = null;
 
-            String[] _contentTypes = new String[] {
+            // to determine the Content-Type header
+            String[] localVarHttpContentTypes = new String[] {
             };
+            String localVarHttpContentType = this.Configuration.ApiClient.SelectHeaderContentType(localVarHttpContentTypes);
 
             // to determine the Accept header
-            String[] _accepts = new String[] {
+            String[] localVarHttpHeaderAccepts = new String[] {
                 "text/plain",
                 "application/json",
                 "text/json"
             };
+            String localVarHttpHeaderAccept = this.Configuration.ApiClient.SelectHeaderAccept(localVarHttpHeaderAccepts);
+            if (localVarHttpHeaderAccept != null)
+                localVarHeaderParams.Add("Accept", localVarHttpHeaderAccept);
 
-            var localVarContentType = Lusid.Sdk.Client.ClientUtils.SelectHeaderContentType(_contentTypes);
-            if (localVarContentType != null) localVarRequestOptions.HeaderParameters.Add("Content-Type", localVarContentType);
-
-            var localVarAccept = Lusid.Sdk.Client.ClientUtils.SelectHeaderAccept(_accepts);
-            if (localVarAccept != null) localVarRequestOptions.HeaderParameters.Add("Accept", localVarAccept);
-
-            localVarRequestOptions.PathParameters.Add("scope", Lusid.Sdk.Client.ClientUtils.ParameterToString(scope)); // path parameter
-            localVarRequestOptions.PathParameters.Add("code", Lusid.Sdk.Client.ClientUtils.ParameterToString(code)); // path parameter
-            localVarRequestOptions.PathParameters.Add("metadataKey", Lusid.Sdk.Client.ClientUtils.ParameterToString(metadataKey)); // path parameter
-            if (effectiveAt != null)
-            {
-                localVarRequestOptions.QueryParameters.Add(Lusid.Sdk.Client.ClientUtils.ParameterToMultiMap("", "effectiveAt", effectiveAt));
-            }
+            if (scope != null) localVarPathParams.Add("scope", this.Configuration.ApiClient.ParameterToString(scope)); // path parameter
+            if (code != null) localVarPathParams.Add("code", this.Configuration.ApiClient.ParameterToString(code)); // path parameter
+            if (metadataKey != null) localVarPathParams.Add("metadataKey", this.Configuration.ApiClient.ParameterToString(metadataKey)); // path parameter
+            if (effectiveAt != null) localVarQueryParams.AddRange(this.Configuration.ApiClient.ParameterToKeyValuePairs("", "effectiveAt", effectiveAt)); // query parameter
 
             // authentication (oauth2) required
             // oauth required
             if (!String.IsNullOrEmpty(this.Configuration.AccessToken))
             {
-                localVarRequestOptions.HeaderParameters.Add("Authorization", "Bearer " + this.Configuration.AccessToken);
+                localVarHeaderParams["Authorization"] = "Bearer " + this.Configuration.AccessToken;
             }
 
             //  set the LUSID header
-            localVarRequestOptions.HeaderParameters.Add("X-LUSID-Sdk-Language", "C#");
-            localVarRequestOptions.HeaderParameters.Add("X-LUSID-Sdk-Version", "0.11.3313");
+            localVarHeaderParams["X-LUSID-SDK-Language"] = "C#";
+            localVarHeaderParams["X-LUSID-SDK-Version"] = "0.11.3314";
 
             // make the HTTP request
-            var localVarResponse = this.Client.Delete<DeletedEntityResponse>("/api/portfolios/{scope}/{code}/metadata/{metadataKey}", localVarRequestOptions, this.Configuration);
+            IRestResponse localVarResponse = (IRestResponse) this.Configuration.ApiClient.CallApi(localVarPath,
+                Method.DELETE, localVarQueryParams, localVarPostBody, localVarHeaderParams, localVarFormParams, localVarFileParams,
+                localVarPathParams, localVarHttpContentType);
 
-            if (this.ExceptionFactory != null)
+            int localVarStatusCode = (int) localVarResponse.StatusCode;
+
+            if (ExceptionFactory != null)
             {
-                Exception _exception = this.ExceptionFactory("DeleteKeyFromPortfolioAccessMetadata", localVarResponse);
-                if (_exception != null) throw _exception;
+                Exception exception = ExceptionFactory("DeleteKeyFromPortfolioAccessMetadata", localVarResponse);
+                if (exception != null) throw exception;
             }
 
-            return localVarResponse;
+            return new ApiResponse<DeletedEntityResponse>(localVarStatusCode,
+                localVarResponse.Headers.ToDictionary(x => x.Key, x => string.Join(",", x.Value)),
+                (DeletedEntityResponse) this.Configuration.ApiClient.Deserialize(localVarResponse, typeof(DeletedEntityResponse)));
         }
 
         /// <summary>
@@ -1447,12 +1396,12 @@ namespace Lusid.Sdk.Api
         /// <param name="code">Portfolio code</param>
         /// <param name="metadataKey">The metadataKey identifying the access metadata entry to delete</param>
         /// <param name="effectiveAt">The effective date to delete at, if this is not supplied, it will delete all data found (optional)</param>
-        /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
         /// <returns>Task of DeletedEntityResponse</returns>
-        public async System.Threading.Tasks.Task<DeletedEntityResponse> DeleteKeyFromPortfolioAccessMetadataAsync(string scope, string code, string metadataKey, DateTimeOrCutLabel effectiveAt = default(DateTimeOrCutLabel), System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
+        public async System.Threading.Tasks.Task<DeletedEntityResponse> DeleteKeyFromPortfolioAccessMetadataAsync (string scope, string code, string metadataKey, DateTimeOrCutLabel effectiveAt = null)
         {
-            Lusid.Sdk.Client.ApiResponse<DeletedEntityResponse> localVarResponse = await DeleteKeyFromPortfolioAccessMetadataWithHttpInfoAsync(scope, code, metadataKey, effectiveAt, cancellationToken).ConfigureAwait(false);
-            return localVarResponse.Data;
+             ApiResponse<DeletedEntityResponse> localVarResponse = await DeleteKeyFromPortfolioAccessMetadataAsyncWithHttpInfo(scope, code, metadataKey, effectiveAt);
+             return localVarResponse.Data;
+
         }
 
         /// <summary>
@@ -1463,72 +1412,74 @@ namespace Lusid.Sdk.Api
         /// <param name="code">Portfolio code</param>
         /// <param name="metadataKey">The metadataKey identifying the access metadata entry to delete</param>
         /// <param name="effectiveAt">The effective date to delete at, if this is not supplied, it will delete all data found (optional)</param>
-        /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
         /// <returns>Task of ApiResponse (DeletedEntityResponse)</returns>
-        public async System.Threading.Tasks.Task<Lusid.Sdk.Client.ApiResponse<DeletedEntityResponse>> DeleteKeyFromPortfolioAccessMetadataWithHttpInfoAsync(string scope, string code, string metadataKey, DateTimeOrCutLabel effectiveAt = default(DateTimeOrCutLabel), System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
+        public async System.Threading.Tasks.Task<ApiResponse<DeletedEntityResponse>> DeleteKeyFromPortfolioAccessMetadataAsyncWithHttpInfo (string scope, string code, string metadataKey, DateTimeOrCutLabel effectiveAt = null)
         {
             // verify the required parameter 'scope' is set
             if (scope == null)
-                throw new Lusid.Sdk.Client.ApiException(400, "Missing required parameter 'scope' when calling PortfoliosApi->DeleteKeyFromPortfolioAccessMetadata");
-
+                throw new ApiException(400, "Missing required parameter 'scope' when calling PortfoliosApi->DeleteKeyFromPortfolioAccessMetadata");
             // verify the required parameter 'code' is set
             if (code == null)
-                throw new Lusid.Sdk.Client.ApiException(400, "Missing required parameter 'code' when calling PortfoliosApi->DeleteKeyFromPortfolioAccessMetadata");
-
+                throw new ApiException(400, "Missing required parameter 'code' when calling PortfoliosApi->DeleteKeyFromPortfolioAccessMetadata");
             // verify the required parameter 'metadataKey' is set
             if (metadataKey == null)
-                throw new Lusid.Sdk.Client.ApiException(400, "Missing required parameter 'metadataKey' when calling PortfoliosApi->DeleteKeyFromPortfolioAccessMetadata");
+                throw new ApiException(400, "Missing required parameter 'metadataKey' when calling PortfoliosApi->DeleteKeyFromPortfolioAccessMetadata");
 
+            var localVarPath = "./api/portfolios/{scope}/{code}/metadata/{metadataKey}";
+            var localVarPathParams = new Dictionary<String, String>();
+            var localVarQueryParams = new List<KeyValuePair<String, String>>();
+            var localVarHeaderParams = new Dictionary<String, String>(this.Configuration.DefaultHeader);
+            var localVarFormParams = new Dictionary<String, String>();
+            var localVarFileParams = new Dictionary<String, FileParameter>();
+            Object localVarPostBody = null;
 
-            Lusid.Sdk.Client.RequestOptions localVarRequestOptions = new Lusid.Sdk.Client.RequestOptions();
-
-            String[] _contentTypes = new String[] {
+            // to determine the Content-Type header
+            String[] localVarHttpContentTypes = new String[] {
             };
+            String localVarHttpContentType = this.Configuration.ApiClient.SelectHeaderContentType(localVarHttpContentTypes);
 
             // to determine the Accept header
-            String[] _accepts = new String[] {
+            String[] localVarHttpHeaderAccepts = new String[] {
                 "text/plain",
                 "application/json",
                 "text/json"
             };
+            String localVarHttpHeaderAccept = this.Configuration.ApiClient.SelectHeaderAccept(localVarHttpHeaderAccepts);
+            if (localVarHttpHeaderAccept != null)
+                localVarHeaderParams.Add("Accept", localVarHttpHeaderAccept);
 
-
-            var localVarContentType = Lusid.Sdk.Client.ClientUtils.SelectHeaderContentType(_contentTypes);
-            if (localVarContentType != null) localVarRequestOptions.HeaderParameters.Add("Content-Type", localVarContentType);
-
-            var localVarAccept = Lusid.Sdk.Client.ClientUtils.SelectHeaderAccept(_accepts);
-            if (localVarAccept != null) localVarRequestOptions.HeaderParameters.Add("Accept", localVarAccept);
-
-            localVarRequestOptions.PathParameters.Add("scope", Lusid.Sdk.Client.ClientUtils.ParameterToString(scope)); // path parameter
-            localVarRequestOptions.PathParameters.Add("code", Lusid.Sdk.Client.ClientUtils.ParameterToString(code)); // path parameter
-            localVarRequestOptions.PathParameters.Add("metadataKey", Lusid.Sdk.Client.ClientUtils.ParameterToString(metadataKey)); // path parameter
-            if (effectiveAt != null)
-            {
-                localVarRequestOptions.QueryParameters.Add(Lusid.Sdk.Client.ClientUtils.ParameterToMultiMap("", "effectiveAt", effectiveAt));
-            }
+            if (scope != null) localVarPathParams.Add("scope", this.Configuration.ApiClient.ParameterToString(scope)); // path parameter
+            if (code != null) localVarPathParams.Add("code", this.Configuration.ApiClient.ParameterToString(code)); // path parameter
+            if (metadataKey != null) localVarPathParams.Add("metadataKey", this.Configuration.ApiClient.ParameterToString(metadataKey)); // path parameter
+            if (effectiveAt != null) localVarQueryParams.AddRange(this.Configuration.ApiClient.ParameterToKeyValuePairs("", "effectiveAt", effectiveAt)); // query parameter
 
             // authentication (oauth2) required
             // oauth required
             if (!String.IsNullOrEmpty(this.Configuration.AccessToken))
             {
-                localVarRequestOptions.HeaderParameters.Add("Authorization", "Bearer " + this.Configuration.AccessToken);
+                localVarHeaderParams["Authorization"] = "Bearer " + this.Configuration.AccessToken;
             }
 
             //  set the LUSID header
-            localVarRequestOptions.HeaderParameters.Add("X-LUSID-Sdk-Language", "C#");
-            localVarRequestOptions.HeaderParameters.Add("X-LUSID-Sdk-Version", "0.11.3313");
+            localVarHeaderParams["X-LUSID-Sdk-Language"] = "C#";
+            localVarHeaderParams["X-LUSID-Sdk-Version"] = "0.11.3314";
 
             // make the HTTP request
+            IRestResponse localVarResponse = (IRestResponse) await this.Configuration.ApiClient.CallApiAsync(localVarPath,
+                Method.DELETE, localVarQueryParams, localVarPostBody, localVarHeaderParams, localVarFormParams, localVarFileParams,
+                localVarPathParams, localVarHttpContentType);
 
-            var localVarResponse = await this.AsynchronousClient.DeleteAsync<DeletedEntityResponse>("/api/portfolios/{scope}/{code}/metadata/{metadataKey}", localVarRequestOptions, this.Configuration, cancellationToken).ConfigureAwait(false);
+            int localVarStatusCode = (int) localVarResponse.StatusCode;
 
-            if (this.ExceptionFactory != null)
+            if (ExceptionFactory != null)
             {
-                Exception _exception = this.ExceptionFactory("DeleteKeyFromPortfolioAccessMetadata", localVarResponse);
-                if (_exception != null) throw _exception;
+                Exception exception = ExceptionFactory("DeleteKeyFromPortfolioAccessMetadata", localVarResponse);
+                if (exception != null) throw exception;
             }
 
-            return localVarResponse;
+            return new ApiResponse<DeletedEntityResponse>(localVarStatusCode,
+                localVarResponse.Headers.ToDictionary(x => x.Key, x => string.Join(",", x.Value)),
+                (DeletedEntityResponse) this.Configuration.ApiClient.Deserialize(localVarResponse, typeof(DeletedEntityResponse)));
         }
 
         /// <summary>
@@ -1538,10 +1489,10 @@ namespace Lusid.Sdk.Api
         /// <param name="scope">The scope of the portfolio.</param>
         /// <param name="code">The code of the portfolio. Together with the scope this uniquely identifies the portfolio.</param>
         /// <returns>DeletedEntityResponse</returns>
-        public DeletedEntityResponse DeletePortfolio(string scope, string code)
+        public DeletedEntityResponse DeletePortfolio (string scope, string code)
         {
-            Lusid.Sdk.Client.ApiResponse<DeletedEntityResponse> localVarResponse = DeletePortfolioWithHttpInfo(scope, code);
-            return localVarResponse.Data;
+             ApiResponse<DeletedEntityResponse> localVarResponse = DeletePortfolioWithHttpInfo(scope, code);
+             return localVarResponse.Data;
         }
 
         /// <summary>
@@ -1551,58 +1502,68 @@ namespace Lusid.Sdk.Api
         /// <param name="scope">The scope of the portfolio.</param>
         /// <param name="code">The code of the portfolio. Together with the scope this uniquely identifies the portfolio.</param>
         /// <returns>ApiResponse of DeletedEntityResponse</returns>
-        public Lusid.Sdk.Client.ApiResponse<DeletedEntityResponse> DeletePortfolioWithHttpInfo(string scope, string code)
+        public ApiResponse< DeletedEntityResponse > DeletePortfolioWithHttpInfo (string scope, string code)
         {
             // verify the required parameter 'scope' is set
             if (scope == null)
-                throw new Lusid.Sdk.Client.ApiException(400, "Missing required parameter 'scope' when calling PortfoliosApi->DeletePortfolio");
-
+                throw new ApiException(400, "Missing required parameter 'scope' when calling PortfoliosApi->DeletePortfolio");
             // verify the required parameter 'code' is set
             if (code == null)
-                throw new Lusid.Sdk.Client.ApiException(400, "Missing required parameter 'code' when calling PortfoliosApi->DeletePortfolio");
+                throw new ApiException(400, "Missing required parameter 'code' when calling PortfoliosApi->DeletePortfolio");
 
-            Lusid.Sdk.Client.RequestOptions localVarRequestOptions = new Lusid.Sdk.Client.RequestOptions();
+            var localVarPath = "./api/portfolios/{scope}/{code}";
+            var localVarPathParams = new Dictionary<String, String>();
+            var localVarQueryParams = new List<KeyValuePair<String, String>>();
+            var localVarHeaderParams = new Dictionary<String, String>(this.Configuration.DefaultHeader);
+            var localVarFormParams = new Dictionary<String, String>();
+            var localVarFileParams = new Dictionary<String, FileParameter>();
+            Object localVarPostBody = null;
 
-            String[] _contentTypes = new String[] {
+            // to determine the Content-Type header
+            String[] localVarHttpContentTypes = new String[] {
             };
+            String localVarHttpContentType = this.Configuration.ApiClient.SelectHeaderContentType(localVarHttpContentTypes);
 
             // to determine the Accept header
-            String[] _accepts = new String[] {
+            String[] localVarHttpHeaderAccepts = new String[] {
                 "text/plain",
                 "application/json",
                 "text/json"
             };
+            String localVarHttpHeaderAccept = this.Configuration.ApiClient.SelectHeaderAccept(localVarHttpHeaderAccepts);
+            if (localVarHttpHeaderAccept != null)
+                localVarHeaderParams.Add("Accept", localVarHttpHeaderAccept);
 
-            var localVarContentType = Lusid.Sdk.Client.ClientUtils.SelectHeaderContentType(_contentTypes);
-            if (localVarContentType != null) localVarRequestOptions.HeaderParameters.Add("Content-Type", localVarContentType);
-
-            var localVarAccept = Lusid.Sdk.Client.ClientUtils.SelectHeaderAccept(_accepts);
-            if (localVarAccept != null) localVarRequestOptions.HeaderParameters.Add("Accept", localVarAccept);
-
-            localVarRequestOptions.PathParameters.Add("scope", Lusid.Sdk.Client.ClientUtils.ParameterToString(scope)); // path parameter
-            localVarRequestOptions.PathParameters.Add("code", Lusid.Sdk.Client.ClientUtils.ParameterToString(code)); // path parameter
+            if (scope != null) localVarPathParams.Add("scope", this.Configuration.ApiClient.ParameterToString(scope)); // path parameter
+            if (code != null) localVarPathParams.Add("code", this.Configuration.ApiClient.ParameterToString(code)); // path parameter
 
             // authentication (oauth2) required
             // oauth required
             if (!String.IsNullOrEmpty(this.Configuration.AccessToken))
             {
-                localVarRequestOptions.HeaderParameters.Add("Authorization", "Bearer " + this.Configuration.AccessToken);
+                localVarHeaderParams["Authorization"] = "Bearer " + this.Configuration.AccessToken;
             }
 
             //  set the LUSID header
-            localVarRequestOptions.HeaderParameters.Add("X-LUSID-Sdk-Language", "C#");
-            localVarRequestOptions.HeaderParameters.Add("X-LUSID-Sdk-Version", "0.11.3313");
+            localVarHeaderParams["X-LUSID-SDK-Language"] = "C#";
+            localVarHeaderParams["X-LUSID-SDK-Version"] = "0.11.3314";
 
             // make the HTTP request
-            var localVarResponse = this.Client.Delete<DeletedEntityResponse>("/api/portfolios/{scope}/{code}", localVarRequestOptions, this.Configuration);
+            IRestResponse localVarResponse = (IRestResponse) this.Configuration.ApiClient.CallApi(localVarPath,
+                Method.DELETE, localVarQueryParams, localVarPostBody, localVarHeaderParams, localVarFormParams, localVarFileParams,
+                localVarPathParams, localVarHttpContentType);
 
-            if (this.ExceptionFactory != null)
+            int localVarStatusCode = (int) localVarResponse.StatusCode;
+
+            if (ExceptionFactory != null)
             {
-                Exception _exception = this.ExceptionFactory("DeletePortfolio", localVarResponse);
-                if (_exception != null) throw _exception;
+                Exception exception = ExceptionFactory("DeletePortfolio", localVarResponse);
+                if (exception != null) throw exception;
             }
 
-            return localVarResponse;
+            return new ApiResponse<DeletedEntityResponse>(localVarStatusCode,
+                localVarResponse.Headers.ToDictionary(x => x.Key, x => string.Join(",", x.Value)),
+                (DeletedEntityResponse) this.Configuration.ApiClient.Deserialize(localVarResponse, typeof(DeletedEntityResponse)));
         }
 
         /// <summary>
@@ -1611,12 +1572,12 @@ namespace Lusid.Sdk.Api
         /// <exception cref="Lusid.Sdk.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="scope">The scope of the portfolio.</param>
         /// <param name="code">The code of the portfolio. Together with the scope this uniquely identifies the portfolio.</param>
-        /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
         /// <returns>Task of DeletedEntityResponse</returns>
-        public async System.Threading.Tasks.Task<DeletedEntityResponse> DeletePortfolioAsync(string scope, string code, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
+        public async System.Threading.Tasks.Task<DeletedEntityResponse> DeletePortfolioAsync (string scope, string code)
         {
-            Lusid.Sdk.Client.ApiResponse<DeletedEntityResponse> localVarResponse = await DeletePortfolioWithHttpInfoAsync(scope, code, cancellationToken).ConfigureAwait(false);
-            return localVarResponse.Data;
+             ApiResponse<DeletedEntityResponse> localVarResponse = await DeletePortfolioAsyncWithHttpInfo(scope, code);
+             return localVarResponse.Data;
+
         }
 
         /// <summary>
@@ -1625,63 +1586,69 @@ namespace Lusid.Sdk.Api
         /// <exception cref="Lusid.Sdk.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="scope">The scope of the portfolio.</param>
         /// <param name="code">The code of the portfolio. Together with the scope this uniquely identifies the portfolio.</param>
-        /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
         /// <returns>Task of ApiResponse (DeletedEntityResponse)</returns>
-        public async System.Threading.Tasks.Task<Lusid.Sdk.Client.ApiResponse<DeletedEntityResponse>> DeletePortfolioWithHttpInfoAsync(string scope, string code, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
+        public async System.Threading.Tasks.Task<ApiResponse<DeletedEntityResponse>> DeletePortfolioAsyncWithHttpInfo (string scope, string code)
         {
             // verify the required parameter 'scope' is set
             if (scope == null)
-                throw new Lusid.Sdk.Client.ApiException(400, "Missing required parameter 'scope' when calling PortfoliosApi->DeletePortfolio");
-
+                throw new ApiException(400, "Missing required parameter 'scope' when calling PortfoliosApi->DeletePortfolio");
             // verify the required parameter 'code' is set
             if (code == null)
-                throw new Lusid.Sdk.Client.ApiException(400, "Missing required parameter 'code' when calling PortfoliosApi->DeletePortfolio");
+                throw new ApiException(400, "Missing required parameter 'code' when calling PortfoliosApi->DeletePortfolio");
 
+            var localVarPath = "./api/portfolios/{scope}/{code}";
+            var localVarPathParams = new Dictionary<String, String>();
+            var localVarQueryParams = new List<KeyValuePair<String, String>>();
+            var localVarHeaderParams = new Dictionary<String, String>(this.Configuration.DefaultHeader);
+            var localVarFormParams = new Dictionary<String, String>();
+            var localVarFileParams = new Dictionary<String, FileParameter>();
+            Object localVarPostBody = null;
 
-            Lusid.Sdk.Client.RequestOptions localVarRequestOptions = new Lusid.Sdk.Client.RequestOptions();
-
-            String[] _contentTypes = new String[] {
+            // to determine the Content-Type header
+            String[] localVarHttpContentTypes = new String[] {
             };
+            String localVarHttpContentType = this.Configuration.ApiClient.SelectHeaderContentType(localVarHttpContentTypes);
 
             // to determine the Accept header
-            String[] _accepts = new String[] {
+            String[] localVarHttpHeaderAccepts = new String[] {
                 "text/plain",
                 "application/json",
                 "text/json"
             };
+            String localVarHttpHeaderAccept = this.Configuration.ApiClient.SelectHeaderAccept(localVarHttpHeaderAccepts);
+            if (localVarHttpHeaderAccept != null)
+                localVarHeaderParams.Add("Accept", localVarHttpHeaderAccept);
 
-
-            var localVarContentType = Lusid.Sdk.Client.ClientUtils.SelectHeaderContentType(_contentTypes);
-            if (localVarContentType != null) localVarRequestOptions.HeaderParameters.Add("Content-Type", localVarContentType);
-
-            var localVarAccept = Lusid.Sdk.Client.ClientUtils.SelectHeaderAccept(_accepts);
-            if (localVarAccept != null) localVarRequestOptions.HeaderParameters.Add("Accept", localVarAccept);
-
-            localVarRequestOptions.PathParameters.Add("scope", Lusid.Sdk.Client.ClientUtils.ParameterToString(scope)); // path parameter
-            localVarRequestOptions.PathParameters.Add("code", Lusid.Sdk.Client.ClientUtils.ParameterToString(code)); // path parameter
+            if (scope != null) localVarPathParams.Add("scope", this.Configuration.ApiClient.ParameterToString(scope)); // path parameter
+            if (code != null) localVarPathParams.Add("code", this.Configuration.ApiClient.ParameterToString(code)); // path parameter
 
             // authentication (oauth2) required
             // oauth required
             if (!String.IsNullOrEmpty(this.Configuration.AccessToken))
             {
-                localVarRequestOptions.HeaderParameters.Add("Authorization", "Bearer " + this.Configuration.AccessToken);
+                localVarHeaderParams["Authorization"] = "Bearer " + this.Configuration.AccessToken;
             }
 
             //  set the LUSID header
-            localVarRequestOptions.HeaderParameters.Add("X-LUSID-Sdk-Language", "C#");
-            localVarRequestOptions.HeaderParameters.Add("X-LUSID-Sdk-Version", "0.11.3313");
+            localVarHeaderParams["X-LUSID-Sdk-Language"] = "C#";
+            localVarHeaderParams["X-LUSID-Sdk-Version"] = "0.11.3314";
 
             // make the HTTP request
+            IRestResponse localVarResponse = (IRestResponse) await this.Configuration.ApiClient.CallApiAsync(localVarPath,
+                Method.DELETE, localVarQueryParams, localVarPostBody, localVarHeaderParams, localVarFormParams, localVarFileParams,
+                localVarPathParams, localVarHttpContentType);
 
-            var localVarResponse = await this.AsynchronousClient.DeleteAsync<DeletedEntityResponse>("/api/portfolios/{scope}/{code}", localVarRequestOptions, this.Configuration, cancellationToken).ConfigureAwait(false);
+            int localVarStatusCode = (int) localVarResponse.StatusCode;
 
-            if (this.ExceptionFactory != null)
+            if (ExceptionFactory != null)
             {
-                Exception _exception = this.ExceptionFactory("DeletePortfolio", localVarResponse);
-                if (_exception != null) throw _exception;
+                Exception exception = ExceptionFactory("DeletePortfolio", localVarResponse);
+                if (exception != null) throw exception;
             }
 
-            return localVarResponse;
+            return new ApiResponse<DeletedEntityResponse>(localVarStatusCode,
+                localVarResponse.Headers.ToDictionary(x => x.Key, x => string.Join(",", x.Value)),
+                (DeletedEntityResponse) this.Configuration.ApiClient.Deserialize(localVarResponse, typeof(DeletedEntityResponse)));
         }
 
         /// <summary>
@@ -1693,10 +1660,10 @@ namespace Lusid.Sdk.Api
         /// <param name="propertyKeys">The property keys of the properties to delete. These must take the format              {domain}/{scope}/{code}, for example &#39;Portfolio/Manager/Id&#39;. Each property must be from the &#39;Portfolio&#39; domain.</param>
         /// <param name="effectiveAt">The effective datetime or cut label at which to delete time-variant properties. (optional)</param>
         /// <returns>DeletedEntityResponse</returns>
-        public DeletedEntityResponse DeletePortfolioProperties(string scope, string code, List<string> propertyKeys, DateTimeOrCutLabel effectiveAt = default(DateTimeOrCutLabel))
+        public DeletedEntityResponse DeletePortfolioProperties (string scope, string code, List<string> propertyKeys, DateTimeOrCutLabel effectiveAt = null)
         {
-            Lusid.Sdk.Client.ApiResponse<DeletedEntityResponse> localVarResponse = DeletePortfolioPropertiesWithHttpInfo(scope, code, propertyKeys, effectiveAt);
-            return localVarResponse.Data;
+             ApiResponse<DeletedEntityResponse> localVarResponse = DeletePortfolioPropertiesWithHttpInfo(scope, code, propertyKeys, effectiveAt);
+             return localVarResponse.Data;
         }
 
         /// <summary>
@@ -1708,67 +1675,73 @@ namespace Lusid.Sdk.Api
         /// <param name="propertyKeys">The property keys of the properties to delete. These must take the format              {domain}/{scope}/{code}, for example &#39;Portfolio/Manager/Id&#39;. Each property must be from the &#39;Portfolio&#39; domain.</param>
         /// <param name="effectiveAt">The effective datetime or cut label at which to delete time-variant properties. (optional)</param>
         /// <returns>ApiResponse of DeletedEntityResponse</returns>
-        public Lusid.Sdk.Client.ApiResponse<DeletedEntityResponse> DeletePortfolioPropertiesWithHttpInfo(string scope, string code, List<string> propertyKeys, DateTimeOrCutLabel effectiveAt = default(DateTimeOrCutLabel))
+        public ApiResponse< DeletedEntityResponse > DeletePortfolioPropertiesWithHttpInfo (string scope, string code, List<string> propertyKeys, DateTimeOrCutLabel effectiveAt = null)
         {
             // verify the required parameter 'scope' is set
             if (scope == null)
-                throw new Lusid.Sdk.Client.ApiException(400, "Missing required parameter 'scope' when calling PortfoliosApi->DeletePortfolioProperties");
-
+                throw new ApiException(400, "Missing required parameter 'scope' when calling PortfoliosApi->DeletePortfolioProperties");
             // verify the required parameter 'code' is set
             if (code == null)
-                throw new Lusid.Sdk.Client.ApiException(400, "Missing required parameter 'code' when calling PortfoliosApi->DeletePortfolioProperties");
-
+                throw new ApiException(400, "Missing required parameter 'code' when calling PortfoliosApi->DeletePortfolioProperties");
             // verify the required parameter 'propertyKeys' is set
             if (propertyKeys == null)
-                throw new Lusid.Sdk.Client.ApiException(400, "Missing required parameter 'propertyKeys' when calling PortfoliosApi->DeletePortfolioProperties");
+                throw new ApiException(400, "Missing required parameter 'propertyKeys' when calling PortfoliosApi->DeletePortfolioProperties");
 
-            Lusid.Sdk.Client.RequestOptions localVarRequestOptions = new Lusid.Sdk.Client.RequestOptions();
+            var localVarPath = "./api/portfolios/{scope}/{code}/properties";
+            var localVarPathParams = new Dictionary<String, String>();
+            var localVarQueryParams = new List<KeyValuePair<String, String>>();
+            var localVarHeaderParams = new Dictionary<String, String>(this.Configuration.DefaultHeader);
+            var localVarFormParams = new Dictionary<String, String>();
+            var localVarFileParams = new Dictionary<String, FileParameter>();
+            Object localVarPostBody = null;
 
-            String[] _contentTypes = new String[] {
+            // to determine the Content-Type header
+            String[] localVarHttpContentTypes = new String[] {
             };
+            String localVarHttpContentType = this.Configuration.ApiClient.SelectHeaderContentType(localVarHttpContentTypes);
 
             // to determine the Accept header
-            String[] _accepts = new String[] {
+            String[] localVarHttpHeaderAccepts = new String[] {
                 "text/plain",
                 "application/json",
                 "text/json"
             };
+            String localVarHttpHeaderAccept = this.Configuration.ApiClient.SelectHeaderAccept(localVarHttpHeaderAccepts);
+            if (localVarHttpHeaderAccept != null)
+                localVarHeaderParams.Add("Accept", localVarHttpHeaderAccept);
 
-            var localVarContentType = Lusid.Sdk.Client.ClientUtils.SelectHeaderContentType(_contentTypes);
-            if (localVarContentType != null) localVarRequestOptions.HeaderParameters.Add("Content-Type", localVarContentType);
-
-            var localVarAccept = Lusid.Sdk.Client.ClientUtils.SelectHeaderAccept(_accepts);
-            if (localVarAccept != null) localVarRequestOptions.HeaderParameters.Add("Accept", localVarAccept);
-
-            localVarRequestOptions.PathParameters.Add("scope", Lusid.Sdk.Client.ClientUtils.ParameterToString(scope)); // path parameter
-            localVarRequestOptions.PathParameters.Add("code", Lusid.Sdk.Client.ClientUtils.ParameterToString(code)); // path parameter
-            if (effectiveAt != null)
-            {
-                localVarRequestOptions.QueryParameters.Add(Lusid.Sdk.Client.ClientUtils.ParameterToMultiMap("", "effectiveAt", effectiveAt));
-            }
-            localVarRequestOptions.QueryParameters.Add(Lusid.Sdk.Client.ClientUtils.ParameterToMultiMap("multi", "propertyKeys", propertyKeys));
+            if (scope != null) localVarPathParams.Add("scope", this.Configuration.ApiClient.ParameterToString(scope)); // path parameter
+            if (code != null) localVarPathParams.Add("code", this.Configuration.ApiClient.ParameterToString(code)); // path parameter
+            if (effectiveAt != null) localVarQueryParams.AddRange(this.Configuration.ApiClient.ParameterToKeyValuePairs("", "effectiveAt", effectiveAt)); // query parameter
+            if (propertyKeys != null) localVarQueryParams.AddRange(this.Configuration.ApiClient.ParameterToKeyValuePairs("multi", "propertyKeys", propertyKeys)); // query parameter
 
             // authentication (oauth2) required
             // oauth required
             if (!String.IsNullOrEmpty(this.Configuration.AccessToken))
             {
-                localVarRequestOptions.HeaderParameters.Add("Authorization", "Bearer " + this.Configuration.AccessToken);
+                localVarHeaderParams["Authorization"] = "Bearer " + this.Configuration.AccessToken;
             }
 
             //  set the LUSID header
-            localVarRequestOptions.HeaderParameters.Add("X-LUSID-Sdk-Language", "C#");
-            localVarRequestOptions.HeaderParameters.Add("X-LUSID-Sdk-Version", "0.11.3313");
+            localVarHeaderParams["X-LUSID-SDK-Language"] = "C#";
+            localVarHeaderParams["X-LUSID-SDK-Version"] = "0.11.3314";
 
             // make the HTTP request
-            var localVarResponse = this.Client.Delete<DeletedEntityResponse>("/api/portfolios/{scope}/{code}/properties", localVarRequestOptions, this.Configuration);
+            IRestResponse localVarResponse = (IRestResponse) this.Configuration.ApiClient.CallApi(localVarPath,
+                Method.DELETE, localVarQueryParams, localVarPostBody, localVarHeaderParams, localVarFormParams, localVarFileParams,
+                localVarPathParams, localVarHttpContentType);
 
-            if (this.ExceptionFactory != null)
+            int localVarStatusCode = (int) localVarResponse.StatusCode;
+
+            if (ExceptionFactory != null)
             {
-                Exception _exception = this.ExceptionFactory("DeletePortfolioProperties", localVarResponse);
-                if (_exception != null) throw _exception;
+                Exception exception = ExceptionFactory("DeletePortfolioProperties", localVarResponse);
+                if (exception != null) throw exception;
             }
 
-            return localVarResponse;
+            return new ApiResponse<DeletedEntityResponse>(localVarStatusCode,
+                localVarResponse.Headers.ToDictionary(x => x.Key, x => string.Join(",", x.Value)),
+                (DeletedEntityResponse) this.Configuration.ApiClient.Deserialize(localVarResponse, typeof(DeletedEntityResponse)));
         }
 
         /// <summary>
@@ -1779,12 +1752,12 @@ namespace Lusid.Sdk.Api
         /// <param name="code">The code of the portfolio. Together with the scope this uniquely identifies the portfolio.</param>
         /// <param name="propertyKeys">The property keys of the properties to delete. These must take the format              {domain}/{scope}/{code}, for example &#39;Portfolio/Manager/Id&#39;. Each property must be from the &#39;Portfolio&#39; domain.</param>
         /// <param name="effectiveAt">The effective datetime or cut label at which to delete time-variant properties. (optional)</param>
-        /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
         /// <returns>Task of DeletedEntityResponse</returns>
-        public async System.Threading.Tasks.Task<DeletedEntityResponse> DeletePortfolioPropertiesAsync(string scope, string code, List<string> propertyKeys, DateTimeOrCutLabel effectiveAt = default(DateTimeOrCutLabel), System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
+        public async System.Threading.Tasks.Task<DeletedEntityResponse> DeletePortfolioPropertiesAsync (string scope, string code, List<string> propertyKeys, DateTimeOrCutLabel effectiveAt = null)
         {
-            Lusid.Sdk.Client.ApiResponse<DeletedEntityResponse> localVarResponse = await DeletePortfolioPropertiesWithHttpInfoAsync(scope, code, propertyKeys, effectiveAt, cancellationToken).ConfigureAwait(false);
-            return localVarResponse.Data;
+             ApiResponse<DeletedEntityResponse> localVarResponse = await DeletePortfolioPropertiesAsyncWithHttpInfo(scope, code, propertyKeys, effectiveAt);
+             return localVarResponse.Data;
+
         }
 
         /// <summary>
@@ -1795,72 +1768,74 @@ namespace Lusid.Sdk.Api
         /// <param name="code">The code of the portfolio. Together with the scope this uniquely identifies the portfolio.</param>
         /// <param name="propertyKeys">The property keys of the properties to delete. These must take the format              {domain}/{scope}/{code}, for example &#39;Portfolio/Manager/Id&#39;. Each property must be from the &#39;Portfolio&#39; domain.</param>
         /// <param name="effectiveAt">The effective datetime or cut label at which to delete time-variant properties. (optional)</param>
-        /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
         /// <returns>Task of ApiResponse (DeletedEntityResponse)</returns>
-        public async System.Threading.Tasks.Task<Lusid.Sdk.Client.ApiResponse<DeletedEntityResponse>> DeletePortfolioPropertiesWithHttpInfoAsync(string scope, string code, List<string> propertyKeys, DateTimeOrCutLabel effectiveAt = default(DateTimeOrCutLabel), System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
+        public async System.Threading.Tasks.Task<ApiResponse<DeletedEntityResponse>> DeletePortfolioPropertiesAsyncWithHttpInfo (string scope, string code, List<string> propertyKeys, DateTimeOrCutLabel effectiveAt = null)
         {
             // verify the required parameter 'scope' is set
             if (scope == null)
-                throw new Lusid.Sdk.Client.ApiException(400, "Missing required parameter 'scope' when calling PortfoliosApi->DeletePortfolioProperties");
-
+                throw new ApiException(400, "Missing required parameter 'scope' when calling PortfoliosApi->DeletePortfolioProperties");
             // verify the required parameter 'code' is set
             if (code == null)
-                throw new Lusid.Sdk.Client.ApiException(400, "Missing required parameter 'code' when calling PortfoliosApi->DeletePortfolioProperties");
-
+                throw new ApiException(400, "Missing required parameter 'code' when calling PortfoliosApi->DeletePortfolioProperties");
             // verify the required parameter 'propertyKeys' is set
             if (propertyKeys == null)
-                throw new Lusid.Sdk.Client.ApiException(400, "Missing required parameter 'propertyKeys' when calling PortfoliosApi->DeletePortfolioProperties");
+                throw new ApiException(400, "Missing required parameter 'propertyKeys' when calling PortfoliosApi->DeletePortfolioProperties");
 
+            var localVarPath = "./api/portfolios/{scope}/{code}/properties";
+            var localVarPathParams = new Dictionary<String, String>();
+            var localVarQueryParams = new List<KeyValuePair<String, String>>();
+            var localVarHeaderParams = new Dictionary<String, String>(this.Configuration.DefaultHeader);
+            var localVarFormParams = new Dictionary<String, String>();
+            var localVarFileParams = new Dictionary<String, FileParameter>();
+            Object localVarPostBody = null;
 
-            Lusid.Sdk.Client.RequestOptions localVarRequestOptions = new Lusid.Sdk.Client.RequestOptions();
-
-            String[] _contentTypes = new String[] {
+            // to determine the Content-Type header
+            String[] localVarHttpContentTypes = new String[] {
             };
+            String localVarHttpContentType = this.Configuration.ApiClient.SelectHeaderContentType(localVarHttpContentTypes);
 
             // to determine the Accept header
-            String[] _accepts = new String[] {
+            String[] localVarHttpHeaderAccepts = new String[] {
                 "text/plain",
                 "application/json",
                 "text/json"
             };
+            String localVarHttpHeaderAccept = this.Configuration.ApiClient.SelectHeaderAccept(localVarHttpHeaderAccepts);
+            if (localVarHttpHeaderAccept != null)
+                localVarHeaderParams.Add("Accept", localVarHttpHeaderAccept);
 
-
-            var localVarContentType = Lusid.Sdk.Client.ClientUtils.SelectHeaderContentType(_contentTypes);
-            if (localVarContentType != null) localVarRequestOptions.HeaderParameters.Add("Content-Type", localVarContentType);
-
-            var localVarAccept = Lusid.Sdk.Client.ClientUtils.SelectHeaderAccept(_accepts);
-            if (localVarAccept != null) localVarRequestOptions.HeaderParameters.Add("Accept", localVarAccept);
-
-            localVarRequestOptions.PathParameters.Add("scope", Lusid.Sdk.Client.ClientUtils.ParameterToString(scope)); // path parameter
-            localVarRequestOptions.PathParameters.Add("code", Lusid.Sdk.Client.ClientUtils.ParameterToString(code)); // path parameter
-            if (effectiveAt != null)
-            {
-                localVarRequestOptions.QueryParameters.Add(Lusid.Sdk.Client.ClientUtils.ParameterToMultiMap("", "effectiveAt", effectiveAt));
-            }
-            localVarRequestOptions.QueryParameters.Add(Lusid.Sdk.Client.ClientUtils.ParameterToMultiMap("multi", "propertyKeys", propertyKeys));
+            if (scope != null) localVarPathParams.Add("scope", this.Configuration.ApiClient.ParameterToString(scope)); // path parameter
+            if (code != null) localVarPathParams.Add("code", this.Configuration.ApiClient.ParameterToString(code)); // path parameter
+            if (effectiveAt != null) localVarQueryParams.AddRange(this.Configuration.ApiClient.ParameterToKeyValuePairs("", "effectiveAt", effectiveAt)); // query parameter
+            if (propertyKeys != null) localVarQueryParams.AddRange(this.Configuration.ApiClient.ParameterToKeyValuePairs("multi", "propertyKeys", propertyKeys)); // query parameter
 
             // authentication (oauth2) required
             // oauth required
             if (!String.IsNullOrEmpty(this.Configuration.AccessToken))
             {
-                localVarRequestOptions.HeaderParameters.Add("Authorization", "Bearer " + this.Configuration.AccessToken);
+                localVarHeaderParams["Authorization"] = "Bearer " + this.Configuration.AccessToken;
             }
 
             //  set the LUSID header
-            localVarRequestOptions.HeaderParameters.Add("X-LUSID-Sdk-Language", "C#");
-            localVarRequestOptions.HeaderParameters.Add("X-LUSID-Sdk-Version", "0.11.3313");
+            localVarHeaderParams["X-LUSID-Sdk-Language"] = "C#";
+            localVarHeaderParams["X-LUSID-Sdk-Version"] = "0.11.3314";
 
             // make the HTTP request
+            IRestResponse localVarResponse = (IRestResponse) await this.Configuration.ApiClient.CallApiAsync(localVarPath,
+                Method.DELETE, localVarQueryParams, localVarPostBody, localVarHeaderParams, localVarFormParams, localVarFileParams,
+                localVarPathParams, localVarHttpContentType);
 
-            var localVarResponse = await this.AsynchronousClient.DeleteAsync<DeletedEntityResponse>("/api/portfolios/{scope}/{code}/properties", localVarRequestOptions, this.Configuration, cancellationToken).ConfigureAwait(false);
+            int localVarStatusCode = (int) localVarResponse.StatusCode;
 
-            if (this.ExceptionFactory != null)
+            if (ExceptionFactory != null)
             {
-                Exception _exception = this.ExceptionFactory("DeletePortfolioProperties", localVarResponse);
-                if (_exception != null) throw _exception;
+                Exception exception = ExceptionFactory("DeletePortfolioProperties", localVarResponse);
+                if (exception != null) throw exception;
             }
 
-            return localVarResponse;
+            return new ApiResponse<DeletedEntityResponse>(localVarStatusCode,
+                localVarResponse.Headers.ToDictionary(x => x.Key, x => string.Join(",", x.Value)),
+                (DeletedEntityResponse) this.Configuration.ApiClient.Deserialize(localVarResponse, typeof(DeletedEntityResponse)));
         }
 
         /// <summary>
@@ -1873,10 +1848,10 @@ namespace Lusid.Sdk.Api
         /// <param name="asAt">The asAt datetime at which to retrieve the portfolio definition. Defaults to returning the latest version of the portfolio definition if not specified. (optional)</param>
         /// <param name="propertyKeys">A list of property keys from the &#39;Portfolio&#39; domain to decorate onto the portfolio.              These must take the format {domain}/{scope}/{code}, for example &#39;Portfolio/Manager/Id&#39;. (optional)</param>
         /// <returns>Portfolio</returns>
-        public Portfolio GetPortfolio(string scope, string code, DateTimeOrCutLabel effectiveAt = default(DateTimeOrCutLabel), DateTimeOffset? asAt = default(DateTimeOffset?), List<string> propertyKeys = default(List<string>))
+        public Portfolio GetPortfolio (string scope, string code, DateTimeOrCutLabel effectiveAt = null, DateTimeOffset? asAt = null, List<string> propertyKeys = null)
         {
-            Lusid.Sdk.Client.ApiResponse<Portfolio> localVarResponse = GetPortfolioWithHttpInfo(scope, code, effectiveAt, asAt, propertyKeys);
-            return localVarResponse.Data;
+             ApiResponse<Portfolio> localVarResponse = GetPortfolioWithHttpInfo(scope, code, effectiveAt, asAt, propertyKeys);
+             return localVarResponse.Data;
         }
 
         /// <summary>
@@ -1889,70 +1864,71 @@ namespace Lusid.Sdk.Api
         /// <param name="asAt">The asAt datetime at which to retrieve the portfolio definition. Defaults to returning the latest version of the portfolio definition if not specified. (optional)</param>
         /// <param name="propertyKeys">A list of property keys from the &#39;Portfolio&#39; domain to decorate onto the portfolio.              These must take the format {domain}/{scope}/{code}, for example &#39;Portfolio/Manager/Id&#39;. (optional)</param>
         /// <returns>ApiResponse of Portfolio</returns>
-        public Lusid.Sdk.Client.ApiResponse<Portfolio> GetPortfolioWithHttpInfo(string scope, string code, DateTimeOrCutLabel effectiveAt = default(DateTimeOrCutLabel), DateTimeOffset? asAt = default(DateTimeOffset?), List<string> propertyKeys = default(List<string>))
+        public ApiResponse< Portfolio > GetPortfolioWithHttpInfo (string scope, string code, DateTimeOrCutLabel effectiveAt = null, DateTimeOffset? asAt = null, List<string> propertyKeys = null)
         {
             // verify the required parameter 'scope' is set
             if (scope == null)
-                throw new Lusid.Sdk.Client.ApiException(400, "Missing required parameter 'scope' when calling PortfoliosApi->GetPortfolio");
-
+                throw new ApiException(400, "Missing required parameter 'scope' when calling PortfoliosApi->GetPortfolio");
             // verify the required parameter 'code' is set
             if (code == null)
-                throw new Lusid.Sdk.Client.ApiException(400, "Missing required parameter 'code' when calling PortfoliosApi->GetPortfolio");
+                throw new ApiException(400, "Missing required parameter 'code' when calling PortfoliosApi->GetPortfolio");
 
-            Lusid.Sdk.Client.RequestOptions localVarRequestOptions = new Lusid.Sdk.Client.RequestOptions();
+            var localVarPath = "./api/portfolios/{scope}/{code}";
+            var localVarPathParams = new Dictionary<String, String>();
+            var localVarQueryParams = new List<KeyValuePair<String, String>>();
+            var localVarHeaderParams = new Dictionary<String, String>(this.Configuration.DefaultHeader);
+            var localVarFormParams = new Dictionary<String, String>();
+            var localVarFileParams = new Dictionary<String, FileParameter>();
+            Object localVarPostBody = null;
 
-            String[] _contentTypes = new String[] {
+            // to determine the Content-Type header
+            String[] localVarHttpContentTypes = new String[] {
             };
+            String localVarHttpContentType = this.Configuration.ApiClient.SelectHeaderContentType(localVarHttpContentTypes);
 
             // to determine the Accept header
-            String[] _accepts = new String[] {
+            String[] localVarHttpHeaderAccepts = new String[] {
                 "text/plain",
                 "application/json",
                 "text/json"
             };
+            String localVarHttpHeaderAccept = this.Configuration.ApiClient.SelectHeaderAccept(localVarHttpHeaderAccepts);
+            if (localVarHttpHeaderAccept != null)
+                localVarHeaderParams.Add("Accept", localVarHttpHeaderAccept);
 
-            var localVarContentType = Lusid.Sdk.Client.ClientUtils.SelectHeaderContentType(_contentTypes);
-            if (localVarContentType != null) localVarRequestOptions.HeaderParameters.Add("Content-Type", localVarContentType);
-
-            var localVarAccept = Lusid.Sdk.Client.ClientUtils.SelectHeaderAccept(_accepts);
-            if (localVarAccept != null) localVarRequestOptions.HeaderParameters.Add("Accept", localVarAccept);
-
-            localVarRequestOptions.PathParameters.Add("scope", Lusid.Sdk.Client.ClientUtils.ParameterToString(scope)); // path parameter
-            localVarRequestOptions.PathParameters.Add("code", Lusid.Sdk.Client.ClientUtils.ParameterToString(code)); // path parameter
-            if (effectiveAt != null)
-            {
-                localVarRequestOptions.QueryParameters.Add(Lusid.Sdk.Client.ClientUtils.ParameterToMultiMap("", "effectiveAt", effectiveAt));
-            }
-            if (asAt != null)
-            {
-                localVarRequestOptions.QueryParameters.Add(Lusid.Sdk.Client.ClientUtils.ParameterToMultiMap("", "asAt", asAt));
-            }
-            if (propertyKeys != null)
-            {
-                localVarRequestOptions.QueryParameters.Add(Lusid.Sdk.Client.ClientUtils.ParameterToMultiMap("multi", "propertyKeys", propertyKeys));
-            }
+            if (scope != null) localVarPathParams.Add("scope", this.Configuration.ApiClient.ParameterToString(scope)); // path parameter
+            if (code != null) localVarPathParams.Add("code", this.Configuration.ApiClient.ParameterToString(code)); // path parameter
+            if (effectiveAt != null) localVarQueryParams.AddRange(this.Configuration.ApiClient.ParameterToKeyValuePairs("", "effectiveAt", effectiveAt)); // query parameter
+            if (asAt != null) localVarQueryParams.AddRange(this.Configuration.ApiClient.ParameterToKeyValuePairs("", "asAt", asAt)); // query parameter
+            if (propertyKeys != null) localVarQueryParams.AddRange(this.Configuration.ApiClient.ParameterToKeyValuePairs("multi", "propertyKeys", propertyKeys)); // query parameter
 
             // authentication (oauth2) required
             // oauth required
             if (!String.IsNullOrEmpty(this.Configuration.AccessToken))
             {
-                localVarRequestOptions.HeaderParameters.Add("Authorization", "Bearer " + this.Configuration.AccessToken);
+                localVarHeaderParams["Authorization"] = "Bearer " + this.Configuration.AccessToken;
             }
 
             //  set the LUSID header
-            localVarRequestOptions.HeaderParameters.Add("X-LUSID-Sdk-Language", "C#");
-            localVarRequestOptions.HeaderParameters.Add("X-LUSID-Sdk-Version", "0.11.3313");
+            localVarHeaderParams["X-LUSID-SDK-Language"] = "C#";
+            localVarHeaderParams["X-LUSID-SDK-Version"] = "0.11.3314";
 
             // make the HTTP request
-            var localVarResponse = this.Client.Get<Portfolio>("/api/portfolios/{scope}/{code}", localVarRequestOptions, this.Configuration);
+            IRestResponse localVarResponse = (IRestResponse) this.Configuration.ApiClient.CallApi(localVarPath,
+                Method.GET, localVarQueryParams, localVarPostBody, localVarHeaderParams, localVarFormParams, localVarFileParams,
+                localVarPathParams, localVarHttpContentType);
 
-            if (this.ExceptionFactory != null)
+            int localVarStatusCode = (int) localVarResponse.StatusCode;
+
+            if (ExceptionFactory != null)
             {
-                Exception _exception = this.ExceptionFactory("GetPortfolio", localVarResponse);
-                if (_exception != null) throw _exception;
+                Exception exception = ExceptionFactory("GetPortfolio", localVarResponse);
+                if (exception != null) throw exception;
             }
 
-            return localVarResponse;
+            return new ApiResponse<Portfolio>(localVarStatusCode,
+                localVarResponse.Headers.ToDictionary(x => x.Key, x => string.Join(",", x.Value)),
+                (Portfolio) this.Configuration.ApiClient.Deserialize(localVarResponse, typeof(Portfolio)));
         }
 
         /// <summary>
@@ -1964,12 +1940,12 @@ namespace Lusid.Sdk.Api
         /// <param name="effectiveAt">The effective datetime or cut label at which to retrieve the portfolio definition. Defaults to the current LUSID system datetime if not specified. (optional)</param>
         /// <param name="asAt">The asAt datetime at which to retrieve the portfolio definition. Defaults to returning the latest version of the portfolio definition if not specified. (optional)</param>
         /// <param name="propertyKeys">A list of property keys from the &#39;Portfolio&#39; domain to decorate onto the portfolio.              These must take the format {domain}/{scope}/{code}, for example &#39;Portfolio/Manager/Id&#39;. (optional)</param>
-        /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
         /// <returns>Task of Portfolio</returns>
-        public async System.Threading.Tasks.Task<Portfolio> GetPortfolioAsync(string scope, string code, DateTimeOrCutLabel effectiveAt = default(DateTimeOrCutLabel), DateTimeOffset? asAt = default(DateTimeOffset?), List<string> propertyKeys = default(List<string>), System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
+        public async System.Threading.Tasks.Task<Portfolio> GetPortfolioAsync (string scope, string code, DateTimeOrCutLabel effectiveAt = null, DateTimeOffset? asAt = null, List<string> propertyKeys = null)
         {
-            Lusid.Sdk.Client.ApiResponse<Portfolio> localVarResponse = await GetPortfolioWithHttpInfoAsync(scope, code, effectiveAt, asAt, propertyKeys, cancellationToken).ConfigureAwait(false);
-            return localVarResponse.Data;
+             ApiResponse<Portfolio> localVarResponse = await GetPortfolioAsyncWithHttpInfo(scope, code, effectiveAt, asAt, propertyKeys);
+             return localVarResponse.Data;
+
         }
 
         /// <summary>
@@ -1981,75 +1957,72 @@ namespace Lusid.Sdk.Api
         /// <param name="effectiveAt">The effective datetime or cut label at which to retrieve the portfolio definition. Defaults to the current LUSID system datetime if not specified. (optional)</param>
         /// <param name="asAt">The asAt datetime at which to retrieve the portfolio definition. Defaults to returning the latest version of the portfolio definition if not specified. (optional)</param>
         /// <param name="propertyKeys">A list of property keys from the &#39;Portfolio&#39; domain to decorate onto the portfolio.              These must take the format {domain}/{scope}/{code}, for example &#39;Portfolio/Manager/Id&#39;. (optional)</param>
-        /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
         /// <returns>Task of ApiResponse (Portfolio)</returns>
-        public async System.Threading.Tasks.Task<Lusid.Sdk.Client.ApiResponse<Portfolio>> GetPortfolioWithHttpInfoAsync(string scope, string code, DateTimeOrCutLabel effectiveAt = default(DateTimeOrCutLabel), DateTimeOffset? asAt = default(DateTimeOffset?), List<string> propertyKeys = default(List<string>), System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
+        public async System.Threading.Tasks.Task<ApiResponse<Portfolio>> GetPortfolioAsyncWithHttpInfo (string scope, string code, DateTimeOrCutLabel effectiveAt = null, DateTimeOffset? asAt = null, List<string> propertyKeys = null)
         {
             // verify the required parameter 'scope' is set
             if (scope == null)
-                throw new Lusid.Sdk.Client.ApiException(400, "Missing required parameter 'scope' when calling PortfoliosApi->GetPortfolio");
-
+                throw new ApiException(400, "Missing required parameter 'scope' when calling PortfoliosApi->GetPortfolio");
             // verify the required parameter 'code' is set
             if (code == null)
-                throw new Lusid.Sdk.Client.ApiException(400, "Missing required parameter 'code' when calling PortfoliosApi->GetPortfolio");
+                throw new ApiException(400, "Missing required parameter 'code' when calling PortfoliosApi->GetPortfolio");
 
+            var localVarPath = "./api/portfolios/{scope}/{code}";
+            var localVarPathParams = new Dictionary<String, String>();
+            var localVarQueryParams = new List<KeyValuePair<String, String>>();
+            var localVarHeaderParams = new Dictionary<String, String>(this.Configuration.DefaultHeader);
+            var localVarFormParams = new Dictionary<String, String>();
+            var localVarFileParams = new Dictionary<String, FileParameter>();
+            Object localVarPostBody = null;
 
-            Lusid.Sdk.Client.RequestOptions localVarRequestOptions = new Lusid.Sdk.Client.RequestOptions();
-
-            String[] _contentTypes = new String[] {
+            // to determine the Content-Type header
+            String[] localVarHttpContentTypes = new String[] {
             };
+            String localVarHttpContentType = this.Configuration.ApiClient.SelectHeaderContentType(localVarHttpContentTypes);
 
             // to determine the Accept header
-            String[] _accepts = new String[] {
+            String[] localVarHttpHeaderAccepts = new String[] {
                 "text/plain",
                 "application/json",
                 "text/json"
             };
+            String localVarHttpHeaderAccept = this.Configuration.ApiClient.SelectHeaderAccept(localVarHttpHeaderAccepts);
+            if (localVarHttpHeaderAccept != null)
+                localVarHeaderParams.Add("Accept", localVarHttpHeaderAccept);
 
-
-            var localVarContentType = Lusid.Sdk.Client.ClientUtils.SelectHeaderContentType(_contentTypes);
-            if (localVarContentType != null) localVarRequestOptions.HeaderParameters.Add("Content-Type", localVarContentType);
-
-            var localVarAccept = Lusid.Sdk.Client.ClientUtils.SelectHeaderAccept(_accepts);
-            if (localVarAccept != null) localVarRequestOptions.HeaderParameters.Add("Accept", localVarAccept);
-
-            localVarRequestOptions.PathParameters.Add("scope", Lusid.Sdk.Client.ClientUtils.ParameterToString(scope)); // path parameter
-            localVarRequestOptions.PathParameters.Add("code", Lusid.Sdk.Client.ClientUtils.ParameterToString(code)); // path parameter
-            if (effectiveAt != null)
-            {
-                localVarRequestOptions.QueryParameters.Add(Lusid.Sdk.Client.ClientUtils.ParameterToMultiMap("", "effectiveAt", effectiveAt));
-            }
-            if (asAt != null)
-            {
-                localVarRequestOptions.QueryParameters.Add(Lusid.Sdk.Client.ClientUtils.ParameterToMultiMap("", "asAt", asAt));
-            }
-            if (propertyKeys != null)
-            {
-                localVarRequestOptions.QueryParameters.Add(Lusid.Sdk.Client.ClientUtils.ParameterToMultiMap("multi", "propertyKeys", propertyKeys));
-            }
+            if (scope != null) localVarPathParams.Add("scope", this.Configuration.ApiClient.ParameterToString(scope)); // path parameter
+            if (code != null) localVarPathParams.Add("code", this.Configuration.ApiClient.ParameterToString(code)); // path parameter
+            if (effectiveAt != null) localVarQueryParams.AddRange(this.Configuration.ApiClient.ParameterToKeyValuePairs("", "effectiveAt", effectiveAt)); // query parameter
+            if (asAt != null) localVarQueryParams.AddRange(this.Configuration.ApiClient.ParameterToKeyValuePairs("", "asAt", asAt)); // query parameter
+            if (propertyKeys != null) localVarQueryParams.AddRange(this.Configuration.ApiClient.ParameterToKeyValuePairs("multi", "propertyKeys", propertyKeys)); // query parameter
 
             // authentication (oauth2) required
             // oauth required
             if (!String.IsNullOrEmpty(this.Configuration.AccessToken))
             {
-                localVarRequestOptions.HeaderParameters.Add("Authorization", "Bearer " + this.Configuration.AccessToken);
+                localVarHeaderParams["Authorization"] = "Bearer " + this.Configuration.AccessToken;
             }
 
             //  set the LUSID header
-            localVarRequestOptions.HeaderParameters.Add("X-LUSID-Sdk-Language", "C#");
-            localVarRequestOptions.HeaderParameters.Add("X-LUSID-Sdk-Version", "0.11.3313");
+            localVarHeaderParams["X-LUSID-Sdk-Language"] = "C#";
+            localVarHeaderParams["X-LUSID-Sdk-Version"] = "0.11.3314";
 
             // make the HTTP request
+            IRestResponse localVarResponse = (IRestResponse) await this.Configuration.ApiClient.CallApiAsync(localVarPath,
+                Method.GET, localVarQueryParams, localVarPostBody, localVarHeaderParams, localVarFormParams, localVarFileParams,
+                localVarPathParams, localVarHttpContentType);
 
-            var localVarResponse = await this.AsynchronousClient.GetAsync<Portfolio>("/api/portfolios/{scope}/{code}", localVarRequestOptions, this.Configuration, cancellationToken).ConfigureAwait(false);
+            int localVarStatusCode = (int) localVarResponse.StatusCode;
 
-            if (this.ExceptionFactory != null)
+            if (ExceptionFactory != null)
             {
-                Exception _exception = this.ExceptionFactory("GetPortfolio", localVarResponse);
-                if (_exception != null) throw _exception;
+                Exception exception = ExceptionFactory("GetPortfolio", localVarResponse);
+                if (exception != null) throw exception;
             }
 
-            return localVarResponse;
+            return new ApiResponse<Portfolio>(localVarStatusCode,
+                localVarResponse.Headers.ToDictionary(x => x.Key, x => string.Join(",", x.Value)),
+                (Portfolio) this.Configuration.ApiClient.Deserialize(localVarResponse, typeof(Portfolio)));
         }
 
         /// <summary>
@@ -2070,10 +2043,10 @@ namespace Lusid.Sdk.Api
         /// <param name="metrics">The period time to calculate the aggregate return. (optional)</param>
         /// <param name="asAt">The asAt datetime at which to retrieve the Returns. Defaults to the latest. (optional)</param>
         /// <returns>ResourceListOfAggregatedReturn</returns>
-        public ResourceListOfAggregatedReturn GetPortfolioAggregateReturns(string scope, string code, string returnScope, string returnCode, string recipeIdScope = default(string), string recipeIdCode = default(string), DateTimeOrCutLabel fromEffectiveAt = default(DateTimeOrCutLabel), DateTimeOrCutLabel toEffectiveAt = default(DateTimeOrCutLabel), string compositeMethod = default(string), string period = default(string), string outputFrequency = default(string), List<string> metrics = default(List<string>), DateTimeOffset? asAt = default(DateTimeOffset?))
+        public ResourceListOfAggregatedReturn GetPortfolioAggregateReturns (string scope, string code, string returnScope, string returnCode, string recipeIdScope = null, string recipeIdCode = null, DateTimeOrCutLabel fromEffectiveAt = null, DateTimeOrCutLabel toEffectiveAt = null, string compositeMethod = null, string period = null, string outputFrequency = null, List<string> metrics = null, DateTimeOffset? asAt = null)
         {
-            Lusid.Sdk.Client.ApiResponse<ResourceListOfAggregatedReturn> localVarResponse = GetPortfolioAggregateReturnsWithHttpInfo(scope, code, returnScope, returnCode, recipeIdScope, recipeIdCode, fromEffectiveAt, toEffectiveAt, compositeMethod, period, outputFrequency, metrics, asAt);
-            return localVarResponse.Data;
+             ApiResponse<ResourceListOfAggregatedReturn> localVarResponse = GetPortfolioAggregateReturnsWithHttpInfo(scope, code, returnScope, returnCode, recipeIdScope, recipeIdCode, fromEffectiveAt, toEffectiveAt, compositeMethod, period, outputFrequency, metrics, asAt);
+             return localVarResponse.Data;
         }
 
         /// <summary>
@@ -2094,104 +2067,85 @@ namespace Lusid.Sdk.Api
         /// <param name="metrics">The period time to calculate the aggregate return. (optional)</param>
         /// <param name="asAt">The asAt datetime at which to retrieve the Returns. Defaults to the latest. (optional)</param>
         /// <returns>ApiResponse of ResourceListOfAggregatedReturn</returns>
-        public Lusid.Sdk.Client.ApiResponse<ResourceListOfAggregatedReturn> GetPortfolioAggregateReturnsWithHttpInfo(string scope, string code, string returnScope, string returnCode, string recipeIdScope = default(string), string recipeIdCode = default(string), DateTimeOrCutLabel fromEffectiveAt = default(DateTimeOrCutLabel), DateTimeOrCutLabel toEffectiveAt = default(DateTimeOrCutLabel), string compositeMethod = default(string), string period = default(string), string outputFrequency = default(string), List<string> metrics = default(List<string>), DateTimeOffset? asAt = default(DateTimeOffset?))
+        public ApiResponse< ResourceListOfAggregatedReturn > GetPortfolioAggregateReturnsWithHttpInfo (string scope, string code, string returnScope, string returnCode, string recipeIdScope = null, string recipeIdCode = null, DateTimeOrCutLabel fromEffectiveAt = null, DateTimeOrCutLabel toEffectiveAt = null, string compositeMethod = null, string period = null, string outputFrequency = null, List<string> metrics = null, DateTimeOffset? asAt = null)
         {
             // verify the required parameter 'scope' is set
             if (scope == null)
-                throw new Lusid.Sdk.Client.ApiException(400, "Missing required parameter 'scope' when calling PortfoliosApi->GetPortfolioAggregateReturns");
-
+                throw new ApiException(400, "Missing required parameter 'scope' when calling PortfoliosApi->GetPortfolioAggregateReturns");
             // verify the required parameter 'code' is set
             if (code == null)
-                throw new Lusid.Sdk.Client.ApiException(400, "Missing required parameter 'code' when calling PortfoliosApi->GetPortfolioAggregateReturns");
-
+                throw new ApiException(400, "Missing required parameter 'code' when calling PortfoliosApi->GetPortfolioAggregateReturns");
             // verify the required parameter 'returnScope' is set
             if (returnScope == null)
-                throw new Lusid.Sdk.Client.ApiException(400, "Missing required parameter 'returnScope' when calling PortfoliosApi->GetPortfolioAggregateReturns");
-
+                throw new ApiException(400, "Missing required parameter 'returnScope' when calling PortfoliosApi->GetPortfolioAggregateReturns");
             // verify the required parameter 'returnCode' is set
             if (returnCode == null)
-                throw new Lusid.Sdk.Client.ApiException(400, "Missing required parameter 'returnCode' when calling PortfoliosApi->GetPortfolioAggregateReturns");
+                throw new ApiException(400, "Missing required parameter 'returnCode' when calling PortfoliosApi->GetPortfolioAggregateReturns");
 
-            Lusid.Sdk.Client.RequestOptions localVarRequestOptions = new Lusid.Sdk.Client.RequestOptions();
+            var localVarPath = "./api/portfolios/{scope}/{code}/returns/{returnScope}/{returnCode}/aggregated";
+            var localVarPathParams = new Dictionary<String, String>();
+            var localVarQueryParams = new List<KeyValuePair<String, String>>();
+            var localVarHeaderParams = new Dictionary<String, String>(this.Configuration.DefaultHeader);
+            var localVarFormParams = new Dictionary<String, String>();
+            var localVarFileParams = new Dictionary<String, FileParameter>();
+            Object localVarPostBody = null;
 
-            String[] _contentTypes = new String[] {
+            // to determine the Content-Type header
+            String[] localVarHttpContentTypes = new String[] {
             };
+            String localVarHttpContentType = this.Configuration.ApiClient.SelectHeaderContentType(localVarHttpContentTypes);
 
             // to determine the Accept header
-            String[] _accepts = new String[] {
+            String[] localVarHttpHeaderAccepts = new String[] {
                 "text/plain",
                 "application/json",
                 "text/json"
             };
+            String localVarHttpHeaderAccept = this.Configuration.ApiClient.SelectHeaderAccept(localVarHttpHeaderAccepts);
+            if (localVarHttpHeaderAccept != null)
+                localVarHeaderParams.Add("Accept", localVarHttpHeaderAccept);
 
-            var localVarContentType = Lusid.Sdk.Client.ClientUtils.SelectHeaderContentType(_contentTypes);
-            if (localVarContentType != null) localVarRequestOptions.HeaderParameters.Add("Content-Type", localVarContentType);
-
-            var localVarAccept = Lusid.Sdk.Client.ClientUtils.SelectHeaderAccept(_accepts);
-            if (localVarAccept != null) localVarRequestOptions.HeaderParameters.Add("Accept", localVarAccept);
-
-            localVarRequestOptions.PathParameters.Add("scope", Lusid.Sdk.Client.ClientUtils.ParameterToString(scope)); // path parameter
-            localVarRequestOptions.PathParameters.Add("code", Lusid.Sdk.Client.ClientUtils.ParameterToString(code)); // path parameter
-            localVarRequestOptions.PathParameters.Add("returnScope", Lusid.Sdk.Client.ClientUtils.ParameterToString(returnScope)); // path parameter
-            localVarRequestOptions.PathParameters.Add("returnCode", Lusid.Sdk.Client.ClientUtils.ParameterToString(returnCode)); // path parameter
-            if (recipeIdScope != null)
-            {
-                localVarRequestOptions.QueryParameters.Add(Lusid.Sdk.Client.ClientUtils.ParameterToMultiMap("", "recipeIdScope", recipeIdScope));
-            }
-            if (recipeIdCode != null)
-            {
-                localVarRequestOptions.QueryParameters.Add(Lusid.Sdk.Client.ClientUtils.ParameterToMultiMap("", "recipeIdCode", recipeIdCode));
-            }
-            if (fromEffectiveAt != null)
-            {
-                localVarRequestOptions.QueryParameters.Add(Lusid.Sdk.Client.ClientUtils.ParameterToMultiMap("", "fromEffectiveAt", fromEffectiveAt));
-            }
-            if (toEffectiveAt != null)
-            {
-                localVarRequestOptions.QueryParameters.Add(Lusid.Sdk.Client.ClientUtils.ParameterToMultiMap("", "toEffectiveAt", toEffectiveAt));
-            }
-            if (compositeMethod != null)
-            {
-                localVarRequestOptions.QueryParameters.Add(Lusid.Sdk.Client.ClientUtils.ParameterToMultiMap("", "compositeMethod", compositeMethod));
-            }
-            if (period != null)
-            {
-                localVarRequestOptions.QueryParameters.Add(Lusid.Sdk.Client.ClientUtils.ParameterToMultiMap("", "period", period));
-            }
-            if (outputFrequency != null)
-            {
-                localVarRequestOptions.QueryParameters.Add(Lusid.Sdk.Client.ClientUtils.ParameterToMultiMap("", "outputFrequency", outputFrequency));
-            }
-            if (metrics != null)
-            {
-                localVarRequestOptions.QueryParameters.Add(Lusid.Sdk.Client.ClientUtils.ParameterToMultiMap("multi", "metrics", metrics));
-            }
-            if (asAt != null)
-            {
-                localVarRequestOptions.QueryParameters.Add(Lusid.Sdk.Client.ClientUtils.ParameterToMultiMap("", "asAt", asAt));
-            }
+            if (scope != null) localVarPathParams.Add("scope", this.Configuration.ApiClient.ParameterToString(scope)); // path parameter
+            if (code != null) localVarPathParams.Add("code", this.Configuration.ApiClient.ParameterToString(code)); // path parameter
+            if (returnScope != null) localVarPathParams.Add("returnScope", this.Configuration.ApiClient.ParameterToString(returnScope)); // path parameter
+            if (returnCode != null) localVarPathParams.Add("returnCode", this.Configuration.ApiClient.ParameterToString(returnCode)); // path parameter
+            if (recipeIdScope != null) localVarQueryParams.AddRange(this.Configuration.ApiClient.ParameterToKeyValuePairs("", "recipeIdScope", recipeIdScope)); // query parameter
+            if (recipeIdCode != null) localVarQueryParams.AddRange(this.Configuration.ApiClient.ParameterToKeyValuePairs("", "recipeIdCode", recipeIdCode)); // query parameter
+            if (fromEffectiveAt != null) localVarQueryParams.AddRange(this.Configuration.ApiClient.ParameterToKeyValuePairs("", "fromEffectiveAt", fromEffectiveAt)); // query parameter
+            if (toEffectiveAt != null) localVarQueryParams.AddRange(this.Configuration.ApiClient.ParameterToKeyValuePairs("", "toEffectiveAt", toEffectiveAt)); // query parameter
+            if (compositeMethod != null) localVarQueryParams.AddRange(this.Configuration.ApiClient.ParameterToKeyValuePairs("", "compositeMethod", compositeMethod)); // query parameter
+            if (period != null) localVarQueryParams.AddRange(this.Configuration.ApiClient.ParameterToKeyValuePairs("", "period", period)); // query parameter
+            if (outputFrequency != null) localVarQueryParams.AddRange(this.Configuration.ApiClient.ParameterToKeyValuePairs("", "outputFrequency", outputFrequency)); // query parameter
+            if (metrics != null) localVarQueryParams.AddRange(this.Configuration.ApiClient.ParameterToKeyValuePairs("multi", "metrics", metrics)); // query parameter
+            if (asAt != null) localVarQueryParams.AddRange(this.Configuration.ApiClient.ParameterToKeyValuePairs("", "asAt", asAt)); // query parameter
 
             // authentication (oauth2) required
             // oauth required
             if (!String.IsNullOrEmpty(this.Configuration.AccessToken))
             {
-                localVarRequestOptions.HeaderParameters.Add("Authorization", "Bearer " + this.Configuration.AccessToken);
+                localVarHeaderParams["Authorization"] = "Bearer " + this.Configuration.AccessToken;
             }
 
             //  set the LUSID header
-            localVarRequestOptions.HeaderParameters.Add("X-LUSID-Sdk-Language", "C#");
-            localVarRequestOptions.HeaderParameters.Add("X-LUSID-Sdk-Version", "0.11.3313");
+            localVarHeaderParams["X-LUSID-SDK-Language"] = "C#";
+            localVarHeaderParams["X-LUSID-SDK-Version"] = "0.11.3314";
 
             // make the HTTP request
-            var localVarResponse = this.Client.Get<ResourceListOfAggregatedReturn>("/api/portfolios/{scope}/{code}/returns/{returnScope}/{returnCode}/aggregated", localVarRequestOptions, this.Configuration);
+            IRestResponse localVarResponse = (IRestResponse) this.Configuration.ApiClient.CallApi(localVarPath,
+                Method.GET, localVarQueryParams, localVarPostBody, localVarHeaderParams, localVarFormParams, localVarFileParams,
+                localVarPathParams, localVarHttpContentType);
 
-            if (this.ExceptionFactory != null)
+            int localVarStatusCode = (int) localVarResponse.StatusCode;
+
+            if (ExceptionFactory != null)
             {
-                Exception _exception = this.ExceptionFactory("GetPortfolioAggregateReturns", localVarResponse);
-                if (_exception != null) throw _exception;
+                Exception exception = ExceptionFactory("GetPortfolioAggregateReturns", localVarResponse);
+                if (exception != null) throw exception;
             }
 
-            return localVarResponse;
+            return new ApiResponse<ResourceListOfAggregatedReturn>(localVarStatusCode,
+                localVarResponse.Headers.ToDictionary(x => x.Key, x => string.Join(",", x.Value)),
+                (ResourceListOfAggregatedReturn) this.Configuration.ApiClient.Deserialize(localVarResponse, typeof(ResourceListOfAggregatedReturn)));
         }
 
         /// <summary>
@@ -2211,12 +2165,12 @@ namespace Lusid.Sdk.Api
         /// <param name="outputFrequency">The type of calculated output: Daily/Weekly/Monthly/Quarterly/Half-Yearly/Yearly. (optional)</param>
         /// <param name="metrics">The period time to calculate the aggregate return. (optional)</param>
         /// <param name="asAt">The asAt datetime at which to retrieve the Returns. Defaults to the latest. (optional)</param>
-        /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
         /// <returns>Task of ResourceListOfAggregatedReturn</returns>
-        public async System.Threading.Tasks.Task<ResourceListOfAggregatedReturn> GetPortfolioAggregateReturnsAsync(string scope, string code, string returnScope, string returnCode, string recipeIdScope = default(string), string recipeIdCode = default(string), DateTimeOrCutLabel fromEffectiveAt = default(DateTimeOrCutLabel), DateTimeOrCutLabel toEffectiveAt = default(DateTimeOrCutLabel), string compositeMethod = default(string), string period = default(string), string outputFrequency = default(string), List<string> metrics = default(List<string>), DateTimeOffset? asAt = default(DateTimeOffset?), System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
+        public async System.Threading.Tasks.Task<ResourceListOfAggregatedReturn> GetPortfolioAggregateReturnsAsync (string scope, string code, string returnScope, string returnCode, string recipeIdScope = null, string recipeIdCode = null, DateTimeOrCutLabel fromEffectiveAt = null, DateTimeOrCutLabel toEffectiveAt = null, string compositeMethod = null, string period = null, string outputFrequency = null, List<string> metrics = null, DateTimeOffset? asAt = null)
         {
-            Lusid.Sdk.Client.ApiResponse<ResourceListOfAggregatedReturn> localVarResponse = await GetPortfolioAggregateReturnsWithHttpInfoAsync(scope, code, returnScope, returnCode, recipeIdScope, recipeIdCode, fromEffectiveAt, toEffectiveAt, compositeMethod, period, outputFrequency, metrics, asAt, cancellationToken).ConfigureAwait(false);
-            return localVarResponse.Data;
+             ApiResponse<ResourceListOfAggregatedReturn> localVarResponse = await GetPortfolioAggregateReturnsAsyncWithHttpInfo(scope, code, returnScope, returnCode, recipeIdScope, recipeIdCode, fromEffectiveAt, toEffectiveAt, compositeMethod, period, outputFrequency, metrics, asAt);
+             return localVarResponse.Data;
+
         }
 
         /// <summary>
@@ -2236,109 +2190,86 @@ namespace Lusid.Sdk.Api
         /// <param name="outputFrequency">The type of calculated output: Daily/Weekly/Monthly/Quarterly/Half-Yearly/Yearly. (optional)</param>
         /// <param name="metrics">The period time to calculate the aggregate return. (optional)</param>
         /// <param name="asAt">The asAt datetime at which to retrieve the Returns. Defaults to the latest. (optional)</param>
-        /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
         /// <returns>Task of ApiResponse (ResourceListOfAggregatedReturn)</returns>
-        public async System.Threading.Tasks.Task<Lusid.Sdk.Client.ApiResponse<ResourceListOfAggregatedReturn>> GetPortfolioAggregateReturnsWithHttpInfoAsync(string scope, string code, string returnScope, string returnCode, string recipeIdScope = default(string), string recipeIdCode = default(string), DateTimeOrCutLabel fromEffectiveAt = default(DateTimeOrCutLabel), DateTimeOrCutLabel toEffectiveAt = default(DateTimeOrCutLabel), string compositeMethod = default(string), string period = default(string), string outputFrequency = default(string), List<string> metrics = default(List<string>), DateTimeOffset? asAt = default(DateTimeOffset?), System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
+        public async System.Threading.Tasks.Task<ApiResponse<ResourceListOfAggregatedReturn>> GetPortfolioAggregateReturnsAsyncWithHttpInfo (string scope, string code, string returnScope, string returnCode, string recipeIdScope = null, string recipeIdCode = null, DateTimeOrCutLabel fromEffectiveAt = null, DateTimeOrCutLabel toEffectiveAt = null, string compositeMethod = null, string period = null, string outputFrequency = null, List<string> metrics = null, DateTimeOffset? asAt = null)
         {
             // verify the required parameter 'scope' is set
             if (scope == null)
-                throw new Lusid.Sdk.Client.ApiException(400, "Missing required parameter 'scope' when calling PortfoliosApi->GetPortfolioAggregateReturns");
-
+                throw new ApiException(400, "Missing required parameter 'scope' when calling PortfoliosApi->GetPortfolioAggregateReturns");
             // verify the required parameter 'code' is set
             if (code == null)
-                throw new Lusid.Sdk.Client.ApiException(400, "Missing required parameter 'code' when calling PortfoliosApi->GetPortfolioAggregateReturns");
-
+                throw new ApiException(400, "Missing required parameter 'code' when calling PortfoliosApi->GetPortfolioAggregateReturns");
             // verify the required parameter 'returnScope' is set
             if (returnScope == null)
-                throw new Lusid.Sdk.Client.ApiException(400, "Missing required parameter 'returnScope' when calling PortfoliosApi->GetPortfolioAggregateReturns");
-
+                throw new ApiException(400, "Missing required parameter 'returnScope' when calling PortfoliosApi->GetPortfolioAggregateReturns");
             // verify the required parameter 'returnCode' is set
             if (returnCode == null)
-                throw new Lusid.Sdk.Client.ApiException(400, "Missing required parameter 'returnCode' when calling PortfoliosApi->GetPortfolioAggregateReturns");
+                throw new ApiException(400, "Missing required parameter 'returnCode' when calling PortfoliosApi->GetPortfolioAggregateReturns");
 
+            var localVarPath = "./api/portfolios/{scope}/{code}/returns/{returnScope}/{returnCode}/aggregated";
+            var localVarPathParams = new Dictionary<String, String>();
+            var localVarQueryParams = new List<KeyValuePair<String, String>>();
+            var localVarHeaderParams = new Dictionary<String, String>(this.Configuration.DefaultHeader);
+            var localVarFormParams = new Dictionary<String, String>();
+            var localVarFileParams = new Dictionary<String, FileParameter>();
+            Object localVarPostBody = null;
 
-            Lusid.Sdk.Client.RequestOptions localVarRequestOptions = new Lusid.Sdk.Client.RequestOptions();
-
-            String[] _contentTypes = new String[] {
+            // to determine the Content-Type header
+            String[] localVarHttpContentTypes = new String[] {
             };
+            String localVarHttpContentType = this.Configuration.ApiClient.SelectHeaderContentType(localVarHttpContentTypes);
 
             // to determine the Accept header
-            String[] _accepts = new String[] {
+            String[] localVarHttpHeaderAccepts = new String[] {
                 "text/plain",
                 "application/json",
                 "text/json"
             };
+            String localVarHttpHeaderAccept = this.Configuration.ApiClient.SelectHeaderAccept(localVarHttpHeaderAccepts);
+            if (localVarHttpHeaderAccept != null)
+                localVarHeaderParams.Add("Accept", localVarHttpHeaderAccept);
 
-
-            var localVarContentType = Lusid.Sdk.Client.ClientUtils.SelectHeaderContentType(_contentTypes);
-            if (localVarContentType != null) localVarRequestOptions.HeaderParameters.Add("Content-Type", localVarContentType);
-
-            var localVarAccept = Lusid.Sdk.Client.ClientUtils.SelectHeaderAccept(_accepts);
-            if (localVarAccept != null) localVarRequestOptions.HeaderParameters.Add("Accept", localVarAccept);
-
-            localVarRequestOptions.PathParameters.Add("scope", Lusid.Sdk.Client.ClientUtils.ParameterToString(scope)); // path parameter
-            localVarRequestOptions.PathParameters.Add("code", Lusid.Sdk.Client.ClientUtils.ParameterToString(code)); // path parameter
-            localVarRequestOptions.PathParameters.Add("returnScope", Lusid.Sdk.Client.ClientUtils.ParameterToString(returnScope)); // path parameter
-            localVarRequestOptions.PathParameters.Add("returnCode", Lusid.Sdk.Client.ClientUtils.ParameterToString(returnCode)); // path parameter
-            if (recipeIdScope != null)
-            {
-                localVarRequestOptions.QueryParameters.Add(Lusid.Sdk.Client.ClientUtils.ParameterToMultiMap("", "recipeIdScope", recipeIdScope));
-            }
-            if (recipeIdCode != null)
-            {
-                localVarRequestOptions.QueryParameters.Add(Lusid.Sdk.Client.ClientUtils.ParameterToMultiMap("", "recipeIdCode", recipeIdCode));
-            }
-            if (fromEffectiveAt != null)
-            {
-                localVarRequestOptions.QueryParameters.Add(Lusid.Sdk.Client.ClientUtils.ParameterToMultiMap("", "fromEffectiveAt", fromEffectiveAt));
-            }
-            if (toEffectiveAt != null)
-            {
-                localVarRequestOptions.QueryParameters.Add(Lusid.Sdk.Client.ClientUtils.ParameterToMultiMap("", "toEffectiveAt", toEffectiveAt));
-            }
-            if (compositeMethod != null)
-            {
-                localVarRequestOptions.QueryParameters.Add(Lusid.Sdk.Client.ClientUtils.ParameterToMultiMap("", "compositeMethod", compositeMethod));
-            }
-            if (period != null)
-            {
-                localVarRequestOptions.QueryParameters.Add(Lusid.Sdk.Client.ClientUtils.ParameterToMultiMap("", "period", period));
-            }
-            if (outputFrequency != null)
-            {
-                localVarRequestOptions.QueryParameters.Add(Lusid.Sdk.Client.ClientUtils.ParameterToMultiMap("", "outputFrequency", outputFrequency));
-            }
-            if (metrics != null)
-            {
-                localVarRequestOptions.QueryParameters.Add(Lusid.Sdk.Client.ClientUtils.ParameterToMultiMap("multi", "metrics", metrics));
-            }
-            if (asAt != null)
-            {
-                localVarRequestOptions.QueryParameters.Add(Lusid.Sdk.Client.ClientUtils.ParameterToMultiMap("", "asAt", asAt));
-            }
+            if (scope != null) localVarPathParams.Add("scope", this.Configuration.ApiClient.ParameterToString(scope)); // path parameter
+            if (code != null) localVarPathParams.Add("code", this.Configuration.ApiClient.ParameterToString(code)); // path parameter
+            if (returnScope != null) localVarPathParams.Add("returnScope", this.Configuration.ApiClient.ParameterToString(returnScope)); // path parameter
+            if (returnCode != null) localVarPathParams.Add("returnCode", this.Configuration.ApiClient.ParameterToString(returnCode)); // path parameter
+            if (recipeIdScope != null) localVarQueryParams.AddRange(this.Configuration.ApiClient.ParameterToKeyValuePairs("", "recipeIdScope", recipeIdScope)); // query parameter
+            if (recipeIdCode != null) localVarQueryParams.AddRange(this.Configuration.ApiClient.ParameterToKeyValuePairs("", "recipeIdCode", recipeIdCode)); // query parameter
+            if (fromEffectiveAt != null) localVarQueryParams.AddRange(this.Configuration.ApiClient.ParameterToKeyValuePairs("", "fromEffectiveAt", fromEffectiveAt)); // query parameter
+            if (toEffectiveAt != null) localVarQueryParams.AddRange(this.Configuration.ApiClient.ParameterToKeyValuePairs("", "toEffectiveAt", toEffectiveAt)); // query parameter
+            if (compositeMethod != null) localVarQueryParams.AddRange(this.Configuration.ApiClient.ParameterToKeyValuePairs("", "compositeMethod", compositeMethod)); // query parameter
+            if (period != null) localVarQueryParams.AddRange(this.Configuration.ApiClient.ParameterToKeyValuePairs("", "period", period)); // query parameter
+            if (outputFrequency != null) localVarQueryParams.AddRange(this.Configuration.ApiClient.ParameterToKeyValuePairs("", "outputFrequency", outputFrequency)); // query parameter
+            if (metrics != null) localVarQueryParams.AddRange(this.Configuration.ApiClient.ParameterToKeyValuePairs("multi", "metrics", metrics)); // query parameter
+            if (asAt != null) localVarQueryParams.AddRange(this.Configuration.ApiClient.ParameterToKeyValuePairs("", "asAt", asAt)); // query parameter
 
             // authentication (oauth2) required
             // oauth required
             if (!String.IsNullOrEmpty(this.Configuration.AccessToken))
             {
-                localVarRequestOptions.HeaderParameters.Add("Authorization", "Bearer " + this.Configuration.AccessToken);
+                localVarHeaderParams["Authorization"] = "Bearer " + this.Configuration.AccessToken;
             }
 
             //  set the LUSID header
-            localVarRequestOptions.HeaderParameters.Add("X-LUSID-Sdk-Language", "C#");
-            localVarRequestOptions.HeaderParameters.Add("X-LUSID-Sdk-Version", "0.11.3313");
+            localVarHeaderParams["X-LUSID-Sdk-Language"] = "C#";
+            localVarHeaderParams["X-LUSID-Sdk-Version"] = "0.11.3314";
 
             // make the HTTP request
+            IRestResponse localVarResponse = (IRestResponse) await this.Configuration.ApiClient.CallApiAsync(localVarPath,
+                Method.GET, localVarQueryParams, localVarPostBody, localVarHeaderParams, localVarFormParams, localVarFileParams,
+                localVarPathParams, localVarHttpContentType);
 
-            var localVarResponse = await this.AsynchronousClient.GetAsync<ResourceListOfAggregatedReturn>("/api/portfolios/{scope}/{code}/returns/{returnScope}/{returnCode}/aggregated", localVarRequestOptions, this.Configuration, cancellationToken).ConfigureAwait(false);
+            int localVarStatusCode = (int) localVarResponse.StatusCode;
 
-            if (this.ExceptionFactory != null)
+            if (ExceptionFactory != null)
             {
-                Exception _exception = this.ExceptionFactory("GetPortfolioAggregateReturns", localVarResponse);
-                if (_exception != null) throw _exception;
+                Exception exception = ExceptionFactory("GetPortfolioAggregateReturns", localVarResponse);
+                if (exception != null) throw exception;
             }
 
-            return localVarResponse;
+            return new ApiResponse<ResourceListOfAggregatedReturn>(localVarStatusCode,
+                localVarResponse.Headers.ToDictionary(x => x.Key, x => string.Join(",", x.Value)),
+                (ResourceListOfAggregatedReturn) this.Configuration.ApiClient.Deserialize(localVarResponse, typeof(ResourceListOfAggregatedReturn)));
         }
 
         /// <summary>
@@ -2353,10 +2284,10 @@ namespace Lusid.Sdk.Api
         /// <param name="page">The pagination token to use to continue listing commands; this value is returned from the previous call. (optional)</param>
         /// <param name="limit">When paginating, limit the results to this number. Defaults to 500 if not specified. (optional)</param>
         /// <returns>ResourceListOfProcessedCommand</returns>
-        public ResourceListOfProcessedCommand GetPortfolioCommands(string scope, string code, DateTimeOffset? fromAsAt = default(DateTimeOffset?), DateTimeOffset? toAsAt = default(DateTimeOffset?), string filter = default(string), string page = default(string), int? limit = default(int?))
+        public ResourceListOfProcessedCommand GetPortfolioCommands (string scope, string code, DateTimeOffset? fromAsAt = null, DateTimeOffset? toAsAt = null, string filter = null, string page = null, int? limit = null)
         {
-            Lusid.Sdk.Client.ApiResponse<ResourceListOfProcessedCommand> localVarResponse = GetPortfolioCommandsWithHttpInfo(scope, code, fromAsAt, toAsAt, filter, page, limit);
-            return localVarResponse.Data;
+             ApiResponse<ResourceListOfProcessedCommand> localVarResponse = GetPortfolioCommandsWithHttpInfo(scope, code, fromAsAt, toAsAt, filter, page, limit);
+             return localVarResponse.Data;
         }
 
         /// <summary>
@@ -2371,78 +2302,73 @@ namespace Lusid.Sdk.Api
         /// <param name="page">The pagination token to use to continue listing commands; this value is returned from the previous call. (optional)</param>
         /// <param name="limit">When paginating, limit the results to this number. Defaults to 500 if not specified. (optional)</param>
         /// <returns>ApiResponse of ResourceListOfProcessedCommand</returns>
-        public Lusid.Sdk.Client.ApiResponse<ResourceListOfProcessedCommand> GetPortfolioCommandsWithHttpInfo(string scope, string code, DateTimeOffset? fromAsAt = default(DateTimeOffset?), DateTimeOffset? toAsAt = default(DateTimeOffset?), string filter = default(string), string page = default(string), int? limit = default(int?))
+        public ApiResponse< ResourceListOfProcessedCommand > GetPortfolioCommandsWithHttpInfo (string scope, string code, DateTimeOffset? fromAsAt = null, DateTimeOffset? toAsAt = null, string filter = null, string page = null, int? limit = null)
         {
             // verify the required parameter 'scope' is set
             if (scope == null)
-                throw new Lusid.Sdk.Client.ApiException(400, "Missing required parameter 'scope' when calling PortfoliosApi->GetPortfolioCommands");
-
+                throw new ApiException(400, "Missing required parameter 'scope' when calling PortfoliosApi->GetPortfolioCommands");
             // verify the required parameter 'code' is set
             if (code == null)
-                throw new Lusid.Sdk.Client.ApiException(400, "Missing required parameter 'code' when calling PortfoliosApi->GetPortfolioCommands");
+                throw new ApiException(400, "Missing required parameter 'code' when calling PortfoliosApi->GetPortfolioCommands");
 
-            Lusid.Sdk.Client.RequestOptions localVarRequestOptions = new Lusid.Sdk.Client.RequestOptions();
+            var localVarPath = "./api/portfolios/{scope}/{code}/commands";
+            var localVarPathParams = new Dictionary<String, String>();
+            var localVarQueryParams = new List<KeyValuePair<String, String>>();
+            var localVarHeaderParams = new Dictionary<String, String>(this.Configuration.DefaultHeader);
+            var localVarFormParams = new Dictionary<String, String>();
+            var localVarFileParams = new Dictionary<String, FileParameter>();
+            Object localVarPostBody = null;
 
-            String[] _contentTypes = new String[] {
+            // to determine the Content-Type header
+            String[] localVarHttpContentTypes = new String[] {
             };
+            String localVarHttpContentType = this.Configuration.ApiClient.SelectHeaderContentType(localVarHttpContentTypes);
 
             // to determine the Accept header
-            String[] _accepts = new String[] {
+            String[] localVarHttpHeaderAccepts = new String[] {
                 "text/plain",
                 "application/json",
                 "text/json"
             };
+            String localVarHttpHeaderAccept = this.Configuration.ApiClient.SelectHeaderAccept(localVarHttpHeaderAccepts);
+            if (localVarHttpHeaderAccept != null)
+                localVarHeaderParams.Add("Accept", localVarHttpHeaderAccept);
 
-            var localVarContentType = Lusid.Sdk.Client.ClientUtils.SelectHeaderContentType(_contentTypes);
-            if (localVarContentType != null) localVarRequestOptions.HeaderParameters.Add("Content-Type", localVarContentType);
-
-            var localVarAccept = Lusid.Sdk.Client.ClientUtils.SelectHeaderAccept(_accepts);
-            if (localVarAccept != null) localVarRequestOptions.HeaderParameters.Add("Accept", localVarAccept);
-
-            localVarRequestOptions.PathParameters.Add("scope", Lusid.Sdk.Client.ClientUtils.ParameterToString(scope)); // path parameter
-            localVarRequestOptions.PathParameters.Add("code", Lusid.Sdk.Client.ClientUtils.ParameterToString(code)); // path parameter
-            if (fromAsAt != null)
-            {
-                localVarRequestOptions.QueryParameters.Add(Lusid.Sdk.Client.ClientUtils.ParameterToMultiMap("", "fromAsAt", fromAsAt));
-            }
-            if (toAsAt != null)
-            {
-                localVarRequestOptions.QueryParameters.Add(Lusid.Sdk.Client.ClientUtils.ParameterToMultiMap("", "toAsAt", toAsAt));
-            }
-            if (filter != null)
-            {
-                localVarRequestOptions.QueryParameters.Add(Lusid.Sdk.Client.ClientUtils.ParameterToMultiMap("", "filter", filter));
-            }
-            if (page != null)
-            {
-                localVarRequestOptions.QueryParameters.Add(Lusid.Sdk.Client.ClientUtils.ParameterToMultiMap("", "page", page));
-            }
-            if (limit != null)
-            {
-                localVarRequestOptions.QueryParameters.Add(Lusid.Sdk.Client.ClientUtils.ParameterToMultiMap("", "limit", limit));
-            }
+            if (scope != null) localVarPathParams.Add("scope", this.Configuration.ApiClient.ParameterToString(scope)); // path parameter
+            if (code != null) localVarPathParams.Add("code", this.Configuration.ApiClient.ParameterToString(code)); // path parameter
+            if (fromAsAt != null) localVarQueryParams.AddRange(this.Configuration.ApiClient.ParameterToKeyValuePairs("", "fromAsAt", fromAsAt)); // query parameter
+            if (toAsAt != null) localVarQueryParams.AddRange(this.Configuration.ApiClient.ParameterToKeyValuePairs("", "toAsAt", toAsAt)); // query parameter
+            if (filter != null) localVarQueryParams.AddRange(this.Configuration.ApiClient.ParameterToKeyValuePairs("", "filter", filter)); // query parameter
+            if (page != null) localVarQueryParams.AddRange(this.Configuration.ApiClient.ParameterToKeyValuePairs("", "page", page)); // query parameter
+            if (limit != null) localVarQueryParams.AddRange(this.Configuration.ApiClient.ParameterToKeyValuePairs("", "limit", limit)); // query parameter
 
             // authentication (oauth2) required
             // oauth required
             if (!String.IsNullOrEmpty(this.Configuration.AccessToken))
             {
-                localVarRequestOptions.HeaderParameters.Add("Authorization", "Bearer " + this.Configuration.AccessToken);
+                localVarHeaderParams["Authorization"] = "Bearer " + this.Configuration.AccessToken;
             }
 
             //  set the LUSID header
-            localVarRequestOptions.HeaderParameters.Add("X-LUSID-Sdk-Language", "C#");
-            localVarRequestOptions.HeaderParameters.Add("X-LUSID-Sdk-Version", "0.11.3313");
+            localVarHeaderParams["X-LUSID-SDK-Language"] = "C#";
+            localVarHeaderParams["X-LUSID-SDK-Version"] = "0.11.3314";
 
             // make the HTTP request
-            var localVarResponse = this.Client.Get<ResourceListOfProcessedCommand>("/api/portfolios/{scope}/{code}/commands", localVarRequestOptions, this.Configuration);
+            IRestResponse localVarResponse = (IRestResponse) this.Configuration.ApiClient.CallApi(localVarPath,
+                Method.GET, localVarQueryParams, localVarPostBody, localVarHeaderParams, localVarFormParams, localVarFileParams,
+                localVarPathParams, localVarHttpContentType);
 
-            if (this.ExceptionFactory != null)
+            int localVarStatusCode = (int) localVarResponse.StatusCode;
+
+            if (ExceptionFactory != null)
             {
-                Exception _exception = this.ExceptionFactory("GetPortfolioCommands", localVarResponse);
-                if (_exception != null) throw _exception;
+                Exception exception = ExceptionFactory("GetPortfolioCommands", localVarResponse);
+                if (exception != null) throw exception;
             }
 
-            return localVarResponse;
+            return new ApiResponse<ResourceListOfProcessedCommand>(localVarStatusCode,
+                localVarResponse.Headers.ToDictionary(x => x.Key, x => string.Join(",", x.Value)),
+                (ResourceListOfProcessedCommand) this.Configuration.ApiClient.Deserialize(localVarResponse, typeof(ResourceListOfProcessedCommand)));
         }
 
         /// <summary>
@@ -2456,12 +2382,12 @@ namespace Lusid.Sdk.Api
         /// <param name="filter">Expression to filter the results.              For example, to filter on the User ID, specify \&quot;userId.id eq &#39;string&#39;\&quot;.              For more information about filtering, see https://support.lusid.com/knowledgebase/article/KA-01914. (optional)</param>
         /// <param name="page">The pagination token to use to continue listing commands; this value is returned from the previous call. (optional)</param>
         /// <param name="limit">When paginating, limit the results to this number. Defaults to 500 if not specified. (optional)</param>
-        /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
         /// <returns>Task of ResourceListOfProcessedCommand</returns>
-        public async System.Threading.Tasks.Task<ResourceListOfProcessedCommand> GetPortfolioCommandsAsync(string scope, string code, DateTimeOffset? fromAsAt = default(DateTimeOffset?), DateTimeOffset? toAsAt = default(DateTimeOffset?), string filter = default(string), string page = default(string), int? limit = default(int?), System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
+        public async System.Threading.Tasks.Task<ResourceListOfProcessedCommand> GetPortfolioCommandsAsync (string scope, string code, DateTimeOffset? fromAsAt = null, DateTimeOffset? toAsAt = null, string filter = null, string page = null, int? limit = null)
         {
-            Lusid.Sdk.Client.ApiResponse<ResourceListOfProcessedCommand> localVarResponse = await GetPortfolioCommandsWithHttpInfoAsync(scope, code, fromAsAt, toAsAt, filter, page, limit, cancellationToken).ConfigureAwait(false);
-            return localVarResponse.Data;
+             ApiResponse<ResourceListOfProcessedCommand> localVarResponse = await GetPortfolioCommandsAsyncWithHttpInfo(scope, code, fromAsAt, toAsAt, filter, page, limit);
+             return localVarResponse.Data;
+
         }
 
         /// <summary>
@@ -2475,83 +2401,74 @@ namespace Lusid.Sdk.Api
         /// <param name="filter">Expression to filter the results.              For example, to filter on the User ID, specify \&quot;userId.id eq &#39;string&#39;\&quot;.              For more information about filtering, see https://support.lusid.com/knowledgebase/article/KA-01914. (optional)</param>
         /// <param name="page">The pagination token to use to continue listing commands; this value is returned from the previous call. (optional)</param>
         /// <param name="limit">When paginating, limit the results to this number. Defaults to 500 if not specified. (optional)</param>
-        /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
         /// <returns>Task of ApiResponse (ResourceListOfProcessedCommand)</returns>
-        public async System.Threading.Tasks.Task<Lusid.Sdk.Client.ApiResponse<ResourceListOfProcessedCommand>> GetPortfolioCommandsWithHttpInfoAsync(string scope, string code, DateTimeOffset? fromAsAt = default(DateTimeOffset?), DateTimeOffset? toAsAt = default(DateTimeOffset?), string filter = default(string), string page = default(string), int? limit = default(int?), System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
+        public async System.Threading.Tasks.Task<ApiResponse<ResourceListOfProcessedCommand>> GetPortfolioCommandsAsyncWithHttpInfo (string scope, string code, DateTimeOffset? fromAsAt = null, DateTimeOffset? toAsAt = null, string filter = null, string page = null, int? limit = null)
         {
             // verify the required parameter 'scope' is set
             if (scope == null)
-                throw new Lusid.Sdk.Client.ApiException(400, "Missing required parameter 'scope' when calling PortfoliosApi->GetPortfolioCommands");
-
+                throw new ApiException(400, "Missing required parameter 'scope' when calling PortfoliosApi->GetPortfolioCommands");
             // verify the required parameter 'code' is set
             if (code == null)
-                throw new Lusid.Sdk.Client.ApiException(400, "Missing required parameter 'code' when calling PortfoliosApi->GetPortfolioCommands");
+                throw new ApiException(400, "Missing required parameter 'code' when calling PortfoliosApi->GetPortfolioCommands");
 
+            var localVarPath = "./api/portfolios/{scope}/{code}/commands";
+            var localVarPathParams = new Dictionary<String, String>();
+            var localVarQueryParams = new List<KeyValuePair<String, String>>();
+            var localVarHeaderParams = new Dictionary<String, String>(this.Configuration.DefaultHeader);
+            var localVarFormParams = new Dictionary<String, String>();
+            var localVarFileParams = new Dictionary<String, FileParameter>();
+            Object localVarPostBody = null;
 
-            Lusid.Sdk.Client.RequestOptions localVarRequestOptions = new Lusid.Sdk.Client.RequestOptions();
-
-            String[] _contentTypes = new String[] {
+            // to determine the Content-Type header
+            String[] localVarHttpContentTypes = new String[] {
             };
+            String localVarHttpContentType = this.Configuration.ApiClient.SelectHeaderContentType(localVarHttpContentTypes);
 
             // to determine the Accept header
-            String[] _accepts = new String[] {
+            String[] localVarHttpHeaderAccepts = new String[] {
                 "text/plain",
                 "application/json",
                 "text/json"
             };
+            String localVarHttpHeaderAccept = this.Configuration.ApiClient.SelectHeaderAccept(localVarHttpHeaderAccepts);
+            if (localVarHttpHeaderAccept != null)
+                localVarHeaderParams.Add("Accept", localVarHttpHeaderAccept);
 
-
-            var localVarContentType = Lusid.Sdk.Client.ClientUtils.SelectHeaderContentType(_contentTypes);
-            if (localVarContentType != null) localVarRequestOptions.HeaderParameters.Add("Content-Type", localVarContentType);
-
-            var localVarAccept = Lusid.Sdk.Client.ClientUtils.SelectHeaderAccept(_accepts);
-            if (localVarAccept != null) localVarRequestOptions.HeaderParameters.Add("Accept", localVarAccept);
-
-            localVarRequestOptions.PathParameters.Add("scope", Lusid.Sdk.Client.ClientUtils.ParameterToString(scope)); // path parameter
-            localVarRequestOptions.PathParameters.Add("code", Lusid.Sdk.Client.ClientUtils.ParameterToString(code)); // path parameter
-            if (fromAsAt != null)
-            {
-                localVarRequestOptions.QueryParameters.Add(Lusid.Sdk.Client.ClientUtils.ParameterToMultiMap("", "fromAsAt", fromAsAt));
-            }
-            if (toAsAt != null)
-            {
-                localVarRequestOptions.QueryParameters.Add(Lusid.Sdk.Client.ClientUtils.ParameterToMultiMap("", "toAsAt", toAsAt));
-            }
-            if (filter != null)
-            {
-                localVarRequestOptions.QueryParameters.Add(Lusid.Sdk.Client.ClientUtils.ParameterToMultiMap("", "filter", filter));
-            }
-            if (page != null)
-            {
-                localVarRequestOptions.QueryParameters.Add(Lusid.Sdk.Client.ClientUtils.ParameterToMultiMap("", "page", page));
-            }
-            if (limit != null)
-            {
-                localVarRequestOptions.QueryParameters.Add(Lusid.Sdk.Client.ClientUtils.ParameterToMultiMap("", "limit", limit));
-            }
+            if (scope != null) localVarPathParams.Add("scope", this.Configuration.ApiClient.ParameterToString(scope)); // path parameter
+            if (code != null) localVarPathParams.Add("code", this.Configuration.ApiClient.ParameterToString(code)); // path parameter
+            if (fromAsAt != null) localVarQueryParams.AddRange(this.Configuration.ApiClient.ParameterToKeyValuePairs("", "fromAsAt", fromAsAt)); // query parameter
+            if (toAsAt != null) localVarQueryParams.AddRange(this.Configuration.ApiClient.ParameterToKeyValuePairs("", "toAsAt", toAsAt)); // query parameter
+            if (filter != null) localVarQueryParams.AddRange(this.Configuration.ApiClient.ParameterToKeyValuePairs("", "filter", filter)); // query parameter
+            if (page != null) localVarQueryParams.AddRange(this.Configuration.ApiClient.ParameterToKeyValuePairs("", "page", page)); // query parameter
+            if (limit != null) localVarQueryParams.AddRange(this.Configuration.ApiClient.ParameterToKeyValuePairs("", "limit", limit)); // query parameter
 
             // authentication (oauth2) required
             // oauth required
             if (!String.IsNullOrEmpty(this.Configuration.AccessToken))
             {
-                localVarRequestOptions.HeaderParameters.Add("Authorization", "Bearer " + this.Configuration.AccessToken);
+                localVarHeaderParams["Authorization"] = "Bearer " + this.Configuration.AccessToken;
             }
 
             //  set the LUSID header
-            localVarRequestOptions.HeaderParameters.Add("X-LUSID-Sdk-Language", "C#");
-            localVarRequestOptions.HeaderParameters.Add("X-LUSID-Sdk-Version", "0.11.3313");
+            localVarHeaderParams["X-LUSID-Sdk-Language"] = "C#";
+            localVarHeaderParams["X-LUSID-Sdk-Version"] = "0.11.3314";
 
             // make the HTTP request
+            IRestResponse localVarResponse = (IRestResponse) await this.Configuration.ApiClient.CallApiAsync(localVarPath,
+                Method.GET, localVarQueryParams, localVarPostBody, localVarHeaderParams, localVarFormParams, localVarFileParams,
+                localVarPathParams, localVarHttpContentType);
 
-            var localVarResponse = await this.AsynchronousClient.GetAsync<ResourceListOfProcessedCommand>("/api/portfolios/{scope}/{code}/commands", localVarRequestOptions, this.Configuration, cancellationToken).ConfigureAwait(false);
+            int localVarStatusCode = (int) localVarResponse.StatusCode;
 
-            if (this.ExceptionFactory != null)
+            if (ExceptionFactory != null)
             {
-                Exception _exception = this.ExceptionFactory("GetPortfolioCommands", localVarResponse);
-                if (_exception != null) throw _exception;
+                Exception exception = ExceptionFactory("GetPortfolioCommands", localVarResponse);
+                if (exception != null) throw exception;
             }
 
-            return localVarResponse;
+            return new ApiResponse<ResourceListOfProcessedCommand>(localVarStatusCode,
+                localVarResponse.Headers.ToDictionary(x => x.Key, x => string.Join(",", x.Value)),
+                (ResourceListOfProcessedCommand) this.Configuration.ApiClient.Deserialize(localVarResponse, typeof(ResourceListOfProcessedCommand)));
         }
 
         /// <summary>
@@ -2563,10 +2480,10 @@ namespace Lusid.Sdk.Api
         /// <param name="effectiveAt">The effectiveAt datetime at which to retrieve the access metadata rule. (optional)</param>
         /// <param name="asAt">The asAt datetime at which to retrieve the portfolio access metadata. (optional)</param>
         /// <returns>Dictionary&lt;string, List&lt;AccessMetadataValue&gt;&gt;</returns>
-        public Dictionary<string, List<AccessMetadataValue>> GetPortfolioMetadata(string scope, string code, string effectiveAt = default(string), DateTimeOffset? asAt = default(DateTimeOffset?))
+        public Dictionary<string, List<AccessMetadataValue>> GetPortfolioMetadata (string scope, string code, string effectiveAt = null, DateTimeOffset? asAt = null)
         {
-            Lusid.Sdk.Client.ApiResponse<Dictionary<string, List<AccessMetadataValue>>> localVarResponse = GetPortfolioMetadataWithHttpInfo(scope, code, effectiveAt, asAt);
-            return localVarResponse.Data;
+             ApiResponse<Dictionary<string, List<AccessMetadataValue>>> localVarResponse = GetPortfolioMetadataWithHttpInfo(scope, code, effectiveAt, asAt);
+             return localVarResponse.Data;
         }
 
         /// <summary>
@@ -2578,66 +2495,70 @@ namespace Lusid.Sdk.Api
         /// <param name="effectiveAt">The effectiveAt datetime at which to retrieve the access metadata rule. (optional)</param>
         /// <param name="asAt">The asAt datetime at which to retrieve the portfolio access metadata. (optional)</param>
         /// <returns>ApiResponse of Dictionary&lt;string, List&lt;AccessMetadataValue&gt;&gt;</returns>
-        public Lusid.Sdk.Client.ApiResponse<Dictionary<string, List<AccessMetadataValue>>> GetPortfolioMetadataWithHttpInfo(string scope, string code, string effectiveAt = default(string), DateTimeOffset? asAt = default(DateTimeOffset?))
+        public ApiResponse< Dictionary<string, List<AccessMetadataValue>> > GetPortfolioMetadataWithHttpInfo (string scope, string code, string effectiveAt = null, DateTimeOffset? asAt = null)
         {
             // verify the required parameter 'scope' is set
             if (scope == null)
-                throw new Lusid.Sdk.Client.ApiException(400, "Missing required parameter 'scope' when calling PortfoliosApi->GetPortfolioMetadata");
-
+                throw new ApiException(400, "Missing required parameter 'scope' when calling PortfoliosApi->GetPortfolioMetadata");
             // verify the required parameter 'code' is set
             if (code == null)
-                throw new Lusid.Sdk.Client.ApiException(400, "Missing required parameter 'code' when calling PortfoliosApi->GetPortfolioMetadata");
+                throw new ApiException(400, "Missing required parameter 'code' when calling PortfoliosApi->GetPortfolioMetadata");
 
-            Lusid.Sdk.Client.RequestOptions localVarRequestOptions = new Lusid.Sdk.Client.RequestOptions();
+            var localVarPath = "./api/portfolios/{scope}/{code}/metadata";
+            var localVarPathParams = new Dictionary<String, String>();
+            var localVarQueryParams = new List<KeyValuePair<String, String>>();
+            var localVarHeaderParams = new Dictionary<String, String>(this.Configuration.DefaultHeader);
+            var localVarFormParams = new Dictionary<String, String>();
+            var localVarFileParams = new Dictionary<String, FileParameter>();
+            Object localVarPostBody = null;
 
-            String[] _contentTypes = new String[] {
+            // to determine the Content-Type header
+            String[] localVarHttpContentTypes = new String[] {
             };
+            String localVarHttpContentType = this.Configuration.ApiClient.SelectHeaderContentType(localVarHttpContentTypes);
 
             // to determine the Accept header
-            String[] _accepts = new String[] {
+            String[] localVarHttpHeaderAccepts = new String[] {
                 "text/plain",
                 "application/json",
                 "text/json"
             };
+            String localVarHttpHeaderAccept = this.Configuration.ApiClient.SelectHeaderAccept(localVarHttpHeaderAccepts);
+            if (localVarHttpHeaderAccept != null)
+                localVarHeaderParams.Add("Accept", localVarHttpHeaderAccept);
 
-            var localVarContentType = Lusid.Sdk.Client.ClientUtils.SelectHeaderContentType(_contentTypes);
-            if (localVarContentType != null) localVarRequestOptions.HeaderParameters.Add("Content-Type", localVarContentType);
-
-            var localVarAccept = Lusid.Sdk.Client.ClientUtils.SelectHeaderAccept(_accepts);
-            if (localVarAccept != null) localVarRequestOptions.HeaderParameters.Add("Accept", localVarAccept);
-
-            localVarRequestOptions.PathParameters.Add("scope", Lusid.Sdk.Client.ClientUtils.ParameterToString(scope)); // path parameter
-            localVarRequestOptions.PathParameters.Add("code", Lusid.Sdk.Client.ClientUtils.ParameterToString(code)); // path parameter
-            if (effectiveAt != null)
-            {
-                localVarRequestOptions.QueryParameters.Add(Lusid.Sdk.Client.ClientUtils.ParameterToMultiMap("", "effectiveAt", effectiveAt));
-            }
-            if (asAt != null)
-            {
-                localVarRequestOptions.QueryParameters.Add(Lusid.Sdk.Client.ClientUtils.ParameterToMultiMap("", "asAt", asAt));
-            }
+            if (scope != null) localVarPathParams.Add("scope", this.Configuration.ApiClient.ParameterToString(scope)); // path parameter
+            if (code != null) localVarPathParams.Add("code", this.Configuration.ApiClient.ParameterToString(code)); // path parameter
+            if (effectiveAt != null) localVarQueryParams.AddRange(this.Configuration.ApiClient.ParameterToKeyValuePairs("", "effectiveAt", effectiveAt)); // query parameter
+            if (asAt != null) localVarQueryParams.AddRange(this.Configuration.ApiClient.ParameterToKeyValuePairs("", "asAt", asAt)); // query parameter
 
             // authentication (oauth2) required
             // oauth required
             if (!String.IsNullOrEmpty(this.Configuration.AccessToken))
             {
-                localVarRequestOptions.HeaderParameters.Add("Authorization", "Bearer " + this.Configuration.AccessToken);
+                localVarHeaderParams["Authorization"] = "Bearer " + this.Configuration.AccessToken;
             }
 
             //  set the LUSID header
-            localVarRequestOptions.HeaderParameters.Add("X-LUSID-Sdk-Language", "C#");
-            localVarRequestOptions.HeaderParameters.Add("X-LUSID-Sdk-Version", "0.11.3313");
+            localVarHeaderParams["X-LUSID-SDK-Language"] = "C#";
+            localVarHeaderParams["X-LUSID-SDK-Version"] = "0.11.3314";
 
             // make the HTTP request
-            var localVarResponse = this.Client.Get<Dictionary<string, List<AccessMetadataValue>>>("/api/portfolios/{scope}/{code}/metadata", localVarRequestOptions, this.Configuration);
+            IRestResponse localVarResponse = (IRestResponse) this.Configuration.ApiClient.CallApi(localVarPath,
+                Method.GET, localVarQueryParams, localVarPostBody, localVarHeaderParams, localVarFormParams, localVarFileParams,
+                localVarPathParams, localVarHttpContentType);
 
-            if (this.ExceptionFactory != null)
+            int localVarStatusCode = (int) localVarResponse.StatusCode;
+
+            if (ExceptionFactory != null)
             {
-                Exception _exception = this.ExceptionFactory("GetPortfolioMetadata", localVarResponse);
-                if (_exception != null) throw _exception;
+                Exception exception = ExceptionFactory("GetPortfolioMetadata", localVarResponse);
+                if (exception != null) throw exception;
             }
 
-            return localVarResponse;
+            return new ApiResponse<Dictionary<string, List<AccessMetadataValue>>>(localVarStatusCode,
+                localVarResponse.Headers.ToDictionary(x => x.Key, x => string.Join(",", x.Value)),
+                (Dictionary<string, List<AccessMetadataValue>>) this.Configuration.ApiClient.Deserialize(localVarResponse, typeof(Dictionary<string, List<AccessMetadataValue>>)));
         }
 
         /// <summary>
@@ -2648,12 +2569,12 @@ namespace Lusid.Sdk.Api
         /// <param name="code">Portfolio code</param>
         /// <param name="effectiveAt">The effectiveAt datetime at which to retrieve the access metadata rule. (optional)</param>
         /// <param name="asAt">The asAt datetime at which to retrieve the portfolio access metadata. (optional)</param>
-        /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
         /// <returns>Task of Dictionary&lt;string, List&lt;AccessMetadataValue&gt;&gt;</returns>
-        public async System.Threading.Tasks.Task<Dictionary<string, List<AccessMetadataValue>>> GetPortfolioMetadataAsync(string scope, string code, string effectiveAt = default(string), DateTimeOffset? asAt = default(DateTimeOffset?), System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
+        public async System.Threading.Tasks.Task<Dictionary<string, List<AccessMetadataValue>>> GetPortfolioMetadataAsync (string scope, string code, string effectiveAt = null, DateTimeOffset? asAt = null)
         {
-            Lusid.Sdk.Client.ApiResponse<Dictionary<string, List<AccessMetadataValue>>> localVarResponse = await GetPortfolioMetadataWithHttpInfoAsync(scope, code, effectiveAt, asAt, cancellationToken).ConfigureAwait(false);
-            return localVarResponse.Data;
+             ApiResponse<Dictionary<string, List<AccessMetadataValue>>> localVarResponse = await GetPortfolioMetadataAsyncWithHttpInfo(scope, code, effectiveAt, asAt);
+             return localVarResponse.Data;
+
         }
 
         /// <summary>
@@ -2664,71 +2585,71 @@ namespace Lusid.Sdk.Api
         /// <param name="code">Portfolio code</param>
         /// <param name="effectiveAt">The effectiveAt datetime at which to retrieve the access metadata rule. (optional)</param>
         /// <param name="asAt">The asAt datetime at which to retrieve the portfolio access metadata. (optional)</param>
-        /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
         /// <returns>Task of ApiResponse (Dictionary&lt;string, List&lt;AccessMetadataValue&gt;&gt;)</returns>
-        public async System.Threading.Tasks.Task<Lusid.Sdk.Client.ApiResponse<Dictionary<string, List<AccessMetadataValue>>>> GetPortfolioMetadataWithHttpInfoAsync(string scope, string code, string effectiveAt = default(string), DateTimeOffset? asAt = default(DateTimeOffset?), System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
+        public async System.Threading.Tasks.Task<ApiResponse<Dictionary<string, List<AccessMetadataValue>>>> GetPortfolioMetadataAsyncWithHttpInfo (string scope, string code, string effectiveAt = null, DateTimeOffset? asAt = null)
         {
             // verify the required parameter 'scope' is set
             if (scope == null)
-                throw new Lusid.Sdk.Client.ApiException(400, "Missing required parameter 'scope' when calling PortfoliosApi->GetPortfolioMetadata");
-
+                throw new ApiException(400, "Missing required parameter 'scope' when calling PortfoliosApi->GetPortfolioMetadata");
             // verify the required parameter 'code' is set
             if (code == null)
-                throw new Lusid.Sdk.Client.ApiException(400, "Missing required parameter 'code' when calling PortfoliosApi->GetPortfolioMetadata");
+                throw new ApiException(400, "Missing required parameter 'code' when calling PortfoliosApi->GetPortfolioMetadata");
 
+            var localVarPath = "./api/portfolios/{scope}/{code}/metadata";
+            var localVarPathParams = new Dictionary<String, String>();
+            var localVarQueryParams = new List<KeyValuePair<String, String>>();
+            var localVarHeaderParams = new Dictionary<String, String>(this.Configuration.DefaultHeader);
+            var localVarFormParams = new Dictionary<String, String>();
+            var localVarFileParams = new Dictionary<String, FileParameter>();
+            Object localVarPostBody = null;
 
-            Lusid.Sdk.Client.RequestOptions localVarRequestOptions = new Lusid.Sdk.Client.RequestOptions();
-
-            String[] _contentTypes = new String[] {
+            // to determine the Content-Type header
+            String[] localVarHttpContentTypes = new String[] {
             };
+            String localVarHttpContentType = this.Configuration.ApiClient.SelectHeaderContentType(localVarHttpContentTypes);
 
             // to determine the Accept header
-            String[] _accepts = new String[] {
+            String[] localVarHttpHeaderAccepts = new String[] {
                 "text/plain",
                 "application/json",
                 "text/json"
             };
+            String localVarHttpHeaderAccept = this.Configuration.ApiClient.SelectHeaderAccept(localVarHttpHeaderAccepts);
+            if (localVarHttpHeaderAccept != null)
+                localVarHeaderParams.Add("Accept", localVarHttpHeaderAccept);
 
-
-            var localVarContentType = Lusid.Sdk.Client.ClientUtils.SelectHeaderContentType(_contentTypes);
-            if (localVarContentType != null) localVarRequestOptions.HeaderParameters.Add("Content-Type", localVarContentType);
-
-            var localVarAccept = Lusid.Sdk.Client.ClientUtils.SelectHeaderAccept(_accepts);
-            if (localVarAccept != null) localVarRequestOptions.HeaderParameters.Add("Accept", localVarAccept);
-
-            localVarRequestOptions.PathParameters.Add("scope", Lusid.Sdk.Client.ClientUtils.ParameterToString(scope)); // path parameter
-            localVarRequestOptions.PathParameters.Add("code", Lusid.Sdk.Client.ClientUtils.ParameterToString(code)); // path parameter
-            if (effectiveAt != null)
-            {
-                localVarRequestOptions.QueryParameters.Add(Lusid.Sdk.Client.ClientUtils.ParameterToMultiMap("", "effectiveAt", effectiveAt));
-            }
-            if (asAt != null)
-            {
-                localVarRequestOptions.QueryParameters.Add(Lusid.Sdk.Client.ClientUtils.ParameterToMultiMap("", "asAt", asAt));
-            }
+            if (scope != null) localVarPathParams.Add("scope", this.Configuration.ApiClient.ParameterToString(scope)); // path parameter
+            if (code != null) localVarPathParams.Add("code", this.Configuration.ApiClient.ParameterToString(code)); // path parameter
+            if (effectiveAt != null) localVarQueryParams.AddRange(this.Configuration.ApiClient.ParameterToKeyValuePairs("", "effectiveAt", effectiveAt)); // query parameter
+            if (asAt != null) localVarQueryParams.AddRange(this.Configuration.ApiClient.ParameterToKeyValuePairs("", "asAt", asAt)); // query parameter
 
             // authentication (oauth2) required
             // oauth required
             if (!String.IsNullOrEmpty(this.Configuration.AccessToken))
             {
-                localVarRequestOptions.HeaderParameters.Add("Authorization", "Bearer " + this.Configuration.AccessToken);
+                localVarHeaderParams["Authorization"] = "Bearer " + this.Configuration.AccessToken;
             }
 
             //  set the LUSID header
-            localVarRequestOptions.HeaderParameters.Add("X-LUSID-Sdk-Language", "C#");
-            localVarRequestOptions.HeaderParameters.Add("X-LUSID-Sdk-Version", "0.11.3313");
+            localVarHeaderParams["X-LUSID-Sdk-Language"] = "C#";
+            localVarHeaderParams["X-LUSID-Sdk-Version"] = "0.11.3314";
 
             // make the HTTP request
+            IRestResponse localVarResponse = (IRestResponse) await this.Configuration.ApiClient.CallApiAsync(localVarPath,
+                Method.GET, localVarQueryParams, localVarPostBody, localVarHeaderParams, localVarFormParams, localVarFileParams,
+                localVarPathParams, localVarHttpContentType);
 
-            var localVarResponse = await this.AsynchronousClient.GetAsync<Dictionary<string, List<AccessMetadataValue>>>("/api/portfolios/{scope}/{code}/metadata", localVarRequestOptions, this.Configuration, cancellationToken).ConfigureAwait(false);
+            int localVarStatusCode = (int) localVarResponse.StatusCode;
 
-            if (this.ExceptionFactory != null)
+            if (ExceptionFactory != null)
             {
-                Exception _exception = this.ExceptionFactory("GetPortfolioMetadata", localVarResponse);
-                if (_exception != null) throw _exception;
+                Exception exception = ExceptionFactory("GetPortfolioMetadata", localVarResponse);
+                if (exception != null) throw exception;
             }
 
-            return localVarResponse;
+            return new ApiResponse<Dictionary<string, List<AccessMetadataValue>>>(localVarStatusCode,
+                localVarResponse.Headers.ToDictionary(x => x.Key, x => string.Join(",", x.Value)),
+                (Dictionary<string, List<AccessMetadataValue>>) this.Configuration.ApiClient.Deserialize(localVarResponse, typeof(Dictionary<string, List<AccessMetadataValue>>)));
         }
 
         /// <summary>
@@ -2740,10 +2661,10 @@ namespace Lusid.Sdk.Api
         /// <param name="effectiveAt">The effective datetime or cut label at which to list the portfolio&#39;s properties. Defaults to the current LUSID system datetime if not specified. (optional)</param>
         /// <param name="asAt">The asAt datetime at which to list the portfolio&#39;s properties. Defaults to returning the latest version of each property if not specified. (optional)</param>
         /// <returns>PortfolioProperties</returns>
-        public PortfolioProperties GetPortfolioProperties(string scope, string code, DateTimeOrCutLabel effectiveAt = default(DateTimeOrCutLabel), DateTimeOffset? asAt = default(DateTimeOffset?))
+        public PortfolioProperties GetPortfolioProperties (string scope, string code, DateTimeOrCutLabel effectiveAt = null, DateTimeOffset? asAt = null)
         {
-            Lusid.Sdk.Client.ApiResponse<PortfolioProperties> localVarResponse = GetPortfolioPropertiesWithHttpInfo(scope, code, effectiveAt, asAt);
-            return localVarResponse.Data;
+             ApiResponse<PortfolioProperties> localVarResponse = GetPortfolioPropertiesWithHttpInfo(scope, code, effectiveAt, asAt);
+             return localVarResponse.Data;
         }
 
         /// <summary>
@@ -2755,66 +2676,70 @@ namespace Lusid.Sdk.Api
         /// <param name="effectiveAt">The effective datetime or cut label at which to list the portfolio&#39;s properties. Defaults to the current LUSID system datetime if not specified. (optional)</param>
         /// <param name="asAt">The asAt datetime at which to list the portfolio&#39;s properties. Defaults to returning the latest version of each property if not specified. (optional)</param>
         /// <returns>ApiResponse of PortfolioProperties</returns>
-        public Lusid.Sdk.Client.ApiResponse<PortfolioProperties> GetPortfolioPropertiesWithHttpInfo(string scope, string code, DateTimeOrCutLabel effectiveAt = default(DateTimeOrCutLabel), DateTimeOffset? asAt = default(DateTimeOffset?))
+        public ApiResponse< PortfolioProperties > GetPortfolioPropertiesWithHttpInfo (string scope, string code, DateTimeOrCutLabel effectiveAt = null, DateTimeOffset? asAt = null)
         {
             // verify the required parameter 'scope' is set
             if (scope == null)
-                throw new Lusid.Sdk.Client.ApiException(400, "Missing required parameter 'scope' when calling PortfoliosApi->GetPortfolioProperties");
-
+                throw new ApiException(400, "Missing required parameter 'scope' when calling PortfoliosApi->GetPortfolioProperties");
             // verify the required parameter 'code' is set
             if (code == null)
-                throw new Lusid.Sdk.Client.ApiException(400, "Missing required parameter 'code' when calling PortfoliosApi->GetPortfolioProperties");
+                throw new ApiException(400, "Missing required parameter 'code' when calling PortfoliosApi->GetPortfolioProperties");
 
-            Lusid.Sdk.Client.RequestOptions localVarRequestOptions = new Lusid.Sdk.Client.RequestOptions();
+            var localVarPath = "./api/portfolios/{scope}/{code}/properties";
+            var localVarPathParams = new Dictionary<String, String>();
+            var localVarQueryParams = new List<KeyValuePair<String, String>>();
+            var localVarHeaderParams = new Dictionary<String, String>(this.Configuration.DefaultHeader);
+            var localVarFormParams = new Dictionary<String, String>();
+            var localVarFileParams = new Dictionary<String, FileParameter>();
+            Object localVarPostBody = null;
 
-            String[] _contentTypes = new String[] {
+            // to determine the Content-Type header
+            String[] localVarHttpContentTypes = new String[] {
             };
+            String localVarHttpContentType = this.Configuration.ApiClient.SelectHeaderContentType(localVarHttpContentTypes);
 
             // to determine the Accept header
-            String[] _accepts = new String[] {
+            String[] localVarHttpHeaderAccepts = new String[] {
                 "text/plain",
                 "application/json",
                 "text/json"
             };
+            String localVarHttpHeaderAccept = this.Configuration.ApiClient.SelectHeaderAccept(localVarHttpHeaderAccepts);
+            if (localVarHttpHeaderAccept != null)
+                localVarHeaderParams.Add("Accept", localVarHttpHeaderAccept);
 
-            var localVarContentType = Lusid.Sdk.Client.ClientUtils.SelectHeaderContentType(_contentTypes);
-            if (localVarContentType != null) localVarRequestOptions.HeaderParameters.Add("Content-Type", localVarContentType);
-
-            var localVarAccept = Lusid.Sdk.Client.ClientUtils.SelectHeaderAccept(_accepts);
-            if (localVarAccept != null) localVarRequestOptions.HeaderParameters.Add("Accept", localVarAccept);
-
-            localVarRequestOptions.PathParameters.Add("scope", Lusid.Sdk.Client.ClientUtils.ParameterToString(scope)); // path parameter
-            localVarRequestOptions.PathParameters.Add("code", Lusid.Sdk.Client.ClientUtils.ParameterToString(code)); // path parameter
-            if (effectiveAt != null)
-            {
-                localVarRequestOptions.QueryParameters.Add(Lusid.Sdk.Client.ClientUtils.ParameterToMultiMap("", "effectiveAt", effectiveAt));
-            }
-            if (asAt != null)
-            {
-                localVarRequestOptions.QueryParameters.Add(Lusid.Sdk.Client.ClientUtils.ParameterToMultiMap("", "asAt", asAt));
-            }
+            if (scope != null) localVarPathParams.Add("scope", this.Configuration.ApiClient.ParameterToString(scope)); // path parameter
+            if (code != null) localVarPathParams.Add("code", this.Configuration.ApiClient.ParameterToString(code)); // path parameter
+            if (effectiveAt != null) localVarQueryParams.AddRange(this.Configuration.ApiClient.ParameterToKeyValuePairs("", "effectiveAt", effectiveAt)); // query parameter
+            if (asAt != null) localVarQueryParams.AddRange(this.Configuration.ApiClient.ParameterToKeyValuePairs("", "asAt", asAt)); // query parameter
 
             // authentication (oauth2) required
             // oauth required
             if (!String.IsNullOrEmpty(this.Configuration.AccessToken))
             {
-                localVarRequestOptions.HeaderParameters.Add("Authorization", "Bearer " + this.Configuration.AccessToken);
+                localVarHeaderParams["Authorization"] = "Bearer " + this.Configuration.AccessToken;
             }
 
             //  set the LUSID header
-            localVarRequestOptions.HeaderParameters.Add("X-LUSID-Sdk-Language", "C#");
-            localVarRequestOptions.HeaderParameters.Add("X-LUSID-Sdk-Version", "0.11.3313");
+            localVarHeaderParams["X-LUSID-SDK-Language"] = "C#";
+            localVarHeaderParams["X-LUSID-SDK-Version"] = "0.11.3314";
 
             // make the HTTP request
-            var localVarResponse = this.Client.Get<PortfolioProperties>("/api/portfolios/{scope}/{code}/properties", localVarRequestOptions, this.Configuration);
+            IRestResponse localVarResponse = (IRestResponse) this.Configuration.ApiClient.CallApi(localVarPath,
+                Method.GET, localVarQueryParams, localVarPostBody, localVarHeaderParams, localVarFormParams, localVarFileParams,
+                localVarPathParams, localVarHttpContentType);
 
-            if (this.ExceptionFactory != null)
+            int localVarStatusCode = (int) localVarResponse.StatusCode;
+
+            if (ExceptionFactory != null)
             {
-                Exception _exception = this.ExceptionFactory("GetPortfolioProperties", localVarResponse);
-                if (_exception != null) throw _exception;
+                Exception exception = ExceptionFactory("GetPortfolioProperties", localVarResponse);
+                if (exception != null) throw exception;
             }
 
-            return localVarResponse;
+            return new ApiResponse<PortfolioProperties>(localVarStatusCode,
+                localVarResponse.Headers.ToDictionary(x => x.Key, x => string.Join(",", x.Value)),
+                (PortfolioProperties) this.Configuration.ApiClient.Deserialize(localVarResponse, typeof(PortfolioProperties)));
         }
 
         /// <summary>
@@ -2825,12 +2750,12 @@ namespace Lusid.Sdk.Api
         /// <param name="code">The code of the portfolio. Together with the scope this uniquely identifies the portfolio.</param>
         /// <param name="effectiveAt">The effective datetime or cut label at which to list the portfolio&#39;s properties. Defaults to the current LUSID system datetime if not specified. (optional)</param>
         /// <param name="asAt">The asAt datetime at which to list the portfolio&#39;s properties. Defaults to returning the latest version of each property if not specified. (optional)</param>
-        /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
         /// <returns>Task of PortfolioProperties</returns>
-        public async System.Threading.Tasks.Task<PortfolioProperties> GetPortfolioPropertiesAsync(string scope, string code, DateTimeOrCutLabel effectiveAt = default(DateTimeOrCutLabel), DateTimeOffset? asAt = default(DateTimeOffset?), System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
+        public async System.Threading.Tasks.Task<PortfolioProperties> GetPortfolioPropertiesAsync (string scope, string code, DateTimeOrCutLabel effectiveAt = null, DateTimeOffset? asAt = null)
         {
-            Lusid.Sdk.Client.ApiResponse<PortfolioProperties> localVarResponse = await GetPortfolioPropertiesWithHttpInfoAsync(scope, code, effectiveAt, asAt, cancellationToken).ConfigureAwait(false);
-            return localVarResponse.Data;
+             ApiResponse<PortfolioProperties> localVarResponse = await GetPortfolioPropertiesAsyncWithHttpInfo(scope, code, effectiveAt, asAt);
+             return localVarResponse.Data;
+
         }
 
         /// <summary>
@@ -2841,71 +2766,71 @@ namespace Lusid.Sdk.Api
         /// <param name="code">The code of the portfolio. Together with the scope this uniquely identifies the portfolio.</param>
         /// <param name="effectiveAt">The effective datetime or cut label at which to list the portfolio&#39;s properties. Defaults to the current LUSID system datetime if not specified. (optional)</param>
         /// <param name="asAt">The asAt datetime at which to list the portfolio&#39;s properties. Defaults to returning the latest version of each property if not specified. (optional)</param>
-        /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
         /// <returns>Task of ApiResponse (PortfolioProperties)</returns>
-        public async System.Threading.Tasks.Task<Lusid.Sdk.Client.ApiResponse<PortfolioProperties>> GetPortfolioPropertiesWithHttpInfoAsync(string scope, string code, DateTimeOrCutLabel effectiveAt = default(DateTimeOrCutLabel), DateTimeOffset? asAt = default(DateTimeOffset?), System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
+        public async System.Threading.Tasks.Task<ApiResponse<PortfolioProperties>> GetPortfolioPropertiesAsyncWithHttpInfo (string scope, string code, DateTimeOrCutLabel effectiveAt = null, DateTimeOffset? asAt = null)
         {
             // verify the required parameter 'scope' is set
             if (scope == null)
-                throw new Lusid.Sdk.Client.ApiException(400, "Missing required parameter 'scope' when calling PortfoliosApi->GetPortfolioProperties");
-
+                throw new ApiException(400, "Missing required parameter 'scope' when calling PortfoliosApi->GetPortfolioProperties");
             // verify the required parameter 'code' is set
             if (code == null)
-                throw new Lusid.Sdk.Client.ApiException(400, "Missing required parameter 'code' when calling PortfoliosApi->GetPortfolioProperties");
+                throw new ApiException(400, "Missing required parameter 'code' when calling PortfoliosApi->GetPortfolioProperties");
 
+            var localVarPath = "./api/portfolios/{scope}/{code}/properties";
+            var localVarPathParams = new Dictionary<String, String>();
+            var localVarQueryParams = new List<KeyValuePair<String, String>>();
+            var localVarHeaderParams = new Dictionary<String, String>(this.Configuration.DefaultHeader);
+            var localVarFormParams = new Dictionary<String, String>();
+            var localVarFileParams = new Dictionary<String, FileParameter>();
+            Object localVarPostBody = null;
 
-            Lusid.Sdk.Client.RequestOptions localVarRequestOptions = new Lusid.Sdk.Client.RequestOptions();
-
-            String[] _contentTypes = new String[] {
+            // to determine the Content-Type header
+            String[] localVarHttpContentTypes = new String[] {
             };
+            String localVarHttpContentType = this.Configuration.ApiClient.SelectHeaderContentType(localVarHttpContentTypes);
 
             // to determine the Accept header
-            String[] _accepts = new String[] {
+            String[] localVarHttpHeaderAccepts = new String[] {
                 "text/plain",
                 "application/json",
                 "text/json"
             };
+            String localVarHttpHeaderAccept = this.Configuration.ApiClient.SelectHeaderAccept(localVarHttpHeaderAccepts);
+            if (localVarHttpHeaderAccept != null)
+                localVarHeaderParams.Add("Accept", localVarHttpHeaderAccept);
 
-
-            var localVarContentType = Lusid.Sdk.Client.ClientUtils.SelectHeaderContentType(_contentTypes);
-            if (localVarContentType != null) localVarRequestOptions.HeaderParameters.Add("Content-Type", localVarContentType);
-
-            var localVarAccept = Lusid.Sdk.Client.ClientUtils.SelectHeaderAccept(_accepts);
-            if (localVarAccept != null) localVarRequestOptions.HeaderParameters.Add("Accept", localVarAccept);
-
-            localVarRequestOptions.PathParameters.Add("scope", Lusid.Sdk.Client.ClientUtils.ParameterToString(scope)); // path parameter
-            localVarRequestOptions.PathParameters.Add("code", Lusid.Sdk.Client.ClientUtils.ParameterToString(code)); // path parameter
-            if (effectiveAt != null)
-            {
-                localVarRequestOptions.QueryParameters.Add(Lusid.Sdk.Client.ClientUtils.ParameterToMultiMap("", "effectiveAt", effectiveAt));
-            }
-            if (asAt != null)
-            {
-                localVarRequestOptions.QueryParameters.Add(Lusid.Sdk.Client.ClientUtils.ParameterToMultiMap("", "asAt", asAt));
-            }
+            if (scope != null) localVarPathParams.Add("scope", this.Configuration.ApiClient.ParameterToString(scope)); // path parameter
+            if (code != null) localVarPathParams.Add("code", this.Configuration.ApiClient.ParameterToString(code)); // path parameter
+            if (effectiveAt != null) localVarQueryParams.AddRange(this.Configuration.ApiClient.ParameterToKeyValuePairs("", "effectiveAt", effectiveAt)); // query parameter
+            if (asAt != null) localVarQueryParams.AddRange(this.Configuration.ApiClient.ParameterToKeyValuePairs("", "asAt", asAt)); // query parameter
 
             // authentication (oauth2) required
             // oauth required
             if (!String.IsNullOrEmpty(this.Configuration.AccessToken))
             {
-                localVarRequestOptions.HeaderParameters.Add("Authorization", "Bearer " + this.Configuration.AccessToken);
+                localVarHeaderParams["Authorization"] = "Bearer " + this.Configuration.AccessToken;
             }
 
             //  set the LUSID header
-            localVarRequestOptions.HeaderParameters.Add("X-LUSID-Sdk-Language", "C#");
-            localVarRequestOptions.HeaderParameters.Add("X-LUSID-Sdk-Version", "0.11.3313");
+            localVarHeaderParams["X-LUSID-Sdk-Language"] = "C#";
+            localVarHeaderParams["X-LUSID-Sdk-Version"] = "0.11.3314";
 
             // make the HTTP request
+            IRestResponse localVarResponse = (IRestResponse) await this.Configuration.ApiClient.CallApiAsync(localVarPath,
+                Method.GET, localVarQueryParams, localVarPostBody, localVarHeaderParams, localVarFormParams, localVarFileParams,
+                localVarPathParams, localVarHttpContentType);
 
-            var localVarResponse = await this.AsynchronousClient.GetAsync<PortfolioProperties>("/api/portfolios/{scope}/{code}/properties", localVarRequestOptions, this.Configuration, cancellationToken).ConfigureAwait(false);
+            int localVarStatusCode = (int) localVarResponse.StatusCode;
 
-            if (this.ExceptionFactory != null)
+            if (ExceptionFactory != null)
             {
-                Exception _exception = this.ExceptionFactory("GetPortfolioProperties", localVarResponse);
-                if (_exception != null) throw _exception;
+                Exception exception = ExceptionFactory("GetPortfolioProperties", localVarResponse);
+                if (exception != null) throw exception;
             }
 
-            return localVarResponse;
+            return new ApiResponse<PortfolioProperties>(localVarStatusCode,
+                localVarResponse.Headers.ToDictionary(x => x.Key, x => string.Join(",", x.Value)),
+                (PortfolioProperties) this.Configuration.ApiClient.Deserialize(localVarResponse, typeof(PortfolioProperties)));
         }
 
         /// <summary>
@@ -2921,10 +2846,10 @@ namespace Lusid.Sdk.Api
         /// <param name="page">The pagination token to use to continue listing properties; this value is returned from              the previous call. If a pagination token is provided, the filter, portfolioEffectiveAt, and asAt fields              must not have changed since the original request. (optional)</param>
         /// <param name="limit">When paginating, limit the results to this number. (optional)</param>
         /// <returns>ResourceListOfPropertyInterval</returns>
-        public ResourceListOfPropertyInterval GetPortfolioPropertyTimeSeries(string scope, string code, string propertyKey = default(string), string portfolioEffectiveAt = default(string), DateTimeOffset? asAt = default(DateTimeOffset?), string filter = default(string), string page = default(string), int? limit = default(int?))
+        public ResourceListOfPropertyInterval GetPortfolioPropertyTimeSeries (string scope, string code, string propertyKey = null, string portfolioEffectiveAt = null, DateTimeOffset? asAt = null, string filter = null, string page = null, int? limit = null)
         {
-            Lusid.Sdk.Client.ApiResponse<ResourceListOfPropertyInterval> localVarResponse = GetPortfolioPropertyTimeSeriesWithHttpInfo(scope, code, propertyKey, portfolioEffectiveAt, asAt, filter, page, limit);
-            return localVarResponse.Data;
+             ApiResponse<ResourceListOfPropertyInterval> localVarResponse = GetPortfolioPropertyTimeSeriesWithHttpInfo(scope, code, propertyKey, portfolioEffectiveAt, asAt, filter, page, limit);
+             return localVarResponse.Data;
         }
 
         /// <summary>
@@ -2940,82 +2865,74 @@ namespace Lusid.Sdk.Api
         /// <param name="page">The pagination token to use to continue listing properties; this value is returned from              the previous call. If a pagination token is provided, the filter, portfolioEffectiveAt, and asAt fields              must not have changed since the original request. (optional)</param>
         /// <param name="limit">When paginating, limit the results to this number. (optional)</param>
         /// <returns>ApiResponse of ResourceListOfPropertyInterval</returns>
-        public Lusid.Sdk.Client.ApiResponse<ResourceListOfPropertyInterval> GetPortfolioPropertyTimeSeriesWithHttpInfo(string scope, string code, string propertyKey = default(string), string portfolioEffectiveAt = default(string), DateTimeOffset? asAt = default(DateTimeOffset?), string filter = default(string), string page = default(string), int? limit = default(int?))
+        public ApiResponse< ResourceListOfPropertyInterval > GetPortfolioPropertyTimeSeriesWithHttpInfo (string scope, string code, string propertyKey = null, string portfolioEffectiveAt = null, DateTimeOffset? asAt = null, string filter = null, string page = null, int? limit = null)
         {
             // verify the required parameter 'scope' is set
             if (scope == null)
-                throw new Lusid.Sdk.Client.ApiException(400, "Missing required parameter 'scope' when calling PortfoliosApi->GetPortfolioPropertyTimeSeries");
-
+                throw new ApiException(400, "Missing required parameter 'scope' when calling PortfoliosApi->GetPortfolioPropertyTimeSeries");
             // verify the required parameter 'code' is set
             if (code == null)
-                throw new Lusid.Sdk.Client.ApiException(400, "Missing required parameter 'code' when calling PortfoliosApi->GetPortfolioPropertyTimeSeries");
+                throw new ApiException(400, "Missing required parameter 'code' when calling PortfoliosApi->GetPortfolioPropertyTimeSeries");
 
-            Lusid.Sdk.Client.RequestOptions localVarRequestOptions = new Lusid.Sdk.Client.RequestOptions();
+            var localVarPath = "./api/portfolios/{scope}/{code}/properties/time-series";
+            var localVarPathParams = new Dictionary<String, String>();
+            var localVarQueryParams = new List<KeyValuePair<String, String>>();
+            var localVarHeaderParams = new Dictionary<String, String>(this.Configuration.DefaultHeader);
+            var localVarFormParams = new Dictionary<String, String>();
+            var localVarFileParams = new Dictionary<String, FileParameter>();
+            Object localVarPostBody = null;
 
-            String[] _contentTypes = new String[] {
+            // to determine the Content-Type header
+            String[] localVarHttpContentTypes = new String[] {
             };
+            String localVarHttpContentType = this.Configuration.ApiClient.SelectHeaderContentType(localVarHttpContentTypes);
 
             // to determine the Accept header
-            String[] _accepts = new String[] {
+            String[] localVarHttpHeaderAccepts = new String[] {
                 "text/plain",
                 "application/json",
                 "text/json"
             };
+            String localVarHttpHeaderAccept = this.Configuration.ApiClient.SelectHeaderAccept(localVarHttpHeaderAccepts);
+            if (localVarHttpHeaderAccept != null)
+                localVarHeaderParams.Add("Accept", localVarHttpHeaderAccept);
 
-            var localVarContentType = Lusid.Sdk.Client.ClientUtils.SelectHeaderContentType(_contentTypes);
-            if (localVarContentType != null) localVarRequestOptions.HeaderParameters.Add("Content-Type", localVarContentType);
-
-            var localVarAccept = Lusid.Sdk.Client.ClientUtils.SelectHeaderAccept(_accepts);
-            if (localVarAccept != null) localVarRequestOptions.HeaderParameters.Add("Accept", localVarAccept);
-
-            localVarRequestOptions.PathParameters.Add("scope", Lusid.Sdk.Client.ClientUtils.ParameterToString(scope)); // path parameter
-            localVarRequestOptions.PathParameters.Add("code", Lusid.Sdk.Client.ClientUtils.ParameterToString(code)); // path parameter
-            if (propertyKey != null)
-            {
-                localVarRequestOptions.QueryParameters.Add(Lusid.Sdk.Client.ClientUtils.ParameterToMultiMap("", "propertyKey", propertyKey));
-            }
-            if (portfolioEffectiveAt != null)
-            {
-                localVarRequestOptions.QueryParameters.Add(Lusid.Sdk.Client.ClientUtils.ParameterToMultiMap("", "portfolioEffectiveAt", portfolioEffectiveAt));
-            }
-            if (asAt != null)
-            {
-                localVarRequestOptions.QueryParameters.Add(Lusid.Sdk.Client.ClientUtils.ParameterToMultiMap("", "asAt", asAt));
-            }
-            if (filter != null)
-            {
-                localVarRequestOptions.QueryParameters.Add(Lusid.Sdk.Client.ClientUtils.ParameterToMultiMap("", "filter", filter));
-            }
-            if (page != null)
-            {
-                localVarRequestOptions.QueryParameters.Add(Lusid.Sdk.Client.ClientUtils.ParameterToMultiMap("", "page", page));
-            }
-            if (limit != null)
-            {
-                localVarRequestOptions.QueryParameters.Add(Lusid.Sdk.Client.ClientUtils.ParameterToMultiMap("", "limit", limit));
-            }
+            if (scope != null) localVarPathParams.Add("scope", this.Configuration.ApiClient.ParameterToString(scope)); // path parameter
+            if (code != null) localVarPathParams.Add("code", this.Configuration.ApiClient.ParameterToString(code)); // path parameter
+            if (propertyKey != null) localVarQueryParams.AddRange(this.Configuration.ApiClient.ParameterToKeyValuePairs("", "propertyKey", propertyKey)); // query parameter
+            if (portfolioEffectiveAt != null) localVarQueryParams.AddRange(this.Configuration.ApiClient.ParameterToKeyValuePairs("", "portfolioEffectiveAt", portfolioEffectiveAt)); // query parameter
+            if (asAt != null) localVarQueryParams.AddRange(this.Configuration.ApiClient.ParameterToKeyValuePairs("", "asAt", asAt)); // query parameter
+            if (filter != null) localVarQueryParams.AddRange(this.Configuration.ApiClient.ParameterToKeyValuePairs("", "filter", filter)); // query parameter
+            if (page != null) localVarQueryParams.AddRange(this.Configuration.ApiClient.ParameterToKeyValuePairs("", "page", page)); // query parameter
+            if (limit != null) localVarQueryParams.AddRange(this.Configuration.ApiClient.ParameterToKeyValuePairs("", "limit", limit)); // query parameter
 
             // authentication (oauth2) required
             // oauth required
             if (!String.IsNullOrEmpty(this.Configuration.AccessToken))
             {
-                localVarRequestOptions.HeaderParameters.Add("Authorization", "Bearer " + this.Configuration.AccessToken);
+                localVarHeaderParams["Authorization"] = "Bearer " + this.Configuration.AccessToken;
             }
 
             //  set the LUSID header
-            localVarRequestOptions.HeaderParameters.Add("X-LUSID-Sdk-Language", "C#");
-            localVarRequestOptions.HeaderParameters.Add("X-LUSID-Sdk-Version", "0.11.3313");
+            localVarHeaderParams["X-LUSID-SDK-Language"] = "C#";
+            localVarHeaderParams["X-LUSID-SDK-Version"] = "0.11.3314";
 
             // make the HTTP request
-            var localVarResponse = this.Client.Get<ResourceListOfPropertyInterval>("/api/portfolios/{scope}/{code}/properties/time-series", localVarRequestOptions, this.Configuration);
+            IRestResponse localVarResponse = (IRestResponse) this.Configuration.ApiClient.CallApi(localVarPath,
+                Method.GET, localVarQueryParams, localVarPostBody, localVarHeaderParams, localVarFormParams, localVarFileParams,
+                localVarPathParams, localVarHttpContentType);
 
-            if (this.ExceptionFactory != null)
+            int localVarStatusCode = (int) localVarResponse.StatusCode;
+
+            if (ExceptionFactory != null)
             {
-                Exception _exception = this.ExceptionFactory("GetPortfolioPropertyTimeSeries", localVarResponse);
-                if (_exception != null) throw _exception;
+                Exception exception = ExceptionFactory("GetPortfolioPropertyTimeSeries", localVarResponse);
+                if (exception != null) throw exception;
             }
 
-            return localVarResponse;
+            return new ApiResponse<ResourceListOfPropertyInterval>(localVarStatusCode,
+                localVarResponse.Headers.ToDictionary(x => x.Key, x => string.Join(",", x.Value)),
+                (ResourceListOfPropertyInterval) this.Configuration.ApiClient.Deserialize(localVarResponse, typeof(ResourceListOfPropertyInterval)));
         }
 
         /// <summary>
@@ -3030,12 +2947,12 @@ namespace Lusid.Sdk.Api
         /// <param name="filter">Expression to filter the results. For more information about filtering,              see https://support.lusid.com/knowledgebase/article/KA-01914. (optional)</param>
         /// <param name="page">The pagination token to use to continue listing properties; this value is returned from              the previous call. If a pagination token is provided, the filter, portfolioEffectiveAt, and asAt fields              must not have changed since the original request. (optional)</param>
         /// <param name="limit">When paginating, limit the results to this number. (optional)</param>
-        /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
         /// <returns>Task of ResourceListOfPropertyInterval</returns>
-        public async System.Threading.Tasks.Task<ResourceListOfPropertyInterval> GetPortfolioPropertyTimeSeriesAsync(string scope, string code, string propertyKey = default(string), string portfolioEffectiveAt = default(string), DateTimeOffset? asAt = default(DateTimeOffset?), string filter = default(string), string page = default(string), int? limit = default(int?), System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
+        public async System.Threading.Tasks.Task<ResourceListOfPropertyInterval> GetPortfolioPropertyTimeSeriesAsync (string scope, string code, string propertyKey = null, string portfolioEffectiveAt = null, DateTimeOffset? asAt = null, string filter = null, string page = null, int? limit = null)
         {
-            Lusid.Sdk.Client.ApiResponse<ResourceListOfPropertyInterval> localVarResponse = await GetPortfolioPropertyTimeSeriesWithHttpInfoAsync(scope, code, propertyKey, portfolioEffectiveAt, asAt, filter, page, limit, cancellationToken).ConfigureAwait(false);
-            return localVarResponse.Data;
+             ApiResponse<ResourceListOfPropertyInterval> localVarResponse = await GetPortfolioPropertyTimeSeriesAsyncWithHttpInfo(scope, code, propertyKey, portfolioEffectiveAt, asAt, filter, page, limit);
+             return localVarResponse.Data;
+
         }
 
         /// <summary>
@@ -3050,87 +2967,75 @@ namespace Lusid.Sdk.Api
         /// <param name="filter">Expression to filter the results. For more information about filtering,              see https://support.lusid.com/knowledgebase/article/KA-01914. (optional)</param>
         /// <param name="page">The pagination token to use to continue listing properties; this value is returned from              the previous call. If a pagination token is provided, the filter, portfolioEffectiveAt, and asAt fields              must not have changed since the original request. (optional)</param>
         /// <param name="limit">When paginating, limit the results to this number. (optional)</param>
-        /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
         /// <returns>Task of ApiResponse (ResourceListOfPropertyInterval)</returns>
-        public async System.Threading.Tasks.Task<Lusid.Sdk.Client.ApiResponse<ResourceListOfPropertyInterval>> GetPortfolioPropertyTimeSeriesWithHttpInfoAsync(string scope, string code, string propertyKey = default(string), string portfolioEffectiveAt = default(string), DateTimeOffset? asAt = default(DateTimeOffset?), string filter = default(string), string page = default(string), int? limit = default(int?), System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
+        public async System.Threading.Tasks.Task<ApiResponse<ResourceListOfPropertyInterval>> GetPortfolioPropertyTimeSeriesAsyncWithHttpInfo (string scope, string code, string propertyKey = null, string portfolioEffectiveAt = null, DateTimeOffset? asAt = null, string filter = null, string page = null, int? limit = null)
         {
             // verify the required parameter 'scope' is set
             if (scope == null)
-                throw new Lusid.Sdk.Client.ApiException(400, "Missing required parameter 'scope' when calling PortfoliosApi->GetPortfolioPropertyTimeSeries");
-
+                throw new ApiException(400, "Missing required parameter 'scope' when calling PortfoliosApi->GetPortfolioPropertyTimeSeries");
             // verify the required parameter 'code' is set
             if (code == null)
-                throw new Lusid.Sdk.Client.ApiException(400, "Missing required parameter 'code' when calling PortfoliosApi->GetPortfolioPropertyTimeSeries");
+                throw new ApiException(400, "Missing required parameter 'code' when calling PortfoliosApi->GetPortfolioPropertyTimeSeries");
 
+            var localVarPath = "./api/portfolios/{scope}/{code}/properties/time-series";
+            var localVarPathParams = new Dictionary<String, String>();
+            var localVarQueryParams = new List<KeyValuePair<String, String>>();
+            var localVarHeaderParams = new Dictionary<String, String>(this.Configuration.DefaultHeader);
+            var localVarFormParams = new Dictionary<String, String>();
+            var localVarFileParams = new Dictionary<String, FileParameter>();
+            Object localVarPostBody = null;
 
-            Lusid.Sdk.Client.RequestOptions localVarRequestOptions = new Lusid.Sdk.Client.RequestOptions();
-
-            String[] _contentTypes = new String[] {
+            // to determine the Content-Type header
+            String[] localVarHttpContentTypes = new String[] {
             };
+            String localVarHttpContentType = this.Configuration.ApiClient.SelectHeaderContentType(localVarHttpContentTypes);
 
             // to determine the Accept header
-            String[] _accepts = new String[] {
+            String[] localVarHttpHeaderAccepts = new String[] {
                 "text/plain",
                 "application/json",
                 "text/json"
             };
+            String localVarHttpHeaderAccept = this.Configuration.ApiClient.SelectHeaderAccept(localVarHttpHeaderAccepts);
+            if (localVarHttpHeaderAccept != null)
+                localVarHeaderParams.Add("Accept", localVarHttpHeaderAccept);
 
-
-            var localVarContentType = Lusid.Sdk.Client.ClientUtils.SelectHeaderContentType(_contentTypes);
-            if (localVarContentType != null) localVarRequestOptions.HeaderParameters.Add("Content-Type", localVarContentType);
-
-            var localVarAccept = Lusid.Sdk.Client.ClientUtils.SelectHeaderAccept(_accepts);
-            if (localVarAccept != null) localVarRequestOptions.HeaderParameters.Add("Accept", localVarAccept);
-
-            localVarRequestOptions.PathParameters.Add("scope", Lusid.Sdk.Client.ClientUtils.ParameterToString(scope)); // path parameter
-            localVarRequestOptions.PathParameters.Add("code", Lusid.Sdk.Client.ClientUtils.ParameterToString(code)); // path parameter
-            if (propertyKey != null)
-            {
-                localVarRequestOptions.QueryParameters.Add(Lusid.Sdk.Client.ClientUtils.ParameterToMultiMap("", "propertyKey", propertyKey));
-            }
-            if (portfolioEffectiveAt != null)
-            {
-                localVarRequestOptions.QueryParameters.Add(Lusid.Sdk.Client.ClientUtils.ParameterToMultiMap("", "portfolioEffectiveAt", portfolioEffectiveAt));
-            }
-            if (asAt != null)
-            {
-                localVarRequestOptions.QueryParameters.Add(Lusid.Sdk.Client.ClientUtils.ParameterToMultiMap("", "asAt", asAt));
-            }
-            if (filter != null)
-            {
-                localVarRequestOptions.QueryParameters.Add(Lusid.Sdk.Client.ClientUtils.ParameterToMultiMap("", "filter", filter));
-            }
-            if (page != null)
-            {
-                localVarRequestOptions.QueryParameters.Add(Lusid.Sdk.Client.ClientUtils.ParameterToMultiMap("", "page", page));
-            }
-            if (limit != null)
-            {
-                localVarRequestOptions.QueryParameters.Add(Lusid.Sdk.Client.ClientUtils.ParameterToMultiMap("", "limit", limit));
-            }
+            if (scope != null) localVarPathParams.Add("scope", this.Configuration.ApiClient.ParameterToString(scope)); // path parameter
+            if (code != null) localVarPathParams.Add("code", this.Configuration.ApiClient.ParameterToString(code)); // path parameter
+            if (propertyKey != null) localVarQueryParams.AddRange(this.Configuration.ApiClient.ParameterToKeyValuePairs("", "propertyKey", propertyKey)); // query parameter
+            if (portfolioEffectiveAt != null) localVarQueryParams.AddRange(this.Configuration.ApiClient.ParameterToKeyValuePairs("", "portfolioEffectiveAt", portfolioEffectiveAt)); // query parameter
+            if (asAt != null) localVarQueryParams.AddRange(this.Configuration.ApiClient.ParameterToKeyValuePairs("", "asAt", asAt)); // query parameter
+            if (filter != null) localVarQueryParams.AddRange(this.Configuration.ApiClient.ParameterToKeyValuePairs("", "filter", filter)); // query parameter
+            if (page != null) localVarQueryParams.AddRange(this.Configuration.ApiClient.ParameterToKeyValuePairs("", "page", page)); // query parameter
+            if (limit != null) localVarQueryParams.AddRange(this.Configuration.ApiClient.ParameterToKeyValuePairs("", "limit", limit)); // query parameter
 
             // authentication (oauth2) required
             // oauth required
             if (!String.IsNullOrEmpty(this.Configuration.AccessToken))
             {
-                localVarRequestOptions.HeaderParameters.Add("Authorization", "Bearer " + this.Configuration.AccessToken);
+                localVarHeaderParams["Authorization"] = "Bearer " + this.Configuration.AccessToken;
             }
 
             //  set the LUSID header
-            localVarRequestOptions.HeaderParameters.Add("X-LUSID-Sdk-Language", "C#");
-            localVarRequestOptions.HeaderParameters.Add("X-LUSID-Sdk-Version", "0.11.3313");
+            localVarHeaderParams["X-LUSID-Sdk-Language"] = "C#";
+            localVarHeaderParams["X-LUSID-Sdk-Version"] = "0.11.3314";
 
             // make the HTTP request
+            IRestResponse localVarResponse = (IRestResponse) await this.Configuration.ApiClient.CallApiAsync(localVarPath,
+                Method.GET, localVarQueryParams, localVarPostBody, localVarHeaderParams, localVarFormParams, localVarFileParams,
+                localVarPathParams, localVarHttpContentType);
 
-            var localVarResponse = await this.AsynchronousClient.GetAsync<ResourceListOfPropertyInterval>("/api/portfolios/{scope}/{code}/properties/time-series", localVarRequestOptions, this.Configuration, cancellationToken).ConfigureAwait(false);
+            int localVarStatusCode = (int) localVarResponse.StatusCode;
 
-            if (this.ExceptionFactory != null)
+            if (ExceptionFactory != null)
             {
-                Exception _exception = this.ExceptionFactory("GetPortfolioPropertyTimeSeries", localVarResponse);
-                if (_exception != null) throw _exception;
+                Exception exception = ExceptionFactory("GetPortfolioPropertyTimeSeries", localVarResponse);
+                if (exception != null) throw exception;
             }
 
-            return localVarResponse;
+            return new ApiResponse<ResourceListOfPropertyInterval>(localVarStatusCode,
+                localVarResponse.Headers.ToDictionary(x => x.Key, x => string.Join(",", x.Value)),
+                (ResourceListOfPropertyInterval) this.Configuration.ApiClient.Deserialize(localVarResponse, typeof(ResourceListOfPropertyInterval)));
         }
 
         /// <summary>
@@ -3144,10 +3049,10 @@ namespace Lusid.Sdk.Api
         /// <param name="filter">Expression to filter the relations. Provide a null or empty string for this field until further notice. (optional)</param>
         /// <param name="identifierTypes">Identifier types (as property keys) used for referencing Persons or Legal Entities.              These must be from the &#39;Person&#39; or &#39;LegalEntity&#39; domains and have the format {domain}/{scope}/{code}, for example              &#39;Person/CompanyDetails/Role&#39;. Only identifier types provided will be used to look up relevant entities in relations. If not applicable, provide an empty array. (optional)</param>
         /// <returns>ResourceListOfRelation</returns>
-        public ResourceListOfRelation GetPortfolioRelations(string scope, string code, DateTimeOrCutLabel effectiveAt = default(DateTimeOrCutLabel), DateTimeOffset? asAt = default(DateTimeOffset?), string filter = default(string), List<string> identifierTypes = default(List<string>))
+        public ResourceListOfRelation GetPortfolioRelations (string scope, string code, DateTimeOrCutLabel effectiveAt = null, DateTimeOffset? asAt = null, string filter = null, List<string> identifierTypes = null)
         {
-            Lusid.Sdk.Client.ApiResponse<ResourceListOfRelation> localVarResponse = GetPortfolioRelationsWithHttpInfo(scope, code, effectiveAt, asAt, filter, identifierTypes);
-            return localVarResponse.Data;
+             ApiResponse<ResourceListOfRelation> localVarResponse = GetPortfolioRelationsWithHttpInfo(scope, code, effectiveAt, asAt, filter, identifierTypes);
+             return localVarResponse.Data;
         }
 
         /// <summary>
@@ -3161,74 +3066,72 @@ namespace Lusid.Sdk.Api
         /// <param name="filter">Expression to filter the relations. Provide a null or empty string for this field until further notice. (optional)</param>
         /// <param name="identifierTypes">Identifier types (as property keys) used for referencing Persons or Legal Entities.              These must be from the &#39;Person&#39; or &#39;LegalEntity&#39; domains and have the format {domain}/{scope}/{code}, for example              &#39;Person/CompanyDetails/Role&#39;. Only identifier types provided will be used to look up relevant entities in relations. If not applicable, provide an empty array. (optional)</param>
         /// <returns>ApiResponse of ResourceListOfRelation</returns>
-        public Lusid.Sdk.Client.ApiResponse<ResourceListOfRelation> GetPortfolioRelationsWithHttpInfo(string scope, string code, DateTimeOrCutLabel effectiveAt = default(DateTimeOrCutLabel), DateTimeOffset? asAt = default(DateTimeOffset?), string filter = default(string), List<string> identifierTypes = default(List<string>))
+        public ApiResponse< ResourceListOfRelation > GetPortfolioRelationsWithHttpInfo (string scope, string code, DateTimeOrCutLabel effectiveAt = null, DateTimeOffset? asAt = null, string filter = null, List<string> identifierTypes = null)
         {
             // verify the required parameter 'scope' is set
             if (scope == null)
-                throw new Lusid.Sdk.Client.ApiException(400, "Missing required parameter 'scope' when calling PortfoliosApi->GetPortfolioRelations");
-
+                throw new ApiException(400, "Missing required parameter 'scope' when calling PortfoliosApi->GetPortfolioRelations");
             // verify the required parameter 'code' is set
             if (code == null)
-                throw new Lusid.Sdk.Client.ApiException(400, "Missing required parameter 'code' when calling PortfoliosApi->GetPortfolioRelations");
+                throw new ApiException(400, "Missing required parameter 'code' when calling PortfoliosApi->GetPortfolioRelations");
 
-            Lusid.Sdk.Client.RequestOptions localVarRequestOptions = new Lusid.Sdk.Client.RequestOptions();
+            var localVarPath = "./api/portfolios/{scope}/{code}/relations";
+            var localVarPathParams = new Dictionary<String, String>();
+            var localVarQueryParams = new List<KeyValuePair<String, String>>();
+            var localVarHeaderParams = new Dictionary<String, String>(this.Configuration.DefaultHeader);
+            var localVarFormParams = new Dictionary<String, String>();
+            var localVarFileParams = new Dictionary<String, FileParameter>();
+            Object localVarPostBody = null;
 
-            String[] _contentTypes = new String[] {
+            // to determine the Content-Type header
+            String[] localVarHttpContentTypes = new String[] {
             };
+            String localVarHttpContentType = this.Configuration.ApiClient.SelectHeaderContentType(localVarHttpContentTypes);
 
             // to determine the Accept header
-            String[] _accepts = new String[] {
+            String[] localVarHttpHeaderAccepts = new String[] {
                 "text/plain",
                 "application/json",
                 "text/json"
             };
+            String localVarHttpHeaderAccept = this.Configuration.ApiClient.SelectHeaderAccept(localVarHttpHeaderAccepts);
+            if (localVarHttpHeaderAccept != null)
+                localVarHeaderParams.Add("Accept", localVarHttpHeaderAccept);
 
-            var localVarContentType = Lusid.Sdk.Client.ClientUtils.SelectHeaderContentType(_contentTypes);
-            if (localVarContentType != null) localVarRequestOptions.HeaderParameters.Add("Content-Type", localVarContentType);
-
-            var localVarAccept = Lusid.Sdk.Client.ClientUtils.SelectHeaderAccept(_accepts);
-            if (localVarAccept != null) localVarRequestOptions.HeaderParameters.Add("Accept", localVarAccept);
-
-            localVarRequestOptions.PathParameters.Add("scope", Lusid.Sdk.Client.ClientUtils.ParameterToString(scope)); // path parameter
-            localVarRequestOptions.PathParameters.Add("code", Lusid.Sdk.Client.ClientUtils.ParameterToString(code)); // path parameter
-            if (effectiveAt != null)
-            {
-                localVarRequestOptions.QueryParameters.Add(Lusid.Sdk.Client.ClientUtils.ParameterToMultiMap("", "effectiveAt", effectiveAt));
-            }
-            if (asAt != null)
-            {
-                localVarRequestOptions.QueryParameters.Add(Lusid.Sdk.Client.ClientUtils.ParameterToMultiMap("", "asAt", asAt));
-            }
-            if (filter != null)
-            {
-                localVarRequestOptions.QueryParameters.Add(Lusid.Sdk.Client.ClientUtils.ParameterToMultiMap("", "filter", filter));
-            }
-            if (identifierTypes != null)
-            {
-                localVarRequestOptions.QueryParameters.Add(Lusid.Sdk.Client.ClientUtils.ParameterToMultiMap("multi", "identifierTypes", identifierTypes));
-            }
+            if (scope != null) localVarPathParams.Add("scope", this.Configuration.ApiClient.ParameterToString(scope)); // path parameter
+            if (code != null) localVarPathParams.Add("code", this.Configuration.ApiClient.ParameterToString(code)); // path parameter
+            if (effectiveAt != null) localVarQueryParams.AddRange(this.Configuration.ApiClient.ParameterToKeyValuePairs("", "effectiveAt", effectiveAt)); // query parameter
+            if (asAt != null) localVarQueryParams.AddRange(this.Configuration.ApiClient.ParameterToKeyValuePairs("", "asAt", asAt)); // query parameter
+            if (filter != null) localVarQueryParams.AddRange(this.Configuration.ApiClient.ParameterToKeyValuePairs("", "filter", filter)); // query parameter
+            if (identifierTypes != null) localVarQueryParams.AddRange(this.Configuration.ApiClient.ParameterToKeyValuePairs("multi", "identifierTypes", identifierTypes)); // query parameter
 
             // authentication (oauth2) required
             // oauth required
             if (!String.IsNullOrEmpty(this.Configuration.AccessToken))
             {
-                localVarRequestOptions.HeaderParameters.Add("Authorization", "Bearer " + this.Configuration.AccessToken);
+                localVarHeaderParams["Authorization"] = "Bearer " + this.Configuration.AccessToken;
             }
 
             //  set the LUSID header
-            localVarRequestOptions.HeaderParameters.Add("X-LUSID-Sdk-Language", "C#");
-            localVarRequestOptions.HeaderParameters.Add("X-LUSID-Sdk-Version", "0.11.3313");
+            localVarHeaderParams["X-LUSID-SDK-Language"] = "C#";
+            localVarHeaderParams["X-LUSID-SDK-Version"] = "0.11.3314";
 
             // make the HTTP request
-            var localVarResponse = this.Client.Get<ResourceListOfRelation>("/api/portfolios/{scope}/{code}/relations", localVarRequestOptions, this.Configuration);
+            IRestResponse localVarResponse = (IRestResponse) this.Configuration.ApiClient.CallApi(localVarPath,
+                Method.GET, localVarQueryParams, localVarPostBody, localVarHeaderParams, localVarFormParams, localVarFileParams,
+                localVarPathParams, localVarHttpContentType);
 
-            if (this.ExceptionFactory != null)
+            int localVarStatusCode = (int) localVarResponse.StatusCode;
+
+            if (ExceptionFactory != null)
             {
-                Exception _exception = this.ExceptionFactory("GetPortfolioRelations", localVarResponse);
-                if (_exception != null) throw _exception;
+                Exception exception = ExceptionFactory("GetPortfolioRelations", localVarResponse);
+                if (exception != null) throw exception;
             }
 
-            return localVarResponse;
+            return new ApiResponse<ResourceListOfRelation>(localVarStatusCode,
+                localVarResponse.Headers.ToDictionary(x => x.Key, x => string.Join(",", x.Value)),
+                (ResourceListOfRelation) this.Configuration.ApiClient.Deserialize(localVarResponse, typeof(ResourceListOfRelation)));
         }
 
         /// <summary>
@@ -3241,12 +3144,12 @@ namespace Lusid.Sdk.Api
         /// <param name="asAt">The asAt datetime at which to retrieve relations. Defaults to returning the latest LUSID AsAt time if not specified. (optional)</param>
         /// <param name="filter">Expression to filter the relations. Provide a null or empty string for this field until further notice. (optional)</param>
         /// <param name="identifierTypes">Identifier types (as property keys) used for referencing Persons or Legal Entities.              These must be from the &#39;Person&#39; or &#39;LegalEntity&#39; domains and have the format {domain}/{scope}/{code}, for example              &#39;Person/CompanyDetails/Role&#39;. Only identifier types provided will be used to look up relevant entities in relations. If not applicable, provide an empty array. (optional)</param>
-        /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
         /// <returns>Task of ResourceListOfRelation</returns>
-        public async System.Threading.Tasks.Task<ResourceListOfRelation> GetPortfolioRelationsAsync(string scope, string code, DateTimeOrCutLabel effectiveAt = default(DateTimeOrCutLabel), DateTimeOffset? asAt = default(DateTimeOffset?), string filter = default(string), List<string> identifierTypes = default(List<string>), System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
+        public async System.Threading.Tasks.Task<ResourceListOfRelation> GetPortfolioRelationsAsync (string scope, string code, DateTimeOrCutLabel effectiveAt = null, DateTimeOffset? asAt = null, string filter = null, List<string> identifierTypes = null)
         {
-            Lusid.Sdk.Client.ApiResponse<ResourceListOfRelation> localVarResponse = await GetPortfolioRelationsWithHttpInfoAsync(scope, code, effectiveAt, asAt, filter, identifierTypes, cancellationToken).ConfigureAwait(false);
-            return localVarResponse.Data;
+             ApiResponse<ResourceListOfRelation> localVarResponse = await GetPortfolioRelationsAsyncWithHttpInfo(scope, code, effectiveAt, asAt, filter, identifierTypes);
+             return localVarResponse.Data;
+
         }
 
         /// <summary>
@@ -3259,79 +3162,73 @@ namespace Lusid.Sdk.Api
         /// <param name="asAt">The asAt datetime at which to retrieve relations. Defaults to returning the latest LUSID AsAt time if not specified. (optional)</param>
         /// <param name="filter">Expression to filter the relations. Provide a null or empty string for this field until further notice. (optional)</param>
         /// <param name="identifierTypes">Identifier types (as property keys) used for referencing Persons or Legal Entities.              These must be from the &#39;Person&#39; or &#39;LegalEntity&#39; domains and have the format {domain}/{scope}/{code}, for example              &#39;Person/CompanyDetails/Role&#39;. Only identifier types provided will be used to look up relevant entities in relations. If not applicable, provide an empty array. (optional)</param>
-        /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
         /// <returns>Task of ApiResponse (ResourceListOfRelation)</returns>
-        public async System.Threading.Tasks.Task<Lusid.Sdk.Client.ApiResponse<ResourceListOfRelation>> GetPortfolioRelationsWithHttpInfoAsync(string scope, string code, DateTimeOrCutLabel effectiveAt = default(DateTimeOrCutLabel), DateTimeOffset? asAt = default(DateTimeOffset?), string filter = default(string), List<string> identifierTypes = default(List<string>), System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
+        public async System.Threading.Tasks.Task<ApiResponse<ResourceListOfRelation>> GetPortfolioRelationsAsyncWithHttpInfo (string scope, string code, DateTimeOrCutLabel effectiveAt = null, DateTimeOffset? asAt = null, string filter = null, List<string> identifierTypes = null)
         {
             // verify the required parameter 'scope' is set
             if (scope == null)
-                throw new Lusid.Sdk.Client.ApiException(400, "Missing required parameter 'scope' when calling PortfoliosApi->GetPortfolioRelations");
-
+                throw new ApiException(400, "Missing required parameter 'scope' when calling PortfoliosApi->GetPortfolioRelations");
             // verify the required parameter 'code' is set
             if (code == null)
-                throw new Lusid.Sdk.Client.ApiException(400, "Missing required parameter 'code' when calling PortfoliosApi->GetPortfolioRelations");
+                throw new ApiException(400, "Missing required parameter 'code' when calling PortfoliosApi->GetPortfolioRelations");
 
+            var localVarPath = "./api/portfolios/{scope}/{code}/relations";
+            var localVarPathParams = new Dictionary<String, String>();
+            var localVarQueryParams = new List<KeyValuePair<String, String>>();
+            var localVarHeaderParams = new Dictionary<String, String>(this.Configuration.DefaultHeader);
+            var localVarFormParams = new Dictionary<String, String>();
+            var localVarFileParams = new Dictionary<String, FileParameter>();
+            Object localVarPostBody = null;
 
-            Lusid.Sdk.Client.RequestOptions localVarRequestOptions = new Lusid.Sdk.Client.RequestOptions();
-
-            String[] _contentTypes = new String[] {
+            // to determine the Content-Type header
+            String[] localVarHttpContentTypes = new String[] {
             };
+            String localVarHttpContentType = this.Configuration.ApiClient.SelectHeaderContentType(localVarHttpContentTypes);
 
             // to determine the Accept header
-            String[] _accepts = new String[] {
+            String[] localVarHttpHeaderAccepts = new String[] {
                 "text/plain",
                 "application/json",
                 "text/json"
             };
+            String localVarHttpHeaderAccept = this.Configuration.ApiClient.SelectHeaderAccept(localVarHttpHeaderAccepts);
+            if (localVarHttpHeaderAccept != null)
+                localVarHeaderParams.Add("Accept", localVarHttpHeaderAccept);
 
-
-            var localVarContentType = Lusid.Sdk.Client.ClientUtils.SelectHeaderContentType(_contentTypes);
-            if (localVarContentType != null) localVarRequestOptions.HeaderParameters.Add("Content-Type", localVarContentType);
-
-            var localVarAccept = Lusid.Sdk.Client.ClientUtils.SelectHeaderAccept(_accepts);
-            if (localVarAccept != null) localVarRequestOptions.HeaderParameters.Add("Accept", localVarAccept);
-
-            localVarRequestOptions.PathParameters.Add("scope", Lusid.Sdk.Client.ClientUtils.ParameterToString(scope)); // path parameter
-            localVarRequestOptions.PathParameters.Add("code", Lusid.Sdk.Client.ClientUtils.ParameterToString(code)); // path parameter
-            if (effectiveAt != null)
-            {
-                localVarRequestOptions.QueryParameters.Add(Lusid.Sdk.Client.ClientUtils.ParameterToMultiMap("", "effectiveAt", effectiveAt));
-            }
-            if (asAt != null)
-            {
-                localVarRequestOptions.QueryParameters.Add(Lusid.Sdk.Client.ClientUtils.ParameterToMultiMap("", "asAt", asAt));
-            }
-            if (filter != null)
-            {
-                localVarRequestOptions.QueryParameters.Add(Lusid.Sdk.Client.ClientUtils.ParameterToMultiMap("", "filter", filter));
-            }
-            if (identifierTypes != null)
-            {
-                localVarRequestOptions.QueryParameters.Add(Lusid.Sdk.Client.ClientUtils.ParameterToMultiMap("multi", "identifierTypes", identifierTypes));
-            }
+            if (scope != null) localVarPathParams.Add("scope", this.Configuration.ApiClient.ParameterToString(scope)); // path parameter
+            if (code != null) localVarPathParams.Add("code", this.Configuration.ApiClient.ParameterToString(code)); // path parameter
+            if (effectiveAt != null) localVarQueryParams.AddRange(this.Configuration.ApiClient.ParameterToKeyValuePairs("", "effectiveAt", effectiveAt)); // query parameter
+            if (asAt != null) localVarQueryParams.AddRange(this.Configuration.ApiClient.ParameterToKeyValuePairs("", "asAt", asAt)); // query parameter
+            if (filter != null) localVarQueryParams.AddRange(this.Configuration.ApiClient.ParameterToKeyValuePairs("", "filter", filter)); // query parameter
+            if (identifierTypes != null) localVarQueryParams.AddRange(this.Configuration.ApiClient.ParameterToKeyValuePairs("multi", "identifierTypes", identifierTypes)); // query parameter
 
             // authentication (oauth2) required
             // oauth required
             if (!String.IsNullOrEmpty(this.Configuration.AccessToken))
             {
-                localVarRequestOptions.HeaderParameters.Add("Authorization", "Bearer " + this.Configuration.AccessToken);
+                localVarHeaderParams["Authorization"] = "Bearer " + this.Configuration.AccessToken;
             }
 
             //  set the LUSID header
-            localVarRequestOptions.HeaderParameters.Add("X-LUSID-Sdk-Language", "C#");
-            localVarRequestOptions.HeaderParameters.Add("X-LUSID-Sdk-Version", "0.11.3313");
+            localVarHeaderParams["X-LUSID-Sdk-Language"] = "C#";
+            localVarHeaderParams["X-LUSID-Sdk-Version"] = "0.11.3314";
 
             // make the HTTP request
+            IRestResponse localVarResponse = (IRestResponse) await this.Configuration.ApiClient.CallApiAsync(localVarPath,
+                Method.GET, localVarQueryParams, localVarPostBody, localVarHeaderParams, localVarFormParams, localVarFileParams,
+                localVarPathParams, localVarHttpContentType);
 
-            var localVarResponse = await this.AsynchronousClient.GetAsync<ResourceListOfRelation>("/api/portfolios/{scope}/{code}/relations", localVarRequestOptions, this.Configuration, cancellationToken).ConfigureAwait(false);
+            int localVarStatusCode = (int) localVarResponse.StatusCode;
 
-            if (this.ExceptionFactory != null)
+            if (ExceptionFactory != null)
             {
-                Exception _exception = this.ExceptionFactory("GetPortfolioRelations", localVarResponse);
-                if (_exception != null) throw _exception;
+                Exception exception = ExceptionFactory("GetPortfolioRelations", localVarResponse);
+                if (exception != null) throw exception;
             }
 
-            return localVarResponse;
+            return new ApiResponse<ResourceListOfRelation>(localVarStatusCode,
+                localVarResponse.Headers.ToDictionary(x => x.Key, x => string.Join(",", x.Value)),
+                (ResourceListOfRelation) this.Configuration.ApiClient.Deserialize(localVarResponse, typeof(ResourceListOfRelation)));
         }
 
         /// <summary>
@@ -3345,10 +3242,10 @@ namespace Lusid.Sdk.Api
         /// <param name="filter">Expression to filter the relationships. Provide a null or empty string for this field until further notice. (optional)</param>
         /// <param name="identifierTypes">Identifier types (as property keys) used for referencing Persons or Legal Entities.              These must be from the &#39;Person&#39; or &#39;LegalEntity&#39; domains and have the format {domain}/{scope}/{code}, for example              &#39;Person/CompanyDetails/Role&#39;. Only identifier types provided will be used to look up relevant entities in relationships. If not applicable, provide an empty array. (optional)</param>
         /// <returns>ResourceListOfRelationship</returns>
-        public ResourceListOfRelationship GetPortfolioRelationships(string scope, string code, DateTimeOrCutLabel effectiveAt = default(DateTimeOrCutLabel), DateTimeOffset? asAt = default(DateTimeOffset?), string filter = default(string), List<string> identifierTypes = default(List<string>))
+        public ResourceListOfRelationship GetPortfolioRelationships (string scope, string code, DateTimeOrCutLabel effectiveAt = null, DateTimeOffset? asAt = null, string filter = null, List<string> identifierTypes = null)
         {
-            Lusid.Sdk.Client.ApiResponse<ResourceListOfRelationship> localVarResponse = GetPortfolioRelationshipsWithHttpInfo(scope, code, effectiveAt, asAt, filter, identifierTypes);
-            return localVarResponse.Data;
+             ApiResponse<ResourceListOfRelationship> localVarResponse = GetPortfolioRelationshipsWithHttpInfo(scope, code, effectiveAt, asAt, filter, identifierTypes);
+             return localVarResponse.Data;
         }
 
         /// <summary>
@@ -3362,74 +3259,72 @@ namespace Lusid.Sdk.Api
         /// <param name="filter">Expression to filter the relationships. Provide a null or empty string for this field until further notice. (optional)</param>
         /// <param name="identifierTypes">Identifier types (as property keys) used for referencing Persons or Legal Entities.              These must be from the &#39;Person&#39; or &#39;LegalEntity&#39; domains and have the format {domain}/{scope}/{code}, for example              &#39;Person/CompanyDetails/Role&#39;. Only identifier types provided will be used to look up relevant entities in relationships. If not applicable, provide an empty array. (optional)</param>
         /// <returns>ApiResponse of ResourceListOfRelationship</returns>
-        public Lusid.Sdk.Client.ApiResponse<ResourceListOfRelationship> GetPortfolioRelationshipsWithHttpInfo(string scope, string code, DateTimeOrCutLabel effectiveAt = default(DateTimeOrCutLabel), DateTimeOffset? asAt = default(DateTimeOffset?), string filter = default(string), List<string> identifierTypes = default(List<string>))
+        public ApiResponse< ResourceListOfRelationship > GetPortfolioRelationshipsWithHttpInfo (string scope, string code, DateTimeOrCutLabel effectiveAt = null, DateTimeOffset? asAt = null, string filter = null, List<string> identifierTypes = null)
         {
             // verify the required parameter 'scope' is set
             if (scope == null)
-                throw new Lusid.Sdk.Client.ApiException(400, "Missing required parameter 'scope' when calling PortfoliosApi->GetPortfolioRelationships");
-
+                throw new ApiException(400, "Missing required parameter 'scope' when calling PortfoliosApi->GetPortfolioRelationships");
             // verify the required parameter 'code' is set
             if (code == null)
-                throw new Lusid.Sdk.Client.ApiException(400, "Missing required parameter 'code' when calling PortfoliosApi->GetPortfolioRelationships");
+                throw new ApiException(400, "Missing required parameter 'code' when calling PortfoliosApi->GetPortfolioRelationships");
 
-            Lusid.Sdk.Client.RequestOptions localVarRequestOptions = new Lusid.Sdk.Client.RequestOptions();
+            var localVarPath = "./api/portfolios/{scope}/{code}/relationships";
+            var localVarPathParams = new Dictionary<String, String>();
+            var localVarQueryParams = new List<KeyValuePair<String, String>>();
+            var localVarHeaderParams = new Dictionary<String, String>(this.Configuration.DefaultHeader);
+            var localVarFormParams = new Dictionary<String, String>();
+            var localVarFileParams = new Dictionary<String, FileParameter>();
+            Object localVarPostBody = null;
 
-            String[] _contentTypes = new String[] {
+            // to determine the Content-Type header
+            String[] localVarHttpContentTypes = new String[] {
             };
+            String localVarHttpContentType = this.Configuration.ApiClient.SelectHeaderContentType(localVarHttpContentTypes);
 
             // to determine the Accept header
-            String[] _accepts = new String[] {
+            String[] localVarHttpHeaderAccepts = new String[] {
                 "text/plain",
                 "application/json",
                 "text/json"
             };
+            String localVarHttpHeaderAccept = this.Configuration.ApiClient.SelectHeaderAccept(localVarHttpHeaderAccepts);
+            if (localVarHttpHeaderAccept != null)
+                localVarHeaderParams.Add("Accept", localVarHttpHeaderAccept);
 
-            var localVarContentType = Lusid.Sdk.Client.ClientUtils.SelectHeaderContentType(_contentTypes);
-            if (localVarContentType != null) localVarRequestOptions.HeaderParameters.Add("Content-Type", localVarContentType);
-
-            var localVarAccept = Lusid.Sdk.Client.ClientUtils.SelectHeaderAccept(_accepts);
-            if (localVarAccept != null) localVarRequestOptions.HeaderParameters.Add("Accept", localVarAccept);
-
-            localVarRequestOptions.PathParameters.Add("scope", Lusid.Sdk.Client.ClientUtils.ParameterToString(scope)); // path parameter
-            localVarRequestOptions.PathParameters.Add("code", Lusid.Sdk.Client.ClientUtils.ParameterToString(code)); // path parameter
-            if (effectiveAt != null)
-            {
-                localVarRequestOptions.QueryParameters.Add(Lusid.Sdk.Client.ClientUtils.ParameterToMultiMap("", "effectiveAt", effectiveAt));
-            }
-            if (asAt != null)
-            {
-                localVarRequestOptions.QueryParameters.Add(Lusid.Sdk.Client.ClientUtils.ParameterToMultiMap("", "asAt", asAt));
-            }
-            if (filter != null)
-            {
-                localVarRequestOptions.QueryParameters.Add(Lusid.Sdk.Client.ClientUtils.ParameterToMultiMap("", "filter", filter));
-            }
-            if (identifierTypes != null)
-            {
-                localVarRequestOptions.QueryParameters.Add(Lusid.Sdk.Client.ClientUtils.ParameterToMultiMap("multi", "identifierTypes", identifierTypes));
-            }
+            if (scope != null) localVarPathParams.Add("scope", this.Configuration.ApiClient.ParameterToString(scope)); // path parameter
+            if (code != null) localVarPathParams.Add("code", this.Configuration.ApiClient.ParameterToString(code)); // path parameter
+            if (effectiveAt != null) localVarQueryParams.AddRange(this.Configuration.ApiClient.ParameterToKeyValuePairs("", "effectiveAt", effectiveAt)); // query parameter
+            if (asAt != null) localVarQueryParams.AddRange(this.Configuration.ApiClient.ParameterToKeyValuePairs("", "asAt", asAt)); // query parameter
+            if (filter != null) localVarQueryParams.AddRange(this.Configuration.ApiClient.ParameterToKeyValuePairs("", "filter", filter)); // query parameter
+            if (identifierTypes != null) localVarQueryParams.AddRange(this.Configuration.ApiClient.ParameterToKeyValuePairs("multi", "identifierTypes", identifierTypes)); // query parameter
 
             // authentication (oauth2) required
             // oauth required
             if (!String.IsNullOrEmpty(this.Configuration.AccessToken))
             {
-                localVarRequestOptions.HeaderParameters.Add("Authorization", "Bearer " + this.Configuration.AccessToken);
+                localVarHeaderParams["Authorization"] = "Bearer " + this.Configuration.AccessToken;
             }
 
             //  set the LUSID header
-            localVarRequestOptions.HeaderParameters.Add("X-LUSID-Sdk-Language", "C#");
-            localVarRequestOptions.HeaderParameters.Add("X-LUSID-Sdk-Version", "0.11.3313");
+            localVarHeaderParams["X-LUSID-SDK-Language"] = "C#";
+            localVarHeaderParams["X-LUSID-SDK-Version"] = "0.11.3314";
 
             // make the HTTP request
-            var localVarResponse = this.Client.Get<ResourceListOfRelationship>("/api/portfolios/{scope}/{code}/relationships", localVarRequestOptions, this.Configuration);
+            IRestResponse localVarResponse = (IRestResponse) this.Configuration.ApiClient.CallApi(localVarPath,
+                Method.GET, localVarQueryParams, localVarPostBody, localVarHeaderParams, localVarFormParams, localVarFileParams,
+                localVarPathParams, localVarHttpContentType);
 
-            if (this.ExceptionFactory != null)
+            int localVarStatusCode = (int) localVarResponse.StatusCode;
+
+            if (ExceptionFactory != null)
             {
-                Exception _exception = this.ExceptionFactory("GetPortfolioRelationships", localVarResponse);
-                if (_exception != null) throw _exception;
+                Exception exception = ExceptionFactory("GetPortfolioRelationships", localVarResponse);
+                if (exception != null) throw exception;
             }
 
-            return localVarResponse;
+            return new ApiResponse<ResourceListOfRelationship>(localVarStatusCode,
+                localVarResponse.Headers.ToDictionary(x => x.Key, x => string.Join(",", x.Value)),
+                (ResourceListOfRelationship) this.Configuration.ApiClient.Deserialize(localVarResponse, typeof(ResourceListOfRelationship)));
         }
 
         /// <summary>
@@ -3442,12 +3337,12 @@ namespace Lusid.Sdk.Api
         /// <param name="asAt">The asAt datetime at which to retrieve relationships. Defaults to returning the latest LUSID AsAt time if not specified. (optional)</param>
         /// <param name="filter">Expression to filter the relationships. Provide a null or empty string for this field until further notice. (optional)</param>
         /// <param name="identifierTypes">Identifier types (as property keys) used for referencing Persons or Legal Entities.              These must be from the &#39;Person&#39; or &#39;LegalEntity&#39; domains and have the format {domain}/{scope}/{code}, for example              &#39;Person/CompanyDetails/Role&#39;. Only identifier types provided will be used to look up relevant entities in relationships. If not applicable, provide an empty array. (optional)</param>
-        /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
         /// <returns>Task of ResourceListOfRelationship</returns>
-        public async System.Threading.Tasks.Task<ResourceListOfRelationship> GetPortfolioRelationshipsAsync(string scope, string code, DateTimeOrCutLabel effectiveAt = default(DateTimeOrCutLabel), DateTimeOffset? asAt = default(DateTimeOffset?), string filter = default(string), List<string> identifierTypes = default(List<string>), System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
+        public async System.Threading.Tasks.Task<ResourceListOfRelationship> GetPortfolioRelationshipsAsync (string scope, string code, DateTimeOrCutLabel effectiveAt = null, DateTimeOffset? asAt = null, string filter = null, List<string> identifierTypes = null)
         {
-            Lusid.Sdk.Client.ApiResponse<ResourceListOfRelationship> localVarResponse = await GetPortfolioRelationshipsWithHttpInfoAsync(scope, code, effectiveAt, asAt, filter, identifierTypes, cancellationToken).ConfigureAwait(false);
-            return localVarResponse.Data;
+             ApiResponse<ResourceListOfRelationship> localVarResponse = await GetPortfolioRelationshipsAsyncWithHttpInfo(scope, code, effectiveAt, asAt, filter, identifierTypes);
+             return localVarResponse.Data;
+
         }
 
         /// <summary>
@@ -3460,79 +3355,73 @@ namespace Lusid.Sdk.Api
         /// <param name="asAt">The asAt datetime at which to retrieve relationships. Defaults to returning the latest LUSID AsAt time if not specified. (optional)</param>
         /// <param name="filter">Expression to filter the relationships. Provide a null or empty string for this field until further notice. (optional)</param>
         /// <param name="identifierTypes">Identifier types (as property keys) used for referencing Persons or Legal Entities.              These must be from the &#39;Person&#39; or &#39;LegalEntity&#39; domains and have the format {domain}/{scope}/{code}, for example              &#39;Person/CompanyDetails/Role&#39;. Only identifier types provided will be used to look up relevant entities in relationships. If not applicable, provide an empty array. (optional)</param>
-        /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
         /// <returns>Task of ApiResponse (ResourceListOfRelationship)</returns>
-        public async System.Threading.Tasks.Task<Lusid.Sdk.Client.ApiResponse<ResourceListOfRelationship>> GetPortfolioRelationshipsWithHttpInfoAsync(string scope, string code, DateTimeOrCutLabel effectiveAt = default(DateTimeOrCutLabel), DateTimeOffset? asAt = default(DateTimeOffset?), string filter = default(string), List<string> identifierTypes = default(List<string>), System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
+        public async System.Threading.Tasks.Task<ApiResponse<ResourceListOfRelationship>> GetPortfolioRelationshipsAsyncWithHttpInfo (string scope, string code, DateTimeOrCutLabel effectiveAt = null, DateTimeOffset? asAt = null, string filter = null, List<string> identifierTypes = null)
         {
             // verify the required parameter 'scope' is set
             if (scope == null)
-                throw new Lusid.Sdk.Client.ApiException(400, "Missing required parameter 'scope' when calling PortfoliosApi->GetPortfolioRelationships");
-
+                throw new ApiException(400, "Missing required parameter 'scope' when calling PortfoliosApi->GetPortfolioRelationships");
             // verify the required parameter 'code' is set
             if (code == null)
-                throw new Lusid.Sdk.Client.ApiException(400, "Missing required parameter 'code' when calling PortfoliosApi->GetPortfolioRelationships");
+                throw new ApiException(400, "Missing required parameter 'code' when calling PortfoliosApi->GetPortfolioRelationships");
 
+            var localVarPath = "./api/portfolios/{scope}/{code}/relationships";
+            var localVarPathParams = new Dictionary<String, String>();
+            var localVarQueryParams = new List<KeyValuePair<String, String>>();
+            var localVarHeaderParams = new Dictionary<String, String>(this.Configuration.DefaultHeader);
+            var localVarFormParams = new Dictionary<String, String>();
+            var localVarFileParams = new Dictionary<String, FileParameter>();
+            Object localVarPostBody = null;
 
-            Lusid.Sdk.Client.RequestOptions localVarRequestOptions = new Lusid.Sdk.Client.RequestOptions();
-
-            String[] _contentTypes = new String[] {
+            // to determine the Content-Type header
+            String[] localVarHttpContentTypes = new String[] {
             };
+            String localVarHttpContentType = this.Configuration.ApiClient.SelectHeaderContentType(localVarHttpContentTypes);
 
             // to determine the Accept header
-            String[] _accepts = new String[] {
+            String[] localVarHttpHeaderAccepts = new String[] {
                 "text/plain",
                 "application/json",
                 "text/json"
             };
+            String localVarHttpHeaderAccept = this.Configuration.ApiClient.SelectHeaderAccept(localVarHttpHeaderAccepts);
+            if (localVarHttpHeaderAccept != null)
+                localVarHeaderParams.Add("Accept", localVarHttpHeaderAccept);
 
-
-            var localVarContentType = Lusid.Sdk.Client.ClientUtils.SelectHeaderContentType(_contentTypes);
-            if (localVarContentType != null) localVarRequestOptions.HeaderParameters.Add("Content-Type", localVarContentType);
-
-            var localVarAccept = Lusid.Sdk.Client.ClientUtils.SelectHeaderAccept(_accepts);
-            if (localVarAccept != null) localVarRequestOptions.HeaderParameters.Add("Accept", localVarAccept);
-
-            localVarRequestOptions.PathParameters.Add("scope", Lusid.Sdk.Client.ClientUtils.ParameterToString(scope)); // path parameter
-            localVarRequestOptions.PathParameters.Add("code", Lusid.Sdk.Client.ClientUtils.ParameterToString(code)); // path parameter
-            if (effectiveAt != null)
-            {
-                localVarRequestOptions.QueryParameters.Add(Lusid.Sdk.Client.ClientUtils.ParameterToMultiMap("", "effectiveAt", effectiveAt));
-            }
-            if (asAt != null)
-            {
-                localVarRequestOptions.QueryParameters.Add(Lusid.Sdk.Client.ClientUtils.ParameterToMultiMap("", "asAt", asAt));
-            }
-            if (filter != null)
-            {
-                localVarRequestOptions.QueryParameters.Add(Lusid.Sdk.Client.ClientUtils.ParameterToMultiMap("", "filter", filter));
-            }
-            if (identifierTypes != null)
-            {
-                localVarRequestOptions.QueryParameters.Add(Lusid.Sdk.Client.ClientUtils.ParameterToMultiMap("multi", "identifierTypes", identifierTypes));
-            }
+            if (scope != null) localVarPathParams.Add("scope", this.Configuration.ApiClient.ParameterToString(scope)); // path parameter
+            if (code != null) localVarPathParams.Add("code", this.Configuration.ApiClient.ParameterToString(code)); // path parameter
+            if (effectiveAt != null) localVarQueryParams.AddRange(this.Configuration.ApiClient.ParameterToKeyValuePairs("", "effectiveAt", effectiveAt)); // query parameter
+            if (asAt != null) localVarQueryParams.AddRange(this.Configuration.ApiClient.ParameterToKeyValuePairs("", "asAt", asAt)); // query parameter
+            if (filter != null) localVarQueryParams.AddRange(this.Configuration.ApiClient.ParameterToKeyValuePairs("", "filter", filter)); // query parameter
+            if (identifierTypes != null) localVarQueryParams.AddRange(this.Configuration.ApiClient.ParameterToKeyValuePairs("multi", "identifierTypes", identifierTypes)); // query parameter
 
             // authentication (oauth2) required
             // oauth required
             if (!String.IsNullOrEmpty(this.Configuration.AccessToken))
             {
-                localVarRequestOptions.HeaderParameters.Add("Authorization", "Bearer " + this.Configuration.AccessToken);
+                localVarHeaderParams["Authorization"] = "Bearer " + this.Configuration.AccessToken;
             }
 
             //  set the LUSID header
-            localVarRequestOptions.HeaderParameters.Add("X-LUSID-Sdk-Language", "C#");
-            localVarRequestOptions.HeaderParameters.Add("X-LUSID-Sdk-Version", "0.11.3313");
+            localVarHeaderParams["X-LUSID-Sdk-Language"] = "C#";
+            localVarHeaderParams["X-LUSID-Sdk-Version"] = "0.11.3314";
 
             // make the HTTP request
+            IRestResponse localVarResponse = (IRestResponse) await this.Configuration.ApiClient.CallApiAsync(localVarPath,
+                Method.GET, localVarQueryParams, localVarPostBody, localVarHeaderParams, localVarFormParams, localVarFileParams,
+                localVarPathParams, localVarHttpContentType);
 
-            var localVarResponse = await this.AsynchronousClient.GetAsync<ResourceListOfRelationship>("/api/portfolios/{scope}/{code}/relationships", localVarRequestOptions, this.Configuration, cancellationToken).ConfigureAwait(false);
+            int localVarStatusCode = (int) localVarResponse.StatusCode;
 
-            if (this.ExceptionFactory != null)
+            if (ExceptionFactory != null)
             {
-                Exception _exception = this.ExceptionFactory("GetPortfolioRelationships", localVarResponse);
-                if (_exception != null) throw _exception;
+                Exception exception = ExceptionFactory("GetPortfolioRelationships", localVarResponse);
+                if (exception != null) throw exception;
             }
 
-            return localVarResponse;
+            return new ApiResponse<ResourceListOfRelationship>(localVarStatusCode,
+                localVarResponse.Headers.ToDictionary(x => x.Key, x => string.Join(",", x.Value)),
+                (ResourceListOfRelationship) this.Configuration.ApiClient.Deserialize(localVarResponse, typeof(ResourceListOfRelationship)));
         }
 
         /// <summary>
@@ -3548,10 +3437,10 @@ namespace Lusid.Sdk.Api
         /// <param name="period">Show the Returns on a Daily or Monthly period. (optional)</param>
         /// <param name="asAt">The asAt datetime at which to retrieve the Returns. Defaults to the latest. (optional)</param>
         /// <returns>ResourceListOfPerformanceReturn</returns>
-        public ResourceListOfPerformanceReturn GetPortfolioReturns(string scope, string code, string returnScope, string returnCode, DateTimeOrCutLabel fromEffectiveAt = default(DateTimeOrCutLabel), DateTimeOrCutLabel toEffectiveAt = default(DateTimeOrCutLabel), string period = default(string), DateTimeOffset? asAt = default(DateTimeOffset?))
+        public ResourceListOfPerformanceReturn GetPortfolioReturns (string scope, string code, string returnScope, string returnCode, DateTimeOrCutLabel fromEffectiveAt = null, DateTimeOrCutLabel toEffectiveAt = null, string period = null, DateTimeOffset? asAt = null)
         {
-            Lusid.Sdk.Client.ApiResponse<ResourceListOfPerformanceReturn> localVarResponse = GetPortfolioReturnsWithHttpInfo(scope, code, returnScope, returnCode, fromEffectiveAt, toEffectiveAt, period, asAt);
-            return localVarResponse.Data;
+             ApiResponse<ResourceListOfPerformanceReturn> localVarResponse = GetPortfolioReturnsWithHttpInfo(scope, code, returnScope, returnCode, fromEffectiveAt, toEffectiveAt, period, asAt);
+             return localVarResponse.Data;
         }
 
         /// <summary>
@@ -3567,84 +3456,80 @@ namespace Lusid.Sdk.Api
         /// <param name="period">Show the Returns on a Daily or Monthly period. (optional)</param>
         /// <param name="asAt">The asAt datetime at which to retrieve the Returns. Defaults to the latest. (optional)</param>
         /// <returns>ApiResponse of ResourceListOfPerformanceReturn</returns>
-        public Lusid.Sdk.Client.ApiResponse<ResourceListOfPerformanceReturn> GetPortfolioReturnsWithHttpInfo(string scope, string code, string returnScope, string returnCode, DateTimeOrCutLabel fromEffectiveAt = default(DateTimeOrCutLabel), DateTimeOrCutLabel toEffectiveAt = default(DateTimeOrCutLabel), string period = default(string), DateTimeOffset? asAt = default(DateTimeOffset?))
+        public ApiResponse< ResourceListOfPerformanceReturn > GetPortfolioReturnsWithHttpInfo (string scope, string code, string returnScope, string returnCode, DateTimeOrCutLabel fromEffectiveAt = null, DateTimeOrCutLabel toEffectiveAt = null, string period = null, DateTimeOffset? asAt = null)
         {
             // verify the required parameter 'scope' is set
             if (scope == null)
-                throw new Lusid.Sdk.Client.ApiException(400, "Missing required parameter 'scope' when calling PortfoliosApi->GetPortfolioReturns");
-
+                throw new ApiException(400, "Missing required parameter 'scope' when calling PortfoliosApi->GetPortfolioReturns");
             // verify the required parameter 'code' is set
             if (code == null)
-                throw new Lusid.Sdk.Client.ApiException(400, "Missing required parameter 'code' when calling PortfoliosApi->GetPortfolioReturns");
-
+                throw new ApiException(400, "Missing required parameter 'code' when calling PortfoliosApi->GetPortfolioReturns");
             // verify the required parameter 'returnScope' is set
             if (returnScope == null)
-                throw new Lusid.Sdk.Client.ApiException(400, "Missing required parameter 'returnScope' when calling PortfoliosApi->GetPortfolioReturns");
-
+                throw new ApiException(400, "Missing required parameter 'returnScope' when calling PortfoliosApi->GetPortfolioReturns");
             // verify the required parameter 'returnCode' is set
             if (returnCode == null)
-                throw new Lusid.Sdk.Client.ApiException(400, "Missing required parameter 'returnCode' when calling PortfoliosApi->GetPortfolioReturns");
+                throw new ApiException(400, "Missing required parameter 'returnCode' when calling PortfoliosApi->GetPortfolioReturns");
 
-            Lusid.Sdk.Client.RequestOptions localVarRequestOptions = new Lusid.Sdk.Client.RequestOptions();
+            var localVarPath = "./api/portfolios/{scope}/{code}/returns/{returnScope}/{returnCode}";
+            var localVarPathParams = new Dictionary<String, String>();
+            var localVarQueryParams = new List<KeyValuePair<String, String>>();
+            var localVarHeaderParams = new Dictionary<String, String>(this.Configuration.DefaultHeader);
+            var localVarFormParams = new Dictionary<String, String>();
+            var localVarFileParams = new Dictionary<String, FileParameter>();
+            Object localVarPostBody = null;
 
-            String[] _contentTypes = new String[] {
+            // to determine the Content-Type header
+            String[] localVarHttpContentTypes = new String[] {
             };
+            String localVarHttpContentType = this.Configuration.ApiClient.SelectHeaderContentType(localVarHttpContentTypes);
 
             // to determine the Accept header
-            String[] _accepts = new String[] {
+            String[] localVarHttpHeaderAccepts = new String[] {
                 "text/plain",
                 "application/json",
                 "text/json"
             };
+            String localVarHttpHeaderAccept = this.Configuration.ApiClient.SelectHeaderAccept(localVarHttpHeaderAccepts);
+            if (localVarHttpHeaderAccept != null)
+                localVarHeaderParams.Add("Accept", localVarHttpHeaderAccept);
 
-            var localVarContentType = Lusid.Sdk.Client.ClientUtils.SelectHeaderContentType(_contentTypes);
-            if (localVarContentType != null) localVarRequestOptions.HeaderParameters.Add("Content-Type", localVarContentType);
-
-            var localVarAccept = Lusid.Sdk.Client.ClientUtils.SelectHeaderAccept(_accepts);
-            if (localVarAccept != null) localVarRequestOptions.HeaderParameters.Add("Accept", localVarAccept);
-
-            localVarRequestOptions.PathParameters.Add("scope", Lusid.Sdk.Client.ClientUtils.ParameterToString(scope)); // path parameter
-            localVarRequestOptions.PathParameters.Add("code", Lusid.Sdk.Client.ClientUtils.ParameterToString(code)); // path parameter
-            localVarRequestOptions.PathParameters.Add("returnScope", Lusid.Sdk.Client.ClientUtils.ParameterToString(returnScope)); // path parameter
-            localVarRequestOptions.PathParameters.Add("returnCode", Lusid.Sdk.Client.ClientUtils.ParameterToString(returnCode)); // path parameter
-            if (fromEffectiveAt != null)
-            {
-                localVarRequestOptions.QueryParameters.Add(Lusid.Sdk.Client.ClientUtils.ParameterToMultiMap("", "fromEffectiveAt", fromEffectiveAt));
-            }
-            if (toEffectiveAt != null)
-            {
-                localVarRequestOptions.QueryParameters.Add(Lusid.Sdk.Client.ClientUtils.ParameterToMultiMap("", "toEffectiveAt", toEffectiveAt));
-            }
-            if (period != null)
-            {
-                localVarRequestOptions.QueryParameters.Add(Lusid.Sdk.Client.ClientUtils.ParameterToMultiMap("", "period", period));
-            }
-            if (asAt != null)
-            {
-                localVarRequestOptions.QueryParameters.Add(Lusid.Sdk.Client.ClientUtils.ParameterToMultiMap("", "asAt", asAt));
-            }
+            if (scope != null) localVarPathParams.Add("scope", this.Configuration.ApiClient.ParameterToString(scope)); // path parameter
+            if (code != null) localVarPathParams.Add("code", this.Configuration.ApiClient.ParameterToString(code)); // path parameter
+            if (returnScope != null) localVarPathParams.Add("returnScope", this.Configuration.ApiClient.ParameterToString(returnScope)); // path parameter
+            if (returnCode != null) localVarPathParams.Add("returnCode", this.Configuration.ApiClient.ParameterToString(returnCode)); // path parameter
+            if (fromEffectiveAt != null) localVarQueryParams.AddRange(this.Configuration.ApiClient.ParameterToKeyValuePairs("", "fromEffectiveAt", fromEffectiveAt)); // query parameter
+            if (toEffectiveAt != null) localVarQueryParams.AddRange(this.Configuration.ApiClient.ParameterToKeyValuePairs("", "toEffectiveAt", toEffectiveAt)); // query parameter
+            if (period != null) localVarQueryParams.AddRange(this.Configuration.ApiClient.ParameterToKeyValuePairs("", "period", period)); // query parameter
+            if (asAt != null) localVarQueryParams.AddRange(this.Configuration.ApiClient.ParameterToKeyValuePairs("", "asAt", asAt)); // query parameter
 
             // authentication (oauth2) required
             // oauth required
             if (!String.IsNullOrEmpty(this.Configuration.AccessToken))
             {
-                localVarRequestOptions.HeaderParameters.Add("Authorization", "Bearer " + this.Configuration.AccessToken);
+                localVarHeaderParams["Authorization"] = "Bearer " + this.Configuration.AccessToken;
             }
 
             //  set the LUSID header
-            localVarRequestOptions.HeaderParameters.Add("X-LUSID-Sdk-Language", "C#");
-            localVarRequestOptions.HeaderParameters.Add("X-LUSID-Sdk-Version", "0.11.3313");
+            localVarHeaderParams["X-LUSID-SDK-Language"] = "C#";
+            localVarHeaderParams["X-LUSID-SDK-Version"] = "0.11.3314";
 
             // make the HTTP request
-            var localVarResponse = this.Client.Get<ResourceListOfPerformanceReturn>("/api/portfolios/{scope}/{code}/returns/{returnScope}/{returnCode}", localVarRequestOptions, this.Configuration);
+            IRestResponse localVarResponse = (IRestResponse) this.Configuration.ApiClient.CallApi(localVarPath,
+                Method.GET, localVarQueryParams, localVarPostBody, localVarHeaderParams, localVarFormParams, localVarFileParams,
+                localVarPathParams, localVarHttpContentType);
 
-            if (this.ExceptionFactory != null)
+            int localVarStatusCode = (int) localVarResponse.StatusCode;
+
+            if (ExceptionFactory != null)
             {
-                Exception _exception = this.ExceptionFactory("GetPortfolioReturns", localVarResponse);
-                if (_exception != null) throw _exception;
+                Exception exception = ExceptionFactory("GetPortfolioReturns", localVarResponse);
+                if (exception != null) throw exception;
             }
 
-            return localVarResponse;
+            return new ApiResponse<ResourceListOfPerformanceReturn>(localVarStatusCode,
+                localVarResponse.Headers.ToDictionary(x => x.Key, x => string.Join(",", x.Value)),
+                (ResourceListOfPerformanceReturn) this.Configuration.ApiClient.Deserialize(localVarResponse, typeof(ResourceListOfPerformanceReturn)));
         }
 
         /// <summary>
@@ -3659,12 +3544,12 @@ namespace Lusid.Sdk.Api
         /// <param name="toEffectiveAt">The end date from which to delete the Returns (optional)</param>
         /// <param name="period">Show the Returns on a Daily or Monthly period. (optional)</param>
         /// <param name="asAt">The asAt datetime at which to retrieve the Returns. Defaults to the latest. (optional)</param>
-        /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
         /// <returns>Task of ResourceListOfPerformanceReturn</returns>
-        public async System.Threading.Tasks.Task<ResourceListOfPerformanceReturn> GetPortfolioReturnsAsync(string scope, string code, string returnScope, string returnCode, DateTimeOrCutLabel fromEffectiveAt = default(DateTimeOrCutLabel), DateTimeOrCutLabel toEffectiveAt = default(DateTimeOrCutLabel), string period = default(string), DateTimeOffset? asAt = default(DateTimeOffset?), System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
+        public async System.Threading.Tasks.Task<ResourceListOfPerformanceReturn> GetPortfolioReturnsAsync (string scope, string code, string returnScope, string returnCode, DateTimeOrCutLabel fromEffectiveAt = null, DateTimeOrCutLabel toEffectiveAt = null, string period = null, DateTimeOffset? asAt = null)
         {
-            Lusid.Sdk.Client.ApiResponse<ResourceListOfPerformanceReturn> localVarResponse = await GetPortfolioReturnsWithHttpInfoAsync(scope, code, returnScope, returnCode, fromEffectiveAt, toEffectiveAt, period, asAt, cancellationToken).ConfigureAwait(false);
-            return localVarResponse.Data;
+             ApiResponse<ResourceListOfPerformanceReturn> localVarResponse = await GetPortfolioReturnsAsyncWithHttpInfo(scope, code, returnScope, returnCode, fromEffectiveAt, toEffectiveAt, period, asAt);
+             return localVarResponse.Data;
+
         }
 
         /// <summary>
@@ -3679,89 +3564,81 @@ namespace Lusid.Sdk.Api
         /// <param name="toEffectiveAt">The end date from which to delete the Returns (optional)</param>
         /// <param name="period">Show the Returns on a Daily or Monthly period. (optional)</param>
         /// <param name="asAt">The asAt datetime at which to retrieve the Returns. Defaults to the latest. (optional)</param>
-        /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
         /// <returns>Task of ApiResponse (ResourceListOfPerformanceReturn)</returns>
-        public async System.Threading.Tasks.Task<Lusid.Sdk.Client.ApiResponse<ResourceListOfPerformanceReturn>> GetPortfolioReturnsWithHttpInfoAsync(string scope, string code, string returnScope, string returnCode, DateTimeOrCutLabel fromEffectiveAt = default(DateTimeOrCutLabel), DateTimeOrCutLabel toEffectiveAt = default(DateTimeOrCutLabel), string period = default(string), DateTimeOffset? asAt = default(DateTimeOffset?), System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
+        public async System.Threading.Tasks.Task<ApiResponse<ResourceListOfPerformanceReturn>> GetPortfolioReturnsAsyncWithHttpInfo (string scope, string code, string returnScope, string returnCode, DateTimeOrCutLabel fromEffectiveAt = null, DateTimeOrCutLabel toEffectiveAt = null, string period = null, DateTimeOffset? asAt = null)
         {
             // verify the required parameter 'scope' is set
             if (scope == null)
-                throw new Lusid.Sdk.Client.ApiException(400, "Missing required parameter 'scope' when calling PortfoliosApi->GetPortfolioReturns");
-
+                throw new ApiException(400, "Missing required parameter 'scope' when calling PortfoliosApi->GetPortfolioReturns");
             // verify the required parameter 'code' is set
             if (code == null)
-                throw new Lusid.Sdk.Client.ApiException(400, "Missing required parameter 'code' when calling PortfoliosApi->GetPortfolioReturns");
-
+                throw new ApiException(400, "Missing required parameter 'code' when calling PortfoliosApi->GetPortfolioReturns");
             // verify the required parameter 'returnScope' is set
             if (returnScope == null)
-                throw new Lusid.Sdk.Client.ApiException(400, "Missing required parameter 'returnScope' when calling PortfoliosApi->GetPortfolioReturns");
-
+                throw new ApiException(400, "Missing required parameter 'returnScope' when calling PortfoliosApi->GetPortfolioReturns");
             // verify the required parameter 'returnCode' is set
             if (returnCode == null)
-                throw new Lusid.Sdk.Client.ApiException(400, "Missing required parameter 'returnCode' when calling PortfoliosApi->GetPortfolioReturns");
+                throw new ApiException(400, "Missing required parameter 'returnCode' when calling PortfoliosApi->GetPortfolioReturns");
 
+            var localVarPath = "./api/portfolios/{scope}/{code}/returns/{returnScope}/{returnCode}";
+            var localVarPathParams = new Dictionary<String, String>();
+            var localVarQueryParams = new List<KeyValuePair<String, String>>();
+            var localVarHeaderParams = new Dictionary<String, String>(this.Configuration.DefaultHeader);
+            var localVarFormParams = new Dictionary<String, String>();
+            var localVarFileParams = new Dictionary<String, FileParameter>();
+            Object localVarPostBody = null;
 
-            Lusid.Sdk.Client.RequestOptions localVarRequestOptions = new Lusid.Sdk.Client.RequestOptions();
-
-            String[] _contentTypes = new String[] {
+            // to determine the Content-Type header
+            String[] localVarHttpContentTypes = new String[] {
             };
+            String localVarHttpContentType = this.Configuration.ApiClient.SelectHeaderContentType(localVarHttpContentTypes);
 
             // to determine the Accept header
-            String[] _accepts = new String[] {
+            String[] localVarHttpHeaderAccepts = new String[] {
                 "text/plain",
                 "application/json",
                 "text/json"
             };
+            String localVarHttpHeaderAccept = this.Configuration.ApiClient.SelectHeaderAccept(localVarHttpHeaderAccepts);
+            if (localVarHttpHeaderAccept != null)
+                localVarHeaderParams.Add("Accept", localVarHttpHeaderAccept);
 
-
-            var localVarContentType = Lusid.Sdk.Client.ClientUtils.SelectHeaderContentType(_contentTypes);
-            if (localVarContentType != null) localVarRequestOptions.HeaderParameters.Add("Content-Type", localVarContentType);
-
-            var localVarAccept = Lusid.Sdk.Client.ClientUtils.SelectHeaderAccept(_accepts);
-            if (localVarAccept != null) localVarRequestOptions.HeaderParameters.Add("Accept", localVarAccept);
-
-            localVarRequestOptions.PathParameters.Add("scope", Lusid.Sdk.Client.ClientUtils.ParameterToString(scope)); // path parameter
-            localVarRequestOptions.PathParameters.Add("code", Lusid.Sdk.Client.ClientUtils.ParameterToString(code)); // path parameter
-            localVarRequestOptions.PathParameters.Add("returnScope", Lusid.Sdk.Client.ClientUtils.ParameterToString(returnScope)); // path parameter
-            localVarRequestOptions.PathParameters.Add("returnCode", Lusid.Sdk.Client.ClientUtils.ParameterToString(returnCode)); // path parameter
-            if (fromEffectiveAt != null)
-            {
-                localVarRequestOptions.QueryParameters.Add(Lusid.Sdk.Client.ClientUtils.ParameterToMultiMap("", "fromEffectiveAt", fromEffectiveAt));
-            }
-            if (toEffectiveAt != null)
-            {
-                localVarRequestOptions.QueryParameters.Add(Lusid.Sdk.Client.ClientUtils.ParameterToMultiMap("", "toEffectiveAt", toEffectiveAt));
-            }
-            if (period != null)
-            {
-                localVarRequestOptions.QueryParameters.Add(Lusid.Sdk.Client.ClientUtils.ParameterToMultiMap("", "period", period));
-            }
-            if (asAt != null)
-            {
-                localVarRequestOptions.QueryParameters.Add(Lusid.Sdk.Client.ClientUtils.ParameterToMultiMap("", "asAt", asAt));
-            }
+            if (scope != null) localVarPathParams.Add("scope", this.Configuration.ApiClient.ParameterToString(scope)); // path parameter
+            if (code != null) localVarPathParams.Add("code", this.Configuration.ApiClient.ParameterToString(code)); // path parameter
+            if (returnScope != null) localVarPathParams.Add("returnScope", this.Configuration.ApiClient.ParameterToString(returnScope)); // path parameter
+            if (returnCode != null) localVarPathParams.Add("returnCode", this.Configuration.ApiClient.ParameterToString(returnCode)); // path parameter
+            if (fromEffectiveAt != null) localVarQueryParams.AddRange(this.Configuration.ApiClient.ParameterToKeyValuePairs("", "fromEffectiveAt", fromEffectiveAt)); // query parameter
+            if (toEffectiveAt != null) localVarQueryParams.AddRange(this.Configuration.ApiClient.ParameterToKeyValuePairs("", "toEffectiveAt", toEffectiveAt)); // query parameter
+            if (period != null) localVarQueryParams.AddRange(this.Configuration.ApiClient.ParameterToKeyValuePairs("", "period", period)); // query parameter
+            if (asAt != null) localVarQueryParams.AddRange(this.Configuration.ApiClient.ParameterToKeyValuePairs("", "asAt", asAt)); // query parameter
 
             // authentication (oauth2) required
             // oauth required
             if (!String.IsNullOrEmpty(this.Configuration.AccessToken))
             {
-                localVarRequestOptions.HeaderParameters.Add("Authorization", "Bearer " + this.Configuration.AccessToken);
+                localVarHeaderParams["Authorization"] = "Bearer " + this.Configuration.AccessToken;
             }
 
             //  set the LUSID header
-            localVarRequestOptions.HeaderParameters.Add("X-LUSID-Sdk-Language", "C#");
-            localVarRequestOptions.HeaderParameters.Add("X-LUSID-Sdk-Version", "0.11.3313");
+            localVarHeaderParams["X-LUSID-Sdk-Language"] = "C#";
+            localVarHeaderParams["X-LUSID-Sdk-Version"] = "0.11.3314";
 
             // make the HTTP request
+            IRestResponse localVarResponse = (IRestResponse) await this.Configuration.ApiClient.CallApiAsync(localVarPath,
+                Method.GET, localVarQueryParams, localVarPostBody, localVarHeaderParams, localVarFormParams, localVarFileParams,
+                localVarPathParams, localVarHttpContentType);
 
-            var localVarResponse = await this.AsynchronousClient.GetAsync<ResourceListOfPerformanceReturn>("/api/portfolios/{scope}/{code}/returns/{returnScope}/{returnCode}", localVarRequestOptions, this.Configuration, cancellationToken).ConfigureAwait(false);
+            int localVarStatusCode = (int) localVarResponse.StatusCode;
 
-            if (this.ExceptionFactory != null)
+            if (ExceptionFactory != null)
             {
-                Exception _exception = this.ExceptionFactory("GetPortfolioReturns", localVarResponse);
-                if (_exception != null) throw _exception;
+                Exception exception = ExceptionFactory("GetPortfolioReturns", localVarResponse);
+                if (exception != null) throw exception;
             }
 
-            return localVarResponse;
+            return new ApiResponse<ResourceListOfPerformanceReturn>(localVarStatusCode,
+                localVarResponse.Headers.ToDictionary(x => x.Key, x => string.Join(",", x.Value)),
+                (ResourceListOfPerformanceReturn) this.Configuration.ApiClient.Deserialize(localVarResponse, typeof(ResourceListOfPerformanceReturn)));
         }
 
         /// <summary>
@@ -3774,10 +3651,10 @@ namespace Lusid.Sdk.Api
         /// <param name="effectiveAt">The effective date of the rule (optional)</param>
         /// <param name="asAt">The asAt datetime at which to retrieve the portfolio access metadata. (optional)</param>
         /// <returns>ICollection&lt;AccessMetadataValue&gt;</returns>
-        public ICollection<AccessMetadataValue> GetPortfoliosAccessMetadataByKey(string scope, string code, string metadataKey, DateTimeOrCutLabel effectiveAt = default(DateTimeOrCutLabel), DateTimeOffset? asAt = default(DateTimeOffset?))
+        public ICollection<AccessMetadataValue> GetPortfoliosAccessMetadataByKey (string scope, string code, string metadataKey, DateTimeOrCutLabel effectiveAt = null, DateTimeOffset? asAt = null)
         {
-            Lusid.Sdk.Client.ApiResponse<ICollection<AccessMetadataValue>> localVarResponse = GetPortfoliosAccessMetadataByKeyWithHttpInfo(scope, code, metadataKey, effectiveAt, asAt);
-            return localVarResponse.Data;
+             ApiResponse<ICollection<AccessMetadataValue>> localVarResponse = GetPortfoliosAccessMetadataByKeyWithHttpInfo(scope, code, metadataKey, effectiveAt, asAt);
+             return localVarResponse.Data;
         }
 
         /// <summary>
@@ -3790,71 +3667,74 @@ namespace Lusid.Sdk.Api
         /// <param name="effectiveAt">The effective date of the rule (optional)</param>
         /// <param name="asAt">The asAt datetime at which to retrieve the portfolio access metadata. (optional)</param>
         /// <returns>ApiResponse of ICollection&lt;AccessMetadataValue&gt;</returns>
-        public Lusid.Sdk.Client.ApiResponse<ICollection<AccessMetadataValue>> GetPortfoliosAccessMetadataByKeyWithHttpInfo(string scope, string code, string metadataKey, DateTimeOrCutLabel effectiveAt = default(DateTimeOrCutLabel), DateTimeOffset? asAt = default(DateTimeOffset?))
+        public ApiResponse< ICollection<AccessMetadataValue> > GetPortfoliosAccessMetadataByKeyWithHttpInfo (string scope, string code, string metadataKey, DateTimeOrCutLabel effectiveAt = null, DateTimeOffset? asAt = null)
         {
             // verify the required parameter 'scope' is set
             if (scope == null)
-                throw new Lusid.Sdk.Client.ApiException(400, "Missing required parameter 'scope' when calling PortfoliosApi->GetPortfoliosAccessMetadataByKey");
-
+                throw new ApiException(400, "Missing required parameter 'scope' when calling PortfoliosApi->GetPortfoliosAccessMetadataByKey");
             // verify the required parameter 'code' is set
             if (code == null)
-                throw new Lusid.Sdk.Client.ApiException(400, "Missing required parameter 'code' when calling PortfoliosApi->GetPortfoliosAccessMetadataByKey");
-
+                throw new ApiException(400, "Missing required parameter 'code' when calling PortfoliosApi->GetPortfoliosAccessMetadataByKey");
             // verify the required parameter 'metadataKey' is set
             if (metadataKey == null)
-                throw new Lusid.Sdk.Client.ApiException(400, "Missing required parameter 'metadataKey' when calling PortfoliosApi->GetPortfoliosAccessMetadataByKey");
+                throw new ApiException(400, "Missing required parameter 'metadataKey' when calling PortfoliosApi->GetPortfoliosAccessMetadataByKey");
 
-            Lusid.Sdk.Client.RequestOptions localVarRequestOptions = new Lusid.Sdk.Client.RequestOptions();
+            var localVarPath = "./api/portfolios/{scope}/{code}/metadata/{metadataKey}";
+            var localVarPathParams = new Dictionary<String, String>();
+            var localVarQueryParams = new List<KeyValuePair<String, String>>();
+            var localVarHeaderParams = new Dictionary<String, String>(this.Configuration.DefaultHeader);
+            var localVarFormParams = new Dictionary<String, String>();
+            var localVarFileParams = new Dictionary<String, FileParameter>();
+            Object localVarPostBody = null;
 
-            String[] _contentTypes = new String[] {
+            // to determine the Content-Type header
+            String[] localVarHttpContentTypes = new String[] {
             };
+            String localVarHttpContentType = this.Configuration.ApiClient.SelectHeaderContentType(localVarHttpContentTypes);
 
             // to determine the Accept header
-            String[] _accepts = new String[] {
+            String[] localVarHttpHeaderAccepts = new String[] {
                 "text/plain",
                 "application/json",
                 "text/json"
             };
+            String localVarHttpHeaderAccept = this.Configuration.ApiClient.SelectHeaderAccept(localVarHttpHeaderAccepts);
+            if (localVarHttpHeaderAccept != null)
+                localVarHeaderParams.Add("Accept", localVarHttpHeaderAccept);
 
-            var localVarContentType = Lusid.Sdk.Client.ClientUtils.SelectHeaderContentType(_contentTypes);
-            if (localVarContentType != null) localVarRequestOptions.HeaderParameters.Add("Content-Type", localVarContentType);
-
-            var localVarAccept = Lusid.Sdk.Client.ClientUtils.SelectHeaderAccept(_accepts);
-            if (localVarAccept != null) localVarRequestOptions.HeaderParameters.Add("Accept", localVarAccept);
-
-            localVarRequestOptions.PathParameters.Add("scope", Lusid.Sdk.Client.ClientUtils.ParameterToString(scope)); // path parameter
-            localVarRequestOptions.PathParameters.Add("code", Lusid.Sdk.Client.ClientUtils.ParameterToString(code)); // path parameter
-            localVarRequestOptions.PathParameters.Add("metadataKey", Lusid.Sdk.Client.ClientUtils.ParameterToString(metadataKey)); // path parameter
-            if (effectiveAt != null)
-            {
-                localVarRequestOptions.QueryParameters.Add(Lusid.Sdk.Client.ClientUtils.ParameterToMultiMap("", "effectiveAt", effectiveAt));
-            }
-            if (asAt != null)
-            {
-                localVarRequestOptions.QueryParameters.Add(Lusid.Sdk.Client.ClientUtils.ParameterToMultiMap("", "asAt", asAt));
-            }
+            if (scope != null) localVarPathParams.Add("scope", this.Configuration.ApiClient.ParameterToString(scope)); // path parameter
+            if (code != null) localVarPathParams.Add("code", this.Configuration.ApiClient.ParameterToString(code)); // path parameter
+            if (metadataKey != null) localVarPathParams.Add("metadataKey", this.Configuration.ApiClient.ParameterToString(metadataKey)); // path parameter
+            if (effectiveAt != null) localVarQueryParams.AddRange(this.Configuration.ApiClient.ParameterToKeyValuePairs("", "effectiveAt", effectiveAt)); // query parameter
+            if (asAt != null) localVarQueryParams.AddRange(this.Configuration.ApiClient.ParameterToKeyValuePairs("", "asAt", asAt)); // query parameter
 
             // authentication (oauth2) required
             // oauth required
             if (!String.IsNullOrEmpty(this.Configuration.AccessToken))
             {
-                localVarRequestOptions.HeaderParameters.Add("Authorization", "Bearer " + this.Configuration.AccessToken);
+                localVarHeaderParams["Authorization"] = "Bearer " + this.Configuration.AccessToken;
             }
 
             //  set the LUSID header
-            localVarRequestOptions.HeaderParameters.Add("X-LUSID-Sdk-Language", "C#");
-            localVarRequestOptions.HeaderParameters.Add("X-LUSID-Sdk-Version", "0.11.3313");
+            localVarHeaderParams["X-LUSID-SDK-Language"] = "C#";
+            localVarHeaderParams["X-LUSID-SDK-Version"] = "0.11.3314";
 
             // make the HTTP request
-            var localVarResponse = this.Client.Get<ICollection<AccessMetadataValue>>("/api/portfolios/{scope}/{code}/metadata/{metadataKey}", localVarRequestOptions, this.Configuration);
+            IRestResponse localVarResponse = (IRestResponse) this.Configuration.ApiClient.CallApi(localVarPath,
+                Method.GET, localVarQueryParams, localVarPostBody, localVarHeaderParams, localVarFormParams, localVarFileParams,
+                localVarPathParams, localVarHttpContentType);
 
-            if (this.ExceptionFactory != null)
+            int localVarStatusCode = (int) localVarResponse.StatusCode;
+
+            if (ExceptionFactory != null)
             {
-                Exception _exception = this.ExceptionFactory("GetPortfoliosAccessMetadataByKey", localVarResponse);
-                if (_exception != null) throw _exception;
+                Exception exception = ExceptionFactory("GetPortfoliosAccessMetadataByKey", localVarResponse);
+                if (exception != null) throw exception;
             }
 
-            return localVarResponse;
+            return new ApiResponse<ICollection<AccessMetadataValue>>(localVarStatusCode,
+                localVarResponse.Headers.ToDictionary(x => x.Key, x => string.Join(",", x.Value)),
+                (ICollection<AccessMetadataValue>) this.Configuration.ApiClient.Deserialize(localVarResponse, typeof(List<AccessMetadataValue>)));
         }
 
         /// <summary>
@@ -3866,12 +3746,12 @@ namespace Lusid.Sdk.Api
         /// <param name="metadataKey">Key of the metadata to retrieve</param>
         /// <param name="effectiveAt">The effective date of the rule (optional)</param>
         /// <param name="asAt">The asAt datetime at which to retrieve the portfolio access metadata. (optional)</param>
-        /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
         /// <returns>Task of ICollection&lt;AccessMetadataValue&gt;</returns>
-        public async System.Threading.Tasks.Task<ICollection<AccessMetadataValue>> GetPortfoliosAccessMetadataByKeyAsync(string scope, string code, string metadataKey, DateTimeOrCutLabel effectiveAt = default(DateTimeOrCutLabel), DateTimeOffset? asAt = default(DateTimeOffset?), System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
+        public async System.Threading.Tasks.Task<ICollection<AccessMetadataValue>> GetPortfoliosAccessMetadataByKeyAsync (string scope, string code, string metadataKey, DateTimeOrCutLabel effectiveAt = null, DateTimeOffset? asAt = null)
         {
-            Lusid.Sdk.Client.ApiResponse<ICollection<AccessMetadataValue>> localVarResponse = await GetPortfoliosAccessMetadataByKeyWithHttpInfoAsync(scope, code, metadataKey, effectiveAt, asAt, cancellationToken).ConfigureAwait(false);
-            return localVarResponse.Data;
+             ApiResponse<ICollection<AccessMetadataValue>> localVarResponse = await GetPortfoliosAccessMetadataByKeyAsyncWithHttpInfo(scope, code, metadataKey, effectiveAt, asAt);
+             return localVarResponse.Data;
+
         }
 
         /// <summary>
@@ -3883,76 +3763,75 @@ namespace Lusid.Sdk.Api
         /// <param name="metadataKey">Key of the metadata to retrieve</param>
         /// <param name="effectiveAt">The effective date of the rule (optional)</param>
         /// <param name="asAt">The asAt datetime at which to retrieve the portfolio access metadata. (optional)</param>
-        /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
         /// <returns>Task of ApiResponse (ICollection&lt;AccessMetadataValue&gt;)</returns>
-        public async System.Threading.Tasks.Task<Lusid.Sdk.Client.ApiResponse<ICollection<AccessMetadataValue>>> GetPortfoliosAccessMetadataByKeyWithHttpInfoAsync(string scope, string code, string metadataKey, DateTimeOrCutLabel effectiveAt = default(DateTimeOrCutLabel), DateTimeOffset? asAt = default(DateTimeOffset?), System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
+        public async System.Threading.Tasks.Task<ApiResponse<ICollection<AccessMetadataValue>>> GetPortfoliosAccessMetadataByKeyAsyncWithHttpInfo (string scope, string code, string metadataKey, DateTimeOrCutLabel effectiveAt = null, DateTimeOffset? asAt = null)
         {
             // verify the required parameter 'scope' is set
             if (scope == null)
-                throw new Lusid.Sdk.Client.ApiException(400, "Missing required parameter 'scope' when calling PortfoliosApi->GetPortfoliosAccessMetadataByKey");
-
+                throw new ApiException(400, "Missing required parameter 'scope' when calling PortfoliosApi->GetPortfoliosAccessMetadataByKey");
             // verify the required parameter 'code' is set
             if (code == null)
-                throw new Lusid.Sdk.Client.ApiException(400, "Missing required parameter 'code' when calling PortfoliosApi->GetPortfoliosAccessMetadataByKey");
-
+                throw new ApiException(400, "Missing required parameter 'code' when calling PortfoliosApi->GetPortfoliosAccessMetadataByKey");
             // verify the required parameter 'metadataKey' is set
             if (metadataKey == null)
-                throw new Lusid.Sdk.Client.ApiException(400, "Missing required parameter 'metadataKey' when calling PortfoliosApi->GetPortfoliosAccessMetadataByKey");
+                throw new ApiException(400, "Missing required parameter 'metadataKey' when calling PortfoliosApi->GetPortfoliosAccessMetadataByKey");
 
+            var localVarPath = "./api/portfolios/{scope}/{code}/metadata/{metadataKey}";
+            var localVarPathParams = new Dictionary<String, String>();
+            var localVarQueryParams = new List<KeyValuePair<String, String>>();
+            var localVarHeaderParams = new Dictionary<String, String>(this.Configuration.DefaultHeader);
+            var localVarFormParams = new Dictionary<String, String>();
+            var localVarFileParams = new Dictionary<String, FileParameter>();
+            Object localVarPostBody = null;
 
-            Lusid.Sdk.Client.RequestOptions localVarRequestOptions = new Lusid.Sdk.Client.RequestOptions();
-
-            String[] _contentTypes = new String[] {
+            // to determine the Content-Type header
+            String[] localVarHttpContentTypes = new String[] {
             };
+            String localVarHttpContentType = this.Configuration.ApiClient.SelectHeaderContentType(localVarHttpContentTypes);
 
             // to determine the Accept header
-            String[] _accepts = new String[] {
+            String[] localVarHttpHeaderAccepts = new String[] {
                 "text/plain",
                 "application/json",
                 "text/json"
             };
+            String localVarHttpHeaderAccept = this.Configuration.ApiClient.SelectHeaderAccept(localVarHttpHeaderAccepts);
+            if (localVarHttpHeaderAccept != null)
+                localVarHeaderParams.Add("Accept", localVarHttpHeaderAccept);
 
-
-            var localVarContentType = Lusid.Sdk.Client.ClientUtils.SelectHeaderContentType(_contentTypes);
-            if (localVarContentType != null) localVarRequestOptions.HeaderParameters.Add("Content-Type", localVarContentType);
-
-            var localVarAccept = Lusid.Sdk.Client.ClientUtils.SelectHeaderAccept(_accepts);
-            if (localVarAccept != null) localVarRequestOptions.HeaderParameters.Add("Accept", localVarAccept);
-
-            localVarRequestOptions.PathParameters.Add("scope", Lusid.Sdk.Client.ClientUtils.ParameterToString(scope)); // path parameter
-            localVarRequestOptions.PathParameters.Add("code", Lusid.Sdk.Client.ClientUtils.ParameterToString(code)); // path parameter
-            localVarRequestOptions.PathParameters.Add("metadataKey", Lusid.Sdk.Client.ClientUtils.ParameterToString(metadataKey)); // path parameter
-            if (effectiveAt != null)
-            {
-                localVarRequestOptions.QueryParameters.Add(Lusid.Sdk.Client.ClientUtils.ParameterToMultiMap("", "effectiveAt", effectiveAt));
-            }
-            if (asAt != null)
-            {
-                localVarRequestOptions.QueryParameters.Add(Lusid.Sdk.Client.ClientUtils.ParameterToMultiMap("", "asAt", asAt));
-            }
+            if (scope != null) localVarPathParams.Add("scope", this.Configuration.ApiClient.ParameterToString(scope)); // path parameter
+            if (code != null) localVarPathParams.Add("code", this.Configuration.ApiClient.ParameterToString(code)); // path parameter
+            if (metadataKey != null) localVarPathParams.Add("metadataKey", this.Configuration.ApiClient.ParameterToString(metadataKey)); // path parameter
+            if (effectiveAt != null) localVarQueryParams.AddRange(this.Configuration.ApiClient.ParameterToKeyValuePairs("", "effectiveAt", effectiveAt)); // query parameter
+            if (asAt != null) localVarQueryParams.AddRange(this.Configuration.ApiClient.ParameterToKeyValuePairs("", "asAt", asAt)); // query parameter
 
             // authentication (oauth2) required
             // oauth required
             if (!String.IsNullOrEmpty(this.Configuration.AccessToken))
             {
-                localVarRequestOptions.HeaderParameters.Add("Authorization", "Bearer " + this.Configuration.AccessToken);
+                localVarHeaderParams["Authorization"] = "Bearer " + this.Configuration.AccessToken;
             }
 
             //  set the LUSID header
-            localVarRequestOptions.HeaderParameters.Add("X-LUSID-Sdk-Language", "C#");
-            localVarRequestOptions.HeaderParameters.Add("X-LUSID-Sdk-Version", "0.11.3313");
+            localVarHeaderParams["X-LUSID-Sdk-Language"] = "C#";
+            localVarHeaderParams["X-LUSID-Sdk-Version"] = "0.11.3314";
 
             // make the HTTP request
+            IRestResponse localVarResponse = (IRestResponse) await this.Configuration.ApiClient.CallApiAsync(localVarPath,
+                Method.GET, localVarQueryParams, localVarPostBody, localVarHeaderParams, localVarFormParams, localVarFileParams,
+                localVarPathParams, localVarHttpContentType);
 
-            var localVarResponse = await this.AsynchronousClient.GetAsync<ICollection<AccessMetadataValue>>("/api/portfolios/{scope}/{code}/metadata/{metadataKey}", localVarRequestOptions, this.Configuration, cancellationToken).ConfigureAwait(false);
+            int localVarStatusCode = (int) localVarResponse.StatusCode;
 
-            if (this.ExceptionFactory != null)
+            if (ExceptionFactory != null)
             {
-                Exception _exception = this.ExceptionFactory("GetPortfoliosAccessMetadataByKey", localVarResponse);
-                if (_exception != null) throw _exception;
+                Exception exception = ExceptionFactory("GetPortfoliosAccessMetadataByKey", localVarResponse);
+                if (exception != null) throw exception;
             }
 
-            return localVarResponse;
+            return new ApiResponse<ICollection<AccessMetadataValue>>(localVarStatusCode,
+                localVarResponse.Headers.ToDictionary(x => x.Key, x => string.Join(",", x.Value)),
+                (ICollection<AccessMetadataValue>) this.Configuration.ApiClient.Deserialize(localVarResponse, typeof(List<AccessMetadataValue>)));
         }
 
         /// <summary>
@@ -3968,10 +3847,10 @@ namespace Lusid.Sdk.Api
         /// <param name="query">Expression specifying the criteria that the returned portfolios must meet. For example, to see which              portfolios have holdings in instruments with a LusidInstrumentId (LUID) of &#39;LUID_PPA8HI6M&#39; or a Figi of &#39;BBG000BLNNH6&#39;,              specify \&quot;instrument.identifiers in ((&#39;LusidInstrumentId&#39;, &#39;LUID_PPA8HI6M&#39;), (&#39;Figi&#39;, &#39;BBG000BLNNH6&#39;))\&quot;. (optional)</param>
         /// <param name="propertyKeys">A list of property keys from the &#39;Portfolio&#39; domain to decorate onto each portfolio.              These must take the format {domain}/{scope}/{code}, for example &#39;Portfolio/Manager/Id&#39;. (optional)</param>
         /// <returns>ResourceListOfPortfolio</returns>
-        public ResourceListOfPortfolio ListPortfolios(DateTimeOrCutLabel effectiveAt = default(DateTimeOrCutLabel), DateTimeOffset? asAt = default(DateTimeOffset?), string page = default(string), int? start = default(int?), int? limit = default(int?), string filter = default(string), string query = default(string), List<string> propertyKeys = default(List<string>))
+        public ResourceListOfPortfolio ListPortfolios (DateTimeOrCutLabel effectiveAt = null, DateTimeOffset? asAt = null, string page = null, int? start = null, int? limit = null, string filter = null, string query = null, List<string> propertyKeys = null)
         {
-            Lusid.Sdk.Client.ApiResponse<ResourceListOfPortfolio> localVarResponse = ListPortfoliosWithHttpInfo(effectiveAt, asAt, page, start, limit, filter, query, propertyKeys);
-            return localVarResponse.Data;
+             ApiResponse<ResourceListOfPortfolio> localVarResponse = ListPortfoliosWithHttpInfo(effectiveAt, asAt, page, start, limit, filter, query, propertyKeys);
+             return localVarResponse.Data;
         }
 
         /// <summary>
@@ -3987,80 +3866,68 @@ namespace Lusid.Sdk.Api
         /// <param name="query">Expression specifying the criteria that the returned portfolios must meet. For example, to see which              portfolios have holdings in instruments with a LusidInstrumentId (LUID) of &#39;LUID_PPA8HI6M&#39; or a Figi of &#39;BBG000BLNNH6&#39;,              specify \&quot;instrument.identifiers in ((&#39;LusidInstrumentId&#39;, &#39;LUID_PPA8HI6M&#39;), (&#39;Figi&#39;, &#39;BBG000BLNNH6&#39;))\&quot;. (optional)</param>
         /// <param name="propertyKeys">A list of property keys from the &#39;Portfolio&#39; domain to decorate onto each portfolio.              These must take the format {domain}/{scope}/{code}, for example &#39;Portfolio/Manager/Id&#39;. (optional)</param>
         /// <returns>ApiResponse of ResourceListOfPortfolio</returns>
-        public Lusid.Sdk.Client.ApiResponse<ResourceListOfPortfolio> ListPortfoliosWithHttpInfo(DateTimeOrCutLabel effectiveAt = default(DateTimeOrCutLabel), DateTimeOffset? asAt = default(DateTimeOffset?), string page = default(string), int? start = default(int?), int? limit = default(int?), string filter = default(string), string query = default(string), List<string> propertyKeys = default(List<string>))
+        public ApiResponse< ResourceListOfPortfolio > ListPortfoliosWithHttpInfo (DateTimeOrCutLabel effectiveAt = null, DateTimeOffset? asAt = null, string page = null, int? start = null, int? limit = null, string filter = null, string query = null, List<string> propertyKeys = null)
         {
-            Lusid.Sdk.Client.RequestOptions localVarRequestOptions = new Lusid.Sdk.Client.RequestOptions();
 
-            String[] _contentTypes = new String[] {
+            var localVarPath = "./api/portfolios";
+            var localVarPathParams = new Dictionary<String, String>();
+            var localVarQueryParams = new List<KeyValuePair<String, String>>();
+            var localVarHeaderParams = new Dictionary<String, String>(this.Configuration.DefaultHeader);
+            var localVarFormParams = new Dictionary<String, String>();
+            var localVarFileParams = new Dictionary<String, FileParameter>();
+            Object localVarPostBody = null;
+
+            // to determine the Content-Type header
+            String[] localVarHttpContentTypes = new String[] {
             };
+            String localVarHttpContentType = this.Configuration.ApiClient.SelectHeaderContentType(localVarHttpContentTypes);
 
             // to determine the Accept header
-            String[] _accepts = new String[] {
+            String[] localVarHttpHeaderAccepts = new String[] {
                 "text/plain",
                 "application/json",
                 "text/json"
             };
+            String localVarHttpHeaderAccept = this.Configuration.ApiClient.SelectHeaderAccept(localVarHttpHeaderAccepts);
+            if (localVarHttpHeaderAccept != null)
+                localVarHeaderParams.Add("Accept", localVarHttpHeaderAccept);
 
-            var localVarContentType = Lusid.Sdk.Client.ClientUtils.SelectHeaderContentType(_contentTypes);
-            if (localVarContentType != null) localVarRequestOptions.HeaderParameters.Add("Content-Type", localVarContentType);
-
-            var localVarAccept = Lusid.Sdk.Client.ClientUtils.SelectHeaderAccept(_accepts);
-            if (localVarAccept != null) localVarRequestOptions.HeaderParameters.Add("Accept", localVarAccept);
-
-            if (effectiveAt != null)
-            {
-                localVarRequestOptions.QueryParameters.Add(Lusid.Sdk.Client.ClientUtils.ParameterToMultiMap("", "effectiveAt", effectiveAt));
-            }
-            if (asAt != null)
-            {
-                localVarRequestOptions.QueryParameters.Add(Lusid.Sdk.Client.ClientUtils.ParameterToMultiMap("", "asAt", asAt));
-            }
-            if (page != null)
-            {
-                localVarRequestOptions.QueryParameters.Add(Lusid.Sdk.Client.ClientUtils.ParameterToMultiMap("", "page", page));
-            }
-            if (start != null)
-            {
-                localVarRequestOptions.QueryParameters.Add(Lusid.Sdk.Client.ClientUtils.ParameterToMultiMap("", "start", start));
-            }
-            if (limit != null)
-            {
-                localVarRequestOptions.QueryParameters.Add(Lusid.Sdk.Client.ClientUtils.ParameterToMultiMap("", "limit", limit));
-            }
-            if (filter != null)
-            {
-                localVarRequestOptions.QueryParameters.Add(Lusid.Sdk.Client.ClientUtils.ParameterToMultiMap("", "filter", filter));
-            }
-            if (query != null)
-            {
-                localVarRequestOptions.QueryParameters.Add(Lusid.Sdk.Client.ClientUtils.ParameterToMultiMap("", "query", query));
-            }
-            if (propertyKeys != null)
-            {
-                localVarRequestOptions.QueryParameters.Add(Lusid.Sdk.Client.ClientUtils.ParameterToMultiMap("multi", "propertyKeys", propertyKeys));
-            }
+            if (effectiveAt != null) localVarQueryParams.AddRange(this.Configuration.ApiClient.ParameterToKeyValuePairs("", "effectiveAt", effectiveAt)); // query parameter
+            if (asAt != null) localVarQueryParams.AddRange(this.Configuration.ApiClient.ParameterToKeyValuePairs("", "asAt", asAt)); // query parameter
+            if (page != null) localVarQueryParams.AddRange(this.Configuration.ApiClient.ParameterToKeyValuePairs("", "page", page)); // query parameter
+            if (start != null) localVarQueryParams.AddRange(this.Configuration.ApiClient.ParameterToKeyValuePairs("", "start", start)); // query parameter
+            if (limit != null) localVarQueryParams.AddRange(this.Configuration.ApiClient.ParameterToKeyValuePairs("", "limit", limit)); // query parameter
+            if (filter != null) localVarQueryParams.AddRange(this.Configuration.ApiClient.ParameterToKeyValuePairs("", "filter", filter)); // query parameter
+            if (query != null) localVarQueryParams.AddRange(this.Configuration.ApiClient.ParameterToKeyValuePairs("", "query", query)); // query parameter
+            if (propertyKeys != null) localVarQueryParams.AddRange(this.Configuration.ApiClient.ParameterToKeyValuePairs("multi", "propertyKeys", propertyKeys)); // query parameter
 
             // authentication (oauth2) required
             // oauth required
             if (!String.IsNullOrEmpty(this.Configuration.AccessToken))
             {
-                localVarRequestOptions.HeaderParameters.Add("Authorization", "Bearer " + this.Configuration.AccessToken);
+                localVarHeaderParams["Authorization"] = "Bearer " + this.Configuration.AccessToken;
             }
 
             //  set the LUSID header
-            localVarRequestOptions.HeaderParameters.Add("X-LUSID-Sdk-Language", "C#");
-            localVarRequestOptions.HeaderParameters.Add("X-LUSID-Sdk-Version", "0.11.3313");
+            localVarHeaderParams["X-LUSID-SDK-Language"] = "C#";
+            localVarHeaderParams["X-LUSID-SDK-Version"] = "0.11.3314";
 
             // make the HTTP request
-            var localVarResponse = this.Client.Get<ResourceListOfPortfolio>("/api/portfolios", localVarRequestOptions, this.Configuration);
+            IRestResponse localVarResponse = (IRestResponse) this.Configuration.ApiClient.CallApi(localVarPath,
+                Method.GET, localVarQueryParams, localVarPostBody, localVarHeaderParams, localVarFormParams, localVarFileParams,
+                localVarPathParams, localVarHttpContentType);
 
-            if (this.ExceptionFactory != null)
+            int localVarStatusCode = (int) localVarResponse.StatusCode;
+
+            if (ExceptionFactory != null)
             {
-                Exception _exception = this.ExceptionFactory("ListPortfolios", localVarResponse);
-                if (_exception != null) throw _exception;
+                Exception exception = ExceptionFactory("ListPortfolios", localVarResponse);
+                if (exception != null) throw exception;
             }
 
-            return localVarResponse;
+            return new ApiResponse<ResourceListOfPortfolio>(localVarStatusCode,
+                localVarResponse.Headers.ToDictionary(x => x.Key, x => string.Join(",", x.Value)),
+                (ResourceListOfPortfolio) this.Configuration.ApiClient.Deserialize(localVarResponse, typeof(ResourceListOfPortfolio)));
         }
 
         /// <summary>
@@ -4075,12 +3942,12 @@ namespace Lusid.Sdk.Api
         /// <param name="filter">Expression to filter the results.              For example, to filter on the transaction type, specify \&quot;type eq &#39;Transaction&#39;\&quot;. For more information about filtering              results, see https://support.lusid.com/knowledgebase/article/KA-01914. (optional)</param>
         /// <param name="query">Expression specifying the criteria that the returned portfolios must meet. For example, to see which              portfolios have holdings in instruments with a LusidInstrumentId (LUID) of &#39;LUID_PPA8HI6M&#39; or a Figi of &#39;BBG000BLNNH6&#39;,              specify \&quot;instrument.identifiers in ((&#39;LusidInstrumentId&#39;, &#39;LUID_PPA8HI6M&#39;), (&#39;Figi&#39;, &#39;BBG000BLNNH6&#39;))\&quot;. (optional)</param>
         /// <param name="propertyKeys">A list of property keys from the &#39;Portfolio&#39; domain to decorate onto each portfolio.              These must take the format {domain}/{scope}/{code}, for example &#39;Portfolio/Manager/Id&#39;. (optional)</param>
-        /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
         /// <returns>Task of ResourceListOfPortfolio</returns>
-        public async System.Threading.Tasks.Task<ResourceListOfPortfolio> ListPortfoliosAsync(DateTimeOrCutLabel effectiveAt = default(DateTimeOrCutLabel), DateTimeOffset? asAt = default(DateTimeOffset?), string page = default(string), int? start = default(int?), int? limit = default(int?), string filter = default(string), string query = default(string), List<string> propertyKeys = default(List<string>), System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
+        public async System.Threading.Tasks.Task<ResourceListOfPortfolio> ListPortfoliosAsync (DateTimeOrCutLabel effectiveAt = null, DateTimeOffset? asAt = null, string page = null, int? start = null, int? limit = null, string filter = null, string query = null, List<string> propertyKeys = null)
         {
-            Lusid.Sdk.Client.ApiResponse<ResourceListOfPortfolio> localVarResponse = await ListPortfoliosWithHttpInfoAsync(effectiveAt, asAt, page, start, limit, filter, query, propertyKeys, cancellationToken).ConfigureAwait(false);
-            return localVarResponse.Data;
+             ApiResponse<ResourceListOfPortfolio> localVarResponse = await ListPortfoliosAsyncWithHttpInfo(effectiveAt, asAt, page, start, limit, filter, query, propertyKeys);
+             return localVarResponse.Data;
+
         }
 
         /// <summary>
@@ -4095,85 +3962,69 @@ namespace Lusid.Sdk.Api
         /// <param name="filter">Expression to filter the results.              For example, to filter on the transaction type, specify \&quot;type eq &#39;Transaction&#39;\&quot;. For more information about filtering              results, see https://support.lusid.com/knowledgebase/article/KA-01914. (optional)</param>
         /// <param name="query">Expression specifying the criteria that the returned portfolios must meet. For example, to see which              portfolios have holdings in instruments with a LusidInstrumentId (LUID) of &#39;LUID_PPA8HI6M&#39; or a Figi of &#39;BBG000BLNNH6&#39;,              specify \&quot;instrument.identifiers in ((&#39;LusidInstrumentId&#39;, &#39;LUID_PPA8HI6M&#39;), (&#39;Figi&#39;, &#39;BBG000BLNNH6&#39;))\&quot;. (optional)</param>
         /// <param name="propertyKeys">A list of property keys from the &#39;Portfolio&#39; domain to decorate onto each portfolio.              These must take the format {domain}/{scope}/{code}, for example &#39;Portfolio/Manager/Id&#39;. (optional)</param>
-        /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
         /// <returns>Task of ApiResponse (ResourceListOfPortfolio)</returns>
-        public async System.Threading.Tasks.Task<Lusid.Sdk.Client.ApiResponse<ResourceListOfPortfolio>> ListPortfoliosWithHttpInfoAsync(DateTimeOrCutLabel effectiveAt = default(DateTimeOrCutLabel), DateTimeOffset? asAt = default(DateTimeOffset?), string page = default(string), int? start = default(int?), int? limit = default(int?), string filter = default(string), string query = default(string), List<string> propertyKeys = default(List<string>), System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
+        public async System.Threading.Tasks.Task<ApiResponse<ResourceListOfPortfolio>> ListPortfoliosAsyncWithHttpInfo (DateTimeOrCutLabel effectiveAt = null, DateTimeOffset? asAt = null, string page = null, int? start = null, int? limit = null, string filter = null, string query = null, List<string> propertyKeys = null)
         {
 
-            Lusid.Sdk.Client.RequestOptions localVarRequestOptions = new Lusid.Sdk.Client.RequestOptions();
+            var localVarPath = "./api/portfolios";
+            var localVarPathParams = new Dictionary<String, String>();
+            var localVarQueryParams = new List<KeyValuePair<String, String>>();
+            var localVarHeaderParams = new Dictionary<String, String>(this.Configuration.DefaultHeader);
+            var localVarFormParams = new Dictionary<String, String>();
+            var localVarFileParams = new Dictionary<String, FileParameter>();
+            Object localVarPostBody = null;
 
-            String[] _contentTypes = new String[] {
+            // to determine the Content-Type header
+            String[] localVarHttpContentTypes = new String[] {
             };
+            String localVarHttpContentType = this.Configuration.ApiClient.SelectHeaderContentType(localVarHttpContentTypes);
 
             // to determine the Accept header
-            String[] _accepts = new String[] {
+            String[] localVarHttpHeaderAccepts = new String[] {
                 "text/plain",
                 "application/json",
                 "text/json"
             };
+            String localVarHttpHeaderAccept = this.Configuration.ApiClient.SelectHeaderAccept(localVarHttpHeaderAccepts);
+            if (localVarHttpHeaderAccept != null)
+                localVarHeaderParams.Add("Accept", localVarHttpHeaderAccept);
 
-
-            var localVarContentType = Lusid.Sdk.Client.ClientUtils.SelectHeaderContentType(_contentTypes);
-            if (localVarContentType != null) localVarRequestOptions.HeaderParameters.Add("Content-Type", localVarContentType);
-
-            var localVarAccept = Lusid.Sdk.Client.ClientUtils.SelectHeaderAccept(_accepts);
-            if (localVarAccept != null) localVarRequestOptions.HeaderParameters.Add("Accept", localVarAccept);
-
-            if (effectiveAt != null)
-            {
-                localVarRequestOptions.QueryParameters.Add(Lusid.Sdk.Client.ClientUtils.ParameterToMultiMap("", "effectiveAt", effectiveAt));
-            }
-            if (asAt != null)
-            {
-                localVarRequestOptions.QueryParameters.Add(Lusid.Sdk.Client.ClientUtils.ParameterToMultiMap("", "asAt", asAt));
-            }
-            if (page != null)
-            {
-                localVarRequestOptions.QueryParameters.Add(Lusid.Sdk.Client.ClientUtils.ParameterToMultiMap("", "page", page));
-            }
-            if (start != null)
-            {
-                localVarRequestOptions.QueryParameters.Add(Lusid.Sdk.Client.ClientUtils.ParameterToMultiMap("", "start", start));
-            }
-            if (limit != null)
-            {
-                localVarRequestOptions.QueryParameters.Add(Lusid.Sdk.Client.ClientUtils.ParameterToMultiMap("", "limit", limit));
-            }
-            if (filter != null)
-            {
-                localVarRequestOptions.QueryParameters.Add(Lusid.Sdk.Client.ClientUtils.ParameterToMultiMap("", "filter", filter));
-            }
-            if (query != null)
-            {
-                localVarRequestOptions.QueryParameters.Add(Lusid.Sdk.Client.ClientUtils.ParameterToMultiMap("", "query", query));
-            }
-            if (propertyKeys != null)
-            {
-                localVarRequestOptions.QueryParameters.Add(Lusid.Sdk.Client.ClientUtils.ParameterToMultiMap("multi", "propertyKeys", propertyKeys));
-            }
+            if (effectiveAt != null) localVarQueryParams.AddRange(this.Configuration.ApiClient.ParameterToKeyValuePairs("", "effectiveAt", effectiveAt)); // query parameter
+            if (asAt != null) localVarQueryParams.AddRange(this.Configuration.ApiClient.ParameterToKeyValuePairs("", "asAt", asAt)); // query parameter
+            if (page != null) localVarQueryParams.AddRange(this.Configuration.ApiClient.ParameterToKeyValuePairs("", "page", page)); // query parameter
+            if (start != null) localVarQueryParams.AddRange(this.Configuration.ApiClient.ParameterToKeyValuePairs("", "start", start)); // query parameter
+            if (limit != null) localVarQueryParams.AddRange(this.Configuration.ApiClient.ParameterToKeyValuePairs("", "limit", limit)); // query parameter
+            if (filter != null) localVarQueryParams.AddRange(this.Configuration.ApiClient.ParameterToKeyValuePairs("", "filter", filter)); // query parameter
+            if (query != null) localVarQueryParams.AddRange(this.Configuration.ApiClient.ParameterToKeyValuePairs("", "query", query)); // query parameter
+            if (propertyKeys != null) localVarQueryParams.AddRange(this.Configuration.ApiClient.ParameterToKeyValuePairs("multi", "propertyKeys", propertyKeys)); // query parameter
 
             // authentication (oauth2) required
             // oauth required
             if (!String.IsNullOrEmpty(this.Configuration.AccessToken))
             {
-                localVarRequestOptions.HeaderParameters.Add("Authorization", "Bearer " + this.Configuration.AccessToken);
+                localVarHeaderParams["Authorization"] = "Bearer " + this.Configuration.AccessToken;
             }
 
             //  set the LUSID header
-            localVarRequestOptions.HeaderParameters.Add("X-LUSID-Sdk-Language", "C#");
-            localVarRequestOptions.HeaderParameters.Add("X-LUSID-Sdk-Version", "0.11.3313");
+            localVarHeaderParams["X-LUSID-Sdk-Language"] = "C#";
+            localVarHeaderParams["X-LUSID-Sdk-Version"] = "0.11.3314";
 
             // make the HTTP request
+            IRestResponse localVarResponse = (IRestResponse) await this.Configuration.ApiClient.CallApiAsync(localVarPath,
+                Method.GET, localVarQueryParams, localVarPostBody, localVarHeaderParams, localVarFormParams, localVarFileParams,
+                localVarPathParams, localVarHttpContentType);
 
-            var localVarResponse = await this.AsynchronousClient.GetAsync<ResourceListOfPortfolio>("/api/portfolios", localVarRequestOptions, this.Configuration, cancellationToken).ConfigureAwait(false);
+            int localVarStatusCode = (int) localVarResponse.StatusCode;
 
-            if (this.ExceptionFactory != null)
+            if (ExceptionFactory != null)
             {
-                Exception _exception = this.ExceptionFactory("ListPortfolios", localVarResponse);
-                if (_exception != null) throw _exception;
+                Exception exception = ExceptionFactory("ListPortfolios", localVarResponse);
+                if (exception != null) throw exception;
             }
 
-            return localVarResponse;
+            return new ApiResponse<ResourceListOfPortfolio>(localVarStatusCode,
+                localVarResponse.Headers.ToDictionary(x => x.Key, x => string.Join(",", x.Value)),
+                (ResourceListOfPortfolio) this.Configuration.ApiClient.Deserialize(localVarResponse, typeof(ResourceListOfPortfolio)));
         }
 
         /// <summary>
@@ -4189,10 +4040,10 @@ namespace Lusid.Sdk.Api
         /// <param name="filter">Expression to filter the results.              For example, to return only transactions with a transaction type of &#39;Buy&#39;, specify \&quot;type eq &#39;Buy&#39;\&quot;.              For more information about filtering results, see https://support.lusid.com/knowledgebase/article/KA-01914. (optional)</param>
         /// <param name="propertyKeys">A list of property keys from the &#39;Portfolio&#39; domain to decorate onto each portfolio.              These must take the format {domain}/{scope}/{code}, for example &#39;Portfolio/Manager/Id&#39;. (optional)</param>
         /// <returns>ResourceListOfPortfolio</returns>
-        public ResourceListOfPortfolio ListPortfoliosForScope(string scope, DateTimeOrCutLabel effectiveAt = default(DateTimeOrCutLabel), DateTimeOffset? asAt = default(DateTimeOffset?), string page = default(string), int? start = default(int?), int? limit = default(int?), string filter = default(string), List<string> propertyKeys = default(List<string>))
+        public ResourceListOfPortfolio ListPortfoliosForScope (string scope, DateTimeOrCutLabel effectiveAt = null, DateTimeOffset? asAt = null, string page = null, int? start = null, int? limit = null, string filter = null, List<string> propertyKeys = null)
         {
-            Lusid.Sdk.Client.ApiResponse<ResourceListOfPortfolio> localVarResponse = ListPortfoliosForScopeWithHttpInfo(scope, effectiveAt, asAt, page, start, limit, filter, propertyKeys);
-            return localVarResponse.Data;
+             ApiResponse<ResourceListOfPortfolio> localVarResponse = ListPortfoliosForScopeWithHttpInfo(scope, effectiveAt, asAt, page, start, limit, filter, propertyKeys);
+             return localVarResponse.Data;
         }
 
         /// <summary>
@@ -4208,81 +4059,71 @@ namespace Lusid.Sdk.Api
         /// <param name="filter">Expression to filter the results.              For example, to return only transactions with a transaction type of &#39;Buy&#39;, specify \&quot;type eq &#39;Buy&#39;\&quot;.              For more information about filtering results, see https://support.lusid.com/knowledgebase/article/KA-01914. (optional)</param>
         /// <param name="propertyKeys">A list of property keys from the &#39;Portfolio&#39; domain to decorate onto each portfolio.              These must take the format {domain}/{scope}/{code}, for example &#39;Portfolio/Manager/Id&#39;. (optional)</param>
         /// <returns>ApiResponse of ResourceListOfPortfolio</returns>
-        public Lusid.Sdk.Client.ApiResponse<ResourceListOfPortfolio> ListPortfoliosForScopeWithHttpInfo(string scope, DateTimeOrCutLabel effectiveAt = default(DateTimeOrCutLabel), DateTimeOffset? asAt = default(DateTimeOffset?), string page = default(string), int? start = default(int?), int? limit = default(int?), string filter = default(string), List<string> propertyKeys = default(List<string>))
+        public ApiResponse< ResourceListOfPortfolio > ListPortfoliosForScopeWithHttpInfo (string scope, DateTimeOrCutLabel effectiveAt = null, DateTimeOffset? asAt = null, string page = null, int? start = null, int? limit = null, string filter = null, List<string> propertyKeys = null)
         {
             // verify the required parameter 'scope' is set
             if (scope == null)
-                throw new Lusid.Sdk.Client.ApiException(400, "Missing required parameter 'scope' when calling PortfoliosApi->ListPortfoliosForScope");
+                throw new ApiException(400, "Missing required parameter 'scope' when calling PortfoliosApi->ListPortfoliosForScope");
 
-            Lusid.Sdk.Client.RequestOptions localVarRequestOptions = new Lusid.Sdk.Client.RequestOptions();
+            var localVarPath = "./api/portfolios/{scope}";
+            var localVarPathParams = new Dictionary<String, String>();
+            var localVarQueryParams = new List<KeyValuePair<String, String>>();
+            var localVarHeaderParams = new Dictionary<String, String>(this.Configuration.DefaultHeader);
+            var localVarFormParams = new Dictionary<String, String>();
+            var localVarFileParams = new Dictionary<String, FileParameter>();
+            Object localVarPostBody = null;
 
-            String[] _contentTypes = new String[] {
+            // to determine the Content-Type header
+            String[] localVarHttpContentTypes = new String[] {
             };
+            String localVarHttpContentType = this.Configuration.ApiClient.SelectHeaderContentType(localVarHttpContentTypes);
 
             // to determine the Accept header
-            String[] _accepts = new String[] {
+            String[] localVarHttpHeaderAccepts = new String[] {
                 "text/plain",
                 "application/json",
                 "text/json"
             };
+            String localVarHttpHeaderAccept = this.Configuration.ApiClient.SelectHeaderAccept(localVarHttpHeaderAccepts);
+            if (localVarHttpHeaderAccept != null)
+                localVarHeaderParams.Add("Accept", localVarHttpHeaderAccept);
 
-            var localVarContentType = Lusid.Sdk.Client.ClientUtils.SelectHeaderContentType(_contentTypes);
-            if (localVarContentType != null) localVarRequestOptions.HeaderParameters.Add("Content-Type", localVarContentType);
-
-            var localVarAccept = Lusid.Sdk.Client.ClientUtils.SelectHeaderAccept(_accepts);
-            if (localVarAccept != null) localVarRequestOptions.HeaderParameters.Add("Accept", localVarAccept);
-
-            localVarRequestOptions.PathParameters.Add("scope", Lusid.Sdk.Client.ClientUtils.ParameterToString(scope)); // path parameter
-            if (effectiveAt != null)
-            {
-                localVarRequestOptions.QueryParameters.Add(Lusid.Sdk.Client.ClientUtils.ParameterToMultiMap("", "effectiveAt", effectiveAt));
-            }
-            if (asAt != null)
-            {
-                localVarRequestOptions.QueryParameters.Add(Lusid.Sdk.Client.ClientUtils.ParameterToMultiMap("", "asAt", asAt));
-            }
-            if (page != null)
-            {
-                localVarRequestOptions.QueryParameters.Add(Lusid.Sdk.Client.ClientUtils.ParameterToMultiMap("", "page", page));
-            }
-            if (start != null)
-            {
-                localVarRequestOptions.QueryParameters.Add(Lusid.Sdk.Client.ClientUtils.ParameterToMultiMap("", "start", start));
-            }
-            if (limit != null)
-            {
-                localVarRequestOptions.QueryParameters.Add(Lusid.Sdk.Client.ClientUtils.ParameterToMultiMap("", "limit", limit));
-            }
-            if (filter != null)
-            {
-                localVarRequestOptions.QueryParameters.Add(Lusid.Sdk.Client.ClientUtils.ParameterToMultiMap("", "filter", filter));
-            }
-            if (propertyKeys != null)
-            {
-                localVarRequestOptions.QueryParameters.Add(Lusid.Sdk.Client.ClientUtils.ParameterToMultiMap("multi", "propertyKeys", propertyKeys));
-            }
+            if (scope != null) localVarPathParams.Add("scope", this.Configuration.ApiClient.ParameterToString(scope)); // path parameter
+            if (effectiveAt != null) localVarQueryParams.AddRange(this.Configuration.ApiClient.ParameterToKeyValuePairs("", "effectiveAt", effectiveAt)); // query parameter
+            if (asAt != null) localVarQueryParams.AddRange(this.Configuration.ApiClient.ParameterToKeyValuePairs("", "asAt", asAt)); // query parameter
+            if (page != null) localVarQueryParams.AddRange(this.Configuration.ApiClient.ParameterToKeyValuePairs("", "page", page)); // query parameter
+            if (start != null) localVarQueryParams.AddRange(this.Configuration.ApiClient.ParameterToKeyValuePairs("", "start", start)); // query parameter
+            if (limit != null) localVarQueryParams.AddRange(this.Configuration.ApiClient.ParameterToKeyValuePairs("", "limit", limit)); // query parameter
+            if (filter != null) localVarQueryParams.AddRange(this.Configuration.ApiClient.ParameterToKeyValuePairs("", "filter", filter)); // query parameter
+            if (propertyKeys != null) localVarQueryParams.AddRange(this.Configuration.ApiClient.ParameterToKeyValuePairs("multi", "propertyKeys", propertyKeys)); // query parameter
 
             // authentication (oauth2) required
             // oauth required
             if (!String.IsNullOrEmpty(this.Configuration.AccessToken))
             {
-                localVarRequestOptions.HeaderParameters.Add("Authorization", "Bearer " + this.Configuration.AccessToken);
+                localVarHeaderParams["Authorization"] = "Bearer " + this.Configuration.AccessToken;
             }
 
             //  set the LUSID header
-            localVarRequestOptions.HeaderParameters.Add("X-LUSID-Sdk-Language", "C#");
-            localVarRequestOptions.HeaderParameters.Add("X-LUSID-Sdk-Version", "0.11.3313");
+            localVarHeaderParams["X-LUSID-SDK-Language"] = "C#";
+            localVarHeaderParams["X-LUSID-SDK-Version"] = "0.11.3314";
 
             // make the HTTP request
-            var localVarResponse = this.Client.Get<ResourceListOfPortfolio>("/api/portfolios/{scope}", localVarRequestOptions, this.Configuration);
+            IRestResponse localVarResponse = (IRestResponse) this.Configuration.ApiClient.CallApi(localVarPath,
+                Method.GET, localVarQueryParams, localVarPostBody, localVarHeaderParams, localVarFormParams, localVarFileParams,
+                localVarPathParams, localVarHttpContentType);
 
-            if (this.ExceptionFactory != null)
+            int localVarStatusCode = (int) localVarResponse.StatusCode;
+
+            if (ExceptionFactory != null)
             {
-                Exception _exception = this.ExceptionFactory("ListPortfoliosForScope", localVarResponse);
-                if (_exception != null) throw _exception;
+                Exception exception = ExceptionFactory("ListPortfoliosForScope", localVarResponse);
+                if (exception != null) throw exception;
             }
 
-            return localVarResponse;
+            return new ApiResponse<ResourceListOfPortfolio>(localVarStatusCode,
+                localVarResponse.Headers.ToDictionary(x => x.Key, x => string.Join(",", x.Value)),
+                (ResourceListOfPortfolio) this.Configuration.ApiClient.Deserialize(localVarResponse, typeof(ResourceListOfPortfolio)));
         }
 
         /// <summary>
@@ -4297,12 +4138,12 @@ namespace Lusid.Sdk.Api
         /// <param name="limit">When paginating, limit the results to this number. Defaults to 65,535 if not specified. (optional)</param>
         /// <param name="filter">Expression to filter the results.              For example, to return only transactions with a transaction type of &#39;Buy&#39;, specify \&quot;type eq &#39;Buy&#39;\&quot;.              For more information about filtering results, see https://support.lusid.com/knowledgebase/article/KA-01914. (optional)</param>
         /// <param name="propertyKeys">A list of property keys from the &#39;Portfolio&#39; domain to decorate onto each portfolio.              These must take the format {domain}/{scope}/{code}, for example &#39;Portfolio/Manager/Id&#39;. (optional)</param>
-        /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
         /// <returns>Task of ResourceListOfPortfolio</returns>
-        public async System.Threading.Tasks.Task<ResourceListOfPortfolio> ListPortfoliosForScopeAsync(string scope, DateTimeOrCutLabel effectiveAt = default(DateTimeOrCutLabel), DateTimeOffset? asAt = default(DateTimeOffset?), string page = default(string), int? start = default(int?), int? limit = default(int?), string filter = default(string), List<string> propertyKeys = default(List<string>), System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
+        public async System.Threading.Tasks.Task<ResourceListOfPortfolio> ListPortfoliosForScopeAsync (string scope, DateTimeOrCutLabel effectiveAt = null, DateTimeOffset? asAt = null, string page = null, int? start = null, int? limit = null, string filter = null, List<string> propertyKeys = null)
         {
-            Lusid.Sdk.Client.ApiResponse<ResourceListOfPortfolio> localVarResponse = await ListPortfoliosForScopeWithHttpInfoAsync(scope, effectiveAt, asAt, page, start, limit, filter, propertyKeys, cancellationToken).ConfigureAwait(false);
-            return localVarResponse.Data;
+             ApiResponse<ResourceListOfPortfolio> localVarResponse = await ListPortfoliosForScopeAsyncWithHttpInfo(scope, effectiveAt, asAt, page, start, limit, filter, propertyKeys);
+             return localVarResponse.Data;
+
         }
 
         /// <summary>
@@ -4317,86 +4158,72 @@ namespace Lusid.Sdk.Api
         /// <param name="limit">When paginating, limit the results to this number. Defaults to 65,535 if not specified. (optional)</param>
         /// <param name="filter">Expression to filter the results.              For example, to return only transactions with a transaction type of &#39;Buy&#39;, specify \&quot;type eq &#39;Buy&#39;\&quot;.              For more information about filtering results, see https://support.lusid.com/knowledgebase/article/KA-01914. (optional)</param>
         /// <param name="propertyKeys">A list of property keys from the &#39;Portfolio&#39; domain to decorate onto each portfolio.              These must take the format {domain}/{scope}/{code}, for example &#39;Portfolio/Manager/Id&#39;. (optional)</param>
-        /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
         /// <returns>Task of ApiResponse (ResourceListOfPortfolio)</returns>
-        public async System.Threading.Tasks.Task<Lusid.Sdk.Client.ApiResponse<ResourceListOfPortfolio>> ListPortfoliosForScopeWithHttpInfoAsync(string scope, DateTimeOrCutLabel effectiveAt = default(DateTimeOrCutLabel), DateTimeOffset? asAt = default(DateTimeOffset?), string page = default(string), int? start = default(int?), int? limit = default(int?), string filter = default(string), List<string> propertyKeys = default(List<string>), System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
+        public async System.Threading.Tasks.Task<ApiResponse<ResourceListOfPortfolio>> ListPortfoliosForScopeAsyncWithHttpInfo (string scope, DateTimeOrCutLabel effectiveAt = null, DateTimeOffset? asAt = null, string page = null, int? start = null, int? limit = null, string filter = null, List<string> propertyKeys = null)
         {
             // verify the required parameter 'scope' is set
             if (scope == null)
-                throw new Lusid.Sdk.Client.ApiException(400, "Missing required parameter 'scope' when calling PortfoliosApi->ListPortfoliosForScope");
+                throw new ApiException(400, "Missing required parameter 'scope' when calling PortfoliosApi->ListPortfoliosForScope");
 
+            var localVarPath = "./api/portfolios/{scope}";
+            var localVarPathParams = new Dictionary<String, String>();
+            var localVarQueryParams = new List<KeyValuePair<String, String>>();
+            var localVarHeaderParams = new Dictionary<String, String>(this.Configuration.DefaultHeader);
+            var localVarFormParams = new Dictionary<String, String>();
+            var localVarFileParams = new Dictionary<String, FileParameter>();
+            Object localVarPostBody = null;
 
-            Lusid.Sdk.Client.RequestOptions localVarRequestOptions = new Lusid.Sdk.Client.RequestOptions();
-
-            String[] _contentTypes = new String[] {
+            // to determine the Content-Type header
+            String[] localVarHttpContentTypes = new String[] {
             };
+            String localVarHttpContentType = this.Configuration.ApiClient.SelectHeaderContentType(localVarHttpContentTypes);
 
             // to determine the Accept header
-            String[] _accepts = new String[] {
+            String[] localVarHttpHeaderAccepts = new String[] {
                 "text/plain",
                 "application/json",
                 "text/json"
             };
+            String localVarHttpHeaderAccept = this.Configuration.ApiClient.SelectHeaderAccept(localVarHttpHeaderAccepts);
+            if (localVarHttpHeaderAccept != null)
+                localVarHeaderParams.Add("Accept", localVarHttpHeaderAccept);
 
-
-            var localVarContentType = Lusid.Sdk.Client.ClientUtils.SelectHeaderContentType(_contentTypes);
-            if (localVarContentType != null) localVarRequestOptions.HeaderParameters.Add("Content-Type", localVarContentType);
-
-            var localVarAccept = Lusid.Sdk.Client.ClientUtils.SelectHeaderAccept(_accepts);
-            if (localVarAccept != null) localVarRequestOptions.HeaderParameters.Add("Accept", localVarAccept);
-
-            localVarRequestOptions.PathParameters.Add("scope", Lusid.Sdk.Client.ClientUtils.ParameterToString(scope)); // path parameter
-            if (effectiveAt != null)
-            {
-                localVarRequestOptions.QueryParameters.Add(Lusid.Sdk.Client.ClientUtils.ParameterToMultiMap("", "effectiveAt", effectiveAt));
-            }
-            if (asAt != null)
-            {
-                localVarRequestOptions.QueryParameters.Add(Lusid.Sdk.Client.ClientUtils.ParameterToMultiMap("", "asAt", asAt));
-            }
-            if (page != null)
-            {
-                localVarRequestOptions.QueryParameters.Add(Lusid.Sdk.Client.ClientUtils.ParameterToMultiMap("", "page", page));
-            }
-            if (start != null)
-            {
-                localVarRequestOptions.QueryParameters.Add(Lusid.Sdk.Client.ClientUtils.ParameterToMultiMap("", "start", start));
-            }
-            if (limit != null)
-            {
-                localVarRequestOptions.QueryParameters.Add(Lusid.Sdk.Client.ClientUtils.ParameterToMultiMap("", "limit", limit));
-            }
-            if (filter != null)
-            {
-                localVarRequestOptions.QueryParameters.Add(Lusid.Sdk.Client.ClientUtils.ParameterToMultiMap("", "filter", filter));
-            }
-            if (propertyKeys != null)
-            {
-                localVarRequestOptions.QueryParameters.Add(Lusid.Sdk.Client.ClientUtils.ParameterToMultiMap("multi", "propertyKeys", propertyKeys));
-            }
+            if (scope != null) localVarPathParams.Add("scope", this.Configuration.ApiClient.ParameterToString(scope)); // path parameter
+            if (effectiveAt != null) localVarQueryParams.AddRange(this.Configuration.ApiClient.ParameterToKeyValuePairs("", "effectiveAt", effectiveAt)); // query parameter
+            if (asAt != null) localVarQueryParams.AddRange(this.Configuration.ApiClient.ParameterToKeyValuePairs("", "asAt", asAt)); // query parameter
+            if (page != null) localVarQueryParams.AddRange(this.Configuration.ApiClient.ParameterToKeyValuePairs("", "page", page)); // query parameter
+            if (start != null) localVarQueryParams.AddRange(this.Configuration.ApiClient.ParameterToKeyValuePairs("", "start", start)); // query parameter
+            if (limit != null) localVarQueryParams.AddRange(this.Configuration.ApiClient.ParameterToKeyValuePairs("", "limit", limit)); // query parameter
+            if (filter != null) localVarQueryParams.AddRange(this.Configuration.ApiClient.ParameterToKeyValuePairs("", "filter", filter)); // query parameter
+            if (propertyKeys != null) localVarQueryParams.AddRange(this.Configuration.ApiClient.ParameterToKeyValuePairs("multi", "propertyKeys", propertyKeys)); // query parameter
 
             // authentication (oauth2) required
             // oauth required
             if (!String.IsNullOrEmpty(this.Configuration.AccessToken))
             {
-                localVarRequestOptions.HeaderParameters.Add("Authorization", "Bearer " + this.Configuration.AccessToken);
+                localVarHeaderParams["Authorization"] = "Bearer " + this.Configuration.AccessToken;
             }
 
             //  set the LUSID header
-            localVarRequestOptions.HeaderParameters.Add("X-LUSID-Sdk-Language", "C#");
-            localVarRequestOptions.HeaderParameters.Add("X-LUSID-Sdk-Version", "0.11.3313");
+            localVarHeaderParams["X-LUSID-Sdk-Language"] = "C#";
+            localVarHeaderParams["X-LUSID-Sdk-Version"] = "0.11.3314";
 
             // make the HTTP request
+            IRestResponse localVarResponse = (IRestResponse) await this.Configuration.ApiClient.CallApiAsync(localVarPath,
+                Method.GET, localVarQueryParams, localVarPostBody, localVarHeaderParams, localVarFormParams, localVarFileParams,
+                localVarPathParams, localVarHttpContentType);
 
-            var localVarResponse = await this.AsynchronousClient.GetAsync<ResourceListOfPortfolio>("/api/portfolios/{scope}", localVarRequestOptions, this.Configuration, cancellationToken).ConfigureAwait(false);
+            int localVarStatusCode = (int) localVarResponse.StatusCode;
 
-            if (this.ExceptionFactory != null)
+            if (ExceptionFactory != null)
             {
-                Exception _exception = this.ExceptionFactory("ListPortfoliosForScope", localVarResponse);
-                if (_exception != null) throw _exception;
+                Exception exception = ExceptionFactory("ListPortfoliosForScope", localVarResponse);
+                if (exception != null) throw exception;
             }
 
-            return localVarResponse;
+            return new ApiResponse<ResourceListOfPortfolio>(localVarStatusCode,
+                localVarResponse.Headers.ToDictionary(x => x.Key, x => string.Join(",", x.Value)),
+                (ResourceListOfPortfolio) this.Configuration.ApiClient.Deserialize(localVarResponse, typeof(ResourceListOfPortfolio)));
         }
 
         /// <summary>
@@ -4408,10 +4235,10 @@ namespace Lusid.Sdk.Api
         /// <param name="updatePortfolioRequest">The updated portfolio definition.</param>
         /// <param name="effectiveAt">The effective datetime or cut label at which to update the definition. Defaults to the current               LUSID system datetime if not specified. (optional)</param>
         /// <returns>Portfolio</returns>
-        public Portfolio UpdatePortfolio(string scope, string code, UpdatePortfolioRequest updatePortfolioRequest, DateTimeOrCutLabel effectiveAt = default(DateTimeOrCutLabel))
+        public Portfolio UpdatePortfolio (string scope, string code, UpdatePortfolioRequest updatePortfolioRequest, DateTimeOrCutLabel effectiveAt = null)
         {
-            Lusid.Sdk.Client.ApiResponse<Portfolio> localVarResponse = UpdatePortfolioWithHttpInfo(scope, code, updatePortfolioRequest, effectiveAt);
-            return localVarResponse.Data;
+             ApiResponse<Portfolio> localVarResponse = UpdatePortfolioWithHttpInfo(scope, code, updatePortfolioRequest, effectiveAt);
+             return localVarResponse.Data;
         }
 
         /// <summary>
@@ -4423,167 +4250,189 @@ namespace Lusid.Sdk.Api
         /// <param name="updatePortfolioRequest">The updated portfolio definition.</param>
         /// <param name="effectiveAt">The effective datetime or cut label at which to update the definition. Defaults to the current               LUSID system datetime if not specified. (optional)</param>
         /// <returns>ApiResponse of Portfolio</returns>
-        public Lusid.Sdk.Client.ApiResponse<Portfolio> UpdatePortfolioWithHttpInfo(string scope, string code, UpdatePortfolioRequest updatePortfolioRequest, DateTimeOrCutLabel effectiveAt = default(DateTimeOrCutLabel))
+        public ApiResponse< Portfolio > UpdatePortfolioWithHttpInfo (string scope, string code, UpdatePortfolioRequest updatePortfolioRequest, DateTimeOrCutLabel effectiveAt = null)
         {
             // verify the required parameter 'scope' is set
             if (scope == null)
-                throw new Lusid.Sdk.Client.ApiException(400, "Missing required parameter 'scope' when calling PortfoliosApi->UpdatePortfolio");
-
+                throw new ApiException(400, "Missing required parameter 'scope' when calling PortfoliosApi->UpdatePortfolio");
             // verify the required parameter 'code' is set
             if (code == null)
-                throw new Lusid.Sdk.Client.ApiException(400, "Missing required parameter 'code' when calling PortfoliosApi->UpdatePortfolio");
-
+                throw new ApiException(400, "Missing required parameter 'code' when calling PortfoliosApi->UpdatePortfolio");
             // verify the required parameter 'updatePortfolioRequest' is set
             if (updatePortfolioRequest == null)
-                throw new Lusid.Sdk.Client.ApiException(400, "Missing required parameter 'updatePortfolioRequest' when calling PortfoliosApi->UpdatePortfolio");
+                throw new ApiException(400, "Missing required parameter 'updatePortfolioRequest' when calling PortfoliosApi->UpdatePortfolio");
 
-            Lusid.Sdk.Client.RequestOptions localVarRequestOptions = new Lusid.Sdk.Client.RequestOptions();
+            var localVarPath = "./api/portfolios/{scope}/{code}";
+            var localVarPathParams = new Dictionary<String, String>();
+            var localVarQueryParams = new List<KeyValuePair<String, String>>();
+            var localVarHeaderParams = new Dictionary<String, String>(this.Configuration.DefaultHeader);
+            var localVarFormParams = new Dictionary<String, String>();
+            var localVarFileParams = new Dictionary<String, FileParameter>();
+            Object localVarPostBody = null;
 
-            String[] _contentTypes = new String[] {
-                "application/json-patch+json",
-                "application/json",
-                "text/json",
-                "application/_*+json"
-            };
-
-            // to determine the Accept header
-            String[] _accepts = new String[] {
-                "text/plain",
-                "application/json",
-                "text/json"
-            };
-
-            var localVarContentType = Lusid.Sdk.Client.ClientUtils.SelectHeaderContentType(_contentTypes);
-            if (localVarContentType != null) localVarRequestOptions.HeaderParameters.Add("Content-Type", localVarContentType);
-
-            var localVarAccept = Lusid.Sdk.Client.ClientUtils.SelectHeaderAccept(_accepts);
-            if (localVarAccept != null) localVarRequestOptions.HeaderParameters.Add("Accept", localVarAccept);
-
-            localVarRequestOptions.PathParameters.Add("scope", Lusid.Sdk.Client.ClientUtils.ParameterToString(scope)); // path parameter
-            localVarRequestOptions.PathParameters.Add("code", Lusid.Sdk.Client.ClientUtils.ParameterToString(code)); // path parameter
-            if (effectiveAt != null)
-            {
-                localVarRequestOptions.QueryParameters.Add(Lusid.Sdk.Client.ClientUtils.ParameterToMultiMap("", "effectiveAt", effectiveAt));
-            }
-            localVarRequestOptions.Data = updatePortfolioRequest;
-
-            // authentication (oauth2) required
-            // oauth required
-            if (!String.IsNullOrEmpty(this.Configuration.AccessToken))
-            {
-                localVarRequestOptions.HeaderParameters.Add("Authorization", "Bearer " + this.Configuration.AccessToken);
-            }
-
-            //  set the LUSID header
-            localVarRequestOptions.HeaderParameters.Add("X-LUSID-Sdk-Language", "C#");
-            localVarRequestOptions.HeaderParameters.Add("X-LUSID-Sdk-Version", "0.11.3313");
-
-            // make the HTTP request
-            var localVarResponse = this.Client.Put<Portfolio>("/api/portfolios/{scope}/{code}", localVarRequestOptions, this.Configuration);
-
-            if (this.ExceptionFactory != null)
-            {
-                Exception _exception = this.ExceptionFactory("UpdatePortfolio", localVarResponse);
-                if (_exception != null) throw _exception;
-            }
-
-            return localVarResponse;
-        }
-
-        /// <summary>
-        /// Update portfolio Update the definition of a particular portfolio.                Note that not all elements of a portfolio definition are  modifiable due to the potential implications for data already stored.
-        /// </summary>
-        /// <exception cref="Lusid.Sdk.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="scope">The scope of the portfolio.</param>
-        /// <param name="code">The code of the portfolio. Together with the scope this uniquely identifies the portfolio.</param>
-        /// <param name="updatePortfolioRequest">The updated portfolio definition.</param>
-        /// <param name="effectiveAt">The effective datetime or cut label at which to update the definition. Defaults to the current               LUSID system datetime if not specified. (optional)</param>
-        /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
-        /// <returns>Task of Portfolio</returns>
-        public async System.Threading.Tasks.Task<Portfolio> UpdatePortfolioAsync(string scope, string code, UpdatePortfolioRequest updatePortfolioRequest, DateTimeOrCutLabel effectiveAt = default(DateTimeOrCutLabel), System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
-        {
-            Lusid.Sdk.Client.ApiResponse<Portfolio> localVarResponse = await UpdatePortfolioWithHttpInfoAsync(scope, code, updatePortfolioRequest, effectiveAt, cancellationToken).ConfigureAwait(false);
-            return localVarResponse.Data;
-        }
-
-        /// <summary>
-        /// Update portfolio Update the definition of a particular portfolio.                Note that not all elements of a portfolio definition are  modifiable due to the potential implications for data already stored.
-        /// </summary>
-        /// <exception cref="Lusid.Sdk.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="scope">The scope of the portfolio.</param>
-        /// <param name="code">The code of the portfolio. Together with the scope this uniquely identifies the portfolio.</param>
-        /// <param name="updatePortfolioRequest">The updated portfolio definition.</param>
-        /// <param name="effectiveAt">The effective datetime or cut label at which to update the definition. Defaults to the current               LUSID system datetime if not specified. (optional)</param>
-        /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
-        /// <returns>Task of ApiResponse (Portfolio)</returns>
-        public async System.Threading.Tasks.Task<Lusid.Sdk.Client.ApiResponse<Portfolio>> UpdatePortfolioWithHttpInfoAsync(string scope, string code, UpdatePortfolioRequest updatePortfolioRequest, DateTimeOrCutLabel effectiveAt = default(DateTimeOrCutLabel), System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
-        {
-            // verify the required parameter 'scope' is set
-            if (scope == null)
-                throw new Lusid.Sdk.Client.ApiException(400, "Missing required parameter 'scope' when calling PortfoliosApi->UpdatePortfolio");
-
-            // verify the required parameter 'code' is set
-            if (code == null)
-                throw new Lusid.Sdk.Client.ApiException(400, "Missing required parameter 'code' when calling PortfoliosApi->UpdatePortfolio");
-
-            // verify the required parameter 'updatePortfolioRequest' is set
-            if (updatePortfolioRequest == null)
-                throw new Lusid.Sdk.Client.ApiException(400, "Missing required parameter 'updatePortfolioRequest' when calling PortfoliosApi->UpdatePortfolio");
-
-
-            Lusid.Sdk.Client.RequestOptions localVarRequestOptions = new Lusid.Sdk.Client.RequestOptions();
-
-            String[] _contentTypes = new String[] {
+            // to determine the Content-Type header
+            String[] localVarHttpContentTypes = new String[] {
                 "application/json-patch+json", 
                 "application/json", 
                 "text/json", 
                 "application/_*+json"
             };
+            String localVarHttpContentType = this.Configuration.ApiClient.SelectHeaderContentType(localVarHttpContentTypes);
 
             // to determine the Accept header
-            String[] _accepts = new String[] {
+            String[] localVarHttpHeaderAccepts = new String[] {
                 "text/plain",
                 "application/json",
                 "text/json"
             };
+            String localVarHttpHeaderAccept = this.Configuration.ApiClient.SelectHeaderAccept(localVarHttpHeaderAccepts);
+            if (localVarHttpHeaderAccept != null)
+                localVarHeaderParams.Add("Accept", localVarHttpHeaderAccept);
 
-
-            var localVarContentType = Lusid.Sdk.Client.ClientUtils.SelectHeaderContentType(_contentTypes);
-            if (localVarContentType != null) localVarRequestOptions.HeaderParameters.Add("Content-Type", localVarContentType);
-
-            var localVarAccept = Lusid.Sdk.Client.ClientUtils.SelectHeaderAccept(_accepts);
-            if (localVarAccept != null) localVarRequestOptions.HeaderParameters.Add("Accept", localVarAccept);
-
-            localVarRequestOptions.PathParameters.Add("scope", Lusid.Sdk.Client.ClientUtils.ParameterToString(scope)); // path parameter
-            localVarRequestOptions.PathParameters.Add("code", Lusid.Sdk.Client.ClientUtils.ParameterToString(code)); // path parameter
-            if (effectiveAt != null)
+            if (scope != null) localVarPathParams.Add("scope", this.Configuration.ApiClient.ParameterToString(scope)); // path parameter
+            if (code != null) localVarPathParams.Add("code", this.Configuration.ApiClient.ParameterToString(code)); // path parameter
+            if (effectiveAt != null) localVarQueryParams.AddRange(this.Configuration.ApiClient.ParameterToKeyValuePairs("", "effectiveAt", effectiveAt)); // query parameter
+            if (updatePortfolioRequest != null && updatePortfolioRequest.GetType() != typeof(byte[]))
             {
-                localVarRequestOptions.QueryParameters.Add(Lusid.Sdk.Client.ClientUtils.ParameterToMultiMap("", "effectiveAt", effectiveAt));
+                localVarPostBody = this.Configuration.ApiClient.Serialize(updatePortfolioRequest); // http body (model) parameter
             }
-            localVarRequestOptions.Data = updatePortfolioRequest;
+            else
+            {
+                localVarPostBody = updatePortfolioRequest; // byte array
+            }
 
             // authentication (oauth2) required
             // oauth required
             if (!String.IsNullOrEmpty(this.Configuration.AccessToken))
             {
-                localVarRequestOptions.HeaderParameters.Add("Authorization", "Bearer " + this.Configuration.AccessToken);
+                localVarHeaderParams["Authorization"] = "Bearer " + this.Configuration.AccessToken;
             }
 
             //  set the LUSID header
-            localVarRequestOptions.HeaderParameters.Add("X-LUSID-Sdk-Language", "C#");
-            localVarRequestOptions.HeaderParameters.Add("X-LUSID-Sdk-Version", "0.11.3313");
+            localVarHeaderParams["X-LUSID-SDK-Language"] = "C#";
+            localVarHeaderParams["X-LUSID-SDK-Version"] = "0.11.3314";
 
             // make the HTTP request
+            IRestResponse localVarResponse = (IRestResponse) this.Configuration.ApiClient.CallApi(localVarPath,
+                Method.PUT, localVarQueryParams, localVarPostBody, localVarHeaderParams, localVarFormParams, localVarFileParams,
+                localVarPathParams, localVarHttpContentType);
 
-            var localVarResponse = await this.AsynchronousClient.PutAsync<Portfolio>("/api/portfolios/{scope}/{code}", localVarRequestOptions, this.Configuration, cancellationToken).ConfigureAwait(false);
+            int localVarStatusCode = (int) localVarResponse.StatusCode;
 
-            if (this.ExceptionFactory != null)
+            if (ExceptionFactory != null)
             {
-                Exception _exception = this.ExceptionFactory("UpdatePortfolio", localVarResponse);
-                if (_exception != null) throw _exception;
+                Exception exception = ExceptionFactory("UpdatePortfolio", localVarResponse);
+                if (exception != null) throw exception;
             }
 
-            return localVarResponse;
+            return new ApiResponse<Portfolio>(localVarStatusCode,
+                localVarResponse.Headers.ToDictionary(x => x.Key, x => string.Join(",", x.Value)),
+                (Portfolio) this.Configuration.ApiClient.Deserialize(localVarResponse, typeof(Portfolio)));
+        }
+
+        /// <summary>
+        /// Update portfolio Update the definition of a particular portfolio.                Note that not all elements of a portfolio definition are  modifiable due to the potential implications for data already stored.
+        /// </summary>
+        /// <exception cref="Lusid.Sdk.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="scope">The scope of the portfolio.</param>
+        /// <param name="code">The code of the portfolio. Together with the scope this uniquely identifies the portfolio.</param>
+        /// <param name="updatePortfolioRequest">The updated portfolio definition.</param>
+        /// <param name="effectiveAt">The effective datetime or cut label at which to update the definition. Defaults to the current               LUSID system datetime if not specified. (optional)</param>
+        /// <returns>Task of Portfolio</returns>
+        public async System.Threading.Tasks.Task<Portfolio> UpdatePortfolioAsync (string scope, string code, UpdatePortfolioRequest updatePortfolioRequest, DateTimeOrCutLabel effectiveAt = null)
+        {
+             ApiResponse<Portfolio> localVarResponse = await UpdatePortfolioAsyncWithHttpInfo(scope, code, updatePortfolioRequest, effectiveAt);
+             return localVarResponse.Data;
+
+        }
+
+        /// <summary>
+        /// Update portfolio Update the definition of a particular portfolio.                Note that not all elements of a portfolio definition are  modifiable due to the potential implications for data already stored.
+        /// </summary>
+        /// <exception cref="Lusid.Sdk.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="scope">The scope of the portfolio.</param>
+        /// <param name="code">The code of the portfolio. Together with the scope this uniquely identifies the portfolio.</param>
+        /// <param name="updatePortfolioRequest">The updated portfolio definition.</param>
+        /// <param name="effectiveAt">The effective datetime or cut label at which to update the definition. Defaults to the current               LUSID system datetime if not specified. (optional)</param>
+        /// <returns>Task of ApiResponse (Portfolio)</returns>
+        public async System.Threading.Tasks.Task<ApiResponse<Portfolio>> UpdatePortfolioAsyncWithHttpInfo (string scope, string code, UpdatePortfolioRequest updatePortfolioRequest, DateTimeOrCutLabel effectiveAt = null)
+        {
+            // verify the required parameter 'scope' is set
+            if (scope == null)
+                throw new ApiException(400, "Missing required parameter 'scope' when calling PortfoliosApi->UpdatePortfolio");
+            // verify the required parameter 'code' is set
+            if (code == null)
+                throw new ApiException(400, "Missing required parameter 'code' when calling PortfoliosApi->UpdatePortfolio");
+            // verify the required parameter 'updatePortfolioRequest' is set
+            if (updatePortfolioRequest == null)
+                throw new ApiException(400, "Missing required parameter 'updatePortfolioRequest' when calling PortfoliosApi->UpdatePortfolio");
+
+            var localVarPath = "./api/portfolios/{scope}/{code}";
+            var localVarPathParams = new Dictionary<String, String>();
+            var localVarQueryParams = new List<KeyValuePair<String, String>>();
+            var localVarHeaderParams = new Dictionary<String, String>(this.Configuration.DefaultHeader);
+            var localVarFormParams = new Dictionary<String, String>();
+            var localVarFileParams = new Dictionary<String, FileParameter>();
+            Object localVarPostBody = null;
+
+            // to determine the Content-Type header
+            String[] localVarHttpContentTypes = new String[] {
+                "application/json-patch+json", 
+                "application/json", 
+                "text/json", 
+                "application/_*+json"
+            };
+            String localVarHttpContentType = this.Configuration.ApiClient.SelectHeaderContentType(localVarHttpContentTypes);
+
+            // to determine the Accept header
+            String[] localVarHttpHeaderAccepts = new String[] {
+                "text/plain",
+                "application/json",
+                "text/json"
+            };
+            String localVarHttpHeaderAccept = this.Configuration.ApiClient.SelectHeaderAccept(localVarHttpHeaderAccepts);
+            if (localVarHttpHeaderAccept != null)
+                localVarHeaderParams.Add("Accept", localVarHttpHeaderAccept);
+
+            if (scope != null) localVarPathParams.Add("scope", this.Configuration.ApiClient.ParameterToString(scope)); // path parameter
+            if (code != null) localVarPathParams.Add("code", this.Configuration.ApiClient.ParameterToString(code)); // path parameter
+            if (effectiveAt != null) localVarQueryParams.AddRange(this.Configuration.ApiClient.ParameterToKeyValuePairs("", "effectiveAt", effectiveAt)); // query parameter
+            if (updatePortfolioRequest != null && updatePortfolioRequest.GetType() != typeof(byte[]))
+            {
+                localVarPostBody = this.Configuration.ApiClient.Serialize(updatePortfolioRequest); // http body (model) parameter
+            }
+            else
+            {
+                localVarPostBody = updatePortfolioRequest; // byte array
+            }
+
+            // authentication (oauth2) required
+            // oauth required
+            if (!String.IsNullOrEmpty(this.Configuration.AccessToken))
+            {
+                localVarHeaderParams["Authorization"] = "Bearer " + this.Configuration.AccessToken;
+            }
+
+            //  set the LUSID header
+            localVarHeaderParams["X-LUSID-Sdk-Language"] = "C#";
+            localVarHeaderParams["X-LUSID-Sdk-Version"] = "0.11.3314";
+
+            // make the HTTP request
+            IRestResponse localVarResponse = (IRestResponse) await this.Configuration.ApiClient.CallApiAsync(localVarPath,
+                Method.PUT, localVarQueryParams, localVarPostBody, localVarHeaderParams, localVarFormParams, localVarFileParams,
+                localVarPathParams, localVarHttpContentType);
+
+            int localVarStatusCode = (int) localVarResponse.StatusCode;
+
+            if (ExceptionFactory != null)
+            {
+                Exception exception = ExceptionFactory("UpdatePortfolio", localVarResponse);
+                if (exception != null) throw exception;
+            }
+
+            return new ApiResponse<Portfolio>(localVarStatusCode,
+                localVarResponse.Headers.ToDictionary(x => x.Key, x => string.Join(",", x.Value)),
+                (Portfolio) this.Configuration.ApiClient.Deserialize(localVarResponse, typeof(Portfolio)));
         }
 
         /// <summary>
@@ -4596,10 +4445,10 @@ namespace Lusid.Sdk.Api
         /// <param name="upsertPortfolioAccessMetadataRequest">The Portfolio Access Metadata Rule to update or insert</param>
         /// <param name="effectiveAt">The date this rule will effective from (optional)</param>
         /// <returns>ResourceListOfAccessMetadataValueOf</returns>
-        public ResourceListOfAccessMetadataValueOf UpsertPortfolioAccessMetadata(string scope, string code, string metadataKey, UpsertPortfolioAccessMetadataRequest upsertPortfolioAccessMetadataRequest, DateTimeOrCutLabel effectiveAt = default(DateTimeOrCutLabel))
+        public ResourceListOfAccessMetadataValueOf UpsertPortfolioAccessMetadata (string scope, string code, string metadataKey, UpsertPortfolioAccessMetadataRequest upsertPortfolioAccessMetadataRequest, DateTimeOrCutLabel effectiveAt = null)
         {
-            Lusid.Sdk.Client.ApiResponse<ResourceListOfAccessMetadataValueOf> localVarResponse = UpsertPortfolioAccessMetadataWithHttpInfo(scope, code, metadataKey, upsertPortfolioAccessMetadataRequest, effectiveAt);
-            return localVarResponse.Data;
+             ApiResponse<ResourceListOfAccessMetadataValueOf> localVarResponse = UpsertPortfolioAccessMetadataWithHttpInfo(scope, code, metadataKey, upsertPortfolioAccessMetadataRequest, effectiveAt);
+             return localVarResponse.Data;
         }
 
         /// <summary>
@@ -4612,179 +4461,199 @@ namespace Lusid.Sdk.Api
         /// <param name="upsertPortfolioAccessMetadataRequest">The Portfolio Access Metadata Rule to update or insert</param>
         /// <param name="effectiveAt">The date this rule will effective from (optional)</param>
         /// <returns>ApiResponse of ResourceListOfAccessMetadataValueOf</returns>
-        public Lusid.Sdk.Client.ApiResponse<ResourceListOfAccessMetadataValueOf> UpsertPortfolioAccessMetadataWithHttpInfo(string scope, string code, string metadataKey, UpsertPortfolioAccessMetadataRequest upsertPortfolioAccessMetadataRequest, DateTimeOrCutLabel effectiveAt = default(DateTimeOrCutLabel))
+        public ApiResponse< ResourceListOfAccessMetadataValueOf > UpsertPortfolioAccessMetadataWithHttpInfo (string scope, string code, string metadataKey, UpsertPortfolioAccessMetadataRequest upsertPortfolioAccessMetadataRequest, DateTimeOrCutLabel effectiveAt = null)
         {
             // verify the required parameter 'scope' is set
             if (scope == null)
-                throw new Lusid.Sdk.Client.ApiException(400, "Missing required parameter 'scope' when calling PortfoliosApi->UpsertPortfolioAccessMetadata");
-
+                throw new ApiException(400, "Missing required parameter 'scope' when calling PortfoliosApi->UpsertPortfolioAccessMetadata");
             // verify the required parameter 'code' is set
             if (code == null)
-                throw new Lusid.Sdk.Client.ApiException(400, "Missing required parameter 'code' when calling PortfoliosApi->UpsertPortfolioAccessMetadata");
-
+                throw new ApiException(400, "Missing required parameter 'code' when calling PortfoliosApi->UpsertPortfolioAccessMetadata");
             // verify the required parameter 'metadataKey' is set
             if (metadataKey == null)
-                throw new Lusid.Sdk.Client.ApiException(400, "Missing required parameter 'metadataKey' when calling PortfoliosApi->UpsertPortfolioAccessMetadata");
-
+                throw new ApiException(400, "Missing required parameter 'metadataKey' when calling PortfoliosApi->UpsertPortfolioAccessMetadata");
             // verify the required parameter 'upsertPortfolioAccessMetadataRequest' is set
             if (upsertPortfolioAccessMetadataRequest == null)
-                throw new Lusid.Sdk.Client.ApiException(400, "Missing required parameter 'upsertPortfolioAccessMetadataRequest' when calling PortfoliosApi->UpsertPortfolioAccessMetadata");
+                throw new ApiException(400, "Missing required parameter 'upsertPortfolioAccessMetadataRequest' when calling PortfoliosApi->UpsertPortfolioAccessMetadata");
 
-            Lusid.Sdk.Client.RequestOptions localVarRequestOptions = new Lusid.Sdk.Client.RequestOptions();
+            var localVarPath = "./api/portfolios/{scope}/{code}/metadata/{metadataKey}";
+            var localVarPathParams = new Dictionary<String, String>();
+            var localVarQueryParams = new List<KeyValuePair<String, String>>();
+            var localVarHeaderParams = new Dictionary<String, String>(this.Configuration.DefaultHeader);
+            var localVarFormParams = new Dictionary<String, String>();
+            var localVarFileParams = new Dictionary<String, FileParameter>();
+            Object localVarPostBody = null;
 
-            String[] _contentTypes = new String[] {
-                "application/json-patch+json",
-                "application/json",
-                "text/json",
-                "application/_*+json"
-            };
-
-            // to determine the Accept header
-            String[] _accepts = new String[] {
-                "text/plain",
-                "application/json",
-                "text/json"
-            };
-
-            var localVarContentType = Lusid.Sdk.Client.ClientUtils.SelectHeaderContentType(_contentTypes);
-            if (localVarContentType != null) localVarRequestOptions.HeaderParameters.Add("Content-Type", localVarContentType);
-
-            var localVarAccept = Lusid.Sdk.Client.ClientUtils.SelectHeaderAccept(_accepts);
-            if (localVarAccept != null) localVarRequestOptions.HeaderParameters.Add("Accept", localVarAccept);
-
-            localVarRequestOptions.PathParameters.Add("scope", Lusid.Sdk.Client.ClientUtils.ParameterToString(scope)); // path parameter
-            localVarRequestOptions.PathParameters.Add("code", Lusid.Sdk.Client.ClientUtils.ParameterToString(code)); // path parameter
-            localVarRequestOptions.PathParameters.Add("metadataKey", Lusid.Sdk.Client.ClientUtils.ParameterToString(metadataKey)); // path parameter
-            if (effectiveAt != null)
-            {
-                localVarRequestOptions.QueryParameters.Add(Lusid.Sdk.Client.ClientUtils.ParameterToMultiMap("", "effectiveAt", effectiveAt));
-            }
-            localVarRequestOptions.Data = upsertPortfolioAccessMetadataRequest;
-
-            // authentication (oauth2) required
-            // oauth required
-            if (!String.IsNullOrEmpty(this.Configuration.AccessToken))
-            {
-                localVarRequestOptions.HeaderParameters.Add("Authorization", "Bearer " + this.Configuration.AccessToken);
-            }
-
-            //  set the LUSID header
-            localVarRequestOptions.HeaderParameters.Add("X-LUSID-Sdk-Language", "C#");
-            localVarRequestOptions.HeaderParameters.Add("X-LUSID-Sdk-Version", "0.11.3313");
-
-            // make the HTTP request
-            var localVarResponse = this.Client.Put<ResourceListOfAccessMetadataValueOf>("/api/portfolios/{scope}/{code}/metadata/{metadataKey}", localVarRequestOptions, this.Configuration);
-
-            if (this.ExceptionFactory != null)
-            {
-                Exception _exception = this.ExceptionFactory("UpsertPortfolioAccessMetadata", localVarResponse);
-                if (_exception != null) throw _exception;
-            }
-
-            return localVarResponse;
-        }
-
-        /// <summary>
-        /// [EXPERIMENTAL] Upsert a Portfolio Access Metadata Rule associated with specific metadataKey. This creates or updates the data in LUSID. Update or insert one Portfolio Access Metadata Rule in a single scope. An item will be updated if it already exists  and inserted if it does not.    The response will return the successfully updated or inserted Portfolio Access Metadata Rule or failure message if unsuccessful    It is important to always check to verify success (or failure).                Multiple rules for a metadataKey can exists with different effective at dates, when resources are accessed the rule that is active for the current time will be fetched
-        /// </summary>
-        /// <exception cref="Lusid.Sdk.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="scope">The scope to use when updating or inserting the Portfolio Access Metadata Rule.</param>
-        /// <param name="code">Portfolio code</param>
-        /// <param name="metadataKey">Key of the access metadata to upsert</param>
-        /// <param name="upsertPortfolioAccessMetadataRequest">The Portfolio Access Metadata Rule to update or insert</param>
-        /// <param name="effectiveAt">The date this rule will effective from (optional)</param>
-        /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
-        /// <returns>Task of ResourceListOfAccessMetadataValueOf</returns>
-        public async System.Threading.Tasks.Task<ResourceListOfAccessMetadataValueOf> UpsertPortfolioAccessMetadataAsync(string scope, string code, string metadataKey, UpsertPortfolioAccessMetadataRequest upsertPortfolioAccessMetadataRequest, DateTimeOrCutLabel effectiveAt = default(DateTimeOrCutLabel), System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
-        {
-            Lusid.Sdk.Client.ApiResponse<ResourceListOfAccessMetadataValueOf> localVarResponse = await UpsertPortfolioAccessMetadataWithHttpInfoAsync(scope, code, metadataKey, upsertPortfolioAccessMetadataRequest, effectiveAt, cancellationToken).ConfigureAwait(false);
-            return localVarResponse.Data;
-        }
-
-        /// <summary>
-        /// [EXPERIMENTAL] Upsert a Portfolio Access Metadata Rule associated with specific metadataKey. This creates or updates the data in LUSID. Update or insert one Portfolio Access Metadata Rule in a single scope. An item will be updated if it already exists  and inserted if it does not.    The response will return the successfully updated or inserted Portfolio Access Metadata Rule or failure message if unsuccessful    It is important to always check to verify success (or failure).                Multiple rules for a metadataKey can exists with different effective at dates, when resources are accessed the rule that is active for the current time will be fetched
-        /// </summary>
-        /// <exception cref="Lusid.Sdk.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="scope">The scope to use when updating or inserting the Portfolio Access Metadata Rule.</param>
-        /// <param name="code">Portfolio code</param>
-        /// <param name="metadataKey">Key of the access metadata to upsert</param>
-        /// <param name="upsertPortfolioAccessMetadataRequest">The Portfolio Access Metadata Rule to update or insert</param>
-        /// <param name="effectiveAt">The date this rule will effective from (optional)</param>
-        /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
-        /// <returns>Task of ApiResponse (ResourceListOfAccessMetadataValueOf)</returns>
-        public async System.Threading.Tasks.Task<Lusid.Sdk.Client.ApiResponse<ResourceListOfAccessMetadataValueOf>> UpsertPortfolioAccessMetadataWithHttpInfoAsync(string scope, string code, string metadataKey, UpsertPortfolioAccessMetadataRequest upsertPortfolioAccessMetadataRequest, DateTimeOrCutLabel effectiveAt = default(DateTimeOrCutLabel), System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
-        {
-            // verify the required parameter 'scope' is set
-            if (scope == null)
-                throw new Lusid.Sdk.Client.ApiException(400, "Missing required parameter 'scope' when calling PortfoliosApi->UpsertPortfolioAccessMetadata");
-
-            // verify the required parameter 'code' is set
-            if (code == null)
-                throw new Lusid.Sdk.Client.ApiException(400, "Missing required parameter 'code' when calling PortfoliosApi->UpsertPortfolioAccessMetadata");
-
-            // verify the required parameter 'metadataKey' is set
-            if (metadataKey == null)
-                throw new Lusid.Sdk.Client.ApiException(400, "Missing required parameter 'metadataKey' when calling PortfoliosApi->UpsertPortfolioAccessMetadata");
-
-            // verify the required parameter 'upsertPortfolioAccessMetadataRequest' is set
-            if (upsertPortfolioAccessMetadataRequest == null)
-                throw new Lusid.Sdk.Client.ApiException(400, "Missing required parameter 'upsertPortfolioAccessMetadataRequest' when calling PortfoliosApi->UpsertPortfolioAccessMetadata");
-
-
-            Lusid.Sdk.Client.RequestOptions localVarRequestOptions = new Lusid.Sdk.Client.RequestOptions();
-
-            String[] _contentTypes = new String[] {
+            // to determine the Content-Type header
+            String[] localVarHttpContentTypes = new String[] {
                 "application/json-patch+json", 
                 "application/json", 
                 "text/json", 
                 "application/_*+json"
             };
+            String localVarHttpContentType = this.Configuration.ApiClient.SelectHeaderContentType(localVarHttpContentTypes);
 
             // to determine the Accept header
-            String[] _accepts = new String[] {
+            String[] localVarHttpHeaderAccepts = new String[] {
                 "text/plain",
                 "application/json",
                 "text/json"
             };
+            String localVarHttpHeaderAccept = this.Configuration.ApiClient.SelectHeaderAccept(localVarHttpHeaderAccepts);
+            if (localVarHttpHeaderAccept != null)
+                localVarHeaderParams.Add("Accept", localVarHttpHeaderAccept);
 
-
-            var localVarContentType = Lusid.Sdk.Client.ClientUtils.SelectHeaderContentType(_contentTypes);
-            if (localVarContentType != null) localVarRequestOptions.HeaderParameters.Add("Content-Type", localVarContentType);
-
-            var localVarAccept = Lusid.Sdk.Client.ClientUtils.SelectHeaderAccept(_accepts);
-            if (localVarAccept != null) localVarRequestOptions.HeaderParameters.Add("Accept", localVarAccept);
-
-            localVarRequestOptions.PathParameters.Add("scope", Lusid.Sdk.Client.ClientUtils.ParameterToString(scope)); // path parameter
-            localVarRequestOptions.PathParameters.Add("code", Lusid.Sdk.Client.ClientUtils.ParameterToString(code)); // path parameter
-            localVarRequestOptions.PathParameters.Add("metadataKey", Lusid.Sdk.Client.ClientUtils.ParameterToString(metadataKey)); // path parameter
-            if (effectiveAt != null)
+            if (scope != null) localVarPathParams.Add("scope", this.Configuration.ApiClient.ParameterToString(scope)); // path parameter
+            if (code != null) localVarPathParams.Add("code", this.Configuration.ApiClient.ParameterToString(code)); // path parameter
+            if (metadataKey != null) localVarPathParams.Add("metadataKey", this.Configuration.ApiClient.ParameterToString(metadataKey)); // path parameter
+            if (effectiveAt != null) localVarQueryParams.AddRange(this.Configuration.ApiClient.ParameterToKeyValuePairs("", "effectiveAt", effectiveAt)); // query parameter
+            if (upsertPortfolioAccessMetadataRequest != null && upsertPortfolioAccessMetadataRequest.GetType() != typeof(byte[]))
             {
-                localVarRequestOptions.QueryParameters.Add(Lusid.Sdk.Client.ClientUtils.ParameterToMultiMap("", "effectiveAt", effectiveAt));
+                localVarPostBody = this.Configuration.ApiClient.Serialize(upsertPortfolioAccessMetadataRequest); // http body (model) parameter
             }
-            localVarRequestOptions.Data = upsertPortfolioAccessMetadataRequest;
+            else
+            {
+                localVarPostBody = upsertPortfolioAccessMetadataRequest; // byte array
+            }
 
             // authentication (oauth2) required
             // oauth required
             if (!String.IsNullOrEmpty(this.Configuration.AccessToken))
             {
-                localVarRequestOptions.HeaderParameters.Add("Authorization", "Bearer " + this.Configuration.AccessToken);
+                localVarHeaderParams["Authorization"] = "Bearer " + this.Configuration.AccessToken;
             }
 
             //  set the LUSID header
-            localVarRequestOptions.HeaderParameters.Add("X-LUSID-Sdk-Language", "C#");
-            localVarRequestOptions.HeaderParameters.Add("X-LUSID-Sdk-Version", "0.11.3313");
+            localVarHeaderParams["X-LUSID-SDK-Language"] = "C#";
+            localVarHeaderParams["X-LUSID-SDK-Version"] = "0.11.3314";
 
             // make the HTTP request
+            IRestResponse localVarResponse = (IRestResponse) this.Configuration.ApiClient.CallApi(localVarPath,
+                Method.PUT, localVarQueryParams, localVarPostBody, localVarHeaderParams, localVarFormParams, localVarFileParams,
+                localVarPathParams, localVarHttpContentType);
 
-            var localVarResponse = await this.AsynchronousClient.PutAsync<ResourceListOfAccessMetadataValueOf>("/api/portfolios/{scope}/{code}/metadata/{metadataKey}", localVarRequestOptions, this.Configuration, cancellationToken).ConfigureAwait(false);
+            int localVarStatusCode = (int) localVarResponse.StatusCode;
 
-            if (this.ExceptionFactory != null)
+            if (ExceptionFactory != null)
             {
-                Exception _exception = this.ExceptionFactory("UpsertPortfolioAccessMetadata", localVarResponse);
-                if (_exception != null) throw _exception;
+                Exception exception = ExceptionFactory("UpsertPortfolioAccessMetadata", localVarResponse);
+                if (exception != null) throw exception;
             }
 
-            return localVarResponse;
+            return new ApiResponse<ResourceListOfAccessMetadataValueOf>(localVarStatusCode,
+                localVarResponse.Headers.ToDictionary(x => x.Key, x => string.Join(",", x.Value)),
+                (ResourceListOfAccessMetadataValueOf) this.Configuration.ApiClient.Deserialize(localVarResponse, typeof(ResourceListOfAccessMetadataValueOf)));
+        }
+
+        /// <summary>
+        /// [EXPERIMENTAL] Upsert a Portfolio Access Metadata Rule associated with specific metadataKey. This creates or updates the data in LUSID. Update or insert one Portfolio Access Metadata Rule in a single scope. An item will be updated if it already exists  and inserted if it does not.    The response will return the successfully updated or inserted Portfolio Access Metadata Rule or failure message if unsuccessful    It is important to always check to verify success (or failure).                Multiple rules for a metadataKey can exists with different effective at dates, when resources are accessed the rule that is active for the current time will be fetched
+        /// </summary>
+        /// <exception cref="Lusid.Sdk.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="scope">The scope to use when updating or inserting the Portfolio Access Metadata Rule.</param>
+        /// <param name="code">Portfolio code</param>
+        /// <param name="metadataKey">Key of the access metadata to upsert</param>
+        /// <param name="upsertPortfolioAccessMetadataRequest">The Portfolio Access Metadata Rule to update or insert</param>
+        /// <param name="effectiveAt">The date this rule will effective from (optional)</param>
+        /// <returns>Task of ResourceListOfAccessMetadataValueOf</returns>
+        public async System.Threading.Tasks.Task<ResourceListOfAccessMetadataValueOf> UpsertPortfolioAccessMetadataAsync (string scope, string code, string metadataKey, UpsertPortfolioAccessMetadataRequest upsertPortfolioAccessMetadataRequest, DateTimeOrCutLabel effectiveAt = null)
+        {
+             ApiResponse<ResourceListOfAccessMetadataValueOf> localVarResponse = await UpsertPortfolioAccessMetadataAsyncWithHttpInfo(scope, code, metadataKey, upsertPortfolioAccessMetadataRequest, effectiveAt);
+             return localVarResponse.Data;
+
+        }
+
+        /// <summary>
+        /// [EXPERIMENTAL] Upsert a Portfolio Access Metadata Rule associated with specific metadataKey. This creates or updates the data in LUSID. Update or insert one Portfolio Access Metadata Rule in a single scope. An item will be updated if it already exists  and inserted if it does not.    The response will return the successfully updated or inserted Portfolio Access Metadata Rule or failure message if unsuccessful    It is important to always check to verify success (or failure).                Multiple rules for a metadataKey can exists with different effective at dates, when resources are accessed the rule that is active for the current time will be fetched
+        /// </summary>
+        /// <exception cref="Lusid.Sdk.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="scope">The scope to use when updating or inserting the Portfolio Access Metadata Rule.</param>
+        /// <param name="code">Portfolio code</param>
+        /// <param name="metadataKey">Key of the access metadata to upsert</param>
+        /// <param name="upsertPortfolioAccessMetadataRequest">The Portfolio Access Metadata Rule to update or insert</param>
+        /// <param name="effectiveAt">The date this rule will effective from (optional)</param>
+        /// <returns>Task of ApiResponse (ResourceListOfAccessMetadataValueOf)</returns>
+        public async System.Threading.Tasks.Task<ApiResponse<ResourceListOfAccessMetadataValueOf>> UpsertPortfolioAccessMetadataAsyncWithHttpInfo (string scope, string code, string metadataKey, UpsertPortfolioAccessMetadataRequest upsertPortfolioAccessMetadataRequest, DateTimeOrCutLabel effectiveAt = null)
+        {
+            // verify the required parameter 'scope' is set
+            if (scope == null)
+                throw new ApiException(400, "Missing required parameter 'scope' when calling PortfoliosApi->UpsertPortfolioAccessMetadata");
+            // verify the required parameter 'code' is set
+            if (code == null)
+                throw new ApiException(400, "Missing required parameter 'code' when calling PortfoliosApi->UpsertPortfolioAccessMetadata");
+            // verify the required parameter 'metadataKey' is set
+            if (metadataKey == null)
+                throw new ApiException(400, "Missing required parameter 'metadataKey' when calling PortfoliosApi->UpsertPortfolioAccessMetadata");
+            // verify the required parameter 'upsertPortfolioAccessMetadataRequest' is set
+            if (upsertPortfolioAccessMetadataRequest == null)
+                throw new ApiException(400, "Missing required parameter 'upsertPortfolioAccessMetadataRequest' when calling PortfoliosApi->UpsertPortfolioAccessMetadata");
+
+            var localVarPath = "./api/portfolios/{scope}/{code}/metadata/{metadataKey}";
+            var localVarPathParams = new Dictionary<String, String>();
+            var localVarQueryParams = new List<KeyValuePair<String, String>>();
+            var localVarHeaderParams = new Dictionary<String, String>(this.Configuration.DefaultHeader);
+            var localVarFormParams = new Dictionary<String, String>();
+            var localVarFileParams = new Dictionary<String, FileParameter>();
+            Object localVarPostBody = null;
+
+            // to determine the Content-Type header
+            String[] localVarHttpContentTypes = new String[] {
+                "application/json-patch+json", 
+                "application/json", 
+                "text/json", 
+                "application/_*+json"
+            };
+            String localVarHttpContentType = this.Configuration.ApiClient.SelectHeaderContentType(localVarHttpContentTypes);
+
+            // to determine the Accept header
+            String[] localVarHttpHeaderAccepts = new String[] {
+                "text/plain",
+                "application/json",
+                "text/json"
+            };
+            String localVarHttpHeaderAccept = this.Configuration.ApiClient.SelectHeaderAccept(localVarHttpHeaderAccepts);
+            if (localVarHttpHeaderAccept != null)
+                localVarHeaderParams.Add("Accept", localVarHttpHeaderAccept);
+
+            if (scope != null) localVarPathParams.Add("scope", this.Configuration.ApiClient.ParameterToString(scope)); // path parameter
+            if (code != null) localVarPathParams.Add("code", this.Configuration.ApiClient.ParameterToString(code)); // path parameter
+            if (metadataKey != null) localVarPathParams.Add("metadataKey", this.Configuration.ApiClient.ParameterToString(metadataKey)); // path parameter
+            if (effectiveAt != null) localVarQueryParams.AddRange(this.Configuration.ApiClient.ParameterToKeyValuePairs("", "effectiveAt", effectiveAt)); // query parameter
+            if (upsertPortfolioAccessMetadataRequest != null && upsertPortfolioAccessMetadataRequest.GetType() != typeof(byte[]))
+            {
+                localVarPostBody = this.Configuration.ApiClient.Serialize(upsertPortfolioAccessMetadataRequest); // http body (model) parameter
+            }
+            else
+            {
+                localVarPostBody = upsertPortfolioAccessMetadataRequest; // byte array
+            }
+
+            // authentication (oauth2) required
+            // oauth required
+            if (!String.IsNullOrEmpty(this.Configuration.AccessToken))
+            {
+                localVarHeaderParams["Authorization"] = "Bearer " + this.Configuration.AccessToken;
+            }
+
+            //  set the LUSID header
+            localVarHeaderParams["X-LUSID-Sdk-Language"] = "C#";
+            localVarHeaderParams["X-LUSID-Sdk-Version"] = "0.11.3314";
+
+            // make the HTTP request
+            IRestResponse localVarResponse = (IRestResponse) await this.Configuration.ApiClient.CallApiAsync(localVarPath,
+                Method.PUT, localVarQueryParams, localVarPostBody, localVarHeaderParams, localVarFormParams, localVarFileParams,
+                localVarPathParams, localVarHttpContentType);
+
+            int localVarStatusCode = (int) localVarResponse.StatusCode;
+
+            if (ExceptionFactory != null)
+            {
+                Exception exception = ExceptionFactory("UpsertPortfolioAccessMetadata", localVarResponse);
+                if (exception != null) throw exception;
+            }
+
+            return new ApiResponse<ResourceListOfAccessMetadataValueOf>(localVarStatusCode,
+                localVarResponse.Headers.ToDictionary(x => x.Key, x => string.Join(",", x.Value)),
+                (ResourceListOfAccessMetadataValueOf) this.Configuration.ApiClient.Deserialize(localVarResponse, typeof(ResourceListOfAccessMetadataValueOf)));
         }
 
         /// <summary>
@@ -4795,10 +4664,10 @@ namespace Lusid.Sdk.Api
         /// <param name="code">The code of the portfolio. Together with the scope this uniquely identifies the portfolio.</param>
         /// <param name="requestBody">The properties to be created or updated. Each property in               the request must be keyed by its unique property key. This has the format {domain}/{scope}/{code}, for example               &#39;Portfolio/Manager/Id&#39;.</param>
         /// <returns>PortfolioProperties</returns>
-        public PortfolioProperties UpsertPortfolioProperties(string scope, string code, Dictionary<string, Property> requestBody)
+        public PortfolioProperties UpsertPortfolioProperties (string scope, string code, Dictionary<string, Property> requestBody)
         {
-            Lusid.Sdk.Client.ApiResponse<PortfolioProperties> localVarResponse = UpsertPortfolioPropertiesWithHttpInfo(scope, code, requestBody);
-            return localVarResponse.Data;
+             ApiResponse<PortfolioProperties> localVarResponse = UpsertPortfolioPropertiesWithHttpInfo(scope, code, requestBody);
+             return localVarResponse.Data;
         }
 
         /// <summary>
@@ -4809,157 +4678,185 @@ namespace Lusid.Sdk.Api
         /// <param name="code">The code of the portfolio. Together with the scope this uniquely identifies the portfolio.</param>
         /// <param name="requestBody">The properties to be created or updated. Each property in               the request must be keyed by its unique property key. This has the format {domain}/{scope}/{code}, for example               &#39;Portfolio/Manager/Id&#39;.</param>
         /// <returns>ApiResponse of PortfolioProperties</returns>
-        public Lusid.Sdk.Client.ApiResponse<PortfolioProperties> UpsertPortfolioPropertiesWithHttpInfo(string scope, string code, Dictionary<string, Property> requestBody)
+        public ApiResponse< PortfolioProperties > UpsertPortfolioPropertiesWithHttpInfo (string scope, string code, Dictionary<string, Property> requestBody)
         {
             // verify the required parameter 'scope' is set
             if (scope == null)
-                throw new Lusid.Sdk.Client.ApiException(400, "Missing required parameter 'scope' when calling PortfoliosApi->UpsertPortfolioProperties");
-
+                throw new ApiException(400, "Missing required parameter 'scope' when calling PortfoliosApi->UpsertPortfolioProperties");
             // verify the required parameter 'code' is set
             if (code == null)
-                throw new Lusid.Sdk.Client.ApiException(400, "Missing required parameter 'code' when calling PortfoliosApi->UpsertPortfolioProperties");
-
+                throw new ApiException(400, "Missing required parameter 'code' when calling PortfoliosApi->UpsertPortfolioProperties");
             // verify the required parameter 'requestBody' is set
             if (requestBody == null)
-                throw new Lusid.Sdk.Client.ApiException(400, "Missing required parameter 'requestBody' when calling PortfoliosApi->UpsertPortfolioProperties");
+                throw new ApiException(400, "Missing required parameter 'requestBody' when calling PortfoliosApi->UpsertPortfolioProperties");
 
-            Lusid.Sdk.Client.RequestOptions localVarRequestOptions = new Lusid.Sdk.Client.RequestOptions();
+            var localVarPath = "./api/portfolios/{scope}/{code}/properties";
+            var localVarPathParams = new Dictionary<String, String>();
+            var localVarQueryParams = new List<KeyValuePair<String, String>>();
+            var localVarHeaderParams = new Dictionary<String, String>(this.Configuration.DefaultHeader);
+            var localVarFormParams = new Dictionary<String, String>();
+            var localVarFileParams = new Dictionary<String, FileParameter>();
+            Object localVarPostBody = null;
 
-            String[] _contentTypes = new String[] {
-                "application/json-patch+json",
-                "application/json",
-                "text/json",
-                "application/_*+json"
-            };
-
-            // to determine the Accept header
-            String[] _accepts = new String[] {
-                "text/plain",
-                "application/json",
-                "text/json"
-            };
-
-            var localVarContentType = Lusid.Sdk.Client.ClientUtils.SelectHeaderContentType(_contentTypes);
-            if (localVarContentType != null) localVarRequestOptions.HeaderParameters.Add("Content-Type", localVarContentType);
-
-            var localVarAccept = Lusid.Sdk.Client.ClientUtils.SelectHeaderAccept(_accepts);
-            if (localVarAccept != null) localVarRequestOptions.HeaderParameters.Add("Accept", localVarAccept);
-
-            localVarRequestOptions.PathParameters.Add("scope", Lusid.Sdk.Client.ClientUtils.ParameterToString(scope)); // path parameter
-            localVarRequestOptions.PathParameters.Add("code", Lusid.Sdk.Client.ClientUtils.ParameterToString(code)); // path parameter
-            localVarRequestOptions.Data = requestBody;
-
-            // authentication (oauth2) required
-            // oauth required
-            if (!String.IsNullOrEmpty(this.Configuration.AccessToken))
-            {
-                localVarRequestOptions.HeaderParameters.Add("Authorization", "Bearer " + this.Configuration.AccessToken);
-            }
-
-            //  set the LUSID header
-            localVarRequestOptions.HeaderParameters.Add("X-LUSID-Sdk-Language", "C#");
-            localVarRequestOptions.HeaderParameters.Add("X-LUSID-Sdk-Version", "0.11.3313");
-
-            // make the HTTP request
-            var localVarResponse = this.Client.Post<PortfolioProperties>("/api/portfolios/{scope}/{code}/properties", localVarRequestOptions, this.Configuration);
-
-            if (this.ExceptionFactory != null)
-            {
-                Exception _exception = this.ExceptionFactory("UpsertPortfolioProperties", localVarResponse);
-                if (_exception != null) throw _exception;
-            }
-
-            return localVarResponse;
-        }
-
-        /// <summary>
-        /// Upsert portfolio properties Create or update one or more properties for a particular portfolio. A property is updated if it  already exists and created if it does not. All properties must be from the &#39;Portfolio&#39; domain.                Properties have an &lt;i&gt;effectiveFrom&lt;/i&gt; datetime from which the property is valid, and an &lt;i&gt;effectiveUntil&lt;/i&gt;  datetime until which it is valid. Not supplying an &lt;i&gt;effectiveUntil&lt;/i&gt; datetime results in the property being  valid indefinitely, or until the next &lt;i&gt;effectiveFrom&lt;/i&gt; datetime of the property.
-        /// </summary>
-        /// <exception cref="Lusid.Sdk.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="scope">The scope of the portfolio.</param>
-        /// <param name="code">The code of the portfolio. Together with the scope this uniquely identifies the portfolio.</param>
-        /// <param name="requestBody">The properties to be created or updated. Each property in               the request must be keyed by its unique property key. This has the format {domain}/{scope}/{code}, for example               &#39;Portfolio/Manager/Id&#39;.</param>
-        /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
-        /// <returns>Task of PortfolioProperties</returns>
-        public async System.Threading.Tasks.Task<PortfolioProperties> UpsertPortfolioPropertiesAsync(string scope, string code, Dictionary<string, Property> requestBody, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
-        {
-            Lusid.Sdk.Client.ApiResponse<PortfolioProperties> localVarResponse = await UpsertPortfolioPropertiesWithHttpInfoAsync(scope, code, requestBody, cancellationToken).ConfigureAwait(false);
-            return localVarResponse.Data;
-        }
-
-        /// <summary>
-        /// Upsert portfolio properties Create or update one or more properties for a particular portfolio. A property is updated if it  already exists and created if it does not. All properties must be from the &#39;Portfolio&#39; domain.                Properties have an &lt;i&gt;effectiveFrom&lt;/i&gt; datetime from which the property is valid, and an &lt;i&gt;effectiveUntil&lt;/i&gt;  datetime until which it is valid. Not supplying an &lt;i&gt;effectiveUntil&lt;/i&gt; datetime results in the property being  valid indefinitely, or until the next &lt;i&gt;effectiveFrom&lt;/i&gt; datetime of the property.
-        /// </summary>
-        /// <exception cref="Lusid.Sdk.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="scope">The scope of the portfolio.</param>
-        /// <param name="code">The code of the portfolio. Together with the scope this uniquely identifies the portfolio.</param>
-        /// <param name="requestBody">The properties to be created or updated. Each property in               the request must be keyed by its unique property key. This has the format {domain}/{scope}/{code}, for example               &#39;Portfolio/Manager/Id&#39;.</param>
-        /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
-        /// <returns>Task of ApiResponse (PortfolioProperties)</returns>
-        public async System.Threading.Tasks.Task<Lusid.Sdk.Client.ApiResponse<PortfolioProperties>> UpsertPortfolioPropertiesWithHttpInfoAsync(string scope, string code, Dictionary<string, Property> requestBody, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
-        {
-            // verify the required parameter 'scope' is set
-            if (scope == null)
-                throw new Lusid.Sdk.Client.ApiException(400, "Missing required parameter 'scope' when calling PortfoliosApi->UpsertPortfolioProperties");
-
-            // verify the required parameter 'code' is set
-            if (code == null)
-                throw new Lusid.Sdk.Client.ApiException(400, "Missing required parameter 'code' when calling PortfoliosApi->UpsertPortfolioProperties");
-
-            // verify the required parameter 'requestBody' is set
-            if (requestBody == null)
-                throw new Lusid.Sdk.Client.ApiException(400, "Missing required parameter 'requestBody' when calling PortfoliosApi->UpsertPortfolioProperties");
-
-
-            Lusid.Sdk.Client.RequestOptions localVarRequestOptions = new Lusid.Sdk.Client.RequestOptions();
-
-            String[] _contentTypes = new String[] {
+            // to determine the Content-Type header
+            String[] localVarHttpContentTypes = new String[] {
                 "application/json-patch+json", 
                 "application/json", 
                 "text/json", 
                 "application/_*+json"
             };
+            String localVarHttpContentType = this.Configuration.ApiClient.SelectHeaderContentType(localVarHttpContentTypes);
 
             // to determine the Accept header
-            String[] _accepts = new String[] {
+            String[] localVarHttpHeaderAccepts = new String[] {
                 "text/plain",
                 "application/json",
                 "text/json"
             };
+            String localVarHttpHeaderAccept = this.Configuration.ApiClient.SelectHeaderAccept(localVarHttpHeaderAccepts);
+            if (localVarHttpHeaderAccept != null)
+                localVarHeaderParams.Add("Accept", localVarHttpHeaderAccept);
 
-
-            var localVarContentType = Lusid.Sdk.Client.ClientUtils.SelectHeaderContentType(_contentTypes);
-            if (localVarContentType != null) localVarRequestOptions.HeaderParameters.Add("Content-Type", localVarContentType);
-
-            var localVarAccept = Lusid.Sdk.Client.ClientUtils.SelectHeaderAccept(_accepts);
-            if (localVarAccept != null) localVarRequestOptions.HeaderParameters.Add("Accept", localVarAccept);
-
-            localVarRequestOptions.PathParameters.Add("scope", Lusid.Sdk.Client.ClientUtils.ParameterToString(scope)); // path parameter
-            localVarRequestOptions.PathParameters.Add("code", Lusid.Sdk.Client.ClientUtils.ParameterToString(code)); // path parameter
-            localVarRequestOptions.Data = requestBody;
+            if (scope != null) localVarPathParams.Add("scope", this.Configuration.ApiClient.ParameterToString(scope)); // path parameter
+            if (code != null) localVarPathParams.Add("code", this.Configuration.ApiClient.ParameterToString(code)); // path parameter
+            if (requestBody != null && requestBody.GetType() != typeof(byte[]))
+            {
+                localVarPostBody = this.Configuration.ApiClient.Serialize(requestBody); // http body (model) parameter
+            }
+            else
+            {
+                localVarPostBody = requestBody; // byte array
+            }
 
             // authentication (oauth2) required
             // oauth required
             if (!String.IsNullOrEmpty(this.Configuration.AccessToken))
             {
-                localVarRequestOptions.HeaderParameters.Add("Authorization", "Bearer " + this.Configuration.AccessToken);
+                localVarHeaderParams["Authorization"] = "Bearer " + this.Configuration.AccessToken;
             }
 
             //  set the LUSID header
-            localVarRequestOptions.HeaderParameters.Add("X-LUSID-Sdk-Language", "C#");
-            localVarRequestOptions.HeaderParameters.Add("X-LUSID-Sdk-Version", "0.11.3313");
+            localVarHeaderParams["X-LUSID-SDK-Language"] = "C#";
+            localVarHeaderParams["X-LUSID-SDK-Version"] = "0.11.3314";
 
             // make the HTTP request
+            IRestResponse localVarResponse = (IRestResponse) this.Configuration.ApiClient.CallApi(localVarPath,
+                Method.POST, localVarQueryParams, localVarPostBody, localVarHeaderParams, localVarFormParams, localVarFileParams,
+                localVarPathParams, localVarHttpContentType);
 
-            var localVarResponse = await this.AsynchronousClient.PostAsync<PortfolioProperties>("/api/portfolios/{scope}/{code}/properties", localVarRequestOptions, this.Configuration, cancellationToken).ConfigureAwait(false);
+            int localVarStatusCode = (int) localVarResponse.StatusCode;
 
-            if (this.ExceptionFactory != null)
+            if (ExceptionFactory != null)
             {
-                Exception _exception = this.ExceptionFactory("UpsertPortfolioProperties", localVarResponse);
-                if (_exception != null) throw _exception;
+                Exception exception = ExceptionFactory("UpsertPortfolioProperties", localVarResponse);
+                if (exception != null) throw exception;
             }
 
-            return localVarResponse;
+            return new ApiResponse<PortfolioProperties>(localVarStatusCode,
+                localVarResponse.Headers.ToDictionary(x => x.Key, x => string.Join(",", x.Value)),
+                (PortfolioProperties) this.Configuration.ApiClient.Deserialize(localVarResponse, typeof(PortfolioProperties)));
+        }
+
+        /// <summary>
+        /// Upsert portfolio properties Create or update one or more properties for a particular portfolio. A property is updated if it  already exists and created if it does not. All properties must be from the &#39;Portfolio&#39; domain.                Properties have an &lt;i&gt;effectiveFrom&lt;/i&gt; datetime from which the property is valid, and an &lt;i&gt;effectiveUntil&lt;/i&gt;  datetime until which it is valid. Not supplying an &lt;i&gt;effectiveUntil&lt;/i&gt; datetime results in the property being  valid indefinitely, or until the next &lt;i&gt;effectiveFrom&lt;/i&gt; datetime of the property.
+        /// </summary>
+        /// <exception cref="Lusid.Sdk.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="scope">The scope of the portfolio.</param>
+        /// <param name="code">The code of the portfolio. Together with the scope this uniquely identifies the portfolio.</param>
+        /// <param name="requestBody">The properties to be created or updated. Each property in               the request must be keyed by its unique property key. This has the format {domain}/{scope}/{code}, for example               &#39;Portfolio/Manager/Id&#39;.</param>
+        /// <returns>Task of PortfolioProperties</returns>
+        public async System.Threading.Tasks.Task<PortfolioProperties> UpsertPortfolioPropertiesAsync (string scope, string code, Dictionary<string, Property> requestBody)
+        {
+             ApiResponse<PortfolioProperties> localVarResponse = await UpsertPortfolioPropertiesAsyncWithHttpInfo(scope, code, requestBody);
+             return localVarResponse.Data;
+
+        }
+
+        /// <summary>
+        /// Upsert portfolio properties Create or update one or more properties for a particular portfolio. A property is updated if it  already exists and created if it does not. All properties must be from the &#39;Portfolio&#39; domain.                Properties have an &lt;i&gt;effectiveFrom&lt;/i&gt; datetime from which the property is valid, and an &lt;i&gt;effectiveUntil&lt;/i&gt;  datetime until which it is valid. Not supplying an &lt;i&gt;effectiveUntil&lt;/i&gt; datetime results in the property being  valid indefinitely, or until the next &lt;i&gt;effectiveFrom&lt;/i&gt; datetime of the property.
+        /// </summary>
+        /// <exception cref="Lusid.Sdk.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="scope">The scope of the portfolio.</param>
+        /// <param name="code">The code of the portfolio. Together with the scope this uniquely identifies the portfolio.</param>
+        /// <param name="requestBody">The properties to be created or updated. Each property in               the request must be keyed by its unique property key. This has the format {domain}/{scope}/{code}, for example               &#39;Portfolio/Manager/Id&#39;.</param>
+        /// <returns>Task of ApiResponse (PortfolioProperties)</returns>
+        public async System.Threading.Tasks.Task<ApiResponse<PortfolioProperties>> UpsertPortfolioPropertiesAsyncWithHttpInfo (string scope, string code, Dictionary<string, Property> requestBody)
+        {
+            // verify the required parameter 'scope' is set
+            if (scope == null)
+                throw new ApiException(400, "Missing required parameter 'scope' when calling PortfoliosApi->UpsertPortfolioProperties");
+            // verify the required parameter 'code' is set
+            if (code == null)
+                throw new ApiException(400, "Missing required parameter 'code' when calling PortfoliosApi->UpsertPortfolioProperties");
+            // verify the required parameter 'requestBody' is set
+            if (requestBody == null)
+                throw new ApiException(400, "Missing required parameter 'requestBody' when calling PortfoliosApi->UpsertPortfolioProperties");
+
+            var localVarPath = "./api/portfolios/{scope}/{code}/properties";
+            var localVarPathParams = new Dictionary<String, String>();
+            var localVarQueryParams = new List<KeyValuePair<String, String>>();
+            var localVarHeaderParams = new Dictionary<String, String>(this.Configuration.DefaultHeader);
+            var localVarFormParams = new Dictionary<String, String>();
+            var localVarFileParams = new Dictionary<String, FileParameter>();
+            Object localVarPostBody = null;
+
+            // to determine the Content-Type header
+            String[] localVarHttpContentTypes = new String[] {
+                "application/json-patch+json", 
+                "application/json", 
+                "text/json", 
+                "application/_*+json"
+            };
+            String localVarHttpContentType = this.Configuration.ApiClient.SelectHeaderContentType(localVarHttpContentTypes);
+
+            // to determine the Accept header
+            String[] localVarHttpHeaderAccepts = new String[] {
+                "text/plain",
+                "application/json",
+                "text/json"
+            };
+            String localVarHttpHeaderAccept = this.Configuration.ApiClient.SelectHeaderAccept(localVarHttpHeaderAccepts);
+            if (localVarHttpHeaderAccept != null)
+                localVarHeaderParams.Add("Accept", localVarHttpHeaderAccept);
+
+            if (scope != null) localVarPathParams.Add("scope", this.Configuration.ApiClient.ParameterToString(scope)); // path parameter
+            if (code != null) localVarPathParams.Add("code", this.Configuration.ApiClient.ParameterToString(code)); // path parameter
+            if (requestBody != null && requestBody.GetType() != typeof(byte[]))
+            {
+                localVarPostBody = this.Configuration.ApiClient.Serialize(requestBody); // http body (model) parameter
+            }
+            else
+            {
+                localVarPostBody = requestBody; // byte array
+            }
+
+            // authentication (oauth2) required
+            // oauth required
+            if (!String.IsNullOrEmpty(this.Configuration.AccessToken))
+            {
+                localVarHeaderParams["Authorization"] = "Bearer " + this.Configuration.AccessToken;
+            }
+
+            //  set the LUSID header
+            localVarHeaderParams["X-LUSID-Sdk-Language"] = "C#";
+            localVarHeaderParams["X-LUSID-Sdk-Version"] = "0.11.3314";
+
+            // make the HTTP request
+            IRestResponse localVarResponse = (IRestResponse) await this.Configuration.ApiClient.CallApiAsync(localVarPath,
+                Method.POST, localVarQueryParams, localVarPostBody, localVarHeaderParams, localVarFormParams, localVarFileParams,
+                localVarPathParams, localVarHttpContentType);
+
+            int localVarStatusCode = (int) localVarResponse.StatusCode;
+
+            if (ExceptionFactory != null)
+            {
+                Exception exception = ExceptionFactory("UpsertPortfolioProperties", localVarResponse);
+                if (exception != null) throw exception;
+            }
+
+            return new ApiResponse<PortfolioProperties>(localVarStatusCode,
+                localVarResponse.Headers.ToDictionary(x => x.Key, x => string.Join(",", x.Value)),
+                (PortfolioProperties) this.Configuration.ApiClient.Deserialize(localVarResponse, typeof(PortfolioProperties)));
         }
 
         /// <summary>
@@ -4972,10 +4869,10 @@ namespace Lusid.Sdk.Api
         /// <param name="returnCode">The code of the Returns.</param>
         /// <param name="performanceReturn">This contains the Returns which need to be upsert.</param>
         /// <returns>UpsertReturnsResponse</returns>
-        public UpsertReturnsResponse UpsertPortfolioReturns(string scope, string code, string returnScope, string returnCode, List<PerformanceReturn> performanceReturn)
+        public UpsertReturnsResponse UpsertPortfolioReturns (string scope, string code, string returnScope, string returnCode, List<PerformanceReturn> performanceReturn)
         {
-            Lusid.Sdk.Client.ApiResponse<UpsertReturnsResponse> localVarResponse = UpsertPortfolioReturnsWithHttpInfo(scope, code, returnScope, returnCode, performanceReturn);
-            return localVarResponse.Data;
+             ApiResponse<UpsertReturnsResponse> localVarResponse = UpsertPortfolioReturnsWithHttpInfo(scope, code, returnScope, returnCode, performanceReturn);
+             return localVarResponse.Data;
         }
 
         /// <summary>
@@ -4988,181 +4885,205 @@ namespace Lusid.Sdk.Api
         /// <param name="returnCode">The code of the Returns.</param>
         /// <param name="performanceReturn">This contains the Returns which need to be upsert.</param>
         /// <returns>ApiResponse of UpsertReturnsResponse</returns>
-        public Lusid.Sdk.Client.ApiResponse<UpsertReturnsResponse> UpsertPortfolioReturnsWithHttpInfo(string scope, string code, string returnScope, string returnCode, List<PerformanceReturn> performanceReturn)
+        public ApiResponse< UpsertReturnsResponse > UpsertPortfolioReturnsWithHttpInfo (string scope, string code, string returnScope, string returnCode, List<PerformanceReturn> performanceReturn)
         {
             // verify the required parameter 'scope' is set
             if (scope == null)
-                throw new Lusid.Sdk.Client.ApiException(400, "Missing required parameter 'scope' when calling PortfoliosApi->UpsertPortfolioReturns");
-
+                throw new ApiException(400, "Missing required parameter 'scope' when calling PortfoliosApi->UpsertPortfolioReturns");
             // verify the required parameter 'code' is set
             if (code == null)
-                throw new Lusid.Sdk.Client.ApiException(400, "Missing required parameter 'code' when calling PortfoliosApi->UpsertPortfolioReturns");
-
+                throw new ApiException(400, "Missing required parameter 'code' when calling PortfoliosApi->UpsertPortfolioReturns");
             // verify the required parameter 'returnScope' is set
             if (returnScope == null)
-                throw new Lusid.Sdk.Client.ApiException(400, "Missing required parameter 'returnScope' when calling PortfoliosApi->UpsertPortfolioReturns");
-
+                throw new ApiException(400, "Missing required parameter 'returnScope' when calling PortfoliosApi->UpsertPortfolioReturns");
             // verify the required parameter 'returnCode' is set
             if (returnCode == null)
-                throw new Lusid.Sdk.Client.ApiException(400, "Missing required parameter 'returnCode' when calling PortfoliosApi->UpsertPortfolioReturns");
-
+                throw new ApiException(400, "Missing required parameter 'returnCode' when calling PortfoliosApi->UpsertPortfolioReturns");
             // verify the required parameter 'performanceReturn' is set
             if (performanceReturn == null)
-                throw new Lusid.Sdk.Client.ApiException(400, "Missing required parameter 'performanceReturn' when calling PortfoliosApi->UpsertPortfolioReturns");
+                throw new ApiException(400, "Missing required parameter 'performanceReturn' when calling PortfoliosApi->UpsertPortfolioReturns");
 
-            Lusid.Sdk.Client.RequestOptions localVarRequestOptions = new Lusid.Sdk.Client.RequestOptions();
+            var localVarPath = "./api/portfolios/{scope}/{code}/returns/{returnScope}/{returnCode}";
+            var localVarPathParams = new Dictionary<String, String>();
+            var localVarQueryParams = new List<KeyValuePair<String, String>>();
+            var localVarHeaderParams = new Dictionary<String, String>(this.Configuration.DefaultHeader);
+            var localVarFormParams = new Dictionary<String, String>();
+            var localVarFileParams = new Dictionary<String, FileParameter>();
+            Object localVarPostBody = null;
 
-            String[] _contentTypes = new String[] {
-                "application/json-patch+json",
-                "application/json",
-                "text/json",
-                "application/_*+json"
-            };
-
-            // to determine the Accept header
-            String[] _accepts = new String[] {
-                "text/plain",
-                "application/json",
-                "text/json"
-            };
-
-            var localVarContentType = Lusid.Sdk.Client.ClientUtils.SelectHeaderContentType(_contentTypes);
-            if (localVarContentType != null) localVarRequestOptions.HeaderParameters.Add("Content-Type", localVarContentType);
-
-            var localVarAccept = Lusid.Sdk.Client.ClientUtils.SelectHeaderAccept(_accepts);
-            if (localVarAccept != null) localVarRequestOptions.HeaderParameters.Add("Accept", localVarAccept);
-
-            localVarRequestOptions.PathParameters.Add("scope", Lusid.Sdk.Client.ClientUtils.ParameterToString(scope)); // path parameter
-            localVarRequestOptions.PathParameters.Add("code", Lusid.Sdk.Client.ClientUtils.ParameterToString(code)); // path parameter
-            localVarRequestOptions.PathParameters.Add("returnScope", Lusid.Sdk.Client.ClientUtils.ParameterToString(returnScope)); // path parameter
-            localVarRequestOptions.PathParameters.Add("returnCode", Lusid.Sdk.Client.ClientUtils.ParameterToString(returnCode)); // path parameter
-            localVarRequestOptions.Data = performanceReturn;
-
-            // authentication (oauth2) required
-            // oauth required
-            if (!String.IsNullOrEmpty(this.Configuration.AccessToken))
-            {
-                localVarRequestOptions.HeaderParameters.Add("Authorization", "Bearer " + this.Configuration.AccessToken);
-            }
-
-            //  set the LUSID header
-            localVarRequestOptions.HeaderParameters.Add("X-LUSID-Sdk-Language", "C#");
-            localVarRequestOptions.HeaderParameters.Add("X-LUSID-Sdk-Version", "0.11.3313");
-
-            // make the HTTP request
-            var localVarResponse = this.Client.Post<UpsertReturnsResponse>("/api/portfolios/{scope}/{code}/returns/{returnScope}/{returnCode}", localVarRequestOptions, this.Configuration);
-
-            if (this.ExceptionFactory != null)
-            {
-                Exception _exception = this.ExceptionFactory("UpsertPortfolioReturns", localVarResponse);
-                if (_exception != null) throw _exception;
-            }
-
-            return localVarResponse;
-        }
-
-        /// <summary>
-        /// [EXPERIMENTAL] Upsert Returns Update or insert returns into the specified portfolio.
-        /// </summary>
-        /// <exception cref="Lusid.Sdk.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="scope">The scope of the Portfolio.</param>
-        /// <param name="code">The code of the  Portfolio.</param>
-        /// <param name="returnScope">The scope of the Returns.</param>
-        /// <param name="returnCode">The code of the Returns.</param>
-        /// <param name="performanceReturn">This contains the Returns which need to be upsert.</param>
-        /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
-        /// <returns>Task of UpsertReturnsResponse</returns>
-        public async System.Threading.Tasks.Task<UpsertReturnsResponse> UpsertPortfolioReturnsAsync(string scope, string code, string returnScope, string returnCode, List<PerformanceReturn> performanceReturn, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
-        {
-            Lusid.Sdk.Client.ApiResponse<UpsertReturnsResponse> localVarResponse = await UpsertPortfolioReturnsWithHttpInfoAsync(scope, code, returnScope, returnCode, performanceReturn, cancellationToken).ConfigureAwait(false);
-            return localVarResponse.Data;
-        }
-
-        /// <summary>
-        /// [EXPERIMENTAL] Upsert Returns Update or insert returns into the specified portfolio.
-        /// </summary>
-        /// <exception cref="Lusid.Sdk.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="scope">The scope of the Portfolio.</param>
-        /// <param name="code">The code of the  Portfolio.</param>
-        /// <param name="returnScope">The scope of the Returns.</param>
-        /// <param name="returnCode">The code of the Returns.</param>
-        /// <param name="performanceReturn">This contains the Returns which need to be upsert.</param>
-        /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
-        /// <returns>Task of ApiResponse (UpsertReturnsResponse)</returns>
-        public async System.Threading.Tasks.Task<Lusid.Sdk.Client.ApiResponse<UpsertReturnsResponse>> UpsertPortfolioReturnsWithHttpInfoAsync(string scope, string code, string returnScope, string returnCode, List<PerformanceReturn> performanceReturn, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
-        {
-            // verify the required parameter 'scope' is set
-            if (scope == null)
-                throw new Lusid.Sdk.Client.ApiException(400, "Missing required parameter 'scope' when calling PortfoliosApi->UpsertPortfolioReturns");
-
-            // verify the required parameter 'code' is set
-            if (code == null)
-                throw new Lusid.Sdk.Client.ApiException(400, "Missing required parameter 'code' when calling PortfoliosApi->UpsertPortfolioReturns");
-
-            // verify the required parameter 'returnScope' is set
-            if (returnScope == null)
-                throw new Lusid.Sdk.Client.ApiException(400, "Missing required parameter 'returnScope' when calling PortfoliosApi->UpsertPortfolioReturns");
-
-            // verify the required parameter 'returnCode' is set
-            if (returnCode == null)
-                throw new Lusid.Sdk.Client.ApiException(400, "Missing required parameter 'returnCode' when calling PortfoliosApi->UpsertPortfolioReturns");
-
-            // verify the required parameter 'performanceReturn' is set
-            if (performanceReturn == null)
-                throw new Lusid.Sdk.Client.ApiException(400, "Missing required parameter 'performanceReturn' when calling PortfoliosApi->UpsertPortfolioReturns");
-
-
-            Lusid.Sdk.Client.RequestOptions localVarRequestOptions = new Lusid.Sdk.Client.RequestOptions();
-
-            String[] _contentTypes = new String[] {
+            // to determine the Content-Type header
+            String[] localVarHttpContentTypes = new String[] {
                 "application/json-patch+json", 
                 "application/json", 
                 "text/json", 
                 "application/_*+json"
             };
+            String localVarHttpContentType = this.Configuration.ApiClient.SelectHeaderContentType(localVarHttpContentTypes);
 
             // to determine the Accept header
-            String[] _accepts = new String[] {
+            String[] localVarHttpHeaderAccepts = new String[] {
                 "text/plain",
                 "application/json",
                 "text/json"
             };
+            String localVarHttpHeaderAccept = this.Configuration.ApiClient.SelectHeaderAccept(localVarHttpHeaderAccepts);
+            if (localVarHttpHeaderAccept != null)
+                localVarHeaderParams.Add("Accept", localVarHttpHeaderAccept);
 
-
-            var localVarContentType = Lusid.Sdk.Client.ClientUtils.SelectHeaderContentType(_contentTypes);
-            if (localVarContentType != null) localVarRequestOptions.HeaderParameters.Add("Content-Type", localVarContentType);
-
-            var localVarAccept = Lusid.Sdk.Client.ClientUtils.SelectHeaderAccept(_accepts);
-            if (localVarAccept != null) localVarRequestOptions.HeaderParameters.Add("Accept", localVarAccept);
-
-            localVarRequestOptions.PathParameters.Add("scope", Lusid.Sdk.Client.ClientUtils.ParameterToString(scope)); // path parameter
-            localVarRequestOptions.PathParameters.Add("code", Lusid.Sdk.Client.ClientUtils.ParameterToString(code)); // path parameter
-            localVarRequestOptions.PathParameters.Add("returnScope", Lusid.Sdk.Client.ClientUtils.ParameterToString(returnScope)); // path parameter
-            localVarRequestOptions.PathParameters.Add("returnCode", Lusid.Sdk.Client.ClientUtils.ParameterToString(returnCode)); // path parameter
-            localVarRequestOptions.Data = performanceReturn;
+            if (scope != null) localVarPathParams.Add("scope", this.Configuration.ApiClient.ParameterToString(scope)); // path parameter
+            if (code != null) localVarPathParams.Add("code", this.Configuration.ApiClient.ParameterToString(code)); // path parameter
+            if (returnScope != null) localVarPathParams.Add("returnScope", this.Configuration.ApiClient.ParameterToString(returnScope)); // path parameter
+            if (returnCode != null) localVarPathParams.Add("returnCode", this.Configuration.ApiClient.ParameterToString(returnCode)); // path parameter
+            if (performanceReturn != null && performanceReturn.GetType() != typeof(byte[]))
+            {
+                localVarPostBody = this.Configuration.ApiClient.Serialize(performanceReturn); // http body (model) parameter
+            }
+            else
+            {
+                localVarPostBody = performanceReturn; // byte array
+            }
 
             // authentication (oauth2) required
             // oauth required
             if (!String.IsNullOrEmpty(this.Configuration.AccessToken))
             {
-                localVarRequestOptions.HeaderParameters.Add("Authorization", "Bearer " + this.Configuration.AccessToken);
+                localVarHeaderParams["Authorization"] = "Bearer " + this.Configuration.AccessToken;
             }
 
             //  set the LUSID header
-            localVarRequestOptions.HeaderParameters.Add("X-LUSID-Sdk-Language", "C#");
-            localVarRequestOptions.HeaderParameters.Add("X-LUSID-Sdk-Version", "0.11.3313");
+            localVarHeaderParams["X-LUSID-SDK-Language"] = "C#";
+            localVarHeaderParams["X-LUSID-SDK-Version"] = "0.11.3314";
 
             // make the HTTP request
+            IRestResponse localVarResponse = (IRestResponse) this.Configuration.ApiClient.CallApi(localVarPath,
+                Method.POST, localVarQueryParams, localVarPostBody, localVarHeaderParams, localVarFormParams, localVarFileParams,
+                localVarPathParams, localVarHttpContentType);
 
-            var localVarResponse = await this.AsynchronousClient.PostAsync<UpsertReturnsResponse>("/api/portfolios/{scope}/{code}/returns/{returnScope}/{returnCode}", localVarRequestOptions, this.Configuration, cancellationToken).ConfigureAwait(false);
+            int localVarStatusCode = (int) localVarResponse.StatusCode;
 
-            if (this.ExceptionFactory != null)
+            if (ExceptionFactory != null)
             {
-                Exception _exception = this.ExceptionFactory("UpsertPortfolioReturns", localVarResponse);
-                if (_exception != null) throw _exception;
+                Exception exception = ExceptionFactory("UpsertPortfolioReturns", localVarResponse);
+                if (exception != null) throw exception;
             }
 
-            return localVarResponse;
+            return new ApiResponse<UpsertReturnsResponse>(localVarStatusCode,
+                localVarResponse.Headers.ToDictionary(x => x.Key, x => string.Join(",", x.Value)),
+                (UpsertReturnsResponse) this.Configuration.ApiClient.Deserialize(localVarResponse, typeof(UpsertReturnsResponse)));
+        }
+
+        /// <summary>
+        /// [EXPERIMENTAL] Upsert Returns Update or insert returns into the specified portfolio.
+        /// </summary>
+        /// <exception cref="Lusid.Sdk.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="scope">The scope of the Portfolio.</param>
+        /// <param name="code">The code of the  Portfolio.</param>
+        /// <param name="returnScope">The scope of the Returns.</param>
+        /// <param name="returnCode">The code of the Returns.</param>
+        /// <param name="performanceReturn">This contains the Returns which need to be upsert.</param>
+        /// <returns>Task of UpsertReturnsResponse</returns>
+        public async System.Threading.Tasks.Task<UpsertReturnsResponse> UpsertPortfolioReturnsAsync (string scope, string code, string returnScope, string returnCode, List<PerformanceReturn> performanceReturn)
+        {
+             ApiResponse<UpsertReturnsResponse> localVarResponse = await UpsertPortfolioReturnsAsyncWithHttpInfo(scope, code, returnScope, returnCode, performanceReturn);
+             return localVarResponse.Data;
+
+        }
+
+        /// <summary>
+        /// [EXPERIMENTAL] Upsert Returns Update or insert returns into the specified portfolio.
+        /// </summary>
+        /// <exception cref="Lusid.Sdk.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="scope">The scope of the Portfolio.</param>
+        /// <param name="code">The code of the  Portfolio.</param>
+        /// <param name="returnScope">The scope of the Returns.</param>
+        /// <param name="returnCode">The code of the Returns.</param>
+        /// <param name="performanceReturn">This contains the Returns which need to be upsert.</param>
+        /// <returns>Task of ApiResponse (UpsertReturnsResponse)</returns>
+        public async System.Threading.Tasks.Task<ApiResponse<UpsertReturnsResponse>> UpsertPortfolioReturnsAsyncWithHttpInfo (string scope, string code, string returnScope, string returnCode, List<PerformanceReturn> performanceReturn)
+        {
+            // verify the required parameter 'scope' is set
+            if (scope == null)
+                throw new ApiException(400, "Missing required parameter 'scope' when calling PortfoliosApi->UpsertPortfolioReturns");
+            // verify the required parameter 'code' is set
+            if (code == null)
+                throw new ApiException(400, "Missing required parameter 'code' when calling PortfoliosApi->UpsertPortfolioReturns");
+            // verify the required parameter 'returnScope' is set
+            if (returnScope == null)
+                throw new ApiException(400, "Missing required parameter 'returnScope' when calling PortfoliosApi->UpsertPortfolioReturns");
+            // verify the required parameter 'returnCode' is set
+            if (returnCode == null)
+                throw new ApiException(400, "Missing required parameter 'returnCode' when calling PortfoliosApi->UpsertPortfolioReturns");
+            // verify the required parameter 'performanceReturn' is set
+            if (performanceReturn == null)
+                throw new ApiException(400, "Missing required parameter 'performanceReturn' when calling PortfoliosApi->UpsertPortfolioReturns");
+
+            var localVarPath = "./api/portfolios/{scope}/{code}/returns/{returnScope}/{returnCode}";
+            var localVarPathParams = new Dictionary<String, String>();
+            var localVarQueryParams = new List<KeyValuePair<String, String>>();
+            var localVarHeaderParams = new Dictionary<String, String>(this.Configuration.DefaultHeader);
+            var localVarFormParams = new Dictionary<String, String>();
+            var localVarFileParams = new Dictionary<String, FileParameter>();
+            Object localVarPostBody = null;
+
+            // to determine the Content-Type header
+            String[] localVarHttpContentTypes = new String[] {
+                "application/json-patch+json", 
+                "application/json", 
+                "text/json", 
+                "application/_*+json"
+            };
+            String localVarHttpContentType = this.Configuration.ApiClient.SelectHeaderContentType(localVarHttpContentTypes);
+
+            // to determine the Accept header
+            String[] localVarHttpHeaderAccepts = new String[] {
+                "text/plain",
+                "application/json",
+                "text/json"
+            };
+            String localVarHttpHeaderAccept = this.Configuration.ApiClient.SelectHeaderAccept(localVarHttpHeaderAccepts);
+            if (localVarHttpHeaderAccept != null)
+                localVarHeaderParams.Add("Accept", localVarHttpHeaderAccept);
+
+            if (scope != null) localVarPathParams.Add("scope", this.Configuration.ApiClient.ParameterToString(scope)); // path parameter
+            if (code != null) localVarPathParams.Add("code", this.Configuration.ApiClient.ParameterToString(code)); // path parameter
+            if (returnScope != null) localVarPathParams.Add("returnScope", this.Configuration.ApiClient.ParameterToString(returnScope)); // path parameter
+            if (returnCode != null) localVarPathParams.Add("returnCode", this.Configuration.ApiClient.ParameterToString(returnCode)); // path parameter
+            if (performanceReturn != null && performanceReturn.GetType() != typeof(byte[]))
+            {
+                localVarPostBody = this.Configuration.ApiClient.Serialize(performanceReturn); // http body (model) parameter
+            }
+            else
+            {
+                localVarPostBody = performanceReturn; // byte array
+            }
+
+            // authentication (oauth2) required
+            // oauth required
+            if (!String.IsNullOrEmpty(this.Configuration.AccessToken))
+            {
+                localVarHeaderParams["Authorization"] = "Bearer " + this.Configuration.AccessToken;
+            }
+
+            //  set the LUSID header
+            localVarHeaderParams["X-LUSID-Sdk-Language"] = "C#";
+            localVarHeaderParams["X-LUSID-Sdk-Version"] = "0.11.3314";
+
+            // make the HTTP request
+            IRestResponse localVarResponse = (IRestResponse) await this.Configuration.ApiClient.CallApiAsync(localVarPath,
+                Method.POST, localVarQueryParams, localVarPostBody, localVarHeaderParams, localVarFormParams, localVarFileParams,
+                localVarPathParams, localVarHttpContentType);
+
+            int localVarStatusCode = (int) localVarResponse.StatusCode;
+
+            if (ExceptionFactory != null)
+            {
+                Exception exception = ExceptionFactory("UpsertPortfolioReturns", localVarResponse);
+                if (exception != null) throw exception;
+            }
+
+            return new ApiResponse<UpsertReturnsResponse>(localVarStatusCode,
+                localVarResponse.Headers.ToDictionary(x => x.Key, x => string.Join(",", x.Value)),
+                (UpsertReturnsResponse) this.Configuration.ApiClient.Deserialize(localVarResponse, typeof(UpsertReturnsResponse)));
         }
 
     }

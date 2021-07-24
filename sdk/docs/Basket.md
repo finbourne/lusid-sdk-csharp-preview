@@ -1,5 +1,5 @@
+
 # Lusid.Sdk.Model.Basket
-Class that models a basket of risky instruments that can default.  Upon default, the weight of a defaulting instrument can (will) change and this then affects the behaviour of the basket.
 
 ## Properties
 
@@ -10,5 +10,7 @@ Name | Type | Description | Notes
 **BasketType** | **string** | What contents does the basket have. The validation will check that the instrument types contained match those expected.  Supported string (enumeration) values are: [Bonds, Credits, Equities, EquitySwap, Unknown]. | 
 **WeightedInstruments** | [**WeightedInstruments**](WeightedInstruments.md) |  | 
 
-[[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to README]](../README.md)
 

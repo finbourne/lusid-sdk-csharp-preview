@@ -1,5 +1,5 @@
+
 # Lusid.Sdk.Model.ValuationSchedule
-Specification object for the valuation schedule, how do we determine which days we wish to perform a valuation upon.
 
 ## Properties
 
@@ -12,5 +12,7 @@ Name | Type | Description | Notes
 **HolidayCalendars** | **List&lt;string&gt;** | The holiday calendar(s) that should be used in determining the date schedule.  Holiday calendar(s) are supplied by their names, for example, \&quot;CoppClarke\&quot;.   Note that when the calendars are not available (e.g. when the user has insufficient permissions),   a recipe setting will be used to determine whether the whole batch should then fail or whether the calendar not being available should simply be ignored. | [optional] 
 **ValuationDateTimes** | **List&lt;string&gt;** | If given, this is the exact set of dates on which to perform a valuation. This will replace/override all other specified values if given. | [optional] 
 
-[[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to README]](../README.md)
 
