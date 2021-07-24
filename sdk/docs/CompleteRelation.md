@@ -1,5 +1,5 @@
-
 # Lusid.Sdk.Model.CompleteRelation
+Representation of a relation containing details of source and target entities, and both outward and inward descriptions.
 
 ## Properties
 
@@ -12,9 +12,7 @@ Name | Type | Description | Notes
 **TargetEntityId** | **Dictionary&lt;string, string&gt;** |  | 
 **OutwardDescription** | **string** |  | 
 **InwardDescription** | **string** |  | 
-**EffectiveFrom** | **DateTimeOffset?** |  | [optional] 
+**EffectiveFrom** | **DateTimeOffset** |  | [optional] 
 
-[[Back to Model list]](../README.md#documentation-for-models)
-[[Back to API list]](../README.md#documentation-for-api-endpoints)
-[[Back to README]](../README.md)
+[[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 

@@ -1,5 +1,5 @@
-
 # Lusid.Sdk.Model.ComplexMarketDataId
+An identifier that uniquely describes an item of complex market data such as an interest rate curve or volatility surface.
 
 ## Properties
 
@@ -11,7 +11,5 @@ Name | Type | Description | Notes
 **EffectiveAt** | [**DateTimeOrCutLabel**](DateTimeOrCutLabel.md) | The effectiveAt or cut label that this item of structured market data is/was updated/inserted with. | [optional] 
 **MarketAsset** | **string** | The name of the market entity that the document represents | [optional] 
 
-[[Back to Model list]](../README.md#documentation-for-models)
-[[Back to API list]](../README.md#documentation-for-api-endpoints)
-[[Back to README]](../README.md)
+[[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 
