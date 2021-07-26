@@ -1,6 +1,6 @@
 # Lusid.Sdk.Api.LegalEntitiesApi
 
-All URIs are relative to *http://local-unit-test-server.lusid.com:46255*
+All URIs are relative to *http://local-unit-test-server.lusid.com:51367*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
@@ -42,7 +42,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:46255";
+            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:51367";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -126,7 +126,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:46255";
+            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:51367";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -214,7 +214,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:46255";
+            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:51367";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -302,7 +302,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:46255";
+            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:51367";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -390,7 +390,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:46255";
+            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:51367";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -480,7 +480,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:46255";
+            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:51367";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -570,7 +570,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:46255";
+            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:51367";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -664,7 +664,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:46255";
+            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:51367";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -756,7 +756,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:46255";
+            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:51367";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -848,7 +848,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:46255";
+            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:51367";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -942,7 +942,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:46255";
+            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:51367";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -1022,7 +1022,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:46255";
+            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:51367";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
