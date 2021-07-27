@@ -354,7 +354,7 @@ namespace Lusid.Sdk.Tests.Utilities
             // CREATE reset quotes in the desired date range
             var upsertQuoteRequests = new Dictionary<string, UpsertQuoteRequest>();
             
-            var resetQuote = CreateSimpleQuoteUpsertRequest("USD6M", QuoteSeriesId.InstrumentIdTypeEnum.RIC, 150, "USD", effectiveAt);
+            var resetQuote = CreateSimpleQuoteUpsertRequest("BP00", QuoteSeriesId.InstrumentIdTypeEnum.RIC, 150, "USD", effectiveAt);
             upsertQuoteRequests.Add($"resetQuote", resetQuote);
 
             // CHECK quotes upsert was successful for all the quotes
