@@ -93,7 +93,7 @@ namespace Lusid.Sdk.Tests.Utilities
             // CREATE the leg definitions
             var fixedLegDef = new LegDefinition(
                 rateOrSpread: 0.02m, // fixed leg rate (swap rate)
-                stubType: "Front",
+                stubType: "ShortFront",
                 payReceive: "Pay",
                 notionalExchangeType: "None",
                 conventions: CreateExampleFlowConventions()
@@ -101,7 +101,7 @@ namespace Lusid.Sdk.Tests.Utilities
 
             var floatLegDef = new LegDefinition(
                 rateOrSpread: 0.05m, // float leg spread over curve rate, often zero
-                stubType: "Front",
+                stubType: "ShortFront",
                 payReceive: "Pay",
                 notionalExchangeType: "None",
                 conventions: CreateExampleFlowConventions(),

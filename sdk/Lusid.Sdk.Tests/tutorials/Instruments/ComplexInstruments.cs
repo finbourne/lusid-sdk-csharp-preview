@@ -344,7 +344,7 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
             // CREATE the leg definitions
             var fixedLegDef = new LegDefinition(
                 rateOrSpread: 0.05m, // fixed leg rate (swap rate)
-                stubType: "Front",
+                stubType: "ShortFront",
                 payReceive: "Pay",
                 notionalExchangeType: "None",
                 conventions: flowConventions
@@ -352,7 +352,7 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
 
             var floatLegDef = new LegDefinition(
                 rateOrSpread: 0.002m, // float leg spread over curve rate, often zero
-                stubType: "Front",
+                stubType: "ShortFront",
                 payReceive: "Pay",
                 notionalExchangeType: "None",
                 conventions: flowConventions,
@@ -469,7 +469,7 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
             // CREATE the leg definitions
             var fixedLegDef = new LegDefinition(
                 rateOrSpread: 0.05m, // fixed leg rate (swap rate)
-                stubType: "Front",
+                stubType: "ShortFront",
                 payReceive: "Pay",
                 notionalExchangeType: "None",
                 conventions: flowConventions
@@ -477,7 +477,7 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
 
             var floatLegDef = new LegDefinition(
                 rateOrSpread: 0.002m, // float leg spread over curve rate, often zero
-                stubType: "Front",
+                stubType: "ShortFront",
                 payReceive: "Receive",
                 notionalExchangeType: "None",
                 conventions: flowConventions,
@@ -698,7 +698,7 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
             // CREATE the leg definitions
             var fixedLegDef = new LegDefinition(
                 rateOrSpread: fixedRate, // fixed leg rate (swap rate)
-                stubType: "Front",
+                stubType: "ShortFront",
                 payReceive: fixedLegDirection,
                 notionalExchangeType: "None",
                 conventionName: flowConventionName
@@ -706,7 +706,7 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
 
             var floatLegDef = new LegDefinition(
                 rateOrSpread: 0,
-                stubType: "Front",
+                stubType: "ShortFront",
                 payReceive: floatingLegDirection,
                 notionalExchangeType: "None",
                 conventionName: flowConventionName,
