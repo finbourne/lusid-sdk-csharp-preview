@@ -339,27 +339,29 @@ namespace Lusid.Sdk.Tests.Tutorials.Ibor
             }
         }
 
-        [TestCase(false, 1_051_587.301_587)]
-        [TestCase(true, 1_051_388.888_888)]
-        public void TestDemonstratingInlineValuationOfBondWithBus252(bool useRealCalendarFromCoppClark, decimal expectedValue)
+        [TestCase("Bus252", true)]
+        [TestCase("Act365", false)]
+        [TestCase("ActAct", true)]
+        [TestCase("Thirty360", false)]
+        [TestCase("ThirtyE360", false)]
+        public void TestDemonstratingTheUseOfDifferentCalendarsAndDayCountConventions(string dayCountConvention, bool useCalendarFromCoppClark)
         {
             // GIVEN the payment calendars to use - real calendars e.g. those from Copp Clark can be used, or an
-            // empty list can be provided resulting in a "NoOp" calendar - this calendar has no holidays but
-            // Saturdays and Sundays are treated as weekends.
-            var paymentCalendars = new List<string>();
-            if (useRealCalendarFromCoppClark)
-            {
-                paymentCalendars.Add("GBP");
-            }
-            
-            // And the flow conventions
+            // empty list can be provided to use the default calendar. The default calendar has no holidays but
+            // Saturdays and Sundays are treated as weekends. More than one calendar code can be provided, to combine
+            // their holidays. For example, when using two calendars, for a day to be a good business day it must be
+            // a good business day in both.
+            var paymentCalendars = useCalendarFromCoppClark ? new List<string>{"GBP"} : new List<string>();
+
+            // CREATE the flow conventions with the desired DayCountConvention. The DayCountConvention determines
+            // how the elapsed time between two datetime points is calculated.
             var flowConventions = new FlowConventions(
                 scope: null,
                 code: null,
                 currency: "GBP",
                 paymentFrequency: "6M",
                 rollConvention: "MF",
-                dayCountConvention: "Bus252",
+                dayCountConvention: dayCountConvention,
                 paymentCalendars: paymentCalendars,
                 resetCalendars: new List<string>(),
                 settleDays: 2,
@@ -367,13 +369,14 @@ namespace Lusid.Sdk.Tests.Tutorials.Ibor
             );
             
             // CREATE a bond instrument inline
+            const decimal principal = 1_000_000m;
             var instruments = new List<WeightedInstrument>
             {
                 new WeightedInstrument(1, "bond", new Bond(
                     startDate: TestEffectiveAt,
                     maturityDate: TestEffectiveAt.AddYears(1),
                     domCcy: "GBP",
-                    principal: 1_000_000m,
+                    principal: principal,
                     couponRate: 0.05m,
                     flowConventions: flowConventions,
                     identifiers: new Dictionary<string, string>(),
@@ -381,7 +384,7 @@ namespace Lusid.Sdk.Tests.Tutorials.Ibor
                 ))
             };
             
-            // Define the response we want
+            // DEFINE the response we want
             const string valuationDateKey = "Analytic/default/ValuationDate";
             const string pvKey = "Holding/default/PV";
             var valuationSpec = new List<AggregateSpec>
@@ -399,12 +402,12 @@ namespace Lusid.Sdk.Tests.Tutorials.Ibor
                 valuationSchedule: new ValuationSchedule(effectiveAt: TestEffectiveAt),
                 instruments: instruments);
 
-            // Values the bond on the date defined by the valuationSchedule
+            // CALL valuation
             var valuation = _apiFactory.Api<IAggregationApi>().GetValuationOfWeightedInstruments(inlineValuationRequest);
             var presentValue = valuation.Data[0][pvKey];
 
-            // Assert that the response is as expected
-            Assert.That(presentValue, Is.EqualTo(expectedValue).Within(1e-6));
+            // CHECK that the PV makes sense
+            Assert.That(presentValue, Is.GreaterThanOrEqualTo(principal));
         }
         
         [Test]
