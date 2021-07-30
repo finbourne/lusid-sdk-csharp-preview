@@ -340,6 +340,7 @@ namespace Lusid.Sdk.Tests.Tutorials.Ibor
         }
 
         [TestCase("Bus252", true)]
+        [TestCase("Act360", false)]
         [TestCase("Act365", false)]
         [TestCase("ActAct", true)]
         [TestCase("Thirty360", false)]
