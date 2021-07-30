@@ -339,6 +339,74 @@ namespace Lusid.Sdk.Tests.Tutorials.Ibor
             }
         }
 
+        [TestCase(false, 1_051_587.301_587)]
+        [TestCase(true, 1_051_388.888_888)]
+        public void TestDemonstratingInlineValuationOfBondWithBus252(bool useRealCalendarFromCoppClark, decimal expectedValue)
+        {
+            // GIVEN the payment calendars to use - real calendars e.g. those from Copp Clark can be used, or an
+            // empty list can be provided resulting in a "NoOp" calendar - this calendar has no holidays but
+            // Saturdays and Sundays are treated as weekends.
+            var paymentCalendars = new List<string>();
+            if (useRealCalendarFromCoppClark)
+            {
+                paymentCalendars.Add("GBP");
+            }
+            
+            // And the flow conventions
+            var flowConventions = new FlowConventions(
+                scope: null,
+                code: null,
+                currency: "GBP",
+                paymentFrequency: "6M",
+                rollConvention: "MF",
+                dayCountConvention: "Bus252",
+                paymentCalendars: paymentCalendars,
+                resetCalendars: new List<string>(),
+                settleDays: 2,
+                resetDays: 2
+            );
+            
+            // CREATE a bond instrument inline
+            var instruments = new List<WeightedInstrument>
+            {
+                new WeightedInstrument(1, "bond", new Bond(
+                    startDate: TestEffectiveAt,
+                    maturityDate: TestEffectiveAt.AddYears(1),
+                    domCcy: "GBP",
+                    principal: 1_000_000m,
+                    couponRate: 0.05m,
+                    flowConventions: flowConventions,
+                    identifiers: new Dictionary<string, string>(),
+                    instrumentType: LusidInstrument.InstrumentTypeEnum.Bond
+                ))
+            };
+            
+            // Define the response we want
+            const string valuationDateKey = "Analytic/default/ValuationDate";
+            const string pvKey = "Holding/default/PV";
+            var valuationSpec = new List<AggregateSpec>
+            {
+                new AggregateSpec(valuationDateKey, AggregateSpec.OpEnum.Value),
+                new AggregateSpec(pvKey, AggregateSpec.OpEnum.Value),
+            };
+
+            // CREATE inline valuation request asking for instruments PV using a "default" recipe
+            var scope = Guid.NewGuid().ToString();
+            var inlineValuationRequest = new InlineValuationRequest(
+                recipeId: new ResourceId(scope, "default"),
+                metrics: valuationSpec,
+                sort: new List<OrderBySpec> {new OrderBySpec(valuationDateKey, OrderBySpec.SortOrderEnum.Ascending)},
+                valuationSchedule: new ValuationSchedule(effectiveAt: TestEffectiveAt),
+                instruments: instruments);
+
+            // Values the bond on the date defined by the valuationSchedule
+            var valuation = _apiFactory.Api<IAggregationApi>().GetValuationOfWeightedInstruments(inlineValuationRequest);
+            var presentValue = valuation.Data[0][pvKey];
+
+            // Assert that the response is as expected
+            Assert.That(presentValue, Is.EqualTo(expectedValue).Within(1e-6));
+        }
+        
         [Test]
         public void SingleDateValuationOfAnInstrumentPortfolio()
         {
