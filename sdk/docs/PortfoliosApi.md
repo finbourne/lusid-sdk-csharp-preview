@@ -1,6 +1,6 @@
 # Lusid.Sdk.Api.PortfoliosApi
 
-All URIs are relative to *http://local-unit-test-server.lusid.com:34511*
+All URIs are relative to *http://local-unit-test-server.lusid.com:30944*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
@@ -50,7 +50,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:34511";
+            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:30944";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -136,7 +136,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:34511";
+            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:30944";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -218,7 +218,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:34511";
+            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:30944";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -304,7 +304,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:34511";
+            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:30944";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -314,7 +314,7 @@ namespace Example
             var returnScope = returnScope_example;  // string | The scope of the Returns.
             var returnCode = returnCode_example;  // string | The code of the Returns.
             var fromEffectiveAt = fromEffectiveAt_example;  // DateTimeOrCutLabel | The start date from which to delete the Returns.
-            var toEffectiveAt = toEffectiveAt_example;  // DateTimeOrCutLabel | The end date from which to delete the Returns
+            var toEffectiveAt = toEffectiveAt_example;  // DateTimeOrCutLabel | The end date from which to delete the Returns.
             var period = period_example;  // string | Show the Returns on a Daily or Monthly period. (optional) 
 
             try
@@ -344,7 +344,7 @@ Name | Type | Description  | Notes
  **returnScope** | **string**| The scope of the Returns. | 
  **returnCode** | **string**| The code of the Returns. | 
  **fromEffectiveAt** | **DateTimeOrCutLabel**| The start date from which to delete the Returns. | 
- **toEffectiveAt** | **DateTimeOrCutLabel**| The end date from which to delete the Returns | 
+ **toEffectiveAt** | **DateTimeOrCutLabel**| The end date from which to delete the Returns. | 
  **period** | **string**| Show the Returns on a Daily or Monthly period. | [optional] 
 
 ### Return type
@@ -396,7 +396,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:34511";
+            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:30944";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -484,7 +484,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:34511";
+            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:30944";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -588,7 +588,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:34511";
+            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:30944";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -680,7 +680,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:34511";
+            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:30944";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -766,7 +766,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:34511";
+            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:30944";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -852,7 +852,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:34511";
+            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:30944";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -946,7 +946,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:34511";
+            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:30944";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -1036,7 +1036,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:34511";
+            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:30944";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -1126,7 +1126,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:34511";
+            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:30944";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -1135,8 +1135,8 @@ namespace Example
             var code = code_example;  // string | The code of the  Portfolio.
             var returnScope = returnScope_example;  // string | The scope of the Returns.
             var returnCode = returnCode_example;  // string | The code of the Returns.
-            var fromEffectiveAt = fromEffectiveAt_example;  // DateTimeOrCutLabel | The start date from which to delete the Returns. (optional) 
-            var toEffectiveAt = toEffectiveAt_example;  // DateTimeOrCutLabel | The end date from which to delete the Returns (optional) 
+            var fromEffectiveAt = fromEffectiveAt_example;  // DateTimeOrCutLabel | The start date from which to get the Returns. (optional) 
+            var toEffectiveAt = toEffectiveAt_example;  // DateTimeOrCutLabel | The end date from which to get the Returns. (optional) 
             var period = period_example;  // string | Show the Returns on a Daily or Monthly period. (optional) 
             var asAt = 2013-10-20T19:20:30+01:00;  // DateTimeOffset? | The asAt datetime at which to retrieve the Returns. Defaults to the latest. (optional) 
 
@@ -1166,8 +1166,8 @@ Name | Type | Description  | Notes
  **code** | **string**| The code of the  Portfolio. | 
  **returnScope** | **string**| The scope of the Returns. | 
  **returnCode** | **string**| The code of the Returns. | 
- **fromEffectiveAt** | **DateTimeOrCutLabel**| The start date from which to delete the Returns. | [optional] 
- **toEffectiveAt** | **DateTimeOrCutLabel**| The end date from which to delete the Returns | [optional] 
+ **fromEffectiveAt** | **DateTimeOrCutLabel**| The start date from which to get the Returns. | [optional] 
+ **toEffectiveAt** | **DateTimeOrCutLabel**| The end date from which to get the Returns. | [optional] 
  **period** | **string**| Show the Returns on a Daily or Monthly period. | [optional] 
  **asAt** | **DateTimeOffset?**| The asAt datetime at which to retrieve the Returns. Defaults to the latest. | [optional] 
 
@@ -1220,7 +1220,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:34511";
+            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:30944";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -1308,7 +1308,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:34511";
+            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:30944";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -1402,7 +1402,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:34511";
+            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:30944";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -1496,7 +1496,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:34511";
+            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:30944";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -1582,7 +1582,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:34511";
+            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:30944";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -1670,7 +1670,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:34511";
+            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:30944";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -1754,7 +1754,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:34511";
+            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:30944";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
