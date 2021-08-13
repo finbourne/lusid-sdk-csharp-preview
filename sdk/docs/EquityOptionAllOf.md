@@ -13,7 +13,7 @@ Name | Type | Description | Notes
 **Strike** | **decimal?** | The strike of the option. | 
 **DomCcy** | **string** | The domestic currency of the instrument. | 
 **UnderlyingIdentifier** | **string** | The available values are: LusidInstrumentId, Isin, Sedol, Cusip, ClientInternal, Figi, RIC, QuotePermId, REDCode, BBGId, ICECode | 
-**Code** | **string** | The reset code of the option. | 
+**Code** | **string** | The identifying code for the equity underlying, e.g. &#39;IBM.N&#39;. | 
 **InstrumentType** | **string** | The available values are: QuotedSecurity, InterestRateSwap, FxForward, Future, ExoticInstrument, FxOption, CreditDefaultSwap, InterestRateSwaption, Bond, EquityOption, FixedLeg, FloatingLeg, BespokeCashFlowsLeg, Unknown, TermDeposit, ContractForDifference, EquitySwap, CashPerpetual, CashSettled, CdsIndex, Basket, FundingLeg, CrossCurrencySwap, FxSwap, ForwardRateAgreement, SimpleInstrument, Repo | 
 
 [[Back to Model list]](../README.md#documentation-for-models)
