@@ -14,7 +14,7 @@ Name | Type | Description | Notes
 **Strike** | **decimal?** | The strike of the option. | 
 **DomCcy** | **string** | The domestic currency of the instrument. | 
 **UnderlyingIdentifier** | **string** | The available values are: LusidInstrumentId, Isin, Sedol, Cusip, ClientInternal, Figi, RIC, QuotePermId, REDCode, BBGId, ICECode | 
-**Code** | **string** | The identifying code for the equity underlying, e.g. &#39;IBM.N&#39;. | 
+**Code** | **string** | The reset code of the option. | 
 
 [[Back to Model list]](../README.md#documentation-for-models)
 [[Back to API list]](../README.md#documentation-for-api-endpoints)
