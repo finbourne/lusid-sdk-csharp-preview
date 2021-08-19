@@ -12,6 +12,8 @@ Name | Type | Description | Notes
 **Principal** | **decimal?** | The face-value or principal for the bond at outset.              This might be reduced through its lifetime in the event of amortization or similar. | 
 **CouponRate** | **decimal?** | simple coupon rate. | 
 **Identifiers** | **Dictionary&lt;string, string&gt;** | external market codes and identifiers for the bond, e.g. ISIN. | [optional] 
+**ExDividendDays** | **int?** | The number of days before the next coupon payment for which the bond goes ex-dividend. | [optional] 
+**InitialCouponDate** | **DateTimeOffset?** | The initial coupon date which specifies the accrual start period for a fixed coupon bond with ex dividend schedule | [optional] 
 **InstrumentType** | **string** | The available values are: QuotedSecurity, InterestRateSwap, FxForward, Future, ExoticInstrument, FxOption, CreditDefaultSwap, InterestRateSwaption, Bond, EquityOption, FixedLeg, FloatingLeg, BespokeCashFlowsLeg, Unknown, TermDeposit, ContractForDifference, EquitySwap, CashPerpetual, CashSettled, CdsIndex, Basket, FundingLeg, CrossCurrencySwap, FxSwap, ForwardRateAgreement, SimpleInstrument, Repo | 
 
 [[Back to Model list]](../README.md#documentation-for-models)
