@@ -1,5 +1,5 @@
-
 # Lusid.Sdk.Model.Package
+A structure used to describe the structure of an order or orders that make up a non-trivial trade.
 
 ## Properties
 
@@ -12,7 +12,5 @@ Name | Type | Description | Notes
 **Version** | [**Version**](Version.md) |  | [optional] 
 **Links** | [**List&lt;Link&gt;**](Link.md) | Collection of links. | [optional] 
 
-[[Back to Model list]](../README.md#documentation-for-models)
-[[Back to API list]](../README.md#documentation-for-api-endpoints)
-[[Back to README]](../README.md)
+[[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 

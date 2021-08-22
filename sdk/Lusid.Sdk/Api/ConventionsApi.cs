@@ -1,4 +1,4 @@
-/* 
+/*
  * LUSID API
  *
  * # Introduction  This page documents the [LUSID APIs](https://www.lusid.com/api/swagger), which allows authorised clients to query and update their data within the LUSID platform.  SDKs to interact with the LUSID APIs are available in the following languages and frameworks:  * [C#](https://github.com/finbourne/lusid-sdk-csharp) * [Java](https://github.com/finbourne/lusid-sdk-java) * [JavaScript](https://github.com/finbourne/lusid-sdk-js) * [Python](https://github.com/finbourne/lusid-sdk-python) * [Angular](https://github.com/finbourne/lusid-sdk-angular)  The LUSID platform is made up of a number of sub-applications. You can find the API / swagger documentation by following the links in the table below.   | Application | Description | API / Swagger Documentation | | - -- -- | - -- -- | - -- - | | LUSID | Open, API-first, developer-friendly investment data platform. | [Swagger](https://www.lusid.com/api/swagger/index.html) | | Web app | User-facing front end for LUSID. | [Swagger](https://www.lusid.com/app/swagger/index.html) | | Scheduler | Automated job scheduler. | [Swagger](https://www.lusid.com/scheduler2/swagger/index.html) | | Insights |Monitoring and troubleshooting service. | [Swagger](https://www.lusid.com/insights/swagger/index.html) | | Identity | Identity management for LUSID (in conjuction with Access) | [Swagger](https://www.lusid.com/identity/swagger/index.html) | | Access | Access control for LUSID (in conjunction with Identity) | [Swagger](https://www.lusid.com/access/swagger/index.html) | | Drive | Secure file repository and manager for collaboration. | [Swagger](https://www.lusid.com/drive/swagger/index.html) | | Luminesce | Data virtualisation service (query data from multiple providers, including LUSID) | [Swagger](https://www.lusid.com/honeycomb/swagger/index.html) | | Notification | Notification service. | [Swagger](https://www.lusid.com/notifications/swagger/index.html) | | Configuration | File store for secrets and other sensitive information. | [Swagger](https://www.lusid.com/configuration/swagger/index.html) |   # Error Codes  | Code|Name|Description | | - --|- --|- -- | | <a name=\"-10\">-10</a>|Server Configuration Error|  | | <a name=\"-1\">-1</a>|Unknown error|An unexpected error was encountered on our side. | | <a name=\"102\">102</a>|Version Not Found|  | | <a name=\"103\">103</a>|Api Rate Limit Violation|  | | <a name=\"104\">104</a>|Instrument Not Found|  | | <a name=\"105\">105</a>|Property Not Found|  | | <a name=\"106\">106</a>|Portfolio Recursion Depth|  | | <a name=\"108\">108</a>|Group Not Found|  | | <a name=\"109\">109</a>|Portfolio Not Found|  | | <a name=\"110\">110</a>|Property Schema Not Found|  | | <a name=\"111\">111</a>|Portfolio Ancestry Not Found|  | | <a name=\"112\">112</a>|Portfolio With Id Already Exists|  | | <a name=\"113\">113</a>|Orphaned Portfolio|  | | <a name=\"119\">119</a>|Missing Base Claims|  | | <a name=\"121\">121</a>|Property Not Defined|  | | <a name=\"122\">122</a>|Cannot Delete System Property|  | | <a name=\"123\">123</a>|Cannot Modify Immutable Property Field|  | | <a name=\"124\">124</a>|Property Already Exists|  | | <a name=\"125\">125</a>|Invalid Property Life Time|  | | <a name=\"126\">126</a>|Property Constraint Style Excludes Properties|  | | <a name=\"127\">127</a>|Cannot Modify Default Data Type|  | | <a name=\"128\">128</a>|Group Already Exists|  | | <a name=\"129\">129</a>|No Such Data Type|  | | <a name=\"130\">130</a>|Undefined Value For Data Type|  | | <a name=\"131\">131</a>|Unsupported Value Type Defined On Data Type|  | | <a name=\"132\">132</a>|Validation Error|  | | <a name=\"133\">133</a>|Loop Detected In Group Hierarchy|  | | <a name=\"134\">134</a>|Undefined Acceptable Values|  | | <a name=\"135\">135</a>|Sub Group Already Exists|  | | <a name=\"138\">138</a>|Price Source Not Found|  | | <a name=\"139\">139</a>|Analytic Store Not Found|  | | <a name=\"141\">141</a>|Analytic Store Already Exists|  | | <a name=\"143\">143</a>|Client Instrument Already Exists|  | | <a name=\"144\">144</a>|Duplicate In Parameter Set|  | | <a name=\"147\">147</a>|Results Not Found|  | | <a name=\"148\">148</a>|Order Field Not In Result Set|  | | <a name=\"149\">149</a>|Operation Failed|  | | <a name=\"150\">150</a>|Elastic Search Error|  | | <a name=\"151\">151</a>|Invalid Parameter Value|  | | <a name=\"153\">153</a>|Command Processing Failure|  | | <a name=\"154\">154</a>|Entity State Construction Failure|  | | <a name=\"155\">155</a>|Entity Timeline Does Not Exist|  | | <a name=\"156\">156</a>|Concurrency Conflict Failure|  | | <a name=\"157\">157</a>|Invalid Request|  | | <a name=\"158\">158</a>|Event Publish Unknown|  | | <a name=\"159\">159</a>|Event Query Failure|  | | <a name=\"160\">160</a>|Blob Did Not Exist|  | | <a name=\"162\">162</a>|Sub System Request Failure|  | | <a name=\"163\">163</a>|Sub System Configuration Failure|  | | <a name=\"165\">165</a>|Failed To Delete|  | | <a name=\"166\">166</a>|Upsert Client Instrument Failure|  | | <a name=\"167\">167</a>|Illegal As At Interval|  | | <a name=\"168\">168</a>|Illegal Bitemporal Query|  | | <a name=\"169\">169</a>|Invalid Alternate Id|  | | <a name=\"170\">170</a>|Cannot Add Source Portfolio Property Explicitly|  | | <a name=\"171\">171</a>|Entity Already Exists In Group|  | | <a name=\"173\">173</a>|Entity With Id Already Exists|  | | <a name=\"174\">174</a>|Derived Portfolio Details Do Not Exist|  | | <a name=\"176\">176</a>|Portfolio With Name Already Exists|  | | <a name=\"177\">177</a>|Invalid Transactions|  | | <a name=\"178\">178</a>|Reference Portfolio Not Found|  | | <a name=\"179\">179</a>|Duplicate Id|  | | <a name=\"180\">180</a>|Command Retrieval Failure|  | | <a name=\"181\">181</a>|Data Filter Application Failure|  | | <a name=\"182\">182</a>|Search Failed|  | | <a name=\"183\">183</a>|Movements Engine Configuration Key Failure|  | | <a name=\"184\">184</a>|Fx Rate Source Not Found|  | | <a name=\"185\">185</a>|Accrual Source Not Found|  | | <a name=\"186\">186</a>|Access Denied|  | | <a name=\"187\">187</a>|Invalid Identity Token|  | | <a name=\"188\">188</a>|Invalid Request Headers|  | | <a name=\"189\">189</a>|Price Not Found|  | | <a name=\"190\">190</a>|Invalid Sub Holding Keys Provided|  | | <a name=\"191\">191</a>|Duplicate Sub Holding Keys Provided|  | | <a name=\"192\">192</a>|Cut Definition Not Found|  | | <a name=\"193\">193</a>|Cut Definition Invalid|  | | <a name=\"194\">194</a>|Time Variant Property Deletion Date Unspecified|  | | <a name=\"195\">195</a>|Perpetual Property Deletion Date Specified|  | | <a name=\"196\">196</a>|Time Variant Property Upsert Date Unspecified|  | | <a name=\"197\">197</a>|Perpetual Property Upsert Date Specified|  | | <a name=\"200\">200</a>|Invalid Unit For Data Type|  | | <a name=\"201\">201</a>|Invalid Type For Data Type|  | | <a name=\"202\">202</a>|Invalid Value For Data Type|  | | <a name=\"203\">203</a>|Unit Not Defined For Data Type|  | | <a name=\"204\">204</a>|Units Not Supported On Data Type|  | | <a name=\"205\">205</a>|Cannot Specify Units On Data Type|  | | <a name=\"206\">206</a>|Unit Schema Inconsistent With Data Type|  | | <a name=\"207\">207</a>|Unit Definition Not Specified|  | | <a name=\"208\">208</a>|Duplicate Unit Definitions Specified|  | | <a name=\"209\">209</a>|Invalid Units Definition|  | | <a name=\"210\">210</a>|Invalid Instrument Identifier Unit|  | | <a name=\"211\">211</a>|Holdings Adjustment Does Not Exist|  | | <a name=\"212\">212</a>|Could Not Build Excel Url|  | | <a name=\"213\">213</a>|Could Not Get Excel Version|  | | <a name=\"214\">214</a>|Instrument By Code Not Found|  | | <a name=\"215\">215</a>|Entity Schema Does Not Exist|  | | <a name=\"216\">216</a>|Feature Not Supported On Portfolio Type|  | | <a name=\"217\">217</a>|Quote Not Found|  | | <a name=\"218\">218</a>|Invalid Quote Identifier|  | | <a name=\"219\">219</a>|Invalid Metric For Data Type|  | | <a name=\"220\">220</a>|Invalid Instrument Definition|  | | <a name=\"221\">221</a>|Instrument Upsert Failure|  | | <a name=\"222\">222</a>|Reference Portfolio Request Not Supported|  | | <a name=\"223\">223</a>|Transaction Portfolio Request Not Supported|  | | <a name=\"224\">224</a>|Invalid Property Value Assignment|  | | <a name=\"230\">230</a>|Transaction Type Not Found|  | | <a name=\"231\">231</a>|Transaction Type Duplication|  | | <a name=\"232\">232</a>|Portfolio Does Not Exist At Given Date|  | | <a name=\"233\">233</a>|Query Parser Failure|  | | <a name=\"234\">234</a>|Duplicate Constituent|  | | <a name=\"235\">235</a>|Unresolved Instrument Constituent|  | | <a name=\"236\">236</a>|Unresolved Instrument In Transition|  | | <a name=\"237\">237</a>|Missing Side Definitions|  | | <a name=\"299\">299</a>|Invalid Recipe|  | | <a name=\"300\">300</a>|Missing Recipe|  | | <a name=\"301\">301</a>|Dependencies|  | | <a name=\"304\">304</a>|Portfolio Preprocess Failure|  | | <a name=\"310\">310</a>|Valuation Engine Failure|  | | <a name=\"311\">311</a>|Task Factory Failure|  | | <a name=\"312\">312</a>|Task Evaluation Failure|  | | <a name=\"313\">313</a>|Task Generation Failure|  | | <a name=\"314\">314</a>|Engine Configuration Failure|  | | <a name=\"315\">315</a>|Model Specification Failure|  | | <a name=\"320\">320</a>|Market Data Key Failure|  | | <a name=\"321\">321</a>|Market Resolver Failure|  | | <a name=\"322\">322</a>|Market Data Failure|  | | <a name=\"330\">330</a>|Curve Failure|  | | <a name=\"331\">331</a>|Volatility Surface Failure|  | | <a name=\"332\">332</a>|Volatility Cube Failure|  | | <a name=\"350\">350</a>|Instrument Failure|  | | <a name=\"351\">351</a>|Cash Flows Failure|  | | <a name=\"352\">352</a>|Reference Data Failure|  | | <a name=\"360\">360</a>|Aggregation Failure|  | | <a name=\"361\">361</a>|Aggregation Measure Failure|  | | <a name=\"370\">370</a>|Result Retrieval Failure|  | | <a name=\"371\">371</a>|Result Processing Failure|  | | <a name=\"372\">372</a>|Vendor Result Processing Failure|  | | <a name=\"373\">373</a>|Vendor Result Mapping Failure|  | | <a name=\"374\">374</a>|Vendor Library Unauthorised|  | | <a name=\"375\">375</a>|Vendor Connectivity Error|  | | <a name=\"376\">376</a>|Vendor Interface Error|  | | <a name=\"377\">377</a>|Vendor Pricing Failure|  | | <a name=\"378\">378</a>|Vendor Translation Failure|  | | <a name=\"379\">379</a>|Vendor Key Mapping Failure|  | | <a name=\"380\">380</a>|Vendor Reflection Failure|  | | <a name=\"381\">381</a>|Vendor Process Failure|  | | <a name=\"382\">382</a>|Vendor System Failure|  | | <a name=\"390\">390</a>|Attempt To Upsert Duplicate Quotes|  | | <a name=\"391\">391</a>|Corporate Action Source Does Not Exist|  | | <a name=\"392\">392</a>|Corporate Action Source Already Exists|  | | <a name=\"393\">393</a>|Instrument Identifier Already In Use|  | | <a name=\"394\">394</a>|Properties Not Found|  | | <a name=\"395\">395</a>|Batch Operation Aborted|  | | <a name=\"400\">400</a>|Invalid Iso4217 Currency Code|  | | <a name=\"401\">401</a>|Cannot Assign Instrument Identifier To Currency|  | | <a name=\"402\">402</a>|Cannot Assign Currency Identifier To Non Currency|  | | <a name=\"403\">403</a>|Currency Instrument Cannot Be Deleted|  | | <a name=\"404\">404</a>|Currency Instrument Cannot Have Economic Definition|  | | <a name=\"405\">405</a>|Currency Instrument Cannot Have Lookthrough Portfolio|  | | <a name=\"406\">406</a>|Cannot Create Currency Instrument With Multiple Identifiers|  | | <a name=\"407\">407</a>|Specified Currency Is Undefined|  | | <a name=\"410\">410</a>|Index Does Not Exist|  | | <a name=\"411\">411</a>|Sort Field Does Not Exist|  | | <a name=\"413\">413</a>|Negative Pagination Parameters|  | | <a name=\"414\">414</a>|Invalid Search Syntax|  | | <a name=\"415\">415</a>|Filter Execution Timeout|  | | <a name=\"420\">420</a>|Side Definition Inconsistent|  | | <a name=\"450\">450</a>|Invalid Quote Access Metadata Rule|  | | <a name=\"451\">451</a>|Access Metadata Not Found|  | | <a name=\"452\">452</a>|Invalid Access Metadata Identifier|  | | <a name=\"460\">460</a>|Standard Resource Not Found|  | | <a name=\"461\">461</a>|Standard Resource Conflict|  | | <a name=\"462\">462</a>|Calendar Not Found|  | | <a name=\"463\">463</a>|Date In A Calendar Not Found|  | | <a name=\"464\">464</a>|Invalid Date Source Data|  | | <a name=\"465\">465</a>|Invalid Timezone|  | | <a name=\"601\">601</a>|Person Identifier Already In Use|  | | <a name=\"602\">602</a>|Person Not Found|  | | <a name=\"603\">603</a>|Cannot Set Identifier|  | | <a name=\"617\">617</a>|Invalid Recipe Specification In Request|  | | <a name=\"618\">618</a>|Inline Recipe Deserialisation Failure|  | | <a name=\"619\">619</a>|Identifier Types Not Set For Entity|  | | <a name=\"620\">620</a>|Cannot Delete All Client Defined Identifiers|  | | <a name=\"650\">650</a>|The Order requested was not found.|  | | <a name=\"654\">654</a>|The Allocation requested was not found.|  | | <a name=\"655\">655</a>|Cannot build the fx forward target with the given holdings.|  | | <a name=\"656\">656</a>|Group does not contain expected entities.|  | | <a name=\"667\">667</a>|Relation definition already exists|  | | <a name=\"673\">673</a>|Missing entitlements for entities in Group|  | | <a name=\"674\">674</a>|Next Best Action not found|  | | <a name=\"676\">676</a>|Relation definition not defined|  | | <a name=\"677\">677</a>|Invalid entity identifier for relation|  | | <a name=\"681\">681</a>|Sorting by specified field not supported|One or more of the provided fields to order by were either invalid or not supported. | | <a name=\"682\">682</a>|Too many fields to sort by|The number of fields to sort the data by exceeds the number allowed by the endpoint | | <a name=\"684\">684</a>|Sequence Not Found|  | | <a name=\"685\">685</a>|Sequence Already Exists|  | | <a name=\"686\">686</a>|Non-cycling sequence has been exhausted|  | | <a name=\"687\">687</a>|Legal Entity Identifier Already In Use|  | | <a name=\"688\">688</a>|Legal Entity Not Found|  | | <a name=\"689\">689</a>|The supplied pagination token is invalid|  | | <a name=\"690\">690</a>|Property Type Is Not Supported|  | | <a name=\"691\">691</a>|Multiple Tax-lots For Currency Type Is Not Supported|  | | <a name=\"692\">692</a>|This endpoint does not support impersonation|  | | <a name=\"693\">693</a>|Entity type is not supported for Relationship|  | | <a name=\"694\">694</a>|Relationship Validation Failure|  | | <a name=\"695\">695</a>|Relationship Not Found|  | | <a name=\"697\">697</a>|Derived Property Formula No Longer Valid|  | | <a name=\"698\">698</a>|Story is not available|  | | <a name=\"703\">703</a>|Corporate Action Does Not Exist|  | | <a name=\"720\">720</a>|The provided sort and filter combination is not valid|  | | <a name=\"721\">721</a>|A2B generation failed|  | | <a name=\"722\">722</a>|Aggregated Return Calculation Failure|  | | <a name=\"723\">723</a>|Custom Entity Definition Identifier Already In Use|  | | <a name=\"724\">724</a>|Custom Entity Definition Not Found|  | | <a name=\"725\">725</a>|The Placement requested was not found.|  | | <a name=\"726\">726</a>|The Execution requested was not found.|  | | <a name=\"727\">727</a>|The Block requested was not found.|  | | <a name=\"728\">728</a>|The Participation requested was not found.|  | | <a name=\"729\">729</a>|The Package requested was not found.|  | | <a name=\"730\">730</a>|The OrderInstruction requested was not found.|  | | <a name=\"732\">732</a>|Custom Entity not found.|  | | <a name=\"733\">733</a>|Custom Entity Identifier already in use.|  | | <a name=\"735\">735</a>|Calculation Failed.|  | | <a name=\"736\">736</a>|An expected key on HttpResponse is missing.|  | | <a name=\"737\">737</a>|A required fee detail is missing.|  | | <a name=\"738\">738</a>|Zero rows were returned from Luminesce|  | | <a name=\"739\">739</a>|Provided Weekend Mask was invalid|  | | <a name=\"742\">742</a>|Custom Entity fields do not match the definition|  | | <a name=\"746\">746</a>|The provided sequence is not valid.|  | 
@@ -8,20 +8,23 @@
  * Generated by: https://github.com/openapitools/openapi-generator.git
  */
 
+
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using RestSharp.Portable;
+using System.Net;
+using System.Net.Mime;
 using Lusid.Sdk.Client;
 using Lusid.Sdk.Model;
 
 namespace Lusid.Sdk.Api
 {
+
     /// <summary>
     /// Represents a collection of functions to interact with the API endpoints
     /// </summary>
-    public interface IConventionsApi : IApiAccessor
+    public interface IConventionsApiSync : IApiAccessor
     {
         #region Synchronous Operations
         /// <summary>
@@ -34,7 +37,7 @@ namespace Lusid.Sdk.Api
         /// <param name="scope">The scope of the CDS Flow Conventions to delete.</param>
         /// <param name="code">The CDS Flow Conventions to delete.</param>
         /// <returns>AnnulSingleStructuredDataResponse</returns>
-        AnnulSingleStructuredDataResponse DeleteCdsFlowConventions (string scope, string code);
+        AnnulSingleStructuredDataResponse DeleteCdsFlowConventions(string scope, string code);
 
         /// <summary>
         /// [BETA] Delete the CDS Flow Conventions of given scope and code, assuming that it is present.
@@ -46,7 +49,7 @@ namespace Lusid.Sdk.Api
         /// <param name="scope">The scope of the CDS Flow Conventions to delete.</param>
         /// <param name="code">The CDS Flow Conventions to delete.</param>
         /// <returns>ApiResponse of AnnulSingleStructuredDataResponse</returns>
-        ApiResponse<AnnulSingleStructuredDataResponse> DeleteCdsFlowConventionsWithHttpInfo (string scope, string code);
+        ApiResponse<AnnulSingleStructuredDataResponse> DeleteCdsFlowConventionsWithHttpInfo(string scope, string code);
         /// <summary>
         /// [BETA] Delete the Flow Conventions of given scope and code, assuming that it is present.
         /// </summary>
@@ -57,7 +60,7 @@ namespace Lusid.Sdk.Api
         /// <param name="scope">The scope of the Flow Conventions to delete.</param>
         /// <param name="code">The Flow Conventions to delete.</param>
         /// <returns>AnnulSingleStructuredDataResponse</returns>
-        AnnulSingleStructuredDataResponse DeleteFlowConventions (string scope, string code);
+        AnnulSingleStructuredDataResponse DeleteFlowConventions(string scope, string code);
 
         /// <summary>
         /// [BETA] Delete the Flow Conventions of given scope and code, assuming that it is present.
@@ -69,7 +72,7 @@ namespace Lusid.Sdk.Api
         /// <param name="scope">The scope of the Flow Conventions to delete.</param>
         /// <param name="code">The Flow Conventions to delete.</param>
         /// <returns>ApiResponse of AnnulSingleStructuredDataResponse</returns>
-        ApiResponse<AnnulSingleStructuredDataResponse> DeleteFlowConventionsWithHttpInfo (string scope, string code);
+        ApiResponse<AnnulSingleStructuredDataResponse> DeleteFlowConventionsWithHttpInfo(string scope, string code);
         /// <summary>
         /// [BETA] Delete the Index Convention of given scope and code, assuming that it is present.
         /// </summary>
@@ -80,7 +83,7 @@ namespace Lusid.Sdk.Api
         /// <param name="scope">The scope of the Index Convention to delete.</param>
         /// <param name="code">The Index Convention to delete.</param>
         /// <returns>AnnulSingleStructuredDataResponse</returns>
-        AnnulSingleStructuredDataResponse DeleteIndexConvention (string scope, string code);
+        AnnulSingleStructuredDataResponse DeleteIndexConvention(string scope, string code);
 
         /// <summary>
         /// [BETA] Delete the Index Convention of given scope and code, assuming that it is present.
@@ -92,7 +95,7 @@ namespace Lusid.Sdk.Api
         /// <param name="scope">The scope of the Index Convention to delete.</param>
         /// <param name="code">The Index Convention to delete.</param>
         /// <returns>ApiResponse of AnnulSingleStructuredDataResponse</returns>
-        ApiResponse<AnnulSingleStructuredDataResponse> DeleteIndexConventionWithHttpInfo (string scope, string code);
+        ApiResponse<AnnulSingleStructuredDataResponse> DeleteIndexConventionWithHttpInfo(string scope, string code);
         /// <summary>
         /// [BETA] Get CDS Flow Conventions
         /// </summary>
@@ -104,7 +107,7 @@ namespace Lusid.Sdk.Api
         /// <param name="code">The name of the CDS Flow Conventions to retrieve the data for.</param>
         /// <param name="asAt">The asAt datetime at which to retrieve the CDS Flow Conventions. Defaults to return the latest version if not specified. (optional)</param>
         /// <returns>GetCdsFlowConventionsResponse</returns>
-        GetCdsFlowConventionsResponse GetCdsFlowConventions (string scope, string code, DateTimeOffset? asAt = null);
+        GetCdsFlowConventionsResponse GetCdsFlowConventions(string scope, string code, DateTimeOffset? asAt = default(DateTimeOffset?));
 
         /// <summary>
         /// [BETA] Get CDS Flow Conventions
@@ -117,7 +120,7 @@ namespace Lusid.Sdk.Api
         /// <param name="code">The name of the CDS Flow Conventions to retrieve the data for.</param>
         /// <param name="asAt">The asAt datetime at which to retrieve the CDS Flow Conventions. Defaults to return the latest version if not specified. (optional)</param>
         /// <returns>ApiResponse of GetCdsFlowConventionsResponse</returns>
-        ApiResponse<GetCdsFlowConventionsResponse> GetCdsFlowConventionsWithHttpInfo (string scope, string code, DateTimeOffset? asAt = null);
+        ApiResponse<GetCdsFlowConventionsResponse> GetCdsFlowConventionsWithHttpInfo(string scope, string code, DateTimeOffset? asAt = default(DateTimeOffset?));
         /// <summary>
         /// [BETA] Get Flow Conventions
         /// </summary>
@@ -129,7 +132,7 @@ namespace Lusid.Sdk.Api
         /// <param name="code">The name of the Flow Conventions to retrieve the data for.</param>
         /// <param name="asAt">The asAt datetime at which to retrieve the Flow Conventions. Defaults to return the latest version if not specified. (optional)</param>
         /// <returns>GetFlowConventionsResponse</returns>
-        GetFlowConventionsResponse GetFlowConventions (string scope, string code, DateTimeOffset? asAt = null);
+        GetFlowConventionsResponse GetFlowConventions(string scope, string code, DateTimeOffset? asAt = default(DateTimeOffset?));
 
         /// <summary>
         /// [BETA] Get Flow Conventions
@@ -142,7 +145,7 @@ namespace Lusid.Sdk.Api
         /// <param name="code">The name of the Flow Conventions to retrieve the data for.</param>
         /// <param name="asAt">The asAt datetime at which to retrieve the Flow Conventions. Defaults to return the latest version if not specified. (optional)</param>
         /// <returns>ApiResponse of GetFlowConventionsResponse</returns>
-        ApiResponse<GetFlowConventionsResponse> GetFlowConventionsWithHttpInfo (string scope, string code, DateTimeOffset? asAt = null);
+        ApiResponse<GetFlowConventionsResponse> GetFlowConventionsWithHttpInfo(string scope, string code, DateTimeOffset? asAt = default(DateTimeOffset?));
         /// <summary>
         /// [BETA] Get Index Convention
         /// </summary>
@@ -154,7 +157,7 @@ namespace Lusid.Sdk.Api
         /// <param name="code">The name of the Index Convention to retrieve the data for.</param>
         /// <param name="asAt">The asAt datetime at which to retrieve the Index Convention. Defaults to return the latest version if not specified. (optional)</param>
         /// <returns>GetIndexConventionResponse</returns>
-        GetIndexConventionResponse GetIndexConvention (string scope, string code, DateTimeOffset? asAt = null);
+        GetIndexConventionResponse GetIndexConvention(string scope, string code, DateTimeOffset? asAt = default(DateTimeOffset?));
 
         /// <summary>
         /// [BETA] Get Index Convention
@@ -167,7 +170,7 @@ namespace Lusid.Sdk.Api
         /// <param name="code">The name of the Index Convention to retrieve the data for.</param>
         /// <param name="asAt">The asAt datetime at which to retrieve the Index Convention. Defaults to return the latest version if not specified. (optional)</param>
         /// <returns>ApiResponse of GetIndexConventionResponse</returns>
-        ApiResponse<GetIndexConventionResponse> GetIndexConventionWithHttpInfo (string scope, string code, DateTimeOffset? asAt = null);
+        ApiResponse<GetIndexConventionResponse> GetIndexConventionWithHttpInfo(string scope, string code, DateTimeOffset? asAt = default(DateTimeOffset?));
         /// <summary>
         /// [BETA] List the set of CDS Flow Conventions
         /// </summary>
@@ -177,7 +180,7 @@ namespace Lusid.Sdk.Api
         /// <exception cref="Lusid.Sdk.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="asAt">The asAt datetime at which to list the conventions. Defaults to latest if not specified. (optional)</param>
         /// <returns>ResourceListOfGetCdsFlowConventionsResponse</returns>
-        ResourceListOfGetCdsFlowConventionsResponse ListCdsFlowConventions (DateTimeOffset? asAt = null);
+        ResourceListOfGetCdsFlowConventionsResponse ListCdsFlowConventions(DateTimeOffset? asAt = default(DateTimeOffset?));
 
         /// <summary>
         /// [BETA] List the set of CDS Flow Conventions
@@ -188,7 +191,7 @@ namespace Lusid.Sdk.Api
         /// <exception cref="Lusid.Sdk.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="asAt">The asAt datetime at which to list the conventions. Defaults to latest if not specified. (optional)</param>
         /// <returns>ApiResponse of ResourceListOfGetCdsFlowConventionsResponse</returns>
-        ApiResponse<ResourceListOfGetCdsFlowConventionsResponse> ListCdsFlowConventionsWithHttpInfo (DateTimeOffset? asAt = null);
+        ApiResponse<ResourceListOfGetCdsFlowConventionsResponse> ListCdsFlowConventionsWithHttpInfo(DateTimeOffset? asAt = default(DateTimeOffset?));
         /// <summary>
         /// [BETA] List the set of Flow Conventions
         /// </summary>
@@ -198,7 +201,7 @@ namespace Lusid.Sdk.Api
         /// <exception cref="Lusid.Sdk.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="asAt">The asAt datetime at which to list the conventions. Defaults to latest if not specified. (optional)</param>
         /// <returns>ResourceListOfGetFlowConventionsResponse</returns>
-        ResourceListOfGetFlowConventionsResponse ListFlowConventions (DateTimeOffset? asAt = null);
+        ResourceListOfGetFlowConventionsResponse ListFlowConventions(DateTimeOffset? asAt = default(DateTimeOffset?));
 
         /// <summary>
         /// [BETA] List the set of Flow Conventions
@@ -209,7 +212,7 @@ namespace Lusid.Sdk.Api
         /// <exception cref="Lusid.Sdk.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="asAt">The asAt datetime at which to list the conventions. Defaults to latest if not specified. (optional)</param>
         /// <returns>ApiResponse of ResourceListOfGetFlowConventionsResponse</returns>
-        ApiResponse<ResourceListOfGetFlowConventionsResponse> ListFlowConventionsWithHttpInfo (DateTimeOffset? asAt = null);
+        ApiResponse<ResourceListOfGetFlowConventionsResponse> ListFlowConventionsWithHttpInfo(DateTimeOffset? asAt = default(DateTimeOffset?));
         /// <summary>
         /// [BETA] List the set of Index Conventions
         /// </summary>
@@ -219,7 +222,7 @@ namespace Lusid.Sdk.Api
         /// <exception cref="Lusid.Sdk.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="asAt">The asAt datetime at which to list the conventions. Defaults to latest if not specified. (optional)</param>
         /// <returns>ResourceListOfGetIndexConventionResponse</returns>
-        ResourceListOfGetIndexConventionResponse ListIndexConvention (DateTimeOffset? asAt = null);
+        ResourceListOfGetIndexConventionResponse ListIndexConvention(DateTimeOffset? asAt = default(DateTimeOffset?));
 
         /// <summary>
         /// [BETA] List the set of Index Conventions
@@ -230,7 +233,7 @@ namespace Lusid.Sdk.Api
         /// <exception cref="Lusid.Sdk.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="asAt">The asAt datetime at which to list the conventions. Defaults to latest if not specified. (optional)</param>
         /// <returns>ApiResponse of ResourceListOfGetIndexConventionResponse</returns>
-        ApiResponse<ResourceListOfGetIndexConventionResponse> ListIndexConventionWithHttpInfo (DateTimeOffset? asAt = null);
+        ApiResponse<ResourceListOfGetIndexConventionResponse> ListIndexConventionWithHttpInfo(DateTimeOffset? asAt = default(DateTimeOffset?));
         /// <summary>
         /// [BETA] Upsert a set of CDS Flow Conventions. This creates or updates the data in Lusid.
         /// </summary>
@@ -240,7 +243,7 @@ namespace Lusid.Sdk.Api
         /// <exception cref="Lusid.Sdk.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="upsertCdsFlowConventionsRequest">The CDS Flow Conventions to update or insert</param>
         /// <returns>UpsertSingleStructuredDataResponse</returns>
-        UpsertSingleStructuredDataResponse UpsertCdsFlowConventions (UpsertCdsFlowConventionsRequest upsertCdsFlowConventionsRequest);
+        UpsertSingleStructuredDataResponse UpsertCdsFlowConventions(UpsertCdsFlowConventionsRequest upsertCdsFlowConventionsRequest);
 
         /// <summary>
         /// [BETA] Upsert a set of CDS Flow Conventions. This creates or updates the data in Lusid.
@@ -251,7 +254,7 @@ namespace Lusid.Sdk.Api
         /// <exception cref="Lusid.Sdk.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="upsertCdsFlowConventionsRequest">The CDS Flow Conventions to update or insert</param>
         /// <returns>ApiResponse of UpsertSingleStructuredDataResponse</returns>
-        ApiResponse<UpsertSingleStructuredDataResponse> UpsertCdsFlowConventionsWithHttpInfo (UpsertCdsFlowConventionsRequest upsertCdsFlowConventionsRequest);
+        ApiResponse<UpsertSingleStructuredDataResponse> UpsertCdsFlowConventionsWithHttpInfo(UpsertCdsFlowConventionsRequest upsertCdsFlowConventionsRequest);
         /// <summary>
         /// [BETA] Upsert Flow Conventions. This creates or updates the data in Lusid.
         /// </summary>
@@ -261,7 +264,7 @@ namespace Lusid.Sdk.Api
         /// <exception cref="Lusid.Sdk.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="upsertFlowConventionsRequest">The Flow Conventions to update or insert</param>
         /// <returns>UpsertSingleStructuredDataResponse</returns>
-        UpsertSingleStructuredDataResponse UpsertFlowConventions (UpsertFlowConventionsRequest upsertFlowConventionsRequest);
+        UpsertSingleStructuredDataResponse UpsertFlowConventions(UpsertFlowConventionsRequest upsertFlowConventionsRequest);
 
         /// <summary>
         /// [BETA] Upsert Flow Conventions. This creates or updates the data in Lusid.
@@ -272,7 +275,7 @@ namespace Lusid.Sdk.Api
         /// <exception cref="Lusid.Sdk.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="upsertFlowConventionsRequest">The Flow Conventions to update or insert</param>
         /// <returns>ApiResponse of UpsertSingleStructuredDataResponse</returns>
-        ApiResponse<UpsertSingleStructuredDataResponse> UpsertFlowConventionsWithHttpInfo (UpsertFlowConventionsRequest upsertFlowConventionsRequest);
+        ApiResponse<UpsertSingleStructuredDataResponse> UpsertFlowConventionsWithHttpInfo(UpsertFlowConventionsRequest upsertFlowConventionsRequest);
         /// <summary>
         /// [BETA] Upsert a set of Index Convention. This creates or updates the data in Lusid.
         /// </summary>
@@ -282,7 +285,7 @@ namespace Lusid.Sdk.Api
         /// <exception cref="Lusid.Sdk.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="upsertIndexConventionRequest">The Index Conventions to update or insert</param>
         /// <returns>UpsertSingleStructuredDataResponse</returns>
-        UpsertSingleStructuredDataResponse UpsertIndexConvention (UpsertIndexConventionRequest upsertIndexConventionRequest);
+        UpsertSingleStructuredDataResponse UpsertIndexConvention(UpsertIndexConventionRequest upsertIndexConventionRequest);
 
         /// <summary>
         /// [BETA] Upsert a set of Index Convention. This creates or updates the data in Lusid.
@@ -293,8 +296,15 @@ namespace Lusid.Sdk.Api
         /// <exception cref="Lusid.Sdk.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="upsertIndexConventionRequest">The Index Conventions to update or insert</param>
         /// <returns>ApiResponse of UpsertSingleStructuredDataResponse</returns>
-        ApiResponse<UpsertSingleStructuredDataResponse> UpsertIndexConventionWithHttpInfo (UpsertIndexConventionRequest upsertIndexConventionRequest);
+        ApiResponse<UpsertSingleStructuredDataResponse> UpsertIndexConventionWithHttpInfo(UpsertIndexConventionRequest upsertIndexConventionRequest);
         #endregion Synchronous Operations
+    }
+
+    /// <summary>
+    /// Represents a collection of functions to interact with the API endpoints
+    /// </summary>
+    public interface IConventionsApiAsync : IApiAccessor
+    {
         #region Asynchronous Operations
         /// <summary>
         /// [BETA] Delete the CDS Flow Conventions of given scope and code, assuming that it is present.
@@ -305,8 +315,9 @@ namespace Lusid.Sdk.Api
         /// <exception cref="Lusid.Sdk.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="scope">The scope of the CDS Flow Conventions to delete.</param>
         /// <param name="code">The CDS Flow Conventions to delete.</param>
+        /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
         /// <returns>Task of AnnulSingleStructuredDataResponse</returns>
-        System.Threading.Tasks.Task<AnnulSingleStructuredDataResponse> DeleteCdsFlowConventionsAsync (string scope, string code);
+        System.Threading.Tasks.Task<AnnulSingleStructuredDataResponse> DeleteCdsFlowConventionsAsync(string scope, string code, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
 
         /// <summary>
         /// [BETA] Delete the CDS Flow Conventions of given scope and code, assuming that it is present.
@@ -317,8 +328,9 @@ namespace Lusid.Sdk.Api
         /// <exception cref="Lusid.Sdk.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="scope">The scope of the CDS Flow Conventions to delete.</param>
         /// <param name="code">The CDS Flow Conventions to delete.</param>
+        /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
         /// <returns>Task of ApiResponse (AnnulSingleStructuredDataResponse)</returns>
-        System.Threading.Tasks.Task<ApiResponse<AnnulSingleStructuredDataResponse>> DeleteCdsFlowConventionsAsyncWithHttpInfo (string scope, string code);
+        System.Threading.Tasks.Task<ApiResponse<AnnulSingleStructuredDataResponse>> DeleteCdsFlowConventionsWithHttpInfoAsync(string scope, string code, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
         /// <summary>
         /// [BETA] Delete the Flow Conventions of given scope and code, assuming that it is present.
         /// </summary>
@@ -328,8 +340,9 @@ namespace Lusid.Sdk.Api
         /// <exception cref="Lusid.Sdk.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="scope">The scope of the Flow Conventions to delete.</param>
         /// <param name="code">The Flow Conventions to delete.</param>
+        /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
         /// <returns>Task of AnnulSingleStructuredDataResponse</returns>
-        System.Threading.Tasks.Task<AnnulSingleStructuredDataResponse> DeleteFlowConventionsAsync (string scope, string code);
+        System.Threading.Tasks.Task<AnnulSingleStructuredDataResponse> DeleteFlowConventionsAsync(string scope, string code, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
 
         /// <summary>
         /// [BETA] Delete the Flow Conventions of given scope and code, assuming that it is present.
@@ -340,8 +353,9 @@ namespace Lusid.Sdk.Api
         /// <exception cref="Lusid.Sdk.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="scope">The scope of the Flow Conventions to delete.</param>
         /// <param name="code">The Flow Conventions to delete.</param>
+        /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
         /// <returns>Task of ApiResponse (AnnulSingleStructuredDataResponse)</returns>
-        System.Threading.Tasks.Task<ApiResponse<AnnulSingleStructuredDataResponse>> DeleteFlowConventionsAsyncWithHttpInfo (string scope, string code);
+        System.Threading.Tasks.Task<ApiResponse<AnnulSingleStructuredDataResponse>> DeleteFlowConventionsWithHttpInfoAsync(string scope, string code, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
         /// <summary>
         /// [BETA] Delete the Index Convention of given scope and code, assuming that it is present.
         /// </summary>
@@ -351,8 +365,9 @@ namespace Lusid.Sdk.Api
         /// <exception cref="Lusid.Sdk.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="scope">The scope of the Index Convention to delete.</param>
         /// <param name="code">The Index Convention to delete.</param>
+        /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
         /// <returns>Task of AnnulSingleStructuredDataResponse</returns>
-        System.Threading.Tasks.Task<AnnulSingleStructuredDataResponse> DeleteIndexConventionAsync (string scope, string code);
+        System.Threading.Tasks.Task<AnnulSingleStructuredDataResponse> DeleteIndexConventionAsync(string scope, string code, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
 
         /// <summary>
         /// [BETA] Delete the Index Convention of given scope and code, assuming that it is present.
@@ -363,8 +378,9 @@ namespace Lusid.Sdk.Api
         /// <exception cref="Lusid.Sdk.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="scope">The scope of the Index Convention to delete.</param>
         /// <param name="code">The Index Convention to delete.</param>
+        /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
         /// <returns>Task of ApiResponse (AnnulSingleStructuredDataResponse)</returns>
-        System.Threading.Tasks.Task<ApiResponse<AnnulSingleStructuredDataResponse>> DeleteIndexConventionAsyncWithHttpInfo (string scope, string code);
+        System.Threading.Tasks.Task<ApiResponse<AnnulSingleStructuredDataResponse>> DeleteIndexConventionWithHttpInfoAsync(string scope, string code, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
         /// <summary>
         /// [BETA] Get CDS Flow Conventions
         /// </summary>
@@ -375,8 +391,9 @@ namespace Lusid.Sdk.Api
         /// <param name="scope">The scope of the CDS Flow Conventions to retrieve.</param>
         /// <param name="code">The name of the CDS Flow Conventions to retrieve the data for.</param>
         /// <param name="asAt">The asAt datetime at which to retrieve the CDS Flow Conventions. Defaults to return the latest version if not specified. (optional)</param>
+        /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
         /// <returns>Task of GetCdsFlowConventionsResponse</returns>
-        System.Threading.Tasks.Task<GetCdsFlowConventionsResponse> GetCdsFlowConventionsAsync (string scope, string code, DateTimeOffset? asAt = null);
+        System.Threading.Tasks.Task<GetCdsFlowConventionsResponse> GetCdsFlowConventionsAsync(string scope, string code, DateTimeOffset? asAt = default(DateTimeOffset?), System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
 
         /// <summary>
         /// [BETA] Get CDS Flow Conventions
@@ -388,8 +405,9 @@ namespace Lusid.Sdk.Api
         /// <param name="scope">The scope of the CDS Flow Conventions to retrieve.</param>
         /// <param name="code">The name of the CDS Flow Conventions to retrieve the data for.</param>
         /// <param name="asAt">The asAt datetime at which to retrieve the CDS Flow Conventions. Defaults to return the latest version if not specified. (optional)</param>
+        /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
         /// <returns>Task of ApiResponse (GetCdsFlowConventionsResponse)</returns>
-        System.Threading.Tasks.Task<ApiResponse<GetCdsFlowConventionsResponse>> GetCdsFlowConventionsAsyncWithHttpInfo (string scope, string code, DateTimeOffset? asAt = null);
+        System.Threading.Tasks.Task<ApiResponse<GetCdsFlowConventionsResponse>> GetCdsFlowConventionsWithHttpInfoAsync(string scope, string code, DateTimeOffset? asAt = default(DateTimeOffset?), System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
         /// <summary>
         /// [BETA] Get Flow Conventions
         /// </summary>
@@ -400,8 +418,9 @@ namespace Lusid.Sdk.Api
         /// <param name="scope">The scope of the Flow Conventions to retrieve.</param>
         /// <param name="code">The name of the Flow Conventions to retrieve the data for.</param>
         /// <param name="asAt">The asAt datetime at which to retrieve the Flow Conventions. Defaults to return the latest version if not specified. (optional)</param>
+        /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
         /// <returns>Task of GetFlowConventionsResponse</returns>
-        System.Threading.Tasks.Task<GetFlowConventionsResponse> GetFlowConventionsAsync (string scope, string code, DateTimeOffset? asAt = null);
+        System.Threading.Tasks.Task<GetFlowConventionsResponse> GetFlowConventionsAsync(string scope, string code, DateTimeOffset? asAt = default(DateTimeOffset?), System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
 
         /// <summary>
         /// [BETA] Get Flow Conventions
@@ -413,8 +432,9 @@ namespace Lusid.Sdk.Api
         /// <param name="scope">The scope of the Flow Conventions to retrieve.</param>
         /// <param name="code">The name of the Flow Conventions to retrieve the data for.</param>
         /// <param name="asAt">The asAt datetime at which to retrieve the Flow Conventions. Defaults to return the latest version if not specified. (optional)</param>
+        /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
         /// <returns>Task of ApiResponse (GetFlowConventionsResponse)</returns>
-        System.Threading.Tasks.Task<ApiResponse<GetFlowConventionsResponse>> GetFlowConventionsAsyncWithHttpInfo (string scope, string code, DateTimeOffset? asAt = null);
+        System.Threading.Tasks.Task<ApiResponse<GetFlowConventionsResponse>> GetFlowConventionsWithHttpInfoAsync(string scope, string code, DateTimeOffset? asAt = default(DateTimeOffset?), System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
         /// <summary>
         /// [BETA] Get Index Convention
         /// </summary>
@@ -425,8 +445,9 @@ namespace Lusid.Sdk.Api
         /// <param name="scope">The scope of the Index Convention to retrieve.</param>
         /// <param name="code">The name of the Index Convention to retrieve the data for.</param>
         /// <param name="asAt">The asAt datetime at which to retrieve the Index Convention. Defaults to return the latest version if not specified. (optional)</param>
+        /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
         /// <returns>Task of GetIndexConventionResponse</returns>
-        System.Threading.Tasks.Task<GetIndexConventionResponse> GetIndexConventionAsync (string scope, string code, DateTimeOffset? asAt = null);
+        System.Threading.Tasks.Task<GetIndexConventionResponse> GetIndexConventionAsync(string scope, string code, DateTimeOffset? asAt = default(DateTimeOffset?), System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
 
         /// <summary>
         /// [BETA] Get Index Convention
@@ -438,8 +459,9 @@ namespace Lusid.Sdk.Api
         /// <param name="scope">The scope of the Index Convention to retrieve.</param>
         /// <param name="code">The name of the Index Convention to retrieve the data for.</param>
         /// <param name="asAt">The asAt datetime at which to retrieve the Index Convention. Defaults to return the latest version if not specified. (optional)</param>
+        /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
         /// <returns>Task of ApiResponse (GetIndexConventionResponse)</returns>
-        System.Threading.Tasks.Task<ApiResponse<GetIndexConventionResponse>> GetIndexConventionAsyncWithHttpInfo (string scope, string code, DateTimeOffset? asAt = null);
+        System.Threading.Tasks.Task<ApiResponse<GetIndexConventionResponse>> GetIndexConventionWithHttpInfoAsync(string scope, string code, DateTimeOffset? asAt = default(DateTimeOffset?), System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
         /// <summary>
         /// [BETA] List the set of CDS Flow Conventions
         /// </summary>
@@ -448,8 +470,9 @@ namespace Lusid.Sdk.Api
         /// </remarks>
         /// <exception cref="Lusid.Sdk.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="asAt">The asAt datetime at which to list the conventions. Defaults to latest if not specified. (optional)</param>
+        /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
         /// <returns>Task of ResourceListOfGetCdsFlowConventionsResponse</returns>
-        System.Threading.Tasks.Task<ResourceListOfGetCdsFlowConventionsResponse> ListCdsFlowConventionsAsync (DateTimeOffset? asAt = null);
+        System.Threading.Tasks.Task<ResourceListOfGetCdsFlowConventionsResponse> ListCdsFlowConventionsAsync(DateTimeOffset? asAt = default(DateTimeOffset?), System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
 
         /// <summary>
         /// [BETA] List the set of CDS Flow Conventions
@@ -459,8 +482,9 @@ namespace Lusid.Sdk.Api
         /// </remarks>
         /// <exception cref="Lusid.Sdk.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="asAt">The asAt datetime at which to list the conventions. Defaults to latest if not specified. (optional)</param>
+        /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
         /// <returns>Task of ApiResponse (ResourceListOfGetCdsFlowConventionsResponse)</returns>
-        System.Threading.Tasks.Task<ApiResponse<ResourceListOfGetCdsFlowConventionsResponse>> ListCdsFlowConventionsAsyncWithHttpInfo (DateTimeOffset? asAt = null);
+        System.Threading.Tasks.Task<ApiResponse<ResourceListOfGetCdsFlowConventionsResponse>> ListCdsFlowConventionsWithHttpInfoAsync(DateTimeOffset? asAt = default(DateTimeOffset?), System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
         /// <summary>
         /// [BETA] List the set of Flow Conventions
         /// </summary>
@@ -469,8 +493,9 @@ namespace Lusid.Sdk.Api
         /// </remarks>
         /// <exception cref="Lusid.Sdk.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="asAt">The asAt datetime at which to list the conventions. Defaults to latest if not specified. (optional)</param>
+        /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
         /// <returns>Task of ResourceListOfGetFlowConventionsResponse</returns>
-        System.Threading.Tasks.Task<ResourceListOfGetFlowConventionsResponse> ListFlowConventionsAsync (DateTimeOffset? asAt = null);
+        System.Threading.Tasks.Task<ResourceListOfGetFlowConventionsResponse> ListFlowConventionsAsync(DateTimeOffset? asAt = default(DateTimeOffset?), System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
 
         /// <summary>
         /// [BETA] List the set of Flow Conventions
@@ -480,8 +505,9 @@ namespace Lusid.Sdk.Api
         /// </remarks>
         /// <exception cref="Lusid.Sdk.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="asAt">The asAt datetime at which to list the conventions. Defaults to latest if not specified. (optional)</param>
+        /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
         /// <returns>Task of ApiResponse (ResourceListOfGetFlowConventionsResponse)</returns>
-        System.Threading.Tasks.Task<ApiResponse<ResourceListOfGetFlowConventionsResponse>> ListFlowConventionsAsyncWithHttpInfo (DateTimeOffset? asAt = null);
+        System.Threading.Tasks.Task<ApiResponse<ResourceListOfGetFlowConventionsResponse>> ListFlowConventionsWithHttpInfoAsync(DateTimeOffset? asAt = default(DateTimeOffset?), System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
         /// <summary>
         /// [BETA] List the set of Index Conventions
         /// </summary>
@@ -490,8 +516,9 @@ namespace Lusid.Sdk.Api
         /// </remarks>
         /// <exception cref="Lusid.Sdk.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="asAt">The asAt datetime at which to list the conventions. Defaults to latest if not specified. (optional)</param>
+        /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
         /// <returns>Task of ResourceListOfGetIndexConventionResponse</returns>
-        System.Threading.Tasks.Task<ResourceListOfGetIndexConventionResponse> ListIndexConventionAsync (DateTimeOffset? asAt = null);
+        System.Threading.Tasks.Task<ResourceListOfGetIndexConventionResponse> ListIndexConventionAsync(DateTimeOffset? asAt = default(DateTimeOffset?), System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
 
         /// <summary>
         /// [BETA] List the set of Index Conventions
@@ -501,8 +528,9 @@ namespace Lusid.Sdk.Api
         /// </remarks>
         /// <exception cref="Lusid.Sdk.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="asAt">The asAt datetime at which to list the conventions. Defaults to latest if not specified. (optional)</param>
+        /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
         /// <returns>Task of ApiResponse (ResourceListOfGetIndexConventionResponse)</returns>
-        System.Threading.Tasks.Task<ApiResponse<ResourceListOfGetIndexConventionResponse>> ListIndexConventionAsyncWithHttpInfo (DateTimeOffset? asAt = null);
+        System.Threading.Tasks.Task<ApiResponse<ResourceListOfGetIndexConventionResponse>> ListIndexConventionWithHttpInfoAsync(DateTimeOffset? asAt = default(DateTimeOffset?), System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
         /// <summary>
         /// [BETA] Upsert a set of CDS Flow Conventions. This creates or updates the data in Lusid.
         /// </summary>
@@ -511,8 +539,9 @@ namespace Lusid.Sdk.Api
         /// </remarks>
         /// <exception cref="Lusid.Sdk.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="upsertCdsFlowConventionsRequest">The CDS Flow Conventions to update or insert</param>
+        /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
         /// <returns>Task of UpsertSingleStructuredDataResponse</returns>
-        System.Threading.Tasks.Task<UpsertSingleStructuredDataResponse> UpsertCdsFlowConventionsAsync (UpsertCdsFlowConventionsRequest upsertCdsFlowConventionsRequest);
+        System.Threading.Tasks.Task<UpsertSingleStructuredDataResponse> UpsertCdsFlowConventionsAsync(UpsertCdsFlowConventionsRequest upsertCdsFlowConventionsRequest, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
 
         /// <summary>
         /// [BETA] Upsert a set of CDS Flow Conventions. This creates or updates the data in Lusid.
@@ -522,8 +551,9 @@ namespace Lusid.Sdk.Api
         /// </remarks>
         /// <exception cref="Lusid.Sdk.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="upsertCdsFlowConventionsRequest">The CDS Flow Conventions to update or insert</param>
+        /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
         /// <returns>Task of ApiResponse (UpsertSingleStructuredDataResponse)</returns>
-        System.Threading.Tasks.Task<ApiResponse<UpsertSingleStructuredDataResponse>> UpsertCdsFlowConventionsAsyncWithHttpInfo (UpsertCdsFlowConventionsRequest upsertCdsFlowConventionsRequest);
+        System.Threading.Tasks.Task<ApiResponse<UpsertSingleStructuredDataResponse>> UpsertCdsFlowConventionsWithHttpInfoAsync(UpsertCdsFlowConventionsRequest upsertCdsFlowConventionsRequest, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
         /// <summary>
         /// [BETA] Upsert Flow Conventions. This creates or updates the data in Lusid.
         /// </summary>
@@ -532,8 +562,9 @@ namespace Lusid.Sdk.Api
         /// </remarks>
         /// <exception cref="Lusid.Sdk.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="upsertFlowConventionsRequest">The Flow Conventions to update or insert</param>
+        /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
         /// <returns>Task of UpsertSingleStructuredDataResponse</returns>
-        System.Threading.Tasks.Task<UpsertSingleStructuredDataResponse> UpsertFlowConventionsAsync (UpsertFlowConventionsRequest upsertFlowConventionsRequest);
+        System.Threading.Tasks.Task<UpsertSingleStructuredDataResponse> UpsertFlowConventionsAsync(UpsertFlowConventionsRequest upsertFlowConventionsRequest, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
 
         /// <summary>
         /// [BETA] Upsert Flow Conventions. This creates or updates the data in Lusid.
@@ -543,8 +574,9 @@ namespace Lusid.Sdk.Api
         /// </remarks>
         /// <exception cref="Lusid.Sdk.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="upsertFlowConventionsRequest">The Flow Conventions to update or insert</param>
+        /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
         /// <returns>Task of ApiResponse (UpsertSingleStructuredDataResponse)</returns>
-        System.Threading.Tasks.Task<ApiResponse<UpsertSingleStructuredDataResponse>> UpsertFlowConventionsAsyncWithHttpInfo (UpsertFlowConventionsRequest upsertFlowConventionsRequest);
+        System.Threading.Tasks.Task<ApiResponse<UpsertSingleStructuredDataResponse>> UpsertFlowConventionsWithHttpInfoAsync(UpsertFlowConventionsRequest upsertFlowConventionsRequest, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
         /// <summary>
         /// [BETA] Upsert a set of Index Convention. This creates or updates the data in Lusid.
         /// </summary>
@@ -553,8 +585,9 @@ namespace Lusid.Sdk.Api
         /// </remarks>
         /// <exception cref="Lusid.Sdk.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="upsertIndexConventionRequest">The Index Conventions to update or insert</param>
+        /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
         /// <returns>Task of UpsertSingleStructuredDataResponse</returns>
-        System.Threading.Tasks.Task<UpsertSingleStructuredDataResponse> UpsertIndexConventionAsync (UpsertIndexConventionRequest upsertIndexConventionRequest);
+        System.Threading.Tasks.Task<UpsertSingleStructuredDataResponse> UpsertIndexConventionAsync(UpsertIndexConventionRequest upsertIndexConventionRequest, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
 
         /// <summary>
         /// [BETA] Upsert a set of Index Convention. This creates or updates the data in Lusid.
@@ -564,9 +597,18 @@ namespace Lusid.Sdk.Api
         /// </remarks>
         /// <exception cref="Lusid.Sdk.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="upsertIndexConventionRequest">The Index Conventions to update or insert</param>
+        /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
         /// <returns>Task of ApiResponse (UpsertSingleStructuredDataResponse)</returns>
-        System.Threading.Tasks.Task<ApiResponse<UpsertSingleStructuredDataResponse>> UpsertIndexConventionAsyncWithHttpInfo (UpsertIndexConventionRequest upsertIndexConventionRequest);
+        System.Threading.Tasks.Task<ApiResponse<UpsertSingleStructuredDataResponse>> UpsertIndexConventionWithHttpInfoAsync(UpsertIndexConventionRequest upsertIndexConventionRequest, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
         #endregion Asynchronous Operations
+    }
+
+    /// <summary>
+    /// Represents a collection of functions to interact with the API endpoints
+    /// </summary>
+    public interface IConventionsApi : IConventionsApiSync, IConventionsApiAsync
+    {
+
     }
 
     /// <summary>
@@ -580,22 +622,23 @@ namespace Lusid.Sdk.Api
         /// Initializes a new instance of the <see cref="ConventionsApi"/> class.
         /// </summary>
         /// <returns></returns>
-        public ConventionsApi(String basePath)
+        public ConventionsApi() : this((string)null)
         {
-            this.Configuration = new Lusid.Sdk.Client.Configuration { BasePath = basePath };
-
-            ExceptionFactory = Lusid.Sdk.Client.Configuration.DefaultExceptionFactory;
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="ConventionsApi"/> class
+        /// Initializes a new instance of the <see cref="ConventionsApi"/> class.
         /// </summary>
         /// <returns></returns>
-        public ConventionsApi()
+        public ConventionsApi(String basePath)
         {
-            this.Configuration = Lusid.Sdk.Client.Configuration.Default;
-
-            ExceptionFactory = Lusid.Sdk.Client.Configuration.DefaultExceptionFactory;
+            this.Configuration = Lusid.Sdk.Client.Configuration.MergeConfigurations(
+                Lusid.Sdk.Client.GlobalConfiguration.Instance,
+                new Lusid.Sdk.Client.Configuration { BasePath = basePath }
+            );
+            this.Client = new Lusid.Sdk.Client.ApiClient(this.Configuration.BasePath);
+            this.AsynchronousClient = new Lusid.Sdk.Client.ApiClient(this.Configuration.BasePath);
+            this.ExceptionFactory = Lusid.Sdk.Client.Configuration.DefaultExceptionFactory;
         }
 
         /// <summary>
@@ -604,15 +647,47 @@ namespace Lusid.Sdk.Api
         /// </summary>
         /// <param name="configuration">An instance of Configuration</param>
         /// <returns></returns>
-        public ConventionsApi(Lusid.Sdk.Client.Configuration configuration = null)
+        public ConventionsApi(Lusid.Sdk.Client.Configuration configuration)
         {
-            if (configuration == null) // use the default one in Configuration
-                this.Configuration = Lusid.Sdk.Client.Configuration.Default;
-            else
-                this.Configuration = configuration;
+            if (configuration == null) throw new ArgumentNullException("configuration");
 
+            this.Configuration = Lusid.Sdk.Client.Configuration.MergeConfigurations(
+                Lusid.Sdk.Client.GlobalConfiguration.Instance,
+                configuration
+            );
+            this.Client = new Lusid.Sdk.Client.ApiClient(this.Configuration.BasePath);
+            this.AsynchronousClient = new Lusid.Sdk.Client.ApiClient(this.Configuration.BasePath);
             ExceptionFactory = Lusid.Sdk.Client.Configuration.DefaultExceptionFactory;
         }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ConventionsApi"/> class
+        /// using a Configuration object and client instance.
+        /// </summary>
+        /// <param name="client">The client interface for synchronous API access.</param>
+        /// <param name="asyncClient">The client interface for asynchronous API access.</param>
+        /// <param name="configuration">The configuration object.</param>
+        public ConventionsApi(Lusid.Sdk.Client.ISynchronousClient client, Lusid.Sdk.Client.IAsynchronousClient asyncClient, Lusid.Sdk.Client.IReadableConfiguration configuration)
+        {
+            if (client == null) throw new ArgumentNullException("client");
+            if (asyncClient == null) throw new ArgumentNullException("asyncClient");
+            if (configuration == null) throw new ArgumentNullException("configuration");
+
+            this.Client = client;
+            this.AsynchronousClient = asyncClient;
+            this.Configuration = configuration;
+            this.ExceptionFactory = Lusid.Sdk.Client.Configuration.DefaultExceptionFactory;
+        }
+
+        /// <summary>
+        /// The client for accessing this underlying API asynchronously.
+        /// </summary>
+        public Lusid.Sdk.Client.IAsynchronousClient AsynchronousClient { get; set; }
+
+        /// <summary>
+        /// The client for accessing this underlying API synchronously.
+        /// </summary>
+        public Lusid.Sdk.Client.ISynchronousClient Client { get; set; }
 
         /// <summary>
         /// Gets the base path of the API client.
@@ -620,24 +695,14 @@ namespace Lusid.Sdk.Api
         /// <value>The base path</value>
         public String GetBasePath()
         {
-            return this.Configuration.ApiClient.RestClient.BaseUrl.ToString();
-        }
-
-        /// <summary>
-        /// Sets the base path of the API client.
-        /// </summary>
-        /// <value>The base path</value>
-        [Obsolete("SetBasePath is deprecated, please do 'Configuration.ApiClient = new ApiClient(\"http://new-path\")' instead.")]
-        public void SetBasePath(String basePath)
-        {
-            // do nothing
+            return this.Configuration.BasePath;
         }
 
         /// <summary>
         /// Gets or sets the configuration object
         /// </summary>
         /// <value>An instance of the Configuration</value>
-        public Lusid.Sdk.Client.Configuration Configuration {get; set;}
+        public Lusid.Sdk.Client.IReadableConfiguration Configuration { get; set; }
 
         /// <summary>
         /// Provides a factory method hook for the creation of exceptions.
@@ -656,38 +721,16 @@ namespace Lusid.Sdk.Api
         }
 
         /// <summary>
-        /// Gets the default header.
-        /// </summary>
-        /// <returns>Dictionary of HTTP header</returns>
-        [Obsolete("DefaultHeader is deprecated, please use Configuration.DefaultHeader instead.")]
-        public IDictionary<String, String> DefaultHeader()
-        {
-            return new ReadOnlyDictionary<string, string>(this.Configuration.DefaultHeader);
-        }
-
-        /// <summary>
-        /// Add default header.
-        /// </summary>
-        /// <param name="key">Header field name.</param>
-        /// <param name="value">Header field value.</param>
-        /// <returns></returns>
-        [Obsolete("AddDefaultHeader is deprecated, please use Configuration.AddDefaultHeader instead.")]
-        public void AddDefaultHeader(string key, string value)
-        {
-            this.Configuration.AddDefaultHeader(key, value);
-        }
-
-        /// <summary>
         /// [BETA] Delete the CDS Flow Conventions of given scope and code, assuming that it is present. Delete the specified CDS Flow Conventions from a single scope.  The response will return either detail of the deleted item, or an explanation (failure) as to why this did not succeed.  It is important to always check for any unsuccessful response.
         /// </summary>
         /// <exception cref="Lusid.Sdk.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="scope">The scope of the CDS Flow Conventions to delete.</param>
         /// <param name="code">The CDS Flow Conventions to delete.</param>
         /// <returns>AnnulSingleStructuredDataResponse</returns>
-        public AnnulSingleStructuredDataResponse DeleteCdsFlowConventions (string scope, string code)
+        public AnnulSingleStructuredDataResponse DeleteCdsFlowConventions(string scope, string code)
         {
-             ApiResponse<AnnulSingleStructuredDataResponse> localVarResponse = DeleteCdsFlowConventionsWithHttpInfo(scope, code);
-             return localVarResponse.Data;
+            Lusid.Sdk.Client.ApiResponse<AnnulSingleStructuredDataResponse> localVarResponse = DeleteCdsFlowConventionsWithHttpInfo(scope, code);
+            return localVarResponse.Data;
         }
 
         /// <summary>
@@ -697,68 +740,58 @@ namespace Lusid.Sdk.Api
         /// <param name="scope">The scope of the CDS Flow Conventions to delete.</param>
         /// <param name="code">The CDS Flow Conventions to delete.</param>
         /// <returns>ApiResponse of AnnulSingleStructuredDataResponse</returns>
-        public ApiResponse< AnnulSingleStructuredDataResponse > DeleteCdsFlowConventionsWithHttpInfo (string scope, string code)
+        public Lusid.Sdk.Client.ApiResponse<AnnulSingleStructuredDataResponse> DeleteCdsFlowConventionsWithHttpInfo(string scope, string code)
         {
             // verify the required parameter 'scope' is set
             if (scope == null)
-                throw new ApiException(400, "Missing required parameter 'scope' when calling ConventionsApi->DeleteCdsFlowConventions");
+                throw new Lusid.Sdk.Client.ApiException(400, "Missing required parameter 'scope' when calling ConventionsApi->DeleteCdsFlowConventions");
+
             // verify the required parameter 'code' is set
             if (code == null)
-                throw new ApiException(400, "Missing required parameter 'code' when calling ConventionsApi->DeleteCdsFlowConventions");
+                throw new Lusid.Sdk.Client.ApiException(400, "Missing required parameter 'code' when calling ConventionsApi->DeleteCdsFlowConventions");
 
-            var localVarPath = "./api/conventions/credit/conventions/{scope}/{code}";
-            var localVarPathParams = new Dictionary<String, String>();
-            var localVarQueryParams = new List<KeyValuePair<String, String>>();
-            var localVarHeaderParams = new Dictionary<String, String>(this.Configuration.DefaultHeader);
-            var localVarFormParams = new Dictionary<String, String>();
-            var localVarFileParams = new Dictionary<String, FileParameter>();
-            Object localVarPostBody = null;
+            Lusid.Sdk.Client.RequestOptions localVarRequestOptions = new Lusid.Sdk.Client.RequestOptions();
 
-            // to determine the Content-Type header
-            String[] localVarHttpContentTypes = new String[] {
+            String[] _contentTypes = new String[] {
             };
-            String localVarHttpContentType = this.Configuration.ApiClient.SelectHeaderContentType(localVarHttpContentTypes);
 
             // to determine the Accept header
-            String[] localVarHttpHeaderAccepts = new String[] {
+            String[] _accepts = new String[] {
                 "text/plain",
                 "application/json",
                 "text/json"
             };
-            String localVarHttpHeaderAccept = this.Configuration.ApiClient.SelectHeaderAccept(localVarHttpHeaderAccepts);
-            if (localVarHttpHeaderAccept != null)
-                localVarHeaderParams.Add("Accept", localVarHttpHeaderAccept);
 
-            if (scope != null) localVarPathParams.Add("scope", this.Configuration.ApiClient.ParameterToString(scope)); // path parameter
-            if (code != null) localVarPathParams.Add("code", this.Configuration.ApiClient.ParameterToString(code)); // path parameter
+            var localVarContentType = Lusid.Sdk.Client.ClientUtils.SelectHeaderContentType(_contentTypes);
+            if (localVarContentType != null) localVarRequestOptions.HeaderParameters.Add("Content-Type", localVarContentType);
+
+            var localVarAccept = Lusid.Sdk.Client.ClientUtils.SelectHeaderAccept(_accepts);
+            if (localVarAccept != null) localVarRequestOptions.HeaderParameters.Add("Accept", localVarAccept);
+
+            localVarRequestOptions.PathParameters.Add("scope", Lusid.Sdk.Client.ClientUtils.ParameterToString(scope)); // path parameter
+            localVarRequestOptions.PathParameters.Add("code", Lusid.Sdk.Client.ClientUtils.ParameterToString(code)); // path parameter
 
             // authentication (oauth2) required
             // oauth required
             if (!String.IsNullOrEmpty(this.Configuration.AccessToken))
             {
-                localVarHeaderParams["Authorization"] = "Bearer " + this.Configuration.AccessToken;
+                localVarRequestOptions.HeaderParameters.Add("Authorization", "Bearer " + this.Configuration.AccessToken);
             }
 
             //  set the LUSID header
-            localVarHeaderParams["X-LUSID-SDK-Language"] = "C#";
-            localVarHeaderParams["X-LUSID-SDK-Version"] = "0.11.3412";
+            localVarRequestOptions.HeaderParameters.Add("X-LUSID-Sdk-Language", "C#");
+            localVarRequestOptions.HeaderParameters.Add("X-LUSID-Sdk-Version", "0.11.3412");
 
             // make the HTTP request
-            IRestResponse localVarResponse = (IRestResponse) this.Configuration.ApiClient.CallApi(localVarPath,
-                Method.DELETE, localVarQueryParams, localVarPostBody, localVarHeaderParams, localVarFormParams, localVarFileParams,
-                localVarPathParams, localVarHttpContentType);
+            var localVarResponse = this.Client.Delete<AnnulSingleStructuredDataResponse>("/api/conventions/credit/conventions/{scope}/{code}", localVarRequestOptions, this.Configuration);
 
-            int localVarStatusCode = (int) localVarResponse.StatusCode;
-
-            if (ExceptionFactory != null)
+            if (this.ExceptionFactory != null)
             {
-                Exception exception = ExceptionFactory("DeleteCdsFlowConventions", localVarResponse);
-                if (exception != null) throw exception;
+                Exception _exception = this.ExceptionFactory("DeleteCdsFlowConventions", localVarResponse);
+                if (_exception != null) throw _exception;
             }
 
-            return new ApiResponse<AnnulSingleStructuredDataResponse>(localVarStatusCode,
-                localVarResponse.Headers.ToDictionary(x => x.Key, x => string.Join(",", x.Value)),
-                (AnnulSingleStructuredDataResponse) this.Configuration.ApiClient.Deserialize(localVarResponse, typeof(AnnulSingleStructuredDataResponse)));
+            return localVarResponse;
         }
 
         /// <summary>
@@ -767,12 +800,12 @@ namespace Lusid.Sdk.Api
         /// <exception cref="Lusid.Sdk.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="scope">The scope of the CDS Flow Conventions to delete.</param>
         /// <param name="code">The CDS Flow Conventions to delete.</param>
+        /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
         /// <returns>Task of AnnulSingleStructuredDataResponse</returns>
-        public async System.Threading.Tasks.Task<AnnulSingleStructuredDataResponse> DeleteCdsFlowConventionsAsync (string scope, string code)
+        public async System.Threading.Tasks.Task<AnnulSingleStructuredDataResponse> DeleteCdsFlowConventionsAsync(string scope, string code, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
-             ApiResponse<AnnulSingleStructuredDataResponse> localVarResponse = await DeleteCdsFlowConventionsAsyncWithHttpInfo(scope, code);
-             return localVarResponse.Data;
-
+            Lusid.Sdk.Client.ApiResponse<AnnulSingleStructuredDataResponse> localVarResponse = await DeleteCdsFlowConventionsWithHttpInfoAsync(scope, code, cancellationToken).ConfigureAwait(false);
+            return localVarResponse.Data;
         }
 
         /// <summary>
@@ -781,69 +814,63 @@ namespace Lusid.Sdk.Api
         /// <exception cref="Lusid.Sdk.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="scope">The scope of the CDS Flow Conventions to delete.</param>
         /// <param name="code">The CDS Flow Conventions to delete.</param>
+        /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
         /// <returns>Task of ApiResponse (AnnulSingleStructuredDataResponse)</returns>
-        public async System.Threading.Tasks.Task<ApiResponse<AnnulSingleStructuredDataResponse>> DeleteCdsFlowConventionsAsyncWithHttpInfo (string scope, string code)
+        public async System.Threading.Tasks.Task<Lusid.Sdk.Client.ApiResponse<AnnulSingleStructuredDataResponse>> DeleteCdsFlowConventionsWithHttpInfoAsync(string scope, string code, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
             // verify the required parameter 'scope' is set
             if (scope == null)
-                throw new ApiException(400, "Missing required parameter 'scope' when calling ConventionsApi->DeleteCdsFlowConventions");
+                throw new Lusid.Sdk.Client.ApiException(400, "Missing required parameter 'scope' when calling ConventionsApi->DeleteCdsFlowConventions");
+
             // verify the required parameter 'code' is set
             if (code == null)
-                throw new ApiException(400, "Missing required parameter 'code' when calling ConventionsApi->DeleteCdsFlowConventions");
+                throw new Lusid.Sdk.Client.ApiException(400, "Missing required parameter 'code' when calling ConventionsApi->DeleteCdsFlowConventions");
 
-            var localVarPath = "./api/conventions/credit/conventions/{scope}/{code}";
-            var localVarPathParams = new Dictionary<String, String>();
-            var localVarQueryParams = new List<KeyValuePair<String, String>>();
-            var localVarHeaderParams = new Dictionary<String, String>(this.Configuration.DefaultHeader);
-            var localVarFormParams = new Dictionary<String, String>();
-            var localVarFileParams = new Dictionary<String, FileParameter>();
-            Object localVarPostBody = null;
 
-            // to determine the Content-Type header
-            String[] localVarHttpContentTypes = new String[] {
+            Lusid.Sdk.Client.RequestOptions localVarRequestOptions = new Lusid.Sdk.Client.RequestOptions();
+
+            String[] _contentTypes = new String[] {
             };
-            String localVarHttpContentType = this.Configuration.ApiClient.SelectHeaderContentType(localVarHttpContentTypes);
 
             // to determine the Accept header
-            String[] localVarHttpHeaderAccepts = new String[] {
+            String[] _accepts = new String[] {
                 "text/plain",
                 "application/json",
                 "text/json"
             };
-            String localVarHttpHeaderAccept = this.Configuration.ApiClient.SelectHeaderAccept(localVarHttpHeaderAccepts);
-            if (localVarHttpHeaderAccept != null)
-                localVarHeaderParams.Add("Accept", localVarHttpHeaderAccept);
 
-            if (scope != null) localVarPathParams.Add("scope", this.Configuration.ApiClient.ParameterToString(scope)); // path parameter
-            if (code != null) localVarPathParams.Add("code", this.Configuration.ApiClient.ParameterToString(code)); // path parameter
+
+            var localVarContentType = Lusid.Sdk.Client.ClientUtils.SelectHeaderContentType(_contentTypes);
+            if (localVarContentType != null) localVarRequestOptions.HeaderParameters.Add("Content-Type", localVarContentType);
+
+            var localVarAccept = Lusid.Sdk.Client.ClientUtils.SelectHeaderAccept(_accepts);
+            if (localVarAccept != null) localVarRequestOptions.HeaderParameters.Add("Accept", localVarAccept);
+
+            localVarRequestOptions.PathParameters.Add("scope", Lusid.Sdk.Client.ClientUtils.ParameterToString(scope)); // path parameter
+            localVarRequestOptions.PathParameters.Add("code", Lusid.Sdk.Client.ClientUtils.ParameterToString(code)); // path parameter
 
             // authentication (oauth2) required
             // oauth required
             if (!String.IsNullOrEmpty(this.Configuration.AccessToken))
             {
-                localVarHeaderParams["Authorization"] = "Bearer " + this.Configuration.AccessToken;
+                localVarRequestOptions.HeaderParameters.Add("Authorization", "Bearer " + this.Configuration.AccessToken);
             }
 
             //  set the LUSID header
-            localVarHeaderParams["X-LUSID-Sdk-Language"] = "C#";
-            localVarHeaderParams["X-LUSID-Sdk-Version"] = "0.11.3412";
+            localVarRequestOptions.HeaderParameters.Add("X-LUSID-Sdk-Language", "C#");
+            localVarRequestOptions.HeaderParameters.Add("X-LUSID-Sdk-Version", "0.11.3412");
 
             // make the HTTP request
-            IRestResponse localVarResponse = (IRestResponse) await this.Configuration.ApiClient.CallApiAsync(localVarPath,
-                Method.DELETE, localVarQueryParams, localVarPostBody, localVarHeaderParams, localVarFormParams, localVarFileParams,
-                localVarPathParams, localVarHttpContentType);
 
-            int localVarStatusCode = (int) localVarResponse.StatusCode;
+            var localVarResponse = await this.AsynchronousClient.DeleteAsync<AnnulSingleStructuredDataResponse>("/api/conventions/credit/conventions/{scope}/{code}", localVarRequestOptions, this.Configuration, cancellationToken).ConfigureAwait(false);
 
-            if (ExceptionFactory != null)
+            if (this.ExceptionFactory != null)
             {
-                Exception exception = ExceptionFactory("DeleteCdsFlowConventions", localVarResponse);
-                if (exception != null) throw exception;
+                Exception _exception = this.ExceptionFactory("DeleteCdsFlowConventions", localVarResponse);
+                if (_exception != null) throw _exception;
             }
 
-            return new ApiResponse<AnnulSingleStructuredDataResponse>(localVarStatusCode,
-                localVarResponse.Headers.ToDictionary(x => x.Key, x => string.Join(",", x.Value)),
-                (AnnulSingleStructuredDataResponse) this.Configuration.ApiClient.Deserialize(localVarResponse, typeof(AnnulSingleStructuredDataResponse)));
+            return localVarResponse;
         }
 
         /// <summary>
@@ -853,10 +880,10 @@ namespace Lusid.Sdk.Api
         /// <param name="scope">The scope of the Flow Conventions to delete.</param>
         /// <param name="code">The Flow Conventions to delete.</param>
         /// <returns>AnnulSingleStructuredDataResponse</returns>
-        public AnnulSingleStructuredDataResponse DeleteFlowConventions (string scope, string code)
+        public AnnulSingleStructuredDataResponse DeleteFlowConventions(string scope, string code)
         {
-             ApiResponse<AnnulSingleStructuredDataResponse> localVarResponse = DeleteFlowConventionsWithHttpInfo(scope, code);
-             return localVarResponse.Data;
+            Lusid.Sdk.Client.ApiResponse<AnnulSingleStructuredDataResponse> localVarResponse = DeleteFlowConventionsWithHttpInfo(scope, code);
+            return localVarResponse.Data;
         }
 
         /// <summary>
@@ -866,68 +893,58 @@ namespace Lusid.Sdk.Api
         /// <param name="scope">The scope of the Flow Conventions to delete.</param>
         /// <param name="code">The Flow Conventions to delete.</param>
         /// <returns>ApiResponse of AnnulSingleStructuredDataResponse</returns>
-        public ApiResponse< AnnulSingleStructuredDataResponse > DeleteFlowConventionsWithHttpInfo (string scope, string code)
+        public Lusid.Sdk.Client.ApiResponse<AnnulSingleStructuredDataResponse> DeleteFlowConventionsWithHttpInfo(string scope, string code)
         {
             // verify the required parameter 'scope' is set
             if (scope == null)
-                throw new ApiException(400, "Missing required parameter 'scope' when calling ConventionsApi->DeleteFlowConventions");
+                throw new Lusid.Sdk.Client.ApiException(400, "Missing required parameter 'scope' when calling ConventionsApi->DeleteFlowConventions");
+
             // verify the required parameter 'code' is set
             if (code == null)
-                throw new ApiException(400, "Missing required parameter 'code' when calling ConventionsApi->DeleteFlowConventions");
+                throw new Lusid.Sdk.Client.ApiException(400, "Missing required parameter 'code' when calling ConventionsApi->DeleteFlowConventions");
 
-            var localVarPath = "./api/conventions/rates/flowconventions/{scope}/{code}";
-            var localVarPathParams = new Dictionary<String, String>();
-            var localVarQueryParams = new List<KeyValuePair<String, String>>();
-            var localVarHeaderParams = new Dictionary<String, String>(this.Configuration.DefaultHeader);
-            var localVarFormParams = new Dictionary<String, String>();
-            var localVarFileParams = new Dictionary<String, FileParameter>();
-            Object localVarPostBody = null;
+            Lusid.Sdk.Client.RequestOptions localVarRequestOptions = new Lusid.Sdk.Client.RequestOptions();
 
-            // to determine the Content-Type header
-            String[] localVarHttpContentTypes = new String[] {
+            String[] _contentTypes = new String[] {
             };
-            String localVarHttpContentType = this.Configuration.ApiClient.SelectHeaderContentType(localVarHttpContentTypes);
 
             // to determine the Accept header
-            String[] localVarHttpHeaderAccepts = new String[] {
+            String[] _accepts = new String[] {
                 "text/plain",
                 "application/json",
                 "text/json"
             };
-            String localVarHttpHeaderAccept = this.Configuration.ApiClient.SelectHeaderAccept(localVarHttpHeaderAccepts);
-            if (localVarHttpHeaderAccept != null)
-                localVarHeaderParams.Add("Accept", localVarHttpHeaderAccept);
 
-            if (scope != null) localVarPathParams.Add("scope", this.Configuration.ApiClient.ParameterToString(scope)); // path parameter
-            if (code != null) localVarPathParams.Add("code", this.Configuration.ApiClient.ParameterToString(code)); // path parameter
+            var localVarContentType = Lusid.Sdk.Client.ClientUtils.SelectHeaderContentType(_contentTypes);
+            if (localVarContentType != null) localVarRequestOptions.HeaderParameters.Add("Content-Type", localVarContentType);
+
+            var localVarAccept = Lusid.Sdk.Client.ClientUtils.SelectHeaderAccept(_accepts);
+            if (localVarAccept != null) localVarRequestOptions.HeaderParameters.Add("Accept", localVarAccept);
+
+            localVarRequestOptions.PathParameters.Add("scope", Lusid.Sdk.Client.ClientUtils.ParameterToString(scope)); // path parameter
+            localVarRequestOptions.PathParameters.Add("code", Lusid.Sdk.Client.ClientUtils.ParameterToString(code)); // path parameter
 
             // authentication (oauth2) required
             // oauth required
             if (!String.IsNullOrEmpty(this.Configuration.AccessToken))
             {
-                localVarHeaderParams["Authorization"] = "Bearer " + this.Configuration.AccessToken;
+                localVarRequestOptions.HeaderParameters.Add("Authorization", "Bearer " + this.Configuration.AccessToken);
             }
 
             //  set the LUSID header
-            localVarHeaderParams["X-LUSID-SDK-Language"] = "C#";
-            localVarHeaderParams["X-LUSID-SDK-Version"] = "0.11.3412";
+            localVarRequestOptions.HeaderParameters.Add("X-LUSID-Sdk-Language", "C#");
+            localVarRequestOptions.HeaderParameters.Add("X-LUSID-Sdk-Version", "0.11.3412");
 
             // make the HTTP request
-            IRestResponse localVarResponse = (IRestResponse) this.Configuration.ApiClient.CallApi(localVarPath,
-                Method.DELETE, localVarQueryParams, localVarPostBody, localVarHeaderParams, localVarFormParams, localVarFileParams,
-                localVarPathParams, localVarHttpContentType);
+            var localVarResponse = this.Client.Delete<AnnulSingleStructuredDataResponse>("/api/conventions/rates/flowconventions/{scope}/{code}", localVarRequestOptions, this.Configuration);
 
-            int localVarStatusCode = (int) localVarResponse.StatusCode;
-
-            if (ExceptionFactory != null)
+            if (this.ExceptionFactory != null)
             {
-                Exception exception = ExceptionFactory("DeleteFlowConventions", localVarResponse);
-                if (exception != null) throw exception;
+                Exception _exception = this.ExceptionFactory("DeleteFlowConventions", localVarResponse);
+                if (_exception != null) throw _exception;
             }
 
-            return new ApiResponse<AnnulSingleStructuredDataResponse>(localVarStatusCode,
-                localVarResponse.Headers.ToDictionary(x => x.Key, x => string.Join(",", x.Value)),
-                (AnnulSingleStructuredDataResponse) this.Configuration.ApiClient.Deserialize(localVarResponse, typeof(AnnulSingleStructuredDataResponse)));
+            return localVarResponse;
         }
 
         /// <summary>
@@ -936,12 +953,12 @@ namespace Lusid.Sdk.Api
         /// <exception cref="Lusid.Sdk.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="scope">The scope of the Flow Conventions to delete.</param>
         /// <param name="code">The Flow Conventions to delete.</param>
+        /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
         /// <returns>Task of AnnulSingleStructuredDataResponse</returns>
-        public async System.Threading.Tasks.Task<AnnulSingleStructuredDataResponse> DeleteFlowConventionsAsync (string scope, string code)
+        public async System.Threading.Tasks.Task<AnnulSingleStructuredDataResponse> DeleteFlowConventionsAsync(string scope, string code, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
-             ApiResponse<AnnulSingleStructuredDataResponse> localVarResponse = await DeleteFlowConventionsAsyncWithHttpInfo(scope, code);
-             return localVarResponse.Data;
-
+            Lusid.Sdk.Client.ApiResponse<AnnulSingleStructuredDataResponse> localVarResponse = await DeleteFlowConventionsWithHttpInfoAsync(scope, code, cancellationToken).ConfigureAwait(false);
+            return localVarResponse.Data;
         }
 
         /// <summary>
@@ -950,69 +967,63 @@ namespace Lusid.Sdk.Api
         /// <exception cref="Lusid.Sdk.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="scope">The scope of the Flow Conventions to delete.</param>
         /// <param name="code">The Flow Conventions to delete.</param>
+        /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
         /// <returns>Task of ApiResponse (AnnulSingleStructuredDataResponse)</returns>
-        public async System.Threading.Tasks.Task<ApiResponse<AnnulSingleStructuredDataResponse>> DeleteFlowConventionsAsyncWithHttpInfo (string scope, string code)
+        public async System.Threading.Tasks.Task<Lusid.Sdk.Client.ApiResponse<AnnulSingleStructuredDataResponse>> DeleteFlowConventionsWithHttpInfoAsync(string scope, string code, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
             // verify the required parameter 'scope' is set
             if (scope == null)
-                throw new ApiException(400, "Missing required parameter 'scope' when calling ConventionsApi->DeleteFlowConventions");
+                throw new Lusid.Sdk.Client.ApiException(400, "Missing required parameter 'scope' when calling ConventionsApi->DeleteFlowConventions");
+
             // verify the required parameter 'code' is set
             if (code == null)
-                throw new ApiException(400, "Missing required parameter 'code' when calling ConventionsApi->DeleteFlowConventions");
+                throw new Lusid.Sdk.Client.ApiException(400, "Missing required parameter 'code' when calling ConventionsApi->DeleteFlowConventions");
 
-            var localVarPath = "./api/conventions/rates/flowconventions/{scope}/{code}";
-            var localVarPathParams = new Dictionary<String, String>();
-            var localVarQueryParams = new List<KeyValuePair<String, String>>();
-            var localVarHeaderParams = new Dictionary<String, String>(this.Configuration.DefaultHeader);
-            var localVarFormParams = new Dictionary<String, String>();
-            var localVarFileParams = new Dictionary<String, FileParameter>();
-            Object localVarPostBody = null;
 
-            // to determine the Content-Type header
-            String[] localVarHttpContentTypes = new String[] {
+            Lusid.Sdk.Client.RequestOptions localVarRequestOptions = new Lusid.Sdk.Client.RequestOptions();
+
+            String[] _contentTypes = new String[] {
             };
-            String localVarHttpContentType = this.Configuration.ApiClient.SelectHeaderContentType(localVarHttpContentTypes);
 
             // to determine the Accept header
-            String[] localVarHttpHeaderAccepts = new String[] {
+            String[] _accepts = new String[] {
                 "text/plain",
                 "application/json",
                 "text/json"
             };
-            String localVarHttpHeaderAccept = this.Configuration.ApiClient.SelectHeaderAccept(localVarHttpHeaderAccepts);
-            if (localVarHttpHeaderAccept != null)
-                localVarHeaderParams.Add("Accept", localVarHttpHeaderAccept);
 
-            if (scope != null) localVarPathParams.Add("scope", this.Configuration.ApiClient.ParameterToString(scope)); // path parameter
-            if (code != null) localVarPathParams.Add("code", this.Configuration.ApiClient.ParameterToString(code)); // path parameter
+
+            var localVarContentType = Lusid.Sdk.Client.ClientUtils.SelectHeaderContentType(_contentTypes);
+            if (localVarContentType != null) localVarRequestOptions.HeaderParameters.Add("Content-Type", localVarContentType);
+
+            var localVarAccept = Lusid.Sdk.Client.ClientUtils.SelectHeaderAccept(_accepts);
+            if (localVarAccept != null) localVarRequestOptions.HeaderParameters.Add("Accept", localVarAccept);
+
+            localVarRequestOptions.PathParameters.Add("scope", Lusid.Sdk.Client.ClientUtils.ParameterToString(scope)); // path parameter
+            localVarRequestOptions.PathParameters.Add("code", Lusid.Sdk.Client.ClientUtils.ParameterToString(code)); // path parameter
 
             // authentication (oauth2) required
             // oauth required
             if (!String.IsNullOrEmpty(this.Configuration.AccessToken))
             {
-                localVarHeaderParams["Authorization"] = "Bearer " + this.Configuration.AccessToken;
+                localVarRequestOptions.HeaderParameters.Add("Authorization", "Bearer " + this.Configuration.AccessToken);
             }
 
             //  set the LUSID header
-            localVarHeaderParams["X-LUSID-Sdk-Language"] = "C#";
-            localVarHeaderParams["X-LUSID-Sdk-Version"] = "0.11.3412";
+            localVarRequestOptions.HeaderParameters.Add("X-LUSID-Sdk-Language", "C#");
+            localVarRequestOptions.HeaderParameters.Add("X-LUSID-Sdk-Version", "0.11.3412");
 
             // make the HTTP request
-            IRestResponse localVarResponse = (IRestResponse) await this.Configuration.ApiClient.CallApiAsync(localVarPath,
-                Method.DELETE, localVarQueryParams, localVarPostBody, localVarHeaderParams, localVarFormParams, localVarFileParams,
-                localVarPathParams, localVarHttpContentType);
 
-            int localVarStatusCode = (int) localVarResponse.StatusCode;
+            var localVarResponse = await this.AsynchronousClient.DeleteAsync<AnnulSingleStructuredDataResponse>("/api/conventions/rates/flowconventions/{scope}/{code}", localVarRequestOptions, this.Configuration, cancellationToken).ConfigureAwait(false);
 
-            if (ExceptionFactory != null)
+            if (this.ExceptionFactory != null)
             {
-                Exception exception = ExceptionFactory("DeleteFlowConventions", localVarResponse);
-                if (exception != null) throw exception;
+                Exception _exception = this.ExceptionFactory("DeleteFlowConventions", localVarResponse);
+                if (_exception != null) throw _exception;
             }
 
-            return new ApiResponse<AnnulSingleStructuredDataResponse>(localVarStatusCode,
-                localVarResponse.Headers.ToDictionary(x => x.Key, x => string.Join(",", x.Value)),
-                (AnnulSingleStructuredDataResponse) this.Configuration.ApiClient.Deserialize(localVarResponse, typeof(AnnulSingleStructuredDataResponse)));
+            return localVarResponse;
         }
 
         /// <summary>
@@ -1022,10 +1033,10 @@ namespace Lusid.Sdk.Api
         /// <param name="scope">The scope of the Index Convention to delete.</param>
         /// <param name="code">The Index Convention to delete.</param>
         /// <returns>AnnulSingleStructuredDataResponse</returns>
-        public AnnulSingleStructuredDataResponse DeleteIndexConvention (string scope, string code)
+        public AnnulSingleStructuredDataResponse DeleteIndexConvention(string scope, string code)
         {
-             ApiResponse<AnnulSingleStructuredDataResponse> localVarResponse = DeleteIndexConventionWithHttpInfo(scope, code);
-             return localVarResponse.Data;
+            Lusid.Sdk.Client.ApiResponse<AnnulSingleStructuredDataResponse> localVarResponse = DeleteIndexConventionWithHttpInfo(scope, code);
+            return localVarResponse.Data;
         }
 
         /// <summary>
@@ -1035,68 +1046,58 @@ namespace Lusid.Sdk.Api
         /// <param name="scope">The scope of the Index Convention to delete.</param>
         /// <param name="code">The Index Convention to delete.</param>
         /// <returns>ApiResponse of AnnulSingleStructuredDataResponse</returns>
-        public ApiResponse< AnnulSingleStructuredDataResponse > DeleteIndexConventionWithHttpInfo (string scope, string code)
+        public Lusid.Sdk.Client.ApiResponse<AnnulSingleStructuredDataResponse> DeleteIndexConventionWithHttpInfo(string scope, string code)
         {
             // verify the required parameter 'scope' is set
             if (scope == null)
-                throw new ApiException(400, "Missing required parameter 'scope' when calling ConventionsApi->DeleteIndexConvention");
+                throw new Lusid.Sdk.Client.ApiException(400, "Missing required parameter 'scope' when calling ConventionsApi->DeleteIndexConvention");
+
             // verify the required parameter 'code' is set
             if (code == null)
-                throw new ApiException(400, "Missing required parameter 'code' when calling ConventionsApi->DeleteIndexConvention");
+                throw new Lusid.Sdk.Client.ApiException(400, "Missing required parameter 'code' when calling ConventionsApi->DeleteIndexConvention");
 
-            var localVarPath = "./api/conventions/rates/indexconventions/{scope}/{code}";
-            var localVarPathParams = new Dictionary<String, String>();
-            var localVarQueryParams = new List<KeyValuePair<String, String>>();
-            var localVarHeaderParams = new Dictionary<String, String>(this.Configuration.DefaultHeader);
-            var localVarFormParams = new Dictionary<String, String>();
-            var localVarFileParams = new Dictionary<String, FileParameter>();
-            Object localVarPostBody = null;
+            Lusid.Sdk.Client.RequestOptions localVarRequestOptions = new Lusid.Sdk.Client.RequestOptions();
 
-            // to determine the Content-Type header
-            String[] localVarHttpContentTypes = new String[] {
+            String[] _contentTypes = new String[] {
             };
-            String localVarHttpContentType = this.Configuration.ApiClient.SelectHeaderContentType(localVarHttpContentTypes);
 
             // to determine the Accept header
-            String[] localVarHttpHeaderAccepts = new String[] {
+            String[] _accepts = new String[] {
                 "text/plain",
                 "application/json",
                 "text/json"
             };
-            String localVarHttpHeaderAccept = this.Configuration.ApiClient.SelectHeaderAccept(localVarHttpHeaderAccepts);
-            if (localVarHttpHeaderAccept != null)
-                localVarHeaderParams.Add("Accept", localVarHttpHeaderAccept);
 
-            if (scope != null) localVarPathParams.Add("scope", this.Configuration.ApiClient.ParameterToString(scope)); // path parameter
-            if (code != null) localVarPathParams.Add("code", this.Configuration.ApiClient.ParameterToString(code)); // path parameter
+            var localVarContentType = Lusid.Sdk.Client.ClientUtils.SelectHeaderContentType(_contentTypes);
+            if (localVarContentType != null) localVarRequestOptions.HeaderParameters.Add("Content-Type", localVarContentType);
+
+            var localVarAccept = Lusid.Sdk.Client.ClientUtils.SelectHeaderAccept(_accepts);
+            if (localVarAccept != null) localVarRequestOptions.HeaderParameters.Add("Accept", localVarAccept);
+
+            localVarRequestOptions.PathParameters.Add("scope", Lusid.Sdk.Client.ClientUtils.ParameterToString(scope)); // path parameter
+            localVarRequestOptions.PathParameters.Add("code", Lusid.Sdk.Client.ClientUtils.ParameterToString(code)); // path parameter
 
             // authentication (oauth2) required
             // oauth required
             if (!String.IsNullOrEmpty(this.Configuration.AccessToken))
             {
-                localVarHeaderParams["Authorization"] = "Bearer " + this.Configuration.AccessToken;
+                localVarRequestOptions.HeaderParameters.Add("Authorization", "Bearer " + this.Configuration.AccessToken);
             }
 
             //  set the LUSID header
-            localVarHeaderParams["X-LUSID-SDK-Language"] = "C#";
-            localVarHeaderParams["X-LUSID-SDK-Version"] = "0.11.3412";
+            localVarRequestOptions.HeaderParameters.Add("X-LUSID-Sdk-Language", "C#");
+            localVarRequestOptions.HeaderParameters.Add("X-LUSID-Sdk-Version", "0.11.3412");
 
             // make the HTTP request
-            IRestResponse localVarResponse = (IRestResponse) this.Configuration.ApiClient.CallApi(localVarPath,
-                Method.DELETE, localVarQueryParams, localVarPostBody, localVarHeaderParams, localVarFormParams, localVarFileParams,
-                localVarPathParams, localVarHttpContentType);
+            var localVarResponse = this.Client.Delete<AnnulSingleStructuredDataResponse>("/api/conventions/rates/indexconventions/{scope}/{code}", localVarRequestOptions, this.Configuration);
 
-            int localVarStatusCode = (int) localVarResponse.StatusCode;
-
-            if (ExceptionFactory != null)
+            if (this.ExceptionFactory != null)
             {
-                Exception exception = ExceptionFactory("DeleteIndexConvention", localVarResponse);
-                if (exception != null) throw exception;
+                Exception _exception = this.ExceptionFactory("DeleteIndexConvention", localVarResponse);
+                if (_exception != null) throw _exception;
             }
 
-            return new ApiResponse<AnnulSingleStructuredDataResponse>(localVarStatusCode,
-                localVarResponse.Headers.ToDictionary(x => x.Key, x => string.Join(",", x.Value)),
-                (AnnulSingleStructuredDataResponse) this.Configuration.ApiClient.Deserialize(localVarResponse, typeof(AnnulSingleStructuredDataResponse)));
+            return localVarResponse;
         }
 
         /// <summary>
@@ -1105,12 +1106,12 @@ namespace Lusid.Sdk.Api
         /// <exception cref="Lusid.Sdk.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="scope">The scope of the Index Convention to delete.</param>
         /// <param name="code">The Index Convention to delete.</param>
+        /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
         /// <returns>Task of AnnulSingleStructuredDataResponse</returns>
-        public async System.Threading.Tasks.Task<AnnulSingleStructuredDataResponse> DeleteIndexConventionAsync (string scope, string code)
+        public async System.Threading.Tasks.Task<AnnulSingleStructuredDataResponse> DeleteIndexConventionAsync(string scope, string code, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
-             ApiResponse<AnnulSingleStructuredDataResponse> localVarResponse = await DeleteIndexConventionAsyncWithHttpInfo(scope, code);
-             return localVarResponse.Data;
-
+            Lusid.Sdk.Client.ApiResponse<AnnulSingleStructuredDataResponse> localVarResponse = await DeleteIndexConventionWithHttpInfoAsync(scope, code, cancellationToken).ConfigureAwait(false);
+            return localVarResponse.Data;
         }
 
         /// <summary>
@@ -1119,69 +1120,63 @@ namespace Lusid.Sdk.Api
         /// <exception cref="Lusid.Sdk.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="scope">The scope of the Index Convention to delete.</param>
         /// <param name="code">The Index Convention to delete.</param>
+        /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
         /// <returns>Task of ApiResponse (AnnulSingleStructuredDataResponse)</returns>
-        public async System.Threading.Tasks.Task<ApiResponse<AnnulSingleStructuredDataResponse>> DeleteIndexConventionAsyncWithHttpInfo (string scope, string code)
+        public async System.Threading.Tasks.Task<Lusid.Sdk.Client.ApiResponse<AnnulSingleStructuredDataResponse>> DeleteIndexConventionWithHttpInfoAsync(string scope, string code, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
             // verify the required parameter 'scope' is set
             if (scope == null)
-                throw new ApiException(400, "Missing required parameter 'scope' when calling ConventionsApi->DeleteIndexConvention");
+                throw new Lusid.Sdk.Client.ApiException(400, "Missing required parameter 'scope' when calling ConventionsApi->DeleteIndexConvention");
+
             // verify the required parameter 'code' is set
             if (code == null)
-                throw new ApiException(400, "Missing required parameter 'code' when calling ConventionsApi->DeleteIndexConvention");
+                throw new Lusid.Sdk.Client.ApiException(400, "Missing required parameter 'code' when calling ConventionsApi->DeleteIndexConvention");
 
-            var localVarPath = "./api/conventions/rates/indexconventions/{scope}/{code}";
-            var localVarPathParams = new Dictionary<String, String>();
-            var localVarQueryParams = new List<KeyValuePair<String, String>>();
-            var localVarHeaderParams = new Dictionary<String, String>(this.Configuration.DefaultHeader);
-            var localVarFormParams = new Dictionary<String, String>();
-            var localVarFileParams = new Dictionary<String, FileParameter>();
-            Object localVarPostBody = null;
 
-            // to determine the Content-Type header
-            String[] localVarHttpContentTypes = new String[] {
+            Lusid.Sdk.Client.RequestOptions localVarRequestOptions = new Lusid.Sdk.Client.RequestOptions();
+
+            String[] _contentTypes = new String[] {
             };
-            String localVarHttpContentType = this.Configuration.ApiClient.SelectHeaderContentType(localVarHttpContentTypes);
 
             // to determine the Accept header
-            String[] localVarHttpHeaderAccepts = new String[] {
+            String[] _accepts = new String[] {
                 "text/plain",
                 "application/json",
                 "text/json"
             };
-            String localVarHttpHeaderAccept = this.Configuration.ApiClient.SelectHeaderAccept(localVarHttpHeaderAccepts);
-            if (localVarHttpHeaderAccept != null)
-                localVarHeaderParams.Add("Accept", localVarHttpHeaderAccept);
 
-            if (scope != null) localVarPathParams.Add("scope", this.Configuration.ApiClient.ParameterToString(scope)); // path parameter
-            if (code != null) localVarPathParams.Add("code", this.Configuration.ApiClient.ParameterToString(code)); // path parameter
+
+            var localVarContentType = Lusid.Sdk.Client.ClientUtils.SelectHeaderContentType(_contentTypes);
+            if (localVarContentType != null) localVarRequestOptions.HeaderParameters.Add("Content-Type", localVarContentType);
+
+            var localVarAccept = Lusid.Sdk.Client.ClientUtils.SelectHeaderAccept(_accepts);
+            if (localVarAccept != null) localVarRequestOptions.HeaderParameters.Add("Accept", localVarAccept);
+
+            localVarRequestOptions.PathParameters.Add("scope", Lusid.Sdk.Client.ClientUtils.ParameterToString(scope)); // path parameter
+            localVarRequestOptions.PathParameters.Add("code", Lusid.Sdk.Client.ClientUtils.ParameterToString(code)); // path parameter
 
             // authentication (oauth2) required
             // oauth required
             if (!String.IsNullOrEmpty(this.Configuration.AccessToken))
             {
-                localVarHeaderParams["Authorization"] = "Bearer " + this.Configuration.AccessToken;
+                localVarRequestOptions.HeaderParameters.Add("Authorization", "Bearer " + this.Configuration.AccessToken);
             }
 
             //  set the LUSID header
-            localVarHeaderParams["X-LUSID-Sdk-Language"] = "C#";
-            localVarHeaderParams["X-LUSID-Sdk-Version"] = "0.11.3412";
+            localVarRequestOptions.HeaderParameters.Add("X-LUSID-Sdk-Language", "C#");
+            localVarRequestOptions.HeaderParameters.Add("X-LUSID-Sdk-Version", "0.11.3412");
 
             // make the HTTP request
-            IRestResponse localVarResponse = (IRestResponse) await this.Configuration.ApiClient.CallApiAsync(localVarPath,
-                Method.DELETE, localVarQueryParams, localVarPostBody, localVarHeaderParams, localVarFormParams, localVarFileParams,
-                localVarPathParams, localVarHttpContentType);
 
-            int localVarStatusCode = (int) localVarResponse.StatusCode;
+            var localVarResponse = await this.AsynchronousClient.DeleteAsync<AnnulSingleStructuredDataResponse>("/api/conventions/rates/indexconventions/{scope}/{code}", localVarRequestOptions, this.Configuration, cancellationToken).ConfigureAwait(false);
 
-            if (ExceptionFactory != null)
+            if (this.ExceptionFactory != null)
             {
-                Exception exception = ExceptionFactory("DeleteIndexConvention", localVarResponse);
-                if (exception != null) throw exception;
+                Exception _exception = this.ExceptionFactory("DeleteIndexConvention", localVarResponse);
+                if (_exception != null) throw _exception;
             }
 
-            return new ApiResponse<AnnulSingleStructuredDataResponse>(localVarStatusCode,
-                localVarResponse.Headers.ToDictionary(x => x.Key, x => string.Join(",", x.Value)),
-                (AnnulSingleStructuredDataResponse) this.Configuration.ApiClient.Deserialize(localVarResponse, typeof(AnnulSingleStructuredDataResponse)));
+            return localVarResponse;
         }
 
         /// <summary>
@@ -1192,10 +1187,10 @@ namespace Lusid.Sdk.Api
         /// <param name="code">The name of the CDS Flow Conventions to retrieve the data for.</param>
         /// <param name="asAt">The asAt datetime at which to retrieve the CDS Flow Conventions. Defaults to return the latest version if not specified. (optional)</param>
         /// <returns>GetCdsFlowConventionsResponse</returns>
-        public GetCdsFlowConventionsResponse GetCdsFlowConventions (string scope, string code, DateTimeOffset? asAt = null)
+        public GetCdsFlowConventionsResponse GetCdsFlowConventions(string scope, string code, DateTimeOffset? asAt = default(DateTimeOffset?))
         {
-             ApiResponse<GetCdsFlowConventionsResponse> localVarResponse = GetCdsFlowConventionsWithHttpInfo(scope, code, asAt);
-             return localVarResponse.Data;
+            Lusid.Sdk.Client.ApiResponse<GetCdsFlowConventionsResponse> localVarResponse = GetCdsFlowConventionsWithHttpInfo(scope, code, asAt);
+            return localVarResponse.Data;
         }
 
         /// <summary>
@@ -1206,69 +1201,62 @@ namespace Lusid.Sdk.Api
         /// <param name="code">The name of the CDS Flow Conventions to retrieve the data for.</param>
         /// <param name="asAt">The asAt datetime at which to retrieve the CDS Flow Conventions. Defaults to return the latest version if not specified. (optional)</param>
         /// <returns>ApiResponse of GetCdsFlowConventionsResponse</returns>
-        public ApiResponse< GetCdsFlowConventionsResponse > GetCdsFlowConventionsWithHttpInfo (string scope, string code, DateTimeOffset? asAt = null)
+        public Lusid.Sdk.Client.ApiResponse<GetCdsFlowConventionsResponse> GetCdsFlowConventionsWithHttpInfo(string scope, string code, DateTimeOffset? asAt = default(DateTimeOffset?))
         {
             // verify the required parameter 'scope' is set
             if (scope == null)
-                throw new ApiException(400, "Missing required parameter 'scope' when calling ConventionsApi->GetCdsFlowConventions");
+                throw new Lusid.Sdk.Client.ApiException(400, "Missing required parameter 'scope' when calling ConventionsApi->GetCdsFlowConventions");
+
             // verify the required parameter 'code' is set
             if (code == null)
-                throw new ApiException(400, "Missing required parameter 'code' when calling ConventionsApi->GetCdsFlowConventions");
+                throw new Lusid.Sdk.Client.ApiException(400, "Missing required parameter 'code' when calling ConventionsApi->GetCdsFlowConventions");
 
-            var localVarPath = "./api/conventions/credit/conventions/{scope}/{code}";
-            var localVarPathParams = new Dictionary<String, String>();
-            var localVarQueryParams = new List<KeyValuePair<String, String>>();
-            var localVarHeaderParams = new Dictionary<String, String>(this.Configuration.DefaultHeader);
-            var localVarFormParams = new Dictionary<String, String>();
-            var localVarFileParams = new Dictionary<String, FileParameter>();
-            Object localVarPostBody = null;
+            Lusid.Sdk.Client.RequestOptions localVarRequestOptions = new Lusid.Sdk.Client.RequestOptions();
 
-            // to determine the Content-Type header
-            String[] localVarHttpContentTypes = new String[] {
+            String[] _contentTypes = new String[] {
             };
-            String localVarHttpContentType = this.Configuration.ApiClient.SelectHeaderContentType(localVarHttpContentTypes);
 
             // to determine the Accept header
-            String[] localVarHttpHeaderAccepts = new String[] {
+            String[] _accepts = new String[] {
                 "text/plain",
                 "application/json",
                 "text/json"
             };
-            String localVarHttpHeaderAccept = this.Configuration.ApiClient.SelectHeaderAccept(localVarHttpHeaderAccepts);
-            if (localVarHttpHeaderAccept != null)
-                localVarHeaderParams.Add("Accept", localVarHttpHeaderAccept);
 
-            if (scope != null) localVarPathParams.Add("scope", this.Configuration.ApiClient.ParameterToString(scope)); // path parameter
-            if (code != null) localVarPathParams.Add("code", this.Configuration.ApiClient.ParameterToString(code)); // path parameter
-            if (asAt != null) localVarQueryParams.AddRange(this.Configuration.ApiClient.ParameterToKeyValuePairs("", "asAt", asAt)); // query parameter
+            var localVarContentType = Lusid.Sdk.Client.ClientUtils.SelectHeaderContentType(_contentTypes);
+            if (localVarContentType != null) localVarRequestOptions.HeaderParameters.Add("Content-Type", localVarContentType);
+
+            var localVarAccept = Lusid.Sdk.Client.ClientUtils.SelectHeaderAccept(_accepts);
+            if (localVarAccept != null) localVarRequestOptions.HeaderParameters.Add("Accept", localVarAccept);
+
+            localVarRequestOptions.PathParameters.Add("scope", Lusid.Sdk.Client.ClientUtils.ParameterToString(scope)); // path parameter
+            localVarRequestOptions.PathParameters.Add("code", Lusid.Sdk.Client.ClientUtils.ParameterToString(code)); // path parameter
+            if (asAt != null)
+            {
+                localVarRequestOptions.QueryParameters.Add(Lusid.Sdk.Client.ClientUtils.ParameterToMultiMap("", "asAt", asAt));
+            }
 
             // authentication (oauth2) required
             // oauth required
             if (!String.IsNullOrEmpty(this.Configuration.AccessToken))
             {
-                localVarHeaderParams["Authorization"] = "Bearer " + this.Configuration.AccessToken;
+                localVarRequestOptions.HeaderParameters.Add("Authorization", "Bearer " + this.Configuration.AccessToken);
             }
 
             //  set the LUSID header
-            localVarHeaderParams["X-LUSID-SDK-Language"] = "C#";
-            localVarHeaderParams["X-LUSID-SDK-Version"] = "0.11.3412";
+            localVarRequestOptions.HeaderParameters.Add("X-LUSID-Sdk-Language", "C#");
+            localVarRequestOptions.HeaderParameters.Add("X-LUSID-Sdk-Version", "0.11.3412");
 
             // make the HTTP request
-            IRestResponse localVarResponse = (IRestResponse) this.Configuration.ApiClient.CallApi(localVarPath,
-                Method.GET, localVarQueryParams, localVarPostBody, localVarHeaderParams, localVarFormParams, localVarFileParams,
-                localVarPathParams, localVarHttpContentType);
+            var localVarResponse = this.Client.Get<GetCdsFlowConventionsResponse>("/api/conventions/credit/conventions/{scope}/{code}", localVarRequestOptions, this.Configuration);
 
-            int localVarStatusCode = (int) localVarResponse.StatusCode;
-
-            if (ExceptionFactory != null)
+            if (this.ExceptionFactory != null)
             {
-                Exception exception = ExceptionFactory("GetCdsFlowConventions", localVarResponse);
-                if (exception != null) throw exception;
+                Exception _exception = this.ExceptionFactory("GetCdsFlowConventions", localVarResponse);
+                if (_exception != null) throw _exception;
             }
 
-            return new ApiResponse<GetCdsFlowConventionsResponse>(localVarStatusCode,
-                localVarResponse.Headers.ToDictionary(x => x.Key, x => string.Join(",", x.Value)),
-                (GetCdsFlowConventionsResponse) this.Configuration.ApiClient.Deserialize(localVarResponse, typeof(GetCdsFlowConventionsResponse)));
+            return localVarResponse;
         }
 
         /// <summary>
@@ -1278,12 +1266,12 @@ namespace Lusid.Sdk.Api
         /// <param name="scope">The scope of the CDS Flow Conventions to retrieve.</param>
         /// <param name="code">The name of the CDS Flow Conventions to retrieve the data for.</param>
         /// <param name="asAt">The asAt datetime at which to retrieve the CDS Flow Conventions. Defaults to return the latest version if not specified. (optional)</param>
+        /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
         /// <returns>Task of GetCdsFlowConventionsResponse</returns>
-        public async System.Threading.Tasks.Task<GetCdsFlowConventionsResponse> GetCdsFlowConventionsAsync (string scope, string code, DateTimeOffset? asAt = null)
+        public async System.Threading.Tasks.Task<GetCdsFlowConventionsResponse> GetCdsFlowConventionsAsync(string scope, string code, DateTimeOffset? asAt = default(DateTimeOffset?), System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
-             ApiResponse<GetCdsFlowConventionsResponse> localVarResponse = await GetCdsFlowConventionsAsyncWithHttpInfo(scope, code, asAt);
-             return localVarResponse.Data;
-
+            Lusid.Sdk.Client.ApiResponse<GetCdsFlowConventionsResponse> localVarResponse = await GetCdsFlowConventionsWithHttpInfoAsync(scope, code, asAt, cancellationToken).ConfigureAwait(false);
+            return localVarResponse.Data;
         }
 
         /// <summary>
@@ -1293,70 +1281,67 @@ namespace Lusid.Sdk.Api
         /// <param name="scope">The scope of the CDS Flow Conventions to retrieve.</param>
         /// <param name="code">The name of the CDS Flow Conventions to retrieve the data for.</param>
         /// <param name="asAt">The asAt datetime at which to retrieve the CDS Flow Conventions. Defaults to return the latest version if not specified. (optional)</param>
+        /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
         /// <returns>Task of ApiResponse (GetCdsFlowConventionsResponse)</returns>
-        public async System.Threading.Tasks.Task<ApiResponse<GetCdsFlowConventionsResponse>> GetCdsFlowConventionsAsyncWithHttpInfo (string scope, string code, DateTimeOffset? asAt = null)
+        public async System.Threading.Tasks.Task<Lusid.Sdk.Client.ApiResponse<GetCdsFlowConventionsResponse>> GetCdsFlowConventionsWithHttpInfoAsync(string scope, string code, DateTimeOffset? asAt = default(DateTimeOffset?), System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
             // verify the required parameter 'scope' is set
             if (scope == null)
-                throw new ApiException(400, "Missing required parameter 'scope' when calling ConventionsApi->GetCdsFlowConventions");
+                throw new Lusid.Sdk.Client.ApiException(400, "Missing required parameter 'scope' when calling ConventionsApi->GetCdsFlowConventions");
+
             // verify the required parameter 'code' is set
             if (code == null)
-                throw new ApiException(400, "Missing required parameter 'code' when calling ConventionsApi->GetCdsFlowConventions");
+                throw new Lusid.Sdk.Client.ApiException(400, "Missing required parameter 'code' when calling ConventionsApi->GetCdsFlowConventions");
 
-            var localVarPath = "./api/conventions/credit/conventions/{scope}/{code}";
-            var localVarPathParams = new Dictionary<String, String>();
-            var localVarQueryParams = new List<KeyValuePair<String, String>>();
-            var localVarHeaderParams = new Dictionary<String, String>(this.Configuration.DefaultHeader);
-            var localVarFormParams = new Dictionary<String, String>();
-            var localVarFileParams = new Dictionary<String, FileParameter>();
-            Object localVarPostBody = null;
 
-            // to determine the Content-Type header
-            String[] localVarHttpContentTypes = new String[] {
+            Lusid.Sdk.Client.RequestOptions localVarRequestOptions = new Lusid.Sdk.Client.RequestOptions();
+
+            String[] _contentTypes = new String[] {
             };
-            String localVarHttpContentType = this.Configuration.ApiClient.SelectHeaderContentType(localVarHttpContentTypes);
 
             // to determine the Accept header
-            String[] localVarHttpHeaderAccepts = new String[] {
+            String[] _accepts = new String[] {
                 "text/plain",
                 "application/json",
                 "text/json"
             };
-            String localVarHttpHeaderAccept = this.Configuration.ApiClient.SelectHeaderAccept(localVarHttpHeaderAccepts);
-            if (localVarHttpHeaderAccept != null)
-                localVarHeaderParams.Add("Accept", localVarHttpHeaderAccept);
 
-            if (scope != null) localVarPathParams.Add("scope", this.Configuration.ApiClient.ParameterToString(scope)); // path parameter
-            if (code != null) localVarPathParams.Add("code", this.Configuration.ApiClient.ParameterToString(code)); // path parameter
-            if (asAt != null) localVarQueryParams.AddRange(this.Configuration.ApiClient.ParameterToKeyValuePairs("", "asAt", asAt)); // query parameter
+
+            var localVarContentType = Lusid.Sdk.Client.ClientUtils.SelectHeaderContentType(_contentTypes);
+            if (localVarContentType != null) localVarRequestOptions.HeaderParameters.Add("Content-Type", localVarContentType);
+
+            var localVarAccept = Lusid.Sdk.Client.ClientUtils.SelectHeaderAccept(_accepts);
+            if (localVarAccept != null) localVarRequestOptions.HeaderParameters.Add("Accept", localVarAccept);
+
+            localVarRequestOptions.PathParameters.Add("scope", Lusid.Sdk.Client.ClientUtils.ParameterToString(scope)); // path parameter
+            localVarRequestOptions.PathParameters.Add("code", Lusid.Sdk.Client.ClientUtils.ParameterToString(code)); // path parameter
+            if (asAt != null)
+            {
+                localVarRequestOptions.QueryParameters.Add(Lusid.Sdk.Client.ClientUtils.ParameterToMultiMap("", "asAt", asAt));
+            }
 
             // authentication (oauth2) required
             // oauth required
             if (!String.IsNullOrEmpty(this.Configuration.AccessToken))
             {
-                localVarHeaderParams["Authorization"] = "Bearer " + this.Configuration.AccessToken;
+                localVarRequestOptions.HeaderParameters.Add("Authorization", "Bearer " + this.Configuration.AccessToken);
             }
 
             //  set the LUSID header
-            localVarHeaderParams["X-LUSID-Sdk-Language"] = "C#";
-            localVarHeaderParams["X-LUSID-Sdk-Version"] = "0.11.3412";
+            localVarRequestOptions.HeaderParameters.Add("X-LUSID-Sdk-Language", "C#");
+            localVarRequestOptions.HeaderParameters.Add("X-LUSID-Sdk-Version", "0.11.3412");
 
             // make the HTTP request
-            IRestResponse localVarResponse = (IRestResponse) await this.Configuration.ApiClient.CallApiAsync(localVarPath,
-                Method.GET, localVarQueryParams, localVarPostBody, localVarHeaderParams, localVarFormParams, localVarFileParams,
-                localVarPathParams, localVarHttpContentType);
 
-            int localVarStatusCode = (int) localVarResponse.StatusCode;
+            var localVarResponse = await this.AsynchronousClient.GetAsync<GetCdsFlowConventionsResponse>("/api/conventions/credit/conventions/{scope}/{code}", localVarRequestOptions, this.Configuration, cancellationToken).ConfigureAwait(false);
 
-            if (ExceptionFactory != null)
+            if (this.ExceptionFactory != null)
             {
-                Exception exception = ExceptionFactory("GetCdsFlowConventions", localVarResponse);
-                if (exception != null) throw exception;
+                Exception _exception = this.ExceptionFactory("GetCdsFlowConventions", localVarResponse);
+                if (_exception != null) throw _exception;
             }
 
-            return new ApiResponse<GetCdsFlowConventionsResponse>(localVarStatusCode,
-                localVarResponse.Headers.ToDictionary(x => x.Key, x => string.Join(",", x.Value)),
-                (GetCdsFlowConventionsResponse) this.Configuration.ApiClient.Deserialize(localVarResponse, typeof(GetCdsFlowConventionsResponse)));
+            return localVarResponse;
         }
 
         /// <summary>
@@ -1367,10 +1352,10 @@ namespace Lusid.Sdk.Api
         /// <param name="code">The name of the Flow Conventions to retrieve the data for.</param>
         /// <param name="asAt">The asAt datetime at which to retrieve the Flow Conventions. Defaults to return the latest version if not specified. (optional)</param>
         /// <returns>GetFlowConventionsResponse</returns>
-        public GetFlowConventionsResponse GetFlowConventions (string scope, string code, DateTimeOffset? asAt = null)
+        public GetFlowConventionsResponse GetFlowConventions(string scope, string code, DateTimeOffset? asAt = default(DateTimeOffset?))
         {
-             ApiResponse<GetFlowConventionsResponse> localVarResponse = GetFlowConventionsWithHttpInfo(scope, code, asAt);
-             return localVarResponse.Data;
+            Lusid.Sdk.Client.ApiResponse<GetFlowConventionsResponse> localVarResponse = GetFlowConventionsWithHttpInfo(scope, code, asAt);
+            return localVarResponse.Data;
         }
 
         /// <summary>
@@ -1381,69 +1366,62 @@ namespace Lusid.Sdk.Api
         /// <param name="code">The name of the Flow Conventions to retrieve the data for.</param>
         /// <param name="asAt">The asAt datetime at which to retrieve the Flow Conventions. Defaults to return the latest version if not specified. (optional)</param>
         /// <returns>ApiResponse of GetFlowConventionsResponse</returns>
-        public ApiResponse< GetFlowConventionsResponse > GetFlowConventionsWithHttpInfo (string scope, string code, DateTimeOffset? asAt = null)
+        public Lusid.Sdk.Client.ApiResponse<GetFlowConventionsResponse> GetFlowConventionsWithHttpInfo(string scope, string code, DateTimeOffset? asAt = default(DateTimeOffset?))
         {
             // verify the required parameter 'scope' is set
             if (scope == null)
-                throw new ApiException(400, "Missing required parameter 'scope' when calling ConventionsApi->GetFlowConventions");
+                throw new Lusid.Sdk.Client.ApiException(400, "Missing required parameter 'scope' when calling ConventionsApi->GetFlowConventions");
+
             // verify the required parameter 'code' is set
             if (code == null)
-                throw new ApiException(400, "Missing required parameter 'code' when calling ConventionsApi->GetFlowConventions");
+                throw new Lusid.Sdk.Client.ApiException(400, "Missing required parameter 'code' when calling ConventionsApi->GetFlowConventions");
 
-            var localVarPath = "./api/conventions/rates/flowconventions/{scope}/{code}";
-            var localVarPathParams = new Dictionary<String, String>();
-            var localVarQueryParams = new List<KeyValuePair<String, String>>();
-            var localVarHeaderParams = new Dictionary<String, String>(this.Configuration.DefaultHeader);
-            var localVarFormParams = new Dictionary<String, String>();
-            var localVarFileParams = new Dictionary<String, FileParameter>();
-            Object localVarPostBody = null;
+            Lusid.Sdk.Client.RequestOptions localVarRequestOptions = new Lusid.Sdk.Client.RequestOptions();
 
-            // to determine the Content-Type header
-            String[] localVarHttpContentTypes = new String[] {
+            String[] _contentTypes = new String[] {
             };
-            String localVarHttpContentType = this.Configuration.ApiClient.SelectHeaderContentType(localVarHttpContentTypes);
 
             // to determine the Accept header
-            String[] localVarHttpHeaderAccepts = new String[] {
+            String[] _accepts = new String[] {
                 "text/plain",
                 "application/json",
                 "text/json"
             };
-            String localVarHttpHeaderAccept = this.Configuration.ApiClient.SelectHeaderAccept(localVarHttpHeaderAccepts);
-            if (localVarHttpHeaderAccept != null)
-                localVarHeaderParams.Add("Accept", localVarHttpHeaderAccept);
 
-            if (scope != null) localVarPathParams.Add("scope", this.Configuration.ApiClient.ParameterToString(scope)); // path parameter
-            if (code != null) localVarPathParams.Add("code", this.Configuration.ApiClient.ParameterToString(code)); // path parameter
-            if (asAt != null) localVarQueryParams.AddRange(this.Configuration.ApiClient.ParameterToKeyValuePairs("", "asAt", asAt)); // query parameter
+            var localVarContentType = Lusid.Sdk.Client.ClientUtils.SelectHeaderContentType(_contentTypes);
+            if (localVarContentType != null) localVarRequestOptions.HeaderParameters.Add("Content-Type", localVarContentType);
+
+            var localVarAccept = Lusid.Sdk.Client.ClientUtils.SelectHeaderAccept(_accepts);
+            if (localVarAccept != null) localVarRequestOptions.HeaderParameters.Add("Accept", localVarAccept);
+
+            localVarRequestOptions.PathParameters.Add("scope", Lusid.Sdk.Client.ClientUtils.ParameterToString(scope)); // path parameter
+            localVarRequestOptions.PathParameters.Add("code", Lusid.Sdk.Client.ClientUtils.ParameterToString(code)); // path parameter
+            if (asAt != null)
+            {
+                localVarRequestOptions.QueryParameters.Add(Lusid.Sdk.Client.ClientUtils.ParameterToMultiMap("", "asAt", asAt));
+            }
 
             // authentication (oauth2) required
             // oauth required
             if (!String.IsNullOrEmpty(this.Configuration.AccessToken))
             {
-                localVarHeaderParams["Authorization"] = "Bearer " + this.Configuration.AccessToken;
+                localVarRequestOptions.HeaderParameters.Add("Authorization", "Bearer " + this.Configuration.AccessToken);
             }
 
             //  set the LUSID header
-            localVarHeaderParams["X-LUSID-SDK-Language"] = "C#";
-            localVarHeaderParams["X-LUSID-SDK-Version"] = "0.11.3412";
+            localVarRequestOptions.HeaderParameters.Add("X-LUSID-Sdk-Language", "C#");
+            localVarRequestOptions.HeaderParameters.Add("X-LUSID-Sdk-Version", "0.11.3412");
 
             // make the HTTP request
-            IRestResponse localVarResponse = (IRestResponse) this.Configuration.ApiClient.CallApi(localVarPath,
-                Method.GET, localVarQueryParams, localVarPostBody, localVarHeaderParams, localVarFormParams, localVarFileParams,
-                localVarPathParams, localVarHttpContentType);
+            var localVarResponse = this.Client.Get<GetFlowConventionsResponse>("/api/conventions/rates/flowconventions/{scope}/{code}", localVarRequestOptions, this.Configuration);
 
-            int localVarStatusCode = (int) localVarResponse.StatusCode;
-
-            if (ExceptionFactory != null)
+            if (this.ExceptionFactory != null)
             {
-                Exception exception = ExceptionFactory("GetFlowConventions", localVarResponse);
-                if (exception != null) throw exception;
+                Exception _exception = this.ExceptionFactory("GetFlowConventions", localVarResponse);
+                if (_exception != null) throw _exception;
             }
 
-            return new ApiResponse<GetFlowConventionsResponse>(localVarStatusCode,
-                localVarResponse.Headers.ToDictionary(x => x.Key, x => string.Join(",", x.Value)),
-                (GetFlowConventionsResponse) this.Configuration.ApiClient.Deserialize(localVarResponse, typeof(GetFlowConventionsResponse)));
+            return localVarResponse;
         }
 
         /// <summary>
@@ -1453,12 +1431,12 @@ namespace Lusid.Sdk.Api
         /// <param name="scope">The scope of the Flow Conventions to retrieve.</param>
         /// <param name="code">The name of the Flow Conventions to retrieve the data for.</param>
         /// <param name="asAt">The asAt datetime at which to retrieve the Flow Conventions. Defaults to return the latest version if not specified. (optional)</param>
+        /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
         /// <returns>Task of GetFlowConventionsResponse</returns>
-        public async System.Threading.Tasks.Task<GetFlowConventionsResponse> GetFlowConventionsAsync (string scope, string code, DateTimeOffset? asAt = null)
+        public async System.Threading.Tasks.Task<GetFlowConventionsResponse> GetFlowConventionsAsync(string scope, string code, DateTimeOffset? asAt = default(DateTimeOffset?), System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
-             ApiResponse<GetFlowConventionsResponse> localVarResponse = await GetFlowConventionsAsyncWithHttpInfo(scope, code, asAt);
-             return localVarResponse.Data;
-
+            Lusid.Sdk.Client.ApiResponse<GetFlowConventionsResponse> localVarResponse = await GetFlowConventionsWithHttpInfoAsync(scope, code, asAt, cancellationToken).ConfigureAwait(false);
+            return localVarResponse.Data;
         }
 
         /// <summary>
@@ -1468,70 +1446,67 @@ namespace Lusid.Sdk.Api
         /// <param name="scope">The scope of the Flow Conventions to retrieve.</param>
         /// <param name="code">The name of the Flow Conventions to retrieve the data for.</param>
         /// <param name="asAt">The asAt datetime at which to retrieve the Flow Conventions. Defaults to return the latest version if not specified. (optional)</param>
+        /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
         /// <returns>Task of ApiResponse (GetFlowConventionsResponse)</returns>
-        public async System.Threading.Tasks.Task<ApiResponse<GetFlowConventionsResponse>> GetFlowConventionsAsyncWithHttpInfo (string scope, string code, DateTimeOffset? asAt = null)
+        public async System.Threading.Tasks.Task<Lusid.Sdk.Client.ApiResponse<GetFlowConventionsResponse>> GetFlowConventionsWithHttpInfoAsync(string scope, string code, DateTimeOffset? asAt = default(DateTimeOffset?), System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
             // verify the required parameter 'scope' is set
             if (scope == null)
-                throw new ApiException(400, "Missing required parameter 'scope' when calling ConventionsApi->GetFlowConventions");
+                throw new Lusid.Sdk.Client.ApiException(400, "Missing required parameter 'scope' when calling ConventionsApi->GetFlowConventions");
+
             // verify the required parameter 'code' is set
             if (code == null)
-                throw new ApiException(400, "Missing required parameter 'code' when calling ConventionsApi->GetFlowConventions");
+                throw new Lusid.Sdk.Client.ApiException(400, "Missing required parameter 'code' when calling ConventionsApi->GetFlowConventions");
 
-            var localVarPath = "./api/conventions/rates/flowconventions/{scope}/{code}";
-            var localVarPathParams = new Dictionary<String, String>();
-            var localVarQueryParams = new List<KeyValuePair<String, String>>();
-            var localVarHeaderParams = new Dictionary<String, String>(this.Configuration.DefaultHeader);
-            var localVarFormParams = new Dictionary<String, String>();
-            var localVarFileParams = new Dictionary<String, FileParameter>();
-            Object localVarPostBody = null;
 
-            // to determine the Content-Type header
-            String[] localVarHttpContentTypes = new String[] {
+            Lusid.Sdk.Client.RequestOptions localVarRequestOptions = new Lusid.Sdk.Client.RequestOptions();
+
+            String[] _contentTypes = new String[] {
             };
-            String localVarHttpContentType = this.Configuration.ApiClient.SelectHeaderContentType(localVarHttpContentTypes);
 
             // to determine the Accept header
-            String[] localVarHttpHeaderAccepts = new String[] {
+            String[] _accepts = new String[] {
                 "text/plain",
                 "application/json",
                 "text/json"
             };
-            String localVarHttpHeaderAccept = this.Configuration.ApiClient.SelectHeaderAccept(localVarHttpHeaderAccepts);
-            if (localVarHttpHeaderAccept != null)
-                localVarHeaderParams.Add("Accept", localVarHttpHeaderAccept);
 
-            if (scope != null) localVarPathParams.Add("scope", this.Configuration.ApiClient.ParameterToString(scope)); // path parameter
-            if (code != null) localVarPathParams.Add("code", this.Configuration.ApiClient.ParameterToString(code)); // path parameter
-            if (asAt != null) localVarQueryParams.AddRange(this.Configuration.ApiClient.ParameterToKeyValuePairs("", "asAt", asAt)); // query parameter
+
+            var localVarContentType = Lusid.Sdk.Client.ClientUtils.SelectHeaderContentType(_contentTypes);
+            if (localVarContentType != null) localVarRequestOptions.HeaderParameters.Add("Content-Type", localVarContentType);
+
+            var localVarAccept = Lusid.Sdk.Client.ClientUtils.SelectHeaderAccept(_accepts);
+            if (localVarAccept != null) localVarRequestOptions.HeaderParameters.Add("Accept", localVarAccept);
+
+            localVarRequestOptions.PathParameters.Add("scope", Lusid.Sdk.Client.ClientUtils.ParameterToString(scope)); // path parameter
+            localVarRequestOptions.PathParameters.Add("code", Lusid.Sdk.Client.ClientUtils.ParameterToString(code)); // path parameter
+            if (asAt != null)
+            {
+                localVarRequestOptions.QueryParameters.Add(Lusid.Sdk.Client.ClientUtils.ParameterToMultiMap("", "asAt", asAt));
+            }
 
             // authentication (oauth2) required
             // oauth required
             if (!String.IsNullOrEmpty(this.Configuration.AccessToken))
             {
-                localVarHeaderParams["Authorization"] = "Bearer " + this.Configuration.AccessToken;
+                localVarRequestOptions.HeaderParameters.Add("Authorization", "Bearer " + this.Configuration.AccessToken);
             }
 
             //  set the LUSID header
-            localVarHeaderParams["X-LUSID-Sdk-Language"] = "C#";
-            localVarHeaderParams["X-LUSID-Sdk-Version"] = "0.11.3412";
+            localVarRequestOptions.HeaderParameters.Add("X-LUSID-Sdk-Language", "C#");
+            localVarRequestOptions.HeaderParameters.Add("X-LUSID-Sdk-Version", "0.11.3412");
 
             // make the HTTP request
-            IRestResponse localVarResponse = (IRestResponse) await this.Configuration.ApiClient.CallApiAsync(localVarPath,
-                Method.GET, localVarQueryParams, localVarPostBody, localVarHeaderParams, localVarFormParams, localVarFileParams,
-                localVarPathParams, localVarHttpContentType);
 
-            int localVarStatusCode = (int) localVarResponse.StatusCode;
+            var localVarResponse = await this.AsynchronousClient.GetAsync<GetFlowConventionsResponse>("/api/conventions/rates/flowconventions/{scope}/{code}", localVarRequestOptions, this.Configuration, cancellationToken).ConfigureAwait(false);
 
-            if (ExceptionFactory != null)
+            if (this.ExceptionFactory != null)
             {
-                Exception exception = ExceptionFactory("GetFlowConventions", localVarResponse);
-                if (exception != null) throw exception;
+                Exception _exception = this.ExceptionFactory("GetFlowConventions", localVarResponse);
+                if (_exception != null) throw _exception;
             }
 
-            return new ApiResponse<GetFlowConventionsResponse>(localVarStatusCode,
-                localVarResponse.Headers.ToDictionary(x => x.Key, x => string.Join(",", x.Value)),
-                (GetFlowConventionsResponse) this.Configuration.ApiClient.Deserialize(localVarResponse, typeof(GetFlowConventionsResponse)));
+            return localVarResponse;
         }
 
         /// <summary>
@@ -1542,10 +1517,10 @@ namespace Lusid.Sdk.Api
         /// <param name="code">The name of the Index Convention to retrieve the data for.</param>
         /// <param name="asAt">The asAt datetime at which to retrieve the Index Convention. Defaults to return the latest version if not specified. (optional)</param>
         /// <returns>GetIndexConventionResponse</returns>
-        public GetIndexConventionResponse GetIndexConvention (string scope, string code, DateTimeOffset? asAt = null)
+        public GetIndexConventionResponse GetIndexConvention(string scope, string code, DateTimeOffset? asAt = default(DateTimeOffset?))
         {
-             ApiResponse<GetIndexConventionResponse> localVarResponse = GetIndexConventionWithHttpInfo(scope, code, asAt);
-             return localVarResponse.Data;
+            Lusid.Sdk.Client.ApiResponse<GetIndexConventionResponse> localVarResponse = GetIndexConventionWithHttpInfo(scope, code, asAt);
+            return localVarResponse.Data;
         }
 
         /// <summary>
@@ -1556,69 +1531,62 @@ namespace Lusid.Sdk.Api
         /// <param name="code">The name of the Index Convention to retrieve the data for.</param>
         /// <param name="asAt">The asAt datetime at which to retrieve the Index Convention. Defaults to return the latest version if not specified. (optional)</param>
         /// <returns>ApiResponse of GetIndexConventionResponse</returns>
-        public ApiResponse< GetIndexConventionResponse > GetIndexConventionWithHttpInfo (string scope, string code, DateTimeOffset? asAt = null)
+        public Lusid.Sdk.Client.ApiResponse<GetIndexConventionResponse> GetIndexConventionWithHttpInfo(string scope, string code, DateTimeOffset? asAt = default(DateTimeOffset?))
         {
             // verify the required parameter 'scope' is set
             if (scope == null)
-                throw new ApiException(400, "Missing required parameter 'scope' when calling ConventionsApi->GetIndexConvention");
+                throw new Lusid.Sdk.Client.ApiException(400, "Missing required parameter 'scope' when calling ConventionsApi->GetIndexConvention");
+
             // verify the required parameter 'code' is set
             if (code == null)
-                throw new ApiException(400, "Missing required parameter 'code' when calling ConventionsApi->GetIndexConvention");
+                throw new Lusid.Sdk.Client.ApiException(400, "Missing required parameter 'code' when calling ConventionsApi->GetIndexConvention");
 
-            var localVarPath = "./api/conventions/rates/indexconventions/{scope}/{code}";
-            var localVarPathParams = new Dictionary<String, String>();
-            var localVarQueryParams = new List<KeyValuePair<String, String>>();
-            var localVarHeaderParams = new Dictionary<String, String>(this.Configuration.DefaultHeader);
-            var localVarFormParams = new Dictionary<String, String>();
-            var localVarFileParams = new Dictionary<String, FileParameter>();
-            Object localVarPostBody = null;
+            Lusid.Sdk.Client.RequestOptions localVarRequestOptions = new Lusid.Sdk.Client.RequestOptions();
 
-            // to determine the Content-Type header
-            String[] localVarHttpContentTypes = new String[] {
+            String[] _contentTypes = new String[] {
             };
-            String localVarHttpContentType = this.Configuration.ApiClient.SelectHeaderContentType(localVarHttpContentTypes);
 
             // to determine the Accept header
-            String[] localVarHttpHeaderAccepts = new String[] {
+            String[] _accepts = new String[] {
                 "text/plain",
                 "application/json",
                 "text/json"
             };
-            String localVarHttpHeaderAccept = this.Configuration.ApiClient.SelectHeaderAccept(localVarHttpHeaderAccepts);
-            if (localVarHttpHeaderAccept != null)
-                localVarHeaderParams.Add("Accept", localVarHttpHeaderAccept);
 
-            if (scope != null) localVarPathParams.Add("scope", this.Configuration.ApiClient.ParameterToString(scope)); // path parameter
-            if (code != null) localVarPathParams.Add("code", this.Configuration.ApiClient.ParameterToString(code)); // path parameter
-            if (asAt != null) localVarQueryParams.AddRange(this.Configuration.ApiClient.ParameterToKeyValuePairs("", "asAt", asAt)); // query parameter
+            var localVarContentType = Lusid.Sdk.Client.ClientUtils.SelectHeaderContentType(_contentTypes);
+            if (localVarContentType != null) localVarRequestOptions.HeaderParameters.Add("Content-Type", localVarContentType);
+
+            var localVarAccept = Lusid.Sdk.Client.ClientUtils.SelectHeaderAccept(_accepts);
+            if (localVarAccept != null) localVarRequestOptions.HeaderParameters.Add("Accept", localVarAccept);
+
+            localVarRequestOptions.PathParameters.Add("scope", Lusid.Sdk.Client.ClientUtils.ParameterToString(scope)); // path parameter
+            localVarRequestOptions.PathParameters.Add("code", Lusid.Sdk.Client.ClientUtils.ParameterToString(code)); // path parameter
+            if (asAt != null)
+            {
+                localVarRequestOptions.QueryParameters.Add(Lusid.Sdk.Client.ClientUtils.ParameterToMultiMap("", "asAt", asAt));
+            }
 
             // authentication (oauth2) required
             // oauth required
             if (!String.IsNullOrEmpty(this.Configuration.AccessToken))
             {
-                localVarHeaderParams["Authorization"] = "Bearer " + this.Configuration.AccessToken;
+                localVarRequestOptions.HeaderParameters.Add("Authorization", "Bearer " + this.Configuration.AccessToken);
             }
 
             //  set the LUSID header
-            localVarHeaderParams["X-LUSID-SDK-Language"] = "C#";
-            localVarHeaderParams["X-LUSID-SDK-Version"] = "0.11.3412";
+            localVarRequestOptions.HeaderParameters.Add("X-LUSID-Sdk-Language", "C#");
+            localVarRequestOptions.HeaderParameters.Add("X-LUSID-Sdk-Version", "0.11.3412");
 
             // make the HTTP request
-            IRestResponse localVarResponse = (IRestResponse) this.Configuration.ApiClient.CallApi(localVarPath,
-                Method.GET, localVarQueryParams, localVarPostBody, localVarHeaderParams, localVarFormParams, localVarFileParams,
-                localVarPathParams, localVarHttpContentType);
+            var localVarResponse = this.Client.Get<GetIndexConventionResponse>("/api/conventions/rates/indexconventions/{scope}/{code}", localVarRequestOptions, this.Configuration);
 
-            int localVarStatusCode = (int) localVarResponse.StatusCode;
-
-            if (ExceptionFactory != null)
+            if (this.ExceptionFactory != null)
             {
-                Exception exception = ExceptionFactory("GetIndexConvention", localVarResponse);
-                if (exception != null) throw exception;
+                Exception _exception = this.ExceptionFactory("GetIndexConvention", localVarResponse);
+                if (_exception != null) throw _exception;
             }
 
-            return new ApiResponse<GetIndexConventionResponse>(localVarStatusCode,
-                localVarResponse.Headers.ToDictionary(x => x.Key, x => string.Join(",", x.Value)),
-                (GetIndexConventionResponse) this.Configuration.ApiClient.Deserialize(localVarResponse, typeof(GetIndexConventionResponse)));
+            return localVarResponse;
         }
 
         /// <summary>
@@ -1628,12 +1596,12 @@ namespace Lusid.Sdk.Api
         /// <param name="scope">The scope of the Index Convention to retrieve.</param>
         /// <param name="code">The name of the Index Convention to retrieve the data for.</param>
         /// <param name="asAt">The asAt datetime at which to retrieve the Index Convention. Defaults to return the latest version if not specified. (optional)</param>
+        /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
         /// <returns>Task of GetIndexConventionResponse</returns>
-        public async System.Threading.Tasks.Task<GetIndexConventionResponse> GetIndexConventionAsync (string scope, string code, DateTimeOffset? asAt = null)
+        public async System.Threading.Tasks.Task<GetIndexConventionResponse> GetIndexConventionAsync(string scope, string code, DateTimeOffset? asAt = default(DateTimeOffset?), System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
-             ApiResponse<GetIndexConventionResponse> localVarResponse = await GetIndexConventionAsyncWithHttpInfo(scope, code, asAt);
-             return localVarResponse.Data;
-
+            Lusid.Sdk.Client.ApiResponse<GetIndexConventionResponse> localVarResponse = await GetIndexConventionWithHttpInfoAsync(scope, code, asAt, cancellationToken).ConfigureAwait(false);
+            return localVarResponse.Data;
         }
 
         /// <summary>
@@ -1643,70 +1611,67 @@ namespace Lusid.Sdk.Api
         /// <param name="scope">The scope of the Index Convention to retrieve.</param>
         /// <param name="code">The name of the Index Convention to retrieve the data for.</param>
         /// <param name="asAt">The asAt datetime at which to retrieve the Index Convention. Defaults to return the latest version if not specified. (optional)</param>
+        /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
         /// <returns>Task of ApiResponse (GetIndexConventionResponse)</returns>
-        public async System.Threading.Tasks.Task<ApiResponse<GetIndexConventionResponse>> GetIndexConventionAsyncWithHttpInfo (string scope, string code, DateTimeOffset? asAt = null)
+        public async System.Threading.Tasks.Task<Lusid.Sdk.Client.ApiResponse<GetIndexConventionResponse>> GetIndexConventionWithHttpInfoAsync(string scope, string code, DateTimeOffset? asAt = default(DateTimeOffset?), System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
             // verify the required parameter 'scope' is set
             if (scope == null)
-                throw new ApiException(400, "Missing required parameter 'scope' when calling ConventionsApi->GetIndexConvention");
+                throw new Lusid.Sdk.Client.ApiException(400, "Missing required parameter 'scope' when calling ConventionsApi->GetIndexConvention");
+
             // verify the required parameter 'code' is set
             if (code == null)
-                throw new ApiException(400, "Missing required parameter 'code' when calling ConventionsApi->GetIndexConvention");
+                throw new Lusid.Sdk.Client.ApiException(400, "Missing required parameter 'code' when calling ConventionsApi->GetIndexConvention");
 
-            var localVarPath = "./api/conventions/rates/indexconventions/{scope}/{code}";
-            var localVarPathParams = new Dictionary<String, String>();
-            var localVarQueryParams = new List<KeyValuePair<String, String>>();
-            var localVarHeaderParams = new Dictionary<String, String>(this.Configuration.DefaultHeader);
-            var localVarFormParams = new Dictionary<String, String>();
-            var localVarFileParams = new Dictionary<String, FileParameter>();
-            Object localVarPostBody = null;
 
-            // to determine the Content-Type header
-            String[] localVarHttpContentTypes = new String[] {
+            Lusid.Sdk.Client.RequestOptions localVarRequestOptions = new Lusid.Sdk.Client.RequestOptions();
+
+            String[] _contentTypes = new String[] {
             };
-            String localVarHttpContentType = this.Configuration.ApiClient.SelectHeaderContentType(localVarHttpContentTypes);
 
             // to determine the Accept header
-            String[] localVarHttpHeaderAccepts = new String[] {
+            String[] _accepts = new String[] {
                 "text/plain",
                 "application/json",
                 "text/json"
             };
-            String localVarHttpHeaderAccept = this.Configuration.ApiClient.SelectHeaderAccept(localVarHttpHeaderAccepts);
-            if (localVarHttpHeaderAccept != null)
-                localVarHeaderParams.Add("Accept", localVarHttpHeaderAccept);
 
-            if (scope != null) localVarPathParams.Add("scope", this.Configuration.ApiClient.ParameterToString(scope)); // path parameter
-            if (code != null) localVarPathParams.Add("code", this.Configuration.ApiClient.ParameterToString(code)); // path parameter
-            if (asAt != null) localVarQueryParams.AddRange(this.Configuration.ApiClient.ParameterToKeyValuePairs("", "asAt", asAt)); // query parameter
+
+            var localVarContentType = Lusid.Sdk.Client.ClientUtils.SelectHeaderContentType(_contentTypes);
+            if (localVarContentType != null) localVarRequestOptions.HeaderParameters.Add("Content-Type", localVarContentType);
+
+            var localVarAccept = Lusid.Sdk.Client.ClientUtils.SelectHeaderAccept(_accepts);
+            if (localVarAccept != null) localVarRequestOptions.HeaderParameters.Add("Accept", localVarAccept);
+
+            localVarRequestOptions.PathParameters.Add("scope", Lusid.Sdk.Client.ClientUtils.ParameterToString(scope)); // path parameter
+            localVarRequestOptions.PathParameters.Add("code", Lusid.Sdk.Client.ClientUtils.ParameterToString(code)); // path parameter
+            if (asAt != null)
+            {
+                localVarRequestOptions.QueryParameters.Add(Lusid.Sdk.Client.ClientUtils.ParameterToMultiMap("", "asAt", asAt));
+            }
 
             // authentication (oauth2) required
             // oauth required
             if (!String.IsNullOrEmpty(this.Configuration.AccessToken))
             {
-                localVarHeaderParams["Authorization"] = "Bearer " + this.Configuration.AccessToken;
+                localVarRequestOptions.HeaderParameters.Add("Authorization", "Bearer " + this.Configuration.AccessToken);
             }
 
             //  set the LUSID header
-            localVarHeaderParams["X-LUSID-Sdk-Language"] = "C#";
-            localVarHeaderParams["X-LUSID-Sdk-Version"] = "0.11.3412";
+            localVarRequestOptions.HeaderParameters.Add("X-LUSID-Sdk-Language", "C#");
+            localVarRequestOptions.HeaderParameters.Add("X-LUSID-Sdk-Version", "0.11.3412");
 
             // make the HTTP request
-            IRestResponse localVarResponse = (IRestResponse) await this.Configuration.ApiClient.CallApiAsync(localVarPath,
-                Method.GET, localVarQueryParams, localVarPostBody, localVarHeaderParams, localVarFormParams, localVarFileParams,
-                localVarPathParams, localVarHttpContentType);
 
-            int localVarStatusCode = (int) localVarResponse.StatusCode;
+            var localVarResponse = await this.AsynchronousClient.GetAsync<GetIndexConventionResponse>("/api/conventions/rates/indexconventions/{scope}/{code}", localVarRequestOptions, this.Configuration, cancellationToken).ConfigureAwait(false);
 
-            if (ExceptionFactory != null)
+            if (this.ExceptionFactory != null)
             {
-                Exception exception = ExceptionFactory("GetIndexConvention", localVarResponse);
-                if (exception != null) throw exception;
+                Exception _exception = this.ExceptionFactory("GetIndexConvention", localVarResponse);
+                if (_exception != null) throw _exception;
             }
 
-            return new ApiResponse<GetIndexConventionResponse>(localVarStatusCode,
-                localVarResponse.Headers.ToDictionary(x => x.Key, x => string.Join(",", x.Value)),
-                (GetIndexConventionResponse) this.Configuration.ApiClient.Deserialize(localVarResponse, typeof(GetIndexConventionResponse)));
+            return localVarResponse;
         }
 
         /// <summary>
@@ -1715,10 +1680,10 @@ namespace Lusid.Sdk.Api
         /// <exception cref="Lusid.Sdk.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="asAt">The asAt datetime at which to list the conventions. Defaults to latest if not specified. (optional)</param>
         /// <returns>ResourceListOfGetCdsFlowConventionsResponse</returns>
-        public ResourceListOfGetCdsFlowConventionsResponse ListCdsFlowConventions (DateTimeOffset? asAt = null)
+        public ResourceListOfGetCdsFlowConventionsResponse ListCdsFlowConventions(DateTimeOffset? asAt = default(DateTimeOffset?))
         {
-             ApiResponse<ResourceListOfGetCdsFlowConventionsResponse> localVarResponse = ListCdsFlowConventionsWithHttpInfo(asAt);
-             return localVarResponse.Data;
+            Lusid.Sdk.Client.ApiResponse<ResourceListOfGetCdsFlowConventionsResponse> localVarResponse = ListCdsFlowConventionsWithHttpInfo(asAt);
+            return localVarResponse.Data;
         }
 
         /// <summary>
@@ -1727,61 +1692,52 @@ namespace Lusid.Sdk.Api
         /// <exception cref="Lusid.Sdk.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="asAt">The asAt datetime at which to list the conventions. Defaults to latest if not specified. (optional)</param>
         /// <returns>ApiResponse of ResourceListOfGetCdsFlowConventionsResponse</returns>
-        public ApiResponse< ResourceListOfGetCdsFlowConventionsResponse > ListCdsFlowConventionsWithHttpInfo (DateTimeOffset? asAt = null)
+        public Lusid.Sdk.Client.ApiResponse<ResourceListOfGetCdsFlowConventionsResponse> ListCdsFlowConventionsWithHttpInfo(DateTimeOffset? asAt = default(DateTimeOffset?))
         {
+            Lusid.Sdk.Client.RequestOptions localVarRequestOptions = new Lusid.Sdk.Client.RequestOptions();
 
-            var localVarPath = "./api/conventions/credit/conventions";
-            var localVarPathParams = new Dictionary<String, String>();
-            var localVarQueryParams = new List<KeyValuePair<String, String>>();
-            var localVarHeaderParams = new Dictionary<String, String>(this.Configuration.DefaultHeader);
-            var localVarFormParams = new Dictionary<String, String>();
-            var localVarFileParams = new Dictionary<String, FileParameter>();
-            Object localVarPostBody = null;
-
-            // to determine the Content-Type header
-            String[] localVarHttpContentTypes = new String[] {
+            String[] _contentTypes = new String[] {
             };
-            String localVarHttpContentType = this.Configuration.ApiClient.SelectHeaderContentType(localVarHttpContentTypes);
 
             // to determine the Accept header
-            String[] localVarHttpHeaderAccepts = new String[] {
+            String[] _accepts = new String[] {
                 "text/plain",
                 "application/json",
                 "text/json"
             };
-            String localVarHttpHeaderAccept = this.Configuration.ApiClient.SelectHeaderAccept(localVarHttpHeaderAccepts);
-            if (localVarHttpHeaderAccept != null)
-                localVarHeaderParams.Add("Accept", localVarHttpHeaderAccept);
 
-            if (asAt != null) localVarQueryParams.AddRange(this.Configuration.ApiClient.ParameterToKeyValuePairs("", "asAt", asAt)); // query parameter
+            var localVarContentType = Lusid.Sdk.Client.ClientUtils.SelectHeaderContentType(_contentTypes);
+            if (localVarContentType != null) localVarRequestOptions.HeaderParameters.Add("Content-Type", localVarContentType);
+
+            var localVarAccept = Lusid.Sdk.Client.ClientUtils.SelectHeaderAccept(_accepts);
+            if (localVarAccept != null) localVarRequestOptions.HeaderParameters.Add("Accept", localVarAccept);
+
+            if (asAt != null)
+            {
+                localVarRequestOptions.QueryParameters.Add(Lusid.Sdk.Client.ClientUtils.ParameterToMultiMap("", "asAt", asAt));
+            }
 
             // authentication (oauth2) required
             // oauth required
             if (!String.IsNullOrEmpty(this.Configuration.AccessToken))
             {
-                localVarHeaderParams["Authorization"] = "Bearer " + this.Configuration.AccessToken;
+                localVarRequestOptions.HeaderParameters.Add("Authorization", "Bearer " + this.Configuration.AccessToken);
             }
 
             //  set the LUSID header
-            localVarHeaderParams["X-LUSID-SDK-Language"] = "C#";
-            localVarHeaderParams["X-LUSID-SDK-Version"] = "0.11.3412";
+            localVarRequestOptions.HeaderParameters.Add("X-LUSID-Sdk-Language", "C#");
+            localVarRequestOptions.HeaderParameters.Add("X-LUSID-Sdk-Version", "0.11.3412");
 
             // make the HTTP request
-            IRestResponse localVarResponse = (IRestResponse) this.Configuration.ApiClient.CallApi(localVarPath,
-                Method.GET, localVarQueryParams, localVarPostBody, localVarHeaderParams, localVarFormParams, localVarFileParams,
-                localVarPathParams, localVarHttpContentType);
+            var localVarResponse = this.Client.Get<ResourceListOfGetCdsFlowConventionsResponse>("/api/conventions/credit/conventions", localVarRequestOptions, this.Configuration);
 
-            int localVarStatusCode = (int) localVarResponse.StatusCode;
-
-            if (ExceptionFactory != null)
+            if (this.ExceptionFactory != null)
             {
-                Exception exception = ExceptionFactory("ListCdsFlowConventions", localVarResponse);
-                if (exception != null) throw exception;
+                Exception _exception = this.ExceptionFactory("ListCdsFlowConventions", localVarResponse);
+                if (_exception != null) throw _exception;
             }
 
-            return new ApiResponse<ResourceListOfGetCdsFlowConventionsResponse>(localVarStatusCode,
-                localVarResponse.Headers.ToDictionary(x => x.Key, x => string.Join(",", x.Value)),
-                (ResourceListOfGetCdsFlowConventionsResponse) this.Configuration.ApiClient.Deserialize(localVarResponse, typeof(ResourceListOfGetCdsFlowConventionsResponse)));
+            return localVarResponse;
         }
 
         /// <summary>
@@ -1789,12 +1745,12 @@ namespace Lusid.Sdk.Api
         /// </summary>
         /// <exception cref="Lusid.Sdk.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="asAt">The asAt datetime at which to list the conventions. Defaults to latest if not specified. (optional)</param>
+        /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
         /// <returns>Task of ResourceListOfGetCdsFlowConventionsResponse</returns>
-        public async System.Threading.Tasks.Task<ResourceListOfGetCdsFlowConventionsResponse> ListCdsFlowConventionsAsync (DateTimeOffset? asAt = null)
+        public async System.Threading.Tasks.Task<ResourceListOfGetCdsFlowConventionsResponse> ListCdsFlowConventionsAsync(DateTimeOffset? asAt = default(DateTimeOffset?), System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
-             ApiResponse<ResourceListOfGetCdsFlowConventionsResponse> localVarResponse = await ListCdsFlowConventionsAsyncWithHttpInfo(asAt);
-             return localVarResponse.Data;
-
+            Lusid.Sdk.Client.ApiResponse<ResourceListOfGetCdsFlowConventionsResponse> localVarResponse = await ListCdsFlowConventionsWithHttpInfoAsync(asAt, cancellationToken).ConfigureAwait(false);
+            return localVarResponse.Data;
         }
 
         /// <summary>
@@ -1802,62 +1758,57 @@ namespace Lusid.Sdk.Api
         /// </summary>
         /// <exception cref="Lusid.Sdk.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="asAt">The asAt datetime at which to list the conventions. Defaults to latest if not specified. (optional)</param>
+        /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
         /// <returns>Task of ApiResponse (ResourceListOfGetCdsFlowConventionsResponse)</returns>
-        public async System.Threading.Tasks.Task<ApiResponse<ResourceListOfGetCdsFlowConventionsResponse>> ListCdsFlowConventionsAsyncWithHttpInfo (DateTimeOffset? asAt = null)
+        public async System.Threading.Tasks.Task<Lusid.Sdk.Client.ApiResponse<ResourceListOfGetCdsFlowConventionsResponse>> ListCdsFlowConventionsWithHttpInfoAsync(DateTimeOffset? asAt = default(DateTimeOffset?), System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
 
-            var localVarPath = "./api/conventions/credit/conventions";
-            var localVarPathParams = new Dictionary<String, String>();
-            var localVarQueryParams = new List<KeyValuePair<String, String>>();
-            var localVarHeaderParams = new Dictionary<String, String>(this.Configuration.DefaultHeader);
-            var localVarFormParams = new Dictionary<String, String>();
-            var localVarFileParams = new Dictionary<String, FileParameter>();
-            Object localVarPostBody = null;
+            Lusid.Sdk.Client.RequestOptions localVarRequestOptions = new Lusid.Sdk.Client.RequestOptions();
 
-            // to determine the Content-Type header
-            String[] localVarHttpContentTypes = new String[] {
+            String[] _contentTypes = new String[] {
             };
-            String localVarHttpContentType = this.Configuration.ApiClient.SelectHeaderContentType(localVarHttpContentTypes);
 
             // to determine the Accept header
-            String[] localVarHttpHeaderAccepts = new String[] {
+            String[] _accepts = new String[] {
                 "text/plain",
                 "application/json",
                 "text/json"
             };
-            String localVarHttpHeaderAccept = this.Configuration.ApiClient.SelectHeaderAccept(localVarHttpHeaderAccepts);
-            if (localVarHttpHeaderAccept != null)
-                localVarHeaderParams.Add("Accept", localVarHttpHeaderAccept);
 
-            if (asAt != null) localVarQueryParams.AddRange(this.Configuration.ApiClient.ParameterToKeyValuePairs("", "asAt", asAt)); // query parameter
+
+            var localVarContentType = Lusid.Sdk.Client.ClientUtils.SelectHeaderContentType(_contentTypes);
+            if (localVarContentType != null) localVarRequestOptions.HeaderParameters.Add("Content-Type", localVarContentType);
+
+            var localVarAccept = Lusid.Sdk.Client.ClientUtils.SelectHeaderAccept(_accepts);
+            if (localVarAccept != null) localVarRequestOptions.HeaderParameters.Add("Accept", localVarAccept);
+
+            if (asAt != null)
+            {
+                localVarRequestOptions.QueryParameters.Add(Lusid.Sdk.Client.ClientUtils.ParameterToMultiMap("", "asAt", asAt));
+            }
 
             // authentication (oauth2) required
             // oauth required
             if (!String.IsNullOrEmpty(this.Configuration.AccessToken))
             {
-                localVarHeaderParams["Authorization"] = "Bearer " + this.Configuration.AccessToken;
+                localVarRequestOptions.HeaderParameters.Add("Authorization", "Bearer " + this.Configuration.AccessToken);
             }
 
             //  set the LUSID header
-            localVarHeaderParams["X-LUSID-Sdk-Language"] = "C#";
-            localVarHeaderParams["X-LUSID-Sdk-Version"] = "0.11.3412";
+            localVarRequestOptions.HeaderParameters.Add("X-LUSID-Sdk-Language", "C#");
+            localVarRequestOptions.HeaderParameters.Add("X-LUSID-Sdk-Version", "0.11.3412");
 
             // make the HTTP request
-            IRestResponse localVarResponse = (IRestResponse) await this.Configuration.ApiClient.CallApiAsync(localVarPath,
-                Method.GET, localVarQueryParams, localVarPostBody, localVarHeaderParams, localVarFormParams, localVarFileParams,
-                localVarPathParams, localVarHttpContentType);
 
-            int localVarStatusCode = (int) localVarResponse.StatusCode;
+            var localVarResponse = await this.AsynchronousClient.GetAsync<ResourceListOfGetCdsFlowConventionsResponse>("/api/conventions/credit/conventions", localVarRequestOptions, this.Configuration, cancellationToken).ConfigureAwait(false);
 
-            if (ExceptionFactory != null)
+            if (this.ExceptionFactory != null)
             {
-                Exception exception = ExceptionFactory("ListCdsFlowConventions", localVarResponse);
-                if (exception != null) throw exception;
+                Exception _exception = this.ExceptionFactory("ListCdsFlowConventions", localVarResponse);
+                if (_exception != null) throw _exception;
             }
 
-            return new ApiResponse<ResourceListOfGetCdsFlowConventionsResponse>(localVarStatusCode,
-                localVarResponse.Headers.ToDictionary(x => x.Key, x => string.Join(",", x.Value)),
-                (ResourceListOfGetCdsFlowConventionsResponse) this.Configuration.ApiClient.Deserialize(localVarResponse, typeof(ResourceListOfGetCdsFlowConventionsResponse)));
+            return localVarResponse;
         }
 
         /// <summary>
@@ -1866,10 +1817,10 @@ namespace Lusid.Sdk.Api
         /// <exception cref="Lusid.Sdk.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="asAt">The asAt datetime at which to list the conventions. Defaults to latest if not specified. (optional)</param>
         /// <returns>ResourceListOfGetFlowConventionsResponse</returns>
-        public ResourceListOfGetFlowConventionsResponse ListFlowConventions (DateTimeOffset? asAt = null)
+        public ResourceListOfGetFlowConventionsResponse ListFlowConventions(DateTimeOffset? asAt = default(DateTimeOffset?))
         {
-             ApiResponse<ResourceListOfGetFlowConventionsResponse> localVarResponse = ListFlowConventionsWithHttpInfo(asAt);
-             return localVarResponse.Data;
+            Lusid.Sdk.Client.ApiResponse<ResourceListOfGetFlowConventionsResponse> localVarResponse = ListFlowConventionsWithHttpInfo(asAt);
+            return localVarResponse.Data;
         }
 
         /// <summary>
@@ -1878,61 +1829,52 @@ namespace Lusid.Sdk.Api
         /// <exception cref="Lusid.Sdk.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="asAt">The asAt datetime at which to list the conventions. Defaults to latest if not specified. (optional)</param>
         /// <returns>ApiResponse of ResourceListOfGetFlowConventionsResponse</returns>
-        public ApiResponse< ResourceListOfGetFlowConventionsResponse > ListFlowConventionsWithHttpInfo (DateTimeOffset? asAt = null)
+        public Lusid.Sdk.Client.ApiResponse<ResourceListOfGetFlowConventionsResponse> ListFlowConventionsWithHttpInfo(DateTimeOffset? asAt = default(DateTimeOffset?))
         {
+            Lusid.Sdk.Client.RequestOptions localVarRequestOptions = new Lusid.Sdk.Client.RequestOptions();
 
-            var localVarPath = "./api/conventions/rates/flowconventions";
-            var localVarPathParams = new Dictionary<String, String>();
-            var localVarQueryParams = new List<KeyValuePair<String, String>>();
-            var localVarHeaderParams = new Dictionary<String, String>(this.Configuration.DefaultHeader);
-            var localVarFormParams = new Dictionary<String, String>();
-            var localVarFileParams = new Dictionary<String, FileParameter>();
-            Object localVarPostBody = null;
-
-            // to determine the Content-Type header
-            String[] localVarHttpContentTypes = new String[] {
+            String[] _contentTypes = new String[] {
             };
-            String localVarHttpContentType = this.Configuration.ApiClient.SelectHeaderContentType(localVarHttpContentTypes);
 
             // to determine the Accept header
-            String[] localVarHttpHeaderAccepts = new String[] {
+            String[] _accepts = new String[] {
                 "text/plain",
                 "application/json",
                 "text/json"
             };
-            String localVarHttpHeaderAccept = this.Configuration.ApiClient.SelectHeaderAccept(localVarHttpHeaderAccepts);
-            if (localVarHttpHeaderAccept != null)
-                localVarHeaderParams.Add("Accept", localVarHttpHeaderAccept);
 
-            if (asAt != null) localVarQueryParams.AddRange(this.Configuration.ApiClient.ParameterToKeyValuePairs("", "asAt", asAt)); // query parameter
+            var localVarContentType = Lusid.Sdk.Client.ClientUtils.SelectHeaderContentType(_contentTypes);
+            if (localVarContentType != null) localVarRequestOptions.HeaderParameters.Add("Content-Type", localVarContentType);
+
+            var localVarAccept = Lusid.Sdk.Client.ClientUtils.SelectHeaderAccept(_accepts);
+            if (localVarAccept != null) localVarRequestOptions.HeaderParameters.Add("Accept", localVarAccept);
+
+            if (asAt != null)
+            {
+                localVarRequestOptions.QueryParameters.Add(Lusid.Sdk.Client.ClientUtils.ParameterToMultiMap("", "asAt", asAt));
+            }
 
             // authentication (oauth2) required
             // oauth required
             if (!String.IsNullOrEmpty(this.Configuration.AccessToken))
             {
-                localVarHeaderParams["Authorization"] = "Bearer " + this.Configuration.AccessToken;
+                localVarRequestOptions.HeaderParameters.Add("Authorization", "Bearer " + this.Configuration.AccessToken);
             }
 
             //  set the LUSID header
-            localVarHeaderParams["X-LUSID-SDK-Language"] = "C#";
-            localVarHeaderParams["X-LUSID-SDK-Version"] = "0.11.3412";
+            localVarRequestOptions.HeaderParameters.Add("X-LUSID-Sdk-Language", "C#");
+            localVarRequestOptions.HeaderParameters.Add("X-LUSID-Sdk-Version", "0.11.3412");
 
             // make the HTTP request
-            IRestResponse localVarResponse = (IRestResponse) this.Configuration.ApiClient.CallApi(localVarPath,
-                Method.GET, localVarQueryParams, localVarPostBody, localVarHeaderParams, localVarFormParams, localVarFileParams,
-                localVarPathParams, localVarHttpContentType);
+            var localVarResponse = this.Client.Get<ResourceListOfGetFlowConventionsResponse>("/api/conventions/rates/flowconventions", localVarRequestOptions, this.Configuration);
 
-            int localVarStatusCode = (int) localVarResponse.StatusCode;
-
-            if (ExceptionFactory != null)
+            if (this.ExceptionFactory != null)
             {
-                Exception exception = ExceptionFactory("ListFlowConventions", localVarResponse);
-                if (exception != null) throw exception;
+                Exception _exception = this.ExceptionFactory("ListFlowConventions", localVarResponse);
+                if (_exception != null) throw _exception;
             }
 
-            return new ApiResponse<ResourceListOfGetFlowConventionsResponse>(localVarStatusCode,
-                localVarResponse.Headers.ToDictionary(x => x.Key, x => string.Join(",", x.Value)),
-                (ResourceListOfGetFlowConventionsResponse) this.Configuration.ApiClient.Deserialize(localVarResponse, typeof(ResourceListOfGetFlowConventionsResponse)));
+            return localVarResponse;
         }
 
         /// <summary>
@@ -1940,12 +1882,12 @@ namespace Lusid.Sdk.Api
         /// </summary>
         /// <exception cref="Lusid.Sdk.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="asAt">The asAt datetime at which to list the conventions. Defaults to latest if not specified. (optional)</param>
+        /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
         /// <returns>Task of ResourceListOfGetFlowConventionsResponse</returns>
-        public async System.Threading.Tasks.Task<ResourceListOfGetFlowConventionsResponse> ListFlowConventionsAsync (DateTimeOffset? asAt = null)
+        public async System.Threading.Tasks.Task<ResourceListOfGetFlowConventionsResponse> ListFlowConventionsAsync(DateTimeOffset? asAt = default(DateTimeOffset?), System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
-             ApiResponse<ResourceListOfGetFlowConventionsResponse> localVarResponse = await ListFlowConventionsAsyncWithHttpInfo(asAt);
-             return localVarResponse.Data;
-
+            Lusid.Sdk.Client.ApiResponse<ResourceListOfGetFlowConventionsResponse> localVarResponse = await ListFlowConventionsWithHttpInfoAsync(asAt, cancellationToken).ConfigureAwait(false);
+            return localVarResponse.Data;
         }
 
         /// <summary>
@@ -1953,62 +1895,57 @@ namespace Lusid.Sdk.Api
         /// </summary>
         /// <exception cref="Lusid.Sdk.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="asAt">The asAt datetime at which to list the conventions. Defaults to latest if not specified. (optional)</param>
+        /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
         /// <returns>Task of ApiResponse (ResourceListOfGetFlowConventionsResponse)</returns>
-        public async System.Threading.Tasks.Task<ApiResponse<ResourceListOfGetFlowConventionsResponse>> ListFlowConventionsAsyncWithHttpInfo (DateTimeOffset? asAt = null)
+        public async System.Threading.Tasks.Task<Lusid.Sdk.Client.ApiResponse<ResourceListOfGetFlowConventionsResponse>> ListFlowConventionsWithHttpInfoAsync(DateTimeOffset? asAt = default(DateTimeOffset?), System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
 
-            var localVarPath = "./api/conventions/rates/flowconventions";
-            var localVarPathParams = new Dictionary<String, String>();
-            var localVarQueryParams = new List<KeyValuePair<String, String>>();
-            var localVarHeaderParams = new Dictionary<String, String>(this.Configuration.DefaultHeader);
-            var localVarFormParams = new Dictionary<String, String>();
-            var localVarFileParams = new Dictionary<String, FileParameter>();
-            Object localVarPostBody = null;
+            Lusid.Sdk.Client.RequestOptions localVarRequestOptions = new Lusid.Sdk.Client.RequestOptions();
 
-            // to determine the Content-Type header
-            String[] localVarHttpContentTypes = new String[] {
+            String[] _contentTypes = new String[] {
             };
-            String localVarHttpContentType = this.Configuration.ApiClient.SelectHeaderContentType(localVarHttpContentTypes);
 
             // to determine the Accept header
-            String[] localVarHttpHeaderAccepts = new String[] {
+            String[] _accepts = new String[] {
                 "text/plain",
                 "application/json",
                 "text/json"
             };
-            String localVarHttpHeaderAccept = this.Configuration.ApiClient.SelectHeaderAccept(localVarHttpHeaderAccepts);
-            if (localVarHttpHeaderAccept != null)
-                localVarHeaderParams.Add("Accept", localVarHttpHeaderAccept);
 
-            if (asAt != null) localVarQueryParams.AddRange(this.Configuration.ApiClient.ParameterToKeyValuePairs("", "asAt", asAt)); // query parameter
+
+            var localVarContentType = Lusid.Sdk.Client.ClientUtils.SelectHeaderContentType(_contentTypes);
+            if (localVarContentType != null) localVarRequestOptions.HeaderParameters.Add("Content-Type", localVarContentType);
+
+            var localVarAccept = Lusid.Sdk.Client.ClientUtils.SelectHeaderAccept(_accepts);
+            if (localVarAccept != null) localVarRequestOptions.HeaderParameters.Add("Accept", localVarAccept);
+
+            if (asAt != null)
+            {
+                localVarRequestOptions.QueryParameters.Add(Lusid.Sdk.Client.ClientUtils.ParameterToMultiMap("", "asAt", asAt));
+            }
 
             // authentication (oauth2) required
             // oauth required
             if (!String.IsNullOrEmpty(this.Configuration.AccessToken))
             {
-                localVarHeaderParams["Authorization"] = "Bearer " + this.Configuration.AccessToken;
+                localVarRequestOptions.HeaderParameters.Add("Authorization", "Bearer " + this.Configuration.AccessToken);
             }
 
             //  set the LUSID header
-            localVarHeaderParams["X-LUSID-Sdk-Language"] = "C#";
-            localVarHeaderParams["X-LUSID-Sdk-Version"] = "0.11.3412";
+            localVarRequestOptions.HeaderParameters.Add("X-LUSID-Sdk-Language", "C#");
+            localVarRequestOptions.HeaderParameters.Add("X-LUSID-Sdk-Version", "0.11.3412");
 
             // make the HTTP request
-            IRestResponse localVarResponse = (IRestResponse) await this.Configuration.ApiClient.CallApiAsync(localVarPath,
-                Method.GET, localVarQueryParams, localVarPostBody, localVarHeaderParams, localVarFormParams, localVarFileParams,
-                localVarPathParams, localVarHttpContentType);
 
-            int localVarStatusCode = (int) localVarResponse.StatusCode;
+            var localVarResponse = await this.AsynchronousClient.GetAsync<ResourceListOfGetFlowConventionsResponse>("/api/conventions/rates/flowconventions", localVarRequestOptions, this.Configuration, cancellationToken).ConfigureAwait(false);
 
-            if (ExceptionFactory != null)
+            if (this.ExceptionFactory != null)
             {
-                Exception exception = ExceptionFactory("ListFlowConventions", localVarResponse);
-                if (exception != null) throw exception;
+                Exception _exception = this.ExceptionFactory("ListFlowConventions", localVarResponse);
+                if (_exception != null) throw _exception;
             }
 
-            return new ApiResponse<ResourceListOfGetFlowConventionsResponse>(localVarStatusCode,
-                localVarResponse.Headers.ToDictionary(x => x.Key, x => string.Join(",", x.Value)),
-                (ResourceListOfGetFlowConventionsResponse) this.Configuration.ApiClient.Deserialize(localVarResponse, typeof(ResourceListOfGetFlowConventionsResponse)));
+            return localVarResponse;
         }
 
         /// <summary>
@@ -2017,10 +1954,10 @@ namespace Lusid.Sdk.Api
         /// <exception cref="Lusid.Sdk.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="asAt">The asAt datetime at which to list the conventions. Defaults to latest if not specified. (optional)</param>
         /// <returns>ResourceListOfGetIndexConventionResponse</returns>
-        public ResourceListOfGetIndexConventionResponse ListIndexConvention (DateTimeOffset? asAt = null)
+        public ResourceListOfGetIndexConventionResponse ListIndexConvention(DateTimeOffset? asAt = default(DateTimeOffset?))
         {
-             ApiResponse<ResourceListOfGetIndexConventionResponse> localVarResponse = ListIndexConventionWithHttpInfo(asAt);
-             return localVarResponse.Data;
+            Lusid.Sdk.Client.ApiResponse<ResourceListOfGetIndexConventionResponse> localVarResponse = ListIndexConventionWithHttpInfo(asAt);
+            return localVarResponse.Data;
         }
 
         /// <summary>
@@ -2029,61 +1966,52 @@ namespace Lusid.Sdk.Api
         /// <exception cref="Lusid.Sdk.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="asAt">The asAt datetime at which to list the conventions. Defaults to latest if not specified. (optional)</param>
         /// <returns>ApiResponse of ResourceListOfGetIndexConventionResponse</returns>
-        public ApiResponse< ResourceListOfGetIndexConventionResponse > ListIndexConventionWithHttpInfo (DateTimeOffset? asAt = null)
+        public Lusid.Sdk.Client.ApiResponse<ResourceListOfGetIndexConventionResponse> ListIndexConventionWithHttpInfo(DateTimeOffset? asAt = default(DateTimeOffset?))
         {
+            Lusid.Sdk.Client.RequestOptions localVarRequestOptions = new Lusid.Sdk.Client.RequestOptions();
 
-            var localVarPath = "./api/conventions/rates/indexconventions";
-            var localVarPathParams = new Dictionary<String, String>();
-            var localVarQueryParams = new List<KeyValuePair<String, String>>();
-            var localVarHeaderParams = new Dictionary<String, String>(this.Configuration.DefaultHeader);
-            var localVarFormParams = new Dictionary<String, String>();
-            var localVarFileParams = new Dictionary<String, FileParameter>();
-            Object localVarPostBody = null;
-
-            // to determine the Content-Type header
-            String[] localVarHttpContentTypes = new String[] {
+            String[] _contentTypes = new String[] {
             };
-            String localVarHttpContentType = this.Configuration.ApiClient.SelectHeaderContentType(localVarHttpContentTypes);
 
             // to determine the Accept header
-            String[] localVarHttpHeaderAccepts = new String[] {
+            String[] _accepts = new String[] {
                 "text/plain",
                 "application/json",
                 "text/json"
             };
-            String localVarHttpHeaderAccept = this.Configuration.ApiClient.SelectHeaderAccept(localVarHttpHeaderAccepts);
-            if (localVarHttpHeaderAccept != null)
-                localVarHeaderParams.Add("Accept", localVarHttpHeaderAccept);
 
-            if (asAt != null) localVarQueryParams.AddRange(this.Configuration.ApiClient.ParameterToKeyValuePairs("", "asAt", asAt)); // query parameter
+            var localVarContentType = Lusid.Sdk.Client.ClientUtils.SelectHeaderContentType(_contentTypes);
+            if (localVarContentType != null) localVarRequestOptions.HeaderParameters.Add("Content-Type", localVarContentType);
+
+            var localVarAccept = Lusid.Sdk.Client.ClientUtils.SelectHeaderAccept(_accepts);
+            if (localVarAccept != null) localVarRequestOptions.HeaderParameters.Add("Accept", localVarAccept);
+
+            if (asAt != null)
+            {
+                localVarRequestOptions.QueryParameters.Add(Lusid.Sdk.Client.ClientUtils.ParameterToMultiMap("", "asAt", asAt));
+            }
 
             // authentication (oauth2) required
             // oauth required
             if (!String.IsNullOrEmpty(this.Configuration.AccessToken))
             {
-                localVarHeaderParams["Authorization"] = "Bearer " + this.Configuration.AccessToken;
+                localVarRequestOptions.HeaderParameters.Add("Authorization", "Bearer " + this.Configuration.AccessToken);
             }
 
             //  set the LUSID header
-            localVarHeaderParams["X-LUSID-SDK-Language"] = "C#";
-            localVarHeaderParams["X-LUSID-SDK-Version"] = "0.11.3412";
+            localVarRequestOptions.HeaderParameters.Add("X-LUSID-Sdk-Language", "C#");
+            localVarRequestOptions.HeaderParameters.Add("X-LUSID-Sdk-Version", "0.11.3412");
 
             // make the HTTP request
-            IRestResponse localVarResponse = (IRestResponse) this.Configuration.ApiClient.CallApi(localVarPath,
-                Method.GET, localVarQueryParams, localVarPostBody, localVarHeaderParams, localVarFormParams, localVarFileParams,
-                localVarPathParams, localVarHttpContentType);
+            var localVarResponse = this.Client.Get<ResourceListOfGetIndexConventionResponse>("/api/conventions/rates/indexconventions", localVarRequestOptions, this.Configuration);
 
-            int localVarStatusCode = (int) localVarResponse.StatusCode;
-
-            if (ExceptionFactory != null)
+            if (this.ExceptionFactory != null)
             {
-                Exception exception = ExceptionFactory("ListIndexConvention", localVarResponse);
-                if (exception != null) throw exception;
+                Exception _exception = this.ExceptionFactory("ListIndexConvention", localVarResponse);
+                if (_exception != null) throw _exception;
             }
 
-            return new ApiResponse<ResourceListOfGetIndexConventionResponse>(localVarStatusCode,
-                localVarResponse.Headers.ToDictionary(x => x.Key, x => string.Join(",", x.Value)),
-                (ResourceListOfGetIndexConventionResponse) this.Configuration.ApiClient.Deserialize(localVarResponse, typeof(ResourceListOfGetIndexConventionResponse)));
+            return localVarResponse;
         }
 
         /// <summary>
@@ -2091,12 +2019,12 @@ namespace Lusid.Sdk.Api
         /// </summary>
         /// <exception cref="Lusid.Sdk.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="asAt">The asAt datetime at which to list the conventions. Defaults to latest if not specified. (optional)</param>
+        /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
         /// <returns>Task of ResourceListOfGetIndexConventionResponse</returns>
-        public async System.Threading.Tasks.Task<ResourceListOfGetIndexConventionResponse> ListIndexConventionAsync (DateTimeOffset? asAt = null)
+        public async System.Threading.Tasks.Task<ResourceListOfGetIndexConventionResponse> ListIndexConventionAsync(DateTimeOffset? asAt = default(DateTimeOffset?), System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
-             ApiResponse<ResourceListOfGetIndexConventionResponse> localVarResponse = await ListIndexConventionAsyncWithHttpInfo(asAt);
-             return localVarResponse.Data;
-
+            Lusid.Sdk.Client.ApiResponse<ResourceListOfGetIndexConventionResponse> localVarResponse = await ListIndexConventionWithHttpInfoAsync(asAt, cancellationToken).ConfigureAwait(false);
+            return localVarResponse.Data;
         }
 
         /// <summary>
@@ -2104,62 +2032,57 @@ namespace Lusid.Sdk.Api
         /// </summary>
         /// <exception cref="Lusid.Sdk.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="asAt">The asAt datetime at which to list the conventions. Defaults to latest if not specified. (optional)</param>
+        /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
         /// <returns>Task of ApiResponse (ResourceListOfGetIndexConventionResponse)</returns>
-        public async System.Threading.Tasks.Task<ApiResponse<ResourceListOfGetIndexConventionResponse>> ListIndexConventionAsyncWithHttpInfo (DateTimeOffset? asAt = null)
+        public async System.Threading.Tasks.Task<Lusid.Sdk.Client.ApiResponse<ResourceListOfGetIndexConventionResponse>> ListIndexConventionWithHttpInfoAsync(DateTimeOffset? asAt = default(DateTimeOffset?), System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
 
-            var localVarPath = "./api/conventions/rates/indexconventions";
-            var localVarPathParams = new Dictionary<String, String>();
-            var localVarQueryParams = new List<KeyValuePair<String, String>>();
-            var localVarHeaderParams = new Dictionary<String, String>(this.Configuration.DefaultHeader);
-            var localVarFormParams = new Dictionary<String, String>();
-            var localVarFileParams = new Dictionary<String, FileParameter>();
-            Object localVarPostBody = null;
+            Lusid.Sdk.Client.RequestOptions localVarRequestOptions = new Lusid.Sdk.Client.RequestOptions();
 
-            // to determine the Content-Type header
-            String[] localVarHttpContentTypes = new String[] {
+            String[] _contentTypes = new String[] {
             };
-            String localVarHttpContentType = this.Configuration.ApiClient.SelectHeaderContentType(localVarHttpContentTypes);
 
             // to determine the Accept header
-            String[] localVarHttpHeaderAccepts = new String[] {
+            String[] _accepts = new String[] {
                 "text/plain",
                 "application/json",
                 "text/json"
             };
-            String localVarHttpHeaderAccept = this.Configuration.ApiClient.SelectHeaderAccept(localVarHttpHeaderAccepts);
-            if (localVarHttpHeaderAccept != null)
-                localVarHeaderParams.Add("Accept", localVarHttpHeaderAccept);
 
-            if (asAt != null) localVarQueryParams.AddRange(this.Configuration.ApiClient.ParameterToKeyValuePairs("", "asAt", asAt)); // query parameter
+
+            var localVarContentType = Lusid.Sdk.Client.ClientUtils.SelectHeaderContentType(_contentTypes);
+            if (localVarContentType != null) localVarRequestOptions.HeaderParameters.Add("Content-Type", localVarContentType);
+
+            var localVarAccept = Lusid.Sdk.Client.ClientUtils.SelectHeaderAccept(_accepts);
+            if (localVarAccept != null) localVarRequestOptions.HeaderParameters.Add("Accept", localVarAccept);
+
+            if (asAt != null)
+            {
+                localVarRequestOptions.QueryParameters.Add(Lusid.Sdk.Client.ClientUtils.ParameterToMultiMap("", "asAt", asAt));
+            }
 
             // authentication (oauth2) required
             // oauth required
             if (!String.IsNullOrEmpty(this.Configuration.AccessToken))
             {
-                localVarHeaderParams["Authorization"] = "Bearer " + this.Configuration.AccessToken;
+                localVarRequestOptions.HeaderParameters.Add("Authorization", "Bearer " + this.Configuration.AccessToken);
             }
 
             //  set the LUSID header
-            localVarHeaderParams["X-LUSID-Sdk-Language"] = "C#";
-            localVarHeaderParams["X-LUSID-Sdk-Version"] = "0.11.3412";
+            localVarRequestOptions.HeaderParameters.Add("X-LUSID-Sdk-Language", "C#");
+            localVarRequestOptions.HeaderParameters.Add("X-LUSID-Sdk-Version", "0.11.3412");
 
             // make the HTTP request
-            IRestResponse localVarResponse = (IRestResponse) await this.Configuration.ApiClient.CallApiAsync(localVarPath,
-                Method.GET, localVarQueryParams, localVarPostBody, localVarHeaderParams, localVarFormParams, localVarFileParams,
-                localVarPathParams, localVarHttpContentType);
 
-            int localVarStatusCode = (int) localVarResponse.StatusCode;
+            var localVarResponse = await this.AsynchronousClient.GetAsync<ResourceListOfGetIndexConventionResponse>("/api/conventions/rates/indexconventions", localVarRequestOptions, this.Configuration, cancellationToken).ConfigureAwait(false);
 
-            if (ExceptionFactory != null)
+            if (this.ExceptionFactory != null)
             {
-                Exception exception = ExceptionFactory("ListIndexConvention", localVarResponse);
-                if (exception != null) throw exception;
+                Exception _exception = this.ExceptionFactory("ListIndexConvention", localVarResponse);
+                if (_exception != null) throw _exception;
             }
 
-            return new ApiResponse<ResourceListOfGetIndexConventionResponse>(localVarStatusCode,
-                localVarResponse.Headers.ToDictionary(x => x.Key, x => string.Join(",", x.Value)),
-                (ResourceListOfGetIndexConventionResponse) this.Configuration.ApiClient.Deserialize(localVarResponse, typeof(ResourceListOfGetIndexConventionResponse)));
+            return localVarResponse;
         }
 
         /// <summary>
@@ -2168,10 +2091,10 @@ namespace Lusid.Sdk.Api
         /// <exception cref="Lusid.Sdk.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="upsertCdsFlowConventionsRequest">The CDS Flow Conventions to update or insert</param>
         /// <returns>UpsertSingleStructuredDataResponse</returns>
-        public UpsertSingleStructuredDataResponse UpsertCdsFlowConventions (UpsertCdsFlowConventionsRequest upsertCdsFlowConventionsRequest)
+        public UpsertSingleStructuredDataResponse UpsertCdsFlowConventions(UpsertCdsFlowConventionsRequest upsertCdsFlowConventionsRequest)
         {
-             ApiResponse<UpsertSingleStructuredDataResponse> localVarResponse = UpsertCdsFlowConventionsWithHttpInfo(upsertCdsFlowConventionsRequest);
-             return localVarResponse.Data;
+            Lusid.Sdk.Client.ApiResponse<UpsertSingleStructuredDataResponse> localVarResponse = UpsertCdsFlowConventionsWithHttpInfo(upsertCdsFlowConventionsRequest);
+            return localVarResponse.Data;
         }
 
         /// <summary>
@@ -2180,75 +2103,57 @@ namespace Lusid.Sdk.Api
         /// <exception cref="Lusid.Sdk.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="upsertCdsFlowConventionsRequest">The CDS Flow Conventions to update or insert</param>
         /// <returns>ApiResponse of UpsertSingleStructuredDataResponse</returns>
-        public ApiResponse< UpsertSingleStructuredDataResponse > UpsertCdsFlowConventionsWithHttpInfo (UpsertCdsFlowConventionsRequest upsertCdsFlowConventionsRequest)
+        public Lusid.Sdk.Client.ApiResponse<UpsertSingleStructuredDataResponse> UpsertCdsFlowConventionsWithHttpInfo(UpsertCdsFlowConventionsRequest upsertCdsFlowConventionsRequest)
         {
             // verify the required parameter 'upsertCdsFlowConventionsRequest' is set
             if (upsertCdsFlowConventionsRequest == null)
-                throw new ApiException(400, "Missing required parameter 'upsertCdsFlowConventionsRequest' when calling ConventionsApi->UpsertCdsFlowConventions");
+                throw new Lusid.Sdk.Client.ApiException(400, "Missing required parameter 'upsertCdsFlowConventionsRequest' when calling ConventionsApi->UpsertCdsFlowConventions");
 
-            var localVarPath = "./api/conventions/credit/conventions";
-            var localVarPathParams = new Dictionary<String, String>();
-            var localVarQueryParams = new List<KeyValuePair<String, String>>();
-            var localVarHeaderParams = new Dictionary<String, String>(this.Configuration.DefaultHeader);
-            var localVarFormParams = new Dictionary<String, String>();
-            var localVarFileParams = new Dictionary<String, FileParameter>();
-            Object localVarPostBody = null;
+            Lusid.Sdk.Client.RequestOptions localVarRequestOptions = new Lusid.Sdk.Client.RequestOptions();
 
-            // to determine the Content-Type header
-            String[] localVarHttpContentTypes = new String[] {
-                "application/json-patch+json", 
-                "application/json", 
-                "text/json", 
+            String[] _contentTypes = new String[] {
+                "application/json-patch+json",
+                "application/json",
+                "text/json",
                 "application/_*+json"
             };
-            String localVarHttpContentType = this.Configuration.ApiClient.SelectHeaderContentType(localVarHttpContentTypes);
 
             // to determine the Accept header
-            String[] localVarHttpHeaderAccepts = new String[] {
+            String[] _accepts = new String[] {
                 "text/plain",
                 "application/json",
                 "text/json"
             };
-            String localVarHttpHeaderAccept = this.Configuration.ApiClient.SelectHeaderAccept(localVarHttpHeaderAccepts);
-            if (localVarHttpHeaderAccept != null)
-                localVarHeaderParams.Add("Accept", localVarHttpHeaderAccept);
 
-            if (upsertCdsFlowConventionsRequest != null && upsertCdsFlowConventionsRequest.GetType() != typeof(byte[]))
-            {
-                localVarPostBody = this.Configuration.ApiClient.Serialize(upsertCdsFlowConventionsRequest); // http body (model) parameter
-            }
-            else
-            {
-                localVarPostBody = upsertCdsFlowConventionsRequest; // byte array
-            }
+            var localVarContentType = Lusid.Sdk.Client.ClientUtils.SelectHeaderContentType(_contentTypes);
+            if (localVarContentType != null) localVarRequestOptions.HeaderParameters.Add("Content-Type", localVarContentType);
+
+            var localVarAccept = Lusid.Sdk.Client.ClientUtils.SelectHeaderAccept(_accepts);
+            if (localVarAccept != null) localVarRequestOptions.HeaderParameters.Add("Accept", localVarAccept);
+
+            localVarRequestOptions.Data = upsertCdsFlowConventionsRequest;
 
             // authentication (oauth2) required
             // oauth required
             if (!String.IsNullOrEmpty(this.Configuration.AccessToken))
             {
-                localVarHeaderParams["Authorization"] = "Bearer " + this.Configuration.AccessToken;
+                localVarRequestOptions.HeaderParameters.Add("Authorization", "Bearer " + this.Configuration.AccessToken);
             }
 
             //  set the LUSID header
-            localVarHeaderParams["X-LUSID-SDK-Language"] = "C#";
-            localVarHeaderParams["X-LUSID-SDK-Version"] = "0.11.3412";
+            localVarRequestOptions.HeaderParameters.Add("X-LUSID-Sdk-Language", "C#");
+            localVarRequestOptions.HeaderParameters.Add("X-LUSID-Sdk-Version", "0.11.3412");
 
             // make the HTTP request
-            IRestResponse localVarResponse = (IRestResponse) this.Configuration.ApiClient.CallApi(localVarPath,
-                Method.POST, localVarQueryParams, localVarPostBody, localVarHeaderParams, localVarFormParams, localVarFileParams,
-                localVarPathParams, localVarHttpContentType);
+            var localVarResponse = this.Client.Post<UpsertSingleStructuredDataResponse>("/api/conventions/credit/conventions", localVarRequestOptions, this.Configuration);
 
-            int localVarStatusCode = (int) localVarResponse.StatusCode;
-
-            if (ExceptionFactory != null)
+            if (this.ExceptionFactory != null)
             {
-                Exception exception = ExceptionFactory("UpsertCdsFlowConventions", localVarResponse);
-                if (exception != null) throw exception;
+                Exception _exception = this.ExceptionFactory("UpsertCdsFlowConventions", localVarResponse);
+                if (_exception != null) throw _exception;
             }
 
-            return new ApiResponse<UpsertSingleStructuredDataResponse>(localVarStatusCode,
-                localVarResponse.Headers.ToDictionary(x => x.Key, x => string.Join(",", x.Value)),
-                (UpsertSingleStructuredDataResponse) this.Configuration.ApiClient.Deserialize(localVarResponse, typeof(UpsertSingleStructuredDataResponse)));
+            return localVarResponse;
         }
 
         /// <summary>
@@ -2256,12 +2161,12 @@ namespace Lusid.Sdk.Api
         /// </summary>
         /// <exception cref="Lusid.Sdk.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="upsertCdsFlowConventionsRequest">The CDS Flow Conventions to update or insert</param>
+        /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
         /// <returns>Task of UpsertSingleStructuredDataResponse</returns>
-        public async System.Threading.Tasks.Task<UpsertSingleStructuredDataResponse> UpsertCdsFlowConventionsAsync (UpsertCdsFlowConventionsRequest upsertCdsFlowConventionsRequest)
+        public async System.Threading.Tasks.Task<UpsertSingleStructuredDataResponse> UpsertCdsFlowConventionsAsync(UpsertCdsFlowConventionsRequest upsertCdsFlowConventionsRequest, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
-             ApiResponse<UpsertSingleStructuredDataResponse> localVarResponse = await UpsertCdsFlowConventionsAsyncWithHttpInfo(upsertCdsFlowConventionsRequest);
-             return localVarResponse.Data;
-
+            Lusid.Sdk.Client.ApiResponse<UpsertSingleStructuredDataResponse> localVarResponse = await UpsertCdsFlowConventionsWithHttpInfoAsync(upsertCdsFlowConventionsRequest, cancellationToken).ConfigureAwait(false);
+            return localVarResponse.Data;
         }
 
         /// <summary>
@@ -2269,76 +2174,62 @@ namespace Lusid.Sdk.Api
         /// </summary>
         /// <exception cref="Lusid.Sdk.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="upsertCdsFlowConventionsRequest">The CDS Flow Conventions to update or insert</param>
+        /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
         /// <returns>Task of ApiResponse (UpsertSingleStructuredDataResponse)</returns>
-        public async System.Threading.Tasks.Task<ApiResponse<UpsertSingleStructuredDataResponse>> UpsertCdsFlowConventionsAsyncWithHttpInfo (UpsertCdsFlowConventionsRequest upsertCdsFlowConventionsRequest)
+        public async System.Threading.Tasks.Task<Lusid.Sdk.Client.ApiResponse<UpsertSingleStructuredDataResponse>> UpsertCdsFlowConventionsWithHttpInfoAsync(UpsertCdsFlowConventionsRequest upsertCdsFlowConventionsRequest, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
             // verify the required parameter 'upsertCdsFlowConventionsRequest' is set
             if (upsertCdsFlowConventionsRequest == null)
-                throw new ApiException(400, "Missing required parameter 'upsertCdsFlowConventionsRequest' when calling ConventionsApi->UpsertCdsFlowConventions");
+                throw new Lusid.Sdk.Client.ApiException(400, "Missing required parameter 'upsertCdsFlowConventionsRequest' when calling ConventionsApi->UpsertCdsFlowConventions");
 
-            var localVarPath = "./api/conventions/credit/conventions";
-            var localVarPathParams = new Dictionary<String, String>();
-            var localVarQueryParams = new List<KeyValuePair<String, String>>();
-            var localVarHeaderParams = new Dictionary<String, String>(this.Configuration.DefaultHeader);
-            var localVarFormParams = new Dictionary<String, String>();
-            var localVarFileParams = new Dictionary<String, FileParameter>();
-            Object localVarPostBody = null;
 
-            // to determine the Content-Type header
-            String[] localVarHttpContentTypes = new String[] {
+            Lusid.Sdk.Client.RequestOptions localVarRequestOptions = new Lusid.Sdk.Client.RequestOptions();
+
+            String[] _contentTypes = new String[] {
                 "application/json-patch+json", 
                 "application/json", 
                 "text/json", 
                 "application/_*+json"
             };
-            String localVarHttpContentType = this.Configuration.ApiClient.SelectHeaderContentType(localVarHttpContentTypes);
 
             // to determine the Accept header
-            String[] localVarHttpHeaderAccepts = new String[] {
+            String[] _accepts = new String[] {
                 "text/plain",
                 "application/json",
                 "text/json"
             };
-            String localVarHttpHeaderAccept = this.Configuration.ApiClient.SelectHeaderAccept(localVarHttpHeaderAccepts);
-            if (localVarHttpHeaderAccept != null)
-                localVarHeaderParams.Add("Accept", localVarHttpHeaderAccept);
 
-            if (upsertCdsFlowConventionsRequest != null && upsertCdsFlowConventionsRequest.GetType() != typeof(byte[]))
-            {
-                localVarPostBody = this.Configuration.ApiClient.Serialize(upsertCdsFlowConventionsRequest); // http body (model) parameter
-            }
-            else
-            {
-                localVarPostBody = upsertCdsFlowConventionsRequest; // byte array
-            }
+
+            var localVarContentType = Lusid.Sdk.Client.ClientUtils.SelectHeaderContentType(_contentTypes);
+            if (localVarContentType != null) localVarRequestOptions.HeaderParameters.Add("Content-Type", localVarContentType);
+
+            var localVarAccept = Lusid.Sdk.Client.ClientUtils.SelectHeaderAccept(_accepts);
+            if (localVarAccept != null) localVarRequestOptions.HeaderParameters.Add("Accept", localVarAccept);
+
+            localVarRequestOptions.Data = upsertCdsFlowConventionsRequest;
 
             // authentication (oauth2) required
             // oauth required
             if (!String.IsNullOrEmpty(this.Configuration.AccessToken))
             {
-                localVarHeaderParams["Authorization"] = "Bearer " + this.Configuration.AccessToken;
+                localVarRequestOptions.HeaderParameters.Add("Authorization", "Bearer " + this.Configuration.AccessToken);
             }
 
             //  set the LUSID header
-            localVarHeaderParams["X-LUSID-Sdk-Language"] = "C#";
-            localVarHeaderParams["X-LUSID-Sdk-Version"] = "0.11.3412";
+            localVarRequestOptions.HeaderParameters.Add("X-LUSID-Sdk-Language", "C#");
+            localVarRequestOptions.HeaderParameters.Add("X-LUSID-Sdk-Version", "0.11.3412");
 
             // make the HTTP request
-            IRestResponse localVarResponse = (IRestResponse) await this.Configuration.ApiClient.CallApiAsync(localVarPath,
-                Method.POST, localVarQueryParams, localVarPostBody, localVarHeaderParams, localVarFormParams, localVarFileParams,
-                localVarPathParams, localVarHttpContentType);
 
-            int localVarStatusCode = (int) localVarResponse.StatusCode;
+            var localVarResponse = await this.AsynchronousClient.PostAsync<UpsertSingleStructuredDataResponse>("/api/conventions/credit/conventions", localVarRequestOptions, this.Configuration, cancellationToken).ConfigureAwait(false);
 
-            if (ExceptionFactory != null)
+            if (this.ExceptionFactory != null)
             {
-                Exception exception = ExceptionFactory("UpsertCdsFlowConventions", localVarResponse);
-                if (exception != null) throw exception;
+                Exception _exception = this.ExceptionFactory("UpsertCdsFlowConventions", localVarResponse);
+                if (_exception != null) throw _exception;
             }
 
-            return new ApiResponse<UpsertSingleStructuredDataResponse>(localVarStatusCode,
-                localVarResponse.Headers.ToDictionary(x => x.Key, x => string.Join(",", x.Value)),
-                (UpsertSingleStructuredDataResponse) this.Configuration.ApiClient.Deserialize(localVarResponse, typeof(UpsertSingleStructuredDataResponse)));
+            return localVarResponse;
         }
 
         /// <summary>
@@ -2347,10 +2238,10 @@ namespace Lusid.Sdk.Api
         /// <exception cref="Lusid.Sdk.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="upsertFlowConventionsRequest">The Flow Conventions to update or insert</param>
         /// <returns>UpsertSingleStructuredDataResponse</returns>
-        public UpsertSingleStructuredDataResponse UpsertFlowConventions (UpsertFlowConventionsRequest upsertFlowConventionsRequest)
+        public UpsertSingleStructuredDataResponse UpsertFlowConventions(UpsertFlowConventionsRequest upsertFlowConventionsRequest)
         {
-             ApiResponse<UpsertSingleStructuredDataResponse> localVarResponse = UpsertFlowConventionsWithHttpInfo(upsertFlowConventionsRequest);
-             return localVarResponse.Data;
+            Lusid.Sdk.Client.ApiResponse<UpsertSingleStructuredDataResponse> localVarResponse = UpsertFlowConventionsWithHttpInfo(upsertFlowConventionsRequest);
+            return localVarResponse.Data;
         }
 
         /// <summary>
@@ -2359,75 +2250,57 @@ namespace Lusid.Sdk.Api
         /// <exception cref="Lusid.Sdk.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="upsertFlowConventionsRequest">The Flow Conventions to update or insert</param>
         /// <returns>ApiResponse of UpsertSingleStructuredDataResponse</returns>
-        public ApiResponse< UpsertSingleStructuredDataResponse > UpsertFlowConventionsWithHttpInfo (UpsertFlowConventionsRequest upsertFlowConventionsRequest)
+        public Lusid.Sdk.Client.ApiResponse<UpsertSingleStructuredDataResponse> UpsertFlowConventionsWithHttpInfo(UpsertFlowConventionsRequest upsertFlowConventionsRequest)
         {
             // verify the required parameter 'upsertFlowConventionsRequest' is set
             if (upsertFlowConventionsRequest == null)
-                throw new ApiException(400, "Missing required parameter 'upsertFlowConventionsRequest' when calling ConventionsApi->UpsertFlowConventions");
+                throw new Lusid.Sdk.Client.ApiException(400, "Missing required parameter 'upsertFlowConventionsRequest' when calling ConventionsApi->UpsertFlowConventions");
 
-            var localVarPath = "./api/conventions/rates/flowconventions";
-            var localVarPathParams = new Dictionary<String, String>();
-            var localVarQueryParams = new List<KeyValuePair<String, String>>();
-            var localVarHeaderParams = new Dictionary<String, String>(this.Configuration.DefaultHeader);
-            var localVarFormParams = new Dictionary<String, String>();
-            var localVarFileParams = new Dictionary<String, FileParameter>();
-            Object localVarPostBody = null;
+            Lusid.Sdk.Client.RequestOptions localVarRequestOptions = new Lusid.Sdk.Client.RequestOptions();
 
-            // to determine the Content-Type header
-            String[] localVarHttpContentTypes = new String[] {
-                "application/json-patch+json", 
-                "application/json", 
-                "text/json", 
+            String[] _contentTypes = new String[] {
+                "application/json-patch+json",
+                "application/json",
+                "text/json",
                 "application/_*+json"
             };
-            String localVarHttpContentType = this.Configuration.ApiClient.SelectHeaderContentType(localVarHttpContentTypes);
 
             // to determine the Accept header
-            String[] localVarHttpHeaderAccepts = new String[] {
+            String[] _accepts = new String[] {
                 "text/plain",
                 "application/json",
                 "text/json"
             };
-            String localVarHttpHeaderAccept = this.Configuration.ApiClient.SelectHeaderAccept(localVarHttpHeaderAccepts);
-            if (localVarHttpHeaderAccept != null)
-                localVarHeaderParams.Add("Accept", localVarHttpHeaderAccept);
 
-            if (upsertFlowConventionsRequest != null && upsertFlowConventionsRequest.GetType() != typeof(byte[]))
-            {
-                localVarPostBody = this.Configuration.ApiClient.Serialize(upsertFlowConventionsRequest); // http body (model) parameter
-            }
-            else
-            {
-                localVarPostBody = upsertFlowConventionsRequest; // byte array
-            }
+            var localVarContentType = Lusid.Sdk.Client.ClientUtils.SelectHeaderContentType(_contentTypes);
+            if (localVarContentType != null) localVarRequestOptions.HeaderParameters.Add("Content-Type", localVarContentType);
+
+            var localVarAccept = Lusid.Sdk.Client.ClientUtils.SelectHeaderAccept(_accepts);
+            if (localVarAccept != null) localVarRequestOptions.HeaderParameters.Add("Accept", localVarAccept);
+
+            localVarRequestOptions.Data = upsertFlowConventionsRequest;
 
             // authentication (oauth2) required
             // oauth required
             if (!String.IsNullOrEmpty(this.Configuration.AccessToken))
             {
-                localVarHeaderParams["Authorization"] = "Bearer " + this.Configuration.AccessToken;
+                localVarRequestOptions.HeaderParameters.Add("Authorization", "Bearer " + this.Configuration.AccessToken);
             }
 
             //  set the LUSID header
-            localVarHeaderParams["X-LUSID-SDK-Language"] = "C#";
-            localVarHeaderParams["X-LUSID-SDK-Version"] = "0.11.3412";
+            localVarRequestOptions.HeaderParameters.Add("X-LUSID-Sdk-Language", "C#");
+            localVarRequestOptions.HeaderParameters.Add("X-LUSID-Sdk-Version", "0.11.3412");
 
             // make the HTTP request
-            IRestResponse localVarResponse = (IRestResponse) this.Configuration.ApiClient.CallApi(localVarPath,
-                Method.POST, localVarQueryParams, localVarPostBody, localVarHeaderParams, localVarFormParams, localVarFileParams,
-                localVarPathParams, localVarHttpContentType);
+            var localVarResponse = this.Client.Post<UpsertSingleStructuredDataResponse>("/api/conventions/rates/flowconventions", localVarRequestOptions, this.Configuration);
 
-            int localVarStatusCode = (int) localVarResponse.StatusCode;
-
-            if (ExceptionFactory != null)
+            if (this.ExceptionFactory != null)
             {
-                Exception exception = ExceptionFactory("UpsertFlowConventions", localVarResponse);
-                if (exception != null) throw exception;
+                Exception _exception = this.ExceptionFactory("UpsertFlowConventions", localVarResponse);
+                if (_exception != null) throw _exception;
             }
 
-            return new ApiResponse<UpsertSingleStructuredDataResponse>(localVarStatusCode,
-                localVarResponse.Headers.ToDictionary(x => x.Key, x => string.Join(",", x.Value)),
-                (UpsertSingleStructuredDataResponse) this.Configuration.ApiClient.Deserialize(localVarResponse, typeof(UpsertSingleStructuredDataResponse)));
+            return localVarResponse;
         }
 
         /// <summary>
@@ -2435,12 +2308,12 @@ namespace Lusid.Sdk.Api
         /// </summary>
         /// <exception cref="Lusid.Sdk.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="upsertFlowConventionsRequest">The Flow Conventions to update or insert</param>
+        /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
         /// <returns>Task of UpsertSingleStructuredDataResponse</returns>
-        public async System.Threading.Tasks.Task<UpsertSingleStructuredDataResponse> UpsertFlowConventionsAsync (UpsertFlowConventionsRequest upsertFlowConventionsRequest)
+        public async System.Threading.Tasks.Task<UpsertSingleStructuredDataResponse> UpsertFlowConventionsAsync(UpsertFlowConventionsRequest upsertFlowConventionsRequest, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
-             ApiResponse<UpsertSingleStructuredDataResponse> localVarResponse = await UpsertFlowConventionsAsyncWithHttpInfo(upsertFlowConventionsRequest);
-             return localVarResponse.Data;
-
+            Lusid.Sdk.Client.ApiResponse<UpsertSingleStructuredDataResponse> localVarResponse = await UpsertFlowConventionsWithHttpInfoAsync(upsertFlowConventionsRequest, cancellationToken).ConfigureAwait(false);
+            return localVarResponse.Data;
         }
 
         /// <summary>
@@ -2448,76 +2321,62 @@ namespace Lusid.Sdk.Api
         /// </summary>
         /// <exception cref="Lusid.Sdk.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="upsertFlowConventionsRequest">The Flow Conventions to update or insert</param>
+        /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
         /// <returns>Task of ApiResponse (UpsertSingleStructuredDataResponse)</returns>
-        public async System.Threading.Tasks.Task<ApiResponse<UpsertSingleStructuredDataResponse>> UpsertFlowConventionsAsyncWithHttpInfo (UpsertFlowConventionsRequest upsertFlowConventionsRequest)
+        public async System.Threading.Tasks.Task<Lusid.Sdk.Client.ApiResponse<UpsertSingleStructuredDataResponse>> UpsertFlowConventionsWithHttpInfoAsync(UpsertFlowConventionsRequest upsertFlowConventionsRequest, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
             // verify the required parameter 'upsertFlowConventionsRequest' is set
             if (upsertFlowConventionsRequest == null)
-                throw new ApiException(400, "Missing required parameter 'upsertFlowConventionsRequest' when calling ConventionsApi->UpsertFlowConventions");
+                throw new Lusid.Sdk.Client.ApiException(400, "Missing required parameter 'upsertFlowConventionsRequest' when calling ConventionsApi->UpsertFlowConventions");
 
-            var localVarPath = "./api/conventions/rates/flowconventions";
-            var localVarPathParams = new Dictionary<String, String>();
-            var localVarQueryParams = new List<KeyValuePair<String, String>>();
-            var localVarHeaderParams = new Dictionary<String, String>(this.Configuration.DefaultHeader);
-            var localVarFormParams = new Dictionary<String, String>();
-            var localVarFileParams = new Dictionary<String, FileParameter>();
-            Object localVarPostBody = null;
 
-            // to determine the Content-Type header
-            String[] localVarHttpContentTypes = new String[] {
+            Lusid.Sdk.Client.RequestOptions localVarRequestOptions = new Lusid.Sdk.Client.RequestOptions();
+
+            String[] _contentTypes = new String[] {
                 "application/json-patch+json", 
                 "application/json", 
                 "text/json", 
                 "application/_*+json"
             };
-            String localVarHttpContentType = this.Configuration.ApiClient.SelectHeaderContentType(localVarHttpContentTypes);
 
             // to determine the Accept header
-            String[] localVarHttpHeaderAccepts = new String[] {
+            String[] _accepts = new String[] {
                 "text/plain",
                 "application/json",
                 "text/json"
             };
-            String localVarHttpHeaderAccept = this.Configuration.ApiClient.SelectHeaderAccept(localVarHttpHeaderAccepts);
-            if (localVarHttpHeaderAccept != null)
-                localVarHeaderParams.Add("Accept", localVarHttpHeaderAccept);
 
-            if (upsertFlowConventionsRequest != null && upsertFlowConventionsRequest.GetType() != typeof(byte[]))
-            {
-                localVarPostBody = this.Configuration.ApiClient.Serialize(upsertFlowConventionsRequest); // http body (model) parameter
-            }
-            else
-            {
-                localVarPostBody = upsertFlowConventionsRequest; // byte array
-            }
+
+            var localVarContentType = Lusid.Sdk.Client.ClientUtils.SelectHeaderContentType(_contentTypes);
+            if (localVarContentType != null) localVarRequestOptions.HeaderParameters.Add("Content-Type", localVarContentType);
+
+            var localVarAccept = Lusid.Sdk.Client.ClientUtils.SelectHeaderAccept(_accepts);
+            if (localVarAccept != null) localVarRequestOptions.HeaderParameters.Add("Accept", localVarAccept);
+
+            localVarRequestOptions.Data = upsertFlowConventionsRequest;
 
             // authentication (oauth2) required
             // oauth required
             if (!String.IsNullOrEmpty(this.Configuration.AccessToken))
             {
-                localVarHeaderParams["Authorization"] = "Bearer " + this.Configuration.AccessToken;
+                localVarRequestOptions.HeaderParameters.Add("Authorization", "Bearer " + this.Configuration.AccessToken);
             }
 
             //  set the LUSID header
-            localVarHeaderParams["X-LUSID-Sdk-Language"] = "C#";
-            localVarHeaderParams["X-LUSID-Sdk-Version"] = "0.11.3412";
+            localVarRequestOptions.HeaderParameters.Add("X-LUSID-Sdk-Language", "C#");
+            localVarRequestOptions.HeaderParameters.Add("X-LUSID-Sdk-Version", "0.11.3412");
 
             // make the HTTP request
-            IRestResponse localVarResponse = (IRestResponse) await this.Configuration.ApiClient.CallApiAsync(localVarPath,
-                Method.POST, localVarQueryParams, localVarPostBody, localVarHeaderParams, localVarFormParams, localVarFileParams,
-                localVarPathParams, localVarHttpContentType);
 
-            int localVarStatusCode = (int) localVarResponse.StatusCode;
+            var localVarResponse = await this.AsynchronousClient.PostAsync<UpsertSingleStructuredDataResponse>("/api/conventions/rates/flowconventions", localVarRequestOptions, this.Configuration, cancellationToken).ConfigureAwait(false);
 
-            if (ExceptionFactory != null)
+            if (this.ExceptionFactory != null)
             {
-                Exception exception = ExceptionFactory("UpsertFlowConventions", localVarResponse);
-                if (exception != null) throw exception;
+                Exception _exception = this.ExceptionFactory("UpsertFlowConventions", localVarResponse);
+                if (_exception != null) throw _exception;
             }
 
-            return new ApiResponse<UpsertSingleStructuredDataResponse>(localVarStatusCode,
-                localVarResponse.Headers.ToDictionary(x => x.Key, x => string.Join(",", x.Value)),
-                (UpsertSingleStructuredDataResponse) this.Configuration.ApiClient.Deserialize(localVarResponse, typeof(UpsertSingleStructuredDataResponse)));
+            return localVarResponse;
         }
 
         /// <summary>
@@ -2526,10 +2385,10 @@ namespace Lusid.Sdk.Api
         /// <exception cref="Lusid.Sdk.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="upsertIndexConventionRequest">The Index Conventions to update or insert</param>
         /// <returns>UpsertSingleStructuredDataResponse</returns>
-        public UpsertSingleStructuredDataResponse UpsertIndexConvention (UpsertIndexConventionRequest upsertIndexConventionRequest)
+        public UpsertSingleStructuredDataResponse UpsertIndexConvention(UpsertIndexConventionRequest upsertIndexConventionRequest)
         {
-             ApiResponse<UpsertSingleStructuredDataResponse> localVarResponse = UpsertIndexConventionWithHttpInfo(upsertIndexConventionRequest);
-             return localVarResponse.Data;
+            Lusid.Sdk.Client.ApiResponse<UpsertSingleStructuredDataResponse> localVarResponse = UpsertIndexConventionWithHttpInfo(upsertIndexConventionRequest);
+            return localVarResponse.Data;
         }
 
         /// <summary>
@@ -2538,75 +2397,57 @@ namespace Lusid.Sdk.Api
         /// <exception cref="Lusid.Sdk.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="upsertIndexConventionRequest">The Index Conventions to update or insert</param>
         /// <returns>ApiResponse of UpsertSingleStructuredDataResponse</returns>
-        public ApiResponse< UpsertSingleStructuredDataResponse > UpsertIndexConventionWithHttpInfo (UpsertIndexConventionRequest upsertIndexConventionRequest)
+        public Lusid.Sdk.Client.ApiResponse<UpsertSingleStructuredDataResponse> UpsertIndexConventionWithHttpInfo(UpsertIndexConventionRequest upsertIndexConventionRequest)
         {
             // verify the required parameter 'upsertIndexConventionRequest' is set
             if (upsertIndexConventionRequest == null)
-                throw new ApiException(400, "Missing required parameter 'upsertIndexConventionRequest' when calling ConventionsApi->UpsertIndexConvention");
+                throw new Lusid.Sdk.Client.ApiException(400, "Missing required parameter 'upsertIndexConventionRequest' when calling ConventionsApi->UpsertIndexConvention");
 
-            var localVarPath = "./api/conventions/rates/indexconventions";
-            var localVarPathParams = new Dictionary<String, String>();
-            var localVarQueryParams = new List<KeyValuePair<String, String>>();
-            var localVarHeaderParams = new Dictionary<String, String>(this.Configuration.DefaultHeader);
-            var localVarFormParams = new Dictionary<String, String>();
-            var localVarFileParams = new Dictionary<String, FileParameter>();
-            Object localVarPostBody = null;
+            Lusid.Sdk.Client.RequestOptions localVarRequestOptions = new Lusid.Sdk.Client.RequestOptions();
 
-            // to determine the Content-Type header
-            String[] localVarHttpContentTypes = new String[] {
-                "application/json-patch+json", 
-                "application/json", 
-                "text/json", 
+            String[] _contentTypes = new String[] {
+                "application/json-patch+json",
+                "application/json",
+                "text/json",
                 "application/_*+json"
             };
-            String localVarHttpContentType = this.Configuration.ApiClient.SelectHeaderContentType(localVarHttpContentTypes);
 
             // to determine the Accept header
-            String[] localVarHttpHeaderAccepts = new String[] {
+            String[] _accepts = new String[] {
                 "text/plain",
                 "application/json",
                 "text/json"
             };
-            String localVarHttpHeaderAccept = this.Configuration.ApiClient.SelectHeaderAccept(localVarHttpHeaderAccepts);
-            if (localVarHttpHeaderAccept != null)
-                localVarHeaderParams.Add("Accept", localVarHttpHeaderAccept);
 
-            if (upsertIndexConventionRequest != null && upsertIndexConventionRequest.GetType() != typeof(byte[]))
-            {
-                localVarPostBody = this.Configuration.ApiClient.Serialize(upsertIndexConventionRequest); // http body (model) parameter
-            }
-            else
-            {
-                localVarPostBody = upsertIndexConventionRequest; // byte array
-            }
+            var localVarContentType = Lusid.Sdk.Client.ClientUtils.SelectHeaderContentType(_contentTypes);
+            if (localVarContentType != null) localVarRequestOptions.HeaderParameters.Add("Content-Type", localVarContentType);
+
+            var localVarAccept = Lusid.Sdk.Client.ClientUtils.SelectHeaderAccept(_accepts);
+            if (localVarAccept != null) localVarRequestOptions.HeaderParameters.Add("Accept", localVarAccept);
+
+            localVarRequestOptions.Data = upsertIndexConventionRequest;
 
             // authentication (oauth2) required
             // oauth required
             if (!String.IsNullOrEmpty(this.Configuration.AccessToken))
             {
-                localVarHeaderParams["Authorization"] = "Bearer " + this.Configuration.AccessToken;
+                localVarRequestOptions.HeaderParameters.Add("Authorization", "Bearer " + this.Configuration.AccessToken);
             }
 
             //  set the LUSID header
-            localVarHeaderParams["X-LUSID-SDK-Language"] = "C#";
-            localVarHeaderParams["X-LUSID-SDK-Version"] = "0.11.3412";
+            localVarRequestOptions.HeaderParameters.Add("X-LUSID-Sdk-Language", "C#");
+            localVarRequestOptions.HeaderParameters.Add("X-LUSID-Sdk-Version", "0.11.3412");
 
             // make the HTTP request
-            IRestResponse localVarResponse = (IRestResponse) this.Configuration.ApiClient.CallApi(localVarPath,
-                Method.POST, localVarQueryParams, localVarPostBody, localVarHeaderParams, localVarFormParams, localVarFileParams,
-                localVarPathParams, localVarHttpContentType);
+            var localVarResponse = this.Client.Post<UpsertSingleStructuredDataResponse>("/api/conventions/rates/indexconventions", localVarRequestOptions, this.Configuration);
 
-            int localVarStatusCode = (int) localVarResponse.StatusCode;
-
-            if (ExceptionFactory != null)
+            if (this.ExceptionFactory != null)
             {
-                Exception exception = ExceptionFactory("UpsertIndexConvention", localVarResponse);
-                if (exception != null) throw exception;
+                Exception _exception = this.ExceptionFactory("UpsertIndexConvention", localVarResponse);
+                if (_exception != null) throw _exception;
             }
 
-            return new ApiResponse<UpsertSingleStructuredDataResponse>(localVarStatusCode,
-                localVarResponse.Headers.ToDictionary(x => x.Key, x => string.Join(",", x.Value)),
-                (UpsertSingleStructuredDataResponse) this.Configuration.ApiClient.Deserialize(localVarResponse, typeof(UpsertSingleStructuredDataResponse)));
+            return localVarResponse;
         }
 
         /// <summary>
@@ -2614,12 +2455,12 @@ namespace Lusid.Sdk.Api
         /// </summary>
         /// <exception cref="Lusid.Sdk.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="upsertIndexConventionRequest">The Index Conventions to update or insert</param>
+        /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
         /// <returns>Task of UpsertSingleStructuredDataResponse</returns>
-        public async System.Threading.Tasks.Task<UpsertSingleStructuredDataResponse> UpsertIndexConventionAsync (UpsertIndexConventionRequest upsertIndexConventionRequest)
+        public async System.Threading.Tasks.Task<UpsertSingleStructuredDataResponse> UpsertIndexConventionAsync(UpsertIndexConventionRequest upsertIndexConventionRequest, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
-             ApiResponse<UpsertSingleStructuredDataResponse> localVarResponse = await UpsertIndexConventionAsyncWithHttpInfo(upsertIndexConventionRequest);
-             return localVarResponse.Data;
-
+            Lusid.Sdk.Client.ApiResponse<UpsertSingleStructuredDataResponse> localVarResponse = await UpsertIndexConventionWithHttpInfoAsync(upsertIndexConventionRequest, cancellationToken).ConfigureAwait(false);
+            return localVarResponse.Data;
         }
 
         /// <summary>
@@ -2627,76 +2468,62 @@ namespace Lusid.Sdk.Api
         /// </summary>
         /// <exception cref="Lusid.Sdk.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="upsertIndexConventionRequest">The Index Conventions to update or insert</param>
+        /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
         /// <returns>Task of ApiResponse (UpsertSingleStructuredDataResponse)</returns>
-        public async System.Threading.Tasks.Task<ApiResponse<UpsertSingleStructuredDataResponse>> UpsertIndexConventionAsyncWithHttpInfo (UpsertIndexConventionRequest upsertIndexConventionRequest)
+        public async System.Threading.Tasks.Task<Lusid.Sdk.Client.ApiResponse<UpsertSingleStructuredDataResponse>> UpsertIndexConventionWithHttpInfoAsync(UpsertIndexConventionRequest upsertIndexConventionRequest, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
             // verify the required parameter 'upsertIndexConventionRequest' is set
             if (upsertIndexConventionRequest == null)
-                throw new ApiException(400, "Missing required parameter 'upsertIndexConventionRequest' when calling ConventionsApi->UpsertIndexConvention");
+                throw new Lusid.Sdk.Client.ApiException(400, "Missing required parameter 'upsertIndexConventionRequest' when calling ConventionsApi->UpsertIndexConvention");
 
-            var localVarPath = "./api/conventions/rates/indexconventions";
-            var localVarPathParams = new Dictionary<String, String>();
-            var localVarQueryParams = new List<KeyValuePair<String, String>>();
-            var localVarHeaderParams = new Dictionary<String, String>(this.Configuration.DefaultHeader);
-            var localVarFormParams = new Dictionary<String, String>();
-            var localVarFileParams = new Dictionary<String, FileParameter>();
-            Object localVarPostBody = null;
 
-            // to determine the Content-Type header
-            String[] localVarHttpContentTypes = new String[] {
+            Lusid.Sdk.Client.RequestOptions localVarRequestOptions = new Lusid.Sdk.Client.RequestOptions();
+
+            String[] _contentTypes = new String[] {
                 "application/json-patch+json", 
                 "application/json", 
                 "text/json", 
                 "application/_*+json"
             };
-            String localVarHttpContentType = this.Configuration.ApiClient.SelectHeaderContentType(localVarHttpContentTypes);
 
             // to determine the Accept header
-            String[] localVarHttpHeaderAccepts = new String[] {
+            String[] _accepts = new String[] {
                 "text/plain",
                 "application/json",
                 "text/json"
             };
-            String localVarHttpHeaderAccept = this.Configuration.ApiClient.SelectHeaderAccept(localVarHttpHeaderAccepts);
-            if (localVarHttpHeaderAccept != null)
-                localVarHeaderParams.Add("Accept", localVarHttpHeaderAccept);
 
-            if (upsertIndexConventionRequest != null && upsertIndexConventionRequest.GetType() != typeof(byte[]))
-            {
-                localVarPostBody = this.Configuration.ApiClient.Serialize(upsertIndexConventionRequest); // http body (model) parameter
-            }
-            else
-            {
-                localVarPostBody = upsertIndexConventionRequest; // byte array
-            }
+
+            var localVarContentType = Lusid.Sdk.Client.ClientUtils.SelectHeaderContentType(_contentTypes);
+            if (localVarContentType != null) localVarRequestOptions.HeaderParameters.Add("Content-Type", localVarContentType);
+
+            var localVarAccept = Lusid.Sdk.Client.ClientUtils.SelectHeaderAccept(_accepts);
+            if (localVarAccept != null) localVarRequestOptions.HeaderParameters.Add("Accept", localVarAccept);
+
+            localVarRequestOptions.Data = upsertIndexConventionRequest;
 
             // authentication (oauth2) required
             // oauth required
             if (!String.IsNullOrEmpty(this.Configuration.AccessToken))
             {
-                localVarHeaderParams["Authorization"] = "Bearer " + this.Configuration.AccessToken;
+                localVarRequestOptions.HeaderParameters.Add("Authorization", "Bearer " + this.Configuration.AccessToken);
             }
 
             //  set the LUSID header
-            localVarHeaderParams["X-LUSID-Sdk-Language"] = "C#";
-            localVarHeaderParams["X-LUSID-Sdk-Version"] = "0.11.3412";
+            localVarRequestOptions.HeaderParameters.Add("X-LUSID-Sdk-Language", "C#");
+            localVarRequestOptions.HeaderParameters.Add("X-LUSID-Sdk-Version", "0.11.3412");
 
             // make the HTTP request
-            IRestResponse localVarResponse = (IRestResponse) await this.Configuration.ApiClient.CallApiAsync(localVarPath,
-                Method.POST, localVarQueryParams, localVarPostBody, localVarHeaderParams, localVarFormParams, localVarFileParams,
-                localVarPathParams, localVarHttpContentType);
 
-            int localVarStatusCode = (int) localVarResponse.StatusCode;
+            var localVarResponse = await this.AsynchronousClient.PostAsync<UpsertSingleStructuredDataResponse>("/api/conventions/rates/indexconventions", localVarRequestOptions, this.Configuration, cancellationToken).ConfigureAwait(false);
 
-            if (ExceptionFactory != null)
+            if (this.ExceptionFactory != null)
             {
-                Exception exception = ExceptionFactory("UpsertIndexConvention", localVarResponse);
-                if (exception != null) throw exception;
+                Exception _exception = this.ExceptionFactory("UpsertIndexConvention", localVarResponse);
+                if (_exception != null) throw _exception;
             }
 
-            return new ApiResponse<UpsertSingleStructuredDataResponse>(localVarStatusCode,
-                localVarResponse.Headers.ToDictionary(x => x.Key, x => string.Join(",", x.Value)),
-                (UpsertSingleStructuredDataResponse) this.Configuration.ApiClient.Deserialize(localVarResponse, typeof(UpsertSingleStructuredDataResponse)));
+            return localVarResponse;
         }
 
     }

@@ -1,5 +1,5 @@
-
 # Lusid.Sdk.Model.CompleteRelationship
+Representation of a relationship containing details of source and target entities, and both outward and inward descriptions.
 
 ## Properties
 
@@ -12,9 +12,7 @@ Name | Type | Description | Notes
 **TargetEntity** | [**RelatedEntity**](RelatedEntity.md) |  | 
 **OutwardDescription** | **string** | Description of the relationship based on relationship definition&#39;s outward description. | 
 **InwardDescription** | **string** | Description of the relationship based on relationship definition&#39;s inward description. | 
-**EffectiveFrom** | **DateTimeOffset?** | The effective datetime from which the relationship is valid. | [optional] 
+**EffectiveFrom** | **DateTimeOffset** | The effective datetime from which the relationship is valid. | [optional] 
 
-[[Back to Model list]](../README.md#documentation-for-models)
-[[Back to API list]](../README.md#documentation-for-api-endpoints)
-[[Back to README]](../README.md)
+[[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 
