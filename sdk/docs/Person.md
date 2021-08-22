@@ -1,3 +1,4 @@
+
 # Lusid.Sdk.Model.Person
 
 ## Properties
@@ -12,5 +13,7 @@ Name | Type | Description | Notes
 **Properties** | **Dictionary&lt;string, List&lt;Property&gt;&gt;** | A set of properties associated to the Person. There can be multiple properties associated with a property key. | [optional] 
 **Version** | [**Version**](Version.md) |  | [optional] 
 
-[[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to README]](../README.md)
 

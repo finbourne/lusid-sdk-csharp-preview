@@ -1,3 +1,4 @@
+
 # Lusid.Sdk.Model.CalendarDate
 
 ## Properties
@@ -6,8 +7,8 @@ Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **Href** | **string** |  | [optional] 
 **DateIdentifier** | **string** |  | 
-**FromUtc** | **DateTimeOffset** |  | 
-**ToUtc** | **DateTimeOffset** |  | 
+**FromUtc** | **DateTimeOffset?** |  | 
+**ToUtc** | **DateTimeOffset?** |  | 
 **LocalDate** | **string** |  | 
 **Timezone** | **string** |  | 
 **Description** | **string** |  | 
@@ -15,5 +16,7 @@ Name | Type | Description | Notes
 **Attributes** | [**DateAttributes**](DateAttributes.md) |  | 
 **SourceData** | **Dictionary&lt;string, string&gt;** |  | 
 
-[[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to README]](../README.md)
 
