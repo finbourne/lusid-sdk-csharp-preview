@@ -13,8 +13,8 @@ Name | Type | Description | Notes
 **Timezone** | **string** |  | 
 **Description** | **string** |  | 
 **Type** | **string** |  | 
-**Attributes** | [**DateAttributes**](DateAttributes.md) |  | 
-**SourceData** | **Dictionary&lt;string, string&gt;** |  | 
+**Attributes** | [**DateAttributes**](DateAttributes.md) |  | [optional] 
+**SourceData** | **Dictionary&lt;string, string&gt;** |  | [optional] 
 
 [[Back to Model list]](../README.md#documentation-for-models)
 [[Back to API list]](../README.md#documentation-for-api-endpoints)
