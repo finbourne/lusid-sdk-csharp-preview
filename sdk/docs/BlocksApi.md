@@ -1,6 +1,6 @@
 # Lusid.Sdk.Api.BlocksApi
 
-All URIs are relative to *http://local-unit-test-server.lusid.com:33218*
+All URIs are relative to *https://fbn-prd.lusid.com/api*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
@@ -34,7 +34,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:33218";
+            Configuration.Default.BasePath = "https://fbn-prd.lusid.com/api";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -116,7 +116,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:33218";
+            Configuration.Default.BasePath = "https://fbn-prd.lusid.com/api";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -202,7 +202,7 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:33218";
+            Configuration.Default.BasePath = "https://fbn-prd.lusid.com/api";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -271,7 +271,7 @@ Name | Type | Description  | Notes
 
 ## UpsertBlocks
 
-> ResourceListOfBlock UpsertBlocks (BlockSetRequest blockSetRequest = null)
+> ResourceListOfBlock UpsertBlocks (Object body = null)
 
 [EXPERIMENTAL] Upsert Block
 
@@ -292,17 +292,17 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:33218";
+            Configuration.Default.BasePath = "https://fbn-prd.lusid.com/api";
             // Configure OAuth2 access token for authorization: oauth2
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
             var apiInstance = new BlocksApi(Configuration.Default);
-            var blockSetRequest = new BlockSetRequest(); // BlockSetRequest | The collection of block requests. (optional) 
+            var body = {};  // Object | The collection of block requests. (optional) 
 
             try
             {
                 // [EXPERIMENTAL] Upsert Block
-                ResourceListOfBlock result = apiInstance.UpsertBlocks(blockSetRequest);
+                ResourceListOfBlock result = apiInstance.UpsertBlocks(body);
                 Debug.WriteLine(result);
             }
             catch (ApiException e)
@@ -321,7 +321,7 @@ namespace Example
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **blockSetRequest** | [**BlockSetRequest**](BlockSetRequest.md)| The collection of block requests. | [optional] 
+ **body** | **Object**| The collection of block requests. | [optional] 
 
 ### Return type
 
