@@ -271,7 +271,7 @@ Name | Type | Description  | Notes
 
 ## UpsertBlocks
 
-> ResourceListOfBlock UpsertBlocks (Object body = null)
+> ResourceListOfBlock UpsertBlocks (BlockSetRequest blockSetRequest = null)
 
 [EXPERIMENTAL] Upsert Block
 
@@ -297,12 +297,12 @@ namespace Example
             Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
 
             var apiInstance = new BlocksApi(Configuration.Default);
-            var body = {};  // Object | The collection of block requests. (optional) 
+            var blockSetRequest = new BlockSetRequest(); // BlockSetRequest | The collection of block requests. (optional) 
 
             try
             {
                 // [EXPERIMENTAL] Upsert Block
-                ResourceListOfBlock result = apiInstance.UpsertBlocks(body);
+                ResourceListOfBlock result = apiInstance.UpsertBlocks(blockSetRequest);
                 Debug.WriteLine(result);
             }
             catch (ApiException e)
@@ -321,7 +321,7 @@ namespace Example
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **body** | **Object**| The collection of block requests. | [optional] 
+ **blockSetRequest** | [**BlockSetRequest**](BlockSetRequest.md)| The collection of block requests. | [optional] 
 
 ### Return type
 
