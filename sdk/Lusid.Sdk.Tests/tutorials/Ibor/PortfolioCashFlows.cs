@@ -17,6 +17,20 @@ namespace Lusid.Sdk.Tests.tutorials.Ibor
         private ITransactionPortfoliosApi _transactionPortfoliosApi;
         private IPortfoliosApi _portfoliosApi;
         private IConfigurationRecipeApi _recipeApi;
+        private IAggregationApi _aggregationApi;
+        
+        private static readonly string ValuationDateKey = "Analytic/default/ValuationDate";
+        private static readonly string ValuationPv = "Valuation/PV/Amount";
+        private static readonly string InstrumentName = "Instrument/default/Name";
+        private static readonly string InstrumentTag = "Analytic/default/InstrumentTag";
+        
+        private static readonly List<AggregateSpec> ValuationSpec = new List<AggregateSpec>
+        {
+            new AggregateSpec(ValuationDateKey, AggregateSpec.OpEnum.Value),
+            new AggregateSpec(ValuationPv, AggregateSpec.OpEnum.Value),
+            new AggregateSpec(InstrumentName, AggregateSpec.OpEnum.Value),
+            new AggregateSpec(InstrumentTag, AggregateSpec.OpEnum.Value)
+        };
 
         [OneTimeSetUp]
         public void SetUp()
@@ -25,6 +39,7 @@ namespace Lusid.Sdk.Tests.tutorials.Ibor
             _transactionPortfoliosApi = _apiFactory.Api<ITransactionPortfoliosApi>();
             _portfoliosApi = _apiFactory.Api<IPortfoliosApi>();
             _recipeApi = _apiFactory.Api<IConfigurationRecipeApi>();
+            _aggregationApi = _apiFactory.Api<IAggregationApi>();
             _testDataUtilities = new TestDataUtilities(
                 _apiFactory.Api<ITransactionPortfoliosApi>(),
                 _apiFactory.Api<IInstrumentsApi>(),
@@ -134,6 +149,7 @@ namespace Lusid.Sdk.Tests.tutorials.Ibor
             Assert.That(cashFlows, Is.EquivalentTo(expectedCashFlows)); 
             
             _portfoliosApi.DeletePortfolio(portfolioScope, portfolioId);
+            _recipeApi.DeleteConfigurationRecipe(portfolioScope, modelRecipeCode);
         }
         
         [Test]
@@ -261,6 +277,115 @@ namespace Lusid.Sdk.Tests.tutorials.Ibor
             _transactionPortfoliosApi.UpsertTransactions(portfolioScope, portfolioId, MapToCashFlowTransactionRequest(upsertCashFlowTransactions));
 
             _portfoliosApi.DeletePortfolio(portfolioScope, portfolioId);
+            _recipeApi.DeleteConfigurationRecipe(portfolioScope, modelRecipeCode);
+        }
+        
+        [Test]
+        public void LifeCycleManagementForFxForward()
+        {
+            // CREATE portfolio
+            var portfolioScope = Guid.NewGuid().ToString();
+            var portfolioId = _testDataUtilities.CreateTransactionPortfolio(portfolioScope);
+
+            // CREATE FX Forward
+            var fxForward = InstrumentExamples.CreateExampleFxForward() as FxForward;
+            
+            // CREATE wide enough window to pick up all cashflows for the FX Forward
+            var windowStart = fxForward?.StartDate.Value.AddMonths(-1);
+            var windowEnd = fxForward?.MaturityDate.Value.AddMonths(1);
+        
+            // UPSERT FX Forward to portfolio and populating stores with required market data
+            var effectiveAt = windowStart.Value;
+            _testDataUtilities.AddInstrumentsTransactionPortfolioAndPopulateRequiredMarketData(
+                portfolioScope, 
+                portfolioId,
+                effectiveAt,
+                effectiveAt,
+                fxForward);
+
+            // CREATE and upsert CTVoM recipe specifying discount pricing model
+            var modelRecipeCode = "CTVoMRecipe";
+            CreateAndUpsertRecipe(
+                modelRecipeCode,
+                portfolioScope,
+                ModelSelection.ModelEnum.ConstantTimeValueOfMoney,
+                windowValuationOnInstrumentStartEnd: true);
+
+            // GET all upsertable cashflows for the FX Forward
+            var allFxFwdCashFlows = _transactionPortfoliosApi.GetUpsertablePortfolioCashFlows(
+                portfolioScope,
+                portfolioId,
+                effectiveAt,
+                windowStart,
+                windowEnd,
+                null,
+                null,
+                portfolioScope,
+                modelRecipeCode)
+                .Values;
+
+            // There are exactly two cashflows associated to FX fwd (one in each currency) both at maturity.
+            Assert.That(allFxFwdCashFlows.Count, Is.EqualTo(2));
+            Assert.That(allFxFwdCashFlows.Distinct().Count(), Is.EqualTo(1));
+            var cashFlowDate = allFxFwdCashFlows.First().TransactionDate.Value;
+            
+            // CREATE valuation schedule 2 days before, day of and 2 days after cashflow amount. 
+            var valuationSchedule = new ValuationSchedule(
+                effectiveAt: cashFlowDate.AddDays(2).ToString("o"),
+                effectiveFrom: cashFlowDate.AddDays(-2).ToString("o"));
+            
+            // CREATE valuation request for this FX Forward portfolio.
+            var valuationRequest = new ValuationRequest(
+                new ResourceId(portfolioScope, modelRecipeCode),
+                portfolioEntityIds: new List<PortfolioEntityId> {new PortfolioEntityId(portfolioScope, portfolioId)},
+                valuationSchedule: valuationSchedule,
+                metrics: ValuationSpec,
+                groupBy:  null,
+                sort:  null,
+                asAt: null,
+                reportCurrency: "GBP");
+            
+            // CALL GetValuation and check that when the FX Forward has matured, the PV is zero.
+            var valuationBeforeAndAfterExpirationOfFxForward = _aggregationApi.GetValuation(valuationRequest).Data;
+            foreach (var valuationResult in valuationBeforeAndAfterExpirationOfFxForward)
+            {
+                var date = (DateTimeOffset) valuationResult[ValuationDateKey];
+                var fxForwardPv = (double) valuationResult[ValuationPv];
+                if (date < fxForward.MaturityDate)
+                {
+                    Assert.That(fxForwardPv, Is.Not.EqualTo(0).Within(1e-12));
+                }
+                else
+                {
+                    Assert.That(fxForwardPv, Is.EqualTo(0).Within(1e-12));
+                }
+            }
+
+            // UPSERT the cashflows back into LUSID. We first populate the cashflow transactions with unique IDs. 
+            var upsertCashFlowTransactions = PopulateCashFlowTransactionWithUniqueIds(allFxFwdCashFlows, fxForward.DomCcy);
+            _transactionPortfoliosApi.UpsertTransactions(portfolioScope, portfolioId, MapToCashFlowTransactionRequest(upsertCashFlowTransactions));
+            
+            // CALL GetValuation after upserting cashflow into lusid
+            // There are 5 evaluation dates = 2 days before maturity, at maturity and 2 days after. 
+            // So 5 evaluation dates/entries for instrument.
+            // At maturity and the 2 days after (so 3 days), there is one cash holding per currency so 6.
+            // Hence we expect 11 data records.
+            var valuationAfterUpsertingCashFlows = _aggregationApi.GetValuation(valuationRequest).Data;
+            Assert.That(valuationAfterUpsertingCashFlows.Count(), Is.EqualTo(11));
+            
+            // ASSERT portfolio PV is constant across time (since we upsert the cashflows back in with ConstantTimeValueOfMoney model)
+            // That is, we are checking instrument pv + cashflow pv = constant both before and after maturity  
+            var resultsGroupedByDate = valuationAfterUpsertingCashFlows
+                .GroupBy(d => (DateTimeOffset) d[ValuationDateKey]);
+            var uniquePvsAcrossDates = resultsGroupedByDate 
+                .Select(pvGroup => pvGroup.Sum(record => (decimal) record[ValuationPv]))
+                .Distinct()
+                .ToList();
+            Assert.That(uniquePvsAcrossDates.Count, Is.EqualTo(1));
+            
+            // CLEAN up.
+            _portfoliosApi.DeletePortfolio(portfolioScope, portfolioId);
+            _recipeApi.DeleteConfigurationRecipe(portfolioScope, modelRecipeCode);
         }
         
         // This method maps a list of Transactions to a list of TransactionRequests so that they can be upserted back into LUSID.
@@ -311,10 +436,11 @@ namespace Lusid.Sdk.Tests.tutorials.Ibor
             );
         }
 
-        private void CreateAndUpsertRecipe(string code, string scope, ModelSelection.ModelEnum model)
+        private void CreateAndUpsertRecipe(string code, string scope, ModelSelection.ModelEnum model, bool windowValuationOnInstrumentStartEnd = false)
         {
             // CREATE recipe for pricing
             var pricingOptions = new PricingOptions(new ModelSelection(ModelSelection.LibraryEnum.Lusid, model));
+            pricingOptions.WindowValuationOnInstrumentStartEnd = windowValuationOnInstrumentStartEnd;
             var recipe = new ConfigurationRecipe(
                 scope,
                 code,
