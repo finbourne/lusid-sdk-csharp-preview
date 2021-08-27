@@ -373,7 +373,7 @@ namespace Lusid.Sdk.Tests.tutorials.Ibor
             var resultsGroupedByDate = valuationAfterUpsertingCashFlows
                 .GroupBy(d => (DateTime) d[ValuationDateKey]);
             var uniquePvsAcrossDates = resultsGroupedByDate 
-                .Select(pvGroup => pvGroup.Sum(record => (decimal) record[ValuationPv]))
+                .Select(pvGroup => pvGroup.Sum(record => (double) record[ValuationPv]))
                 .Distinct()
                 .ToList();
             Assert.That(uniquePvsAcrossDates.Count, Is.EqualTo(1));
