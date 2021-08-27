@@ -288,7 +288,7 @@ namespace Lusid.Sdk.Tests.tutorials.Ibor
             var portfolioId = _testDataUtilities.CreateTransactionPortfolio(portfolioScope);
 
             // CREATE FX Forward
-            var fxForward = InstrumentExamples.CreateExampleFxForward() as FxForward;
+            var fxForward = InstrumentExamples.CreateExampleFxForward(isNdf: false) as FxForward;
             
             // CREATE wide enough window to pick up all cashflows for the FX Forward
             var windowStart = fxForward?.StartDate.Value.AddMonths(-1);
