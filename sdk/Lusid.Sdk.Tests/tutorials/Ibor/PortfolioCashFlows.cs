@@ -349,7 +349,7 @@ namespace Lusid.Sdk.Tests.tutorials.Ibor
             var valuationBeforeAndAfterExpirationOfFxForward = _aggregationApi.GetValuation(valuationRequest).Data;
             foreach (var valuationResult in valuationBeforeAndAfterExpirationOfFxForward)
             {
-                var date = (DateTimeOffset) valuationResult[ValuationDateKey];
+                var date = (DateTime) valuationResult[ValuationDateKey];
                 var fxForwardPv = (double) valuationResult[ValuationPv];
                 if (date < fxForward.MaturityDate)
                 {
@@ -366,17 +366,12 @@ namespace Lusid.Sdk.Tests.tutorials.Ibor
             _transactionPortfoliosApi.UpsertTransactions(portfolioScope, portfolioId, MapToCashFlowTransactionRequest(upsertCashFlowTransactions));
             
             // CALL GetValuation after upserting cashflow into lusid
-            // There are 5 evaluation dates = 2 days before maturity, at maturity and 2 days after. 
-            // So 5 evaluation dates/entries for instrument.
-            // At maturity and the 2 days after (so 3 days), there is one cash holding per currency so 6.
-            // Hence we expect 11 data records.
             var valuationAfterUpsertingCashFlows = _aggregationApi.GetValuation(valuationRequest).Data;
-            Assert.That(valuationAfterUpsertingCashFlows.Count(), Is.EqualTo(11));
             
             // ASSERT portfolio PV is constant across time (since we upsert the cashflows back in with ConstantTimeValueOfMoney model)
             // That is, we are checking instrument pv + cashflow pv = constant both before and after maturity  
             var resultsGroupedByDate = valuationAfterUpsertingCashFlows
-                .GroupBy(d => (DateTimeOffset) d[ValuationDateKey]);
+                .GroupBy(d => (DateTime) d[ValuationDateKey]);
             var uniquePvsAcrossDates = resultsGroupedByDate 
                 .Select(pvGroup => pvGroup.Sum(record => (decimal) record[ValuationPv]))
                 .Distinct()
