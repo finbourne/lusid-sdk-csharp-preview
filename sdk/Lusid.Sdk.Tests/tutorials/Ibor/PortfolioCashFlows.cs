@@ -343,7 +343,7 @@ namespace Lusid.Sdk.Tests.tutorials.Ibor
                 groupBy:  null,
                 sort:  null,
                 asAt: null,
-                reportCurrency: "GBP");
+                reportCurrency: "USD");
             
             // CALL GetValuation and check that when the FX Forward has matured, the PV is zero.
             var valuationBeforeAndAfterExpirationOfFxForward = _aggregationApi.GetValuation(valuationRequest).Data;
