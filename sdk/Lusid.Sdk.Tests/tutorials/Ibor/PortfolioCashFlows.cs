@@ -324,9 +324,9 @@ namespace Lusid.Sdk.Tests.tutorials.Ibor
                 modelRecipeCode)
                 .Values;
 
-            // There are exactly two cashflows associated to FX fwd (one in each currency) both at maturity.
+            // There are exactly two cashflows associated to FX forward (one in each currency) both at maturity.
             Assert.That(allFxFwdCashFlows.Count, Is.EqualTo(2));
-            Assert.That(allFxFwdCashFlows.Distinct().Count(), Is.EqualTo(1));
+            Assert.That(allFxFwdCashFlows.Select(c => c.TransactionDate.Value).Distinct().Count(), Is.EqualTo(1));
             var cashFlowDate = allFxFwdCashFlows.First().TransactionDate.Value;
             
             // CREATE valuation schedule 2 days before, day of and 2 days after cashflow amount. 
