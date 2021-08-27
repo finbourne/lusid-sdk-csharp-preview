@@ -299,8 +299,8 @@ namespace Lusid.Sdk.Tests.tutorials.Ibor
             _testDataUtilities.AddInstrumentsTransactionPortfolioAndPopulateRequiredMarketData(
                 portfolioScope, 
                 portfolioId,
-                effectiveAt,
-                effectiveAt,
+                windowStart.Value,
+                windowEnd.Value,
                 fxForward);
 
             // CREATE and upsert CTVoM recipe specifying discount pricing model
