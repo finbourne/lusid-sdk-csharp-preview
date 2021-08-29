@@ -52,7 +52,7 @@ namespace Lusid.Sdk.Tests.tutorials.Ibor
                 bond);
             
             // CALL api to get cashflows at maturity
-            var maturity = bond.MaturityDate;
+            var maturity = bond.MaturityDate.Value;
             var cashFlowsAtMaturity = _transactionPortfoliosApi.GetPortfolioCashFlows(
                 portfolioScope,
                 portfolioId,
@@ -100,7 +100,7 @@ namespace Lusid.Sdk.Tests.tutorials.Ibor
             CreateAndUpsertRecipe(modelRecipeCode, portfolioScope, ModelSelection.ModelEnum.ConstantTimeValueOfMoney);
 
             // CALL api to get cashflows at maturity
-            var maturity = fxForward.MaturityDate;
+            var maturity = fxForward.MaturityDate.Value;
             var cashFlowsAtMaturity = _transactionPortfoliosApi.GetPortfolioCashFlows(
                 portfolioScope,
                 portfolioId,
@@ -156,7 +156,7 @@ namespace Lusid.Sdk.Tests.tutorials.Ibor
                 bond);
             
             // CALL api to get upsertable cashflows at maturity            
-            var maturity = bond.MaturityDate;
+            var maturity = bond.MaturityDate.Value;
             var cashFlows = _transactionPortfoliosApi.GetUpsertablePortfolioCashFlows(
                 portfolioScope,
                 portfolioId,
@@ -226,7 +226,7 @@ namespace Lusid.Sdk.Tests.tutorials.Ibor
             CreateAndUpsertRecipe(modelRecipeCode, portfolioScope, ModelSelection.ModelEnum.ConstantTimeValueOfMoney);
 
             // CALL api to get upsertable cashflows at maturity            
-            var maturity = fxForward.MaturityDate;
+            var maturity = fxForward.MaturityDate.Value;
             var cashFlows = _transactionPortfoliosApi.GetUpsertablePortfolioCashFlows(
                 portfolioScope,
                 portfolioId,
