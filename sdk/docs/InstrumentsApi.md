@@ -1,6 +1,6 @@
 # Lusid.Sdk.Api.InstrumentsApi
 
-All URIs are relative to *https://fbn-prd.lusid.com/api*
+All URIs are relative to *http://local-unit-test-server.lusid.com:53397*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
@@ -18,9 +18,8 @@ Method | HTTP request | Description
 [**UpsertInstrumentsProperties**](InstrumentsApi.md#upsertinstrumentsproperties) | **POST** /api/instruments/$upsertproperties | Upsert instruments properties
 
 
-
-## DeleteInstrument
-
+<a name="deleteinstrument"></a>
+# **DeleteInstrument**
 > DeleteInstrumentResponse DeleteInstrument (string identifierType, string identifier)
 
 [EARLY ACCESS] Delete instrument
@@ -28,7 +27,6 @@ Method | HTTP request | Description
 Delete a particular instrument, as identified by a particular instrument identifier.                Once deleted, an instrument is marked as inactive and can no longer be referenced when creating or updating  transactions or holdings. You can still query existing transactions and holdings related to the  deleted instrument.
 
 ### Example
-
 ```csharp
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -42,11 +40,12 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "https://fbn-prd.lusid.com/api";
+            Configuration config = new Configuration();
+            config.BasePath = "http://local-unit-test-server.lusid.com:53397";
             // Configure OAuth2 access token for authorization: oauth2
-            Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
+            config.AccessToken = "YOUR_ACCESS_TOKEN";
 
-            var apiInstance = new InstrumentsApi(Configuration.Default);
+            var apiInstance = new InstrumentsApi(config);
             var identifierType = identifierType_example;  // string | The unique identifier type to search, for example 'Figi'.
             var identifier = identifier_example;  // string | An <i>identifierType</i> value to use to identify the instrument, for example 'BBG000BLNNV0'.
 
@@ -56,7 +55,7 @@ namespace Example
                 DeleteInstrumentResponse result = apiInstance.DeleteInstrument(identifierType, identifier);
                 Debug.WriteLine(result);
             }
-            catch (ApiException e)
+            catch (ApiException  e)
             {
                 Debug.Print("Exception when calling InstrumentsApi.DeleteInstrument: " + e.Message );
                 Debug.Print("Status Code: "+ e.ErrorCode);
@@ -68,7 +67,6 @@ namespace Example
 ```
 
 ### Parameters
-
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
@@ -85,8 +83,9 @@ Name | Type | Description  | Notes
 
 ### HTTP request headers
 
-- **Content-Type**: Not defined
-- **Accept**: text/plain, application/json, text/json
+ - **Content-Type**: Not defined
+ - **Accept**: text/plain, application/json, text/json
+
 
 ### HTTP response details
 | Status code | Description | Response headers |
@@ -95,14 +94,10 @@ Name | Type | Description  | Notes
 | **400** | The details of the input related failure |  -  |
 | **0** | Error response |  -  |
 
-[[Back to top]](#)
-[[Back to API list]](../README.md#documentation-for-api-endpoints)
-[[Back to Model list]](../README.md#documentation-for-models)
-[[Back to README]](../README.md)
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
-
-## DeleteInstrumentProperties
-
+<a name="deleteinstrumentproperties"></a>
+# **DeleteInstrumentProperties**
 > DeleteInstrumentPropertiesResponse DeleteInstrumentProperties (string identifierType, string identifier, List<string> requestBody, DateTimeOrCutLabel effectiveAt = null)
 
 [EXPERIMENTAL] Delete instrument properties
@@ -110,7 +105,6 @@ Name | Type | Description  | Notes
 Delete a collection of properties from a particular instrument.
 
 ### Example
-
 ```csharp
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -124,11 +118,12 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "https://fbn-prd.lusid.com/api";
+            Configuration config = new Configuration();
+            config.BasePath = "http://local-unit-test-server.lusid.com:53397";
             // Configure OAuth2 access token for authorization: oauth2
-            Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
+            config.AccessToken = "YOUR_ACCESS_TOKEN";
 
-            var apiInstance = new InstrumentsApi(Configuration.Default);
+            var apiInstance = new InstrumentsApi(config);
             var identifierType = identifierType_example;  // string | The unique identifier type to search, for example 'Figi'.
             var identifier = identifier_example;  // string | An <i>identifierType</i> value to use to identify the instrument, for example 'BBG000BLNNV0'.
             var requestBody = new List<string>(); // List<string> | A list of property keys from the 'Instruments' domain whose properties to delete.
@@ -140,7 +135,7 @@ namespace Example
                 DeleteInstrumentPropertiesResponse result = apiInstance.DeleteInstrumentProperties(identifierType, identifier, requestBody, effectiveAt);
                 Debug.WriteLine(result);
             }
-            catch (ApiException e)
+            catch (ApiException  e)
             {
                 Debug.Print("Exception when calling InstrumentsApi.DeleteInstrumentProperties: " + e.Message );
                 Debug.Print("Status Code: "+ e.ErrorCode);
@@ -152,7 +147,6 @@ namespace Example
 ```
 
 ### Parameters
-
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
@@ -171,8 +165,9 @@ Name | Type | Description  | Notes
 
 ### HTTP request headers
 
-- **Content-Type**: application/json-patch+json, application/json, text/json, application/_*+json
-- **Accept**: text/plain, application/json, text/json
+ - **Content-Type**: application/json-patch+json, application/json, text/json, application/_*+json
+ - **Accept**: text/plain, application/json, text/json
+
 
 ### HTTP response details
 | Status code | Description | Response headers |
@@ -181,14 +176,10 @@ Name | Type | Description  | Notes
 | **400** | The details of the input related failure |  -  |
 | **0** | Error response |  -  |
 
-[[Back to top]](#)
-[[Back to API list]](../README.md#documentation-for-api-endpoints)
-[[Back to Model list]](../README.md#documentation-for-models)
-[[Back to README]](../README.md)
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
-
-## GetInstrument
-
+<a name="getinstrument"></a>
+# **GetInstrument**
 > Instrument GetInstrument (string identifierType, string identifier, DateTimeOrCutLabel effectiveAt = null, DateTimeOffset? asAt = null, List<string> propertyKeys = null)
 
 Get instrument
@@ -196,7 +187,6 @@ Get instrument
 Retrieve the definition of a particular instrument, as identified by a particular unique identifier.
 
 ### Example
-
 ```csharp
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -210,11 +200,12 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "https://fbn-prd.lusid.com/api";
+            Configuration config = new Configuration();
+            config.BasePath = "http://local-unit-test-server.lusid.com:53397";
             // Configure OAuth2 access token for authorization: oauth2
-            Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
+            config.AccessToken = "YOUR_ACCESS_TOKEN";
 
-            var apiInstance = new InstrumentsApi(Configuration.Default);
+            var apiInstance = new InstrumentsApi(config);
             var identifierType = identifierType_example;  // string | The unique identifier type to use, for example 'Figi'.
             var identifier = identifier_example;  // string | An <i>identifierType</i> value to use to identify the instrument, for example 'BBG000BLNNV0'.
             var effectiveAt = effectiveAt_example;  // DateTimeOrCutLabel | The effective datetime or cut label at which to retrieve the instrument.              Defaults to the current LUSID system datetime if not specified. (optional) 
@@ -227,7 +218,7 @@ namespace Example
                 Instrument result = apiInstance.GetInstrument(identifierType, identifier, effectiveAt, asAt, propertyKeys);
                 Debug.WriteLine(result);
             }
-            catch (ApiException e)
+            catch (ApiException  e)
             {
                 Debug.Print("Exception when calling InstrumentsApi.GetInstrument: " + e.Message );
                 Debug.Print("Status Code: "+ e.ErrorCode);
@@ -239,7 +230,6 @@ namespace Example
 ```
 
 ### Parameters
-
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
@@ -259,8 +249,9 @@ Name | Type | Description  | Notes
 
 ### HTTP request headers
 
-- **Content-Type**: Not defined
-- **Accept**: text/plain, application/json, text/json
+ - **Content-Type**: Not defined
+ - **Accept**: text/plain, application/json, text/json
+
 
 ### HTTP response details
 | Status code | Description | Response headers |
@@ -269,14 +260,10 @@ Name | Type | Description  | Notes
 | **400** | The details of the input related failure |  -  |
 | **0** | Error response |  -  |
 
-[[Back to top]](#)
-[[Back to API list]](../README.md#documentation-for-api-endpoints)
-[[Back to Model list]](../README.md#documentation-for-models)
-[[Back to README]](../README.md)
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
-
-## GetInstrumentIdentifierTypes
-
+<a name="getinstrumentidentifiertypes"></a>
+# **GetInstrumentIdentifierTypes**
 > ResourceListOfInstrumentIdTypeDescriptor GetInstrumentIdentifierTypes ()
 
 [EARLY ACCESS] Get instrument identifier types
@@ -284,7 +271,6 @@ Name | Type | Description  | Notes
 Retrieve a list of all valid instrument identifier types and whether they are unique or not.                An instrument must have a value for at least one unique identifier type (it can have more than one unique type and value).  In addition, a value is automatically generated for a LUSID Instrument ID (LUID) unique type by the system.                An instrument can have values for multiple non-unique identifier types (or it can have zero non-unique types and values).
 
 ### Example
-
 ```csharp
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -298,11 +284,12 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "https://fbn-prd.lusid.com/api";
+            Configuration config = new Configuration();
+            config.BasePath = "http://local-unit-test-server.lusid.com:53397";
             // Configure OAuth2 access token for authorization: oauth2
-            Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
+            config.AccessToken = "YOUR_ACCESS_TOKEN";
 
-            var apiInstance = new InstrumentsApi(Configuration.Default);
+            var apiInstance = new InstrumentsApi(config);
 
             try
             {
@@ -310,7 +297,7 @@ namespace Example
                 ResourceListOfInstrumentIdTypeDescriptor result = apiInstance.GetInstrumentIdentifierTypes();
                 Debug.WriteLine(result);
             }
-            catch (ApiException e)
+            catch (ApiException  e)
             {
                 Debug.Print("Exception when calling InstrumentsApi.GetInstrumentIdentifierTypes: " + e.Message );
                 Debug.Print("Status Code: "+ e.ErrorCode);
@@ -322,7 +309,6 @@ namespace Example
 ```
 
 ### Parameters
-
 This endpoint does not need any parameter.
 
 ### Return type
@@ -335,8 +321,9 @@ This endpoint does not need any parameter.
 
 ### HTTP request headers
 
-- **Content-Type**: Not defined
-- **Accept**: text/plain, application/json, text/json
+ - **Content-Type**: Not defined
+ - **Accept**: text/plain, application/json, text/json
+
 
 ### HTTP response details
 | Status code | Description | Response headers |
@@ -344,14 +331,10 @@ This endpoint does not need any parameter.
 | **200** | A list of valid instrument identifier types. |  -  |
 | **0** | Error response |  -  |
 
-[[Back to top]](#)
-[[Back to API list]](../README.md#documentation-for-api-endpoints)
-[[Back to Model list]](../README.md#documentation-for-models)
-[[Back to README]](../README.md)
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
-
-## GetInstrumentProperties
-
+<a name="getinstrumentproperties"></a>
+# **GetInstrumentProperties**
 > InstrumentProperties GetInstrumentProperties (string identifierType, string identifier, DateTimeOrCutLabel effectiveAt = null, DateTimeOffset? asAt = null)
 
 [EXPERIMENTAL] Get instrument properties
@@ -359,7 +342,6 @@ This endpoint does not need any parameter.
 List all the properties of a particular instrument, as identified by a particular unique identifier.
 
 ### Example
-
 ```csharp
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -373,11 +355,12 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "https://fbn-prd.lusid.com/api";
+            Configuration config = new Configuration();
+            config.BasePath = "http://local-unit-test-server.lusid.com:53397";
             // Configure OAuth2 access token for authorization: oauth2
-            Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
+            config.AccessToken = "YOUR_ACCESS_TOKEN";
 
-            var apiInstance = new InstrumentsApi(Configuration.Default);
+            var apiInstance = new InstrumentsApi(config);
             var identifierType = identifierType_example;  // string | The unique identifier type to search, for example 'Figi'.
             var identifier = identifier_example;  // string | An <i>identifierType</i> value to use to identify the instrument, for example 'BBG000BLNNV0'.
             var effectiveAt = effectiveAt_example;  // DateTimeOrCutLabel | The effective datetime or cut label at which to list the instrument's properties.              Defaults to the current LUSID system datetime if not specified. (optional) 
@@ -389,7 +372,7 @@ namespace Example
                 InstrumentProperties result = apiInstance.GetInstrumentProperties(identifierType, identifier, effectiveAt, asAt);
                 Debug.WriteLine(result);
             }
-            catch (ApiException e)
+            catch (ApiException  e)
             {
                 Debug.Print("Exception when calling InstrumentsApi.GetInstrumentProperties: " + e.Message );
                 Debug.Print("Status Code: "+ e.ErrorCode);
@@ -401,7 +384,6 @@ namespace Example
 ```
 
 ### Parameters
-
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
@@ -420,8 +402,9 @@ Name | Type | Description  | Notes
 
 ### HTTP request headers
 
-- **Content-Type**: Not defined
-- **Accept**: text/plain, application/json, text/json
+ - **Content-Type**: Not defined
+ - **Accept**: text/plain, application/json, text/json
+
 
 ### HTTP response details
 | Status code | Description | Response headers |
@@ -430,14 +413,10 @@ Name | Type | Description  | Notes
 | **400** | The details of the input related failure |  -  |
 | **0** | Error response |  -  |
 
-[[Back to top]](#)
-[[Back to API list]](../README.md#documentation-for-api-endpoints)
-[[Back to Model list]](../README.md#documentation-for-models)
-[[Back to README]](../README.md)
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
-
-## GetInstrumentPropertyTimeSeries
-
+<a name="getinstrumentpropertytimeseries"></a>
+# **GetInstrumentPropertyTimeSeries**
 > ResourceListOfPropertyInterval GetInstrumentPropertyTimeSeries (string identifierType, string identifier, string propertyKey = null, string identifierEffectiveAt = null, DateTimeOffset? asAt = null, string filter = null, string page = null, int? limit = null)
 
 [EARLY ACCESS] Get instrument property time series
@@ -445,7 +424,6 @@ Name | Type | Description  | Notes
 Retrieve the complete time series (history) for a particular property of an instrument.
 
 ### Example
-
 ```csharp
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -459,11 +437,12 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "https://fbn-prd.lusid.com/api";
+            Configuration config = new Configuration();
+            config.BasePath = "http://local-unit-test-server.lusid.com:53397";
             // Configure OAuth2 access token for authorization: oauth2
-            Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
+            config.AccessToken = "YOUR_ACCESS_TOKEN";
 
-            var apiInstance = new InstrumentsApi(Configuration.Default);
+            var apiInstance = new InstrumentsApi(config);
             var identifierType = identifierType_example;  // string | The unique identifier type to search, for example 'Figi'.
             var identifier = identifier_example;  // string | An <i>identifierType</i> value to use to identify the instrument, for example 'BBG000BLNNV0'.
             var propertyKey = propertyKey_example;  // string | The property key of a property from the 'Instrument' domain whose history to retrieve.              This must have the format {domain}/{scope}/{code}, for example 'Instrument/system/Name'. (optional) 
@@ -479,7 +458,7 @@ namespace Example
                 ResourceListOfPropertyInterval result = apiInstance.GetInstrumentPropertyTimeSeries(identifierType, identifier, propertyKey, identifierEffectiveAt, asAt, filter, page, limit);
                 Debug.WriteLine(result);
             }
-            catch (ApiException e)
+            catch (ApiException  e)
             {
                 Debug.Print("Exception when calling InstrumentsApi.GetInstrumentPropertyTimeSeries: " + e.Message );
                 Debug.Print("Status Code: "+ e.ErrorCode);
@@ -491,7 +470,6 @@ namespace Example
 ```
 
 ### Parameters
-
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
@@ -514,8 +492,9 @@ Name | Type | Description  | Notes
 
 ### HTTP request headers
 
-- **Content-Type**: Not defined
-- **Accept**: text/plain, application/json, text/json
+ - **Content-Type**: Not defined
+ - **Accept**: text/plain, application/json, text/json
+
 
 ### HTTP response details
 | Status code | Description | Response headers |
@@ -524,14 +503,10 @@ Name | Type | Description  | Notes
 | **400** | The details of the input related failure |  -  |
 | **0** | Error response |  -  |
 
-[[Back to top]](#)
-[[Back to API list]](../README.md#documentation-for-api-endpoints)
-[[Back to Model list]](../README.md#documentation-for-models)
-[[Back to README]](../README.md)
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
-
-## GetInstruments
-
+<a name="getinstruments"></a>
+# **GetInstruments**
 > GetInstrumentsResponse GetInstruments (string identifierType, List<string> requestBody, DateTimeOrCutLabel effectiveAt = null, DateTimeOffset? asAt = null, List<string> propertyKeys = null)
 
 Get instruments
@@ -539,7 +514,6 @@ Get instruments
 Retrieve the definition of one or more instruments, as identified by a collection of unique identifiers.                Note that to retrieve all the instruments in the instrument master, use the List instruments endpoint instead.
 
 ### Example
-
 ```csharp
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -553,11 +527,12 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "https://fbn-prd.lusid.com/api";
+            Configuration config = new Configuration();
+            config.BasePath = "http://local-unit-test-server.lusid.com:53397";
             // Configure OAuth2 access token for authorization: oauth2
-            Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
+            config.AccessToken = "YOUR_ACCESS_TOKEN";
 
-            var apiInstance = new InstrumentsApi(Configuration.Default);
+            var apiInstance = new InstrumentsApi(config);
             var identifierType = identifierType_example;  // string | The unique identifier type to use, for example 'Figi'.
             var requestBody = new List<string>(); // List<string> | A list of one or more <i>identifierType</i> values to use to identify instruments.
             var effectiveAt = effectiveAt_example;  // DateTimeOrCutLabel | The effective datetime or cut label at which to retrieve the instrument definitions.               Defaults to the current LUSID system datetime if not specified. (optional) 
@@ -570,7 +545,7 @@ namespace Example
                 GetInstrumentsResponse result = apiInstance.GetInstruments(identifierType, requestBody, effectiveAt, asAt, propertyKeys);
                 Debug.WriteLine(result);
             }
-            catch (ApiException e)
+            catch (ApiException  e)
             {
                 Debug.Print("Exception when calling InstrumentsApi.GetInstruments: " + e.Message );
                 Debug.Print("Status Code: "+ e.ErrorCode);
@@ -582,7 +557,6 @@ namespace Example
 ```
 
 ### Parameters
-
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
@@ -602,8 +576,9 @@ Name | Type | Description  | Notes
 
 ### HTTP request headers
 
-- **Content-Type**: application/json-patch+json, application/json, text/json, application/_*+json
-- **Accept**: text/plain, application/json, text/json
+ - **Content-Type**: application/json-patch+json, application/json, text/json, application/_*+json
+ - **Accept**: text/plain, application/json, text/json
+
 
 ### HTTP response details
 | Status code | Description | Response headers |
@@ -612,14 +587,10 @@ Name | Type | Description  | Notes
 | **400** | The details of the input related failure |  -  |
 | **0** | Error response |  -  |
 
-[[Back to top]](#)
-[[Back to API list]](../README.md#documentation-for-api-endpoints)
-[[Back to Model list]](../README.md#documentation-for-models)
-[[Back to README]](../README.md)
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
-
-## ListInstrumentProperties
-
+<a name="listinstrumentproperties"></a>
+# **ListInstrumentProperties**
 > ResourceListOfProperty ListInstrumentProperties (string identifierType, string identifier, DateTimeOrCutLabel effectiveAt = null, DateTimeOffset? asAt = null, string page = null, int? limit = null)
 
 [EXPERIMENTAL] Get instrument properties (with Pagination)
@@ -627,7 +598,6 @@ Name | Type | Description  | Notes
 List all the properties of a particular instrument, as identified by a particular unique identifier.
 
 ### Example
-
 ```csharp
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -641,11 +611,12 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "https://fbn-prd.lusid.com/api";
+            Configuration config = new Configuration();
+            config.BasePath = "http://local-unit-test-server.lusid.com:53397";
             // Configure OAuth2 access token for authorization: oauth2
-            Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
+            config.AccessToken = "YOUR_ACCESS_TOKEN";
 
-            var apiInstance = new InstrumentsApi(Configuration.Default);
+            var apiInstance = new InstrumentsApi(config);
             var identifierType = identifierType_example;  // string | The unique identifier type to search, for example 'Figi'.
             var identifier = identifier_example;  // string | An <i>identifierType</i> value to use to identify the instrument, for example 'BBG000BLNNV0'.
             var effectiveAt = effectiveAt_example;  // DateTimeOrCutLabel | The effective datetime or cut label at which to list the instrument's properties.              Defaults to the current LUSID system datetime if not specified. (optional) 
@@ -659,7 +630,7 @@ namespace Example
                 ResourceListOfProperty result = apiInstance.ListInstrumentProperties(identifierType, identifier, effectiveAt, asAt, page, limit);
                 Debug.WriteLine(result);
             }
-            catch (ApiException e)
+            catch (ApiException  e)
             {
                 Debug.Print("Exception when calling InstrumentsApi.ListInstrumentProperties: " + e.Message );
                 Debug.Print("Status Code: "+ e.ErrorCode);
@@ -671,7 +642,6 @@ namespace Example
 ```
 
 ### Parameters
-
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
@@ -692,8 +662,9 @@ Name | Type | Description  | Notes
 
 ### HTTP request headers
 
-- **Content-Type**: Not defined
-- **Accept**: text/plain, application/json, text/json
+ - **Content-Type**: Not defined
+ - **Accept**: text/plain, application/json, text/json
+
 
 ### HTTP response details
 | Status code | Description | Response headers |
@@ -702,14 +673,10 @@ Name | Type | Description  | Notes
 | **400** | The details of the input related failure |  -  |
 | **0** | Error response |  -  |
 
-[[Back to top]](#)
-[[Back to API list]](../README.md#documentation-for-api-endpoints)
-[[Back to Model list]](../README.md#documentation-for-models)
-[[Back to README]](../README.md)
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
-
-## ListInstruments
-
+<a name="listinstruments"></a>
+# **ListInstruments**
 > PagedResourceListOfInstrument ListInstruments (DateTimeOffset? asAt = null, DateTimeOrCutLabel effectiveAt = null, string page = null, List<string> sortBy = null, int? start = null, int? limit = null, string filter = null, List<string> instrumentPropertyKeys = null)
 
 [EARLY ACCESS] List instruments
@@ -717,7 +684,6 @@ Name | Type | Description  | Notes
 List all the instruments in the instrument master.                To retrieve a particular set of instruments instead, use the Get instruments endpoint.  The maximum number of instruments that this method can list per request is 2,000.
 
 ### Example
-
 ```csharp
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -731,11 +697,12 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "https://fbn-prd.lusid.com/api";
+            Configuration config = new Configuration();
+            config.BasePath = "http://local-unit-test-server.lusid.com:53397";
             // Configure OAuth2 access token for authorization: oauth2
-            Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
+            config.AccessToken = "YOUR_ACCESS_TOKEN";
 
-            var apiInstance = new InstrumentsApi(Configuration.Default);
+            var apiInstance = new InstrumentsApi(config);
             var asAt = 2013-10-20T19:20:30+01:00;  // DateTimeOffset? | The asAt datetime at which to list instruments. Defaults to returning the latest               version of each instrument if not specified. (optional) 
             var effectiveAt = effectiveAt_example;  // DateTimeOrCutLabel | The effective datetime or cut label at which to list instruments.               Defaults to the current LUSID system datetime if not specified. (optional) 
             var page = page_example;  // string | The pagination token to use to continue listing instruments; this value is returned from               the previous call. If a pagination token is provided, the <i>sortBy</i>, <i>filter</i>, <i>effectiveAt</i> and               <i>asAt</i> fields must not have changed since the original request. Also, a <i>start</i> value cannot be               provided. For more information, see https://support.lusid.com/knowledgebase/article/KA-01915. (optional) 
@@ -751,7 +718,7 @@ namespace Example
                 PagedResourceListOfInstrument result = apiInstance.ListInstruments(asAt, effectiveAt, page, sortBy, start, limit, filter, instrumentPropertyKeys);
                 Debug.WriteLine(result);
             }
-            catch (ApiException e)
+            catch (ApiException  e)
             {
                 Debug.Print("Exception when calling InstrumentsApi.ListInstruments: " + e.Message );
                 Debug.Print("Status Code: "+ e.ErrorCode);
@@ -763,7 +730,6 @@ namespace Example
 ```
 
 ### Parameters
-
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
@@ -786,8 +752,9 @@ Name | Type | Description  | Notes
 
 ### HTTP request headers
 
-- **Content-Type**: Not defined
-- **Accept**: text/plain, application/json, text/json
+ - **Content-Type**: Not defined
+ - **Accept**: text/plain, application/json, text/json
+
 
 ### HTTP response details
 | Status code | Description | Response headers |
@@ -796,14 +763,10 @@ Name | Type | Description  | Notes
 | **400** | The details of the input related failure |  -  |
 | **0** | Error response |  -  |
 
-[[Back to top]](#)
-[[Back to API list]](../README.md#documentation-for-api-endpoints)
-[[Back to Model list]](../README.md#documentation-for-models)
-[[Back to README]](../README.md)
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
-
-## UpdateInstrumentIdentifier
-
+<a name="updateinstrumentidentifier"></a>
+# **UpdateInstrumentIdentifier**
 > Instrument UpdateInstrumentIdentifier (string identifierType, string identifier, UpdateInstrumentIdentifierRequest updateInstrumentIdentifierRequest)
 
 [EARLY ACCESS] Update instrument identifier
@@ -811,7 +774,6 @@ Name | Type | Description  | Notes
 Create, update or delete a particular instrument identifier for an instrument.                To delete the identifier, leave the value unspecified in the request. If not being deleted, the  identifier is updated if it exists and created if it does not.
 
 ### Example
-
 ```csharp
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -825,11 +787,12 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "https://fbn-prd.lusid.com/api";
+            Configuration config = new Configuration();
+            config.BasePath = "http://local-unit-test-server.lusid.com:53397";
             // Configure OAuth2 access token for authorization: oauth2
-            Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
+            config.AccessToken = "YOUR_ACCESS_TOKEN";
 
-            var apiInstance = new InstrumentsApi(Configuration.Default);
+            var apiInstance = new InstrumentsApi(config);
             var identifierType = identifierType_example;  // string | The unique identifier type to search, for example 'Figi'.
             var identifier = identifier_example;  // string | An <i>identifierType</i> value to use to identify the instrument, for example 'BBG000BLNNV0'.
             var updateInstrumentIdentifierRequest = new UpdateInstrumentIdentifierRequest(); // UpdateInstrumentIdentifierRequest | The identifier to update or delete. This need not be the same value as the               'identifier' parameter used to retrieve the instrument.
@@ -840,7 +803,7 @@ namespace Example
                 Instrument result = apiInstance.UpdateInstrumentIdentifier(identifierType, identifier, updateInstrumentIdentifierRequest);
                 Debug.WriteLine(result);
             }
-            catch (ApiException e)
+            catch (ApiException  e)
             {
                 Debug.Print("Exception when calling InstrumentsApi.UpdateInstrumentIdentifier: " + e.Message );
                 Debug.Print("Status Code: "+ e.ErrorCode);
@@ -852,7 +815,6 @@ namespace Example
 ```
 
 ### Parameters
-
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
@@ -870,8 +832,9 @@ Name | Type | Description  | Notes
 
 ### HTTP request headers
 
-- **Content-Type**: application/json-patch+json, application/json, text/json, application/_*+json
-- **Accept**: text/plain, application/json, text/json
+ - **Content-Type**: application/json-patch+json, application/json, text/json, application/_*+json
+ - **Accept**: text/plain, application/json, text/json
+
 
 ### HTTP response details
 | Status code | Description | Response headers |
@@ -880,14 +843,10 @@ Name | Type | Description  | Notes
 | **400** | The details of the input related failure |  -  |
 | **0** | Error response |  -  |
 
-[[Back to top]](#)
-[[Back to API list]](../README.md#documentation-for-api-endpoints)
-[[Back to Model list]](../README.md#documentation-for-models)
-[[Back to README]](../README.md)
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
-
-## UpsertInstruments
-
+<a name="upsertinstruments"></a>
+# **UpsertInstruments**
 > UpsertInstrumentsResponse UpsertInstruments (Dictionary<string, InstrumentDefinition> requestBody)
 
 Upsert instruments
@@ -895,7 +854,6 @@ Upsert instruments
 Create or update one or more instruments in the instrument master. An instrument is updated  if it already exists and created if it does not.                In the request, each instrument definition should be keyed by a unique correlation ID. This ID is ephemeral  and not stored by LUSID. It serves only to easily identify each instrument in the response.                Note that an instrument must have at least one unique identifier, which is a combination of a type  (such as 'Figi') and a value (such as 'BBG000BS1N49'). In addition, a random value is automatically  generated for a LUSID Instrument ID (LUID) unique type by the system. For more information, see  https://support.lusid.com/knowledgebase/article/KA-01862.                The response returns both the collection of successfully created or updated instruments, as well as those  that failed. For each failure, a reason is provided. It is important to check the failed set for  unsuccessful results.  The maximum number of instruments that this method can upsert per request is 2,000.
 
 ### Example
-
 ```csharp
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -909,11 +867,12 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "https://fbn-prd.lusid.com/api";
+            Configuration config = new Configuration();
+            config.BasePath = "http://local-unit-test-server.lusid.com:53397";
             // Configure OAuth2 access token for authorization: oauth2
-            Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
+            config.AccessToken = "YOUR_ACCESS_TOKEN";
 
-            var apiInstance = new InstrumentsApi(Configuration.Default);
+            var apiInstance = new InstrumentsApi(config);
             var requestBody = new Dictionary<string, InstrumentDefinition>(); // Dictionary<string, InstrumentDefinition> | The definitions of the instruments to create or update.
 
             try
@@ -922,7 +881,7 @@ namespace Example
                 UpsertInstrumentsResponse result = apiInstance.UpsertInstruments(requestBody);
                 Debug.WriteLine(result);
             }
-            catch (ApiException e)
+            catch (ApiException  e)
             {
                 Debug.Print("Exception when calling InstrumentsApi.UpsertInstruments: " + e.Message );
                 Debug.Print("Status Code: "+ e.ErrorCode);
@@ -934,7 +893,6 @@ namespace Example
 ```
 
 ### Parameters
-
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
@@ -950,8 +908,9 @@ Name | Type | Description  | Notes
 
 ### HTTP request headers
 
-- **Content-Type**: application/json-patch+json, application/json, text/json, application/_*+json
-- **Accept**: text/plain, application/json, text/json
+ - **Content-Type**: application/json-patch+json, application/json, text/json, application/_*+json
+ - **Accept**: text/plain, application/json, text/json
+
 
 ### HTTP response details
 | Status code | Description | Response headers |
@@ -960,14 +919,10 @@ Name | Type | Description  | Notes
 | **400** | The details of the input related failure |  -  |
 | **0** | Error response |  -  |
 
-[[Back to top]](#)
-[[Back to API list]](../README.md#documentation-for-api-endpoints)
-[[Back to Model list]](../README.md#documentation-for-models)
-[[Back to README]](../README.md)
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
-
-## UpsertInstrumentsProperties
-
+<a name="upsertinstrumentsproperties"></a>
+# **UpsertInstrumentsProperties**
 > UpsertInstrumentPropertiesResponse UpsertInstrumentsProperties (List<UpsertInstrumentPropertyRequest> upsertInstrumentPropertyRequest)
 
 Upsert instruments properties
@@ -975,7 +930,6 @@ Upsert instruments properties
 Create or update one or more properties for particular instruments.                Each instrument property is updated if it exists and created if it does not. For any failures, a reason  is provided.                Properties have an <i>effectiveFrom</i> datetime from which the property is valid, and an <i>effectiveUntil</i>  datetime until which the property is valid. Not supplying an <i>effectiveUntil</i> datetime results in the property being  valid indefinitely, or until the next <i>effectiveFrom</i> datetime of the property.
 
 ### Example
-
 ```csharp
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -989,11 +943,12 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "https://fbn-prd.lusid.com/api";
+            Configuration config = new Configuration();
+            config.BasePath = "http://local-unit-test-server.lusid.com:53397";
             // Configure OAuth2 access token for authorization: oauth2
-            Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
+            config.AccessToken = "YOUR_ACCESS_TOKEN";
 
-            var apiInstance = new InstrumentsApi(Configuration.Default);
+            var apiInstance = new InstrumentsApi(config);
             var upsertInstrumentPropertyRequest = new List<UpsertInstrumentPropertyRequest>(); // List<UpsertInstrumentPropertyRequest> | A list of instruments and associated instrument properties to create or update.
 
             try
@@ -1002,7 +957,7 @@ namespace Example
                 UpsertInstrumentPropertiesResponse result = apiInstance.UpsertInstrumentsProperties(upsertInstrumentPropertyRequest);
                 Debug.WriteLine(result);
             }
-            catch (ApiException e)
+            catch (ApiException  e)
             {
                 Debug.Print("Exception when calling InstrumentsApi.UpsertInstrumentsProperties: " + e.Message );
                 Debug.Print("Status Code: "+ e.ErrorCode);
@@ -1014,7 +969,6 @@ namespace Example
 ```
 
 ### Parameters
-
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
@@ -1030,8 +984,9 @@ Name | Type | Description  | Notes
 
 ### HTTP request headers
 
-- **Content-Type**: application/json-patch+json, application/json, text/json, application/_*+json
-- **Accept**: text/plain, application/json, text/json
+ - **Content-Type**: application/json-patch+json, application/json, text/json, application/_*+json
+ - **Accept**: text/plain, application/json, text/json
+
 
 ### HTTP response details
 | Status code | Description | Response headers |
@@ -1040,8 +995,5 @@ Name | Type | Description  | Notes
 | **400** | The details of the input related failure |  -  |
 | **0** | Error response |  -  |
 
-[[Back to top]](#)
-[[Back to API list]](../README.md#documentation-for-api-endpoints)
-[[Back to Model list]](../README.md#documentation-for-models)
-[[Back to README]](../README.md)
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
