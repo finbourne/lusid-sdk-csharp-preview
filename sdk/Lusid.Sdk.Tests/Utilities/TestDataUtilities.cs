@@ -188,7 +188,8 @@ namespace Lusid.Sdk.Tests.Utilities
             DateTimeOffset effectiveFrom,
             DateTimeOffset effectiveAt,
             LusidInstrument instrument,
-            string equityIdentifier = null
+            string equityIdentifier = null,
+            bool useConstantFxRate = false
         )
             => AddInstrumentsTransactionPortfolioAndPopulateRequiredMarketData(
                 portfolioScope,
@@ -196,7 +197,8 @@ namespace Lusid.Sdk.Tests.Utilities
                 effectiveFrom,
                 effectiveAt,
                 new List<LusidInstrument> {instrument},
-                equityIdentifier);
+                equityIdentifier,
+                useConstantFxRate);
 
         /// <summary>
         /// This method adds the instruments to the portfolio and populates required market data for the pricing for examples.
@@ -221,7 +223,8 @@ namespace Lusid.Sdk.Tests.Utilities
             DateTimeOffset effectiveFrom,
             DateTimeOffset effectiveAt,
             List<LusidInstrument> instruments,
-            string equityIdentifier = null
+            string equityIdentifier = null,
+            bool useConstantFxRate = false
         )
         {
             // UPSERT instruments and return the upsert response to attain LusidInstrumentIds
@@ -234,7 +237,7 @@ namespace Lusid.Sdk.Tests.Utilities
             AddInstrumentsTransactionToPortfolio(luids, portfolioScope, portfolioCode, effectiveFrom);
             
             // UPSERT fx quotes and rate curves required pricing instruments
-            UpsertFxRate(portfolioScope, effectiveFrom, effectiveAt);
+            UpsertFxRate(portfolioScope, effectiveFrom, effectiveAt, useConstantFxRate);
             UpsertRateCurves(portfolioScope, effectiveAt);
             UpsertResetQuotes(portfolioScope, effectiveAt.AddDays(-4)); // The effective date for the reset quote should start 2 business days prior the accrual start date. Hence the date is adjusted
 
@@ -325,7 +328,7 @@ namespace Lusid.Sdk.Tests.Utilities
         /// <summary>
         /// This method upserts JPY/USD and USD/JPY fx quotes for every day in the date range
         /// </summary>
-        public void UpsertFxRate(string scope, DateTimeOffset effectiveFrom,  DateTimeOffset effectiveAt)
+        public void UpsertFxRate(string scope, DateTimeOffset effectiveFrom,  DateTimeOffset effectiveAt, bool useConstantFxRate = false)
         {
             // CREATE fx quotes and inverse fx rate in the desired date range
             var upsertQuoteRequests = new Dictionary<string, UpsertQuoteRequest>();
@@ -333,11 +336,22 @@ namespace Lusid.Sdk.Tests.Utilities
             for (var days = 0; days != numberOfDaysBetween + 1; ++days)
             {
                 var date = effectiveFrom.AddDays(days);
-                var fxRate = CreateSimpleQuoteUpsertRequest("USD/JPY", QuoteSeriesId.InstrumentIdTypeEnum.CurrencyPair, (150 + days), "USD", date);
-                var inverseFxRate = CreateSimpleQuoteUpsertRequest("JPY/USD", QuoteSeriesId.InstrumentIdTypeEnum.CurrencyPair, 1m / (150 + days), "USD", date);
-                
-                upsertQuoteRequests.Add($"day_{days}_fx_rate", fxRate);
-                upsertQuoteRequests.Add($"day_{days}_inverseFx_rate", inverseFxRate);
+                if (useConstantFxRate)
+                {
+                    var fxRate = CreateSimpleQuoteUpsertRequest("USD/JPY", QuoteSeriesId.InstrumentIdTypeEnum.CurrencyPair, 150, "USD", date);
+                    var inverseFxRate = CreateSimpleQuoteUpsertRequest("JPY/USD", QuoteSeriesId.InstrumentIdTypeEnum.CurrencyPair, 1m / 150, "USD", date);
+
+                    upsertQuoteRequests.Add($"day_{days}_fx_rate", fxRate);
+                    upsertQuoteRequests.Add($"day_{days}_inverseFx_rate", inverseFxRate);
+                }
+                else
+                {
+                    var fxRate = CreateSimpleQuoteUpsertRequest("USD/JPY", QuoteSeriesId.InstrumentIdTypeEnum.CurrencyPair, (150 + days), "USD", date);
+                    var inverseFxRate = CreateSimpleQuoteUpsertRequest("JPY/USD", QuoteSeriesId.InstrumentIdTypeEnum.CurrencyPair, 1m / (150 + days), "USD", date);
+
+                    upsertQuoteRequests.Add($"day_{days}_fx_rate", fxRate);
+                    upsertQuoteRequests.Add($"day_{days}_inverseFx_rate", inverseFxRate);
+                }
             }
 
             // CHECK quotes upsert was successful for all the quotes

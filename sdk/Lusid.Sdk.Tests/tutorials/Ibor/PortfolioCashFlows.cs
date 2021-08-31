@@ -21,6 +21,7 @@ namespace Lusid.Sdk.Tests.tutorials.Ibor
         
         private static readonly string ValuationDateKey = "Analytic/default/ValuationDate";
         private static readonly string ValuationPv = "Valuation/PV/Amount";
+        private static readonly string ValuationCcy = "Valuation/PV/Ccy";
         private static readonly string InstrumentName = "Instrument/default/Name";
         private static readonly string InstrumentTag = "Analytic/default/InstrumentTag";
         
@@ -28,6 +29,7 @@ namespace Lusid.Sdk.Tests.tutorials.Ibor
         {
             new AggregateSpec(ValuationDateKey, AggregateSpec.OpEnum.Value),
             new AggregateSpec(ValuationPv, AggregateSpec.OpEnum.Value),
+            new AggregateSpec(ValuationCcy, AggregateSpec.OpEnum.Value),
             new AggregateSpec(InstrumentName, AggregateSpec.OpEnum.Value),
             new AggregateSpec(InstrumentTag, AggregateSpec.OpEnum.Value)
         };
@@ -294,14 +296,15 @@ namespace Lusid.Sdk.Tests.tutorials.Ibor
             var windowStart = fxForward?.StartDate.Value.AddMonths(-1);
             var windowEnd = fxForward?.MaturityDate.Value.AddMonths(1);
         
-            // UPSERT FX Forward to portfolio and populating stores with required market data
+            // UPSERT FX Forward to portfolio and populating stores with required market data - use a constant FX rate USD/JPY = 150.
             var effectiveAt = windowStart.Value;
             _testDataUtilities.AddInstrumentsTransactionPortfolioAndPopulateRequiredMarketData(
                 portfolioScope, 
                 portfolioId,
                 windowStart.Value,
                 windowEnd.Value,
-                fxForward);
+                fxForward,
+                useConstantFxRate: true);
 
             // CREATE and upsert CTVoM recipe specifying discount pricing model
             var modelRecipeCode = "CTVoMRecipe";
@@ -368,12 +371,22 @@ namespace Lusid.Sdk.Tests.tutorials.Ibor
             // CALL GetValuation after upserting cashflow into lusid
             var valuationAfterUpsertingCashFlows = _aggregationApi.GetValuation(valuationRequest).Data;
             
-            // ASSERT portfolio PV is constant across time (since we upsert the cashflows back in with ConstantTimeValueOfMoney model)
-            // That is, we are checking instrument pv + cashflow pv = constant both before and after maturity  
+            // ASSERT portfolio PV is constant across time (since we upsert the cashflows back in with ConstantTimeValueOfMoney model and the FX rate is constant)
+            // That is, we are checking instrument PV + cashflow PV = constant both before and after maturity  
             var resultsGroupedByDate = valuationAfterUpsertingCashFlows
                 .GroupBy(d => (DateTime) d[ValuationDateKey]);
-            var uniquePvsAcrossDates = resultsGroupedByDate 
-                .Select(pvGroup => pvGroup.Sum(record => (double) record[ValuationPv]))
+            
+            // CONVERT and AGGREGATE all results to USD
+            var pvsInUsd = resultsGroupedByDate
+                .Select(pvGroup => pvGroup.Sum(record =>
+                {
+                    var fxRate = ((string) record[ValuationCcy]).Equals("JPY") ? 1m/150 : 1;
+                    return Convert.ToDecimal(record[ValuationPv]) * fxRate;
+                }));
+
+            // ASSERT portfolio PV is constant over time within a tolerance
+            var uniquePvsAcrossDates = pvsInUsd
+                .Select(pv => Math.Round(pv, 12))
                 .Distinct()
                 .ToList();
             Assert.That(uniquePvsAcrossDates.Count, Is.EqualTo(1));
