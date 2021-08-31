@@ -290,19 +290,19 @@ namespace Lusid.Sdk.Tests.tutorials.Ibor
             var portfolioId = _testDataUtilities.CreateTransactionPortfolio(portfolioScope);
 
             // CREATE FX Forward
-            var fxForward = InstrumentExamples.CreateExampleFxForward(isNdf: false) as FxForward;
+            var fxForward = (FxForward) InstrumentExamples.CreateExampleFxForward(isNdf: false);
             
             // CREATE wide enough window to pick up all cashflows for the FX Forward
-            var windowStart = fxForward?.StartDate.Value.AddMonths(-1);
-            var windowEnd = fxForward?.MaturityDate.Value.AddMonths(1);
+            var windowStart = fxForward.StartDate.AddMonths(-1);
+            var windowEnd = fxForward.MaturityDate.AddMonths(1);
         
             // UPSERT FX Forward to portfolio and populating stores with required market data - use a constant FX rate USD/JPY = 150.
-            var effectiveAt = windowStart.Value;
+            var effectiveAt = windowStart;
             _testDataUtilities.AddInstrumentsTransactionPortfolioAndPopulateRequiredMarketData(
                 portfolioScope, 
                 portfolioId,
-                windowStart.Value,
-                windowEnd.Value,
+                windowStart,
+                windowEnd,
                 fxForward,
                 useConstantFxRate: true);
 
@@ -329,8 +329,8 @@ namespace Lusid.Sdk.Tests.tutorials.Ibor
 
             // There are exactly two cashflows associated to FX forward (one in each currency) both at maturity.
             Assert.That(allFxFwdCashFlows.Count, Is.EqualTo(2));
-            Assert.That(allFxFwdCashFlows.Select(c => c.TransactionDate.Value).Distinct().Count(), Is.EqualTo(1));
-            var cashFlowDate = allFxFwdCashFlows.First().TransactionDate.Value;
+            Assert.That(allFxFwdCashFlows.Select(c => c.TransactionDate).Distinct().Count(), Is.EqualTo(1));
+            var cashFlowDate = allFxFwdCashFlows.First().TransactionDate;
             
             // CREATE valuation schedule 2 days before, day of and 2 days after cashflow amount. 
             var valuationSchedule = new ValuationSchedule(
