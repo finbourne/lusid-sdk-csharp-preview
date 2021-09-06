@@ -1,6 +1,6 @@
 # Lusid.Sdk.Api.CustomEntitiesApi
 
-All URIs are relative to *https://fbn-prd.lusid.com/api*
+All URIs are relative to *http://local-unit-test-server.lusid.com:38291*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
@@ -31,12 +31,12 @@ namespace Example
         public static void Main()
         {
             Configuration config = new Configuration();
-            config.BasePath = "https://fbn-prd.lusid.com/api";
+            config.BasePath = "http://local-unit-test-server.lusid.com:38291";
             // Configure OAuth2 access token for authorization: oauth2
             config.AccessToken = "YOUR_ACCESS_TOKEN";
 
             var apiInstance = new CustomEntitiesApi(config);
-            var entityType = entityType_example;  // string | The type of entity to retrieve
+            var entityType = entityType_example;  // string | The type of entity to retrieve. This is included in the response from M:Finbourne.WebApi.Controllers.CustomEntityDefinitionController.CreateCustomEntityDefinition(Finbourne.WebApi.Interface.Dto.CustomEntityDefinitions.CustomEntityDefinitionRequest).
             var identifierType = identifierType_example;  // string | An identifier type attached to the CustomEntity
             var identifierValue = identifierValue_example;  // string | The identifier value
             var identifierScope = identifierScope_example;  // string | The identifier scope
@@ -63,7 +63,7 @@ namespace Example
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **entityType** | **string**| The type of entity to retrieve | 
+ **entityType** | **string**| The type of entity to retrieve. This is included in the response from M:Finbourne.WebApi.Controllers.CustomEntityDefinitionController.CreateCustomEntityDefinition(Finbourne.WebApi.Interface.Dto.CustomEntityDefinitions.CustomEntityDefinitionRequest). | 
  **identifierType** | **string**| An identifier type attached to the CustomEntity | 
  **identifierValue** | **string**| The identifier value | 
  **identifierScope** | **string**| The identifier scope | 
@@ -115,7 +115,7 @@ namespace Example
         public static void Main()
         {
             Configuration config = new Configuration();
-            config.BasePath = "https://fbn-prd.lusid.com/api";
+            config.BasePath = "http://local-unit-test-server.lusid.com:38291";
             // Configure OAuth2 access token for authorization: oauth2
             config.AccessToken = "YOUR_ACCESS_TOKEN";
 
