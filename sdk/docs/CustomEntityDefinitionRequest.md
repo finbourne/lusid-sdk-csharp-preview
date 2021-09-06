@@ -4,7 +4,7 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**EntityTypeName** | **string** |  | 
+**CustomEntityId** | **string** |  | 
 **DisplayName** | **string** |  | 
 **Description** | **string** |  | [optional] 
 **FieldSchema** | [**List&lt;CustomEntityFieldDefinition&gt;**](CustomEntityFieldDefinition.md) |  | [optional] 
