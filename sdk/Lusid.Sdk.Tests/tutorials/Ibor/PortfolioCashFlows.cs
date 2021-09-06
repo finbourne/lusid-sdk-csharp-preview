@@ -314,7 +314,7 @@ namespace Lusid.Sdk.Tests.tutorials.Ibor
                 ModelSelection.ModelEnum.ConstantTimeValueOfMoney,
                 windowValuationOnInstrumentStartEnd: true);
 
-            // GET all upsertable cashflows for the FX Forward
+            // GET all upsertable cashflows (transactions) for the FX Forward
             var allFxFwdCashFlows = _transactionPortfoliosApi.GetUpsertablePortfolioCashFlows(
                 portfolioScope,
                 portfolioId,
@@ -329,15 +329,18 @@ namespace Lusid.Sdk.Tests.tutorials.Ibor
 
             // There are exactly two cashflows associated to FX forward (one in each currency) both at maturity.
             Assert.That(allFxFwdCashFlows.Count, Is.EqualTo(2));
+            Assert.That(allFxFwdCashFlows.First().TotalConsideration.Currency, Is.EqualTo("USD"));
+            Assert.That(allFxFwdCashFlows.Last().TotalConsideration.Currency, Is.EqualTo("JPY"));
             Assert.That(allFxFwdCashFlows.Select(c => c.TransactionDate).Distinct().Count(), Is.EqualTo(1));
             var cashFlowDate = allFxFwdCashFlows.First().TransactionDate;
             
-            // CREATE valuation schedule 2 days before, day of and 2 days after cashflow amount. 
+            // CREATE valuation schedule 2 days before, day of and 2 days after the cashflows. 
             var valuationSchedule = new ValuationSchedule(
                 effectiveAt: cashFlowDate.AddDays(2).ToString("o"),
                 effectiveFrom: cashFlowDate.AddDays(-2).ToString("o"));
             
-            // CREATE valuation request for this FX Forward portfolio.
+            // CREATE valuation request for this FX Forward portfolio,
+            // where the valuation schedule covers before, at and after the expiration of the FX Forward. 
             var valuationRequest = new ValuationRequest(
                 new ResourceId(portfolioScope, modelRecipeCode),
                 portfolioEntityIds: new List<PortfolioEntityId> {new PortfolioEntityId(portfolioScope, portfolioId)},
@@ -348,7 +351,7 @@ namespace Lusid.Sdk.Tests.tutorials.Ibor
                 asAt: null,
                 reportCurrency: "USD");
             
-            // CALL GetValuation and check that when the FX Forward has matured, the PV is zero.
+            // CALL GetValuation before upserting back the cashflows. We check that when the FX Forward has expired, the PV is zero.
             var valuationBeforeAndAfterExpirationOfFxForward = _aggregationApi.GetValuation(valuationRequest).Data;
             foreach (var valuationResult in valuationBeforeAndAfterExpirationOfFxForward)
             {
@@ -364,14 +367,15 @@ namespace Lusid.Sdk.Tests.tutorials.Ibor
                 }
             }
 
-            // UPSERT the cashflows back into LUSID. We first populate the cashflow transactions with unique IDs. 
+            // UPSERT the cashflows back into LUSID. We first populate the cashflow transactions with unique IDs.
             var upsertCashFlowTransactions = PopulateCashFlowTransactionWithUniqueIds(allFxFwdCashFlows, fxForward.DomCcy);
             _transactionPortfoliosApi.UpsertTransactions(portfolioScope, portfolioId, MapToCashFlowTransactionRequest(upsertCashFlowTransactions));
             
-            // CALL GetValuation after upserting cashflow into lusid
+            // HAVING upserted cashflow into lusid, we call GetValuation again.
             var valuationAfterUpsertingCashFlows = _aggregationApi.GetValuation(valuationRequest).Data;
             
-            // ASSERT portfolio PV is constant across time (since we upsert the cashflows back in with ConstantTimeValueOfMoney model and the FX rate is constant)
+            // ASSERT portfolio PV is constant across time by grouping the valuation result by date.
+            // (constant because we upserted the cashflows back in with ConstantTimeValueOfMoney model and the FX rate is constant)
             // That is, we are checking instrument PV + cashflow PV = constant both before and after maturity  
             var resultsGroupedByDate = valuationAfterUpsertingCashFlows
                 .GroupBy(d => (DateTime) d[ValuationDateKey]);
