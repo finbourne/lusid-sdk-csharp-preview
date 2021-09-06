@@ -1,11 +1,11 @@
 # Lusid.Sdk.Api.CustomEntityDefinitionsApi
 
-All URIs are relative to *https://fbn-prd.lusid.com/api*
+All URIs are relative to *http://local-unit-test-server.lusid.com:44774*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
-[**CreateCustomEntityDefinition**](CustomEntityDefinitionsApi.md#createcustomentitydefinition) | **POST** /api/customentitydefinitions | [EXPERIMENTAL] Create a new CustomEntityDefinition
-[**GetDefinition**](CustomEntityDefinitionsApi.md#getdefinition) | **GET** /api/customentitydefinitions/{customEntityId} | [EXPERIMENTAL] Get CustomEntityDefinition
+[**CreateCustomEntityDefinition**](CustomEntityDefinitionsApi.md#createcustomentitydefinition) | **POST** /api/customentities/entitytypes | [EXPERIMENTAL] Create a new CustomEntityDefinition
+[**GetDefinition**](CustomEntityDefinitionsApi.md#getdefinition) | **GET** /api/customentities/entitytypes/{entityType} | [EXPERIMENTAL] Get CustomEntityDefinition
 
 
 <a name="createcustomentitydefinition"></a>
@@ -31,7 +31,7 @@ namespace Example
         public static void Main()
         {
             Configuration config = new Configuration();
-            config.BasePath = "https://fbn-prd.lusid.com/api";
+            config.BasePath = "http://local-unit-test-server.lusid.com:44774";
             // Configure OAuth2 access token for authorization: oauth2
             config.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -86,11 +86,11 @@ Name | Type | Description  | Notes
 
 <a name="getdefinition"></a>
 # **GetDefinition**
-> CustomEntityDefinition GetDefinition (string customEntityId, DateTimeOffset? asAt = null)
+> CustomEntityDefinition GetDefinition (string entityType, DateTimeOffset? asAt = null)
 
 [EXPERIMENTAL] Get CustomEntityDefinition
 
-Retrieve a CustomEntityDefinition by a specific Id at a point in AsAt time
+Retrieve a CustomEntityDefinition by a specific EntityType at a point in AsAt time
 
 ### Example
 ```csharp
@@ -107,18 +107,18 @@ namespace Example
         public static void Main()
         {
             Configuration config = new Configuration();
-            config.BasePath = "https://fbn-prd.lusid.com/api";
+            config.BasePath = "http://local-unit-test-server.lusid.com:44774";
             // Configure OAuth2 access token for authorization: oauth2
             config.AccessToken = "YOUR_ACCESS_TOKEN";
 
             var apiInstance = new CustomEntityDefinitionsApi(config);
-            var customEntityId = customEntityId_example;  // string | Id of the CustomEntityDefinition
-            var asAt = 2013-10-20T19:20:30+01:00;  // DateTimeOffset? | The AsAt at which to retrieve the CustomEntityDefinition (optional) 
+            var entityType = entityType_example;  // string | The type of entity for which to retrieve the CustomEntityDefinition. This is included in the response from M:Finbourne.WebApi.Controllers.CustomEntityDefinitionController.CreateCustomEntityDefinition(Finbourne.WebApi.Interface.Dto.CustomEntityDefinitions.CustomEntityDefinitionRequest).
+            var asAt = 2013-10-20T19:20:30+01:00;  // DateTimeOffset? | The AsAt at which to retrieve the CustomEntityDefinition. (optional) 
 
             try
             {
                 // [EXPERIMENTAL] Get CustomEntityDefinition
-                CustomEntityDefinition result = apiInstance.GetDefinition(customEntityId, asAt);
+                CustomEntityDefinition result = apiInstance.GetDefinition(entityType, asAt);
                 Debug.WriteLine(result);
             }
             catch (ApiException  e)
@@ -136,8 +136,8 @@ namespace Example
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **customEntityId** | **string**| Id of the CustomEntityDefinition | 
- **asAt** | **DateTimeOffset?**| The AsAt at which to retrieve the CustomEntityDefinition | [optional] 
+ **entityType** | **string**| The type of entity for which to retrieve the CustomEntityDefinition. This is included in the response from M:Finbourne.WebApi.Controllers.CustomEntityDefinitionController.CreateCustomEntityDefinition(Finbourne.WebApi.Interface.Dto.CustomEntityDefinitions.CustomEntityDefinitionRequest). | 
+ **asAt** | **DateTimeOffset?**| The AsAt at which to retrieve the CustomEntityDefinition. | [optional] 
 
 ### Return type
 
