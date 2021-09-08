@@ -1,6 +1,6 @@
 # Lusid.Sdk.Api.PortfoliosApi
 
-All URIs are relative to *http://local-unit-test-server.lusid.com:37552*
+All URIs are relative to *http://local-unit-test-server.lusid.com:56349*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
@@ -51,7 +51,7 @@ namespace Example
         public static void Main()
         {
             Configuration config = new Configuration();
-            config.BasePath = "http://local-unit-test-server.lusid.com:37552";
+            config.BasePath = "http://local-unit-test-server.lusid.com:56349";
             // Configure OAuth2 access token for authorization: oauth2
             config.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -133,7 +133,7 @@ namespace Example
         public static void Main()
         {
             Configuration config = new Configuration();
-            config.BasePath = "http://local-unit-test-server.lusid.com:37552";
+            config.BasePath = "http://local-unit-test-server.lusid.com:56349";
             // Configure OAuth2 access token for authorization: oauth2
             config.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -211,7 +211,7 @@ namespace Example
         public static void Main()
         {
             Configuration config = new Configuration();
-            config.BasePath = "http://local-unit-test-server.lusid.com:37552";
+            config.BasePath = "http://local-unit-test-server.lusid.com:56349";
             // Configure OAuth2 access token for authorization: oauth2
             config.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -219,7 +219,7 @@ namespace Example
             var scope = scope_example;  // string | The scope of the portfolio.
             var code = code_example;  // string | The code of the portfolio. Together with the scope this uniquely identifies the portfolio.
             var propertyKeys = new List<string>(); // List<string> | The property keys of the properties to delete. These must take the format              {domain}/{scope}/{code}, for example 'Portfolio/Manager/Id'. Each property must be from the 'Portfolio' domain.
-            var effectiveAt = effectiveAt_example;  // DateTimeOrCutLabel | The effective datetime or cut label at which to delete time-variant properties. (optional) 
+            var effectiveAt = effectiveAt_example;  // DateTimeOrCutLabel | The effective datetime or cut label at which to delete time-variant properties from.              The property must exist at the specified 'effectiveAt' datetime. If the 'effectiveAt' is not provided or is              before the time-variant property exists then a failure is returned. Do not specify this parameter if any of              the properties to delete are perpetual. (optional) 
 
             try
             {
@@ -245,7 +245,7 @@ Name | Type | Description  | Notes
  **scope** | **string**| The scope of the portfolio. | 
  **code** | **string**| The code of the portfolio. Together with the scope this uniquely identifies the portfolio. | 
  **propertyKeys** | [**List&lt;string&gt;**](string.md)| The property keys of the properties to delete. These must take the format              {domain}/{scope}/{code}, for example &#39;Portfolio/Manager/Id&#39;. Each property must be from the &#39;Portfolio&#39; domain. | 
- **effectiveAt** | **DateTimeOrCutLabel**| The effective datetime or cut label at which to delete time-variant properties. | [optional] 
+ **effectiveAt** | **DateTimeOrCutLabel**| The effective datetime or cut label at which to delete time-variant properties from.              The property must exist at the specified &#39;effectiveAt&#39; datetime. If the &#39;effectiveAt&#39; is not provided or is              before the time-variant property exists then a failure is returned. Do not specify this parameter if any of              the properties to delete are perpetual. | [optional] 
 
 ### Return type
 
@@ -293,7 +293,7 @@ namespace Example
         public static void Main()
         {
             Configuration config = new Configuration();
-            config.BasePath = "http://local-unit-test-server.lusid.com:37552";
+            config.BasePath = "http://local-unit-test-server.lusid.com:56349";
             // Configure OAuth2 access token for authorization: oauth2
             config.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -381,7 +381,7 @@ namespace Example
         public static void Main()
         {
             Configuration config = new Configuration();
-            config.BasePath = "http://local-unit-test-server.lusid.com:37552";
+            config.BasePath = "http://local-unit-test-server.lusid.com:56349";
             // Configure OAuth2 access token for authorization: oauth2
             config.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -465,7 +465,7 @@ namespace Example
         public static void Main()
         {
             Configuration config = new Configuration();
-            config.BasePath = "http://local-unit-test-server.lusid.com:37552";
+            config.BasePath = "http://local-unit-test-server.lusid.com:56349";
             // Configure OAuth2 access token for authorization: oauth2
             config.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -567,7 +567,7 @@ namespace Example
         public static void Main()
         {
             Configuration config = new Configuration();
-            config.BasePath = "http://local-unit-test-server.lusid.com:37552";
+            config.BasePath = "http://local-unit-test-server.lusid.com:56349";
             // Configure OAuth2 access token for authorization: oauth2
             config.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -659,7 +659,7 @@ namespace Example
         public static void Main()
         {
             Configuration config = new Configuration();
-            config.BasePath = "http://local-unit-test-server.lusid.com:37552";
+            config.BasePath = "http://local-unit-test-server.lusid.com:56349";
             // Configure OAuth2 access token for authorization: oauth2
             config.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -747,7 +747,7 @@ namespace Example
         public static void Main()
         {
             Configuration config = new Configuration();
-            config.BasePath = "http://local-unit-test-server.lusid.com:37552";
+            config.BasePath = "http://local-unit-test-server.lusid.com:56349";
             // Configure OAuth2 access token for authorization: oauth2
             config.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -829,7 +829,7 @@ namespace Example
         public static void Main()
         {
             Configuration config = new Configuration();
-            config.BasePath = "http://local-unit-test-server.lusid.com:37552";
+            config.BasePath = "http://local-unit-test-server.lusid.com:56349";
             // Configure OAuth2 access token for authorization: oauth2
             config.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -890,7 +890,7 @@ Name | Type | Description  | Notes
 
 <a name="getportfoliopropertytimeseries"></a>
 # **GetPortfolioPropertyTimeSeries**
-> ResourceListOfPropertyInterval GetPortfolioPropertyTimeSeries (string scope, string code, string propertyKey = null, string portfolioEffectiveAt = null, DateTimeOffset? asAt = null, string filter = null, string page = null, int? limit = null)
+> ResourceListOfPropertyInterval GetPortfolioPropertyTimeSeries (string scope, string code, string propertyKey, string portfolioEffectiveAt = null, DateTimeOffset? asAt = null, string filter = null, string page = null, int? limit = null)
 
 [EXPERIMENTAL] Get portfolio property time series
 
@@ -911,14 +911,14 @@ namespace Example
         public static void Main()
         {
             Configuration config = new Configuration();
-            config.BasePath = "http://local-unit-test-server.lusid.com:37552";
+            config.BasePath = "http://local-unit-test-server.lusid.com:56349";
             // Configure OAuth2 access token for authorization: oauth2
             config.AccessToken = "YOUR_ACCESS_TOKEN";
 
             var apiInstance = new PortfoliosApi(config);
             var scope = scope_example;  // string | The scope of the portfolio.
             var code = code_example;  // string | The code of the portfolio. Together with the scope this uniquely identifies the portfolio.
-            var propertyKey = propertyKey_example;  // string | The property key of the property whose history to show.              This must be from the 'Portfolio' domain and in the format {domain}/{scope}/{code}, for example 'Portfolio/Manager/Id'. (optional) 
+            var propertyKey = propertyKey_example;  // string | The property key of the property whose history to show.              This must be from the 'Portfolio' domain and in the format {domain}/{scope}/{code}, for example 'Portfolio/Manager/Id'.
             var portfolioEffectiveAt = portfolioEffectiveAt_example;  // string | The effective datetime used to resolve the portfolio. Defaults to the current LUSID system datetime if not specified. (optional) 
             var asAt = 2013-10-20T19:20:30+01:00;  // DateTimeOffset? | The asAt datetime at which to show the history. Defaults to returning the current datetime if not supplied. (optional) 
             var filter = filter_example;  // string | Expression to filter the results. For more information about filtering,              see https://support.lusid.com/knowledgebase/article/KA-01914. (optional) 
@@ -948,7 +948,7 @@ Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **scope** | **string**| The scope of the portfolio. | 
  **code** | **string**| The code of the portfolio. Together with the scope this uniquely identifies the portfolio. | 
- **propertyKey** | **string**| The property key of the property whose history to show.              This must be from the &#39;Portfolio&#39; domain and in the format {domain}/{scope}/{code}, for example &#39;Portfolio/Manager/Id&#39;. | [optional] 
+ **propertyKey** | **string**| The property key of the property whose history to show.              This must be from the &#39;Portfolio&#39; domain and in the format {domain}/{scope}/{code}, for example &#39;Portfolio/Manager/Id&#39;. | 
  **portfolioEffectiveAt** | **string**| The effective datetime used to resolve the portfolio. Defaults to the current LUSID system datetime if not specified. | [optional] 
  **asAt** | **DateTimeOffset?**| The asAt datetime at which to show the history. Defaults to returning the current datetime if not supplied. | [optional] 
  **filter** | **string**| Expression to filter the results. For more information about filtering,              see https://support.lusid.com/knowledgebase/article/KA-01914. | [optional] 
@@ -1001,7 +1001,7 @@ namespace Example
         public static void Main()
         {
             Configuration config = new Configuration();
-            config.BasePath = "http://local-unit-test-server.lusid.com:37552";
+            config.BasePath = "http://local-unit-test-server.lusid.com:56349";
             // Configure OAuth2 access token for authorization: oauth2
             config.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -1087,7 +1087,7 @@ namespace Example
         public static void Main()
         {
             Configuration config = new Configuration();
-            config.BasePath = "http://local-unit-test-server.lusid.com:37552";
+            config.BasePath = "http://local-unit-test-server.lusid.com:56349";
             // Configure OAuth2 access token for authorization: oauth2
             config.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -1173,7 +1173,7 @@ namespace Example
         public static void Main()
         {
             Configuration config = new Configuration();
-            config.BasePath = "http://local-unit-test-server.lusid.com:37552";
+            config.BasePath = "http://local-unit-test-server.lusid.com:56349";
             // Configure OAuth2 access token for authorization: oauth2
             config.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -1263,7 +1263,7 @@ namespace Example
         public static void Main()
         {
             Configuration config = new Configuration();
-            config.BasePath = "http://local-unit-test-server.lusid.com:37552";
+            config.BasePath = "http://local-unit-test-server.lusid.com:56349";
             // Configure OAuth2 access token for authorization: oauth2
             config.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -1347,7 +1347,7 @@ namespace Example
         public static void Main()
         {
             Configuration config = new Configuration();
-            config.BasePath = "http://local-unit-test-server.lusid.com:37552";
+            config.BasePath = "http://local-unit-test-server.lusid.com:56349";
             // Configure OAuth2 access token for authorization: oauth2
             config.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -1433,7 +1433,7 @@ namespace Example
         public static void Main()
         {
             Configuration config = new Configuration();
-            config.BasePath = "http://local-unit-test-server.lusid.com:37552";
+            config.BasePath = "http://local-unit-test-server.lusid.com:56349";
             // Configure OAuth2 access token for authorization: oauth2
             config.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -1523,7 +1523,7 @@ namespace Example
         public static void Main()
         {
             Configuration config = new Configuration();
-            config.BasePath = "http://local-unit-test-server.lusid.com:37552";
+            config.BasePath = "http://local-unit-test-server.lusid.com:56349";
             // Configure OAuth2 access token for authorization: oauth2
             config.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -1613,7 +1613,7 @@ namespace Example
         public static void Main()
         {
             Configuration config = new Configuration();
-            config.BasePath = "http://local-unit-test-server.lusid.com:37552";
+            config.BasePath = "http://local-unit-test-server.lusid.com:56349";
             // Configure OAuth2 access token for authorization: oauth2
             config.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -1695,7 +1695,7 @@ namespace Example
         public static void Main()
         {
             Configuration config = new Configuration();
-            config.BasePath = "http://local-unit-test-server.lusid.com:37552";
+            config.BasePath = "http://local-unit-test-server.lusid.com:56349";
             // Configure OAuth2 access token for authorization: oauth2
             config.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -1779,7 +1779,7 @@ namespace Example
         public static void Main()
         {
             Configuration config = new Configuration();
-            config.BasePath = "http://local-unit-test-server.lusid.com:37552";
+            config.BasePath = "http://local-unit-test-server.lusid.com:56349";
             // Configure OAuth2 access token for authorization: oauth2
             config.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -1859,7 +1859,7 @@ namespace Example
         public static void Main()
         {
             Configuration config = new Configuration();
-            config.BasePath = "http://local-unit-test-server.lusid.com:37552";
+            config.BasePath = "http://local-unit-test-server.lusid.com:56349";
             // Configure OAuth2 access token for authorization: oauth2
             config.AccessToken = "YOUR_ACCESS_TOKEN";
 
