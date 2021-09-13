@@ -47,6 +47,20 @@ namespace Lusid.Sdk.Tests.Utilities
                 isDeliveryNotCash: true,
                 instrumentType: LusidInstrument.InstrumentTypeEnum.FxOption
             );
+        
+        internal static LusidInstrument CreateExampleEquityOption(bool isCashSettled)
+            => new EquityOption(
+                startDate: new DateTimeOffset(2020, 2, 7, 0, 0, 0, TimeSpan.Zero),
+                optionMaturityDate: new DateTimeOffset(2020, 12, 19, 0, 0, 0, TimeSpan.Zero),
+                optionSettlementDate: new DateTimeOffset(2020, 12, 21, 0, 0, 0, TimeSpan.Zero),
+                deliveryType: isCashSettled ? EquityOption.DeliveryTypeEnum.Cash : EquityOption.DeliveryTypeEnum.Physical,
+                optionType: EquityOption.OptionTypeEnum.Call,
+                strike: 130,
+                domCcy: "USD",
+                underlyingIdentifier: EquityOption.UnderlyingIdentifierEnum.RIC,
+                code: "SomeCorp",
+                instrumentType: LusidInstrument.InstrumentTypeEnum.EquityOption
+            );
 
         private static FlowConventions CreateExampleFlowConventions()
             => new FlowConventions(
