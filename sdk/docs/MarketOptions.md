@@ -9,6 +9,8 @@ Name | Type | Description | Notes
 **DefaultInstrumentCodeType** | **string** | When instrument quotes are searched for, what identifier should be used by default | [optional] 
 **DefaultScope** | **string** | For default rules, which scope should data be searched for in | [optional] 
 **AttemptToInferMissingFx** | **bool** | if true will calculate a missing Fx pair (e.g. THBJPY) from the inverse JPYTHB or from standardised pairs against USD, e.g. THBUSD and JPYUSD | [optional] 
+**CalendarScope** | **string** | The scope in which holiday calendars stored | [optional] 
+**ConventionScope** | **string** | The scope in which holiday calendars stored | [optional] 
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 
