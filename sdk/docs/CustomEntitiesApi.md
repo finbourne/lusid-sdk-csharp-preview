@@ -1,10 +1,11 @@
 # Lusid.Sdk.Api.CustomEntitiesApi
 
-All URIs are relative to *https://fbn-prd.lusid.com/api*
+All URIs are relative to *http://local-unit-test-server.lusid.com:39462*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
 [**GetCustomEntity**](CustomEntitiesApi.md#getcustomentity) | **GET** /api/customentities/{entityType}/{identifierType}/{identifierValue} | [EXPERIMENTAL] Get CustomEntity
+[**ListCustomEntities**](CustomEntitiesApi.md#listcustomentities) | **GET** /api/customentities/{entityType} | [EXPERIMENTAL] List Custom Entities
 [**UpsertCustomEntity**](CustomEntitiesApi.md#upsertcustomentity) | **POST** /api/customentities/{entityType} | [EXPERIMENTAL] Upsert a new CustomEntity
 
 
@@ -14,7 +15,7 @@ Method | HTTP request | Description
 
 [EXPERIMENTAL] Get CustomEntity
 
-Retrieve a CustomEntity by a specific Id at a point in AsAt time
+Retrieve a CustomEntity by a specific Id at a point in AsAt time.
 
 ### Example
 ```csharp
@@ -31,16 +32,16 @@ namespace Example
         public static void Main()
         {
             Configuration config = new Configuration();
-            config.BasePath = "https://fbn-prd.lusid.com/api";
+            config.BasePath = "http://local-unit-test-server.lusid.com:39462";
             // Configure OAuth2 access token for authorization: oauth2
             config.AccessToken = "YOUR_ACCESS_TOKEN";
 
             var apiInstance = new CustomEntitiesApi(config);
             var entityType = entityType_example;  // string | The type of entity to retrieve. This is included in the response from M:Finbourne.WebApi.Controllers.CustomEntityDefinitionController.CreateCustomEntityDefinition(Finbourne.WebApi.Interface.Dto.CustomEntityDefinitions.CustomEntityDefinitionRequest).
-            var identifierType = identifierType_example;  // string | An identifier type attached to the CustomEntity
-            var identifierValue = identifierValue_example;  // string | The identifier value
-            var identifierScope = identifierScope_example;  // string | The identifier scope
-            var asAt = 2013-10-20T19:20:30+01:00;  // DateTimeOffset? | The AsAt at which to retrieve the CustomEntity (optional) 
+            var identifierType = identifierType_example;  // string | An identifier type attached to the CustomEntity.
+            var identifierValue = identifierValue_example;  // string | The identifier value.
+            var identifierScope = identifierScope_example;  // string | The identifier scope.
+            var asAt = 2013-10-20T19:20:30+01:00;  // DateTimeOffset? | The AsAt at which to retrieve the CustomEntity. (optional) 
 
             try
             {
@@ -64,10 +65,10 @@ namespace Example
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **entityType** | **string**| The type of entity to retrieve. This is included in the response from M:Finbourne.WebApi.Controllers.CustomEntityDefinitionController.CreateCustomEntityDefinition(Finbourne.WebApi.Interface.Dto.CustomEntityDefinitions.CustomEntityDefinitionRequest). | 
- **identifierType** | **string**| An identifier type attached to the CustomEntity | 
- **identifierValue** | **string**| The identifier value | 
- **identifierScope** | **string**| The identifier scope | 
- **asAt** | **DateTimeOffset?**| The AsAt at which to retrieve the CustomEntity | [optional] 
+ **identifierType** | **string**| An identifier type attached to the CustomEntity. | 
+ **identifierValue** | **string**| The identifier value. | 
+ **identifierScope** | **string**| The identifier scope. | 
+ **asAt** | **DateTimeOffset?**| The AsAt at which to retrieve the CustomEntity. | [optional] 
 
 ### Return type
 
@@ -87,6 +88,92 @@ Name | Type | Description  | Notes
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
 | **200** | The requested Custom Entity |  -  |
+| **400** | The details of the input related failure |  -  |
+| **0** | Error response |  -  |
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+<a name="listcustomentities"></a>
+# **ListCustomEntities**
+> PagedResourceListOfCustomEntityResponse ListCustomEntities (string entityType, DateTimeOrCutLabel effectiveAt = null, DateTimeOffset? asAt = null, int? limit = null, string filter = null, string page = null)
+
+[EXPERIMENTAL] List Custom Entities
+
+List all the Custom Entities matching particular criteria.
+
+### Example
+```csharp
+using System.Collections.Generic;
+using System.Diagnostics;
+using Lusid.Sdk.Api;
+using Lusid.Sdk.Client;
+using Lusid.Sdk.Model;
+
+namespace Example
+{
+    public class ListCustomEntitiesExample
+    {
+        public static void Main()
+        {
+            Configuration config = new Configuration();
+            config.BasePath = "http://local-unit-test-server.lusid.com:39462";
+            // Configure OAuth2 access token for authorization: oauth2
+            config.AccessToken = "YOUR_ACCESS_TOKEN";
+
+            var apiInstance = new CustomEntitiesApi(config);
+            var entityType = entityType_example;  // string | The type of entity to list.
+            var effectiveAt = effectiveAt_example;  // DateTimeOrCutLabel | The effective datetime or cut label at which to list the entities. Defaults to the current LUSID              system datetime if not specified. (optional) 
+            var asAt = 2013-10-20T19:20:30+01:00;  // DateTimeOffset? | The asAt datetime at which to list the entities. Defaults to returning the latest version              of each portfolio if not specified. (optional) 
+            var limit = 56;  // int? | When paginating, limit the results to this number. Defaults to 65,535 if not specified. (optional) 
+            var filter = filter_example;  // string | Expression to filter the results. For more information about filtering              results, see https://support.lusid.com/knowledgebase/article/KA-01914. (optional) 
+            var page = page_example;  // string | The pagination token to use to continue listing entities; this              value is returned from the previous call. If a pagination token is provided, the filter, effectiveAt              and asAt fields must not have changed since the original request. (optional) 
+
+            try
+            {
+                // [EXPERIMENTAL] List Custom Entities
+                PagedResourceListOfCustomEntityResponse result = apiInstance.ListCustomEntities(entityType, effectiveAt, asAt, limit, filter, page);
+                Debug.WriteLine(result);
+            }
+            catch (ApiException  e)
+            {
+                Debug.Print("Exception when calling CustomEntitiesApi.ListCustomEntities: " + e.Message );
+                Debug.Print("Status Code: "+ e.ErrorCode);
+                Debug.Print(e.StackTrace);
+            }
+        }
+    }
+}
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **entityType** | **string**| The type of entity to list. | 
+ **effectiveAt** | **DateTimeOrCutLabel**| The effective datetime or cut label at which to list the entities. Defaults to the current LUSID              system datetime if not specified. | [optional] 
+ **asAt** | **DateTimeOffset?**| The asAt datetime at which to list the entities. Defaults to returning the latest version              of each portfolio if not specified. | [optional] 
+ **limit** | **int?**| When paginating, limit the results to this number. Defaults to 65,535 if not specified. | [optional] 
+ **filter** | **string**| Expression to filter the results. For more information about filtering              results, see https://support.lusid.com/knowledgebase/article/KA-01914. | [optional] 
+ **page** | **string**| The pagination token to use to continue listing entities; this              value is returned from the previous call. If a pagination token is provided, the filter, effectiveAt              and asAt fields must not have changed since the original request. | [optional] 
+
+### Return type
+
+[**PagedResourceListOfCustomEntityResponse**](PagedResourceListOfCustomEntityResponse.md)
+
+### Authorization
+
+[oauth2](../README.md#oauth2)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: text/plain, application/json, text/json
+
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+| **200** | The requested custom entities |  -  |
 | **400** | The details of the input related failure |  -  |
 | **0** | Error response |  -  |
 
@@ -115,13 +202,13 @@ namespace Example
         public static void Main()
         {
             Configuration config = new Configuration();
-            config.BasePath = "https://fbn-prd.lusid.com/api";
+            config.BasePath = "http://local-unit-test-server.lusid.com:39462";
             // Configure OAuth2 access token for authorization: oauth2
             config.AccessToken = "YOUR_ACCESS_TOKEN";
 
             var apiInstance = new CustomEntitiesApi(config);
             var entityType = entityType_example;  // string | The type of the CustomEntity to be created. An entityType can be created using the M:Finbourne.WebApi.Controllers.CustomEntityDefinitionController.GetDefinition(System.String,System.Nullable{System.DateTimeOffset}) endpoint.
-            var customEntityRequest = new CustomEntityRequest(); // CustomEntityRequest | The CustomEntity to be created
+            var customEntityRequest = new CustomEntityRequest(); // CustomEntityRequest | The CustomEntity to be created.
 
             try
             {
@@ -145,7 +232,7 @@ namespace Example
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **entityType** | **string**| The type of the CustomEntity to be created. An entityType can be created using the M:Finbourne.WebApi.Controllers.CustomEntityDefinitionController.GetDefinition(System.String,System.Nullable{System.DateTimeOffset}) endpoint. | 
- **customEntityRequest** | [**CustomEntityRequest**](CustomEntityRequest.md)| The CustomEntity to be created | 
+ **customEntityRequest** | [**CustomEntityRequest**](CustomEntityRequest.md)| The CustomEntity to be created. | 
 
 ### Return type
 
