@@ -1,6 +1,6 @@
 # Lusid.Sdk.Api.DataTypesApi
 
-All URIs are relative to *http://local-unit-test-server.lusid.com:62717*
+All URIs are relative to *http://local-unit-test-server.lusid.com:30524*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
@@ -34,7 +34,7 @@ namespace Example
         public static void Main()
         {
             Configuration config = new Configuration();
-            config.BasePath = "http://local-unit-test-server.lusid.com:62717";
+            config.BasePath = "http://local-unit-test-server.lusid.com:30524";
             // Configure OAuth2 access token for authorization: oauth2
             config.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -110,7 +110,7 @@ namespace Example
         public static void Main()
         {
             Configuration config = new Configuration();
-            config.BasePath = "http://local-unit-test-server.lusid.com:62717";
+            config.BasePath = "http://local-unit-test-server.lusid.com:30524";
             // Configure OAuth2 access token for authorization: oauth2
             config.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -190,7 +190,7 @@ namespace Example
         public static void Main()
         {
             Configuration config = new Configuration();
-            config.BasePath = "http://local-unit-test-server.lusid.com:62717";
+            config.BasePath = "http://local-unit-test-server.lusid.com:30524";
             // Configure OAuth2 access token for authorization: oauth2
             config.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -274,7 +274,7 @@ namespace Example
         public static void Main()
         {
             Configuration config = new Configuration();
-            config.BasePath = "http://local-unit-test-server.lusid.com:62717";
+            config.BasePath = "http://local-unit-test-server.lusid.com:30524";
             // Configure OAuth2 access token for authorization: oauth2
             config.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -341,7 +341,7 @@ Name | Type | Description  | Notes
 
 <a name="updatedatatype"></a>
 # **UpdateDataType**
-> DataType UpdateDataType (string scope, string code, UpdateDataTypeRequest updateDataTypeRequest = null)
+> DataType UpdateDataType (string scope, string code, UpdateDataTypeRequest updateDataTypeRequest)
 
 [BETA] Update data type definition
 
@@ -362,14 +362,14 @@ namespace Example
         public static void Main()
         {
             Configuration config = new Configuration();
-            config.BasePath = "http://local-unit-test-server.lusid.com:62717";
+            config.BasePath = "http://local-unit-test-server.lusid.com:30524";
             // Configure OAuth2 access token for authorization: oauth2
             config.AccessToken = "YOUR_ACCESS_TOKEN";
 
             var apiInstance = new DataTypesApi(config);
             var scope = scope_example;  // string | The scope of the data type
             var code = code_example;  // string | The code of the data type
-            var updateDataTypeRequest = new UpdateDataTypeRequest(); // UpdateDataTypeRequest | The updated definition of the data type (optional) 
+            var updateDataTypeRequest = new UpdateDataTypeRequest(); // UpdateDataTypeRequest | The updated definition of the data type
 
             try
             {
@@ -394,7 +394,7 @@ Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **scope** | **string**| The scope of the data type | 
  **code** | **string**| The code of the data type | 
- **updateDataTypeRequest** | [**UpdateDataTypeRequest**](UpdateDataTypeRequest.md)| The updated definition of the data type | [optional] 
+ **updateDataTypeRequest** | [**UpdateDataTypeRequest**](UpdateDataTypeRequest.md)| The updated definition of the data type | 
 
 ### Return type
 
