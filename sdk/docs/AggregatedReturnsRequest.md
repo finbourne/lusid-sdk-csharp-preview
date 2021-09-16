@@ -10,6 +10,7 @@ Name | Type | Description | Notes
 **CompositeMethod** | **string** | The method used to calculate the Portfolio performance: Equal/Asset. | [optional] 
 **Period** | **string** | The type of the returns used to calculate the aggregation result: Daily/Monthly. | [optional] 
 **OutputFrequency** | **string** | The type of calculated output: Daily/Weekly/Monthly/Quarterly/Half-Yearly/Yearly. | [optional] 
+**AlternativeInceptionDate** | **string** | The type of calculated output: Daily/Weekly/Monthly/Quarterly/Half-Yearly/Yearly. | [optional] 
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 
