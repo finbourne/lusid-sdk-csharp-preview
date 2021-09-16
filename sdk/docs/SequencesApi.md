@@ -1,17 +1,17 @@
 # Lusid.Sdk.Api.SequencesApi
 
-All URIs are relative to *http://local-unit-test-server.lusid.com:59385*
+All URIs are relative to *http://local-unit-test-server.lusid.com:40437*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
 [**CreateSequence**](SequencesApi.md#createsequence) | **POST** /api/sequences/{scope} | [EXPERIMENTAL] Create a new sequence
-[**GetSequenceDefinition**](SequencesApi.md#getsequencedefinition) | **GET** /api/sequences/{scope}/{code} | [EXPERIMENTAL] Return the definition of a sequence
-[**Next**](SequencesApi.md#next) | **GET** /api/sequences/{scope}/{code}/next | [EXPERIMENTAL] Get the next set of values from the sequence
+[**GetSequence**](SequencesApi.md#getsequence) | **GET** /api/sequences/{scope}/{code} | [EXPERIMENTAL] Get a specified sequence
+[**Next**](SequencesApi.md#next) | **GET** /api/sequences/{scope}/{code}/next | [EXPERIMENTAL] Get next values from sequence
 
 
 <a name="createsequence"></a>
 # **CreateSequence**
-> SequenceDefinition CreateSequence (string scope, CreateSequenceRequest createSequenceRequest = null)
+> SequenceDefinition CreateSequence (string scope, CreateSequenceRequest createSequenceRequest)
 
 [EXPERIMENTAL] Create a new sequence
 
@@ -32,13 +32,13 @@ namespace Example
         public static void Main()
         {
             Configuration config = new Configuration();
-            config.BasePath = "http://local-unit-test-server.lusid.com:59385";
+            config.BasePath = "http://local-unit-test-server.lusid.com:40437";
             // Configure OAuth2 access token for authorization: oauth2
             config.AccessToken = "YOUR_ACCESS_TOKEN";
 
             var apiInstance = new SequencesApi(config);
-            var scope = scope_example;  // string | Scope of the sequence definition.
-            var createSequenceRequest = new CreateSequenceRequest(); // CreateSequenceRequest | Request to create sequence definition. (optional) 
+            var scope = scope_example;  // string | Scope of the sequence.
+            var createSequenceRequest = new CreateSequenceRequest(); // CreateSequenceRequest | Request to create sequence
 
             try
             {
@@ -61,8 +61,8 @@ namespace Example
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **scope** | **string**| Scope of the sequence definition. | 
- **createSequenceRequest** | [**CreateSequenceRequest**](CreateSequenceRequest.md)| Request to create sequence definition. | [optional] 
+ **scope** | **string**| Scope of the sequence. | 
+ **createSequenceRequest** | [**CreateSequenceRequest**](CreateSequenceRequest.md)| Request to create sequence | 
 
 ### Return type
 
@@ -81,19 +81,19 @@ Name | Type | Description  | Notes
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
-| **201** | Successful creation of the sequence |  -  |
+| **201** | The newly created Sequence |  -  |
 | **400** | The details of the input related failure |  -  |
 | **0** | Error response |  -  |
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
-<a name="getsequencedefinition"></a>
-# **GetSequenceDefinition**
-> SequenceDefinition GetSequenceDefinition (string scope, string code)
+<a name="getsequence"></a>
+# **GetSequence**
+> SequenceDefinition GetSequence (string scope, string code)
 
-[EXPERIMENTAL] Return the definition of a sequence
+[EXPERIMENTAL] Get a specified sequence
 
-Return the detailed definition of a sequence
+Return the details of a specified sequence
 
 ### Example
 ```csharp
@@ -105,28 +105,28 @@ using Lusid.Sdk.Model;
 
 namespace Example
 {
-    public class GetSequenceDefinitionExample
+    public class GetSequenceExample
     {
         public static void Main()
         {
             Configuration config = new Configuration();
-            config.BasePath = "http://local-unit-test-server.lusid.com:59385";
+            config.BasePath = "http://local-unit-test-server.lusid.com:40437";
             // Configure OAuth2 access token for authorization: oauth2
             config.AccessToken = "YOUR_ACCESS_TOKEN";
 
             var apiInstance = new SequencesApi(config);
-            var scope = scope_example;  // string | Scope of the sequence definition.
-            var code = code_example;  // string | Code of the sequence definition. This together with stated scope uniquely              identifies the sequence definition.
+            var scope = scope_example;  // string | Scope of the sequence.
+            var code = code_example;  // string | Code of the sequence. This together with stated scope uniquely              identifies the sequence.
 
             try
             {
-                // [EXPERIMENTAL] Return the definition of a sequence
-                SequenceDefinition result = apiInstance.GetSequenceDefinition(scope, code);
+                // [EXPERIMENTAL] Get a specified sequence
+                SequenceDefinition result = apiInstance.GetSequence(scope, code);
                 Debug.WriteLine(result);
             }
             catch (ApiException  e)
             {
-                Debug.Print("Exception when calling SequencesApi.GetSequenceDefinition: " + e.Message );
+                Debug.Print("Exception when calling SequencesApi.GetSequence: " + e.Message );
                 Debug.Print("Status Code: "+ e.ErrorCode);
                 Debug.Print(e.StackTrace);
             }
@@ -139,8 +139,8 @@ namespace Example
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **scope** | **string**| Scope of the sequence definition. | 
- **code** | **string**| Code of the sequence definition. This together with stated scope uniquely              identifies the sequence definition. | 
+ **scope** | **string**| Scope of the sequence. | 
+ **code** | **string**| Code of the sequence. This together with stated scope uniquely              identifies the sequence. | 
 
 ### Return type
 
@@ -169,9 +169,9 @@ Name | Type | Description  | Notes
 # **Next**
 > NextValueInSequenceResponse Next (string scope, string code, int? batch = null)
 
-[EXPERIMENTAL] Get the next set of values from the sequence
+[EXPERIMENTAL] Get next values from sequence
 
-Get the next set of values from the sequence
+Get the next set of values from a specified sequence
 
 ### Example
 ```csharp
@@ -188,18 +188,18 @@ namespace Example
         public static void Main()
         {
             Configuration config = new Configuration();
-            config.BasePath = "http://local-unit-test-server.lusid.com:59385";
+            config.BasePath = "http://local-unit-test-server.lusid.com:40437";
             // Configure OAuth2 access token for authorization: oauth2
             config.AccessToken = "YOUR_ACCESS_TOKEN";
 
             var apiInstance = new SequencesApi(config);
-            var scope = scope_example;  // string | Scope of the sequence definition.
-            var code = code_example;  // string | Code of the sequence definition. This together with stated scope uniquely              identifies the sequence definition.
-            var batch = 56;  // int? | Number of sequences items to return for the specified sequence definition. (optional)  (default to 1)
+            var scope = scope_example;  // string | Scope of the sequence.
+            var code = code_example;  // string | Code of the sequence. This together with stated scope uniquely              identifies the sequence.
+            var batch = 56;  // int? | Number of sequences items to return for the specified sequence. Default to 1 if not specified. (optional) 
 
             try
             {
-                // [EXPERIMENTAL] Get the next set of values from the sequence
+                // [EXPERIMENTAL] Get next values from sequence
                 NextValueInSequenceResponse result = apiInstance.Next(scope, code, batch);
                 Debug.WriteLine(result);
             }
@@ -218,9 +218,9 @@ namespace Example
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **scope** | **string**| Scope of the sequence definition. | 
- **code** | **string**| Code of the sequence definition. This together with stated scope uniquely              identifies the sequence definition. | 
- **batch** | **int?**| Number of sequences items to return for the specified sequence definition. | [optional] [default to 1]
+ **scope** | **string**| Scope of the sequence. | 
+ **code** | **string**| Code of the sequence. This together with stated scope uniquely              identifies the sequence. | 
+ **batch** | **int?**| Number of sequences items to return for the specified sequence. Default to 1 if not specified. | [optional] 
 
 ### Return type
 
@@ -239,7 +239,7 @@ Name | Type | Description  | Notes
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
-| **200** | Gets the next set of values for the sequence |  -  |
+| **200** | The response containing next available values in specified sequence. |  -  |
 | **400** | The details of the input related failure |  -  |
 | **0** | Error response |  -  |
 
