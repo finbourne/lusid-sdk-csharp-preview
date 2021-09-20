@@ -37,6 +37,8 @@ namespace Lusid.Sdk.Utilities
     {
         private readonly ApiConfiguration _apiConfig;
         private readonly SemaphoreSlim _semaphore = new SemaphoreSlim(1, 1);
+        private const int RefreshExpires = 5400; // Refresh token expires in 90 minutes - Speak to Xan if you think this has changed
+        private const string ExpireMessage = "refresh token is invalid or expired";
 
         internal class AuthenticationToken
         {
@@ -67,15 +69,13 @@ namespace Lusid.Sdk.Utilities
         /// <inheritdoc />
         public async Task<string> GetAuthenticationTokenAsync()
         {
-            AsyncRetryPolicy _policy;
-            _policy = 
+            var policy = 
                 Policy
                     .Handle<HttpRequestException>()
                     .WaitAndRetryAsync(5, retryAttempt =>
                         TimeSpan.FromSeconds(Math.Pow(2, retryAttempt)), OnRetry);
             
-            var r = await _policy.ExecuteAsync(context => GetAuthenticationTokenAsyncInternal(), CancellationToken.None);
-            return r;
+            return await policy.ExecuteAsync(context => GetAuthenticationTokenAsyncInternal(), CancellationToken.None);
 
             async Task<string> GetAuthenticationTokenAsyncInternal()
             {
@@ -104,7 +104,7 @@ namespace Lusid.Sdk.Utilities
 
         private void OnRetry(Exception arg1, TimeSpan arg2)
         {
-            if (arg1.Message.Contains("refresh token is invalid or expired"))
+            if (arg1.Message.Contains(ExpireMessage))
             {
                 ExpireRefreshToken();
             }
@@ -151,7 +151,7 @@ namespace Lusid.Sdk.Utilities
                 var response = await httpClient.SendAsync(tokenRequest);
                 var body = await response.Content.ReadAsStringAsync();
                  
-                if ((int) response.StatusCode != 200)
+                if (!response.IsSuccessStatusCode)
                 {
                     throw new HttpRequestException(
                         $"Could not retrieve an authentication token from the specified identity provider. The request to {tokenRequest.RequestUri} returned an unsuccessful status code of {response.StatusCode} and the response body: {body}");
@@ -161,7 +161,6 @@ namespace Lusid.Sdk.Utilities
 
                 var apiToken = parsed["access_token"];
                 var expires = parsed["expires_in"];
-                var refreshExpires = "5400"; // Refresh token expires in 90 minutes - Speak to Xan if you think this has changed
 
                 parsed.TryGetValue("refresh_token", out var refresh_token);
 
@@ -177,15 +176,8 @@ namespace Lusid.Sdk.Utilities
                 }
                 
                 DateTimeOffset refreshExpiresAt;
-                if (int.TryParse(refreshExpires, out int refreshExpiresSeconds))
-                {
-                    // expiration is shorten to overcome a race condition where the token is still valid when retrieved from cache but expired when used
-                    refreshExpiresAt = DateTimeOffset.UtcNow.AddSeconds(refreshExpiresSeconds - 30);
-                }
-                else
-                {
-                    throw new InvalidOperationException("Failed to parse expires_in: " + refreshExpires);
-                }
+                // expiration is shorten to overcome a race condition where the token is still valid when retrieved from cache but expired when used
+                refreshExpiresAt = DateTimeOffset.UtcNow.AddSeconds(RefreshExpires - 30);
 
                 return new AuthenticationToken(apiToken, expiresAt, refresh_token, refreshExpiresAt);
             }
@@ -233,7 +225,6 @@ namespace Lusid.Sdk.Utilities
 
                 var apiToken = parsed["access_token"];                
                 var expires = parsed["expires_in"];
-                var refreshExpires = "5400";
 
                 parsed.TryGetValue("refresh_token", out var refresh_token);
 
@@ -249,15 +240,8 @@ namespace Lusid.Sdk.Utilities
                 }
 
                 DateTimeOffset refreshExpiresAt;
-                if (int.TryParse(refreshExpires, out int refreshExpiresSeconds))
-                {
-                    // expiration is shorten to overcome a race condition where the token is still valid when retrieved from cache but expired when used
-                    refreshExpiresAt = DateTimeOffset.UtcNow.AddSeconds(refreshExpiresSeconds - 30);
-                }
-                else
-                {
-                    throw new InvalidOperationException("Failed to parse expires_in: " + refreshExpires);
-                }
+                // expiration is shorten to overcome a race condition where the token is still valid when retrieved from cache but expired when used
+                refreshExpiresAt = DateTimeOffset.UtcNow.AddSeconds(RefreshExpires - 30);
 
                 return new AuthenticationToken(apiToken, expiresAt, refresh_token, refreshExpiresAt);
             }
