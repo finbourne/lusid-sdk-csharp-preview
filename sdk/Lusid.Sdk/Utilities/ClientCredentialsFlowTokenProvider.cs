@@ -104,7 +104,7 @@ namespace Lusid.Sdk.Utilities
 
         private void OnRetry(Exception arg1, TimeSpan arg2)
         {
-            if (arg1.Message.Contains(ExpireMessage))
+            if (arg1.Message.ToLower().Contains(ExpireMessage))
             {
                 ExpireRefreshToken();
             }
