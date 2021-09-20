@@ -18,7 +18,7 @@ namespace Lusid.Sdk.Tests.Tutorials.MarketData
             _corporateActionSourcesApi = apiFactory.Api<ICorporateActionSourcesApi>();
         }
         
-        [LusidFeature("F33")]
+        [LusidFeature("F12-6")]
         [Test]
         public void List_Corporate_Action_Sources()
         {
