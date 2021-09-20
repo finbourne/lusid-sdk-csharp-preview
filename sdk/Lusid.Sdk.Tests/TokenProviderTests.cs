@@ -125,11 +125,8 @@ namespace Lusid.Sdk.Tests
             // WHEN we pretend to delay until both...
             // (1) the original token has expired (for expediency update the expires_on on the token)
             provider.ExpireToken();
-            provider.ExpireRefreshToken();
             // (2) the refresh token has expired (for expediency update the refresh_token to an invalid value that will not be found)
-            var oldToken = provider.GetLastToken().Token;
             provider.GetLastToken().RefreshToken = "InvalidRefreshToken";
-            provider.GetLastToken().Token = "invalidToken";
 
             Assert.That(DateTimeOffset.UtcNow, Is.GreaterThan(firstTokenDetails.ExpiresOn));
             var refreshedToken = await provider.GetAuthenticationTokenAsync();
@@ -137,8 +134,8 @@ namespace Lusid.Sdk.Tests
             // THEN it should be populated, and the ExpiresOn should be in the future
             Assert.That(refreshedToken, Is.Not.Empty);
             Assert.That(provider.GetLastToken().ExpiresOn, Is.GreaterThan(DateTimeOffset.UtcNow));
-            Assert.That(oldToken != provider.GetLastToken().Token);
         }
+
     }
 }
 
