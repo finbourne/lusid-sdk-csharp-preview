@@ -127,7 +127,6 @@ namespace Lusid.Sdk.Tests
             provider.ExpireToken();
             provider.ExpireRefreshToken();
             // (2) the refresh token has expired (for expediency update the refresh_token to an invalid value that will not be found)
-            var oldToken = provider.GetLastToken().Token;
             provider.GetLastToken().RefreshToken = "InvalidRefreshToken";
             provider.GetLastToken().Token = "invalidToken";
 
@@ -137,8 +136,6 @@ namespace Lusid.Sdk.Tests
             // THEN it should be populated, and the ExpiresOn should be in the future
             Assert.That(refreshedToken, Is.Not.Empty);
             Assert.That(provider.GetLastToken().ExpiresOn, Is.GreaterThan(DateTimeOffset.UtcNow));
-            // Test does not pass when building as token is not acquired from okta
-            // Assert.That(oldToken != provider.GetLastToken().Token);
         }
     }
 }
