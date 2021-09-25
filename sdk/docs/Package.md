@@ -6,8 +6,8 @@ A structure used to describe the structure of an order or orders that make up a 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **Id** | [**ResourceId**](ResourceId.md) |  | 
-**OrderIds** | [**List&lt;ResourceId&gt;**](ResourceId.md) | A related order ids. | 
-**OrderInstructionIds** | [**List&lt;ResourceId&gt;**](ResourceId.md) | A related order instruction id. | 
+**OrderIds** | [**List&lt;ResourceId&gt;**](ResourceId.md) | Related order ids. | 
+**OrderInstructionIds** | [**List&lt;ResourceId&gt;**](ResourceId.md) | Related order instruction ids. | 
 **Properties** | [**Dictionary&lt;string, PerpetualProperty&gt;**](PerpetualProperty.md) | Client-defined properties associated with this execution. | [optional] 
 **Version** | [**Version**](Version.md) |  | [optional] 
 **Links** | [**List&lt;Link&gt;**](Link.md) | Collection of links. | [optional] 
