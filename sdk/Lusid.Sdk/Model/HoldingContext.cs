@@ -27,26 +27,26 @@ using OpenAPIDateConverter = Lusid.Sdk.Client.OpenAPIDateConverter;
 namespace Lusid.Sdk.Model
 {
     /// <summary>
-    /// A request to create or update multiple Orders.
+    /// Holding context node.  Contains settings that control how LUSID handles holdings within portfolios.
     /// </summary>
-    [DataContract(Name = "OrderSetRequest")]
-    public partial class OrderSetRequest : IEquatable<OrderSetRequest>
+    [DataContract(Name = "HoldingContext")]
+    public partial class HoldingContext : IEquatable<HoldingContext>
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="OrderSetRequest" /> class.
+        /// Initializes a new instance of the <see cref="HoldingContext" /> class.
         /// </summary>
-        /// <param name="orderRequests">A collection of OrderRequests..</param>
-        public OrderSetRequest(List<OrderRequest> orderRequests = default(List<OrderRequest>))
+        /// <param name="taxLotLevelHoldings">Whether or not to expand the holdings to return the underlying tax-lots. Defaults to True..</param>
+        public HoldingContext(bool taxLotLevelHoldings = default(bool))
         {
-            this.OrderRequests = orderRequests;
+            this.TaxLotLevelHoldings = taxLotLevelHoldings;
         }
 
         /// <summary>
-        /// A collection of OrderRequests.
+        /// Whether or not to expand the holdings to return the underlying tax-lots. Defaults to True.
         /// </summary>
-        /// <value>A collection of OrderRequests.</value>
-        [DataMember(Name = "orderRequests", EmitDefaultValue = true)]
-        public List<OrderRequest> OrderRequests { get; set; }
+        /// <value>Whether or not to expand the holdings to return the underlying tax-lots. Defaults to True.</value>
+        [DataMember(Name = "taxLotLevelHoldings", EmitDefaultValue = true)]
+        public bool TaxLotLevelHoldings { get; set; }
 
         /// <summary>
         /// Returns the string presentation of the object
@@ -55,8 +55,8 @@ namespace Lusid.Sdk.Model
         public override string ToString()
         {
             var sb = new StringBuilder();
-            sb.Append("class OrderSetRequest {\n");
-            sb.Append("  OrderRequests: ").Append(OrderRequests).Append("\n");
+            sb.Append("class HoldingContext {\n");
+            sb.Append("  TaxLotLevelHoldings: ").Append(TaxLotLevelHoldings).Append("\n");
             sb.Append("}\n");
             return sb.ToString();
         }
@@ -77,25 +77,23 @@ namespace Lusid.Sdk.Model
         /// <returns>Boolean</returns>
         public override bool Equals(object input)
         {
-            return this.Equals(input as OrderSetRequest);
+            return this.Equals(input as HoldingContext);
         }
 
         /// <summary>
-        /// Returns true if OrderSetRequest instances are equal
+        /// Returns true if HoldingContext instances are equal
         /// </summary>
-        /// <param name="input">Instance of OrderSetRequest to be compared</param>
+        /// <param name="input">Instance of HoldingContext to be compared</param>
         /// <returns>Boolean</returns>
-        public bool Equals(OrderSetRequest input)
+        public bool Equals(HoldingContext input)
         {
             if (input == null)
                 return false;
 
             return 
                 (
-                    this.OrderRequests == input.OrderRequests ||
-                    this.OrderRequests != null &&
-                    input.OrderRequests != null &&
-                    this.OrderRequests.SequenceEqual(input.OrderRequests)
+                    this.TaxLotLevelHoldings == input.TaxLotLevelHoldings ||
+                    this.TaxLotLevelHoldings.Equals(input.TaxLotLevelHoldings)
                 );
         }
 
@@ -108,8 +106,7 @@ namespace Lusid.Sdk.Model
             unchecked // Overflow is fine, just wrap
             {
                 int hashCode = 41;
-                if (this.OrderRequests != null)
-                    hashCode = hashCode * 59 + this.OrderRequests.GetHashCode();
+                hashCode = hashCode * 59 + this.TaxLotLevelHoldings.GetHashCode();
                 return hashCode;
             }
         }
