@@ -15,8 +15,6 @@ Name | Type | Description | Notes
 **Identifiers** | **Dictionary&lt;string, string&gt;** | external market codes and identifiers for the bond, e.g. ISIN. | [optional] 
 **ExDividendDays** | **int?** | The number of days before the next coupon payment for which the bond goes ex-dividend. | [optional] 
 **InitialCouponDate** | **DateTimeOffset?** | The initial coupon date which specifies the accrual start period for a fixed coupon bond with ex dividend schedule | [optional] 
-**FirstCouponPayDate** | **DateTimeOffset?** | The date that the first coupon of the bond is paid. This is required for bonds that have a long first coupon or short first coupon. The first coupon pay date is used  as an anchor to compare with the start date and determine if this is a long/short coupon period. | [optional] 
-**CalculationType** | **string** | The calculation type applied to the bond coupon amount. This is required for bonds that have a particular type of computing the period coupon, such as simple compounding,  irregular coupons etc.  Supported string (enumeration) values are: [Standard, NoCalculationFloater, BrazilFixedCoupon]. | [optional] 
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 
