@@ -247,6 +247,15 @@ namespace Lusid.Sdk.Tests.Utilities
                 var luid = upsertResponse[equityIdentifier].LusidInstrumentId;
                 UpsertEquityQuote(luid, portfolioScope, effectiveFrom, effectiveAt);
             }
+
+            // For equity options, we upsert the reset price in which the option payoff is computed.
+            var equityOptions = instruments
+                .Where(inst => inst.InstrumentType == LusidInstrument.InstrumentTypeEnum.EquityOption)
+                .Select(eqOpt => (EquityOption) eqOpt);
+            foreach (var eqOpt in equityOptions)
+            {
+                UpsertEquityQuote(eqOpt.Code, portfolioScope, effectiveFrom, effectiveAt, QuoteSeriesId.InstrumentIdTypeEnum.RIC);
+            }
         }
 
         private Dictionary<string, InstrumentDefinition> CreateEquityUpsertRequest(string equityIdentifier)
@@ -377,7 +386,12 @@ namespace Lusid.Sdk.Tests.Utilities
             Assert.That(upsertResponse.Values.Count, Is.EqualTo(upsertQuoteRequests.Count));
         }
 
-        private void UpsertEquityQuote(string luid, string scope, DateTimeOffset effectiveFrom,  DateTimeOffset effectiveAt)
+        private void UpsertEquityQuote(
+            string instrumentId,
+            string scope,
+            DateTimeOffset effectiveFrom,
+            DateTimeOffset effectiveAt,
+            QuoteSeriesId.InstrumentIdTypeEnum instrumentIdType = QuoteSeriesId.InstrumentIdTypeEnum.LusidInstrumentId)
         {
             // CREATE equity quotes for the desired date range
             var upsertQuoteRequests = new Dictionary<string, UpsertQuoteRequest>();
@@ -386,7 +400,7 @@ namespace Lusid.Sdk.Tests.Utilities
             for (var days = 0; days != numberOfDaysBetween + 1; ++days)
             {
                 var date = effectiveFrom.AddDays(days);
-                var quote = CreateSimpleQuoteUpsertRequest(luid, QuoteSeriesId.InstrumentIdTypeEnum.LusidInstrumentId, 100 + days, "USD", date);
+                var quote = CreateSimpleQuoteUpsertRequest(instrumentId, instrumentIdType, 100 + days, "USD", date);
                 upsertQuoteRequests.Add($"day_{days}_equity_quote", quote);
             }
             

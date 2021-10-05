@@ -22,6 +22,7 @@ namespace Lusid.Sdk.Tests.tutorials.Ibor
         private static readonly string ValuationDateKey = "Analytic/default/ValuationDate";
         private static readonly string ValuationPv = "Valuation/PV/Amount";
         private static readonly string ValuationCcy = "Valuation/PV/Ccy";
+        private static readonly string Luid = "Instrument/default/LusidInstrumentId";
         private static readonly string InstrumentName = "Instrument/default/Name";
         private static readonly string InstrumentTag = "Analytic/default/InstrumentTag";
         
@@ -31,7 +32,8 @@ namespace Lusid.Sdk.Tests.tutorials.Ibor
             new AggregateSpec(ValuationPv, AggregateSpec.OpEnum.Value),
             new AggregateSpec(ValuationCcy, AggregateSpec.OpEnum.Value),
             new AggregateSpec(InstrumentName, AggregateSpec.OpEnum.Value),
-            new AggregateSpec(InstrumentTag, AggregateSpec.OpEnum.Value)
+            new AggregateSpec(InstrumentTag, AggregateSpec.OpEnum.Value),
+            new AggregateSpec(Luid, AggregateSpec.OpEnum.Value)
         };
 
         [OneTimeSetUp]
@@ -400,6 +402,124 @@ namespace Lusid.Sdk.Tests.tutorials.Ibor
             _recipeApi.DeleteConfigurationRecipe(portfolioScope, modelRecipeCode);
         }
         
+        [Test]
+        public void LifeCycleManagementForCashSettledEquityOption()
+        {
+            // CREATE portfolio
+            var portfolioScope = Guid.NewGuid().ToString();
+            var portfolioId = _testDataUtilities.CreateTransactionPortfolio(portfolioScope);
+
+            // CREATE EquityOption
+            var equityOption = (EquityOption) InstrumentExamples.CreateExampleEquityOption(isCashSettled: true);
+            
+            // CREATE wide enough window to pick up all cashflows associated to the EquityOption
+            var windowStart = equityOption.StartDate.AddMonths(-1);
+            var windowEnd = equityOption.OptionSettlementDate.AddMonths(1);
+        
+            // UPSERT EquityOption to portfolio and populating stores with required market data.
+            var effectiveAt = equityOption.OptionSettlementDate;
+            _testDataUtilities.AddInstrumentsTransactionPortfolioAndPopulateRequiredMarketData(
+                portfolioScope, 
+                portfolioId,
+                windowStart,
+                windowEnd,
+                equityOption);
+
+            // CREATE and upsert CTVoM recipe specifying constant time value of money pricing model
+            var modelRecipeCode = "CTVoMRecipe";
+            CreateAndUpsertRecipe(
+                modelRecipeCode,
+                portfolioScope,
+                ModelSelection.ModelEnum.ConstantTimeValueOfMoney,
+                windowValuationOnInstrumentStartEnd: true);
+
+            // GET all upsertable cashflows (transactions) for the EquityOption
+            var allEquityOptionCashFlows = _transactionPortfoliosApi.GetUpsertablePortfolioCashFlows(
+                portfolioScope,
+                portfolioId,
+                effectiveAt,
+                windowStart,
+                windowEnd,
+                null,
+                null,
+                portfolioScope,
+                modelRecipeCode)
+                .Values;
+
+            // We expect exactly one cashflow associated to a cash settled EquityOption and it occurs at expiry.
+            Assert.That(allEquityOptionCashFlows.Count, Is.EqualTo(1));
+            Assert.That(allEquityOptionCashFlows.Last().TotalConsideration.Currency, Is.EqualTo("USD"));
+            var cashFlowDate = allEquityOptionCashFlows.First().TransactionDate;
+            
+            // CREATE valuation schedule 2 days before, day of and 2 days after the cashflows. 
+            var valuationSchedule = new ValuationSchedule(
+                effectiveAt: cashFlowDate.AddDays(2).ToString("o"),
+                effectiveFrom: cashFlowDate.AddDays(-2).ToString("o"));
+            
+            // CREATE valuation request for this portfolio consisting of the EquityOption,
+            // where the valuation schedule covers before, at and after the expiration of the EquityOption. 
+            var valuationRequest = new ValuationRequest(
+                new ResourceId(portfolioScope, modelRecipeCode),
+                portfolioEntityIds: new List<PortfolioEntityId> {new PortfolioEntityId(portfolioScope, portfolioId)},
+                valuationSchedule: valuationSchedule,
+                metrics: ValuationSpec,
+                groupBy:  null,
+                sort:  null,
+                asAt: null,
+                reportCurrency: "USD");
+            
+            // CALL GetValuation before upserting back the cashflows. We check
+            // (1) there is no cash holdings in the portfolio prior to expiration
+            // (2) that when the EquityOption has expired, the PV is zero.
+            var valuationBeforeAndAfterExpirationEquityOption = _aggregationApi.GetValuation(valuationRequest).Data;
+            var doesNotContainAnyCashBeforeExpiration = valuationBeforeAndAfterExpirationEquityOption
+                .Select(d => (string) d[Luid])
+                .All(luid => luid != $"CCY_{equityOption.DomCcy}");
+            Assert.That(doesNotContainAnyCashBeforeExpiration, Is.True);
+            foreach (var valuationResult in valuationBeforeAndAfterExpirationEquityOption)
+            {
+                var date = (DateTime) valuationResult[ValuationDateKey];
+                var equityOptionPv = (double) valuationResult[ValuationPv];
+                if (date < equityOption.OptionSettlementDate)
+                {
+                    Assert.That(equityOptionPv, Is.Not.EqualTo(0).Within(1e-12));
+                }
+                else
+                {
+                    Assert.That(equityOptionPv, Is.EqualTo(0).Within(1e-12));
+                }
+            }
+
+            // UPSERT the cashflows back into LUSID. We first populate the cashflow transactions with unique IDs.
+            var upsertCashFlowTransactions = PopulateCashFlowTransactionWithUniqueIds(allEquityOptionCashFlows, equityOption.DomCcy);
+            _transactionPortfoliosApi.UpsertTransactions(portfolioScope, portfolioId, MapToCashFlowTransactionRequest(upsertCashFlowTransactions));
+            
+            // HAVING upserted cashflow into lusid, we call GetValuation again.
+            var valuationAfterUpsertingCashFlows = _aggregationApi.GetValuation(valuationRequest).Data;
+
+            // ASSERT that we have some cash in the portfolio
+            var containsCashAfterUpsertion = valuationAfterUpsertingCashFlows
+                .Select(d => (string) d[Luid])
+                .Any(luid => luid != $"CCY_{equityOption.DomCcy}");
+            Assert.That(containsCashAfterUpsertion, Is.True);
+
+            // ASSERT portfolio PV is constant across time  (since we upsert the cashflows back in) by grouping the valuation result by date.
+            // That is instrument pv + cashflow = constant = option payoff
+            var resultsGroupedByDate = valuationAfterUpsertingCashFlows
+                .GroupBy(d => (DateTime) d[ValuationDateKey]);
+
+            // ASSERT portfolio PV is constant over time
+            var uniquePvsAcrossDates = resultsGroupedByDate
+                .Select(pvGroup => pvGroup.Sum(record => (double) record[ValuationPv]))
+                .Distinct()
+                .ToList();
+            Assert.That(uniquePvsAcrossDates.Count, Is.EqualTo(1));
+    
+            // CLEAN up.
+            _portfoliosApi.DeletePortfolio(portfolioScope, portfolioId);
+            _recipeApi.DeleteConfigurationRecipe(portfolioScope, modelRecipeCode);
+        }
+        
         // This method maps a list of Transactions to a list of TransactionRequests so that they can be upserted back into LUSID.
         private static List<TransactionRequest> MapToCashFlowTransactionRequest(IEnumerable<Transaction> transactions)
         {
@@ -450,13 +570,20 @@ namespace Lusid.Sdk.Tests.tutorials.Ibor
 
         private void CreateAndUpsertRecipe(string code, string scope, ModelSelection.ModelEnum model, bool windowValuationOnInstrumentStartEnd = false)
         {
-            // CREATE recipe for pricing
+            // CREATE pricing context for recipe
             var pricingOptions = new PricingOptions(new ModelSelection(ModelSelection.LibraryEnum.Lusid, model));
             pricingOptions.WindowValuationOnInstrumentStartEnd = windowValuationOnInstrumentStartEnd;
+            
+            // DEFINE rules to pick up reset quotes
+            var resetRule = new MarketDataKeyRule("Equity.RIC.*", "Lusid", scope , MarketDataKeyRule.QuoteTypeEnum.Price, "mid", quoteInterval: "1Y");
+            
+            // CREATE recipe
             var recipe = new ConfigurationRecipe(
                 scope,
                 code,
-                market: new MarketContext(options: new MarketOptions(defaultScope: scope)),
+                market: new MarketContext(
+                    marketRules: new List<MarketDataKeyRule>{resetRule},
+                    options: new MarketOptions(defaultScope: scope)),
                 pricing: new PricingContext(options: pricingOptions),
                 description: $"Recipe for {model} pricing");
 
