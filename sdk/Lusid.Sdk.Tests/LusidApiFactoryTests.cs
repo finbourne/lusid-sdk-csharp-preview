@@ -141,6 +141,17 @@ namespace Lusid.Sdk.Tests
         }
         
         [Test]
+        public void ApiException_WhenExceptionDoesNotContainRequestId_DoesNotThrow()
+        {
+            var exception = new ApiException(
+                errorCode: 123,
+                message: "Some Critical Exception",
+                errorContent: JsonConvert.SerializeObject(new LusidProblemDetails(name: "CriticalException")));
+
+            Assert.That(exception.GetRequestId(), Is.Null);
+        }
+        
+        [Test]
         public void ApiExceptionMalformedInsightsUrl_ReturnsNull_RequestId()
         {
             try
