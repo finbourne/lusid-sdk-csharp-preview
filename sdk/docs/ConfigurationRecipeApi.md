@@ -1,20 +1,20 @@
 # Lusid.Sdk.Api.ConfigurationRecipeApi
 
-All URIs are relative to *http://local-unit-test-server.lusid.com:37599*
+All URIs are relative to *http://local-unit-test-server.lusid.com:57003*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
-[**DeleteConfigurationRecipe**](ConfigurationRecipeApi.md#deleteconfigurationrecipe) | **DELETE** /api/recipes/{scope}/{code} | [EXPERIMENTAL] Delete a Configuration Recipe, assuming that it is present.
-[**GetConfigurationRecipe**](ConfigurationRecipeApi.md#getconfigurationrecipe) | **GET** /api/recipes/{scope}/{code} | [EXPERIMENTAL] Get Configuration Recipe
-[**ListConfigurationRecipes**](ConfigurationRecipeApi.md#listconfigurationrecipes) | **GET** /api/recipes | [EXPERIMENTAL] List the set of Configuration Recipes
-[**UpsertConfigurationRecipe**](ConfigurationRecipeApi.md#upsertconfigurationrecipe) | **POST** /api/recipes | [EXPERIMENTAL] Upsert a Configuration Recipe. This creates or updates the data in Lusid.
+[**DeleteConfigurationRecipe**](ConfigurationRecipeApi.md#deleteconfigurationrecipe) | **DELETE** /api/recipes/{scope}/{code} | [EXPERIMENTAL] DeleteConfigurationRecipe: Delete a Configuration Recipe, assuming that it is present.
+[**GetConfigurationRecipe**](ConfigurationRecipeApi.md#getconfigurationrecipe) | **GET** /api/recipes/{scope}/{code} | [EXPERIMENTAL] GetConfigurationRecipe: Get Configuration Recipe
+[**ListConfigurationRecipes**](ConfigurationRecipeApi.md#listconfigurationrecipes) | **GET** /api/recipes | [EXPERIMENTAL] ListConfigurationRecipes: List the set of Configuration Recipes
+[**UpsertConfigurationRecipe**](ConfigurationRecipeApi.md#upsertconfigurationrecipe) | **POST** /api/recipes | [EXPERIMENTAL] UpsertConfigurationRecipe: Upsert a Configuration Recipe. This creates or updates the data in Lusid.
 
 
 <a name="deleteconfigurationrecipe"></a>
 # **DeleteConfigurationRecipe**
 > AnnulSingleStructuredDataResponse DeleteConfigurationRecipe (string scope, string code)
 
-[EXPERIMENTAL] Delete a Configuration Recipe, assuming that it is present.
+[EXPERIMENTAL] DeleteConfigurationRecipe: Delete a Configuration Recipe, assuming that it is present.
 
 Delete the specified Configuration Recipe from a single scope.                The response will return either detail of the deleted item, or an explanation (failure) as to why this did not succeed.                It is important to always check for any unsuccessful response.
 
@@ -33,7 +33,7 @@ namespace Example
         public static void Main()
         {
             Configuration config = new Configuration();
-            config.BasePath = "http://local-unit-test-server.lusid.com:37599";
+            config.BasePath = "http://local-unit-test-server.lusid.com:57003";
             // Configure OAuth2 access token for authorization: oauth2
             config.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -43,7 +43,7 @@ namespace Example
 
             try
             {
-                // [EXPERIMENTAL] Delete a Configuration Recipe, assuming that it is present.
+                // [EXPERIMENTAL] DeleteConfigurationRecipe: Delete a Configuration Recipe, assuming that it is present.
                 AnnulSingleStructuredDataResponse result = apiInstance.DeleteConfigurationRecipe(scope, code);
                 Debug.WriteLine(result);
             }
@@ -92,7 +92,7 @@ Name | Type | Description  | Notes
 # **GetConfigurationRecipe**
 > GetRecipeResponse GetConfigurationRecipe (string scope, string code, DateTimeOffset? asAt = null)
 
-[EXPERIMENTAL] Get Configuration Recipe
+[EXPERIMENTAL] GetConfigurationRecipe: Get Configuration Recipe
 
 Get a Configuration Recipe from a single scope.                The response will return either the recipe that has been stored, or a failure explaining why the request was unsuccessful.                It is important to always check for any unsuccessful requests (failures).
 
@@ -111,7 +111,7 @@ namespace Example
         public static void Main()
         {
             Configuration config = new Configuration();
-            config.BasePath = "http://local-unit-test-server.lusid.com:37599";
+            config.BasePath = "http://local-unit-test-server.lusid.com:57003";
             // Configure OAuth2 access token for authorization: oauth2
             config.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -122,7 +122,7 @@ namespace Example
 
             try
             {
-                // [EXPERIMENTAL] Get Configuration Recipe
+                // [EXPERIMENTAL] GetConfigurationRecipe: Get Configuration Recipe
                 GetRecipeResponse result = apiInstance.GetConfigurationRecipe(scope, code, asAt);
                 Debug.WriteLine(result);
             }
@@ -172,7 +172,7 @@ Name | Type | Description  | Notes
 # **ListConfigurationRecipes**
 > ResourceListOfGetRecipeResponse ListConfigurationRecipes (DateTimeOffset? asAt = null, string filter = null)
 
-[EXPERIMENTAL] List the set of Configuration Recipes
+[EXPERIMENTAL] ListConfigurationRecipes: List the set of Configuration Recipes
 
 List the set of configuration recipes at the specified date/time and scope
 
@@ -191,7 +191,7 @@ namespace Example
         public static void Main()
         {
             Configuration config = new Configuration();
-            config.BasePath = "http://local-unit-test-server.lusid.com:37599";
+            config.BasePath = "http://local-unit-test-server.lusid.com:57003";
             // Configure OAuth2 access token for authorization: oauth2
             config.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -201,7 +201,7 @@ namespace Example
 
             try
             {
-                // [EXPERIMENTAL] List the set of Configuration Recipes
+                // [EXPERIMENTAL] ListConfigurationRecipes: List the set of Configuration Recipes
                 ResourceListOfGetRecipeResponse result = apiInstance.ListConfigurationRecipes(asAt, filter);
                 Debug.WriteLine(result);
             }
@@ -250,7 +250,7 @@ Name | Type | Description  | Notes
 # **UpsertConfigurationRecipe**
 > UpsertSingleStructuredDataResponse UpsertConfigurationRecipe (UpsertRecipeRequest upsertRecipeRequest)
 
-[EXPERIMENTAL] Upsert a Configuration Recipe. This creates or updates the data in Lusid.
+[EXPERIMENTAL] UpsertConfigurationRecipe: Upsert a Configuration Recipe. This creates or updates the data in Lusid.
 
 Update or insert one Configuration Recipe in a single scope. An item will be updated if it already exists  and inserted if it does not.                The response will return the successfully updated or inserted Configuration Recipe or failure message if unsuccessful                It is important to always check to verify success (or failure).
 
@@ -269,7 +269,7 @@ namespace Example
         public static void Main()
         {
             Configuration config = new Configuration();
-            config.BasePath = "http://local-unit-test-server.lusid.com:37599";
+            config.BasePath = "http://local-unit-test-server.lusid.com:57003";
             // Configure OAuth2 access token for authorization: oauth2
             config.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -278,7 +278,7 @@ namespace Example
 
             try
             {
-                // [EXPERIMENTAL] Upsert a Configuration Recipe. This creates or updates the data in Lusid.
+                // [EXPERIMENTAL] UpsertConfigurationRecipe: Upsert a Configuration Recipe. This creates or updates the data in Lusid.
                 UpsertSingleStructuredDataResponse result = apiInstance.UpsertConfigurationRecipe(upsertRecipeRequest);
                 Debug.WriteLine(result);
             }

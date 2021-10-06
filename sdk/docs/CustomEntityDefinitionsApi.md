@@ -1,18 +1,18 @@
 # Lusid.Sdk.Api.CustomEntityDefinitionsApi
 
-All URIs are relative to *http://local-unit-test-server.lusid.com:37599*
+All URIs are relative to *http://local-unit-test-server.lusid.com:57003*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
-[**CreateCustomEntityDefinition**](CustomEntityDefinitionsApi.md#createcustomentitydefinition) | **POST** /api/customentities/entitytypes | [EXPERIMENTAL] Create a new CustomEntityDefinition
-[**GetDefinition**](CustomEntityDefinitionsApi.md#getdefinition) | **GET** /api/customentities/entitytypes/{entityType} | [EXPERIMENTAL] Get CustomEntityDefinition
+[**CreateCustomEntityDefinition**](CustomEntityDefinitionsApi.md#createcustomentitydefinition) | **POST** /api/customentities/entitytypes | [EXPERIMENTAL] CreateCustomEntityDefinition: Create a new CustomEntityDefinition
+[**GetDefinition**](CustomEntityDefinitionsApi.md#getdefinition) | **GET** /api/customentities/entitytypes/{entityType} | [EXPERIMENTAL] GetDefinition: Get CustomEntityDefinition
 
 
 <a name="createcustomentitydefinition"></a>
 # **CreateCustomEntityDefinition**
 > CustomEntityDefinition CreateCustomEntityDefinition (CustomEntityDefinitionRequest customEntityDefinitionRequest = null)
 
-[EXPERIMENTAL] Create a new CustomEntityDefinition
+[EXPERIMENTAL] CreateCustomEntityDefinition: Create a new CustomEntityDefinition
 
 Create a custom entity definition that does not already exist. Will return a Bad Request if the CustomEntityDefinition already exists
 
@@ -31,7 +31,7 @@ namespace Example
         public static void Main()
         {
             Configuration config = new Configuration();
-            config.BasePath = "http://local-unit-test-server.lusid.com:37599";
+            config.BasePath = "http://local-unit-test-server.lusid.com:57003";
             // Configure OAuth2 access token for authorization: oauth2
             config.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -40,7 +40,7 @@ namespace Example
 
             try
             {
-                // [EXPERIMENTAL] Create a new CustomEntityDefinition
+                // [EXPERIMENTAL] CreateCustomEntityDefinition: Create a new CustomEntityDefinition
                 CustomEntityDefinition result = apiInstance.CreateCustomEntityDefinition(customEntityDefinitionRequest);
                 Debug.WriteLine(result);
             }
@@ -88,7 +88,7 @@ Name | Type | Description  | Notes
 # **GetDefinition**
 > CustomEntityDefinition GetDefinition (string entityType, DateTimeOffset? asAt = null)
 
-[EXPERIMENTAL] Get CustomEntityDefinition
+[EXPERIMENTAL] GetDefinition: Get CustomEntityDefinition
 
 Retrieve a CustomEntityDefinition by a specific EntityType at a point in AsAt time
 
@@ -107,7 +107,7 @@ namespace Example
         public static void Main()
         {
             Configuration config = new Configuration();
-            config.BasePath = "http://local-unit-test-server.lusid.com:37599";
+            config.BasePath = "http://local-unit-test-server.lusid.com:57003";
             // Configure OAuth2 access token for authorization: oauth2
             config.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -117,7 +117,7 @@ namespace Example
 
             try
             {
-                // [EXPERIMENTAL] Get CustomEntityDefinition
+                // [EXPERIMENTAL] GetDefinition: Get CustomEntityDefinition
                 CustomEntityDefinition result = apiInstance.GetDefinition(entityType, asAt);
                 Debug.WriteLine(result);
             }

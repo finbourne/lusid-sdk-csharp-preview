@@ -1,21 +1,21 @@
 # Lusid.Sdk.Api.DataTypesApi
 
-All URIs are relative to *http://local-unit-test-server.lusid.com:37599*
+All URIs are relative to *http://local-unit-test-server.lusid.com:57003*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
-[**CreateDataType**](DataTypesApi.md#createdatatype) | **POST** /api/datatypes | [BETA] Create data type definition
-[**GetDataType**](DataTypesApi.md#getdatatype) | **GET** /api/datatypes/{scope}/{code} | [EARLY ACCESS] Get data type definition
-[**GetUnitsFromDataType**](DataTypesApi.md#getunitsfromdatatype) | **GET** /api/datatypes/{scope}/{code}/units | [EARLY ACCESS] Get units from data type
-[**ListDataTypes**](DataTypesApi.md#listdatatypes) | **GET** /api/datatypes/{scope} | [EARLY ACCESS] List data types
-[**UpdateDataType**](DataTypesApi.md#updatedatatype) | **PUT** /api/datatypes/{scope}/{code} | [BETA] Update data type definition
+[**CreateDataType**](DataTypesApi.md#createdatatype) | **POST** /api/datatypes | [BETA] CreateDataType: Create data type definition
+[**GetDataType**](DataTypesApi.md#getdatatype) | **GET** /api/datatypes/{scope}/{code} | [EARLY ACCESS] GetDataType: Get data type definition
+[**GetUnitsFromDataType**](DataTypesApi.md#getunitsfromdatatype) | **GET** /api/datatypes/{scope}/{code}/units | [EARLY ACCESS] GetUnitsFromDataType: Get units from data type
+[**ListDataTypes**](DataTypesApi.md#listdatatypes) | **GET** /api/datatypes/{scope} | [EARLY ACCESS] ListDataTypes: List data types
+[**UpdateDataType**](DataTypesApi.md#updatedatatype) | **PUT** /api/datatypes/{scope}/{code} | [BETA] UpdateDataType: Update data type definition
 
 
 <a name="createdatatype"></a>
 # **CreateDataType**
 > DataType CreateDataType (CreateDataTypeRequest createDataTypeRequest = null)
 
-[BETA] Create data type definition
+[BETA] CreateDataType: Create data type definition
 
 Create a new data type definition    Data types cannot be created in either the \"default\" or \"system\" scopes.
 
@@ -34,7 +34,7 @@ namespace Example
         public static void Main()
         {
             Configuration config = new Configuration();
-            config.BasePath = "http://local-unit-test-server.lusid.com:37599";
+            config.BasePath = "http://local-unit-test-server.lusid.com:57003";
             // Configure OAuth2 access token for authorization: oauth2
             config.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -43,7 +43,7 @@ namespace Example
 
             try
             {
-                // [BETA] Create data type definition
+                // [BETA] CreateDataType: Create data type definition
                 DataType result = apiInstance.CreateDataType(createDataTypeRequest);
                 Debug.WriteLine(result);
             }
@@ -91,7 +91,7 @@ Name | Type | Description  | Notes
 # **GetDataType**
 > DataType GetDataType (string scope, string code, DateTimeOffset? asAt = null)
 
-[EARLY ACCESS] Get data type definition
+[EARLY ACCESS] GetDataType: Get data type definition
 
 Get the definition of a specified data type
 
@@ -110,7 +110,7 @@ namespace Example
         public static void Main()
         {
             Configuration config = new Configuration();
-            config.BasePath = "http://local-unit-test-server.lusid.com:37599";
+            config.BasePath = "http://local-unit-test-server.lusid.com:57003";
             // Configure OAuth2 access token for authorization: oauth2
             config.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -121,7 +121,7 @@ namespace Example
 
             try
             {
-                // [EARLY ACCESS] Get data type definition
+                // [EARLY ACCESS] GetDataType: Get data type definition
                 DataType result = apiInstance.GetDataType(scope, code, asAt);
                 Debug.WriteLine(result);
             }
@@ -171,7 +171,7 @@ Name | Type | Description  | Notes
 # **GetUnitsFromDataType**
 > ResourceListOfIUnitDefinitionDto GetUnitsFromDataType (string scope, string code, List<string> units = null, string filter = null, DateTimeOffset? asAt = null)
 
-[EARLY ACCESS] Get units from data type
+[EARLY ACCESS] GetUnitsFromDataType: Get units from data type
 
 Get the definitions of the specified units associated bound to a specific data type
 
@@ -190,7 +190,7 @@ namespace Example
         public static void Main()
         {
             Configuration config = new Configuration();
-            config.BasePath = "http://local-unit-test-server.lusid.com:37599";
+            config.BasePath = "http://local-unit-test-server.lusid.com:57003";
             // Configure OAuth2 access token for authorization: oauth2
             config.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -203,7 +203,7 @@ namespace Example
 
             try
             {
-                // [EARLY ACCESS] Get units from data type
+                // [EARLY ACCESS] GetUnitsFromDataType: Get units from data type
                 ResourceListOfIUnitDefinitionDto result = apiInstance.GetUnitsFromDataType(scope, code, units, filter, asAt);
                 Debug.WriteLine(result);
             }
@@ -255,7 +255,7 @@ Name | Type | Description  | Notes
 # **ListDataTypes**
 > ResourceListOfDataType ListDataTypes (string scope, DateTimeOffset? asAt = null, bool? includeSystem = null, List<string> sortBy = null, int? start = null, int? limit = null, string filter = null)
 
-[EARLY ACCESS] List data types
+[EARLY ACCESS] ListDataTypes: List data types
 
 List all data types in a specified scope
 
@@ -274,7 +274,7 @@ namespace Example
         public static void Main()
         {
             Configuration config = new Configuration();
-            config.BasePath = "http://local-unit-test-server.lusid.com:37599";
+            config.BasePath = "http://local-unit-test-server.lusid.com:57003";
             // Configure OAuth2 access token for authorization: oauth2
             config.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -289,7 +289,7 @@ namespace Example
 
             try
             {
-                // [EARLY ACCESS] List data types
+                // [EARLY ACCESS] ListDataTypes: List data types
                 ResourceListOfDataType result = apiInstance.ListDataTypes(scope, asAt, includeSystem, sortBy, start, limit, filter);
                 Debug.WriteLine(result);
             }
@@ -343,7 +343,7 @@ Name | Type | Description  | Notes
 # **UpdateDataType**
 > DataType UpdateDataType (string scope, string code, UpdateDataTypeRequest updateDataTypeRequest)
 
-[BETA] Update data type definition
+[BETA] UpdateDataType: Update data type definition
 
 Update the definition of the specified existing data type    Not all elements within a data type definition are modifiable due to the potential implications for data  already stored against the types
 
@@ -362,7 +362,7 @@ namespace Example
         public static void Main()
         {
             Configuration config = new Configuration();
-            config.BasePath = "http://local-unit-test-server.lusid.com:37599";
+            config.BasePath = "http://local-unit-test-server.lusid.com:57003";
             // Configure OAuth2 access token for authorization: oauth2
             config.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -373,7 +373,7 @@ namespace Example
 
             try
             {
-                // [BETA] Update data type definition
+                // [BETA] UpdateDataType: Update data type definition
                 DataType result = apiInstance.UpdateDataType(scope, code, updateDataTypeRequest);
                 Debug.WriteLine(result);
             }

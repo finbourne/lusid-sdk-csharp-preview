@@ -1,20 +1,20 @@
 # Lusid.Sdk.Api.PackagesApi
 
-All URIs are relative to *http://local-unit-test-server.lusid.com:37599*
+All URIs are relative to *http://local-unit-test-server.lusid.com:57003*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
-[**DeletePackage**](PackagesApi.md#deletepackage) | **DELETE** /api/packages/{scope}/{code} | [EXPERIMENTAL] Delete package
-[**GetPackage**](PackagesApi.md#getpackage) | **GET** /api/packages/{scope}/{code} | [EXPERIMENTAL] Get Package
-[**ListPackages**](PackagesApi.md#listpackages) | **GET** /api/packages | [EXPERIMENTAL] List Packages
-[**UpsertPackages**](PackagesApi.md#upsertpackages) | **POST** /api/packages | [EXPERIMENTAL] Upsert Package
+[**DeletePackage**](PackagesApi.md#deletepackage) | **DELETE** /api/packages/{scope}/{code} | [EXPERIMENTAL] DeletePackage: Delete package
+[**GetPackage**](PackagesApi.md#getpackage) | **GET** /api/packages/{scope}/{code} | [EXPERIMENTAL] GetPackage: Get Package
+[**ListPackages**](PackagesApi.md#listpackages) | **GET** /api/packages | [EXPERIMENTAL] ListPackages: List Packages
+[**UpsertPackages**](PackagesApi.md#upsertpackages) | **POST** /api/packages | [EXPERIMENTAL] UpsertPackages: Upsert Package
 
 
 <a name="deletepackage"></a>
 # **DeletePackage**
 > DeletedEntityResponse DeletePackage (string scope, string code)
 
-[EXPERIMENTAL] Delete package
+[EXPERIMENTAL] DeletePackage: Delete package
 
 Delete an package. Deletion will be valid from the package's creation datetime.  This means that the package will no longer exist at any effective datetime from the asAt datetime of deletion.
 
@@ -33,7 +33,7 @@ namespace Example
         public static void Main()
         {
             Configuration config = new Configuration();
-            config.BasePath = "http://local-unit-test-server.lusid.com:37599";
+            config.BasePath = "http://local-unit-test-server.lusid.com:57003";
             // Configure OAuth2 access token for authorization: oauth2
             config.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -43,7 +43,7 @@ namespace Example
 
             try
             {
-                // [EXPERIMENTAL] Delete package
+                // [EXPERIMENTAL] DeletePackage: Delete package
                 DeletedEntityResponse result = apiInstance.DeletePackage(scope, code);
                 Debug.WriteLine(result);
             }
@@ -92,7 +92,7 @@ Name | Type | Description  | Notes
 # **GetPackage**
 > Package GetPackage (string scope, string code, DateTimeOffset? asAt = null, List<string> propertyKeys = null)
 
-[EXPERIMENTAL] Get Package
+[EXPERIMENTAL] GetPackage: Get Package
 
 Fetch a Package that matches the specified identifier
 
@@ -111,7 +111,7 @@ namespace Example
         public static void Main()
         {
             Configuration config = new Configuration();
-            config.BasePath = "http://local-unit-test-server.lusid.com:37599";
+            config.BasePath = "http://local-unit-test-server.lusid.com:57003";
             // Configure OAuth2 access token for authorization: oauth2
             config.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -123,7 +123,7 @@ namespace Example
 
             try
             {
-                // [EXPERIMENTAL] Get Package
+                // [EXPERIMENTAL] GetPackage: Get Package
                 Package result = apiInstance.GetPackage(scope, code, asAt, propertyKeys);
                 Debug.WriteLine(result);
             }
@@ -174,7 +174,7 @@ Name | Type | Description  | Notes
 # **ListPackages**
 > PagedResourceListOfPackage ListPackages (DateTimeOffset? asAt = null, string page = null, List<string> sortBy = null, int? limit = null, string filter = null, List<string> propertyKeys = null)
 
-[EXPERIMENTAL] List Packages
+[EXPERIMENTAL] ListPackages: List Packages
 
 Fetch the last pre-AsAt date version of each package in scope (does not fetch the entire history).
 
@@ -193,7 +193,7 @@ namespace Example
         public static void Main()
         {
             Configuration config = new Configuration();
-            config.BasePath = "http://local-unit-test-server.lusid.com:37599";
+            config.BasePath = "http://local-unit-test-server.lusid.com:57003";
             // Configure OAuth2 access token for authorization: oauth2
             config.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -207,7 +207,7 @@ namespace Example
 
             try
             {
-                // [EXPERIMENTAL] List Packages
+                // [EXPERIMENTAL] ListPackages: List Packages
                 PagedResourceListOfPackage result = apiInstance.ListPackages(asAt, page, sortBy, limit, filter, propertyKeys);
                 Debug.WriteLine(result);
             }
@@ -260,7 +260,7 @@ Name | Type | Description  | Notes
 # **UpsertPackages**
 > ResourceListOfPackage UpsertPackages (PackageSetRequest packageSetRequest = null)
 
-[EXPERIMENTAL] Upsert Package
+[EXPERIMENTAL] UpsertPackages: Upsert Package
 
 Upsert; update existing packages with given ids, or create new packages otherwise.
 
@@ -279,7 +279,7 @@ namespace Example
         public static void Main()
         {
             Configuration config = new Configuration();
-            config.BasePath = "http://local-unit-test-server.lusid.com:37599";
+            config.BasePath = "http://local-unit-test-server.lusid.com:57003";
             // Configure OAuth2 access token for authorization: oauth2
             config.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -288,7 +288,7 @@ namespace Example
 
             try
             {
-                // [EXPERIMENTAL] Upsert Package
+                // [EXPERIMENTAL] UpsertPackages: Upsert Package
                 ResourceListOfPackage result = apiInstance.UpsertPackages(packageSetRequest);
                 Debug.WriteLine(result);
             }
