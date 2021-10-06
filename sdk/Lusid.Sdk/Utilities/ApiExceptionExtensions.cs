@@ -73,12 +73,12 @@ namespace Lusid.Sdk.Utilities
         /// </summary>
         public static string GetRequestId(this ApiException ex)
         {
-            if (ex.ProblemDetails() == null) return null;
-
             // Extract requestId from Insights link contained in the Instance property
-            var instanceParts = ex.ProblemDetails().Instance.Split("/".ToCharArray());
+            var instanceParts = ex?.ProblemDetails()?.Instance?.Split("/".ToCharArray());
 
-            return instanceParts.Length < 7 ? null : instanceParts[6];
+            if (instanceParts == null || instanceParts.Length < 7) return null;
+            
+            return instanceParts[6];
         }
     }
 }
