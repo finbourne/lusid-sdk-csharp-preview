@@ -4,14 +4,14 @@ All URIs are relative to *https://fbn-prd.lusid.com/api*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
-[**TranslateInstrumentDefinitions**](TranslationApi.md#translateinstrumentdefinitions) | **POST** /api/translation/instrumentdefinitions | [EXPERIMENTAL] Translate instruments
+[**TranslateInstrumentDefinitions**](TranslationApi.md#translateinstrumentdefinitions) | **POST** /api/translation/instrumentdefinitions | [EXPERIMENTAL] TranslateInstrumentDefinitions: Translate instruments
 
 
 <a name="translateinstrumentdefinitions"></a>
 # **TranslateInstrumentDefinitions**
 > TranslateInstrumentDefinitionsResponse TranslateInstrumentDefinitions (TranslateInstrumentDefinitionsRequest translateInstrumentDefinitionsRequest)
 
-[EXPERIMENTAL] Translate instruments
+[EXPERIMENTAL] TranslateInstrumentDefinitions: Translate instruments
 
 Translates one or more instruments into the given target dialect.                In the request each instrument definition should be keyed by a unique correlation id. This id is ephemeral  and is not stored by LUSID. It serves only as a way to easily identify each instrument in the response.                Any instrument that is not already in the LUSID dialect should be given as an ExoticInstrument.                The response will return both the collection of successfully translated instruments in the target dialect,  as well as those that failed.  For the failures a reason will be provided explaining why the instrument could not be updated or inserted.
 
@@ -39,7 +39,7 @@ namespace Example
 
             try
             {
-                // [EXPERIMENTAL] Translate instruments
+                // [EXPERIMENTAL] TranslateInstrumentDefinitions: Translate instruments
                 TranslateInstrumentDefinitionsResponse result = apiInstance.TranslateInstrumentDefinitions(translateInstrumentDefinitionsRequest);
                 Debug.WriteLine(result);
             }

@@ -4,19 +4,19 @@ All URIs are relative to *https://fbn-prd.lusid.com/api*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
-[**BatchUpsertCorporateActions**](CorporateActionSourcesApi.md#batchupsertcorporateactions) | **POST** /api/corporateactionsources/{scope}/{code}/corporateactions | [BETA] Upsert corporate actions
-[**CreateCorporateActionSource**](CorporateActionSourcesApi.md#createcorporateactionsource) | **POST** /api/corporateactionsources | [BETA] Create corporate action source
-[**DeleteCorporateActionSource**](CorporateActionSourcesApi.md#deletecorporateactionsource) | **DELETE** /api/corporateactionsources/{scope}/{code} | [BETA] Delete a corporate action source
-[**DeleteCorporateActions**](CorporateActionSourcesApi.md#deletecorporateactions) | **DELETE** /api/corporateactionsources/{scope}/{code}/corporateactions | [EXPERIMENTAL] Delete corporate actions
-[**GetCorporateActions**](CorporateActionSourcesApi.md#getcorporateactions) | **GET** /api/corporateactionsources/{scope}/{code}/corporateactions | [BETA] Get corporate actions
-[**ListCorporateActionSources**](CorporateActionSourcesApi.md#listcorporateactionsources) | **GET** /api/corporateactionsources | [BETA] List corporate action sources
+[**BatchUpsertCorporateActions**](CorporateActionSourcesApi.md#batchupsertcorporateactions) | **POST** /api/corporateactionsources/{scope}/{code}/corporateactions | [BETA] BatchUpsertCorporateActions: Upsert corporate actions
+[**CreateCorporateActionSource**](CorporateActionSourcesApi.md#createcorporateactionsource) | **POST** /api/corporateactionsources | [BETA] CreateCorporateActionSource: Create corporate action source
+[**DeleteCorporateActionSource**](CorporateActionSourcesApi.md#deletecorporateactionsource) | **DELETE** /api/corporateactionsources/{scope}/{code} | [BETA] DeleteCorporateActionSource: Delete a corporate action source
+[**DeleteCorporateActions**](CorporateActionSourcesApi.md#deletecorporateactions) | **DELETE** /api/corporateactionsources/{scope}/{code}/corporateactions | [EXPERIMENTAL] DeleteCorporateActions: Delete corporate actions
+[**GetCorporateActions**](CorporateActionSourcesApi.md#getcorporateactions) | **GET** /api/corporateactionsources/{scope}/{code}/corporateactions | [BETA] GetCorporateActions: Get corporate actions
+[**ListCorporateActionSources**](CorporateActionSourcesApi.md#listcorporateactionsources) | **GET** /api/corporateactionsources | [BETA] ListCorporateActionSources: List corporate action sources
 
 
 <a name="batchupsertcorporateactions"></a>
 # **BatchUpsertCorporateActions**
 > UpsertCorporateActionsResponse BatchUpsertCorporateActions (string scope, string code, List<UpsertCorporateActionRequest> upsertCorporateActionRequest = null)
 
-[BETA] Upsert corporate actions
+[BETA] BatchUpsertCorporateActions: Upsert corporate actions
 
 Create or update one or more corporate actions in a particular corporate action source. Failures are identified in the body of the response.                If a corporate action is upserted at exactly the same effective datetime as a transaction for the same instrument, the corporate action takes precedence. Depending on the nature of the corporate action, this may mean it affects the transaction.
 
@@ -46,7 +46,7 @@ namespace Example
 
             try
             {
-                // [BETA] Upsert corporate actions
+                // [BETA] BatchUpsertCorporateActions: Upsert corporate actions
                 UpsertCorporateActionsResponse result = apiInstance.BatchUpsertCorporateActions(scope, code, upsertCorporateActionRequest);
                 Debug.WriteLine(result);
             }
@@ -96,7 +96,7 @@ Name | Type | Description  | Notes
 # **CreateCorporateActionSource**
 > CorporateActionSource CreateCorporateActionSource (CreateCorporateActionSourceRequest createCorporateActionSourceRequest)
 
-[BETA] Create corporate action source
+[BETA] CreateCorporateActionSource: Create corporate action source
 
 Create a corporate action source.
 
@@ -124,7 +124,7 @@ namespace Example
 
             try
             {
-                // [BETA] Create corporate action source
+                // [BETA] CreateCorporateActionSource: Create corporate action source
                 CorporateActionSource result = apiInstance.CreateCorporateActionSource(createCorporateActionSourceRequest);
                 Debug.WriteLine(result);
             }
@@ -172,7 +172,7 @@ Name | Type | Description  | Notes
 # **DeleteCorporateActionSource**
 > DeletedEntityResponse DeleteCorporateActionSource (string scope, string code)
 
-[BETA] Delete a corporate action source
+[BETA] DeleteCorporateActionSource: Delete a corporate action source
 
 Deletes a single corporate action source
 
@@ -201,7 +201,7 @@ namespace Example
 
             try
             {
-                // [BETA] Delete a corporate action source
+                // [BETA] DeleteCorporateActionSource: Delete a corporate action source
                 DeletedEntityResponse result = apiInstance.DeleteCorporateActionSource(scope, code);
                 Debug.WriteLine(result);
             }
@@ -250,7 +250,7 @@ Name | Type | Description  | Notes
 # **DeleteCorporateActions**
 > DeletedEntityResponse DeleteCorporateActions (string scope, string code, List<string> corporateActionIds)
 
-[EXPERIMENTAL] Delete corporate actions
+[EXPERIMENTAL] DeleteCorporateActions: Delete corporate actions
 
 Delete one or more corporate actions from a particular corporate action source.
 
@@ -280,7 +280,7 @@ namespace Example
 
             try
             {
-                // [EXPERIMENTAL] Delete corporate actions
+                // [EXPERIMENTAL] DeleteCorporateActions: Delete corporate actions
                 DeletedEntityResponse result = apiInstance.DeleteCorporateActions(scope, code, corporateActionIds);
                 Debug.WriteLine(result);
             }
@@ -330,7 +330,7 @@ Name | Type | Description  | Notes
 # **GetCorporateActions**
 > ResourceListOfCorporateAction GetCorporateActions (string scope, string code, DateTimeOrCutLabel fromEffectiveAt = null, DateTimeOrCutLabel toEffectiveAt = null, DateTimeOffset? asAt = null, List<string> sortBy = null, int? limit = null, string filter = null)
 
-[BETA] Get corporate actions
+[BETA] GetCorporateActions: Get corporate actions
 
 Get corporate actions from a particular corporate action source.
 
@@ -365,7 +365,7 @@ namespace Example
 
             try
             {
-                // [BETA] Get corporate actions
+                // [BETA] GetCorporateActions: Get corporate actions
                 ResourceListOfCorporateAction result = apiInstance.GetCorporateActions(scope, code, fromEffectiveAt, toEffectiveAt, asAt, sortBy, limit, filter);
                 Debug.WriteLine(result);
             }
@@ -420,7 +420,7 @@ Name | Type | Description  | Notes
 # **ListCorporateActionSources**
 > PagedResourceListOfCorporateActionSource ListCorporateActionSources (DateTimeOffset? asAt = null, List<string> sortBy = null, int? limit = null, string filter = null, string page = null)
 
-[BETA] List corporate action sources
+[BETA] ListCorporateActionSources: List corporate action sources
 
 Gets a list of all corporate action sources
 
@@ -452,7 +452,7 @@ namespace Example
 
             try
             {
-                // [BETA] List corporate action sources
+                // [BETA] ListCorporateActionSources: List corporate action sources
                 PagedResourceListOfCorporateActionSource result = apiInstance.ListCorporateActionSources(asAt, sortBy, limit, filter, page);
                 Debug.WriteLine(result);
             }

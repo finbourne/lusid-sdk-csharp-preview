@@ -4,16 +4,16 @@ All URIs are relative to *https://fbn-prd.lusid.com/api*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
-[**GetCustomEntity**](CustomEntitiesApi.md#getcustomentity) | **GET** /api/customentities/{entityType}/{identifierType}/{identifierValue} | [EXPERIMENTAL] Get CustomEntity
-[**ListCustomEntities**](CustomEntitiesApi.md#listcustomentities) | **GET** /api/customentities/{entityType} | [EXPERIMENTAL] List Custom Entities
-[**UpsertCustomEntity**](CustomEntitiesApi.md#upsertcustomentity) | **POST** /api/customentities/{entityType} | [EXPERIMENTAL] Upsert a new CustomEntity
+[**GetCustomEntity**](CustomEntitiesApi.md#getcustomentity) | **GET** /api/customentities/{entityType}/{identifierType}/{identifierValue} | [EXPERIMENTAL] GetCustomEntity: Get CustomEntity
+[**ListCustomEntities**](CustomEntitiesApi.md#listcustomentities) | **GET** /api/customentities/{entityType} | [EXPERIMENTAL] ListCustomEntities: List Custom Entities
+[**UpsertCustomEntity**](CustomEntitiesApi.md#upsertcustomentity) | **POST** /api/customentities/{entityType} | [EXPERIMENTAL] UpsertCustomEntity: Upsert a new CustomEntity
 
 
 <a name="getcustomentity"></a>
 # **GetCustomEntity**
 > CustomEntityResponse GetCustomEntity (string entityType, string identifierType, string identifierValue, string identifierScope, DateTimeOffset? asAt = null)
 
-[EXPERIMENTAL] Get CustomEntity
+[EXPERIMENTAL] GetCustomEntity: Get CustomEntity
 
 Retrieve a CustomEntity by a specific Id at a point in AsAt time.
 
@@ -45,7 +45,7 @@ namespace Example
 
             try
             {
-                // [EXPERIMENTAL] Get CustomEntity
+                // [EXPERIMENTAL] GetCustomEntity: Get CustomEntity
                 CustomEntityResponse result = apiInstance.GetCustomEntity(entityType, identifierType, identifierValue, identifierScope, asAt);
                 Debug.WriteLine(result);
             }
@@ -97,7 +97,7 @@ Name | Type | Description  | Notes
 # **ListCustomEntities**
 > PagedResourceListOfCustomEntityResponse ListCustomEntities (string entityType, DateTimeOrCutLabel effectiveAt = null, DateTimeOffset? asAt = null, int? limit = null, string filter = null, string page = null)
 
-[EXPERIMENTAL] List Custom Entities
+[EXPERIMENTAL] ListCustomEntities: List Custom Entities
 
 List all the Custom Entities matching particular criteria.
 
@@ -130,7 +130,7 @@ namespace Example
 
             try
             {
-                // [EXPERIMENTAL] List Custom Entities
+                // [EXPERIMENTAL] ListCustomEntities: List Custom Entities
                 PagedResourceListOfCustomEntityResponse result = apiInstance.ListCustomEntities(entityType, effectiveAt, asAt, limit, filter, page);
                 Debug.WriteLine(result);
             }
@@ -183,7 +183,7 @@ Name | Type | Description  | Notes
 # **UpsertCustomEntity**
 > CustomEntityResponse UpsertCustomEntity (string entityType, CustomEntityRequest customEntityRequest)
 
-[EXPERIMENTAL] Upsert a new CustomEntity
+[EXPERIMENTAL] UpsertCustomEntity: Upsert a new CustomEntity
 
 Insert the custom entity if it does not exist or update the custom entity with the supplied state if it does exist.
 
@@ -212,7 +212,7 @@ namespace Example
 
             try
             {
-                // [EXPERIMENTAL] Upsert a new CustomEntity
+                // [EXPERIMENTAL] UpsertCustomEntity: Upsert a new CustomEntity
                 CustomEntityResponse result = apiInstance.UpsertCustomEntity(entityType, customEntityRequest);
                 Debug.WriteLine(result);
             }

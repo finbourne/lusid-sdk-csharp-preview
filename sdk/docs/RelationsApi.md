@@ -4,15 +4,15 @@ All URIs are relative to *https://fbn-prd.lusid.com/api*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
-[**CreateRelation**](RelationsApi.md#createrelation) | **POST** /api/relations/{scope}/{code} | [EXPERIMENTAL] Create Relation
-[**DeleteRelation**](RelationsApi.md#deleterelation) | **POST** /api/relations/{scope}/{code}/$delete | [EXPERIMENTAL] Delete a relation
+[**CreateRelation**](RelationsApi.md#createrelation) | **POST** /api/relations/{scope}/{code} | [EXPERIMENTAL] CreateRelation: Create Relation
+[**DeleteRelation**](RelationsApi.md#deleterelation) | **POST** /api/relations/{scope}/{code}/$delete | [EXPERIMENTAL] DeleteRelation: Delete a relation
 
 
 <a name="createrelation"></a>
 # **CreateRelation**
 > CompleteRelation CreateRelation (string scope, string code, CreateRelationRequest createRelationRequest, DateTimeOrCutLabel effectiveAt = null)
 
-[EXPERIMENTAL] Create Relation
+[EXPERIMENTAL] CreateRelation: Create Relation
 
 Create a relation between two entity objects by their identifiers
 
@@ -43,7 +43,7 @@ namespace Example
 
             try
             {
-                // [EXPERIMENTAL] Create Relation
+                // [EXPERIMENTAL] CreateRelation: Create Relation
                 CompleteRelation result = apiInstance.CreateRelation(scope, code, createRelationRequest, effectiveAt);
                 Debug.WriteLine(result);
             }
@@ -94,7 +94,7 @@ Name | Type | Description  | Notes
 # **DeleteRelation**
 > DeletedEntityResponse DeleteRelation (string scope, string code, DeleteRelationRequest deleteRelationRequest, DateTimeOrCutLabel effectiveAt = null)
 
-[EXPERIMENTAL] Delete a relation
+[EXPERIMENTAL] DeleteRelation: Delete a relation
 
 Delete a relation between two entity objects represented by their identifiers
 
@@ -125,7 +125,7 @@ namespace Example
 
             try
             {
-                // [EXPERIMENTAL] Delete a relation
+                // [EXPERIMENTAL] DeleteRelation: Delete a relation
                 DeletedEntityResponse result = apiInstance.DeleteRelation(scope, code, deleteRelationRequest, effectiveAt);
                 Debug.WriteLine(result);
             }

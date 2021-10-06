@@ -4,17 +4,17 @@ All URIs are relative to *https://fbn-prd.lusid.com/api*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
-[**DeleteParticipation**](ParticipationsApi.md#deleteparticipation) | **DELETE** /api/participations/{scope}/{code} | [EXPERIMENTAL] Delete participation
-[**GetParticipation**](ParticipationsApi.md#getparticipation) | **GET** /api/participations/{scope}/{code} | [EXPERIMENTAL] Get Participation
-[**ListParticipations**](ParticipationsApi.md#listparticipations) | **GET** /api/participations | [EXPERIMENTAL] List Participations
-[**UpsertParticipations**](ParticipationsApi.md#upsertparticipations) | **POST** /api/participations | [EXPERIMENTAL] Upsert Participation
+[**DeleteParticipation**](ParticipationsApi.md#deleteparticipation) | **DELETE** /api/participations/{scope}/{code} | [EXPERIMENTAL] DeleteParticipation: Delete participation
+[**GetParticipation**](ParticipationsApi.md#getparticipation) | **GET** /api/participations/{scope}/{code} | [EXPERIMENTAL] GetParticipation: Get Participation
+[**ListParticipations**](ParticipationsApi.md#listparticipations) | **GET** /api/participations | [EXPERIMENTAL] ListParticipations: List Participations
+[**UpsertParticipations**](ParticipationsApi.md#upsertparticipations) | **POST** /api/participations | [EXPERIMENTAL] UpsertParticipations: Upsert Participation
 
 
 <a name="deleteparticipation"></a>
 # **DeleteParticipation**
 > DeletedEntityResponse DeleteParticipation (string scope, string code)
 
-[EXPERIMENTAL] Delete participation
+[EXPERIMENTAL] DeleteParticipation: Delete participation
 
 Delete an participation. Deletion will be valid from the participation's creation datetime.  This means that the participation will no longer exist at any effective datetime from the asAt datetime of deletion.
 
@@ -43,7 +43,7 @@ namespace Example
 
             try
             {
-                // [EXPERIMENTAL] Delete participation
+                // [EXPERIMENTAL] DeleteParticipation: Delete participation
                 DeletedEntityResponse result = apiInstance.DeleteParticipation(scope, code);
                 Debug.WriteLine(result);
             }
@@ -92,7 +92,7 @@ Name | Type | Description  | Notes
 # **GetParticipation**
 > Participation GetParticipation (string scope, string code, DateTimeOffset? asAt = null, List<string> propertyKeys = null)
 
-[EXPERIMENTAL] Get Participation
+[EXPERIMENTAL] GetParticipation: Get Participation
 
 Fetch a Participation that matches the specified identifier
 
@@ -123,7 +123,7 @@ namespace Example
 
             try
             {
-                // [EXPERIMENTAL] Get Participation
+                // [EXPERIMENTAL] GetParticipation: Get Participation
                 Participation result = apiInstance.GetParticipation(scope, code, asAt, propertyKeys);
                 Debug.WriteLine(result);
             }
@@ -174,7 +174,7 @@ Name | Type | Description  | Notes
 # **ListParticipations**
 > PagedResourceListOfParticipation ListParticipations (DateTimeOffset? asAt = null, string page = null, List<string> sortBy = null, int? limit = null, string filter = null, List<string> propertyKeys = null)
 
-[EXPERIMENTAL] List Participations
+[EXPERIMENTAL] ListParticipations: List Participations
 
 Fetch the last pre-AsAt date version of each Participation in scope (does not fetch the entire history).
 
@@ -207,7 +207,7 @@ namespace Example
 
             try
             {
-                // [EXPERIMENTAL] List Participations
+                // [EXPERIMENTAL] ListParticipations: List Participations
                 PagedResourceListOfParticipation result = apiInstance.ListParticipations(asAt, page, sortBy, limit, filter, propertyKeys);
                 Debug.WriteLine(result);
             }
@@ -260,7 +260,7 @@ Name | Type | Description  | Notes
 # **UpsertParticipations**
 > ResourceListOfParticipation UpsertParticipations (ParticipationSetRequest participationSetRequest = null)
 
-[EXPERIMENTAL] Upsert Participation
+[EXPERIMENTAL] UpsertParticipations: Upsert Participation
 
 Upsert; update existing participations with given ids, or create new participations otherwise.
 
@@ -288,7 +288,7 @@ namespace Example
 
             try
             {
-                // [EXPERIMENTAL] Upsert Participation
+                // [EXPERIMENTAL] UpsertParticipations: Upsert Participation
                 ResourceListOfParticipation result = apiInstance.UpsertParticipations(participationSetRequest);
                 Debug.WriteLine(result);
             }

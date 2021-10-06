@@ -4,17 +4,17 @@ All URIs are relative to *https://fbn-prd.lusid.com/api*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
-[**ReconcileHoldings**](ReconciliationsApi.md#reconcileholdings) | **POST** /api/portfolios/$reconcileholdings | [EARLY ACCESS] Reconcile portfolio holdings
-[**ReconcileHoldingsPreview**](ReconciliationsApi.md#reconcileholdingspreview) | **POST** /api/portfolios/preview/$reconcileholdings | [EXPERIMENTAL] Reconcile portfolio holdings with given tolerance
-[**ReconcileInline**](ReconciliationsApi.md#reconcileinline) | **POST** /api/portfolios/$reconcileInline | [BETA] Reconcile valuations performed on one or two sets of inline instruments using one or two configuration recipes.
-[**ReconcileValuation**](ReconciliationsApi.md#reconcilevaluation) | **POST** /api/portfolios/$reconcileValuation | [BETA] Reconcile valuations performed on one or two sets of holdings using one or two configuration recipes.
+[**ReconcileHoldings**](ReconciliationsApi.md#reconcileholdings) | **POST** /api/portfolios/$reconcileholdings | [EARLY ACCESS] ReconcileHoldings: Reconcile portfolio holdings
+[**ReconcileHoldingsPreview**](ReconciliationsApi.md#reconcileholdingspreview) | **POST** /api/portfolios/preview/$reconcileholdings | [EXPERIMENTAL] ReconcileHoldingsPreview: Reconcile portfolio holdings with given tolerance
+[**ReconcileInline**](ReconciliationsApi.md#reconcileinline) | **POST** /api/portfolios/$reconcileInline | [BETA] ReconcileInline: Reconcile valuations performed on one or two sets of inline instruments using one or two configuration recipes.
+[**ReconcileValuation**](ReconciliationsApi.md#reconcilevaluation) | **POST** /api/portfolios/$reconcileValuation | [BETA] ReconcileValuation: Reconcile valuations performed on one or two sets of holdings using one or two configuration recipes.
 
 
 <a name="reconcileholdings"></a>
 # **ReconcileHoldings**
 > ResourceListOfReconciliationBreak ReconcileHoldings (List<string> sortBy = null, int? start = null, int? limit = null, string filter = null, PortfoliosReconciliationRequest portfoliosReconciliationRequest = null)
 
-[EARLY ACCESS] Reconcile portfolio holdings
+[EARLY ACCESS] ReconcileHoldings: Reconcile portfolio holdings
 
 Reconcile the holdings of two portfolios.
 
@@ -46,7 +46,7 @@ namespace Example
 
             try
             {
-                // [EARLY ACCESS] Reconcile portfolio holdings
+                // [EARLY ACCESS] ReconcileHoldings: Reconcile portfolio holdings
                 ResourceListOfReconciliationBreak result = apiInstance.ReconcileHoldings(sortBy, start, limit, filter, portfoliosReconciliationRequest);
                 Debug.WriteLine(result);
             }
@@ -98,7 +98,7 @@ Name | Type | Description  | Notes
 # **ReconcileHoldingsPreview**
 > ResourceListOfReconciliationBreak ReconcileHoldingsPreview (List<string> sortBy = null, int? start = null, int? limit = null, string filter = null, PortfoliosReconciliationRequestPreview portfoliosReconciliationRequestPreview = null)
 
-[EXPERIMENTAL] Reconcile portfolio holdings with given tolerance
+[EXPERIMENTAL] ReconcileHoldingsPreview: Reconcile portfolio holdings with given tolerance
 
 Reconcile the holdings of two portfolios.
 
@@ -130,7 +130,7 @@ namespace Example
 
             try
             {
-                // [EXPERIMENTAL] Reconcile portfolio holdings with given tolerance
+                // [EXPERIMENTAL] ReconcileHoldingsPreview: Reconcile portfolio holdings with given tolerance
                 ResourceListOfReconciliationBreak result = apiInstance.ReconcileHoldingsPreview(sortBy, start, limit, filter, portfoliosReconciliationRequestPreview);
                 Debug.WriteLine(result);
             }
@@ -182,7 +182,7 @@ Name | Type | Description  | Notes
 # **ReconcileInline**
 > ListAggregationReconciliation ReconcileInline (InlineValuationsReconciliationRequest inlineValuationsReconciliationRequest = null)
 
-[BETA] Reconcile valuations performed on one or two sets of inline instruments using one or two configuration recipes.
+[BETA] ReconcileInline: Reconcile valuations performed on one or two sets of inline instruments using one or two configuration recipes.
 
 Perform valuation of one or two set of inline instruments using different one or two configuration recipes. Produce a breakdown of the resulting differences in valuation.
 
@@ -210,7 +210,7 @@ namespace Example
 
             try
             {
-                // [BETA] Reconcile valuations performed on one or two sets of inline instruments using one or two configuration recipes.
+                // [BETA] ReconcileInline: Reconcile valuations performed on one or two sets of inline instruments using one or two configuration recipes.
                 ListAggregationReconciliation result = apiInstance.ReconcileInline(inlineValuationsReconciliationRequest);
                 Debug.WriteLine(result);
             }
@@ -258,7 +258,7 @@ Name | Type | Description  | Notes
 # **ReconcileValuation**
 > ListAggregationReconciliation ReconcileValuation (ValuationsReconciliationRequest valuationsReconciliationRequest = null)
 
-[BETA] Reconcile valuations performed on one or two sets of holdings using one or two configuration recipes.
+[BETA] ReconcileValuation: Reconcile valuations performed on one or two sets of holdings using one or two configuration recipes.
 
 Perform valuation of one or two set of holdings using different one or two configuration recipes. Produce a breakdown of the resulting differences in valuation.
 
@@ -286,7 +286,7 @@ namespace Example
 
             try
             {
-                // [BETA] Reconcile valuations performed on one or two sets of holdings using one or two configuration recipes.
+                // [BETA] ReconcileValuation: Reconcile valuations performed on one or two sets of holdings using one or two configuration recipes.
                 ListAggregationReconciliation result = apiInstance.ReconcileValuation(valuationsReconciliationRequest);
                 Debug.WriteLine(result);
             }

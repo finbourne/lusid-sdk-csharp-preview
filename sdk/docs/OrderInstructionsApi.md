@@ -4,17 +4,17 @@ All URIs are relative to *https://fbn-prd.lusid.com/api*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
-[**DeleteOrderInstruction**](OrderInstructionsApi.md#deleteorderinstruction) | **DELETE** /api/orderinstructions/{scope}/{code} | [EXPERIMENTAL] Delete orderInstruction
-[**GetOrderInstruction**](OrderInstructionsApi.md#getorderinstruction) | **GET** /api/orderinstructions/{scope}/{code} | [EXPERIMENTAL] Get OrderInstruction
-[**ListOrderInstructions**](OrderInstructionsApi.md#listorderinstructions) | **GET** /api/orderinstructions | [EXPERIMENTAL] List OrderInstructions
-[**UpsertOrderInstructions**](OrderInstructionsApi.md#upsertorderinstructions) | **POST** /api/orderinstructions | [EXPERIMENTAL] Upsert OrderInstruction
+[**DeleteOrderInstruction**](OrderInstructionsApi.md#deleteorderinstruction) | **DELETE** /api/orderinstructions/{scope}/{code} | [EXPERIMENTAL] DeleteOrderInstruction: Delete orderInstruction
+[**GetOrderInstruction**](OrderInstructionsApi.md#getorderinstruction) | **GET** /api/orderinstructions/{scope}/{code} | [EXPERIMENTAL] GetOrderInstruction: Get OrderInstruction
+[**ListOrderInstructions**](OrderInstructionsApi.md#listorderinstructions) | **GET** /api/orderinstructions | [EXPERIMENTAL] ListOrderInstructions: List OrderInstructions
+[**UpsertOrderInstructions**](OrderInstructionsApi.md#upsertorderinstructions) | **POST** /api/orderinstructions | [EXPERIMENTAL] UpsertOrderInstructions: Upsert OrderInstruction
 
 
 <a name="deleteorderinstruction"></a>
 # **DeleteOrderInstruction**
 > DeletedEntityResponse DeleteOrderInstruction (string scope, string code)
 
-[EXPERIMENTAL] Delete orderInstruction
+[EXPERIMENTAL] DeleteOrderInstruction: Delete orderInstruction
 
 Delete an orderInstruction. Deletion will be valid from the orderInstruction's creation datetime.  This means that the orderInstruction will no longer exist at any effective datetime from the asAt datetime of deletion.
 
@@ -43,7 +43,7 @@ namespace Example
 
             try
             {
-                // [EXPERIMENTAL] Delete orderInstruction
+                // [EXPERIMENTAL] DeleteOrderInstruction: Delete orderInstruction
                 DeletedEntityResponse result = apiInstance.DeleteOrderInstruction(scope, code);
                 Debug.WriteLine(result);
             }
@@ -92,7 +92,7 @@ Name | Type | Description  | Notes
 # **GetOrderInstruction**
 > OrderInstruction GetOrderInstruction (string scope, string code, DateTimeOffset? asAt = null, List<string> propertyKeys = null)
 
-[EXPERIMENTAL] Get OrderInstruction
+[EXPERIMENTAL] GetOrderInstruction: Get OrderInstruction
 
 Fetch a OrderInstruction that matches the specified identifier
 
@@ -123,7 +123,7 @@ namespace Example
 
             try
             {
-                // [EXPERIMENTAL] Get OrderInstruction
+                // [EXPERIMENTAL] GetOrderInstruction: Get OrderInstruction
                 OrderInstruction result = apiInstance.GetOrderInstruction(scope, code, asAt, propertyKeys);
                 Debug.WriteLine(result);
             }
@@ -174,7 +174,7 @@ Name | Type | Description  | Notes
 # **ListOrderInstructions**
 > PagedResourceListOfOrderInstruction ListOrderInstructions (DateTimeOffset? asAt = null, string page = null, List<string> sortBy = null, int? limit = null, string filter = null, List<string> propertyKeys = null)
 
-[EXPERIMENTAL] List OrderInstructions
+[EXPERIMENTAL] ListOrderInstructions: List OrderInstructions
 
 Fetch the last pre-AsAt date version of each orderInstruction in scope (does not fetch the entire history).
 
@@ -207,7 +207,7 @@ namespace Example
 
             try
             {
-                // [EXPERIMENTAL] List OrderInstructions
+                // [EXPERIMENTAL] ListOrderInstructions: List OrderInstructions
                 PagedResourceListOfOrderInstruction result = apiInstance.ListOrderInstructions(asAt, page, sortBy, limit, filter, propertyKeys);
                 Debug.WriteLine(result);
             }
@@ -260,7 +260,7 @@ Name | Type | Description  | Notes
 # **UpsertOrderInstructions**
 > ResourceListOfOrderInstruction UpsertOrderInstructions (OrderInstructionSetRequest orderInstructionSetRequest = null)
 
-[EXPERIMENTAL] Upsert OrderInstruction
+[EXPERIMENTAL] UpsertOrderInstructions: Upsert OrderInstruction
 
 Upsert; update existing orderInstructions with given ids, or create new orderInstructions otherwise.
 
@@ -288,7 +288,7 @@ namespace Example
 
             try
             {
-                // [EXPERIMENTAL] Upsert OrderInstruction
+                // [EXPERIMENTAL] UpsertOrderInstructions: Upsert OrderInstruction
                 ResourceListOfOrderInstruction result = apiInstance.UpsertOrderInstructions(orderInstructionSetRequest);
                 Debug.WriteLine(result);
             }

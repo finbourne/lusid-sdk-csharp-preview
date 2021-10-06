@@ -4,17 +4,17 @@ All URIs are relative to *https://fbn-prd.lusid.com/api*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
-[**GetEntitySchema**](SchemasApi.md#getentityschema) | **GET** /api/schemas/entities/{entity} | [BETA] Get schema
-[**GetPropertySchema**](SchemasApi.md#getpropertyschema) | **GET** /api/schemas/properties | [BETA] Get property schema
-[**GetValueTypes**](SchemasApi.md#getvaluetypes) | **GET** /api/schemas/types | [BETA] Get value types
-[**ListEntities**](SchemasApi.md#listentities) | **GET** /api/schemas/entities | [BETA] List entities
+[**GetEntitySchema**](SchemasApi.md#getentityschema) | **GET** /api/schemas/entities/{entity} | [BETA] GetEntitySchema: Get schema
+[**GetPropertySchema**](SchemasApi.md#getpropertyschema) | **GET** /api/schemas/properties | [BETA] GetPropertySchema: Get property schema
+[**GetValueTypes**](SchemasApi.md#getvaluetypes) | **GET** /api/schemas/types | [BETA] GetValueTypes: Get value types
+[**ListEntities**](SchemasApi.md#listentities) | **GET** /api/schemas/entities | [BETA] ListEntities: List entities
 
 
 <a name="getentityschema"></a>
 # **GetEntitySchema**
 > Schema GetEntitySchema (string entity)
 
-[BETA] Get schema
+[BETA] GetEntitySchema: Get schema
 
 Gets the schema and meta-data for a given entity
 
@@ -42,7 +42,7 @@ namespace Example
 
             try
             {
-                // [BETA] Get schema
+                // [BETA] GetEntitySchema: Get schema
                 Schema result = apiInstance.GetEntitySchema(entity);
                 Debug.WriteLine(result);
             }
@@ -90,7 +90,7 @@ Name | Type | Description  | Notes
 # **GetPropertySchema**
 > PropertySchema GetPropertySchema (List<string> propertyKeys = null, DateTimeOffset? asAt = null)
 
-[BETA] Get property schema
+[BETA] GetPropertySchema: Get property schema
 
 Get the schemas for the provided list of property keys.
 
@@ -119,7 +119,7 @@ namespace Example
 
             try
             {
-                // [BETA] Get property schema
+                // [BETA] GetPropertySchema: Get property schema
                 PropertySchema result = apiInstance.GetPropertySchema(propertyKeys, asAt);
                 Debug.WriteLine(result);
             }
@@ -168,7 +168,7 @@ Name | Type | Description  | Notes
 # **GetValueTypes**
 > ResourceListOfValueType GetValueTypes (List<string> sortBy = null, int? start = null, int? limit = null)
 
-[BETA] Get value types
+[BETA] GetValueTypes: Get value types
 
 Gets the available value types for which a schema is available.
 
@@ -198,7 +198,7 @@ namespace Example
 
             try
             {
-                // [BETA] Get value types
+                // [BETA] GetValueTypes: Get value types
                 ResourceListOfValueType result = apiInstance.GetValueTypes(sortBy, start, limit);
                 Debug.WriteLine(result);
             }
@@ -248,7 +248,7 @@ Name | Type | Description  | Notes
 # **ListEntities**
 > ResourceListOfString ListEntities ()
 
-[BETA] List entities
+[BETA] ListEntities: List entities
 
 List all available entities for which schema information is available.
 
@@ -275,7 +275,7 @@ namespace Example
 
             try
             {
-                // [BETA] List entities
+                // [BETA] ListEntities: List entities
                 ResourceListOfString result = apiInstance.ListEntities();
                 Debug.WriteLine(result);
             }

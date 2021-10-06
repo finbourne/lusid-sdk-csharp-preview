@@ -4,16 +4,16 @@ All URIs are relative to *https://fbn-prd.lusid.com/api*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
-[**CreateSequence**](SequencesApi.md#createsequence) | **POST** /api/sequences/{scope} | [EXPERIMENTAL] Create a new sequence
-[**GetSequence**](SequencesApi.md#getsequence) | **GET** /api/sequences/{scope}/{code} | [EXPERIMENTAL] Get a specified sequence
-[**Next**](SequencesApi.md#next) | **GET** /api/sequences/{scope}/{code}/next | [EXPERIMENTAL] Get next values from sequence
+[**CreateSequence**](SequencesApi.md#createsequence) | **POST** /api/sequences/{scope} | [EXPERIMENTAL] CreateSequence: Create a new sequence
+[**GetSequence**](SequencesApi.md#getsequence) | **GET** /api/sequences/{scope}/{code} | [EXPERIMENTAL] GetSequence: Get a specified sequence
+[**Next**](SequencesApi.md#next) | **GET** /api/sequences/{scope}/{code}/next | [EXPERIMENTAL] Next: Get next values from sequence
 
 
 <a name="createsequence"></a>
 # **CreateSequence**
 > SequenceDefinition CreateSequence (string scope, CreateSequenceRequest createSequenceRequest)
 
-[EXPERIMENTAL] Create a new sequence
+[EXPERIMENTAL] CreateSequence: Create a new sequence
 
 Create a new sequence
 
@@ -42,7 +42,7 @@ namespace Example
 
             try
             {
-                // [EXPERIMENTAL] Create a new sequence
+                // [EXPERIMENTAL] CreateSequence: Create a new sequence
                 SequenceDefinition result = apiInstance.CreateSequence(scope, createSequenceRequest);
                 Debug.WriteLine(result);
             }
@@ -91,7 +91,7 @@ Name | Type | Description  | Notes
 # **GetSequence**
 > SequenceDefinition GetSequence (string scope, string code)
 
-[EXPERIMENTAL] Get a specified sequence
+[EXPERIMENTAL] GetSequence: Get a specified sequence
 
 Return the details of a specified sequence
 
@@ -120,7 +120,7 @@ namespace Example
 
             try
             {
-                // [EXPERIMENTAL] Get a specified sequence
+                // [EXPERIMENTAL] GetSequence: Get a specified sequence
                 SequenceDefinition result = apiInstance.GetSequence(scope, code);
                 Debug.WriteLine(result);
             }
@@ -169,7 +169,7 @@ Name | Type | Description  | Notes
 # **Next**
 > NextValueInSequenceResponse Next (string scope, string code, int? batch = null)
 
-[EXPERIMENTAL] Get next values from sequence
+[EXPERIMENTAL] Next: Get next values from sequence
 
 Get the next set of values from a specified sequence
 
@@ -199,7 +199,7 @@ namespace Example
 
             try
             {
-                // [EXPERIMENTAL] Get next values from sequence
+                // [EXPERIMENTAL] Next: Get next values from sequence
                 NextValueInSequenceResponse result = apiInstance.Next(scope, code, batch);
                 Debug.WriteLine(result);
             }

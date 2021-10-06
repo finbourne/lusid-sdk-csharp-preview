@@ -4,17 +4,17 @@ All URIs are relative to *https://fbn-prd.lusid.com/api*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
-[**DeleteExecution**](ExecutionsApi.md#deleteexecution) | **DELETE** /api/executions/{scope}/{code} | [EXPERIMENTAL] Delete execution
-[**GetExecution**](ExecutionsApi.md#getexecution) | **GET** /api/executions/{scope}/{code} | [EXPERIMENTAL] Get Execution
-[**ListExecutions**](ExecutionsApi.md#listexecutions) | **GET** /api/executions | [EXPERIMENTAL] List Executions
-[**UpsertExecutions**](ExecutionsApi.md#upsertexecutions) | **POST** /api/executions | [EXPERIMENTAL] Upsert Execution
+[**DeleteExecution**](ExecutionsApi.md#deleteexecution) | **DELETE** /api/executions/{scope}/{code} | [EXPERIMENTAL] DeleteExecution: Delete execution
+[**GetExecution**](ExecutionsApi.md#getexecution) | **GET** /api/executions/{scope}/{code} | [EXPERIMENTAL] GetExecution: Get Execution
+[**ListExecutions**](ExecutionsApi.md#listexecutions) | **GET** /api/executions | [EXPERIMENTAL] ListExecutions: List Executions
+[**UpsertExecutions**](ExecutionsApi.md#upsertexecutions) | **POST** /api/executions | [EXPERIMENTAL] UpsertExecutions: Upsert Execution
 
 
 <a name="deleteexecution"></a>
 # **DeleteExecution**
 > DeletedEntityResponse DeleteExecution (string scope, string code)
 
-[EXPERIMENTAL] Delete execution
+[EXPERIMENTAL] DeleteExecution: Delete execution
 
 Delete an execution. Deletion will be valid from the execution's creation datetime.  This means that the execution will no longer exist at any effective datetime from the asAt datetime of deletion.
 
@@ -43,7 +43,7 @@ namespace Example
 
             try
             {
-                // [EXPERIMENTAL] Delete execution
+                // [EXPERIMENTAL] DeleteExecution: Delete execution
                 DeletedEntityResponse result = apiInstance.DeleteExecution(scope, code);
                 Debug.WriteLine(result);
             }
@@ -92,7 +92,7 @@ Name | Type | Description  | Notes
 # **GetExecution**
 > Execution GetExecution (string scope, string code, DateTimeOffset? asAt = null, List<string> propertyKeys = null)
 
-[EXPERIMENTAL] Get Execution
+[EXPERIMENTAL] GetExecution: Get Execution
 
 Fetch a Execution that matches the specified identifier
 
@@ -123,7 +123,7 @@ namespace Example
 
             try
             {
-                // [EXPERIMENTAL] Get Execution
+                // [EXPERIMENTAL] GetExecution: Get Execution
                 Execution result = apiInstance.GetExecution(scope, code, asAt, propertyKeys);
                 Debug.WriteLine(result);
             }
@@ -174,7 +174,7 @@ Name | Type | Description  | Notes
 # **ListExecutions**
 > PagedResourceListOfExecution ListExecutions (DateTimeOffset? asAt = null, string page = null, List<string> sortBy = null, int? limit = null, string filter = null, List<string> propertyKeys = null)
 
-[EXPERIMENTAL] List Executions
+[EXPERIMENTAL] ListExecutions: List Executions
 
 Fetch the last pre-AsAt date version of each execution in scope (does not fetch the entire history).
 
@@ -207,7 +207,7 @@ namespace Example
 
             try
             {
-                // [EXPERIMENTAL] List Executions
+                // [EXPERIMENTAL] ListExecutions: List Executions
                 PagedResourceListOfExecution result = apiInstance.ListExecutions(asAt, page, sortBy, limit, filter, propertyKeys);
                 Debug.WriteLine(result);
             }
@@ -260,7 +260,7 @@ Name | Type | Description  | Notes
 # **UpsertExecutions**
 > ResourceListOfExecution UpsertExecutions (ExecutionSetRequest executionSetRequest = null)
 
-[EXPERIMENTAL] Upsert Execution
+[EXPERIMENTAL] UpsertExecutions: Upsert Execution
 
 Upsert; update existing executions with given ids, or create new executions otherwise.
 
@@ -288,7 +288,7 @@ namespace Example
 
             try
             {
-                // [EXPERIMENTAL] Upsert Execution
+                // [EXPERIMENTAL] UpsertExecutions: Upsert Execution
                 ResourceListOfExecution result = apiInstance.UpsertExecutions(executionSetRequest);
                 Debug.WriteLine(result);
             }

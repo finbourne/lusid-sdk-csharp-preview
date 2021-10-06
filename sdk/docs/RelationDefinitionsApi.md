@@ -4,15 +4,15 @@ All URIs are relative to *https://fbn-prd.lusid.com/api*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
-[**CreateRelationDefinition**](RelationDefinitionsApi.md#createrelationdefinition) | **POST** /api/relationdefinitions | [EXPERIMENTAL] Create a relation definition
-[**GetRelationDefinition**](RelationDefinitionsApi.md#getrelationdefinition) | **GET** /api/relationdefinitions/{scope}/{code} | [EXPERIMENTAL] Get relation definition
+[**CreateRelationDefinition**](RelationDefinitionsApi.md#createrelationdefinition) | **POST** /api/relationdefinitions | [EXPERIMENTAL] CreateRelationDefinition: Create a relation definition
+[**GetRelationDefinition**](RelationDefinitionsApi.md#getrelationdefinition) | **GET** /api/relationdefinitions/{scope}/{code} | [EXPERIMENTAL] GetRelationDefinition: Get relation definition
 
 
 <a name="createrelationdefinition"></a>
 # **CreateRelationDefinition**
 > RelationDefinition CreateRelationDefinition (CreateRelationDefinitionRequest createRelationDefinitionRequest)
 
-[EXPERIMENTAL] Create a relation definition
+[EXPERIMENTAL] CreateRelationDefinition: Create a relation definition
 
 Define a new relation.
 
@@ -40,7 +40,7 @@ namespace Example
 
             try
             {
-                // [EXPERIMENTAL] Create a relation definition
+                // [EXPERIMENTAL] CreateRelationDefinition: Create a relation definition
                 RelationDefinition result = apiInstance.CreateRelationDefinition(createRelationDefinitionRequest);
                 Debug.WriteLine(result);
             }
@@ -88,7 +88,7 @@ Name | Type | Description  | Notes
 # **GetRelationDefinition**
 > RelationDefinition GetRelationDefinition (string scope, string code, DateTimeOffset? asAt = null)
 
-[EXPERIMENTAL] Get relation definition
+[EXPERIMENTAL] GetRelationDefinition: Get relation definition
 
 Retrieve the definition of a specified relation.
 
@@ -118,7 +118,7 @@ namespace Example
 
             try
             {
-                // [EXPERIMENTAL] Get relation definition
+                // [EXPERIMENTAL] GetRelationDefinition: Get relation definition
                 RelationDefinition result = apiInstance.GetRelationDefinition(scope, code, asAt);
                 Debug.WriteLine(result);
             }
