@@ -1,18 +1,18 @@
 # Lusid.Sdk.Api.RelationDefinitionsApi
 
-All URIs are relative to *http://local-unit-test-server.lusid.com:55238*
+All URIs are relative to *https://fbn-prd.lusid.com/api*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
-[**CreateRelationDefinition**](RelationDefinitionsApi.md#createrelationdefinition) | **POST** /api/relationdefinitions | [EXPERIMENTAL] CreateRelationDefinition: Create a relation definition
-[**GetRelationDefinition**](RelationDefinitionsApi.md#getrelationdefinition) | **GET** /api/relationdefinitions/{scope}/{code} | [EXPERIMENTAL] GetRelationDefinition: Get relation definition
+[**CreateRelationDefinition**](RelationDefinitionsApi.md#createrelationdefinition) | **POST** /api/relationdefinitions | [EXPERIMENTAL] Create a relation definition
+[**GetRelationDefinition**](RelationDefinitionsApi.md#getrelationdefinition) | **GET** /api/relationdefinitions/{scope}/{code} | [EXPERIMENTAL] Get relation definition
 
 
 <a name="createrelationdefinition"></a>
 # **CreateRelationDefinition**
 > RelationDefinition CreateRelationDefinition (CreateRelationDefinitionRequest createRelationDefinitionRequest)
 
-[EXPERIMENTAL] CreateRelationDefinition: Create a relation definition
+[EXPERIMENTAL] Create a relation definition
 
 Define a new relation.
 
@@ -31,7 +31,7 @@ namespace Example
         public static void Main()
         {
             Configuration config = new Configuration();
-            config.BasePath = "http://local-unit-test-server.lusid.com:55238";
+            config.BasePath = "https://fbn-prd.lusid.com/api";
             // Configure OAuth2 access token for authorization: oauth2
             config.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -40,7 +40,7 @@ namespace Example
 
             try
             {
-                // [EXPERIMENTAL] CreateRelationDefinition: Create a relation definition
+                // [EXPERIMENTAL] Create a relation definition
                 RelationDefinition result = apiInstance.CreateRelationDefinition(createRelationDefinitionRequest);
                 Debug.WriteLine(result);
             }
@@ -88,7 +88,7 @@ Name | Type | Description  | Notes
 # **GetRelationDefinition**
 > RelationDefinition GetRelationDefinition (string scope, string code, DateTimeOffset? asAt = null)
 
-[EXPERIMENTAL] GetRelationDefinition: Get relation definition
+[EXPERIMENTAL] Get relation definition
 
 Retrieve the definition of a specified relation.
 
@@ -107,7 +107,7 @@ namespace Example
         public static void Main()
         {
             Configuration config = new Configuration();
-            config.BasePath = "http://local-unit-test-server.lusid.com:55238";
+            config.BasePath = "https://fbn-prd.lusid.com/api";
             // Configure OAuth2 access token for authorization: oauth2
             config.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -118,7 +118,7 @@ namespace Example
 
             try
             {
-                // [EXPERIMENTAL] GetRelationDefinition: Get relation definition
+                // [EXPERIMENTAL] Get relation definition
                 RelationDefinition result = apiInstance.GetRelationDefinition(scope, code, asAt);
                 Debug.WriteLine(result);
             }

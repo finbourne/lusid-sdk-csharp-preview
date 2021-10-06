@@ -1,18 +1,18 @@
 # Lusid.Sdk.Api.RelationshipsApi
 
-All URIs are relative to *http://local-unit-test-server.lusid.com:55238*
+All URIs are relative to *https://fbn-prd.lusid.com/api*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
-[**CreateRelationship**](RelationshipsApi.md#createrelationship) | **POST** /api/relationshipdefinitions/{scope}/{code}/relationships | [EXPERIMENTAL] CreateRelationship: Create Relationship
-[**DeleteRelationship**](RelationshipsApi.md#deleterelationship) | **POST** /api/relationshipdefinitions/{scope}/{code}/relationships/$delete | [EXPERIMENTAL] DeleteRelationship: Delete Relationship
+[**CreateRelationship**](RelationshipsApi.md#createrelationship) | **POST** /api/relationshipdefinitions/{scope}/{code}/relationships | [EXPERIMENTAL] Create Relationship
+[**DeleteRelationship**](RelationshipsApi.md#deleterelationship) | **POST** /api/relationshipdefinitions/{scope}/{code}/relationships/$delete | [EXPERIMENTAL] Delete Relationship
 
 
 <a name="createrelationship"></a>
 # **CreateRelationship**
 > CompleteRelationship CreateRelationship (string scope, string code, CreateRelationshipRequest createRelationshipRequest)
 
-[EXPERIMENTAL] CreateRelationship: Create Relationship
+[EXPERIMENTAL] Create Relationship
 
 Create a relationship between two entity objects by their identifiers
 
@@ -31,7 +31,7 @@ namespace Example
         public static void Main()
         {
             Configuration config = new Configuration();
-            config.BasePath = "http://local-unit-test-server.lusid.com:55238";
+            config.BasePath = "https://fbn-prd.lusid.com/api";
             // Configure OAuth2 access token for authorization: oauth2
             config.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -42,7 +42,7 @@ namespace Example
 
             try
             {
-                // [EXPERIMENTAL] CreateRelationship: Create Relationship
+                // [EXPERIMENTAL] Create Relationship
                 CompleteRelationship result = apiInstance.CreateRelationship(scope, code, createRelationshipRequest);
                 Debug.WriteLine(result);
             }
@@ -92,7 +92,7 @@ Name | Type | Description  | Notes
 # **DeleteRelationship**
 > DeletedEntityResponse DeleteRelationship (string scope, string code, DeleteRelationshipRequest deleteRelationshipRequest)
 
-[EXPERIMENTAL] DeleteRelationship: Delete Relationship
+[EXPERIMENTAL] Delete Relationship
 
 Delete a relationship between two entity objects represented by their identifiers
 
@@ -111,7 +111,7 @@ namespace Example
         public static void Main()
         {
             Configuration config = new Configuration();
-            config.BasePath = "http://local-unit-test-server.lusid.com:55238";
+            config.BasePath = "https://fbn-prd.lusid.com/api";
             // Configure OAuth2 access token for authorization: oauth2
             config.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -122,7 +122,7 @@ namespace Example
 
             try
             {
-                // [EXPERIMENTAL] DeleteRelationship: Delete Relationship
+                // [EXPERIMENTAL] Delete Relationship
                 DeletedEntityResponse result = apiInstance.DeleteRelationship(scope, code, deleteRelationshipRequest);
                 Debug.WriteLine(result);
             }

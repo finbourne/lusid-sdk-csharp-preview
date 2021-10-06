@@ -1,20 +1,20 @@
 # Lusid.Sdk.Api.ExecutionsApi
 
-All URIs are relative to *http://local-unit-test-server.lusid.com:55238*
+All URIs are relative to *https://fbn-prd.lusid.com/api*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
-[**DeleteExecution**](ExecutionsApi.md#deleteexecution) | **DELETE** /api/executions/{scope}/{code} | [EXPERIMENTAL] DeleteExecution: Delete execution
-[**GetExecution**](ExecutionsApi.md#getexecution) | **GET** /api/executions/{scope}/{code} | [EXPERIMENTAL] GetExecution: Get Execution
-[**ListExecutions**](ExecutionsApi.md#listexecutions) | **GET** /api/executions | [EXPERIMENTAL] ListExecutions: List Executions
-[**UpsertExecutions**](ExecutionsApi.md#upsertexecutions) | **POST** /api/executions | [EXPERIMENTAL] UpsertExecutions: Upsert Execution
+[**DeleteExecution**](ExecutionsApi.md#deleteexecution) | **DELETE** /api/executions/{scope}/{code} | [EXPERIMENTAL] Delete execution
+[**GetExecution**](ExecutionsApi.md#getexecution) | **GET** /api/executions/{scope}/{code} | [EXPERIMENTAL] Get Execution
+[**ListExecutions**](ExecutionsApi.md#listexecutions) | **GET** /api/executions | [EXPERIMENTAL] List Executions
+[**UpsertExecutions**](ExecutionsApi.md#upsertexecutions) | **POST** /api/executions | [EXPERIMENTAL] Upsert Execution
 
 
 <a name="deleteexecution"></a>
 # **DeleteExecution**
 > DeletedEntityResponse DeleteExecution (string scope, string code)
 
-[EXPERIMENTAL] DeleteExecution: Delete execution
+[EXPERIMENTAL] Delete execution
 
 Delete an execution. Deletion will be valid from the execution's creation datetime.  This means that the execution will no longer exist at any effective datetime from the asAt datetime of deletion.
 
@@ -33,7 +33,7 @@ namespace Example
         public static void Main()
         {
             Configuration config = new Configuration();
-            config.BasePath = "http://local-unit-test-server.lusid.com:55238";
+            config.BasePath = "https://fbn-prd.lusid.com/api";
             // Configure OAuth2 access token for authorization: oauth2
             config.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -43,7 +43,7 @@ namespace Example
 
             try
             {
-                // [EXPERIMENTAL] DeleteExecution: Delete execution
+                // [EXPERIMENTAL] Delete execution
                 DeletedEntityResponse result = apiInstance.DeleteExecution(scope, code);
                 Debug.WriteLine(result);
             }
@@ -92,7 +92,7 @@ Name | Type | Description  | Notes
 # **GetExecution**
 > Execution GetExecution (string scope, string code, DateTimeOffset? asAt = null, List<string> propertyKeys = null)
 
-[EXPERIMENTAL] GetExecution: Get Execution
+[EXPERIMENTAL] Get Execution
 
 Fetch a Execution that matches the specified identifier
 
@@ -111,7 +111,7 @@ namespace Example
         public static void Main()
         {
             Configuration config = new Configuration();
-            config.BasePath = "http://local-unit-test-server.lusid.com:55238";
+            config.BasePath = "https://fbn-prd.lusid.com/api";
             // Configure OAuth2 access token for authorization: oauth2
             config.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -123,7 +123,7 @@ namespace Example
 
             try
             {
-                // [EXPERIMENTAL] GetExecution: Get Execution
+                // [EXPERIMENTAL] Get Execution
                 Execution result = apiInstance.GetExecution(scope, code, asAt, propertyKeys);
                 Debug.WriteLine(result);
             }
@@ -174,7 +174,7 @@ Name | Type | Description  | Notes
 # **ListExecutions**
 > PagedResourceListOfExecution ListExecutions (DateTimeOffset? asAt = null, string page = null, List<string> sortBy = null, int? limit = null, string filter = null, List<string> propertyKeys = null)
 
-[EXPERIMENTAL] ListExecutions: List Executions
+[EXPERIMENTAL] List Executions
 
 Fetch the last pre-AsAt date version of each execution in scope (does not fetch the entire history).
 
@@ -193,7 +193,7 @@ namespace Example
         public static void Main()
         {
             Configuration config = new Configuration();
-            config.BasePath = "http://local-unit-test-server.lusid.com:55238";
+            config.BasePath = "https://fbn-prd.lusid.com/api";
             // Configure OAuth2 access token for authorization: oauth2
             config.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -207,7 +207,7 @@ namespace Example
 
             try
             {
-                // [EXPERIMENTAL] ListExecutions: List Executions
+                // [EXPERIMENTAL] List Executions
                 PagedResourceListOfExecution result = apiInstance.ListExecutions(asAt, page, sortBy, limit, filter, propertyKeys);
                 Debug.WriteLine(result);
             }
@@ -260,7 +260,7 @@ Name | Type | Description  | Notes
 # **UpsertExecutions**
 > ResourceListOfExecution UpsertExecutions (ExecutionSetRequest executionSetRequest = null)
 
-[EXPERIMENTAL] UpsertExecutions: Upsert Execution
+[EXPERIMENTAL] Upsert Execution
 
 Upsert; update existing executions with given ids, or create new executions otherwise.
 
@@ -279,7 +279,7 @@ namespace Example
         public static void Main()
         {
             Configuration config = new Configuration();
-            config.BasePath = "http://local-unit-test-server.lusid.com:55238";
+            config.BasePath = "https://fbn-prd.lusid.com/api";
             // Configure OAuth2 access token for authorization: oauth2
             config.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -288,7 +288,7 @@ namespace Example
 
             try
             {
-                // [EXPERIMENTAL] UpsertExecutions: Upsert Execution
+                // [EXPERIMENTAL] Upsert Execution
                 ResourceListOfExecution result = apiInstance.UpsertExecutions(executionSetRequest);
                 Debug.WriteLine(result);
             }

@@ -1,18 +1,18 @@
 # Lusid.Sdk.Api.FeesAndCommissionsApi
 
-All URIs are relative to *http://local-unit-test-server.lusid.com:55238*
+All URIs are relative to *https://fbn-prd.lusid.com/api*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
-[**GetApplicableFees**](FeesAndCommissionsApi.md#getapplicablefees) | **GET** /api/feesandcommissions | [EXPERIMENTAL] GetApplicableFees: Get the Fees and Commissions that may be applicable to a transaction.
-[**ListAllFees**](FeesAndCommissionsApi.md#listallfees) | **GET** /api/feesandcommissions/rules | [EXPERIMENTAL] ListAllFees: List the rules available for fees and commissions.
+[**GetApplicableFees**](FeesAndCommissionsApi.md#getapplicablefees) | **GET** /api/feesandcommissions | [EXPERIMENTAL] Get the Fees and Commissions that may be applicable to a transaction.
+[**ListAllFees**](FeesAndCommissionsApi.md#listallfees) | **GET** /api/feesandcommissions/rules | [EXPERIMENTAL] List the rules available for fees and commissions.
 
 
 <a name="getapplicablefees"></a>
 # **GetApplicableFees**
 > ResourceListOfFeeCalculationDetails GetApplicableFees (string instrumentIdentifierType = null, string instrumentIdentifier = null, string portfolioScope = null, string portfolioCode = null, List<string> additionalSearchKeys = null)
 
-[EXPERIMENTAL] GetApplicableFees: Get the Fees and Commissions that may be applicable to a transaction.
+[EXPERIMENTAL] Get the Fees and Commissions that may be applicable to a transaction.
 
 Additionally, matching can be based on the instrument's properties, its portfolio properties, and any additional property keys present in the data file.
 
@@ -31,7 +31,7 @@ namespace Example
         public static void Main()
         {
             Configuration config = new Configuration();
-            config.BasePath = "http://local-unit-test-server.lusid.com:55238";
+            config.BasePath = "https://fbn-prd.lusid.com/api";
             // Configure OAuth2 access token for authorization: oauth2
             config.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -44,7 +44,7 @@ namespace Example
 
             try
             {
-                // [EXPERIMENTAL] GetApplicableFees: Get the Fees and Commissions that may be applicable to a transaction.
+                // [EXPERIMENTAL] Get the Fees and Commissions that may be applicable to a transaction.
                 ResourceListOfFeeCalculationDetails result = apiInstance.GetApplicableFees(instrumentIdentifierType, instrumentIdentifier, portfolioScope, portfolioCode, additionalSearchKeys);
                 Debug.WriteLine(result);
             }
@@ -96,7 +96,7 @@ Name | Type | Description  | Notes
 # **ListAllFees**
 > ResourceListOfFeeCalculationDetails ListAllFees (List<string> additionalSearchKeys = null)
 
-[EXPERIMENTAL] ListAllFees: List the rules available for fees and commissions.
+[EXPERIMENTAL] List the rules available for fees and commissions.
 
 By default, will list ALL rules available. Additional keys and be specified to list a smaller subset of rules.
 
@@ -115,7 +115,7 @@ namespace Example
         public static void Main()
         {
             Configuration config = new Configuration();
-            config.BasePath = "http://local-unit-test-server.lusid.com:55238";
+            config.BasePath = "https://fbn-prd.lusid.com/api";
             // Configure OAuth2 access token for authorization: oauth2
             config.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -124,7 +124,7 @@ namespace Example
 
             try
             {
-                // [EXPERIMENTAL] ListAllFees: List the rules available for fees and commissions.
+                // [EXPERIMENTAL] List the rules available for fees and commissions.
                 ResourceListOfFeeCalculationDetails result = apiInstance.ListAllFees(additionalSearchKeys);
                 Debug.WriteLine(result);
             }

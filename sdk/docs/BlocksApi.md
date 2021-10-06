@@ -1,20 +1,20 @@
 # Lusid.Sdk.Api.BlocksApi
 
-All URIs are relative to *http://local-unit-test-server.lusid.com:55238*
+All URIs are relative to *https://fbn-prd.lusid.com/api*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
-[**DeleteBlock**](BlocksApi.md#deleteblock) | **DELETE** /api/blocks/{scope}/{code} | [EXPERIMENTAL] DeleteBlock: Delete block
-[**GetBlock**](BlocksApi.md#getblock) | **GET** /api/blocks/{scope}/{code} | [EXPERIMENTAL] GetBlock: Get Block
-[**ListBlocks**](BlocksApi.md#listblocks) | **GET** /api/blocks | [EXPERIMENTAL] ListBlocks: List Blocks
-[**UpsertBlocks**](BlocksApi.md#upsertblocks) | **POST** /api/blocks | [EXPERIMENTAL] UpsertBlocks: Upsert Block
+[**DeleteBlock**](BlocksApi.md#deleteblock) | **DELETE** /api/blocks/{scope}/{code} | [EXPERIMENTAL] Delete block
+[**GetBlock**](BlocksApi.md#getblock) | **GET** /api/blocks/{scope}/{code} | [EXPERIMENTAL] Get Block
+[**ListBlocks**](BlocksApi.md#listblocks) | **GET** /api/blocks | [EXPERIMENTAL] List Blocks
+[**UpsertBlocks**](BlocksApi.md#upsertblocks) | **POST** /api/blocks | [EXPERIMENTAL] Upsert Block
 
 
 <a name="deleteblock"></a>
 # **DeleteBlock**
 > DeletedEntityResponse DeleteBlock (string scope, string code)
 
-[EXPERIMENTAL] DeleteBlock: Delete block
+[EXPERIMENTAL] Delete block
 
 Delete an block. Deletion will be valid from the block's creation datetime.  This means that the block will no longer exist at any effective datetime from the asAt datetime of deletion.
 
@@ -33,7 +33,7 @@ namespace Example
         public static void Main()
         {
             Configuration config = new Configuration();
-            config.BasePath = "http://local-unit-test-server.lusid.com:55238";
+            config.BasePath = "https://fbn-prd.lusid.com/api";
             // Configure OAuth2 access token for authorization: oauth2
             config.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -43,7 +43,7 @@ namespace Example
 
             try
             {
-                // [EXPERIMENTAL] DeleteBlock: Delete block
+                // [EXPERIMENTAL] Delete block
                 DeletedEntityResponse result = apiInstance.DeleteBlock(scope, code);
                 Debug.WriteLine(result);
             }
@@ -92,7 +92,7 @@ Name | Type | Description  | Notes
 # **GetBlock**
 > Block GetBlock (string scope, string code, DateTimeOffset? asAt = null, List<string> propertyKeys = null)
 
-[EXPERIMENTAL] GetBlock: Get Block
+[EXPERIMENTAL] Get Block
 
 Fetch a Block that matches the specified identifier
 
@@ -111,7 +111,7 @@ namespace Example
         public static void Main()
         {
             Configuration config = new Configuration();
-            config.BasePath = "http://local-unit-test-server.lusid.com:55238";
+            config.BasePath = "https://fbn-prd.lusid.com/api";
             // Configure OAuth2 access token for authorization: oauth2
             config.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -123,7 +123,7 @@ namespace Example
 
             try
             {
-                // [EXPERIMENTAL] GetBlock: Get Block
+                // [EXPERIMENTAL] Get Block
                 Block result = apiInstance.GetBlock(scope, code, asAt, propertyKeys);
                 Debug.WriteLine(result);
             }
@@ -174,7 +174,7 @@ Name | Type | Description  | Notes
 # **ListBlocks**
 > PagedResourceListOfBlock ListBlocks (DateTimeOffset? asAt = null, string page = null, List<string> sortBy = null, int? limit = null, string filter = null, List<string> propertyKeys = null)
 
-[EXPERIMENTAL] ListBlocks: List Blocks
+[EXPERIMENTAL] List Blocks
 
 Fetch the last pre-AsAt date version of each block in scope (does not fetch the entire history).
 
@@ -193,7 +193,7 @@ namespace Example
         public static void Main()
         {
             Configuration config = new Configuration();
-            config.BasePath = "http://local-unit-test-server.lusid.com:55238";
+            config.BasePath = "https://fbn-prd.lusid.com/api";
             // Configure OAuth2 access token for authorization: oauth2
             config.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -207,7 +207,7 @@ namespace Example
 
             try
             {
-                // [EXPERIMENTAL] ListBlocks: List Blocks
+                // [EXPERIMENTAL] List Blocks
                 PagedResourceListOfBlock result = apiInstance.ListBlocks(asAt, page, sortBy, limit, filter, propertyKeys);
                 Debug.WriteLine(result);
             }
@@ -260,7 +260,7 @@ Name | Type | Description  | Notes
 # **UpsertBlocks**
 > ResourceListOfBlock UpsertBlocks (BlockSetRequest blockSetRequest = null)
 
-[EXPERIMENTAL] UpsertBlocks: Upsert Block
+[EXPERIMENTAL] Upsert Block
 
 Upsert; update existing blocks with given ids, or create new blocks otherwise.
 
@@ -279,7 +279,7 @@ namespace Example
         public static void Main()
         {
             Configuration config = new Configuration();
-            config.BasePath = "http://local-unit-test-server.lusid.com:55238";
+            config.BasePath = "https://fbn-prd.lusid.com/api";
             // Configure OAuth2 access token for authorization: oauth2
             config.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -288,7 +288,7 @@ namespace Example
 
             try
             {
-                // [EXPERIMENTAL] UpsertBlocks: Upsert Block
+                // [EXPERIMENTAL] Upsert Block
                 ResourceListOfBlock result = apiInstance.UpsertBlocks(blockSetRequest);
                 Debug.WriteLine(result);
             }

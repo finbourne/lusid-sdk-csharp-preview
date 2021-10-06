@@ -1,20 +1,20 @@
 # Lusid.Sdk.Api.SystemConfigurationApi
 
-All URIs are relative to *http://local-unit-test-server.lusid.com:55238*
+All URIs are relative to *https://fbn-prd.lusid.com/api*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
-[**CreateConfigurationTransactionType**](SystemConfigurationApi.md#createconfigurationtransactiontype) | **POST** /api/systemconfiguration/transactions/type | [EARLY ACCESS] CreateConfigurationTransactionType: Create transaction type
-[**CreateSideDefinition**](SystemConfigurationApi.md#createsidedefinition) | **POST** /api/systemconfiguration/transactions/side | [EXPERIMENTAL] CreateSideDefinition: Create side definition
-[**ListConfigurationTransactionTypes**](SystemConfigurationApi.md#listconfigurationtransactiontypes) | **GET** /api/systemconfiguration/transactions | [EARLY ACCESS] ListConfigurationTransactionTypes: List transaction types
-[**SetConfigurationTransactionTypes**](SystemConfigurationApi.md#setconfigurationtransactiontypes) | **PUT** /api/systemconfiguration/transactions | [EXPERIMENTAL] SetConfigurationTransactionTypes: Set transaction types
+[**CreateConfigurationTransactionType**](SystemConfigurationApi.md#createconfigurationtransactiontype) | **POST** /api/systemconfiguration/transactions/type | [EARLY ACCESS] Create transaction type
+[**CreateSideDefinition**](SystemConfigurationApi.md#createsidedefinition) | **POST** /api/systemconfiguration/transactions/side | [EXPERIMENTAL] Create side definition
+[**ListConfigurationTransactionTypes**](SystemConfigurationApi.md#listconfigurationtransactiontypes) | **GET** /api/systemconfiguration/transactions | [EARLY ACCESS] List transaction types
+[**SetConfigurationTransactionTypes**](SystemConfigurationApi.md#setconfigurationtransactiontypes) | **PUT** /api/systemconfiguration/transactions | [EXPERIMENTAL] Set transaction types
 
 
 <a name="createconfigurationtransactiontype"></a>
 # **CreateConfigurationTransactionType**
 > TransactionSetConfigurationData CreateConfigurationTransactionType (TransactionConfigurationDataRequest transactionConfigurationDataRequest = null)
 
-[EARLY ACCESS] CreateConfigurationTransactionType: Create transaction type
+[EARLY ACCESS] Create transaction type
 
 Create a new transaction type by specifying a definition and mappings to movements.
 
@@ -33,7 +33,7 @@ namespace Example
         public static void Main()
         {
             Configuration config = new Configuration();
-            config.BasePath = "http://local-unit-test-server.lusid.com:55238";
+            config.BasePath = "https://fbn-prd.lusid.com/api";
             // Configure OAuth2 access token for authorization: oauth2
             config.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -42,7 +42,7 @@ namespace Example
 
             try
             {
-                // [EARLY ACCESS] CreateConfigurationTransactionType: Create transaction type
+                // [EARLY ACCESS] Create transaction type
                 TransactionSetConfigurationData result = apiInstance.CreateConfigurationTransactionType(transactionConfigurationDataRequest);
                 Debug.WriteLine(result);
             }
@@ -90,7 +90,7 @@ Name | Type | Description  | Notes
 # **CreateSideDefinition**
 > TransactionSetConfigurationData CreateSideDefinition (SideConfigurationDataRequest sideConfigurationDataRequest = null)
 
-[EXPERIMENTAL] CreateSideDefinition: Create side definition
+[EXPERIMENTAL] Create side definition
 
 Create a new side definition for use in a transaction type. For more information, see https://support.lusid.com/knowledgebase/article/KA-01875.
 
@@ -109,7 +109,7 @@ namespace Example
         public static void Main()
         {
             Configuration config = new Configuration();
-            config.BasePath = "http://local-unit-test-server.lusid.com:55238";
+            config.BasePath = "https://fbn-prd.lusid.com/api";
             // Configure OAuth2 access token for authorization: oauth2
             config.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -118,7 +118,7 @@ namespace Example
 
             try
             {
-                // [EXPERIMENTAL] CreateSideDefinition: Create side definition
+                // [EXPERIMENTAL] Create side definition
                 TransactionSetConfigurationData result = apiInstance.CreateSideDefinition(sideConfigurationDataRequest);
                 Debug.WriteLine(result);
             }
@@ -166,7 +166,7 @@ Name | Type | Description  | Notes
 # **ListConfigurationTransactionTypes**
 > TransactionSetConfigurationData ListConfigurationTransactionTypes (DateTimeOffset? asAt = null)
 
-[EARLY ACCESS] ListConfigurationTransactionTypes: List transaction types
+[EARLY ACCESS] List transaction types
 
 Get the list of current transaction types. For information on the default transaction types provided with  LUSID, see https://support.lusid.com/knowledgebase/article/KA-01873/.
 
@@ -185,7 +185,7 @@ namespace Example
         public static void Main()
         {
             Configuration config = new Configuration();
-            config.BasePath = "http://local-unit-test-server.lusid.com:55238";
+            config.BasePath = "https://fbn-prd.lusid.com/api";
             // Configure OAuth2 access token for authorization: oauth2
             config.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -194,7 +194,7 @@ namespace Example
 
             try
             {
-                // [EARLY ACCESS] ListConfigurationTransactionTypes: List transaction types
+                // [EARLY ACCESS] List transaction types
                 TransactionSetConfigurationData result = apiInstance.ListConfigurationTransactionTypes(asAt);
                 Debug.WriteLine(result);
             }
@@ -242,7 +242,7 @@ Name | Type | Description  | Notes
 # **SetConfigurationTransactionTypes**
 > TransactionSetConfigurationData SetConfigurationTransactionTypes (TransactionSetConfigurationDataRequest transactionSetConfigurationDataRequest = null)
 
-[EXPERIMENTAL] SetConfigurationTransactionTypes: Set transaction types
+[EXPERIMENTAL] Set transaction types
 
 Configure all existing transaction types. Note it is not possible to configure a single existing transaction type on its own.                WARNING! Changing existing transaction types has a material impact on how data, new and old, is processed and aggregated by LUSID, and will affect your whole organisation. Only call this API if you are fully aware of the implications of the change.
 
@@ -261,7 +261,7 @@ namespace Example
         public static void Main()
         {
             Configuration config = new Configuration();
-            config.BasePath = "http://local-unit-test-server.lusid.com:55238";
+            config.BasePath = "https://fbn-prd.lusid.com/api";
             // Configure OAuth2 access token for authorization: oauth2
             config.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -270,7 +270,7 @@ namespace Example
 
             try
             {
-                // [EXPERIMENTAL] SetConfigurationTransactionTypes: Set transaction types
+                // [EXPERIMENTAL] Set transaction types
                 TransactionSetConfigurationData result = apiInstance.SetConfigurationTransactionTypes(transactionSetConfigurationDataRequest);
                 Debug.WriteLine(result);
             }

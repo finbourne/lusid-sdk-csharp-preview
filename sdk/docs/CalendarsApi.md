@@ -1,28 +1,28 @@
 # Lusid.Sdk.Api.CalendarsApi
 
-All URIs are relative to *http://local-unit-test-server.lusid.com:55238*
+All URIs are relative to *https://fbn-prd.lusid.com/api*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
-[**AddBusinessDaysToDate**](CalendarsApi.md#addbusinessdaystodate) | **POST** /api/calendars/businessday/{scope}/add | [EXPERIMENTAL] AddBusinessDaysToDate: Adds the requested number of Business Days to the provided date.
-[**AddDateToCalendar**](CalendarsApi.md#adddatetocalendar) | **PUT** /api/calendars/generic/{scope}/{code}/dates | [BETA] AddDateToCalendar: Add a date to a calendar
-[**CreateCalendar**](CalendarsApi.md#createcalendar) | **POST** /api/calendars/generic | [BETA] CreateCalendar: Create a calendar in its generic form
-[**DeleteCalendar**](CalendarsApi.md#deletecalendar) | **DELETE** /api/calendars/generic/{scope}/{code} | [BETA] DeleteCalendar: Delete a calendar
-[**DeleteDateFromCalendar**](CalendarsApi.md#deletedatefromcalendar) | **DELETE** /api/calendars/generic/{scope}/{code}/dates/{dateId} | [BETA] DeleteDateFromCalendar: Remove a date from a calendar
-[**GenerateSchedule**](CalendarsApi.md#generateschedule) | **POST** /api/calendars/schedule/{scope} | [EXPERIMENTAL] GenerateSchedule: Generate an ordered schedule of dates.
-[**GetCalendar**](CalendarsApi.md#getcalendar) | **GET** /api/calendars/generic/{scope}/{code} | [BETA] GetCalendar: Get a calendar in its generic form
-[**GetDates**](CalendarsApi.md#getdates) | **GET** /api/calendars/generic/{scope}/{code}/dates | [BETA] GetDates: Get dates for a specific calendar
-[**IsBusinessDateTime**](CalendarsApi.md#isbusinessdatetime) | **GET** /api/calendars/businessday/{scope}/{code} | [BETA] IsBusinessDateTime: Check whether a DateTime is a \&quot;Business DateTime\&quot;
-[**ListCalendars**](CalendarsApi.md#listcalendars) | **GET** /api/calendars/generic | [BETA] ListCalendars: List Calenders
-[**ListCalendarsInScope**](CalendarsApi.md#listcalendarsinscope) | **GET** /api/calendars/generic/{scope} | [BETA] ListCalendarsInScope: List all calenders in a specified scope
-[**UpdateCalendar**](CalendarsApi.md#updatecalendar) | **POST** /api/calendars/generic/{scope}/{code} | [BETA] UpdateCalendar: Update a calendar
+[**AddBusinessDaysToDate**](CalendarsApi.md#addbusinessdaystodate) | **POST** /api/calendars/businessday/{scope}/add | [EXPERIMENTAL] Adds the requested number of Business Days to the provided date.
+[**AddDateToCalendar**](CalendarsApi.md#adddatetocalendar) | **PUT** /api/calendars/generic/{scope}/{code}/dates | [BETA] Add a date to a calendar
+[**CreateCalendar**](CalendarsApi.md#createcalendar) | **POST** /api/calendars/generic | [BETA] Create a calendar in its generic form
+[**DeleteCalendar**](CalendarsApi.md#deletecalendar) | **DELETE** /api/calendars/generic/{scope}/{code} | [BETA] Delete a calendar
+[**DeleteDateFromCalendar**](CalendarsApi.md#deletedatefromcalendar) | **DELETE** /api/calendars/generic/{scope}/{code}/dates/{dateId} | [BETA] Remove a date from a calendar
+[**GenerateSchedule**](CalendarsApi.md#generateschedule) | **POST** /api/calendars/schedule/{scope} | [EXPERIMENTAL] Generate an ordered schedule of dates.
+[**GetCalendar**](CalendarsApi.md#getcalendar) | **GET** /api/calendars/generic/{scope}/{code} | [BETA] Get a calendar in its generic form
+[**GetDates**](CalendarsApi.md#getdates) | **GET** /api/calendars/generic/{scope}/{code}/dates | [BETA] Get dates for a specific calendar
+[**IsBusinessDateTime**](CalendarsApi.md#isbusinessdatetime) | **GET** /api/calendars/businessday/{scope}/{code} | [BETA] Check whether a DateTime is a \&quot;Business DateTime\&quot;
+[**ListCalendars**](CalendarsApi.md#listcalendars) | **GET** /api/calendars/generic | [BETA] List Calenders
+[**ListCalendarsInScope**](CalendarsApi.md#listcalendarsinscope) | **GET** /api/calendars/generic/{scope} | [BETA] List all calenders in a specified scope
+[**UpdateCalendar**](CalendarsApi.md#updatecalendar) | **POST** /api/calendars/generic/{scope}/{code} | [BETA] Update a calendar
 
 
 <a name="addbusinessdaystodate"></a>
 # **AddBusinessDaysToDate**
 > AddBusinessDaysToDateResponse AddBusinessDaysToDate (string scope, AddBusinessDaysToDateRequest addBusinessDaysToDateRequest)
 
-[EXPERIMENTAL] AddBusinessDaysToDate: Adds the requested number of Business Days to the provided date.
+[EXPERIMENTAL] Adds the requested number of Business Days to the provided date.
 
 A Business day is defined as a point in time that:      * Does not represent a day in the calendar's weekend      * Does not represent a day in the calendar's list of holidays (e.g. Christmas Day in the UK)                 All dates specified must be UTC and the upper bound of a calendar is not inclusive                 e.g. From: 2020-12-24-00-00-00:       Adding 3 business days returns 2020-12-30, assuming Saturday and Sunday are weekends, and the 25th and 28th are holidays.       Adding -2 business days returns 2020-12-22 under the same assumptions.                If the provided number of days to add is zero, returns a failure.
 
@@ -41,7 +41,7 @@ namespace Example
         public static void Main()
         {
             Configuration config = new Configuration();
-            config.BasePath = "http://local-unit-test-server.lusid.com:55238";
+            config.BasePath = "https://fbn-prd.lusid.com/api";
             // Configure OAuth2 access token for authorization: oauth2
             config.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -51,7 +51,7 @@ namespace Example
 
             try
             {
-                // [EXPERIMENTAL] AddBusinessDaysToDate: Adds the requested number of Business Days to the provided date.
+                // [EXPERIMENTAL] Adds the requested number of Business Days to the provided date.
                 AddBusinessDaysToDateResponse result = apiInstance.AddBusinessDaysToDate(scope, addBusinessDaysToDateRequest);
                 Debug.WriteLine(result);
             }
@@ -100,7 +100,7 @@ Name | Type | Description  | Notes
 # **AddDateToCalendar**
 > CalendarDate AddDateToCalendar (string scope, string code, CreateDateRequest createDateRequest)
 
-[BETA] AddDateToCalendar: Add a date to a calendar
+[BETA] Add a date to a calendar
 
 Add an event to the calendar. These Events can be a maximum of 24 hours and must be specified in UTC.  A local date will be calculated by the system and applied to the calendar before processing.
 
@@ -119,7 +119,7 @@ namespace Example
         public static void Main()
         {
             Configuration config = new Configuration();
-            config.BasePath = "http://local-unit-test-server.lusid.com:55238";
+            config.BasePath = "https://fbn-prd.lusid.com/api";
             // Configure OAuth2 access token for authorization: oauth2
             config.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -130,7 +130,7 @@ namespace Example
 
             try
             {
-                // [BETA] AddDateToCalendar: Add a date to a calendar
+                // [BETA] Add a date to a calendar
                 CalendarDate result = apiInstance.AddDateToCalendar(scope, code, createDateRequest);
                 Debug.WriteLine(result);
             }
@@ -180,7 +180,7 @@ Name | Type | Description  | Notes
 # **CreateCalendar**
 > Calendar CreateCalendar (CreateCalendarRequest createCalendarRequest)
 
-[BETA] CreateCalendar: Create a calendar in its generic form
+[BETA] Create a calendar in its generic form
 
 Create a calendar in a generic form which can be used to store date events.
 
@@ -199,7 +199,7 @@ namespace Example
         public static void Main()
         {
             Configuration config = new Configuration();
-            config.BasePath = "http://local-unit-test-server.lusid.com:55238";
+            config.BasePath = "https://fbn-prd.lusid.com/api";
             // Configure OAuth2 access token for authorization: oauth2
             config.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -208,7 +208,7 @@ namespace Example
 
             try
             {
-                // [BETA] CreateCalendar: Create a calendar in its generic form
+                // [BETA] Create a calendar in its generic form
                 Calendar result = apiInstance.CreateCalendar(createCalendarRequest);
                 Debug.WriteLine(result);
             }
@@ -256,7 +256,7 @@ Name | Type | Description  | Notes
 # **DeleteCalendar**
 > Calendar DeleteCalendar (string scope, string code)
 
-[BETA] DeleteCalendar: Delete a calendar
+[BETA] Delete a calendar
 
 Delete a calendar and all of its respective dates
 
@@ -275,7 +275,7 @@ namespace Example
         public static void Main()
         {
             Configuration config = new Configuration();
-            config.BasePath = "http://local-unit-test-server.lusid.com:55238";
+            config.BasePath = "https://fbn-prd.lusid.com/api";
             // Configure OAuth2 access token for authorization: oauth2
             config.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -285,7 +285,7 @@ namespace Example
 
             try
             {
-                // [BETA] DeleteCalendar: Delete a calendar
+                // [BETA] Delete a calendar
                 Calendar result = apiInstance.DeleteCalendar(scope, code);
                 Debug.WriteLine(result);
             }
@@ -334,7 +334,7 @@ Name | Type | Description  | Notes
 # **DeleteDateFromCalendar**
 > CalendarDate DeleteDateFromCalendar (string scope, string code, string dateId)
 
-[BETA] DeleteDateFromCalendar: Remove a date from a calendar
+[BETA] Remove a date from a calendar
 
 Remove a date from a calendar.
 
@@ -353,7 +353,7 @@ namespace Example
         public static void Main()
         {
             Configuration config = new Configuration();
-            config.BasePath = "http://local-unit-test-server.lusid.com:55238";
+            config.BasePath = "https://fbn-prd.lusid.com/api";
             // Configure OAuth2 access token for authorization: oauth2
             config.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -364,7 +364,7 @@ namespace Example
 
             try
             {
-                // [BETA] DeleteDateFromCalendar: Remove a date from a calendar
+                // [BETA] Remove a date from a calendar
                 CalendarDate result = apiInstance.DeleteDateFromCalendar(scope, code, dateId);
                 Debug.WriteLine(result);
             }
@@ -414,7 +414,7 @@ Name | Type | Description  | Notes
 # **GenerateSchedule**
 > ICollection&lt;DateTimeOffset&gt; GenerateSchedule (string scope, ValuationSchedule valuationSchedule, DateTimeOffset? asAt = null)
 
-[EXPERIMENTAL] GenerateSchedule: Generate an ordered schedule of dates.
+[EXPERIMENTAL] Generate an ordered schedule of dates.
 
 Returns an ordered array of dates. The dates will only fall on business  days as defined by the scope and calendar codes in the valuation schedule.                Valuations are made at a frequency defined by the valuation schedule's tenor, e.g. every day (\"1D\"),  every other week (\"2W\") etc. These dates will be adjusted onto business days as defined by the schedule's  rollConvention.
 
@@ -433,7 +433,7 @@ namespace Example
         public static void Main()
         {
             Configuration config = new Configuration();
-            config.BasePath = "http://local-unit-test-server.lusid.com:55238";
+            config.BasePath = "https://fbn-prd.lusid.com/api";
             // Configure OAuth2 access token for authorization: oauth2
             config.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -444,7 +444,7 @@ namespace Example
 
             try
             {
-                // [EXPERIMENTAL] GenerateSchedule: Generate an ordered schedule of dates.
+                // [EXPERIMENTAL] Generate an ordered schedule of dates.
                 ICollection<DateTimeOffset> result = apiInstance.GenerateSchedule(scope, valuationSchedule, asAt);
                 Debug.WriteLine(result);
             }
@@ -494,7 +494,7 @@ Name | Type | Description  | Notes
 # **GetCalendar**
 > Calendar GetCalendar (string scope, string code, DateTimeOffset? asAt = null)
 
-[BETA] GetCalendar: Get a calendar in its generic form
+[BETA] Get a calendar in its generic form
 
 Retrieve a generic calendar by a specific ID at a point in AsAt time
 
@@ -513,7 +513,7 @@ namespace Example
         public static void Main()
         {
             Configuration config = new Configuration();
-            config.BasePath = "http://local-unit-test-server.lusid.com:55238";
+            config.BasePath = "https://fbn-prd.lusid.com/api";
             // Configure OAuth2 access token for authorization: oauth2
             config.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -524,7 +524,7 @@ namespace Example
 
             try
             {
-                // [BETA] GetCalendar: Get a calendar in its generic form
+                // [BETA] Get a calendar in its generic form
                 Calendar result = apiInstance.GetCalendar(scope, code, asAt);
                 Debug.WriteLine(result);
             }
@@ -574,7 +574,7 @@ Name | Type | Description  | Notes
 # **GetDates**
 > ResourceListOfCalendarDate GetDates (string scope, string code, DateTimeOrCutLabel fromEffectiveAt = null, DateTimeOrCutLabel toEffectiveAt = null, DateTimeOffset? asAt = null, List<string> idFilter = null)
 
-[BETA] GetDates: Get dates for a specific calendar
+[BETA] Get dates for a specific calendar
 
 Get dates from a specific calendar within a specific window of effective time, at a point in AsAt time.  Providing an id filter can further refine the results.
 
@@ -593,7 +593,7 @@ namespace Example
         public static void Main()
         {
             Configuration config = new Configuration();
-            config.BasePath = "http://local-unit-test-server.lusid.com:55238";
+            config.BasePath = "https://fbn-prd.lusid.com/api";
             // Configure OAuth2 access token for authorization: oauth2
             config.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -607,7 +607,7 @@ namespace Example
 
             try
             {
-                // [BETA] GetDates: Get dates for a specific calendar
+                // [BETA] Get dates for a specific calendar
                 ResourceListOfCalendarDate result = apiInstance.GetDates(scope, code, fromEffectiveAt, toEffectiveAt, asAt, idFilter);
                 Debug.WriteLine(result);
             }
@@ -660,7 +660,7 @@ Name | Type | Description  | Notes
 # **IsBusinessDateTime**
 > IsBusinessDayResponse IsBusinessDateTime (DateTimeOffset dateTime, string scope, string code, DateTimeOffset? asAt = null)
 
-[BETA] IsBusinessDateTime: Check whether a DateTime is a \"Business DateTime\"
+[BETA] Check whether a DateTime is a \"Business DateTime\"
 
 A Business DateTime is defined as a point in time that:      * Does not represent a day that overlaps with the calendars WeekendMask      * If the calendar is a \"Holiday Calendar\" Does not overlap with any dates in the calendar      * If the calendar is a \"TradingHours Calendar\" Does overlap with a date in the calendar                All dates specified must be UTC and the upper bound of a calendar is not inclusive   e.g. From: 2020-12-25-00-00-00        To: 2020-12-26-00-00-00  IsBusinessDay(2020-12-26-00-00-00) == false
 
@@ -679,7 +679,7 @@ namespace Example
         public static void Main()
         {
             Configuration config = new Configuration();
-            config.BasePath = "http://local-unit-test-server.lusid.com:55238";
+            config.BasePath = "https://fbn-prd.lusid.com/api";
             // Configure OAuth2 access token for authorization: oauth2
             config.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -691,7 +691,7 @@ namespace Example
 
             try
             {
-                // [BETA] IsBusinessDateTime: Check whether a DateTime is a \"Business DateTime\"
+                // [BETA] Check whether a DateTime is a \"Business DateTime\"
                 IsBusinessDayResponse result = apiInstance.IsBusinessDateTime(dateTime, scope, code, asAt);
                 Debug.WriteLine(result);
             }
@@ -742,7 +742,7 @@ Name | Type | Description  | Notes
 # **ListCalendars**
 > PagedResourceListOfCalendar ListCalendars (DateTimeOffset? asAt = null, string page = null, int? limit = null, string filter = null)
 
-[BETA] ListCalendars: List Calenders
+[BETA] List Calenders
 
 List calendars at a point in AsAt time.
 
@@ -761,7 +761,7 @@ namespace Example
         public static void Main()
         {
             Configuration config = new Configuration();
-            config.BasePath = "http://local-unit-test-server.lusid.com:55238";
+            config.BasePath = "https://fbn-prd.lusid.com/api";
             // Configure OAuth2 access token for authorization: oauth2
             config.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -773,7 +773,7 @@ namespace Example
 
             try
             {
-                // [BETA] ListCalendars: List Calenders
+                // [BETA] List Calenders
                 PagedResourceListOfCalendar result = apiInstance.ListCalendars(asAt, page, limit, filter);
                 Debug.WriteLine(result);
             }
@@ -824,7 +824,7 @@ Name | Type | Description  | Notes
 # **ListCalendarsInScope**
 > PagedResourceListOfCalendar ListCalendarsInScope (string scope, DateTimeOffset? asAt = null, string page = null, int? start = null, int? limit = null, string filter = null)
 
-[BETA] ListCalendarsInScope: List all calenders in a specified scope
+[BETA] List all calenders in a specified scope
 
 List calendars at a point in AsAt time.
 
@@ -843,7 +843,7 @@ namespace Example
         public static void Main()
         {
             Configuration config = new Configuration();
-            config.BasePath = "http://local-unit-test-server.lusid.com:55238";
+            config.BasePath = "https://fbn-prd.lusid.com/api";
             // Configure OAuth2 access token for authorization: oauth2
             config.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -857,7 +857,7 @@ namespace Example
 
             try
             {
-                // [BETA] ListCalendarsInScope: List all calenders in a specified scope
+                // [BETA] List all calenders in a specified scope
                 PagedResourceListOfCalendar result = apiInstance.ListCalendarsInScope(scope, asAt, page, start, limit, filter);
                 Debug.WriteLine(result);
             }
@@ -910,7 +910,7 @@ Name | Type | Description  | Notes
 # **UpdateCalendar**
 > Calendar UpdateCalendar (string scope, string code, UpdateCalendarRequest updateCalendarRequest)
 
-[BETA] UpdateCalendar: Update a calendar
+[BETA] Update a calendar
 
 Update the calendars WeekendMask, SourceProvider or Properties
 
@@ -929,7 +929,7 @@ namespace Example
         public static void Main()
         {
             Configuration config = new Configuration();
-            config.BasePath = "http://local-unit-test-server.lusid.com:55238";
+            config.BasePath = "https://fbn-prd.lusid.com/api";
             // Configure OAuth2 access token for authorization: oauth2
             config.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -940,7 +940,7 @@ namespace Example
 
             try
             {
-                // [BETA] UpdateCalendar: Update a calendar
+                // [BETA] Update a calendar
                 Calendar result = apiInstance.UpdateCalendar(scope, code, updateCalendarRequest);
                 Debug.WriteLine(result);
             }
