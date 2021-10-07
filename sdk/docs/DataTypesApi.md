@@ -8,7 +8,7 @@ Method | HTTP request | Description
 [**GetDataType**](DataTypesApi.md#getdatatype) | **GET** /api/datatypes/{scope}/{code} | [EARLY ACCESS] GetDataType: Get data type definition
 [**GetUnitsFromDataType**](DataTypesApi.md#getunitsfromdatatype) | **GET** /api/datatypes/{scope}/{code}/units | [EARLY ACCESS] GetUnitsFromDataType: Get units from data type
 [**ListDataTypes**](DataTypesApi.md#listdatatypes) | **GET** /api/datatypes/{scope} | [EARLY ACCESS] ListDataTypes: List data types
-[**UpdateDataType**](DataTypesApi.md#updatedatatype) | **PUT** /api/datatypes/{scope}/{code} | [BETA] UpdateDataType: Update data type definition
+[**UpdateDataType**](DataTypesApi.md#updatedatatype) | **PUT** /api/datatypes/{scope}/{code} | [EXPERIMENTAL] UpdateDataType: Update data type definition
 
 
 <a name="createdatatype"></a>
@@ -343,7 +343,7 @@ Name | Type | Description  | Notes
 # **UpdateDataType**
 > DataType UpdateDataType (string scope, string code, UpdateDataTypeRequest updateDataTypeRequest)
 
-[BETA] UpdateDataType: Update data type definition
+[EXPERIMENTAL] UpdateDataType: Update data type definition
 
 Update the definition of the specified existing data type    Not all elements within a data type definition are modifiable due to the potential implications for data  already stored against the types
 
@@ -373,7 +373,7 @@ namespace Example
 
             try
             {
-                // [BETA] UpdateDataType: Update data type definition
+                // [EXPERIMENTAL] UpdateDataType: Update data type definition
                 DataType result = apiInstance.UpdateDataType(scope, code, updateDataTypeRequest);
                 Debug.WriteLine(result);
             }
