@@ -148,7 +148,7 @@ namespace Lusid.Sdk.Tests.tutorials.Ibor
                 : new List<(DateTimeOffset? PaymentDate, decimal? Amount, string Currency)> 
                 {
                     (fxForward.MaturityDate, fxForward.DomAmount, fxForward.DomCcy),
-                    (fxForward.MaturityDate, fxForward.FgnAmount, fxForward.FgnCcy),
+                    (fxForward.MaturityDate, -fxForward.FgnAmount, fxForward.FgnCcy),
                 };
             Assert.That(cashFlows, Is.EquivalentTo(expectedCashFlows)); 
             
