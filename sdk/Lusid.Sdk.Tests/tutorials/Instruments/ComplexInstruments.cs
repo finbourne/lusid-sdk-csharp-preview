@@ -516,8 +516,8 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
             // CREATE swaption to upsert to LUSID
             var swaption = new InterestRateSwaption(
                 startDate: new DateTimeOffset(2020, 1, 15, 0, 0, 0, TimeSpan.Zero),
-                payOrReceiveFixed: InterestRateSwaption.PayOrReceiveFixedEnum.Pay,
-                deliveryMethod: InterestRateSwaption.DeliveryMethodEnum.Cash,
+                payOrReceiveFixed: "Pay",
+                deliveryMethod: "Cash",
                 swap: swap,
                 instrumentType: LusidInstrument.InstrumentTypeEnum.InterestRateSwaption);
 
