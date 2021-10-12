@@ -74,8 +74,15 @@ namespace Lusid.Sdk.Utilities
             catch (JsonException)
             {
                 return new LusidProblemDetails(
-                    name: "Invalid JSON response",  
-                    detail: $"The response is not deserializable: {ex.ErrorContent}");
+                    name: "Invalid JSON error content response",
+                    errorDetails: new List<Dictionary<string, string>>
+                    {
+                        new Dictionary<string, string>
+                        {
+                            {"errorContent", ex.ErrorContent.ToString()}
+                        }
+                    },
+                    detail: $"The error content response is not deserializable: {ex.ErrorContent}");
             }
         }
 
