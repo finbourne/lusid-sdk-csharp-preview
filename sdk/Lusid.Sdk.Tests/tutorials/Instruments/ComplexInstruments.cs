@@ -4,6 +4,7 @@ using System.Linq;
 using Lusid.Sdk.Api;
 using Lusid.Sdk.Model;
 using Lusid.Sdk.Tests.Utilities;
+using LusidFeatures;
 using NUnit.Framework;
 
 namespace Lusid.Sdk.Tests.Tutorials.Instruments
@@ -20,6 +21,7 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
             _instrumentsApi = apiFactory.Api<IInstrumentsApi>();
         }
 
+        [LusidFeature("F22-1")]
         [Test]
         public void DemonstrateCreationOfFxForward()
         {
@@ -53,6 +55,7 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
             Assert.That(retrFxFwd.FgnCcy, Is.EqualTo(fxForward.FgnCcy));
         }
         
+        [LusidFeature("F22-2")]
         [Test]
         public void DemonstrateCreationOfFxOption()
         {
@@ -91,6 +94,7 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
             Assert.That(roundTripFxOption.IsDeliveryNotCash, Is.EqualTo(fxOption.IsDeliveryNotCash));
         }
         
+        [LusidFeature("F22-3")]
         [Test]
         public void DemonstrateCreationOfFuture()
         {
@@ -145,6 +149,7 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
             Assert.That(roundTripFuture.Underlying.InstrumentType, Is.EqualTo(LusidInstrument.InstrumentTypeEnum.ExoticInstrument));
         }
         
+        [LusidFeature("F22-4")]
         [Test]
         public void DemonstrateCreationOfBond()
         {
@@ -198,6 +203,7 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
             Assert.That(roundTripBond.FlowConventions.PaymentCalendars, Is.EquivalentTo(bond.FlowConventions.PaymentCalendars));
         }
 
+        [LusidFeature("F22-5")]
         [Test]
         public void DemonstrateCreationOfZeroCouponBond()
         {
@@ -253,6 +259,7 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
             Assert.That(roundTripBond.FlowConventions.PaymentCalendars, Is.EquivalentTo(bond.FlowConventions.PaymentCalendars));
         }
         
+        [LusidFeature("F22-6")]
         [Test]
         public void DemonstrateCreationOfCreditDefaultSwap()
         {
@@ -310,7 +317,7 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
             Assert.That(roundTripCds.FlowConventions.PaymentCalendars, Is.EquivalentTo(cds.FlowConventions.PaymentCalendars));
         }
         
-
+        [LusidFeature("F22-7")]
         [Test]
         public void DemonstrateCreationOfSwap()
         {
@@ -405,6 +412,7 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
             Assert.That(retrSwap.Legs.Count, Is.EqualTo(irs.Legs.Count));
         }
 
+        [LusidFeature("F22-8")]
         [Test]
         public void DemonstrateCreationOfSwapWithNamedConventions()
         {
@@ -436,6 +444,7 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
             Assert.That(retrSwap.Legs.Count, Is.EqualTo(irs.Legs.Count));
         }
 
+        [LusidFeature("F22-9")]
         [Test]
         public void DemonstrateCreationOfSwaption()
         {
@@ -541,6 +550,7 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
             Assert.That(roundTripSwaption.Swap.InstrumentType, Is.EqualTo(LusidInstrument.InstrumentTypeEnum.InterestRateSwap));
         }
 
+        [LusidFeature("F22-10")]
         [Test]
         public void DemonstrateCreationOfExotic()
         {
@@ -567,6 +577,7 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
             Assert.That(roundTripExotic.InstrumentFormat, Is.EqualTo(exotic.InstrumentFormat)); 
         }
         
+        [LusidFeature("F22-11")]
         [Test]
         public void DemonstrateCreationOfEquityOption()
         {
@@ -607,6 +618,7 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
             Assert.That(roundTripEquityOption.UnderlyingIdentifier, Is.EqualTo(roundTripEquityOption.UnderlyingIdentifier));
         }
 
+        [LusidFeature("F22-12")]
         [Test]
         public void DemonstrateCreationOfTermDeposit()
         {
