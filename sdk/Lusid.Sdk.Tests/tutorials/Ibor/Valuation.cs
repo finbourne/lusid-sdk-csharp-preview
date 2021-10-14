@@ -54,7 +54,7 @@ namespace Lusid.Sdk.Tests.Tutorials.Ibor
                 _apiFactory.Api<IComplexMarketDataApi>());
         }
         
-        [LusidFeature("F36")]
+        [LusidFeature("F10-1")]
         [Test]
         public void Run_Valuation()
         {

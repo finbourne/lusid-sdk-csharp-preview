@@ -124,7 +124,7 @@ namespace Lusid.Sdk.Tests.Tutorials.MarketData
             Assert.That(upsertInstrumentsResponse.Values, Has.Count.EqualTo(5));
         }
         
-        [LusidFeature("F22")]
+        [LusidFeature("F20-1")]
         [Test]
         public void Lookup_Instrument_By_Unique_Id()
         {
@@ -152,7 +152,7 @@ namespace Lusid.Sdk.Tests.Tutorials.MarketData
             Assert.That(identifiers[1].Value.LabelValue, Is.EqualTo("BH4HKS3"));
         }
         
-         private void EnsurePropertyDefinition(string code)
+        private void EnsurePropertyDefinition(string code)
         {
             var propertyApi = _apiFactory.Api<IPropertyDefinitionsApi>();
                 
@@ -179,7 +179,7 @@ namespace Lusid.Sdk.Tests.Tutorials.MarketData
             }
         }
         
-        [LusidFeature("F23")]
+        [LusidFeature("F20-2")]
         [Test]
         public void List_Available_Identifiers()
         {
@@ -193,7 +193,7 @@ namespace Lusid.Sdk.Tests.Tutorials.MarketData
             }
         }
         
-        [LusidFeature("F24")]
+        [LusidFeature("F20-3")]
         [Test]
         public void List_All_Instruments()
         {
@@ -205,7 +205,7 @@ namespace Lusid.Sdk.Tests.Tutorials.MarketData
             Assert.That(instruments.Values.Count(), Is.LessThanOrEqualTo(pageSize));
         }
         
-        [LusidFeature("F25")]
+        [LusidFeature("F20-4")]
         [Test]
         public void List_Instruments_By_Identifier_Type()
         {
@@ -223,7 +223,7 @@ namespace Lusid.Sdk.Tests.Tutorials.MarketData
             }
         }
         
-        [LusidFeature("F26")]
+        [LusidFeature("F4-4")]
         [Test]
         public void Edit_Instrument_Property()
         {
@@ -259,7 +259,7 @@ namespace Lusid.Sdk.Tests.Tutorials.MarketData
                 Is.Not.Null, $"Cannot find property {propertyKey} with value {propertyValue.LabelValue}");
         }
         
-        [LusidFeature("F27")]
+        [LusidFeature("F5-12")]
         [Test]
         public void Create_Custom_Instrument()
         {
