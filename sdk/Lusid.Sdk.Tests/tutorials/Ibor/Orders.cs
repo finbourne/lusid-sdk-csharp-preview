@@ -1,7 +1,8 @@
 ﻿﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Lusid.Sdk.Api;
+ using System.Threading;
+ using Lusid.Sdk.Api;
 using Lusid.Sdk.Client;
 using Lusid.Sdk.Model;
  using Lusid.Sdk.Tests.Utilities;
@@ -377,6 +378,10 @@ namespace Lusid.Sdk.Tests.Tutorials.Ibor
             var order1Filter = $"{order1}";
             var order2Filter = $"{order2}";
             var order3Filter = $"{order3}";
+            
+            // In order to enable efficient filtering, LUSID indexes upserted data under the hood. Here,
+            // we wait for a few seconds whilst this happens.
+            Thread.Sleep(5000);
 
             var quantityFilter = _ordersApi.ListOrders(
                 asAt: t,
