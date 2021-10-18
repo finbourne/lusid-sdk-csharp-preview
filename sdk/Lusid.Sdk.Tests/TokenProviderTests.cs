@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
+using Lusid.Sdk.Api;
 using Lusid.Sdk.Tests.Utilities;
 using Lusid.Sdk.Utilities;
 using Microsoft.Extensions.Configuration;
@@ -79,7 +81,10 @@ namespace Lusid.Sdk.Tests
             var mockTokenProvider = new Mock<ITokenProvider>(MockBehavior.Loose);  // Don't care about the response
 
             // GIVEN a TokenProviderConfiguration configured with a mock TokenProvider
-            TokenProviderConfiguration config = new TokenProviderConfiguration(mockTokenProvider.Object);
+            
+            // We need to set the token provider before accessing TokenProviderConfiguration
+            TokenProviderConfiguration.TokenProvider = mockTokenProvider.Object;
+            var config = TokenProviderConfiguration.Instance;
 
             // BEFORE the token is requested
             // THEN TokenProvider should not have been called
@@ -136,6 +141,15 @@ namespace Lusid.Sdk.Tests
             // THEN it should be populated, and the ExpiresOn should be in the future
             Assert.That(refreshedToken, Is.Not.Empty);
             Assert.That(provider.GetLastToken().ExpiresOn, Is.GreaterThan(DateTimeOffset.UtcNow));
+        }
+
+        [Test]
+        public void GetInstance_TokenProviderConfiguration_TokenProviderNull_Failure()
+        {
+            var exception = Assert.Throws<ArgumentNullException>(() => _ = TokenProviderConfiguration.Instance);
+
+            Assert.That(exception.Message ==
+                        $"Token provider must be set before accessing the {nameof(TokenProviderConfiguration)} instance. (Parameter 'TokenProvider')");
         }
     }
 }

@@ -8,22 +8,33 @@ namespace Lusid.Sdk.Utilities
     /// </summary>
     internal class TokenProviderConfiguration : Configuration
     {
-        private readonly ITokenProvider _tokenProvider;
+        private static readonly Lazy<TokenProviderConfiguration> LazyInstance =
+            new Lazy<TokenProviderConfiguration>(() => new TokenProviderConfiguration());
+
+        public static ITokenProvider TokenProvider { private get; set; }
 
         /// <summary>
         /// Create a new Configuration using the supplied token provider
         /// </summary>
-        public TokenProviderConfiguration(ITokenProvider tokenProvider)
+        private TokenProviderConfiguration()
         {
-            _tokenProvider = tokenProvider;
+            if (TokenProvider == null)
+            {
+                throw new ArgumentNullException(
+                    nameof(TokenProvider),
+                    $"Token provider must be set before accessing the {nameof(TokenProviderConfiguration)} instance.");
+            }
         }
+
+        public static TokenProviderConfiguration Instance => LazyInstance.Value;
+
 
         /// <summary>
         /// Gets/sets the accesstoken
         /// </summary>
         public override string AccessToken
         {
-            get => _tokenProvider.GetAuthenticationTokenAsync().Result;
+            get => TokenProvider.GetAuthenticationTokenAsync().Result;
             set => throw new InvalidOperationException("AccessToken is not assignable");
         }
     }
