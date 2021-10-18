@@ -46,12 +46,17 @@ namespace Lusid.Sdk.Utilities
 
             // Create configuration
             var tokenProvider = new ClientCredentialsFlowTokenProvider(apiConfiguration);
-            var configuration = new TokenProviderConfiguration(tokenProvider)
-            {
-                BasePath = apiConfiguration.ApiUrl,
-            };
+
+            // We need to set the token provider before accessing TokenProviderConfiguration
+            TokenProviderConfiguration.TokenProvider = tokenProvider;
             
-            configuration.DefaultHeaders.Add("X-LUSID-Application", apiConfiguration.ApplicationName);
+            var configuration = TokenProviderConfiguration.Instance;
+            configuration.BasePath = apiConfiguration.ApiUrl;
+
+            if (!configuration.DefaultHeaders.ContainsKey("X-LUSID-Application"))
+            {
+                configuration.DefaultHeaders.Add("X-LUSID-Application", apiConfiguration.ApplicationName);
+            }
 
             _apis = Init(configuration);
         }

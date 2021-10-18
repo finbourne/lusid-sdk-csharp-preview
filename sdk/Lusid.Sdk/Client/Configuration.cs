@@ -18,6 +18,7 @@ using System.Net;
 using System.Reflection;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
+using Lusid.Sdk.Utilities;
 
 namespace Lusid.Sdk.Client
 {
@@ -494,21 +495,21 @@ namespace Lusid.Sdk.Client
             foreach (var kvp in second.ApiKeyPrefix) apiKeyPrefix[kvp.Key] = kvp.Value;
             foreach (var kvp in second.DefaultHeaders) defaultHeaders[kvp.Key] = kvp.Value;
 
-            var config = new Configuration
-            {
-                ApiKey = apiKey,
-                ApiKeyPrefix = apiKeyPrefix,
-                DefaultHeaders = defaultHeaders,
-                BasePath = second.BasePath ?? first.BasePath,
-                Timeout = second.Timeout,
-                Proxy = second.Proxy ?? first.Proxy,
-                UserAgent = second.UserAgent ?? first.UserAgent,
-                Username = second.Username ?? first.Username,
-                Password = second.Password ?? first.Password,
-                AccessToken = second.AccessToken ?? first.AccessToken,
-                TempFolderPath = second.TempFolderPath ?? first.TempFolderPath,
-                DateTimeFormat = second.DateTimeFormat ?? first.DateTimeFormat
-            };
+            var config = TokenProviderConfiguration.Instance;
+
+            config.ApiKey = apiKey;
+            config.ApiKeyPrefix = apiKeyPrefix;
+            config.DefaultHeaders = defaultHeaders;
+            config.BasePath = second.BasePath ?? first.BasePath;
+            config.Timeout = second.Timeout;
+            config.Proxy = second.Proxy ?? first.Proxy;
+            config.UserAgent = second.UserAgent ?? first.UserAgent;
+            config.Username = second.Username ?? first.Username;
+            config.Password = second.Password ?? first.Password;
+            //config.AccessToken = second.AccessToken ?? first.AccessToken;
+            config.TempFolderPath = second.TempFolderPath ?? first.TempFolderPath;
+            config.DateTimeFormat = second.DateTimeFormat ?? first.DateTimeFormat;
+            
             return config;
         }
         #endregion Static Members
