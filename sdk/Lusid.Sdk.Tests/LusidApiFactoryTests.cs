@@ -152,6 +152,19 @@ namespace Lusid.Sdk.Tests
         }
         
         [Test]
+        public void ApiException_WhenErrorContentIsNotAValidJson_DoesNotThrow()
+        {
+            const string errorContent = "<Some Invalid Json>";
+            var exception = new ApiException(
+                errorCode: 123,
+                message: "Some Critical Exception",
+                errorContent: errorContent);
+
+            Assert.That(exception.GetRequestId(), Is.Null);
+            Assert.That(exception.ProblemDetails(), Is.Null);
+        }
+        
+        [Test]
         public void ApiExceptionMalformedInsightsUrl_ReturnsNull_RequestId()
         {
             try

@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Net;
 using Lusid.Sdk.Client;
 using Lusid.Sdk.Model;
@@ -33,7 +34,7 @@ namespace Lusid.Sdk.Utilities
             details = null;
             return false;
         }
-        
+
         /// <summary>
         /// Return the details of a validation problem
         /// </summary>
@@ -43,16 +44,18 @@ namespace Lusid.Sdk.Utilities
             {
                 return null;
             }
-            
+
             //    ApiException.ErrorContent contains a JSON serialized ValidationProblemDetails
-            return JsonConvert.DeserializeObject<LusidValidationProblemDetails>(ex.ErrorContent.ToString(), new JsonConverter[]
-            {
-                new PropertyBasedConverter(),
-            });
+            return JsonConvert.DeserializeObject<LusidValidationProblemDetails>(ex.ErrorContent.ToString(),
+                new JsonConverter[]
+                {
+                    new PropertyBasedConverter(),
+                });
         }
-        
+
         /// <summary>
         /// Return the details of a problem
+        /// In case the ErrorContent object that gets returned is not a valid deserializable LusidProblemDetails JSON, a null be returned
         /// </summary>
         public static LusidProblemDetails ProblemDetails(this ApiException ex)
         {
@@ -61,11 +64,18 @@ namespace Lusid.Sdk.Utilities
                 return null;
             }
 
-            //    ApiException.ErrorContent contains a JSON serialized ProblemDetails
-            return JsonConvert.DeserializeObject<LusidProblemDetails>(ex.ErrorContent.ToString(), new JsonConverter[]
+            try
             {
-                new PropertyBasedConverter(),
-            });
+                // ApiException.ErrorContent contains a JSON serialized ProblemDetails
+                return JsonConvert.DeserializeObject<LusidProblemDetails>(
+                    ex.ErrorContent.ToString(), new PropertyBasedConverter()
+                );
+            }
+            catch (JsonException)
+            {
+                // Return a null in case the ErrorContent is an invalid JSON or a HTML string
+                return null;
+            }
         }
 
         /// <summary>
@@ -77,7 +87,7 @@ namespace Lusid.Sdk.Utilities
             var instanceParts = ex?.ProblemDetails()?.Instance?.Split("/".ToCharArray());
 
             if (instanceParts == null || instanceParts.Length < 7) return null;
-            
+
             return instanceParts[6];
         }
     }
