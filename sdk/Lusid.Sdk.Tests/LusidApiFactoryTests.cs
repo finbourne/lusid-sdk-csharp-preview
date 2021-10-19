@@ -161,7 +161,7 @@ namespace Lusid.Sdk.Tests
                 errorContent: errorContent);
 
             Assert.That(exception.GetRequestId(), Is.Null);
-            Assert.That(exception.ProblemDetails().Detail, Contains.Substring(errorContent));
+            Assert.That(exception.ProblemDetails(), Is.Null);
         }
         
         [Test]
