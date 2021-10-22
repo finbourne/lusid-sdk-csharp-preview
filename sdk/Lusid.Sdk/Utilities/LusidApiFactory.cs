@@ -102,7 +102,7 @@ namespace Lusid.Sdk.Utilities
         public TApi Api<TApi>() where TApi : class, IApiAccessor
         {
 
-            if (_tokenProvider.IsAccessTokenExpired)
+            if (_tokenProvider != null && _tokenProvider.IsAccessTokenExpired)
             {
                 _apis = Init(CreateConfiguration());
             }
