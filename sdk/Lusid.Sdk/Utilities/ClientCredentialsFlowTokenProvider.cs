@@ -57,6 +57,13 @@ namespace Lusid.Sdk.Utilities
 
         
         private AuthenticationToken _lastIssuedToken;
+        
+        /// <summary>
+        /// Checks if current AccessToken if expired
+        /// </summary>
+        public bool IsAccessTokenExpired { 
+            get => _lastIssuedToken == null || _lastIssuedToken.ExpiresOn < DateTimeOffset.UtcNow;
+        }
 
         /// <summary>
         /// Constructor
@@ -82,7 +89,7 @@ namespace Lusid.Sdk.Utilities
                 await _semaphore.WaitAsync();
                 try
                 {
-                    if (_lastIssuedToken == null || _lastIssuedToken.ExpiresOn < DateTimeOffset.UtcNow)
+                    if (IsAccessTokenExpired)
                     {
                         if (_lastIssuedToken?.RefreshToken != null && _lastIssuedToken?.RefreshExpiresOn > DateTimeOffset.UtcNow)
                         {

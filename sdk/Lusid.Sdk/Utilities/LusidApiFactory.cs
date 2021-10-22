@@ -24,7 +24,10 @@ namespace Lusid.Sdk.Utilities
             .GetTypes()
             .Where(t => typeof(IApiAccessor).IsAssignableFrom(t) && t.IsClass);
 
-        private readonly IReadOnlyDictionary<Type, IApiAccessor> _apis;
+        private IReadOnlyDictionary<Type, IApiAccessor> _apis;
+
+        private readonly ApiConfiguration _apiConfiguration;
+        private readonly ClientCredentialsFlowTokenProvider _tokenProvider;
 
         /// <summary>
         /// Create a new factory using the specified configuration
@@ -44,16 +47,25 @@ namespace Lusid.Sdk.Utilities
                 throw new UriFormatException($"Invalid LUSID Uri: {apiConfiguration.ApiUrl}");
             }
 
+            _apiConfiguration = apiConfiguration;
+
             // Create configuration
-            var tokenProvider = new ClientCredentialsFlowTokenProvider(apiConfiguration);
-            var configuration = new TokenProviderConfiguration(tokenProvider)
+            _tokenProvider = new ClientCredentialsFlowTokenProvider(_apiConfiguration);
+            var configuration = CreateConfiguration();
+            
+            _apis = Init(configuration);
+        }
+
+        private Configuration CreateConfiguration()
+        {
+            var configuration = new TokenProviderConfiguration(_tokenProvider)
             {
-                BasePath = apiConfiguration.ApiUrl,
+                BasePath = _apiConfiguration.ApiUrl,
             };
             
-            configuration.DefaultHeaders.Add("X-LUSID-Application", apiConfiguration.ApplicationName);
+            configuration.DefaultHeaders.Add("X-LUSID-Application", _apiConfiguration.ApplicationName);
 
-            _apis = Init(configuration);
+            return configuration;
         }
 
         /// <summary>
@@ -89,6 +101,12 @@ namespace Lusid.Sdk.Utilities
         /// <inheritdoc />
         public TApi Api<TApi>() where TApi : class, IApiAccessor
         {
+
+            if (_tokenProvider.IsAccessTokenExpired)
+            {
+                _apis = Init(CreateConfiguration());
+            }
+            
             _apis.TryGetValue(typeof(TApi), out var api);
 
             if (api == null)
