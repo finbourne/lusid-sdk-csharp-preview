@@ -1,6 +1,6 @@
 # Lusid.Sdk.Api.FeesAndCommissionsApi
 
-All URIs are relative to *http://local-unit-test-server.lusid.com:54254*
+All URIs are relative to *http://local-unit-test-server.lusid.com:50466*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
@@ -10,7 +10,7 @@ Method | HTTP request | Description
 
 <a name="getapplicablefees"></a>
 # **GetApplicableFees**
-> ResourceListOfFeeCalculationDetails GetApplicableFees (string instrumentIdentifierType = null, string instrumentIdentifier = null, string portfolioScope = null, string portfolioCode = null, List<string> additionalSearchKeys = null)
+> ResourceListOfFeeCalculationDetails GetApplicableFees (string instrumentIdentifierType = null, string instrumentIdentifier = null, string portfolioScope = null, string portfolioCode = null, List<string> additionalSearchKeys = null, string fileName = null)
 
 [EXPERIMENTAL] GetApplicableFees: Get the Fees and Commissions that may be applicable to a transaction.
 
@@ -31,7 +31,7 @@ namespace Example
         public static void Main()
         {
             Configuration config = new Configuration();
-            config.BasePath = "http://local-unit-test-server.lusid.com:54254";
+            config.BasePath = "http://local-unit-test-server.lusid.com:50466";
             // Configure OAuth2 access token for authorization: oauth2
             config.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -41,11 +41,12 @@ namespace Example
             var portfolioScope = portfolioScope_example;  // string | Optional. The scope of the portfolio to fetch additional properties from. (optional) 
             var portfolioCode = portfolioCode_example;  // string | Optional. The code of the portfolio to fetch additional properties from. (optional) 
             var additionalSearchKeys = new List<string>(); // List<string> | Any other property keys or fields and their corresponding values that should be matched for fees. Eg. \"Instrument/default/Name=exampleValue\" or \"AdditionalKey2=Value2\".              The list of fields available is as follows : \"RuleName\", \"Country\", \"FeeType\", \"FeeRate\", \"MinFee\", \"MaxFee\", \"PropertyKey\",               \"TransactionType\", \"Counterparty\", \"SettlementCurrency\", \"TransactionCurrency\", \"ExecutionBroker\",               \"Custodian\", \"Exchange\" (optional) 
+            var fileName = fileName_example;  // string | Optionally provide the filename of an alternative to the default fees file ({fees.csv})              in your {fees-and-commissions} Drive folder, to support different fee structures.              For example, you might use one to understand the effect of different fees when considering a change in broker. (optional) 
 
             try
             {
                 // [EXPERIMENTAL] GetApplicableFees: Get the Fees and Commissions that may be applicable to a transaction.
-                ResourceListOfFeeCalculationDetails result = apiInstance.GetApplicableFees(instrumentIdentifierType, instrumentIdentifier, portfolioScope, portfolioCode, additionalSearchKeys);
+                ResourceListOfFeeCalculationDetails result = apiInstance.GetApplicableFees(instrumentIdentifierType, instrumentIdentifier, portfolioScope, portfolioCode, additionalSearchKeys, fileName);
                 Debug.WriteLine(result);
             }
             catch (ApiException  e)
@@ -68,6 +69,7 @@ Name | Type | Description  | Notes
  **portfolioScope** | **string**| Optional. The scope of the portfolio to fetch additional properties from. | [optional] 
  **portfolioCode** | **string**| Optional. The code of the portfolio to fetch additional properties from. | [optional] 
  **additionalSearchKeys** | [**List&lt;string&gt;**](string.md)| Any other property keys or fields and their corresponding values that should be matched for fees. Eg. \&quot;Instrument/default/Name&#x3D;exampleValue\&quot; or \&quot;AdditionalKey2&#x3D;Value2\&quot;.              The list of fields available is as follows : \&quot;RuleName\&quot;, \&quot;Country\&quot;, \&quot;FeeType\&quot;, \&quot;FeeRate\&quot;, \&quot;MinFee\&quot;, \&quot;MaxFee\&quot;, \&quot;PropertyKey\&quot;,               \&quot;TransactionType\&quot;, \&quot;Counterparty\&quot;, \&quot;SettlementCurrency\&quot;, \&quot;TransactionCurrency\&quot;, \&quot;ExecutionBroker\&quot;,               \&quot;Custodian\&quot;, \&quot;Exchange\&quot; | [optional] 
+ **fileName** | **string**| Optionally provide the filename of an alternative to the default fees file ({fees.csv})              in your {fees-and-commissions} Drive folder, to support different fee structures.              For example, you might use one to understand the effect of different fees when considering a change in broker. | [optional] 
 
 ### Return type
 
@@ -94,7 +96,7 @@ Name | Type | Description  | Notes
 
 <a name="listallfees"></a>
 # **ListAllFees**
-> ResourceListOfFeeCalculationDetails ListAllFees (List<string> additionalSearchKeys = null)
+> ResourceListOfFeeCalculationDetails ListAllFees (List<string> additionalSearchKeys = null, string fileName = null)
 
 [EXPERIMENTAL] ListAllFees: List the rules available for fees and commissions.
 
@@ -115,17 +117,18 @@ namespace Example
         public static void Main()
         {
             Configuration config = new Configuration();
-            config.BasePath = "http://local-unit-test-server.lusid.com:54254";
+            config.BasePath = "http://local-unit-test-server.lusid.com:50466";
             // Configure OAuth2 access token for authorization: oauth2
             config.AccessToken = "YOUR_ACCESS_TOKEN";
 
             var apiInstance = new FeesAndCommissionsApi(config);
             var additionalSearchKeys = new List<string>(); // List<string> | Any other property keys or fields and their corresponding values that should be matched to reduce the list of rules returned. Eg. \"Instrument/default/Name=exampleValue\" or \"AdditionalKey2=Value2\".              The minimum list of fields available is as follows : \"RuleName\", \"Country\", \"FeeCalculationMethod\", \"FeeMultiplier\", \"MinFeeCalculationMethod\",               \"MinFeeMultiplier\", \"MaxFeeCalculationMethod\", \"MaxFeeMultiplier\", \"PropertyKey\",               \"TransactionType\", \"Counterparty\", \"SettlementCurrency\", \"TransactionCurrency\", \"ExecutionBroker\",               \"Custodian\", \"Exchange\" (optional) 
+            var fileName = fileName_example;  // string | Optionally provide the filename of an alternative to the default fees file ({fees.csv})              in your Drive {fees-and-commissions} folder, to support different fee structures.              For example, you might use one to understand the effect of different fees when considering a change in broker. (optional) 
 
             try
             {
                 // [EXPERIMENTAL] ListAllFees: List the rules available for fees and commissions.
-                ResourceListOfFeeCalculationDetails result = apiInstance.ListAllFees(additionalSearchKeys);
+                ResourceListOfFeeCalculationDetails result = apiInstance.ListAllFees(additionalSearchKeys, fileName);
                 Debug.WriteLine(result);
             }
             catch (ApiException  e)
@@ -144,6 +147,7 @@ namespace Example
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **additionalSearchKeys** | [**List&lt;string&gt;**](string.md)| Any other property keys or fields and their corresponding values that should be matched to reduce the list of rules returned. Eg. \&quot;Instrument/default/Name&#x3D;exampleValue\&quot; or \&quot;AdditionalKey2&#x3D;Value2\&quot;.              The minimum list of fields available is as follows : \&quot;RuleName\&quot;, \&quot;Country\&quot;, \&quot;FeeCalculationMethod\&quot;, \&quot;FeeMultiplier\&quot;, \&quot;MinFeeCalculationMethod\&quot;,               \&quot;MinFeeMultiplier\&quot;, \&quot;MaxFeeCalculationMethod\&quot;, \&quot;MaxFeeMultiplier\&quot;, \&quot;PropertyKey\&quot;,               \&quot;TransactionType\&quot;, \&quot;Counterparty\&quot;, \&quot;SettlementCurrency\&quot;, \&quot;TransactionCurrency\&quot;, \&quot;ExecutionBroker\&quot;,               \&quot;Custodian\&quot;, \&quot;Exchange\&quot; | [optional] 
+ **fileName** | **string**| Optionally provide the filename of an alternative to the default fees file ({fees.csv})              in your Drive {fees-and-commissions} folder, to support different fee structures.              For example, you might use one to understand the effect of different fees when considering a change in broker. | [optional] 
 
 ### Return type
 
