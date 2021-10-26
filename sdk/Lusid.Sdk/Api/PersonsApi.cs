@@ -1011,10 +1011,7 @@ namespace Lusid.Sdk.Api
         {
             if (configuration == null) throw new ArgumentNullException("configuration");
 
-            this.Configuration = Lusid.Sdk.Client.Configuration.MergeConfigurations(
-                Lusid.Sdk.Client.GlobalConfiguration.Instance,
-                configuration
-            );
+            this.Configuration = configuration;
             this.Client = new Lusid.Sdk.Client.ApiClient(this.Configuration.BasePath);
             this.AsynchronousClient = new Lusid.Sdk.Client.ApiClient(this.Configuration.BasePath);
             ExceptionFactory = Lusid.Sdk.Client.Configuration.DefaultExceptionFactory;
