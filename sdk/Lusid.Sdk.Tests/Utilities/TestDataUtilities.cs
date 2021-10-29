@@ -409,7 +409,18 @@ namespace Lusid.Sdk.Tests.Utilities
             Assert.That(upsertResponse.Failed.Count, Is.EqualTo(0));
             Assert.That(upsertResponse.Values.Count, Is.EqualTo(upsertQuoteRequests.Count));
         }
-        
+
+        public void CreateAndUpsertSimpleQuote(string scope, string id, QuoteSeriesId.InstrumentIdTypeEnum instrumentIdType, decimal price, string ccy, DateTimeOffset effectiveAt)
+        {
+            var quoteRequest = CreateSimpleQuoteUpsertRequest(id, instrumentIdType, price, ccy, effectiveAt);
+            var upsertRequests = new Dictionary<string, UpsertQuoteRequest> {{"req1", quoteRequest}};
+
+            // CHECK quotes upsert was successful for all the quotes
+            var upsertResponse = _quotesApi.UpsertQuotes(scope, upsertRequests);
+            Assert.That(upsertResponse.Failed.Count, Is.EqualTo(0));
+            Assert.That(upsertResponse.Values.Count, Is.EqualTo(upsertRequests.Count));
+        }
+
         /// <summary>
         /// Helper method to create simple equity or fx quote upsert request
         /// </summary>
@@ -438,42 +449,117 @@ namespace Lusid.Sdk.Tests.Utilities
         /// </summary>
         public void UpsertRateCurves(string scope, DateTimeOffset effectiveAt)
         {
-            // CREATE dictionary of upsert requests, rates are structured market data
+            CreateAndUpsertOisCurve(scope, effectiveAt, "USD");
+            CreateAndUpsertOisCurveHighRates(scope, effectiveAt, "JPY");
+            CreateAndUpsert6MRateCurve(scope, effectiveAt, "USD"); // this would be necessary for valuation of swaps paying every 6M
+        }
+
+        public void CreateAndUpsertOisCurve(string scope, DateTimeOffset effectiveAt, string currency)
+        {
+            var complexMarketData = CreateDiscountCurve(effectiveAt);
+            var complexMarketDataId = new ComplexMarketDataId(
+                provider: "Lusid",
+                effectiveAt: effectiveAt.ToString("o"),
+                marketAsset: $"{currency}/{currency}OIS",
+                priceSource: "");
             var upsertRequest = new Dictionary<string, UpsertComplexMarketDataRequest>
-            {
-                {$"usd_6m_rate", CreateUpsertUsdRateCurve(effectiveAt)},
-                {$"usd_ois", CreateUpsertOisCurve(effectiveAt, "USD")},
-                {$"jpy_ois", CreateUpsertOisCurve(effectiveAt, "JPY")}
-            };
+                {{"0", new UpsertComplexMarketDataRequest(complexMarketDataId, complexMarketData)}};
 
             // CHECK upsert was successful
             var upsertResponse = _complexMarketDataApi.UpsertComplexMarketData(scope, upsertRequest);
             Assert.That(upsertResponse.Values.Values, Is.Not.Null);
             Assert.That(upsertResponse.Values.Values.Count, Is.EqualTo(upsertRequest.Count));
         }
-        
-        private UpsertComplexMarketDataRequest CreateUpsertOisCurve(DateTimeOffset effectiveAt, string currency)
+
+        public void CreateAndUpsertOisCurveHighRates(string scope, DateTimeOffset effectiveAt, string currency)
         {
-            var complexMarketData = GetRateCurveJsonFromFile(($"{currency}OIS.json"));
+            // different rates as the valuation for some instruments such as fx forwards depend on the difference between the rates curves in two currencies
+            var complexMarketData = CreateDiscountCurveHighRates(effectiveAt);
             var complexMarketDataId = new ComplexMarketDataId(
                 provider: "Lusid",
                 effectiveAt: effectiveAt.ToString("o"),
                 marketAsset: $"{currency}/{currency}OIS",
                 priceSource: "");
+            var upsertRequest = new Dictionary<string, UpsertComplexMarketDataRequest>
+                {{"0", new UpsertComplexMarketDataRequest(complexMarketDataId, complexMarketData)}};
 
-            return new UpsertComplexMarketDataRequest(complexMarketDataId, complexMarketData);
+            // CHECK upsert was successful
+            var upsertResponse = _complexMarketDataApi.UpsertComplexMarketData(scope, upsertRequest);
+            Assert.That(upsertResponse.Values.Values, Is.Not.Null);
+            Assert.That(upsertResponse.Values.Values.Count, Is.EqualTo(upsertRequest.Count));
         }
 
-        private UpsertComplexMarketDataRequest CreateUpsertUsdRateCurve(DateTimeOffset effectiveAt)
+        private DiscountFactorCurveData CreateDiscountCurve(DateTimeOffset effectiveAt)
+        {
+            var discountDates = new List<DateTimeOffset>
+                { effectiveAt, effectiveAt.AddMonths(3), effectiveAt.AddMonths(6), effectiveAt.AddMonths(9), effectiveAt.AddMonths(12), effectiveAt.AddYears(5) };
+            var rates = new List<decimal> { 1.0m, 0.995026109593975m, 0.990076958773721m, 0.985098445011387m, 0.980144965261876m, 0.9m };
+            return new DiscountFactorCurveData(effectiveAt, discountDates, rates, ComplexMarketData.MarketDataTypeEnum.DiscountFactorCurveData);
+        }
+
+        private DiscountFactorCurveData CreateDiscountCurveHighRates(DateTimeOffset effectiveAt)
+        {
+            var discountDates = new List<DateTimeOffset>
+                { effectiveAt, effectiveAt.AddMonths(3), effectiveAt.AddMonths(6), effectiveAt.AddMonths(9), effectiveAt.AddMonths(12), effectiveAt.AddYears(5) };
+            var rates = new List<decimal> { 1.0m, 0.992548449440757m, 0.985152424487251m, 0.977731146620901m, 0.970365774179742m, 0.85m };
+            return new DiscountFactorCurveData(effectiveAt, discountDates, rates, ComplexMarketData.MarketDataTypeEnum.DiscountFactorCurveData);
+        }
+
+        public void CreateAndUpsert6MRateCurve(string scope, DateTimeOffset effectiveAt, string currency)
         {
             var complexMarketData = GetRateCurveJsonFromFile("USD6M.json");
             var complexMarketDataId = new ComplexMarketDataId(
                 provider: "Lusid",
                 effectiveAt: effectiveAt.ToString("o"),
-                marketAsset: "USD/6M",
+                marketAsset: $"{currency}/6M",
                 priceSource: "");
 
-            return new UpsertComplexMarketDataRequest(complexMarketDataId, complexMarketData);
+            var upsertRequest = new Dictionary<string, UpsertComplexMarketDataRequest>
+                {{"0", new UpsertComplexMarketDataRequest(complexMarketDataId, complexMarketData)}};
+
+            // CHECK upsert was successful
+            var upsertResponse = _complexMarketDataApi.UpsertComplexMarketData(scope, upsertRequest);
+            Assert.That(upsertResponse.Values.Values, Is.Not.Null);
+            Assert.That(upsertResponse.Values.Values.Count, Is.EqualTo(upsertRequest.Count));
+        }
+
+        public void CreateAndUpsertVolSurface(string scope, DateTimeOffset effectiveAt, EquityOption option, decimal vol = 0.5m)
+        {
+            var instruments = new List<LusidInstrument> {option};
+            var quotes = new List<MarketQuote> {new MarketQuote(MarketQuote.QuoteTypeEnum.LogNormalVol, vol)};
+            var complexMarketData = new EquityVolSurfaceData(effectiveAt, instruments, quotes, ComplexMarketData.MarketDataTypeEnum.EquityVolSurfaceData);
+
+            var complexMarketDataId = new ComplexMarketDataId(
+                provider: "Lusid",
+                effectiveAt: effectiveAt.ToString("o"),
+                marketAsset: "ACME/USD/LN");
+            var upsertRequest = new Dictionary<string, UpsertComplexMarketDataRequest>
+                {{"0", new UpsertComplexMarketDataRequest(complexMarketDataId, complexMarketData)}};
+
+            // CHECK upsert was successful
+            var upsertResponse = _complexMarketDataApi.UpsertComplexMarketData(scope, upsertRequest);
+            Assert.That(upsertResponse.Values.Values, Is.Not.Null);
+            Assert.That(upsertResponse.Values.Values.Count, Is.EqualTo(upsertRequest.Count));
+        }
+
+        public void CreateAndUpsertVolSurface(string scope, DateTimeOffset effectiveAt, FxOption option, decimal vol)
+        {
+            var instruments = new List<LusidInstrument> {option};
+            var quotes = new List<MarketQuote> {new MarketQuote(MarketQuote.QuoteTypeEnum.LogNormalVol, vol)};
+            var complexMarketData = new EquityVolSurfaceData(effectiveAt, instruments, quotes, ComplexMarketData.MarketDataTypeEnum.EquityVolSurfaceData);
+
+            var complexMarketDataId = new ComplexMarketDataId(
+                provider: "Lusid",
+                effectiveAt: effectiveAt.ToString("o"),
+                marketAsset: "ACME.USD.LN",
+                priceSource: "");
+            var upsertRequest = new Dictionary<string, UpsertComplexMarketDataRequest>
+                {{"0", new UpsertComplexMarketDataRequest(complexMarketDataId, complexMarketData)}};
+
+            // CHECK upsert was successful
+            var upsertResponse = _complexMarketDataApi.UpsertComplexMarketData(scope, upsertRequest);
+            Assert.That(upsertResponse.Values.Values, Is.Not.Null);
+            Assert.That(upsertResponse.Values.Values.Count, Is.EqualTo(upsertRequest.Count));
         }
         
         private static ComplexMarketData GetRateCurveJsonFromFile(string filename)

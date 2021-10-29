@@ -607,15 +607,15 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
             Assert.That(retrieved.InstrumentType == LusidInstrument.InstrumentTypeEnum.EquityOption);
             var roundTripEquityOption = retrieved as EquityOption;
             Assert.That(roundTripEquityOption, Is.Not.Null);
-            Assert.That(roundTripEquityOption.Code, Is.EqualTo(roundTripEquityOption.Code));
-            Assert.That(roundTripEquityOption.Strike, Is.EqualTo(roundTripEquityOption.Strike));
-            Assert.That(roundTripEquityOption.DeliveryType, Is.EqualTo(roundTripEquityOption.DeliveryType));
-            Assert.That(roundTripEquityOption.DomCcy, Is.EqualTo(roundTripEquityOption.DomCcy));
-            Assert.That(roundTripEquityOption.OptionType, Is.EqualTo(roundTripEquityOption.OptionType));
-            Assert.That(roundTripEquityOption.StartDate, Is.EqualTo(roundTripEquityOption.StartDate));
-            Assert.That(roundTripEquityOption.OptionMaturityDate, Is.EqualTo(roundTripEquityOption.OptionMaturityDate));
-            Assert.That(roundTripEquityOption.OptionSettlementDate, Is.EqualTo(roundTripEquityOption.OptionSettlementDate));
-            Assert.That(roundTripEquityOption.UnderlyingIdentifier, Is.EqualTo(roundTripEquityOption.UnderlyingIdentifier));
+            Assert.That(roundTripEquityOption.Code, Is.EqualTo(equityOption.Code));
+            Assert.That(roundTripEquityOption.Strike, Is.EqualTo(equityOption.Strike));
+            Assert.That(roundTripEquityOption.DeliveryType, Is.EqualTo(equityOption.DeliveryType));
+            Assert.That(roundTripEquityOption.DomCcy, Is.EqualTo(equityOption.DomCcy));
+            Assert.That(roundTripEquityOption.OptionType, Is.EqualTo(equityOption.OptionType));
+            Assert.That(roundTripEquityOption.StartDate, Is.EqualTo(equityOption.StartDate));
+            Assert.That(roundTripEquityOption.OptionMaturityDate, Is.EqualTo(equityOption.OptionMaturityDate));
+            Assert.That(roundTripEquityOption.OptionSettlementDate, Is.EqualTo(equityOption.OptionSettlementDate));
+            Assert.That(roundTripEquityOption.UnderlyingIdentifier, Is.EqualTo(equityOption.UnderlyingIdentifier));
         }
 
         [LusidFeature("F22-12")]
@@ -664,7 +664,7 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
             Assert.That(roundTripTermDeposit.FlowConvention.PaymentCalendars, Is.EquivalentTo(termDeposit.FlowConvention.PaymentCalendars));
         }
 
-        private void UpsertOtcToLusid(LusidInstrument instrument, string name, string idUniqueToInstrument)
+        public void UpsertOtcToLusid(LusidInstrument instrument, string name, string idUniqueToInstrument)
         {
             // PACKAGE instrument for upsert
             var instrumentDefinition = new InstrumentDefinition(
@@ -687,7 +687,7 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
             Assert.That(response.Values.Count, Is.EqualTo(1));
         }
 
-        private LusidInstrument QueryOtcFromLusid(string idUniqueToInstrument)
+        public LusidInstrument QueryOtcFromLusid(string idUniqueToInstrument)
         {
             var response = _instrumentsApi.GetInstruments("ClientInternal",
                 new List<string>
