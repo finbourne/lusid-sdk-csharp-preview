@@ -59,6 +59,7 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
         [Test]
         public void DemonstrateCreationOfFxOption()
         {
+            
             // CREATE an Fx-Option (that can then be upserted into LUSID)
             var fxOption = new FxOption(
                 strike: 100m,

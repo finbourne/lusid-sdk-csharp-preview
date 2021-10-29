@@ -4,7 +4,7 @@ using Lusid.Sdk.Model;
 using Lusid.Sdk.Tests.Utilities;
 using NUnit.Framework;
 
-namespace Lusid.Sdk.Tests.Tutorials.MarketData
+namespace Lusid.Sdk.Tests.Tutorials.Instruments
 {
     public class InstrumentData
     {
