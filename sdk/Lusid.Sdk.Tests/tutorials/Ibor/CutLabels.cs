@@ -61,16 +61,16 @@ namespace Lusid.Sdk.Tests.tutorials.Ibor
         public void Cut_Labels()
         {
             // Create cut labels for different time zones
-            CreateCutLabel(hours: 9, minutes: 0, displayName: "LDNOpen", description: "London Opening Time, 9am in UK",
+            CreateCutLabel(hours: 9, minutes: 0, displayName: "SGPOpen", description: "Singapore Opening Time, 2am in UK",
+                timeZone: "Singapore", codeDict: _cutLabelCodes);
+            CreateCutLabel(hours: 8, minutes: 0, displayName: "LDNOpen", description: "London Opening Time, 9am in UK",
                              timeZone: "GB", codeDict: _cutLabelCodes);
+            CreateCutLabel(hours: 17, minutes: 0, displayName: "SGPClose", description: "Singapore Closing Time, 10am in UK",
+                timeZone: "Singapore", codeDict: _cutLabelCodes);
+            CreateCutLabel(hours: 9, minutes: 0, displayName: "NYOpen", description: "New York Opening Time, 2pm in UK",
+                timeZone: "America/New_York", codeDict: _cutLabelCodes);
             CreateCutLabel(hours: 17, minutes: 0, displayName: "LDNClose", description: "London Closing Time, 5pm in UK",
                              timeZone: "GB", codeDict: _cutLabelCodes);
-            CreateCutLabel(hours: 9, minutes: 0, displayName: "SGPOpen", description: "Singapore Opening Time, 2am in UK",
-                            timeZone: "Singapore", codeDict: _cutLabelCodes);
-            CreateCutLabel(hours: 17, minutes: 0, displayName: "SGPClose", description: "Singapore Closing Time, 10am in UK",
-                            timeZone: "Singapore", codeDict: _cutLabelCodes);
-            CreateCutLabel(hours: 9, minutes: 0, displayName: "NYOpen", description: "New York Opening Time, 2pm in UK",
-                            timeZone: "America/New_York", codeDict: _cutLabelCodes);
             CreateCutLabel(hours: 17, minutes: 0, displayName: "NYClose", description: "New York Closing Time, 10pm in UK",
                             timeZone: "America/New_York", codeDict: _cutLabelCodes);
 
