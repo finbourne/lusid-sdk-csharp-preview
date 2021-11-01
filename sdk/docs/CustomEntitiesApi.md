@@ -1,6 +1,6 @@
 # Lusid.Sdk.Api.CustomEntitiesApi
 
-All URIs are relative to *http://local-unit-test-server.lusid.com:42844*
+All URIs are relative to *http://local-unit-test-server.lusid.com:43999*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
@@ -32,7 +32,7 @@ namespace Example
         public static void Main()
         {
             Configuration config = new Configuration();
-            config.BasePath = "http://local-unit-test-server.lusid.com:42844";
+            config.BasePath = "http://local-unit-test-server.lusid.com:43999";
             // Configure OAuth2 access token for authorization: oauth2
             config.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -116,7 +116,7 @@ namespace Example
         public static void Main()
         {
             Configuration config = new Configuration();
-            config.BasePath = "http://local-unit-test-server.lusid.com:42844";
+            config.BasePath = "http://local-unit-test-server.lusid.com:43999";
             // Configure OAuth2 access token for authorization: oauth2
             config.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -124,7 +124,7 @@ namespace Example
             var entityType = entityType_example;  // string | The type of entity to list.
             var effectiveAt = effectiveAt_example;  // DateTimeOrCutLabel | The effective datetime or cut label at which to list the entities. Defaults to the current LUSID              system datetime if not specified. (optional) 
             var asAt = 2013-10-20T19:20:30+01:00;  // DateTimeOffset? | The asAt datetime at which to list the entities. Defaults to returning the latest version              of each portfolio if not specified. (optional) 
-            var limit = 56;  // int? | When paginating, limit the results to this number. Defaults to 65,535 if not specified. (optional) 
+            var limit = 56;  // int? | When paginating, limit the results to this number. Defaults to 100 if not specified. (optional) 
             var filter = filter_example;  // string | Expression to filter the results. For more information about filtering              results, see https://support.lusid.com/knowledgebase/article/KA-01914. (optional) 
             var page = page_example;  // string | The pagination token to use to continue listing entities; this              value is returned from the previous call. If a pagination token is provided, the filter, effectiveAt              and asAt fields must not have changed since the original request. (optional) 
 
@@ -152,7 +152,7 @@ Name | Type | Description  | Notes
  **entityType** | **string**| The type of entity to list. | 
  **effectiveAt** | **DateTimeOrCutLabel**| The effective datetime or cut label at which to list the entities. Defaults to the current LUSID              system datetime if not specified. | [optional] 
  **asAt** | **DateTimeOffset?**| The asAt datetime at which to list the entities. Defaults to returning the latest version              of each portfolio if not specified. | [optional] 
- **limit** | **int?**| When paginating, limit the results to this number. Defaults to 65,535 if not specified. | [optional] 
+ **limit** | **int?**| When paginating, limit the results to this number. Defaults to 100 if not specified. | [optional] 
  **filter** | **string**| Expression to filter the results. For more information about filtering              results, see https://support.lusid.com/knowledgebase/article/KA-01914. | [optional] 
  **page** | **string**| The pagination token to use to continue listing entities; this              value is returned from the previous call. If a pagination token is provided, the filter, effectiveAt              and asAt fields must not have changed since the original request. | [optional] 
 
@@ -202,7 +202,7 @@ namespace Example
         public static void Main()
         {
             Configuration config = new Configuration();
-            config.BasePath = "http://local-unit-test-server.lusid.com:42844";
+            config.BasePath = "http://local-unit-test-server.lusid.com:43999";
             // Configure OAuth2 access token for authorization: oauth2
             config.AccessToken = "YOUR_ACCESS_TOKEN";
 
