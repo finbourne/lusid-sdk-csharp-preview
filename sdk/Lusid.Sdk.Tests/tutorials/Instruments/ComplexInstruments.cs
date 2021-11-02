@@ -664,7 +664,7 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
             Assert.That(roundTripTermDeposit.FlowConvention.PaymentCalendars, Is.EquivalentTo(termDeposit.FlowConvention.PaymentCalendars));
         }
 
-        public void UpsertOtcToLusid(LusidInstrument instrument, string name, string idUniqueToInstrument)
+        private void UpsertOtcToLusid(LusidInstrument instrument, string name, string idUniqueToInstrument)
         {
             // PACKAGE instrument for upsert
             var instrumentDefinition = new InstrumentDefinition(
@@ -687,7 +687,7 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
             Assert.That(response.Values.Count, Is.EqualTo(1));
         }
 
-        public LusidInstrument QueryOtcFromLusid(string idUniqueToInstrument)
+        private LusidInstrument QueryOtcFromLusid(string idUniqueToInstrument)
         {
             var response = _instrumentsApi.GetInstruments("ClientInternal",
                 new List<string>

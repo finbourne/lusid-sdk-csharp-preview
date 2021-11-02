@@ -17,7 +17,6 @@ namespace Lusid.Sdk.Tests.Utilities
                 nameof(FxForward) => CreateExampleFxForward(),
                 nameof(FxOption) => CreateExampleFxOption(),
                 nameof(InterestRateSwap) => CreateExampleSwap(),
-                nameof(EquityOption) => CreateExampleEquityOption(),
                 _ => throw new ArgumentOutOfRangeException($"Please implement case for instrument {instrumentName}")
             };
         }
@@ -49,7 +48,7 @@ namespace Lusid.Sdk.Tests.Utilities
                 instrumentType: LusidInstrument.InstrumentTypeEnum.FxOption
             );
         
-        internal static LusidInstrument CreateExampleEquityOption(bool isCashSettled)
+        internal static EquityOption CreateExampleEquityOption(bool isCashSettled = false)
             => new EquityOption(
                 startDate: new DateTimeOffset(2020, 2, 7, 0, 0, 0, TimeSpan.Zero),
                 optionMaturityDate: new DateTimeOffset(2020, 12, 19, 0, 0, 0, TimeSpan.Zero),
@@ -59,7 +58,7 @@ namespace Lusid.Sdk.Tests.Utilities
                 strike: 130,
                 domCcy: "USD",
                 underlyingIdentifier: EquityOption.UnderlyingIdentifierEnum.RIC,
-                code: "SomeCorp",
+                code: "ACME",
                 instrumentType: LusidInstrument.InstrumentTypeEnum.EquityOption
             );
 
@@ -151,21 +150,6 @@ namespace Lusid.Sdk.Tests.Utilities
                 },
                 instrumentType: LusidInstrument.InstrumentTypeEnum.InterestRateSwap
             );
-        }
-
-        internal static EquityOption CreateExampleEquityOption()
-        {
-            return new EquityOption(
-                            startDate: new DateTimeOffset(2020, 2, 7, 0, 0, 0, TimeSpan.Zero),
-                            optionMaturityDate: new DateTimeOffset(2020, 9, 18, 0, 0, 0, TimeSpan.Zero),
-                            optionSettlementDate: new DateTimeOffset(2020, 9, 20, 0, 0, 0, TimeSpan.Zero),
-                            deliveryType: EquityOption.DeliveryTypeEnum.Physical,
-                            optionType: EquityOption.OptionTypeEnum.Call,
-                            strike: 100m,
-                            domCcy: "USD",
-                            underlyingIdentifier: EquityOption.UnderlyingIdentifierEnum.Isin,
-                            code: "ACME",
-                            instrumentType: LusidInstrument.InstrumentTypeEnum.EquityOption);
         }
     }
 }

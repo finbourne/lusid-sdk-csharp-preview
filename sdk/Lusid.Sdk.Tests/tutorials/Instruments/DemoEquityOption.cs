@@ -46,7 +46,7 @@ namespace Lusid.Sdk.Tests.tutorials.Instruments
         public void DemoEquityOptionCreation()
         {
             // CREATE an equity option (that can then be upserted into Lusid)
-            var equityOption = InstrumentExamples.CreateExampleEquityOption();
+            var equityOption = (EquityOption) InstrumentExamples.CreateExampleEquityOption();
             Assert.That(equityOption, Is.Not.Null);
 
             // Can now UPSERT to Lusid
@@ -80,7 +80,7 @@ namespace Lusid.Sdk.Tests.tutorials.Instruments
             _testDataUtilities.UpsertOtcToLusid(option, "some-name-for-this-equityOption", uniqueId);
 
             // for Black-Scholes pricing, we need the following market data
-            _testDataUtilities.CreateAndUpsertSimpleQuote(scope, "ACME", QuoteSeriesId.InstrumentIdTypeEnum.Isin, 90m, "USD", _demoEffectiveAt);
+            _testDataUtilities.CreateAndUpsertSimpleQuote(scope, "ACME", QuoteSeriesId.InstrumentIdTypeEnum.RIC, 110m, "USD", _demoEffectiveAt);
             _testDataUtilities.CreateAndUpsertOisCurve(scope, _demoEffectiveAt, "USD");
             _testDataUtilities.CreateAndUpsertVolSurface(scope, _demoEffectiveAt, option, 0.2m);
 
@@ -94,7 +94,7 @@ namespace Lusid.Sdk.Tests.tutorials.Instruments
                 code: recipeCode,
                 market: new MarketContext(
                     new List<MarketDataKeyRule> {},
-                    options: new MarketOptions(defaultSupplier: "Lusid", defaultScope: scope, defaultInstrumentCodeType: "Isin")
+                    options: new MarketOptions(defaultSupplier: "Lusid", defaultScope: scope, defaultInstrumentCodeType: "RIC")
                     ),
                 pricing: new PricingContext(options: pricingOptions)
             );
@@ -143,7 +143,7 @@ namespace Lusid.Sdk.Tests.tutorials.Instruments
             var luid = response.Values.First().Value.LusidInstrumentId;
 
             // for equity option cashflows, we need the following market data to determine intrinsic value
-            _testDataUtilities.CreateAndUpsertSimpleQuote(scope, "ACME", QuoteSeriesId.InstrumentIdTypeEnum.Isin, 110m, "USD", _demoEffectiveAt);
+            _testDataUtilities.CreateAndUpsertSimpleQuote(scope, "ACME", QuoteSeriesId.InstrumentIdTypeEnum.RIC, 110m, "USD", _demoEffectiveAt);
 
             // create a new portfolio and add the option to it via a transaction
             var portfolioCode = _testDataUtilities.CreateTransactionPortfolio(scope);
@@ -163,7 +163,7 @@ namespace Lusid.Sdk.Tests.tutorials.Instruments
                 code: recipeCode,
                 market: new MarketContext(
                     new List<MarketDataKeyRule> { },
-                    options: new MarketOptions(defaultSupplier: "Lusid", defaultScope: scope, defaultInstrumentCodeType: "Isin")
+                    options: new MarketOptions(defaultSupplier: "Lusid", defaultScope: scope, defaultInstrumentCodeType: "RIC")
                 ),
                 pricing: new PricingContext(options: pricingOptions)
             );
@@ -173,7 +173,9 @@ namespace Lusid.Sdk.Tests.tutorials.Instruments
                 windowStart: option.StartDate.AddDays(-3), windowEnd: option.OptionMaturityDate.AddDays(3),
                 recipeIdScope: scope, recipeIdCode: recipeCode).Values;
             Assert.That(cashflows.Count, Is.EqualTo(1));
-            Assert.That(cashflows[0].Amount, Is.Negative);
+            var cashflow = cashflows[0];
+            Assert.That(cashflow.Amount, Is.Negative);
+            Console.WriteLine($"Computed cash flow of {cashflow.Amount} {cashflow.Currency} at time {cashflow.PaymentDate}");
         }
     }
 }
