@@ -17,7 +17,7 @@ namespace Lusid.Sdk.Tests.Tutorials.Ibor
         private InstrumentLoader _instrumentLoader;
         private TestDataUtilities _testDataUtilities;
         private IList<string> _instrumentIds;
-        private IConfigurationRecipeApi _recipeApi;
+        private static IConfigurationRecipeApi _recipeApi;
 
         private static readonly string ValuationDateKey = "Analytic/default/ValuationDate";
         private static readonly string HoldingPvKey = "Holding/default/PV";
@@ -518,7 +518,7 @@ namespace Lusid.Sdk.Tests.Tutorials.Ibor
             }
         }
 
-        private void CreateAndUpsertRecipe(string code, string scope, ModelSelection.ModelEnum model)
+        internal static void CreateAndUpsertRecipe(string code, string scope, ModelSelection.ModelEnum model)
         {
             // CREATE a rule for reset quotes
             var resetRule = new MarketDataKeyRule("Equity.RIC.*", "Lusid", scope, MarketDataKeyRule.QuoteTypeEnum.Price, "mid", quoteInterval: "1Y");
@@ -535,7 +535,7 @@ namespace Lusid.Sdk.Tests.Tutorials.Ibor
             UpsertRecipe(recipe);
         }
 
-        private void UpsertRecipe(ConfigurationRecipe recipe)
+        private static void UpsertRecipe(ConfigurationRecipe recipe)
         {
             // UPSERT recipe and check upsert was successful
             var upsertRecipeRequest = new UpsertRecipeRequest(recipe);
