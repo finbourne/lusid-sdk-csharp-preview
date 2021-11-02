@@ -1,6 +1,6 @@
 # Lusid.Sdk.Api.PersonsApi
 
-All URIs are relative to *http://local-unit-test-server.lusid.com:43999*
+All URIs are relative to *https://fbn-prd.lusid.com/api*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
@@ -44,7 +44,7 @@ namespace Example
         public static void Main()
         {
             Configuration config = new Configuration();
-            config.BasePath = "http://local-unit-test-server.lusid.com:43999";
+            config.BasePath = "https://fbn-prd.lusid.com/api";
             // Configure OAuth2 access token for authorization: oauth2
             config.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -124,7 +124,7 @@ namespace Example
         public static void Main()
         {
             Configuration config = new Configuration();
-            config.BasePath = "http://local-unit-test-server.lusid.com:43999";
+            config.BasePath = "https://fbn-prd.lusid.com/api";
             // Configure OAuth2 access token for authorization: oauth2
             config.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -208,7 +208,7 @@ namespace Example
         public static void Main()
         {
             Configuration config = new Configuration();
-            config.BasePath = "http://local-unit-test-server.lusid.com:43999";
+            config.BasePath = "https://fbn-prd.lusid.com/api";
             // Configure OAuth2 access token for authorization: oauth2
             config.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -292,7 +292,7 @@ namespace Example
         public static void Main()
         {
             Configuration config = new Configuration();
-            config.BasePath = "http://local-unit-test-server.lusid.com:43999";
+            config.BasePath = "https://fbn-prd.lusid.com/api";
             // Configure OAuth2 access token for authorization: oauth2
             config.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -376,7 +376,7 @@ namespace Example
         public static void Main()
         {
             Configuration config = new Configuration();
-            config.BasePath = "http://local-unit-test-server.lusid.com:43999";
+            config.BasePath = "https://fbn-prd.lusid.com/api";
             // Configure OAuth2 access token for authorization: oauth2
             config.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -460,7 +460,7 @@ namespace Example
         public static void Main()
         {
             Configuration config = new Configuration();
-            config.BasePath = "http://local-unit-test-server.lusid.com:43999";
+            config.BasePath = "https://fbn-prd.lusid.com/api";
             // Configure OAuth2 access token for authorization: oauth2
             config.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -546,7 +546,7 @@ namespace Example
         public static void Main()
         {
             Configuration config = new Configuration();
-            config.BasePath = "http://local-unit-test-server.lusid.com:43999";
+            config.BasePath = "https://fbn-prd.lusid.com/api";
             // Configure OAuth2 access token for authorization: oauth2
             config.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -632,7 +632,7 @@ namespace Example
         public static void Main()
         {
             Configuration config = new Configuration();
-            config.BasePath = "http://local-unit-test-server.lusid.com:43999";
+            config.BasePath = "https://fbn-prd.lusid.com/api";
             // Configure OAuth2 access token for authorization: oauth2
             config.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -722,7 +722,7 @@ namespace Example
         public static void Main()
         {
             Configuration config = new Configuration();
-            config.BasePath = "http://local-unit-test-server.lusid.com:43999";
+            config.BasePath = "https://fbn-prd.lusid.com/api";
             // Configure OAuth2 access token for authorization: oauth2
             config.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -810,7 +810,7 @@ namespace Example
         public static void Main()
         {
             Configuration config = new Configuration();
-            config.BasePath = "http://local-unit-test-server.lusid.com:43999";
+            config.BasePath = "https://fbn-prd.lusid.com/api";
             // Configure OAuth2 access token for authorization: oauth2
             config.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -898,7 +898,7 @@ namespace Example
         public static void Main()
         {
             Configuration config = new Configuration();
-            config.BasePath = "http://local-unit-test-server.lusid.com:43999";
+            config.BasePath = "https://fbn-prd.lusid.com/api";
             // Configure OAuth2 access token for authorization: oauth2
             config.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -909,7 +909,7 @@ namespace Example
             var asAt = 2013-10-20T19:20:30+01:00;  // DateTimeOffset? | The asAt datetime at which to list the people. Defaults to return the latest version              of each people if not specified. (optional) 
             var page = page_example;  // string | The pagination token to use to continue listing portfolios from a previous call to list portfolios. This  value is returned from the previous call. If a pagination token is provided the filter, effectiveAt  and asAt fields must not have changed since the original request. Also, if set, a start value cannot be provided. (optional) 
             var start = 56;  // int? | When paginating, skip this number of results. (optional) 
-            var limit = 56;  // int? | When paginating, limit the number of returned results to this many. Defaults to 100 if not specified. (optional) 
+            var limit = 56;  // int? | When paginating, limit the number of returned results to this many. Defaults to 65,535 if not specified. (optional) 
             var filter = filter_example;  // string | Expression to filter the result set.               For example, to filter on the LUPID, use \"lusidPersonId eq 'string'\"              Read more about filtering results from LUSID here https://support.lusid.com/filtering-results-from-lusid. (optional) 
             var propertyKeys = new List<string>(); // List<string> | A list of property keys from the \"Person\" domain to decorate onto each person.              These take the format {domain}/{scope}/{code} e.g. \"Person/ContactDetails/Address\". (optional) 
 
@@ -940,7 +940,7 @@ Name | Type | Description  | Notes
  **asAt** | **DateTimeOffset?**| The asAt datetime at which to list the people. Defaults to return the latest version              of each people if not specified. | [optional] 
  **page** | **string**| The pagination token to use to continue listing portfolios from a previous call to list portfolios. This  value is returned from the previous call. If a pagination token is provided the filter, effectiveAt  and asAt fields must not have changed since the original request. Also, if set, a start value cannot be provided. | [optional] 
  **start** | **int?**| When paginating, skip this number of results. | [optional] 
- **limit** | **int?**| When paginating, limit the number of returned results to this many. Defaults to 100 if not specified. | [optional] 
+ **limit** | **int?**| When paginating, limit the number of returned results to this many. Defaults to 65,535 if not specified. | [optional] 
  **filter** | **string**| Expression to filter the result set.               For example, to filter on the LUPID, use \&quot;lusidPersonId eq &#39;string&#39;\&quot;              Read more about filtering results from LUSID here https://support.lusid.com/filtering-results-from-lusid. | [optional] 
  **propertyKeys** | [**List&lt;string&gt;**](string.md)| A list of property keys from the \&quot;Person\&quot; domain to decorate onto each person.              These take the format {domain}/{scope}/{code} e.g. \&quot;Person/ContactDetails/Address\&quot;. | [optional] 
 
@@ -990,7 +990,7 @@ namespace Example
         public static void Main()
         {
             Configuration config = new Configuration();
-            config.BasePath = "http://local-unit-test-server.lusid.com:43999";
+            config.BasePath = "https://fbn-prd.lusid.com/api";
             // Configure OAuth2 access token for authorization: oauth2
             config.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -1072,7 +1072,7 @@ namespace Example
         public static void Main()
         {
             Configuration config = new Configuration();
-            config.BasePath = "http://local-unit-test-server.lusid.com:43999";
+            config.BasePath = "https://fbn-prd.lusid.com/api";
             // Configure OAuth2 access token for authorization: oauth2
             config.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -1154,7 +1154,7 @@ namespace Example
         public static void Main()
         {
             Configuration config = new Configuration();
-            config.BasePath = "http://local-unit-test-server.lusid.com:43999";
+            config.BasePath = "https://fbn-prd.lusid.com/api";
             // Configure OAuth2 access token for authorization: oauth2
             config.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -1230,7 +1230,7 @@ namespace Example
         public static void Main()
         {
             Configuration config = new Configuration();
-            config.BasePath = "http://local-unit-test-server.lusid.com:43999";
+            config.BasePath = "https://fbn-prd.lusid.com/api";
             // Configure OAuth2 access token for authorization: oauth2
             config.AccessToken = "YOUR_ACCESS_TOKEN";
 
