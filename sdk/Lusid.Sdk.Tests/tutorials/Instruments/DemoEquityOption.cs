@@ -4,7 +4,6 @@ using System.Linq;
 using Lusid.Sdk.Api;
 using Lusid.Sdk.Model;
 using Lusid.Sdk.Tests.Utilities;
-using Lusid.Sdk.Utilities;
 using NUnit.Framework;
 
 namespace Lusid.Sdk.Tests.tutorials.Instruments
@@ -12,7 +11,6 @@ namespace Lusid.Sdk.Tests.tutorials.Instruments
     [TestFixture]
     public class DemoEquityOption
     {
-        private IPortfoliosApi _portfoliosApi;
         private ITransactionPortfoliosApi _transactionPortfoliosApi;
         private IInstrumentsApi _instrumentsApi;
         private IQuotesApi _quotesApi;
@@ -20,9 +18,7 @@ namespace Lusid.Sdk.Tests.tutorials.Instruments
         private IConfigurationRecipeApi _recipeApi;
         private IAggregationApi _aggregationApi;
 
-        private InstrumentDemoHelpers _instrumentDemoHelpers;
         private TestDataUtilities _testDataUtilities;
-        private readonly string _scope = "DemoEquityOptionVal"; //TODO: Revert Name
         private readonly DateTimeOffset _demoEffectiveAt = new DateTimeOffset(2020, 7, 1, 0, 0, 0, TimeSpan.Zero);
 
         [OneTimeSetUp]
@@ -31,7 +27,6 @@ namespace Lusid.Sdk.Tests.tutorials.Instruments
             // if we are just demoing creation, then all we need is the instruments api
             var apiFactory = TestLusidApiFactoryBuilder.CreateApiFactory("secrets.json");
 
-            _portfoliosApi = apiFactory.Api<IPortfoliosApi>();
             _transactionPortfoliosApi = apiFactory.Api<ITransactionPortfoliosApi>();
             _instrumentsApi = apiFactory.Api<IInstrumentsApi>();
             _quotesApi = apiFactory.Api<IQuotesApi>();
@@ -39,12 +34,12 @@ namespace Lusid.Sdk.Tests.tutorials.Instruments
             _recipeApi = apiFactory.Api<IConfigurationRecipeApi>();
             _aggregationApi = apiFactory.Api<IAggregationApi>();
 
-            _instrumentDemoHelpers = new InstrumentDemoHelpers(_instrumentsApi, _quotesApi, _complexMarketDataApi, _recipeApi, _transactionPortfoliosApi);
             _testDataUtilities = new TestDataUtilities(_transactionPortfoliosApi,
                 _instrumentsApi,
                 _quotesApi,
-                _complexMarketDataApi
-                );
+                _complexMarketDataApi,
+                _recipeApi
+            );
         }
 
         [Test]
@@ -56,10 +51,10 @@ namespace Lusid.Sdk.Tests.tutorials.Instruments
 
             // Can now UPSERT to Lusid
             string uniqueId = "id-equityOption-1";
-            _instrumentDemoHelpers.UpsertOtcToLusid(equityOption, "some-name-for-this-equityOption", uniqueId);
+            _testDataUtilities.UpsertOtcToLusid(equityOption, "some-name-for-this-equityOption", uniqueId);
 
             // Can now QUERY from Lusid
-            var retrieved = _instrumentDemoHelpers.QueryOtcFromLusid(uniqueId);
+            var retrieved = _testDataUtilities.QueryOtcFromLusid(uniqueId);
             Assert.That(retrieved.InstrumentType == LusidInstrument.InstrumentTypeEnum.EquityOption);
             var roundTripEquityOption = retrieved as EquityOption;
             Assert.That(roundTripEquityOption, Is.Not.Null);
@@ -77,34 +72,33 @@ namespace Lusid.Sdk.Tests.tutorials.Instruments
         [Test]
         public void DemoEquityOptionValuation()
         {
+            var scope = "DemoEquityOptionValuation";
+
             // upsert option
             var option = InstrumentExamples.CreateExampleEquityOption();
             string uniqueId = "id-equityOption-1";
-            _instrumentDemoHelpers.UpsertOtcToLusid(option, "some-name-for-this-equityOption", uniqueId);
+            _testDataUtilities.UpsertOtcToLusid(option, "some-name-for-this-equityOption", uniqueId);
 
             // for Black-Scholes pricing, we need the following market data
-            _testDataUtilities.CreateAndUpsertSimpleQuote(_scope, "ACME", QuoteSeriesId.InstrumentIdTypeEnum.Isin, 90m, "USD", _demoEffectiveAt);
-            // _testDataUtilities.CreateAndUpsertSimpleQuote(_scope, "ACME", QuoteSeriesId.InstrumentIdTypeEnum.RIC, 105m, "USD", option.OptionMaturityDate);
-            // _testDataUtilities.CreateAndUpsertSimpleQuote(_scope, "ACME", QuoteSeriesId.InstrumentIdTypeEnum.Isin, 200m, "USD", option.OptionMaturityDate.AddDays(-2));
-            _testDataUtilities.CreateAndUpsertOisCurve(_scope, _demoEffectiveAt, "USD");
-            _testDataUtilities.CreateAndUpsertVolSurface(_scope, _demoEffectiveAt, option, 0.2m);
+            _testDataUtilities.CreateAndUpsertSimpleQuote(scope, "ACME", QuoteSeriesId.InstrumentIdTypeEnum.Isin, 90m, "USD", _demoEffectiveAt);
+            _testDataUtilities.CreateAndUpsertOisCurve(scope, _demoEffectiveAt, "USD");
+            _testDataUtilities.CreateAndUpsertVolSurface(scope, _demoEffectiveAt, option, 0.2m);
 
             // create Black-Scholes recipe specifying where to look for market data and which metrics to return
             // if in a larger portfolio, we would make a specific VendorModelRule specifying that equity options are to be valued using Black-Scholes
+            var recipeCode = "EquityOption_ValuationRecipe";
             var pricingOptions = new PricingOptions(new ModelSelection(ModelSelection.LibraryEnum.Lusid, ModelSelection.ModelEnum.BlackScholes));
-            var equityRule = new MarketDataKeyRule("Equity.RIC.*", "Lusid", _scope, MarketDataKeyRule.QuoteTypeEnum.Price, "mid", "1Y");
-            var recipeCode = "EquityOption_Recipe";
             var recipe = new ConfigurationRecipe
             (
-                scope: _scope,
+                scope: scope,
                 code: recipeCode,
                 market: new MarketContext(
                     new List<MarketDataKeyRule> {},
-                    options: new MarketOptions(defaultSupplier: "Lusid", defaultScope: _scope, defaultInstrumentCodeType: "Isin")
+                    options: new MarketOptions(defaultSupplier: "Lusid", defaultScope: scope, defaultInstrumentCodeType: "Isin")
                     ),
                 pricing: new PricingContext(options: pricingOptions)
             );
-            _instrumentDemoHelpers.UpsertRecipe(recipe);
+            _testDataUtilities.UpsertRecipe(recipe);
 
             // define the metrics that we wish to return
             string ValuationDateKey = "Analytic/default/ValuationDate";
@@ -118,15 +112,12 @@ namespace Lusid.Sdk.Tests.tutorials.Instruments
             };
 
             // choose valuation dates
-            var postExpiryDate = option.OptionMaturityDate.AddDays(3);
-            //var valuationSchedule = new ValuationSchedule(effectiveFrom: postExpiryDate, effectiveAt: postExpiryDate, "1Y");
-            //var valuationSchedule = new ValuationSchedule(effectiveAt: _demoEffectiveAt);
-            var valuationSchedule = new ValuationSchedule(effectiveAt: _demoEffectiveAt, valuationDateTimes: new List<string> {$"{postExpiryDate:O}"});
+            var valuationSchedule = new ValuationSchedule(effectiveAt: _demoEffectiveAt);
 
             // construct and perform valuation request
             var instruments = new List<WeightedInstrument> {new WeightedInstrument(1, "some-holding-identifier", option)};
             var inlineValuationRequest = new InlineValuationRequest(
-                recipeId: new ResourceId(_scope, recipeCode),
+                recipeId: new ResourceId(scope, recipeCode),
                 metrics: valuationSpec,
                 sort: new List<OrderBySpec> {new OrderBySpec(ValuationDateKey, OrderBySpec.SortOrderEnum.Ascending)},
                 valuationSchedule: valuationSchedule,
@@ -138,38 +129,51 @@ namespace Lusid.Sdk.Tests.tutorials.Instruments
             var pv = valuation.Data[0][HoldingPvKey];
             Assert.That(pv, Is.Positive);
             Console.WriteLine($"Computed pv of {pv} at time {_demoEffectiveAt:O}");
-
-            // Notes EqOptionImpl is where the 500 comes from, pretty straightforward that if you ask for a valuation on that day that it happens
-            // RIC generation on the option maturity date comes from Equity's reset dependencies in Lusid
         }
 
         [Test]
-        public void DemoEquityOptionCashflows()
+        public void DemoEquityOptionCashFlows()
         {
+            var scope = "DemoEquityOptionCashFlows";
+
             // upsert option
             var option = InstrumentExamples.CreateExampleEquityOption();
             string uniqueId = "id-equityOption-1";
-            var response = _instrumentDemoHelpers.UpsertOtcToLusid(option, "some-name-for-this-equityOption", uniqueId);
+            var response = _testDataUtilities.UpsertOtcToLusid(option, "some-name-for-this-equityOption", uniqueId);
             var luid = response.Values.First().Value.LusidInstrumentId;
 
-            //_testDataUtilities.CreateAndUpsertSimpleQuote(_scope, luid, QuoteSeriesId.InstrumentIdTypeEnum.LusidInstrumentId, 110m, "USD", new DateTimeOffset(2021, 10, 28, 0, 0, 0, TimeSpan.Zero));
+            // for equity option cashflows, we need the following market data to determine intrinsic value
+            _testDataUtilities.CreateAndUpsertSimpleQuote(scope, "ACME", QuoteSeriesId.InstrumentIdTypeEnum.Isin, 110m, "USD", _demoEffectiveAt);
 
             // create a new portfolio and add the option to it via a transaction
-            var portfolioCode = _testDataUtilities.CreateTransactionPortfolio(_scope);
+            var portfolioCode = _testDataUtilities.CreateTransactionPortfolio(scope);
             var reqs = new List<TransactionRequest> {_testDataUtilities.BuildTransactionRequest(luid, 100m, 5m, "USD", option.StartDate, "Buy")};
-            _transactionPortfoliosApi.UpsertTransactions(_scope, portfolioCode, reqs);
-            var holdings = _transactionPortfoliosApi.GetHoldings(_scope, portfolioCode);
+            _transactionPortfoliosApi.UpsertTransactions(scope, portfolioCode, reqs);
+            var holdings = _transactionPortfoliosApi.GetHoldings(scope, portfolioCode);
             Assert.That(holdings.Values.Count == 2); // one holding for the option, and an opposite holding of cash
 
-            // get
-            var cashflows = _transactionPortfoliosApi.GetPortfolioCashFlows(_scope, portfolioCode,
+            // create a recipe to tell lusid where to find the requisite market data
+            // we require a model to estimate/determine future cashflows (for physically settled options, we currently assume exercise in all models)
+            // we choose ConstantTimeValueOfMoney since it has the fewest dependencies
+            var recipeCode = "EquityOption_CashFlowsRecipe";
+            var pricingOptions = new PricingOptions(new ModelSelection(ModelSelection.LibraryEnum.Lusid, ModelSelection.ModelEnum.ConstantTimeValueOfMoney));
+            var recipe = new ConfigurationRecipe
+            (
+                scope: scope,
+                code: recipeCode,
+                market: new MarketContext(
+                    new List<MarketDataKeyRule> { },
+                    options: new MarketOptions(defaultSupplier: "Lusid", defaultScope: scope, defaultInstrumentCodeType: "Isin")
+                ),
+                pricing: new PricingContext(options: pricingOptions)
+            );
+            _testDataUtilities.UpsertRecipe(recipe);
+
+            var cashflows = _transactionPortfoliosApi.GetPortfolioCashFlows(scope, portfolioCode, effectiveAt: _demoEffectiveAt,
                 windowStart: option.StartDate.AddDays(-3), windowEnd: option.OptionMaturityDate.AddDays(3),
-                recipeIdScope: _scope, recipeIdCode: "EquityOption_Recipe").Values;
-
-            _portfoliosApi.DeletePortfolio(_scope, portfolioCode);
-
-            // notes: unwindowed is supposed to be minTime -> now, but shows no cashflows
-            // windowed gives no cashflows either
+                recipeIdScope: scope, recipeIdCode: recipeCode).Values;
+            Assert.That(cashflows.Count, Is.EqualTo(1));
+            Assert.That(cashflows[0].Amount, Is.Negative);
         }
     }
 }
