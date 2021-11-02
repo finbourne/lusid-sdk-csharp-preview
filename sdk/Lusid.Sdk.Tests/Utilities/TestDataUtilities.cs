@@ -24,6 +24,7 @@ namespace Lusid.Sdk.Tests.Utilities
         private readonly IInstrumentsApi _instrumentsApi;
         private readonly IQuotesApi _quotesApi;
         private readonly IComplexMarketDataApi _complexMarketDataApi;
+        private readonly IConfigurationRecipeApi _recipeApi;
 
         public TestDataUtilities(ITransactionPortfoliosApi transactionPortfoliosApi)
         {
@@ -34,12 +35,14 @@ namespace Lusid.Sdk.Tests.Utilities
             ITransactionPortfoliosApi transactionPortfoliosApi,
             IInstrumentsApi instrumentsApi,
             IQuotesApi quotesApi,
-            IComplexMarketDataApi complexMarketDataApi)
+            IComplexMarketDataApi complexMarketDataApi = null,
+            IConfigurationRecipeApi recipeApi = null)
         {
             _transactionPortfoliosApi = transactionPortfoliosApi;
             _instrumentsApi = instrumentsApi;
             _quotesApi = quotesApi;
             _complexMarketDataApi = complexMarketDataApi;
+            _recipeApi = recipeApi;
         }
 
         public string CreateTransactionPortfolio(string scope)
@@ -410,7 +413,7 @@ namespace Lusid.Sdk.Tests.Utilities
             Assert.That(upsertResponse.Values.Count, Is.EqualTo(upsertQuoteRequests.Count));
         }
 
-        public void CreateAndUpsertSimpleQuote(string scope, string id, QuoteSeriesId.InstrumentIdTypeEnum instrumentIdType, decimal price, string ccy, DateTimeOffset effectiveAt)
+        public UpsertQuotesResponse CreateAndUpsertSimpleQuote(string scope, string id, QuoteSeriesId.InstrumentIdTypeEnum instrumentIdType, decimal price, string ccy, DateTimeOffset effectiveAt)
         {
             var quoteRequest = CreateSimpleQuoteUpsertRequest(id, instrumentIdType, price, ccy, effectiveAt);
             var upsertRequests = new Dictionary<string, UpsertQuoteRequest> {{"req1", quoteRequest}};
@@ -419,6 +422,7 @@ namespace Lusid.Sdk.Tests.Utilities
             var upsertResponse = _quotesApi.UpsertQuotes(scope, upsertRequests);
             Assert.That(upsertResponse.Failed.Count, Is.EqualTo(0));
             Assert.That(upsertResponse.Values.Count, Is.EqualTo(upsertRequests.Count));
+            return upsertResponse;
         }
 
         /// <summary>
@@ -542,31 +546,59 @@ namespace Lusid.Sdk.Tests.Utilities
             Assert.That(upsertResponse.Values.Values.Count, Is.EqualTo(upsertRequest.Count));
         }
 
-        public void CreateAndUpsertVolSurface(string scope, DateTimeOffset effectiveAt, FxOption option, decimal vol)
-        {
-            var instruments = new List<LusidInstrument> {option};
-            var quotes = new List<MarketQuote> {new MarketQuote(MarketQuote.QuoteTypeEnum.LogNormalVol, vol)};
-            var complexMarketData = new EquityVolSurfaceData(effectiveAt, instruments, quotes, ComplexMarketData.MarketDataTypeEnum.EquityVolSurfaceData);
-
-            var complexMarketDataId = new ComplexMarketDataId(
-                provider: "Lusid",
-                effectiveAt: effectiveAt.ToString("o"),
-                marketAsset: "ACME.USD.LN",
-                priceSource: "");
-            var upsertRequest = new Dictionary<string, UpsertComplexMarketDataRequest>
-                {{"0", new UpsertComplexMarketDataRequest(complexMarketDataId, complexMarketData)}};
-
-            // CHECK upsert was successful
-            var upsertResponse = _complexMarketDataApi.UpsertComplexMarketData(scope, upsertRequest);
-            Assert.That(upsertResponse.Values.Values, Is.Not.Null);
-            Assert.That(upsertResponse.Values.Values.Count, Is.EqualTo(upsertRequest.Count));
-        }
-        
         private static ComplexMarketData GetRateCurveJsonFromFile(string filename)
         {
             using var reader = new StreamReader(ExampleMarketDataDirectory + filename);
             var jsonString = reader.ReadToEnd();
             return JsonConvert.DeserializeObject<DiscountFactorCurveData>(jsonString);
+        }
+
+        public UpsertInstrumentsResponse UpsertOtcToLusid(LusidInstrument instrument, string name, string idUniqueToInstrument)
+        {
+            // PACKAGE instrument for upsert
+            var instrumentDefinition = new InstrumentDefinition(
+                name: name,
+                identifiers: new Dictionary<string, InstrumentIdValue>
+                {
+                    ["ClientInternal"] = new InstrumentIdValue(value: idUniqueToInstrument)
+                },
+                definition: instrument
+            );
+
+            // put instrument into Lusid
+            var response = _instrumentsApi.UpsertInstruments(new Dictionary<string, InstrumentDefinition>
+            {
+                ["someId1"] = instrumentDefinition
+            });
+
+            // Check the response succeeded and has no errors.
+            Assert.That(response.Failed.Count, Is.EqualTo(0));
+            Assert.That(response.Values.Count, Is.EqualTo(1));
+            return response;
+        }
+
+        public LusidInstrument QueryOtcFromLusid(string idUniqueToInstrument)
+        {
+            var response = _instrumentsApi.GetInstruments("ClientInternal",
+                new List<string>
+                {
+                    idUniqueToInstrument
+                });
+
+            // Check the response succeeded and has no errors.
+            Assert.That(response.Failed.Count, Is.EqualTo(0));
+            Assert.That(response.Values.Count, Is.EqualTo(1));
+
+            Assert.That(response.Values.First().Key, Is.EqualTo(idUniqueToInstrument));
+            return response.Values.First().Value.InstrumentDefinition;
+        }
+
+        public UpsertSingleStructuredDataResponse UpsertRecipe(ConfigurationRecipe recipe)
+        {
+            var upsertRecipeRequest = new UpsertRecipeRequest(recipe);
+            var response = _recipeApi.UpsertConfigurationRecipe(upsertRecipeRequest);
+            Assert.That(response.Value, Is.Not.Null);
+            return response;
         }
     }
 }
