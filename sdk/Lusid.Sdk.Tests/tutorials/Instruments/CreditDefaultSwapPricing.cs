@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using Lusid.Sdk.Api;
 using Lusid.Sdk.Model;
-using Lusid.Sdk.Tests.Tutorials.Ibor;
 using Lusid.Sdk.Tests.Utilities;
 using Lusid.Sdk.Utilities;
 using NUnit.Framework;
@@ -11,7 +10,7 @@ using NUnit.Framework;
 namespace Lusid.Sdk.Tests.tutorials.Instruments
 {
     [TestFixture]
-    public class CDSPricing
+    public class CreditDefaultSwapPricing
     {
         private ILusidApiFactory _apiFactory;
         private TestDataUtilities _testDataUtilities;
@@ -84,7 +83,6 @@ namespace Lusid.Sdk.Tests.tutorials.Instruments
             // CHECK PV - note that swaps/forwards can have negative PV
             var pv = (double) valuation.Data.First()[HoldingPvKey];
             Assert.That(pv, Is.Not.Null);
-            Assert.That(pv, Is.GreaterThanOrEqualTo(0));
         }
     }
 }
