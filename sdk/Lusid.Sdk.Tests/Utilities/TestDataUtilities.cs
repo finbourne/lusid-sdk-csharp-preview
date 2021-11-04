@@ -554,16 +554,17 @@ namespace Lusid.Sdk.Tests.Utilities
         /// <summary>
         /// One-point vol surface for a given equity option - thus the surface is constant.
         /// </summary>
-        public void CreateAndUpsertConstantVolSurface(string scope, DateTimeOffset effectiveAt, EquityOption option, decimal vol = 0.2m)
+        public void CreateAndUpsertConstantVolSurface(string scope, DateTimeOffset effectiveAt, EquityOption option, ModelSelection.ModelEnum model, decimal vol = 0.2m)
         {
             var instruments = new List<LusidInstrument> {option};
-            var quotes = new List<MarketQuote> {new MarketQuote(MarketQuote.QuoteTypeEnum.LogNormalVol, vol)};
+            var volType = model == ModelSelection.ModelEnum.Bachelier ? MarketQuote.QuoteTypeEnum.NormalVol : MarketQuote.QuoteTypeEnum.LogNormalVol;
+            var quotes = new List<MarketQuote> {new MarketQuote(volType, vol)};
             var complexMarketData = new EquityVolSurfaceData(effectiveAt, instruments, quotes, ComplexMarketData.MarketDataTypeEnum.EquityVolSurfaceData);
 
             var complexMarketDataId = new ComplexMarketDataId(
                 provider: "Lusid",
                 effectiveAt: effectiveAt.ToString("o"),
-                marketAsset: $"{option.Code}/{option.DomCcy}/LN");
+                marketAsset: $"{option.Code}/{option.DomCcy}/" + (volType == MarketQuote.QuoteTypeEnum.NormalVol ? "N" : "LN"));
             var upsertRequest = new Dictionary<string, UpsertComplexMarketDataRequest>
                 {{"0", new UpsertComplexMarketDataRequest(complexMarketDataId, complexMarketData)}};
 

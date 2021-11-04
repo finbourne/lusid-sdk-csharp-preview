@@ -72,6 +72,7 @@ namespace Lusid.Sdk.Tests.tutorials.Instruments
         [TestCase("ConstantTimeValueOfMoney")]
         [TestCase("Discounting")]
         [TestCase("BlackScholes")]
+        [TestCase("Bachelier")]
         public void DemoEquityOptionValuation(string modelName)
         {
             var scope = $"DemoEquityOptionValuation-{modelName}";
@@ -87,7 +88,9 @@ namespace Lusid.Sdk.Tests.tutorials.Instruments
             if (model != ModelSelection.ModelEnum.ConstantTimeValueOfMoney)
                 _testDataUtilities.CreateAndUpsertOisCurve(scope, _demoEffectiveAt, "USD");
             if (model == ModelSelection.ModelEnum.BlackScholes)
-                _testDataUtilities.CreateAndUpsertConstantVolSurface(scope, _demoEffectiveAt, option, 0.2m);
+                _testDataUtilities.CreateAndUpsertConstantVolSurface(scope, _demoEffectiveAt, option, model, 0.2m);
+            if (model == ModelSelection.ModelEnum.Bachelier)
+                _testDataUtilities.CreateAndUpsertConstantVolSurface(scope, _demoEffectiveAt, option, model, 10m);
 
             // CREATE Black-Scholes recipe specifying where to look for market data and which metrics to return
             // if in a larger portfolio, we would make a specific VendorModelRule specifying that equity options are to be valued using Black-Scholes
@@ -132,14 +135,18 @@ namespace Lusid.Sdk.Tests.tutorials.Instruments
             Assert.That(valuation.Data.Count, Is.EqualTo(instruments.Count));
 
             var pv = valuation.Data[0][HoldingPvKey];
-            Assert.That(pv, Is.Positive); // since our option is in the money
+            Assert.That(pv, Is.Positive); // since our option is in the money, all models should return a positive pv
             Console.WriteLine($"Computed pv of {pv} at time {_demoEffectiveAt:O} using model {modelName}");
         }
 
-        [Test]
-        public void DemoEquityOptionCashFlows()
+        [TestCase("ConstantTimeValueOfMoney")]
+        [TestCase("Discounting")]
+        [TestCase("BlackScholes")]
+        [TestCase("Bachelier")]
+        public void DemoEquityOptionCashFlows(string modelName)
         {
             var scope = "DemoEquityOptionCashFlows";
+            var model = Enum.Parse<ModelSelection.ModelEnum>(modelName);
 
             // CREATE and UPSERT option
             var option = (EquityOption) InstrumentExamples.CreateExampleEquityOption(isCashSettled: false);
@@ -149,6 +156,13 @@ namespace Lusid.Sdk.Tests.tutorials.Instruments
 
             // for equity option cashflows, we need the following market data to determine intrinsic value
             _testDataUtilities.CreateAndUpsertSimpleQuote(scope, "ACME", QuoteSeriesId.InstrumentIdTypeEnum.RIC, 135m, "USD", _demoEffectiveAt);
+            // the choice of model will further determine the required market data, although it may or may not be relevant for the cashflow
+            if (model != ModelSelection.ModelEnum.ConstantTimeValueOfMoney)
+                _testDataUtilities.CreateAndUpsertOisCurve(scope, _demoEffectiveAt, "USD");
+            if (model == ModelSelection.ModelEnum.BlackScholes)
+                _testDataUtilities.CreateAndUpsertConstantVolSurface(scope, _demoEffectiveAt, option, model, 0.2m);
+            if (model == ModelSelection.ModelEnum.Bachelier)
+                _testDataUtilities.CreateAndUpsertConstantVolSurface(scope, _demoEffectiveAt, option, model, 10m);
 
             // CREATE a new portfolio and add the option to it via a transaction
             var portfolioCode = _testDataUtilities.CreateTransactionPortfolio(scope);
@@ -161,7 +175,7 @@ namespace Lusid.Sdk.Tests.tutorials.Instruments
             // we require a model to estimate/determine future cashflows (for physically settled options, we currently assume exercise in all models)
             // we choose ConstantTimeValueOfMoney since it has the fewest dependencies
             var recipeCode = "EquityOption_CashFlowsRecipe";
-            var pricingOptions = new PricingOptions(new ModelSelection(ModelSelection.LibraryEnum.Lusid, ModelSelection.ModelEnum.ConstantTimeValueOfMoney));
+            var pricingOptions = new PricingOptions(new ModelSelection(ModelSelection.LibraryEnum.Lusid, model));
             var recipe = new ConfigurationRecipe
             (
                 scope: scope,
@@ -179,6 +193,7 @@ namespace Lusid.Sdk.Tests.tutorials.Instruments
                 windowStart: option.StartDate.AddDays(-3), windowEnd: option.OptionMaturityDate.AddDays(3),
                 recipeIdScope: scope, recipeIdCode: recipeCode).Values;
             Assert.That(cashflows.Count, Is.EqualTo(1));
+
             var cashflow = cashflows[0];
             Assert.That(cashflow.Amount, Is.Negative);
             Console.WriteLine($"Computed cash flow of {cashflow.Amount} {cashflow.Currency} at time {cashflow.PaymentDate}");
