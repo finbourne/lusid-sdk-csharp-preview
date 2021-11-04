@@ -635,6 +635,7 @@ namespace Lusid.Sdk.Tests.Utilities
             var response = _recipeApi.UpsertConfigurationRecipe(upsertRecipeRequest);
             Assert.That(response.Value, Is.Not.Null);
             return response;
+        }
 
         private static ComplexMarketData GetSpreadCurveJsonFromFile(string filename)
         {
