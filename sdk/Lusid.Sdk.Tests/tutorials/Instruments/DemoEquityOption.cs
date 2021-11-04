@@ -69,25 +69,30 @@ namespace Lusid.Sdk.Tests.tutorials.Instruments
             Assert.That(roundTripEquityOption.UnderlyingIdentifier, Is.EqualTo(equityOption.UnderlyingIdentifier));
         }
 
-        [Test]
-        public void DemoEquityOptionValuation()
+        [TestCase("ConstantTimeValueOfMoney")]
+        [TestCase("Discounting")]
+        [TestCase("BlackScholes")]
+        public void DemoEquityOptionValuation(string modelName)
         {
-            var scope = "DemoEquityOptionValuation";
+            var scope = $"DemoEquityOptionValuation-{modelName}";
+            var model = Enum.Parse<ModelSelection.ModelEnum>(modelName);
 
             // CREATE and UPSERT option
             var option = (EquityOption) InstrumentExamples.CreateExampleEquityOption();
             string uniqueId = "id-equityOption-1";
             _testDataUtilities.UpsertOtcInstrumentToLusid(option, "some-name-for-this-equityOption", uniqueId);
 
-            // for Black-Scholes pricing, we need the following market data
-            _testDataUtilities.CreateAndUpsertSimpleQuote(scope, "ACME", QuoteSeriesId.InstrumentIdTypeEnum.RIC, 110m, "USD", _demoEffectiveAt);
-            _testDataUtilities.CreateAndUpsertOisCurve(scope, _demoEffectiveAt, "USD");
-            _testDataUtilities.CreateAndUpsertConstantVolSurface(scope, _demoEffectiveAt, option, 0.2m);
+            // for pricing, we need the following market data (depending on the model)
+            _testDataUtilities.CreateAndUpsertSimpleQuote(scope, "ACME", QuoteSeriesId.InstrumentIdTypeEnum.RIC, 135m, "USD", _demoEffectiveAt);
+            if (model != ModelSelection.ModelEnum.ConstantTimeValueOfMoney)
+                _testDataUtilities.CreateAndUpsertOisCurve(scope, _demoEffectiveAt, "USD");
+            if (model == ModelSelection.ModelEnum.BlackScholes)
+                _testDataUtilities.CreateAndUpsertConstantVolSurface(scope, _demoEffectiveAt, option, 0.2m);
 
             // CREATE Black-Scholes recipe specifying where to look for market data and which metrics to return
             // if in a larger portfolio, we would make a specific VendorModelRule specifying that equity options are to be valued using Black-Scholes
-            var recipeCode = "EquityOption_ValuationRecipe";
-            var pricingOptions = new PricingOptions(new ModelSelection(ModelSelection.LibraryEnum.Lusid, ModelSelection.ModelEnum.BlackScholes));
+            var recipeCode = $"EquityOption_ValuationRecipe-{modelName}";
+            var pricingOptions = new PricingOptions(new ModelSelection(ModelSelection.LibraryEnum.Lusid, model));
             var recipe = new ConfigurationRecipe
             (
                 scope: scope,
@@ -127,8 +132,8 @@ namespace Lusid.Sdk.Tests.tutorials.Instruments
             Assert.That(valuation.Data.Count, Is.EqualTo(instruments.Count));
 
             var pv = valuation.Data[0][HoldingPvKey];
-            Assert.That(pv, Is.Positive);
-            Console.WriteLine($"Computed pv of {pv} at time {_demoEffectiveAt:O}");
+            Assert.That(pv, Is.Positive); // since our option is in the money
+            Console.WriteLine($"Computed pv of {pv} at time {_demoEffectiveAt:O} using model {modelName}");
         }
 
         [Test]
@@ -137,13 +142,13 @@ namespace Lusid.Sdk.Tests.tutorials.Instruments
             var scope = "DemoEquityOptionCashFlows";
 
             // CREATE and UPSERT option
-            var option = (EquityOption) InstrumentExamples.CreateExampleEquityOption();
+            var option = (EquityOption) InstrumentExamples.CreateExampleEquityOption(isCashSettled: false);
             string uniqueId = "id-equityOption-1";
             var response = _testDataUtilities.UpsertOtcInstrumentToLusid(option, "some-name-for-this-equityOption", uniqueId);
             var luid = response.Values.First().Value.LusidInstrumentId;
 
             // for equity option cashflows, we need the following market data to determine intrinsic value
-            _testDataUtilities.CreateAndUpsertSimpleQuote(scope, "ACME", QuoteSeriesId.InstrumentIdTypeEnum.RIC, 110m, "USD", _demoEffectiveAt);
+            _testDataUtilities.CreateAndUpsertSimpleQuote(scope, "ACME", QuoteSeriesId.InstrumentIdTypeEnum.RIC, 135m, "USD", _demoEffectiveAt);
 
             // CREATE a new portfolio and add the option to it via a transaction
             var portfolioCode = _testDataUtilities.CreateTransactionPortfolio(scope);
