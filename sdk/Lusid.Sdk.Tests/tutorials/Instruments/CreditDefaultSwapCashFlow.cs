@@ -90,19 +90,22 @@ namespace Lusid.Sdk.Tests.tutorials.Instruments
                 null,
                 portfolioScope,
                 discountingRecipeCode);
-            
-            // CHECK correct number of CDS premium leg cashflows at maturity: If no default event is triggered and CDS reaches maturity then there is 1 cash flow expected, which is the last
-            // coupon payment of the protection leg. 
-            var expectedNumber = 1;
-            Assert.That(cashFlowsAtMaturity.Values.Count, Is.GreaterThanOrEqualTo(expectedNumber));
-            
+
+            // CHECK that expected cash flows at maturity are not 0.
             var cashFlows = cashFlowsAtMaturity.Values.Select(cf => cf)
                 .Select(cf => (cf.PaymentDate, cf.Amount, cf.Currency))
                 .ToList();
-
-            // CHECK that expected cash flows at maturity are not 0.
             var allCashFlowsPositive = cashFlows.All(cf => cf.Amount > 0);
+            
             Assert.That(allCashFlowsPositive, Is.True);
+            
+            // CHECK correct number of CDS premium leg cash flows at maturity: If CDS reaches maturity (that would be if no default event is triggered) there is 1 expected cash flow,
+            // which is the last coupon payment of the premium leg. 
+            var expectedNumber = 1;
+            var couponCashFlows = cashFlowsAtMaturity.Values.Where(cf => cf.Diagnostics["CashFlowType"] == "Premium")
+                .ToList();
+            
+            Assert.That(couponCashFlows.Count, Is.EqualTo(expectedNumber));
             
             _portfoliosApi.DeletePortfolio(portfolioScope, portfolioId);
         }
