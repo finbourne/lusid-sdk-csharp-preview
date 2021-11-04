@@ -261,6 +261,23 @@ namespace Lusid.Sdk.Tests.Utilities
             }
         }
 
+        public void UpsertCdsSpreadCurves(string scope, DateTimeOffset effectiveAt, string ticker, string ccy, CdsProtectionDetailSpecification.SeniorityEnum seniority, CdsProtectionDetailSpecification.RestructuringTypeEnum restructType)
+        {
+            var marketDataId = new ComplexMarketDataId
+            (
+                provider: "Lusid",
+                effectiveAt: effectiveAt.ToString("o"),
+                marketAsset: $"{ticker}/{ccy}/{seniority}/{restructType}",
+                priceSource: "",
+                lineage: ""
+            );
+            
+            var marketData = GetSpreadCurveJsonFromFile("XYZCorp.json");
+            var request = new UpsertComplexMarketDataRequest(marketDataId, marketData);
+            
+            _complexMarketDataApi.UpsertComplexMarketData(scope, new Dictionary<string, UpsertComplexMarketDataRequest>(){{"Request", request}});
+        }
+        
         private Dictionary<string, InstrumentDefinition> CreateEquityUpsertRequest(string equityIdentifier)
         {
             return new Dictionary<string, InstrumentDefinition>()
@@ -618,6 +635,19 @@ namespace Lusid.Sdk.Tests.Utilities
             var response = _recipeApi.UpsertConfigurationRecipe(upsertRecipeRequest);
             Assert.That(response.Value, Is.Not.Null);
             return response;
+
+        private static ComplexMarketData GetSpreadCurveJsonFromFile(string filename)
+        {
+            using var reader = new StreamReader(ExampleMarketDataDirectory + filename);
+            var jsonString = reader.ReadToEnd();
+            
+            var cdsCurve = new OpaqueMarketData(
+                jsonString,
+                "Json",
+                "CDS curve",
+                ComplexMarketData.MarketDataTypeEnum.OpaqueMarketData
+            );
+            return cdsCurve;
         }
     }
 }

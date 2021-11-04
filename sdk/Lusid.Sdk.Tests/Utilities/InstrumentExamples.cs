@@ -6,9 +6,9 @@ namespace Lusid.Sdk.Tests.Utilities
 {
     public static class InstrumentExamples
     {
-        private static readonly DateTimeOffset TestEffectiveAt 
+        private static readonly DateTimeOffset TestEffectiveAt
             = new DateTimeOffset(2020, 2, 23, 0, 0, 0, TimeSpan.Zero);
-        
+
         public static LusidInstrument GetExampleInstrument(string instrumentName)
         {
             return instrumentName switch
@@ -17,6 +17,7 @@ namespace Lusid.Sdk.Tests.Utilities
                 nameof(FxForward) => CreateExampleFxForward(),
                 nameof(FxOption) => CreateExampleFxOption(),
                 nameof(InterestRateSwap) => CreateExampleSwap(),
+                nameof(CreditDefaultSwap) => CreateExampleCreditDefaultSwap(),
                 _ => throw new ArgumentOutOfRangeException($"Please implement case for instrument {instrumentName}")
             };
         }
@@ -53,7 +54,9 @@ namespace Lusid.Sdk.Tests.Utilities
                 startDate: new DateTimeOffset(2020, 2, 7, 0, 0, 0, TimeSpan.Zero),
                 optionMaturityDate: new DateTimeOffset(2020, 12, 19, 0, 0, 0, TimeSpan.Zero),
                 optionSettlementDate: new DateTimeOffset(2020, 12, 21, 0, 0, 0, TimeSpan.Zero),
-                deliveryType: isCashSettled ? EquityOption.DeliveryTypeEnum.Cash : EquityOption.DeliveryTypeEnum.Physical,
+                deliveryType: isCashSettled
+                    ? EquityOption.DeliveryTypeEnum.Cash
+                    : EquityOption.DeliveryTypeEnum.Physical,
                 optionType: EquityOption.OptionTypeEnum.Call,
                 strike: 130,
                 domCcy: "USD",
@@ -151,5 +154,38 @@ namespace Lusid.Sdk.Tests.Utilities
                 instrumentType: LusidInstrument.InstrumentTypeEnum.InterestRateSwap
             );
         }
+
+        private static CdsFlowConventions CreateExampleCdsFlowConventions()
+            => new CdsFlowConventions(
+                scope: null,
+                code: null,
+                currency: "USD",
+                paymentFrequency: "3M",
+                rollConvention: "F",
+                dayCountConvention: "Act365",
+                paymentCalendars: new List<string>(),
+                resetCalendars: new List<string>(),
+                rollFrequency: "6M",
+                settleDays: 0,
+                resetDays: 0
+            );
+
+        internal static LusidInstrument CreateExampleCreditDefaultSwap()
+            => new CreditDefaultSwap(
+                ticker: "XYZCorp",
+                startDate: new DateTimeOffset(2020, 3, 20, 0, 0, 0, TimeSpan.Zero),
+                maturityDate: new DateTimeOffset(2025, 6, 20, 0, 0, 0, TimeSpan.Zero),
+                flowConventions: CreateExampleCdsFlowConventions(),
+                couponRate: 0.05m,
+                null,
+                new CdsProtectionDetailSpecification(
+                    CdsProtectionDetailSpecification.SeniorityEnum.SNR,
+                    CdsProtectionDetailSpecification.RestructuringTypeEnum.MM,
+                    true,
+                    true
+                ),
+                instrumentType: LusidInstrument.InstrumentTypeEnum.CreditDefaultSwap
+            );
     }
 }
+
