@@ -48,7 +48,7 @@ namespace Lusid.Sdk.Tests.Utilities
                 instrumentType: LusidInstrument.InstrumentTypeEnum.FxOption
             );
         
-        internal static EquityOption CreateExampleEquityOption(bool isCashSettled = false)
+        internal static LusidInstrument CreateExampleEquityOption(bool isCashSettled = false)
             => new EquityOption(
                 startDate: new DateTimeOffset(2020, 2, 7, 0, 0, 0, TimeSpan.Zero),
                 optionMaturityDate: new DateTimeOffset(2020, 12, 19, 0, 0, 0, TimeSpan.Zero),

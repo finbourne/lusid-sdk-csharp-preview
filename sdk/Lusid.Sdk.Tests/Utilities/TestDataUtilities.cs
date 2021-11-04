@@ -447,7 +447,7 @@ namespace Lusid.Sdk.Tests.Utilities
                 new MetricValue(price, ccy));
         
         /// <summary>
-        /// This method upserts the 3 rate curves from file required: 
+        /// This method upserts the 3 rate curves:
         /// JPY/JPYOIS and USD/USDOIS are used for discounting pricing models
         /// USD 6M rate is used for pricing interest rate swap
         /// </summary>
@@ -458,6 +458,10 @@ namespace Lusid.Sdk.Tests.Utilities
             CreateAndUpsert6MRateCurve(scope, effectiveAt, "USD"); // this would be necessary for valuation of swaps paying every 6M
         }
 
+        /// <summary>
+        /// Upsert Ois curve for a specific currency.
+        /// The market asset string under which the curve is upserted is the one that is looked up by default during valuation calls for instruments.
+        /// </summary>
         public void CreateAndUpsertOisCurve(string scope, DateTimeOffset effectiveAt, string currency)
         {
             var complexMarketData = CreateDiscountCurve(effectiveAt);
@@ -475,9 +479,12 @@ namespace Lusid.Sdk.Tests.Utilities
             Assert.That(upsertResponse.Values.Values.Count, Is.EqualTo(upsertRequest.Count));
         }
 
+        /// <summary>
+        /// Similar to <see cref="CreateAndUpsertOisCurve"/>, but with higher rates.
+        /// This is relevant as some valuations (e.g. fx forwards) depend on the difference between the rates curves in two currencies
+        /// </summary>
         public void CreateAndUpsertOisCurveHighRates(string scope, DateTimeOffset effectiveAt, string currency)
         {
-            // different rates as the valuation for some instruments such as fx forwards depend on the difference between the rates curves in two currencies
             var complexMarketData = CreateDiscountCurveHighRates(effectiveAt);
             var complexMarketDataId = new ComplexMarketDataId(
                 provider: "Lusid",
@@ -527,7 +534,10 @@ namespace Lusid.Sdk.Tests.Utilities
             Assert.That(upsertResponse.Values.Values.Count, Is.EqualTo(upsertRequest.Count));
         }
 
-        public void CreateAndUpsertVolSurface(string scope, DateTimeOffset effectiveAt, EquityOption option, decimal vol = 0.5m)
+        /// <summary>
+        /// One-point vol surface for a given equity option - thus the surface is constant.
+        /// </summary>
+        public void CreateAndUpsertConstantVolSurface(string scope, DateTimeOffset effectiveAt, EquityOption option, decimal vol = 0.2m)
         {
             var instruments = new List<LusidInstrument> {option};
             var quotes = new List<MarketQuote> {new MarketQuote(MarketQuote.QuoteTypeEnum.LogNormalVol, vol)};
@@ -536,7 +546,7 @@ namespace Lusid.Sdk.Tests.Utilities
             var complexMarketDataId = new ComplexMarketDataId(
                 provider: "Lusid",
                 effectiveAt: effectiveAt.ToString("o"),
-                marketAsset: "ACME/USD/LN");
+                marketAsset: $"{option.Code}/{option.DomCcy}/LN");
             var upsertRequest = new Dictionary<string, UpsertComplexMarketDataRequest>
                 {{"0", new UpsertComplexMarketDataRequest(complexMarketDataId, complexMarketData)}};
 
@@ -553,7 +563,10 @@ namespace Lusid.Sdk.Tests.Utilities
             return JsonConvert.DeserializeObject<DiscountFactorCurveData>(jsonString);
         }
 
-        public UpsertInstrumentsResponse UpsertOtcToLusid(LusidInstrument instrument, string name, string idUniqueToInstrument)
+        /// <summary>
+        /// Helper to upsert a given LusidInstrument and ensure that the process is successful
+        /// </summary>
+        public UpsertInstrumentsResponse UpsertOtcInstrumentToLusid(LusidInstrument instrument, string name, string idUniqueToInstrument)
         {
             // PACKAGE instrument for upsert
             var instrumentDefinition = new InstrumentDefinition(
@@ -577,7 +590,10 @@ namespace Lusid.Sdk.Tests.Utilities
             return response;
         }
 
-        public LusidInstrument QueryOtcFromLusid(string idUniqueToInstrument)
+        /// <summary>
+        /// Helper to query the definition of an instrument stored in Lusid
+        /// </summary>
+        public LusidInstrument QueryOtcInstrumentFromLusid(string idUniqueToInstrument)
         {
             var response = _instrumentsApi.GetInstruments("ClientInternal",
                 new List<string>
@@ -593,6 +609,9 @@ namespace Lusid.Sdk.Tests.Utilities
             return response.Values.First().Value.InstrumentDefinition;
         }
 
+        /// <summary>
+        /// Simple wrapper to upsert a recipe to Lusid and ensure that the process is successful
+        /// </summary>
         public UpsertSingleStructuredDataResponse UpsertRecipe(ConfigurationRecipe recipe)
         {
             var upsertRecipeRequest = new UpsertRecipeRequest(recipe);

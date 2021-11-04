@@ -51,10 +51,10 @@ namespace Lusid.Sdk.Tests.tutorials.Instruments
 
             // Can now UPSERT to Lusid
             string uniqueId = "id-equityOption-1";
-            _testDataUtilities.UpsertOtcToLusid(equityOption, "some-name-for-this-equityOption", uniqueId);
+            _testDataUtilities.UpsertOtcInstrumentToLusid(equityOption, "some-name-for-this-equityOption", uniqueId);
 
             // Can now QUERY from Lusid
-            var retrieved = _testDataUtilities.QueryOtcFromLusid(uniqueId);
+            var retrieved = _testDataUtilities.QueryOtcInstrumentFromLusid(uniqueId);
             Assert.That(retrieved.InstrumentType == LusidInstrument.InstrumentTypeEnum.EquityOption);
             var roundTripEquityOption = retrieved as EquityOption;
             Assert.That(roundTripEquityOption, Is.Not.Null);
@@ -74,17 +74,17 @@ namespace Lusid.Sdk.Tests.tutorials.Instruments
         {
             var scope = "DemoEquityOptionValuation";
 
-            // upsert option
-            var option = InstrumentExamples.CreateExampleEquityOption();
+            // CREATE and UPSERT option
+            var option = (EquityOption) InstrumentExamples.CreateExampleEquityOption();
             string uniqueId = "id-equityOption-1";
-            _testDataUtilities.UpsertOtcToLusid(option, "some-name-for-this-equityOption", uniqueId);
+            _testDataUtilities.UpsertOtcInstrumentToLusid(option, "some-name-for-this-equityOption", uniqueId);
 
             // for Black-Scholes pricing, we need the following market data
             _testDataUtilities.CreateAndUpsertSimpleQuote(scope, "ACME", QuoteSeriesId.InstrumentIdTypeEnum.RIC, 110m, "USD", _demoEffectiveAt);
             _testDataUtilities.CreateAndUpsertOisCurve(scope, _demoEffectiveAt, "USD");
-            _testDataUtilities.CreateAndUpsertVolSurface(scope, _demoEffectiveAt, option, 0.2m);
+            _testDataUtilities.CreateAndUpsertConstantVolSurface(scope, _demoEffectiveAt, option, 0.2m);
 
-            // create Black-Scholes recipe specifying where to look for market data and which metrics to return
+            // CREATE Black-Scholes recipe specifying where to look for market data and which metrics to return
             // if in a larger portfolio, we would make a specific VendorModelRule specifying that equity options are to be valued using Black-Scholes
             var recipeCode = "EquityOption_ValuationRecipe";
             var pricingOptions = new PricingOptions(new ModelSelection(ModelSelection.LibraryEnum.Lusid, ModelSelection.ModelEnum.BlackScholes));
@@ -100,7 +100,7 @@ namespace Lusid.Sdk.Tests.tutorials.Instruments
             );
             _testDataUtilities.UpsertRecipe(recipe);
 
-            // define the metrics that we wish to return
+            // DEFINE the metrics that we wish to return
             string ValuationDateKey = "Analytic/default/ValuationDate";
             string InstrumentTag = "Analytic/default/InstrumentTag";
             string HoldingPvKey = "Holding/default/PV";
@@ -111,10 +111,10 @@ namespace Lusid.Sdk.Tests.tutorials.Instruments
                 new AggregateSpec(HoldingPvKey, AggregateSpec.OpEnum.Value)
             };
 
-            // choose valuation dates
+            // CHOOSE valuation dates
             var valuationSchedule = new ValuationSchedule(effectiveAt: _demoEffectiveAt);
 
-            // construct and perform valuation request
+            // CONSTRUCT and PERFORM valuation request
             var instruments = new List<WeightedInstrument> {new WeightedInstrument(1, "some-holding-identifier", option)};
             var inlineValuationRequest = new InlineValuationRequest(
                 recipeId: new ResourceId(scope, recipeCode),
@@ -136,23 +136,23 @@ namespace Lusid.Sdk.Tests.tutorials.Instruments
         {
             var scope = "DemoEquityOptionCashFlows";
 
-            // upsert option
-            var option = InstrumentExamples.CreateExampleEquityOption();
+            // CREATE and UPSERT option
+            var option = (EquityOption) InstrumentExamples.CreateExampleEquityOption();
             string uniqueId = "id-equityOption-1";
-            var response = _testDataUtilities.UpsertOtcToLusid(option, "some-name-for-this-equityOption", uniqueId);
+            var response = _testDataUtilities.UpsertOtcInstrumentToLusid(option, "some-name-for-this-equityOption", uniqueId);
             var luid = response.Values.First().Value.LusidInstrumentId;
 
             // for equity option cashflows, we need the following market data to determine intrinsic value
             _testDataUtilities.CreateAndUpsertSimpleQuote(scope, "ACME", QuoteSeriesId.InstrumentIdTypeEnum.RIC, 110m, "USD", _demoEffectiveAt);
 
-            // create a new portfolio and add the option to it via a transaction
+            // CREATE a new portfolio and add the option to it via a transaction
             var portfolioCode = _testDataUtilities.CreateTransactionPortfolio(scope);
             var reqs = new List<TransactionRequest> {_testDataUtilities.BuildTransactionRequest(luid, 100m, 5m, "USD", option.StartDate, "Buy")};
             _transactionPortfoliosApi.UpsertTransactions(scope, portfolioCode, reqs);
             var holdings = _transactionPortfoliosApi.GetHoldings(scope, portfolioCode);
             Assert.That(holdings.Values.Count == 2); // one holding for the option, and an opposite holding of cash
 
-            // create a recipe to tell lusid where to find the requisite market data
+            // CREATE a recipe to tell lusid where to find the requisite market data
             // we require a model to estimate/determine future cashflows (for physically settled options, we currently assume exercise in all models)
             // we choose ConstantTimeValueOfMoney since it has the fewest dependencies
             var recipeCode = "EquityOption_CashFlowsRecipe";
@@ -169,6 +169,7 @@ namespace Lusid.Sdk.Tests.tutorials.Instruments
             );
             _testDataUtilities.UpsertRecipe(recipe);
 
+            // QUERY cashflows and check that there is exactly one, as expected
             var cashflows = _transactionPortfoliosApi.GetPortfolioCashFlows(scope, portfolioCode, effectiveAt: _demoEffectiveAt,
                 windowStart: option.StartDate.AddDays(-3), windowEnd: option.OptionMaturityDate.AddDays(3),
                 recipeIdScope: scope, recipeIdCode: recipeCode).Values;
