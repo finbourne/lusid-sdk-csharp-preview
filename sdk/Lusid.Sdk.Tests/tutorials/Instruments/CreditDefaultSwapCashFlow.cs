@@ -113,14 +113,34 @@ namespace Lusid.Sdk.Tests.tutorials.Instruments
         internal static void CreateAndUpsertRecipe(string code, string scope, ModelSelection.ModelEnum model)
         {
             // CREATE a rule for reset quotes
-            var resetRule = new MarketDataKeyRule("Equity.RIC.*", "Lusid", scope, MarketDataKeyRule.QuoteTypeEnum.Price, "mid", quoteInterval: "1Y");
+            var resetRule = new MarketDataKeyRule(
+                key: "Equity.RIC.*",
+                supplier: "Lusid",
+                scope,
+                MarketDataKeyRule.QuoteTypeEnum.Price,
+                field: "mid",
+                quoteInterval: "1Y");
+            var ratesRule = new MarketDataKeyRule(
+                key: "Rates.*.*",
+                supplier: "Lusid",
+                scope,
+                MarketDataKeyRule.QuoteTypeEnum.Price,
+                field: "mid",
+                quoteInterval: "6Y");
+            var creditRule = new MarketDataKeyRule(
+                key: "Credit.*.*.*.*",
+                supplier: "Lusid",
+                scope,
+                MarketDataKeyRule.QuoteTypeEnum.Spread,
+                field: "mid",
+                quoteInterval: "10Y");
             
             // CREATE recipe for pricing
             var pricingOptions = new PricingOptions(new ModelSelection(ModelSelection.LibraryEnum.Lusid, model));
             var recipe = new ConfigurationRecipe(
                 scope,
                 code,
-                market: new MarketContext(new List<MarketDataKeyRule>{resetRule}, options: new MarketOptions(defaultScope: scope)),
+                market: new MarketContext(new List<MarketDataKeyRule>{resetRule, ratesRule, creditRule}, options: new MarketOptions(defaultScope: scope)),
                 pricing: new PricingContext(options: pricingOptions),
                 description: $"Recipe for {model} pricing");
             
