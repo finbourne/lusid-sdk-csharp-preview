@@ -41,6 +41,7 @@ namespace Lusid.Sdk.Tests.tutorials.Instruments
                 _apiFactory.Api<IComplexMarketDataApi>());
         }
         
+        [Test]
         public void TestDemonstratingThePricingOfCreditDefaultSwaps()
         {
             // CREATE a portfolio with instrument
