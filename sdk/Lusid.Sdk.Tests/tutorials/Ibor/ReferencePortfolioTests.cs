@@ -12,9 +12,8 @@ namespace Lusid.Sdk.Tests.Tutorials.Ibor
 {
 
     [TestFixture]
-    public class ReferencePortfolioTests
+    public class ReferencePortfolioTests: TutorialBase
     {
-        private ILusidApiFactory _apiFactory;
         private IList<string> _instrumentIds;
 
         //  This defines the scope that entities will be created in the test
@@ -25,7 +24,6 @@ namespace Lusid.Sdk.Tests.Tutorials.Ibor
         public void SetUp()
         {
             //  Initialise the API factory
-            _apiFactory = TestLusidApiFactoryBuilder.CreateApiFactory("secrets.json");
 
             // Load default instruments which will be used in the tests
             var instrumentsLoader = new InstrumentLoader(_apiFactory);

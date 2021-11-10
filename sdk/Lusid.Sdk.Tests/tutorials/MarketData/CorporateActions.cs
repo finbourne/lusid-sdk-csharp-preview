@@ -1,23 +1,16 @@
 using System;
 using Lusid.Sdk.Api;
 using Lusid.Sdk.Tests.Utilities;
+using Lusid.Sdk.Utilities;
 using LusidFeatures;
 using NUnit.Framework;
 
 namespace Lusid.Sdk.Tests.Tutorials.MarketData
 {
     [TestFixture]
-    public class CorporateActions
+    public class CorporateActions: TutorialBase
     {
-        private ICorporateActionSourcesApi _corporateActionSourcesApi;
 
-        [OneTimeSetUp]
-        public void SetUp()
-        {
-            var apiFactory = TestLusidApiFactoryBuilder.CreateApiFactory("secrets.json");
-            _corporateActionSourcesApi = apiFactory.Api<ICorporateActionSourcesApi>();
-        }
-        
         [LusidFeature("F12-6")]
         [Test]
         public void List_Corporate_Action_Sources()

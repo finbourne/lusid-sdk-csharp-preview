@@ -15,24 +15,31 @@ namespace Lusid.Sdk.Tests.Tutorials.Ibor
     /// LUSID API.  A
     /// </summary>
     [TestFixture]
-    public class Portfolios
+    public class Portfolios: TutorialBase
     {
-        private ILusidApiFactory _apiFactory;
-        private InstrumentLoader _instrumentLoader;
-        private TestDataUtilities _testDataUtilities;
         private IList<string> _instrumentIds;
-
+        private InstrumentLoader _instrumentLoader;
         //    This defines the scope that entities will be created in
-        private const string TutorialScope = "Testdemo";
         
-        [OneTimeSetUp]
+        internal string _portfolioCode;
+        internal string _portfolioScope;
+        
+        [SetUp]
         public void SetUp()
         {
-            _apiFactory = TestLusidApiFactoryBuilder.CreateApiFactory("secrets.json");
-            
+            _portfolioScope = TestDataUtilities.TutorialScope;
             _instrumentLoader = new InstrumentLoader(_apiFactory);
             _instrumentIds = _instrumentLoader.LoadInstruments();
-            _testDataUtilities = new TestDataUtilities(_apiFactory.Api<ITransactionPortfoliosApi>());
+            var portfolioRequest = TestDataUtilities.BuildTransactionPortfolioRequest();
+            var portfolio = _transactionPortfoliosApi.CreatePortfolio(TestDataUtilities.TutorialScope, portfolioRequest);
+            Assert.That(portfolio?.Id.Code, Is.EqualTo(portfolioRequest.Code));
+            _portfolioCode = portfolioRequest.Code;
+        }
+
+        [TearDown]
+        public void TearDown()
+        {
+            _portfoliosApi.DeletePortfolio(_portfolioScope, _portfolioCode); 
         }
         
         [LusidFeature("F8")]
@@ -54,7 +61,7 @@ namespace Lusid.Sdk.Tests.Tutorials.Ibor
             );
 
             //    Create the portfolio in LUSID
-            var portfolio = _apiFactory.Api<ITransactionPortfoliosApi>().CreatePortfolio(TutorialScope, request);
+            var portfolio = _apiFactory.Api<ITransactionPortfoliosApi>().CreatePortfolio(_portfolioScope, request);
 
             //    Confirm that the portfolio was successfully created.  Any failures will result in
             //    a ApiException being thrown which contain the relevant response code and error message
@@ -131,7 +138,7 @@ namespace Lusid.Sdk.Tests.Tutorials.Ibor
             var effectiveDate = new DateTimeOffset(2018, 1, 1, 0, 0, 0, TimeSpan.Zero);
 
             //    Create a portfolio
-            var portfolioId = _testDataUtilities.CreateTransactionPortfolio(TutorialScope);
+            //var portfolioId = _testDataUtilities.CreateTransactionPortfolio(TutorialScope);
 
             //    Details of the transaction to be added       
             var transaction = new TransactionRequest(
@@ -156,10 +163,10 @@ namespace Lusid.Sdk.Tests.Tutorials.Ibor
                 source: "Broker"
             );
             //    Add the transaction to the portfolio
-            _apiFactory.Api<ITransactionPortfoliosApi>().UpsertTransactions(TutorialScope, portfolioId, new List<TransactionRequest> {transaction});
+            _apiFactory.Api<ITransactionPortfoliosApi>().UpsertTransactions(TestDataUtilities.TutorialScope, _portfolioCode, new List<TransactionRequest> {transaction});
             
             //    Retrieve the transaction
-            var transactions = _apiFactory.Api<ITransactionPortfoliosApi>().GetTransactions(TutorialScope, portfolioId);                
+            var transactions = _apiFactory.Api<ITransactionPortfoliosApi>().GetTransactions(TestDataUtilities.TutorialScope, _portfolioCode);                
             
             Assert.That(transactions.Values.Count, Is.EqualTo(1));
             Assert.That(transactions.Values[0].InstrumentUid, Is.EqualTo(transaction.InstrumentIdentifiers.First().Value));           
@@ -202,7 +209,7 @@ namespace Lusid.Sdk.Tests.Tutorials.Ibor
             var propertyValue = new PerpetualProperty(propertyDefinitionResult.Key, new PropertyValue(labelValue));
 
             //    Create a portfolio
-            var portfolioId = _testDataUtilities.CreateTransactionPortfolio(TutorialScope);
+            //var portfolioId = _testDataUtilities.CreateTransactionPortfolio(TutorialScope);
 
             //    Details of the transaction to be added       
             var transaction = new TransactionRequest(
@@ -234,10 +241,10 @@ namespace Lusid.Sdk.Tests.Tutorials.Ibor
             );
 
             //    Add the transaction to the portfolio
-            _apiFactory.Api<ITransactionPortfoliosApi>().UpsertTransactions(TutorialScope, portfolioId, new List<TransactionRequest> {transaction});
+            _apiFactory.Api<ITransactionPortfoliosApi>().UpsertTransactions(TestDataUtilities.TutorialScope, _portfolioCode, new List<TransactionRequest> {transaction});
             
             //    Retrieve the transaction
-            var transactions = _apiFactory.Api<ITransactionPortfoliosApi>().GetTransactions(TutorialScope, portfolioId);                
+            var transactions = _apiFactory.Api<ITransactionPortfoliosApi>().GetTransactions(TestDataUtilities.TutorialScope, _portfolioCode);                
             
             Assert.That(transactions.Values.Count, Is.EqualTo(1));
             Assert.That(transactions.Values[0].InstrumentUid, Is.EqualTo(transaction.InstrumentIdentifiers.First().Value));
@@ -249,12 +256,15 @@ namespace Lusid.Sdk.Tests.Tutorials.Ibor
         public void List_Portfolios()
         {
             //    This defines the scope that the portfolios will be retrieved from
-            var scope = $"{TutorialScope}-{Guid.NewGuid().ToString()}";
+            var scope = $"{TestDataUtilities.TutorialScope}-{Guid.NewGuid().ToString()}";
             
             //    Set up some sample portfolios
             for (var i = 0; i < 10; i++)
             {
-                _testDataUtilities.CreateTransactionPortfolio(scope);
+                //_testDataUtilities.CreateTransactionPortfolio(scope);
+                var portfolioRequest = TestDataUtilities.BuildTransactionPortfolioRequest();
+                var portfolio = _transactionPortfoliosApi.CreatePortfolio(scope, portfolioRequest);
+                Assert.That(portfolio?.Id.Code, Is.EqualTo(portfolioRequest.Code));
             }
             
             //    Retrieve the list of portfolios from a given scope           

@@ -1,27 +1,96 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using Lusid.Sdk.Model;
 using Lusid.Sdk.Tests.Utilities;
+using Lusid.Sdk.Utilities;
 using NUnit.Framework;
+using NUnit.Framework.Internal;
 
 namespace Lusid.Sdk.Tests.Tutorials.Instruments
 {
     [TestFixture]
-    public class DemoEquityOption: DemoInstrument
+    public class DemoEquityOption: DemoInstrumentBase
     {
+        internal override void CreateMarketData(string scope, ModelSelection.ModelEnum model, LusidInstrument option)
+        {
+            
+            var quoteRequest = TestDataUtilities.BuildQuoteRequest(scope, "ACME", QuoteSeriesId.InstrumentIdTypeEnum.RIC, 135m, "USD", TestDataUtilities.EffectiveAt);
+            var upsertResponse = _quotesApi.UpsertQuotes(scope, quoteRequest);
+            Assert.That(upsertResponse.Failed.Count, Is.EqualTo(0));
+            Assert.That(upsertResponse.Values.Count, Is.EqualTo(quoteRequest.Count));
+
+            List<Dictionary<string, UpsertComplexMarketDataRequest>> complexMarket =
+                new List<Dictionary<string, UpsertComplexMarketDataRequest>>();
+            if (model != ModelSelection.ModelEnum.ConstantTimeValueOfMoney)
+            {
+                complexMarket.Add(TestDataUtilities.BuildOisCurveRequest(scope, TestDataUtilities.EffectiveAt, "USD"));
+            }
+            if (model == ModelSelection.ModelEnum.BlackScholes)
+            {
+                complexMarket.Add(TestDataUtilities.ConstantVolSurfaceRequest(scope, TestDataUtilities.EffectiveAt, option, model, 0.2m));
+            }
+            if (model == ModelSelection.ModelEnum.Bachelier)
+            { 
+                complexMarket.Add(TestDataUtilities.ConstantVolSurfaceRequest(scope, TestDataUtilities.EffectiveAt, option, model, 10m));
+            }
+            foreach (var r in complexMarket)
+            {
+                var upsertmarketResponse = _complexMarketDataApi.UpsertComplexMarketData(scope, r);
+                ValidateComplexMarketDataUpsert(upsertmarketResponse, r.Count);
+            }
+        }
         
+        internal override LusidInstrument CreateInstrument()
+        {
+            return InstrumentExamples.CreateExampleEquityOption();
+        }
+
+
+        internal override void GetAndValidateCashFlows(LusidInstrument instrument, string scope, string portfolioCode,
+            string recipeCode, string instrumentID)
+        {
+            var option = (EquityOption) instrument;
+            var cashflows = _transactionPortfoliosApi.GetPortfolioCashFlows(
+                scope: scope,
+                code: portfolioCode,
+                effectiveAt: TestDataUtilities.EffectiveAt,
+                windowStart: option.StartDate.AddDays(-3),
+                windowEnd: option.OptionMaturityDate.AddDays(3),
+                asAt:null,
+                filter:null,
+                recipeIdScope: scope,
+                recipeIdCode: recipeCode).Values;
+            
+            Assert.That(cashflows.Count, Is.EqualTo(1));
+            Assert.That(cashflows[0].Amount, Is.EqualTo(-option.Strike));
+            
+            _instrumentsApi.DeleteInstrument("ClientInternal", instrumentID);
+            _portfoliosApi.DeletePortfolio(scope, portfolioCode);
+        }
+
         [Test]
         public void DemoEquityOptionCreation()
         {
-            // CREATE an equity option (that can then be upserted into Lusid)
+            // CREATE an Equity-Option (that can then be upserted into LUSID)
             var equityOption = (EquityOption) InstrumentExamples.CreateExampleEquityOption();
+            
+            // ASSERT that it was created
             Assert.That(equityOption, Is.Not.Null);
 
-            // Can now UPSERT to Lusid
-            string uniqueId = Guid.NewGuid().ToString();
-            UpsertOtcInstrumentToLusid(equityOption, uniqueId);
+            // CAN NOW UPSERT TO LUSID
+            string uniqueId = equityOption.InstrumentType+Guid.NewGuid().ToString(); 
+            List<(LusidInstrument, string)> instrumentsIds = new List<(LusidInstrument, string)>(){(equityOption, uniqueId)};
+            var definitions = TestDataUtilities.BuildInstrumentUpsertRequest(instrumentsIds);
+            
+            UpsertInstrumentsResponse upsertResponse = _instrumentsApi.UpsertInstruments(definitions);
+            ValidateInstrumentResponse(upsertResponse);
 
-            // Can now QUERY from Lusid
-            var retrieved = QueryOtcInstrumentFromLusid(uniqueId);
+            // CAN NOW QUERY FROM LUSID
+            GetInstrumentsResponse getResponse = _instrumentsApi.GetInstruments("ClientInternal", new List<string> { uniqueId });
+            ValidateInstrumentResponse(getResponse ,uniqueId);
+            
+            var retrieved = getResponse.Values.First().Value.InstrumentDefinition;
             Assert.That(retrieved.InstrumentType == LusidInstrument.InstrumentTypeEnum.EquityOption);
             var roundTripEquityOption = retrieved as EquityOption;
             Assert.That(roundTripEquityOption, Is.Not.Null);
@@ -35,10 +104,10 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
             Assert.That(roundTripEquityOption.OptionSettlementDate, Is.EqualTo(equityOption.OptionSettlementDate));
             Assert.That(roundTripEquityOption.UnderlyingIdentifier, Is.EqualTo(equityOption.UnderlyingIdentifier));
             
-            DeleteItems(null,null,null,uniqueId);
-            
+            // Delete Instrument 
+            _instrumentsApi.DeleteInstrument("ClientInternal", uniqueId); 
         }
-
+        
         [TestCase("ConstantTimeValueOfMoney", true)]
         [TestCase("Discounting", true)]
         [TestCase("BlackScholes", true)]
@@ -47,85 +116,22 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
         [TestCase("Discounting", false)]
         [TestCase("BlackScholes", false)]
         [TestCase("Bachelier", false)]
-        public void DemoEquityOptionValuation(string modelName, bool inlineValuationRequest)
+        public void DemoEquityOptionValuation(string modelName, bool inLineValuation)
         {
-            // Set model and scope
-            var scope = Guid.NewGuid().ToString(); 
-            var model = Enum.Parse<ModelSelection.ModelEnum>(modelName);
-            
-            // Create instrument
-            var option = (EquityOption) InstrumentExamples.CreateExampleEquityOption();
-           
-            // for pricing, we need the following market data (depending on the model)
-            CreateAndUpsertSimpleQuote(scope, "ACME", QuoteSeriesId.InstrumentIdTypeEnum.RIC, 135m, "USD", TestDataUtilities.EffectiveAt);
-            if (model != ModelSelection.ModelEnum.ConstantTimeValueOfMoney)
-                CreateAndUpsertOisCurve(scope, TestDataUtilities.EffectiveAt, "USD");
-            if (model == ModelSelection.ModelEnum.BlackScholes)
-                CreateAndUpsertConstantVolSurface(scope, TestDataUtilities.EffectiveAt, option, model, 0.2m);
-            if (model == ModelSelection.ModelEnum.Bachelier)
-                CreateAndUpsertConstantVolSurface(scope, TestDataUtilities.EffectiveAt, option, model, 10m);
-
-            // CREATE Black-Scholes recipe specifying where to look for market data and which metrics to return
-            // if in a larger portfolio, we would make a specific VendorModelRule specifying that equity options are to be valued using Black-Scholes
-            var valuation = Valuation(option, scope, model, EffectiveAt, inlineValuationRequest);
-            
-            Assert.That(valuation, Is.Not.Null);
-            Assert.That(valuation.Data.Count, Is.EqualTo(1));
-
-            var pv = valuation.Data[0][HoldingPvKey];
-            Assert.That(pv, Is.Positive); // since our option is in the money, all models should return a positive pv
-            Console.WriteLine($"Computed pv of {pv} at time {EffectiveAt:O} using model {modelName}");
+            ModelSelection.ModelEnum model = Enum.Parse<ModelSelection.ModelEnum>(modelName);
+            DemoValuation(model, inLineValuation);
         }
 
+        
         [TestCase("ConstantTimeValueOfMoney")]
         [TestCase("Discounting")]
         [TestCase("BlackScholes")]
         [TestCase("Bachelier")]
         public void DemoEquityOptionCashFlows(string modelName)
         {
-            var scope = Guid.NewGuid().ToString();
             var model = Enum.Parse<ModelSelection.ModelEnum>(modelName);
-
-            // CREATE and UPSERT option
-            var option = (EquityOption) InstrumentExamples.CreateExampleEquityOption(isCashSettled: false);
-            string uniqueId = Guid.NewGuid().ToString();
-
-            // for equity option cashflows, we need the following market data to determine intrinsic value for cashflow calculation
-            CreateAndUpsertSimpleQuote(scope, "ACME", QuoteSeriesId.InstrumentIdTypeEnum.RIC, 135m, "USD", EffectiveAt);
-            if (model != ModelSelection.ModelEnum.ConstantTimeValueOfMoney)
-                CreateAndUpsertOisCurve(scope, TestDataUtilities.EffectiveAt, "USD");
-            if (model == ModelSelection.ModelEnum.BlackScholes)
-                CreateAndUpsertConstantVolSurface(scope, TestDataUtilities.EffectiveAt, option, model, 0.2m);
-            if (model == ModelSelection.ModelEnum.Bachelier)
-                CreateAndUpsertConstantVolSurface(scope, TestDataUtilities.EffectiveAt, option, model, 10m);
-            // CREATE a new portfolio and add the option to it via a transaction
-            var portfolioCode = CreatePortfolioAndTransaction(scope, option, uniqueId, EffectiveAt); 
-            
-
-            // CREATE a recipe to tell lusid where to find the requisite market data
-            // we require a model to estimate/determine future cashflows (for physically settled options, we currently assume exercise in all models)
-            // we choose ConstantTimeValueOfMoney since it has the fewest dependencies
-            var recipeCode = Guid.NewGuid().ToString(); 
-            UpsertRecipe(recipeCode, scope, model);
-
-            // QUERY cashflows and check that there is exactly one, as expected
-            var cashflows = GetPortfolioCashFlows(
-                scope: scope,
-                code: portfolioCode,
-                effectiveAt: TestDataUtilities.EffectiveAt,
-                windowStart: option.StartDate.AddDays(-3),
-                windowEnd: option.OptionMaturityDate.AddDays(3),
-                asAt:null,
-                filter:null,
-                recipeIdScope: scope,
-                recipeIdCode: recipeCode).Values;
-            
-            Assert.That(cashflows.Count, Is.EqualTo(1));
-
-            var cashflow = cashflows[0];
-            Assert.That(cashflow.Amount, Is.Negative);
-            Console.WriteLine($"Computed cash flow of {cashflow.Amount} {cashflow.Currency} at time {cashflow.PaymentDate}");
-            DeleteItems(scope, recipeCode, portfolioCode, uniqueId);
+            DemoCashFlows(model);
         }
+        
     }
 }

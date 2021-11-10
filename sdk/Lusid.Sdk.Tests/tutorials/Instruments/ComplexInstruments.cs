@@ -4,22 +4,15 @@ using System.Linq;
 using Lusid.Sdk.Api;
 using Lusid.Sdk.Model;
 using Lusid.Sdk.Tests.Utilities;
+using Lusid.Sdk.Utilities;
 using LusidFeatures;
 using NUnit.Framework;
 
 namespace Lusid.Sdk.Tests.Tutorials.Instruments
 {
     [TestFixture]
-    public class ComplexInstruments
+    public class ComplexInstruments: TutorialBase
     {
-        private IInstrumentsApi _instrumentsApi;
-
-        [OneTimeSetUp]
-        public void SetUp()
-        {
-            var apiFactory = TestLusidApiFactoryBuilder.CreateApiFactory("secrets.json");
-            _instrumentsApi = apiFactory.Api<IInstrumentsApi>();
-        }
 
         [LusidFeature("F22-1")]
         [Test]
