@@ -120,13 +120,15 @@ namespace Lusid.Sdk.Tests.tutorials.Instruments
                 MarketDataKeyRule.QuoteTypeEnum.Price,
                 field: "mid",
                 quoteInterval: "1Y");
+            // CREATE rules for cashflow tests.
+            // We use long quote intervals here because we are happy to use old market data, as pricing is not a concern.
             var ratesRule = new MarketDataKeyRule(
                 key: "Rates.*.*",
                 supplier: "Lusid",
                 scope,
                 MarketDataKeyRule.QuoteTypeEnum.Price,
                 field: "mid",
-                quoteInterval: "6Y");
+                quoteInterval: "10Y");
             var creditRule = new MarketDataKeyRule(
                 key: "Credit.*.*.*.*",
                 supplier: "Lusid",
