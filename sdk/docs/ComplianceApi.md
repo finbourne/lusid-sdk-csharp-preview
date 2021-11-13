@@ -1,11 +1,12 @@
 # Lusid.Sdk.Api.ComplianceApi
 
-All URIs are relative to *http://local-unit-test-server.lusid.com:62575*
+All URIs are relative to *http://local-unit-test-server.lusid.com:48945*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
 [**GetComplianceRun**](ComplianceApi.md#getcompliancerun) | **GET** /api/compliance/{runId} | [EXPERIMENTAL] GetComplianceRun: Get the details of a single compliance run.
 [**ListComplianceRuns**](ComplianceApi.md#listcomplianceruns) | **GET** /api/compliance | [EXPERIMENTAL] ListComplianceRuns: List historical compliance runs.
+[**RunComplianceCheck**](ComplianceApi.md#runcompliancecheck) | **POST** /api/compliance/run | [EXPERIMENTAL] RunComplianceCheck: Kick off the compliance check process
 
 
 <a name="getcompliancerun"></a>
@@ -31,7 +32,7 @@ namespace Example
         public static void Main()
         {
             Configuration config = new Configuration();
-            config.BasePath = "http://local-unit-test-server.lusid.com:62575";
+            config.BasePath = "http://local-unit-test-server.lusid.com:48945";
             // Configure OAuth2 access token for authorization: oauth2
             config.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -113,7 +114,7 @@ namespace Example
         public static void Main()
         {
             Configuration config = new Configuration();
-            config.BasePath = "http://local-unit-test-server.lusid.com:62575";
+            config.BasePath = "http://local-unit-test-server.lusid.com:48945";
             // Configure OAuth2 access token for authorization: oauth2
             config.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -165,6 +166,82 @@ Name | Type | Description  | Notes
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
 | **200** | The List of all compliance runs completed |  -  |
+| **400** | The details of the input related failure |  -  |
+| **0** | Error response |  -  |
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+<a name="runcompliancecheck"></a>
+# **RunComplianceCheck**
+> ComplianceRun RunComplianceCheck (string fileName)
+
+[EXPERIMENTAL] RunComplianceCheck: Kick off the compliance check process
+
+Use this endpoint to fetch the start a compliance run, based on a pre-set mapping file.
+
+### Example
+```csharp
+using System.Collections.Generic;
+using System.Diagnostics;
+using Lusid.Sdk.Api;
+using Lusid.Sdk.Client;
+using Lusid.Sdk.Model;
+
+namespace Example
+{
+    public class RunComplianceCheckExample
+    {
+        public static void Main()
+        {
+            Configuration config = new Configuration();
+            config.BasePath = "http://local-unit-test-server.lusid.com:48945";
+            // Configure OAuth2 access token for authorization: oauth2
+            config.AccessToken = "YOUR_ACCESS_TOKEN";
+
+            var apiInstance = new ComplianceApi(config);
+            var fileName = fileName_example;  // string | The name of compliance mappings file to use. Has to exist in drive ComplianceRules folder
+
+            try
+            {
+                // [EXPERIMENTAL] RunComplianceCheck: Kick off the compliance check process
+                ComplianceRun result = apiInstance.RunComplianceCheck(fileName);
+                Debug.WriteLine(result);
+            }
+            catch (ApiException  e)
+            {
+                Debug.Print("Exception when calling ComplianceApi.RunComplianceCheck: " + e.Message );
+                Debug.Print("Status Code: "+ e.ErrorCode);
+                Debug.Print(e.StackTrace);
+            }
+        }
+    }
+}
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **fileName** | **string**| The name of compliance mappings file to use. Has to exist in drive ComplianceRules folder | 
+
+### Return type
+
+[**ComplianceRun**](ComplianceRun.md)
+
+### Authorization
+
+[oauth2](../README.md#oauth2)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: text/plain, application/json, text/json
+
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+| **200** | The identifying information of a compliance run |  -  |
 | **400** | The details of the input related failure |  -  |
 | **0** | Error response |  -  |
 
