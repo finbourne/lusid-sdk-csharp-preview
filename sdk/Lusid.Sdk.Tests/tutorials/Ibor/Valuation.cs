@@ -113,12 +113,11 @@ namespace Lusid.Sdk.Tests.Tutorials.Ibor
                     {
                         Equity = "DataScope"
                     },
-                    Options = new MarketOptions
-                    {
-                        DefaultSupplier = "DataScope",
-                        DefaultInstrumentCodeType = "LusidInstrumentId",
-                        DefaultScope = scope
-                    }
+                    Options = new MarketOptions(
+                        defaultScope:  scope,
+                        defaultSupplier: "DataScope",
+                        defaultInstrumentCodeType: "LusidInstrumentId"
+                    )
                 }
             );
 
