@@ -48,7 +48,7 @@ namespace Lusid.Sdk.Tests.Utilities
                 isDeliveryNotCash: true,
                 instrumentType: LusidInstrument.InstrumentTypeEnum.FxOption
             );
-        
+
         internal static LusidInstrument CreateExampleEquityOption(bool isCashSettled = false)
             => new EquityOption(
                 startDate: new DateTimeOffset(2020, 2, 7, 0, 0, 0, TimeSpan.Zero),
@@ -188,4 +188,3 @@ namespace Lusid.Sdk.Tests.Utilities
             );
     }
 }
-

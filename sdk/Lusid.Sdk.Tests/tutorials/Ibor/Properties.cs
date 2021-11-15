@@ -16,15 +16,9 @@ namespace Lusid.Sdk.Tests.tutorials.Ibor
     /// LUSID API.
     /// </summary>
     [TestFixture]
-    public class Properties
+    public class Properties: TutorialBase
     {
-        private ILusidApiFactory _apiFactory;
 
-        [OneTimeSetUp]
-        public void SetUp()
-        {
-            _apiFactory = TestLusidApiFactoryBuilder.CreateApiFactory("secrets.json");
-        }
         
         [LusidFeature("F1-5")]
         [Test]

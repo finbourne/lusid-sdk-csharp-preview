@@ -10,71 +10,58 @@ using NUnit.Framework;
 
 namespace Lusid.Sdk.Tests.Utilities
 {
-    public class TestDataUtilities
+    public static class TestDataUtilities
     {
-        private static readonly string ExampleMarketDataDirectory = "../../../tutorials/Ibor/ExampleMarketData/";
+        internal static readonly string ExampleMarketDataDirectory = "../../../tutorials/Ibor/ExampleMarketData/";
         public const string TutorialScope = "Testdemo";
         public const string MarketDataScope = "FinbourneMarketData";
+        public static string ValuationDateKey = "Analytic/default/ValuationDate";
+        public static string InstrumentTag = "Analytic/default/InstrumentTag";
+        public static string HoldingPvKey = "Holding/default/PV";
+        public static string InstrumentName = "Instrument/default/Name";
         
+        public static readonly List<AggregateSpec> valuationSpec = new List<AggregateSpec>
+        {
+            new AggregateSpec(ValuationDateKey, AggregateSpec.OpEnum.Value),
+            new AggregateSpec(InstrumentName, AggregateSpec.OpEnum.Value),
+            new AggregateSpec(HoldingPvKey, AggregateSpec.OpEnum.Value),
+            new AggregateSpec(InstrumentTag, AggregateSpec.OpEnum.Value)
+        };
         //    Specific key used to denote cash in LUSID
         public const string LusidCashIdentifier = "Instrument/default/Currency";
         public const string LusidInstrumentIdentifier = "Instrument/default/LusidInstrumentId";
-        
-        private readonly ITransactionPortfoliosApi _transactionPortfoliosApi;
-        private readonly IInstrumentsApi _instrumentsApi;
-        private readonly IQuotesApi _quotesApi;
-        private readonly IComplexMarketDataApi _complexMarketDataApi;
-        private readonly IConfigurationRecipeApi _recipeApi;
 
-        public TestDataUtilities(ITransactionPortfoliosApi transactionPortfoliosApi)
-        {
-            _transactionPortfoliosApi = transactionPortfoliosApi;
-        }
+        public static DateTimeOffset EffectiveAt = new DateTimeOffset(2020, 1, 2, 0, 0, 0, TimeSpan.Zero);
 
-        public TestDataUtilities(
-            ITransactionPortfoliosApi transactionPortfoliosApi,
-            IInstrumentsApi instrumentsApi,
-            IQuotesApi quotesApi,
-            IComplexMarketDataApi complexMarketDataApi = null,
-            IConfigurationRecipeApi recipeApi = null)
+        /// <summary>
+        /// Helper method to construct CreateTransactionPortfolioRequest to be used in ITransactionPortfoliosApi
+        /// </summary>
+        public static CreateTransactionPortfolioRequest BuildTransactionPortfolioRequest(DateTimeOffset? effectiveAt = null)
         {
-            _transactionPortfoliosApi = transactionPortfoliosApi;
-            _instrumentsApi = instrumentsApi;
-            _quotesApi = quotesApi;
-            _complexMarketDataApi = complexMarketDataApi;
-            _recipeApi = recipeApi;
-        }
-
-        public string CreateTransactionPortfolio(string scope)
-        {
-            var uuid = Guid.NewGuid().ToString();
-            
+            var portfolioCode = Guid.NewGuid().ToString();
             //    Effective date of the portfolio, this is the date the portfolio was created and became live.  All dates/times
             //    must be supplied in UTC
-            var effectiveDate = new DateTimeOffset(2018, 1, 1, 0, 0, 0, TimeSpan.Zero);
-            
+            var effectiveDate = effectiveAt  ?? new DateTimeOffset(2018, 1, 1, 0, 0, 0, TimeSpan.Zero);
+
             //    Details of the new portfolio to be created, created here with the minimum set of mandatory fields
             var request = new CreateTransactionPortfolioRequest(
-                code: $"id-{uuid}",
-                displayName: $"Portfolio-{uuid}",                 
+                code: portfolioCode,
+                displayName: $"Portfolio-{portfolioCode}",
                 baseCurrency: "GBP",
                 created: effectiveDate
             );
-            
-            //    Create the portfolio in LUSID
-            var portfolio = _transactionPortfoliosApi.CreatePortfolio(scope, request);
-
-            Assert.That(portfolio?.Id.Code, Is.EqualTo(request.Code));
-
-            return portfolio.Id.Code;
+            return request;
         }
-        
-        public TransactionRequest BuildTransactionRequest(
+
+        /// <summary>
+        /// Helper method to construct TransactionReqeust to be used in ITransactionPortfoliosApi to build transaction
+        /// </summary>
+        public static TransactionRequest BuildTransactionRequest(
             string instrumentId,
-            decimal units, 
+            decimal units,
             decimal price,
             string currency,
-            DateTimeOrCutLabel tradeDate, 
+            DateTimeOrCutLabel tradeDate,
             string transactionType)
         {
             return new TransactionRequest(
@@ -92,14 +79,17 @@ namespace Lusid.Sdk.Tests.Utilities
                 source: "Broker");
         }
 
-        public TransactionRequest BuildCashFundsInTransactionRequest(
+        /// <summary>
+        /// Helper method to create Cash Fund transaction request to be used in ITransactionPortfoliosApi 
+        /// </summary>
+        public static TransactionRequest BuildCashFundsInTransactionRequest(
             decimal units,
             string currency,
             DateTimeOffset tradeDate)
         {
             return new TransactionRequest(
                 transactionId: Guid.NewGuid().ToString(),
-                
+
                 //    Set the transaction type to denote cash being added to the portfolio
                 type: "FundsIn",
                 instrumentIdentifiers: new Dictionary<string, string>
@@ -114,7 +104,7 @@ namespace Lusid.Sdk.Tests.Utilities
                 source: "Client");
         }
 
-        public AdjustHoldingRequest BuildAdjustHoldingsRequst(string instrumentId, decimal units, decimal price, string currency, DateTimeOffset? tradeDate)
+        public static AdjustHoldingRequest BuildAdjustHoldingsRequst(string instrumentId, decimal units, decimal price, string currency, DateTimeOffset? tradeDate)
         {
             return new AdjustHoldingRequest(
                 instrumentIdentifiers: new Dictionary<string, string>
@@ -138,7 +128,7 @@ namespace Lusid.Sdk.Tests.Utilities
            );
         }
 
-        public AdjustHoldingRequest BuildCashFundsInAdjustHoldingsRequest(string currency, decimal units)
+        public static AdjustHoldingRequest BuildCashFundsInAdjustHoldingsRequest(string currency, decimal units)
         {
             return new AdjustHoldingRequest(
                 instrumentIdentifiers: new Dictionary<string, string>
@@ -159,7 +149,7 @@ namespace Lusid.Sdk.Tests.Utilities
             );
         }
 
-        public PortfolioHolding BuildPortfolioHolding(string currency, string instrumentUid, decimal units, decimal cost)
+        public static PortfolioHolding BuildPortfolioHolding(string currency, string instrumentUid, decimal units, decimal cost)
         {
             return new PortfolioHolding(
                     cost: new CurrencyAndAmount(cost, currency),
@@ -172,7 +162,7 @@ namespace Lusid.Sdk.Tests.Utilities
                 );
         }
 
-        public PortfolioHolding BuildCashPortfolioHolding(string currency, string currencyLuid, decimal units)
+        public static PortfolioHolding BuildCashPortfolioHolding(string currency, string currencyLuid, decimal units)
         {
             return new PortfolioHolding(
                     cost: new CurrencyAndAmount(0, currency),
@@ -185,179 +175,50 @@ namespace Lusid.Sdk.Tests.Utilities
                 );
         }
 
-        public void AddInstrumentsTransactionPortfolioAndPopulateRequiredMarketData(
-            string portfolioScope,
-            string portfolioCode,
-            DateTimeOffset effectiveFrom,
-            DateTimeOffset effectiveAt,
-            LusidInstrument instrument,
-            string equityIdentifier = null,
-            bool useConstantFxRate = false
-        )
-            => AddInstrumentsTransactionPortfolioAndPopulateRequiredMarketData(
-                portfolioScope,
-                portfolioCode,
-                effectiveFrom,
-                effectiveAt,
-                new List<LusidInstrument> {instrument},
-                equityIdentifier,
-                useConstantFxRate);
-
         /// <summary>
-        /// This method adds the instruments to the portfolio and populates required market data for the pricing for examples.
-        /// This method contains a several steps:
-        ///
-        /// 1) We first upsert our instruments by UpsertInstrumentSetAndReturnResponseValues.
-        /// Inside this method, it first creates the instruments and upsert them using the InstrumentApi.
-        /// Then it returns the upsert response.
-        ///
-        /// 2) The upsert response contains the LUIDs for the instruments upserted.
-        /// Using the LUIDs, we add them to the portfolio by the method AddInstrumentsTransactionToPortfolio.
-        /// The effective from argument is to specify when we want the instruments to be effective date from
-        ///
-        /// 3) To value the instrument in our example set, we populate with relevant market data.
-        /// Fx rates (JPY/USD, UDS/JPY) are upserted for Fx-Forward, Fx-Option pricing
-        /// Rate Curves are upserted for discounting pricing of Fx-Forward as well as for pricing swaps.
-        /// Equity price quote is also upserted if an identifier is supplied.
+        /// Helper to upsert a given LusidInstrument 
         /// </summary>
-        public void AddInstrumentsTransactionPortfolioAndPopulateRequiredMarketData(
-            string portfolioScope,
-            string portfolioCode,
-            DateTimeOffset effectiveFrom,
-            DateTimeOffset effectiveAt,
-            List<LusidInstrument> instruments,
-            string equityIdentifier = null,
-            bool useConstantFxRate = false
-        )
-        {
-            // UPSERT instruments and return the upsert response to attain LusidInstrumentIds
-            var upsertResponse = UpsertInstrumentSetAndReturnResponseValues(instruments, equityIdentifier);
-            var luids = upsertResponse
-                .Select(inst => inst.Value.LusidInstrumentId)
-                .ToList();
-            
-            // ADD instruments to the portfolio via their LusidInstrumentId
-            AddInstrumentsTransactionToPortfolio(luids, portfolioScope, portfolioCode, effectiveFrom);
-            
-            // UPSERT fx quotes and rate curves required pricing instruments
-            UpsertFxRate(portfolioScope, effectiveFrom, effectiveAt, useConstantFxRate);
-            UpsertRateCurves(portfolioScope, effectiveAt);
-            UpsertResetQuotes(portfolioScope, effectiveAt.AddDays(-4)); // The effective date for the reset quote should start 2 business days prior the accrual start date. Hence the date is adjusted
-
-            // UPSERT equity quotes, if an equityIdentifier is present
-            if (!equityIdentifier.IsNullOrEmpty())
-            {
-                var luid = upsertResponse[equityIdentifier].LusidInstrumentId;
-                UpsertEquityQuote(luid, portfolioScope, effectiveFrom, effectiveAt);
-            }
-
-            // For equity options, we upsert the reset price in which the option payoff is computed.
-            var equityOptions = instruments
-                .Where(inst => inst.InstrumentType == LusidInstrument.InstrumentTypeEnum.EquityOption)
-                .Select(eqOpt => (EquityOption) eqOpt);
-            foreach (var eqOpt in equityOptions)
-            {
-                UpsertEquityQuote(eqOpt.Code, portfolioScope, effectiveFrom, effectiveAt, QuoteSeriesId.InstrumentIdTypeEnum.RIC);
-            }
-        }
-
-        public void UpsertCdsSpreadCurves(string scope, DateTimeOffset effectiveAt, string ticker, string ccy, CdsProtectionDetailSpecification.SeniorityEnum seniority, CdsProtectionDetailSpecification.RestructuringTypeEnum restructType)
-        {
-            var marketDataId = new ComplexMarketDataId
-            (
-                provider: "Lusid",
-                effectiveAt: effectiveAt.ToString("o"),
-                marketAsset: $"{ticker}/{ccy}/{seniority}/{restructType}",
-                priceSource: "",
-                lineage: ""
-            );
-            
-            var marketData = GetSpreadCurveJsonFromFile("XYZCorp.json");
-            var request = new UpsertComplexMarketDataRequest(marketDataId, marketData);
-            
-            _complexMarketDataApi.UpsertComplexMarketData(scope, new Dictionary<string, UpsertComplexMarketDataRequest>(){{"Request", request}});
-        }
-        
-        private Dictionary<string, InstrumentDefinition> CreateEquityUpsertRequest(string equityIdentifier)
-        {
-            return new Dictionary<string, InstrumentDefinition>()
-                {
-                    {equityIdentifier, new InstrumentDefinition(
-                        equityIdentifier,
-                        new Dictionary<string, InstrumentIdValue>
-                            {{"ClientInternal", new InstrumentIdValue(equityIdentifier)}})}
-                };
-        }
-
-        /// <summary>
-        /// Given a list of instruments and the name of an equity (if any), this method upsert these instruments
-        /// to LUSID and return their response value. 
-        /// </summary>
-        /// <returns></returns>
-        private Dictionary<string, Instrument> UpsertInstrumentSetAndReturnResponseValues(
-            List<LusidInstrument> instruments,
-            string equityIdentifier = null)
-        {
-            // CREATE instrument upsert request
-            var instrumentUpsertRequest = CreateInstrumentUpsertRequest(instruments);
-
-            // CREATE upsert equity instrument request, if equityIdentifier is provided
-            if (!equityIdentifier.IsNullOrEmpty())
-            {
-                // MERGE into one upsert dictionary of instruments to upsert 
-                var equityRequest = CreateEquityUpsertRequest(equityIdentifier);
-                equityRequest.ToList().ForEach(r => instrumentUpsertRequest.Add(r.Key, r.Value));
-            }
-            
-            // UPSERT and check the response succeeded with no errors.
-            var response = _instrumentsApi.UpsertInstruments(instrumentUpsertRequest);
-            Assert.That(response.Failed.Count, Is.EqualTo(0));
-            Assert.That(response.Values.Count, Is.EqualTo(instrumentUpsertRequest.Count));
-            return response.Values;
-        }
-        
-        private Dictionary<string, InstrumentDefinition> CreateInstrumentUpsertRequest(List<LusidInstrument> instruments)
+        public static Dictionary<string, InstrumentDefinition> BuildInstrumentUpsertRequest(List<(LusidInstrument, string)> instruments)
         {
             return instruments
                 .ToDictionary(
-                    instrument => $"upsertIdFor{instrument.InstrumentType}",
+                    instrument => $"upsertIdFor{instrument.Item1.InstrumentType}",
                     instrument => new InstrumentDefinition(
-                        name: instrument.InstrumentType.ToString(),
+                        name: instrument.Item1.InstrumentType.ToString(),
                         identifiers: new Dictionary<string, InstrumentIdValue>
                         {
-                            ["ClientInternal"] = new InstrumentIdValue(value: instrument.InstrumentType + "_uniqueId")
+                            ["ClientInternal"] = new InstrumentIdValue(value: instrument.Item2)
                         },
-                        definition: instrument));
+                        definition: instrument.Item1));
         }
-        
+
         /// <summary>
         /// This method add instruments to a portfolio (specified by its scope and code),
         /// by creating a transaction request with the instrument's LUID.
         /// </summary>
-        private void AddInstrumentsTransactionToPortfolio(
+        public static List<TransactionRequest> BuildTransactionRequest(
             List<string> luids,
-            string portfolioScope,
+            string scope,
             string portfolioCode,
             DateTimeOffset effectiveAt)
         {
             // CREATE instrument transaction request
-            var transactionRequests = luids.Select(luid => 
-                    BuildTransactionRequest(luid, 1, 0.0m, "USD", effectiveAt, "StockIn"))
+            var transactionRequests = luids.Select(luid =>
+                    BuildTransactionRequest(luid, 1, 0.0m, "USD", effectiveAt, "Buy"))
                 .ToList();
-            
-            // UPSERT instruments to portfolio
-            _transactionPortfoliosApi.UpsertTransactions(portfolioScope, portfolioCode, transactionRequests);
+            return transactionRequests;
         }
 
+        
         /// <summary>
         /// This method upserts JPY/USD and USD/JPY fx quotes for the given effectiveAt date
         /// </summary>
-        public void UpsertFxRate(string scope, DateTimeOffset effectiveAt) => UpsertFxRate(scope, effectiveAt, effectiveAt);
-        
+        public static Dictionary<string, UpsertQuoteRequest> BuildFxRateRequest(string scope, DateTimeOffset effectiveAt) => BuildFxRateRequest(scope, effectiveAt, effectiveAt);
+
         /// <summary>
         /// This method upserts JPY/USD and USD/JPY fx quotes for every day in the date range
         /// </summary>
-        public void UpsertFxRate(string scope, DateTimeOffset effectiveFrom,  DateTimeOffset effectiveAt, bool useConstantFxRate = false)
+        public static Dictionary<string, UpsertQuoteRequest> BuildFxRateRequest(string scope, DateTimeOffset effectiveFrom,  DateTimeOffset effectiveAt, bool useConstantFxRate = false)
         {
             // CREATE fx quotes and inverse fx rate in the desired date range
             var upsertQuoteRequests = new Dictionary<string, UpsertQuoteRequest>();
@@ -367,48 +228,44 @@ namespace Lusid.Sdk.Tests.Utilities
                 var date = effectiveFrom.AddDays(days);
                 if (useConstantFxRate)
                 {
-                    var fxRate = CreateSimpleQuoteUpsertRequest("USD/JPY", QuoteSeriesId.InstrumentIdTypeEnum.CurrencyPair, 150, "USD", date);
-                    var inverseFxRate = CreateSimpleQuoteUpsertRequest("JPY/USD", QuoteSeriesId.InstrumentIdTypeEnum.CurrencyPair, 1m / 150, "USD", date);
+                    var fxRate = BuildSimpleQuoteUpsertRequest("USD/JPY", QuoteSeriesId.InstrumentIdTypeEnum.CurrencyPair, 150, "USD", date);
+                    var inverseFxRate = BuildSimpleQuoteUpsertRequest("JPY/USD", QuoteSeriesId.InstrumentIdTypeEnum.CurrencyPair, 1m / 150, "USD", date);
 
                     upsertQuoteRequests.Add($"day_{days}_fx_rate", fxRate);
                     upsertQuoteRequests.Add($"day_{days}_inverseFx_rate", inverseFxRate);
                 }
                 else
                 {
-                    var fxRate = CreateSimpleQuoteUpsertRequest("USD/JPY", QuoteSeriesId.InstrumentIdTypeEnum.CurrencyPair, (150 + days), "USD", date);
-                    var inverseFxRate = CreateSimpleQuoteUpsertRequest("JPY/USD", QuoteSeriesId.InstrumentIdTypeEnum.CurrencyPair, 1m / (150 + days), "USD", date);
+                    var fxRate = BuildSimpleQuoteUpsertRequest("USD/JPY", QuoteSeriesId.InstrumentIdTypeEnum.CurrencyPair, (150 + days), "USD", date);
+                    var inverseFxRate = BuildSimpleQuoteUpsertRequest("JPY/USD", QuoteSeriesId.InstrumentIdTypeEnum.CurrencyPair, 1m / (150 + days), "USD", date);
 
                     upsertQuoteRequests.Add($"day_{days}_fx_rate", fxRate);
                     upsertQuoteRequests.Add($"day_{days}_inverseFx_rate", inverseFxRate);
                 }
             }
 
-            // CHECK quotes upsert was successful for all the quotes
-            var upsertResponse = _quotesApi.UpsertQuotes(scope, upsertQuoteRequests);
-            Assert.That(upsertResponse.Failed.Count, Is.EqualTo(0));
-            Assert.That(upsertResponse.Values.Count, Is.EqualTo(upsertQuoteRequests.Count));
+            return upsertQuoteRequests;
         }
-        
+
         /// <summary>
         /// This method upserts the reset quotes for the floating leg of a swap
         /// </summary>
-        private void UpsertResetQuotes(string scope, DateTimeOffset effectiveAt)
+        public static Dictionary<string, UpsertQuoteRequest> BuildResetQuotesRequest(string scope, DateTimeOffset effectiveAt)
         {
             // CREATE reset quotes in the desired date range
             var upsertQuoteRequests = new Dictionary<string, UpsertQuoteRequest>();
-            
-            var resetQuote = CreateSimpleQuoteUpsertRequest("BP00", QuoteSeriesId.InstrumentIdTypeEnum.RIC, 150, "USD", effectiveAt);
+
+            var resetQuote = BuildSimpleQuoteUpsertRequest("BP00", QuoteSeriesId.InstrumentIdTypeEnum.RIC, 150, "USD", effectiveAt);
             upsertQuoteRequests.Add($"resetQuote", resetQuote);
 
-            // CHECK quotes upsert was successful for all the quotes
-            var upsertResponse = _quotesApi.UpsertQuotes(scope, upsertQuoteRequests);
-            Assert.That(upsertResponse.Failed.Count, Is.EqualTo(0));
-            Assert.That(upsertResponse.Values.Count, Is.EqualTo(upsertQuoteRequests.Count));
+            return upsertQuoteRequests;
         }
 
-        private void UpsertEquityQuote(
+        /// <summary>
+        /// Helper method to construct equity quote request to be used in IQuotesApi 
+        /// </summary>
+        public static Dictionary<string, UpsertQuoteRequest> BuildEquityQuoteRequest(
             string instrumentId,
-            string scope,
             DateTimeOffset effectiveFrom,
             DateTimeOffset effectiveAt,
             QuoteSeriesId.InstrumentIdTypeEnum instrumentIdType = QuoteSeriesId.InstrumentIdTypeEnum.LusidInstrumentId)
@@ -416,36 +273,22 @@ namespace Lusid.Sdk.Tests.Utilities
             // CREATE equity quotes for the desired date range
             var upsertQuoteRequests = new Dictionary<string, UpsertQuoteRequest>();
             var numberOfDaysBetween = (effectiveAt - effectiveFrom).Days;
-            
+
             for (var days = 0; days != numberOfDaysBetween + 1; ++days)
             {
                 var date = effectiveFrom.AddDays(days);
-                var quote = CreateSimpleQuoteUpsertRequest(instrumentId, instrumentIdType, 100 + days, "USD", date);
+                var quote = BuildSimpleQuoteUpsertRequest(instrumentId, instrumentIdType,100 + days, "USD", date, "mid", "Lusid", null);
                 upsertQuoteRequests.Add($"day_{days}_equity_quote", quote);
             }
-            
-            // CHECK quotes upsert was successful for all the quotes
-            var upsertResponse = _quotesApi.UpsertQuotes(scope, upsertQuoteRequests);
-            Assert.That(upsertResponse.Failed.Count, Is.EqualTo(0));
-            Assert.That(upsertResponse.Values.Count, Is.EqualTo(upsertQuoteRequests.Count));
+
+            return upsertQuoteRequests;
         }
 
-        public UpsertQuotesResponse CreateAndUpsertSimpleQuote(string scope, string id, QuoteSeriesId.InstrumentIdTypeEnum instrumentIdType, decimal price, string ccy, DateTimeOffset effectiveAt)
-        {
-            var quoteRequest = CreateSimpleQuoteUpsertRequest(id, instrumentIdType, price, ccy, effectiveAt);
-            var upsertRequests = new Dictionary<string, UpsertQuoteRequest> {{"req1", quoteRequest}};
-
-            // CHECK quotes upsert was successful for all the quotes
-            var upsertResponse = _quotesApi.UpsertQuotes(scope, upsertRequests);
-            Assert.That(upsertResponse.Failed.Count, Is.EqualTo(0));
-            Assert.That(upsertResponse.Values.Count, Is.EqualTo(upsertRequests.Count));
-            return upsertResponse;
-        }
 
         /// <summary>
         /// Helper method to create simple equity or fx quote upsert request
         /// </summary>
-        private static UpsertQuoteRequest CreateSimpleQuoteUpsertRequest(
+        internal static UpsertQuoteRequest BuildSimpleQuoteUpsertRequest(
             string id,
             QuoteSeriesId.InstrumentIdTypeEnum instrumentIdType,
             decimal price,
@@ -462,24 +305,26 @@ namespace Lusid.Sdk.Tests.Utilities
                     effectiveAt
                 ),
                 new MetricValue(price, ccy));
-        
+
         /// <summary>
         /// This method upserts the 3 rate curves:
         /// JPY/JPYOIS and USD/USDOIS are used for discounting pricing models
         /// USD 6M rate is used for pricing interest rate swap
         /// </summary>
-        public void UpsertRateCurves(string scope, DateTimeOffset effectiveAt)
+        public static List<Dictionary<string, UpsertComplexMarketDataRequest>> BuildRateCurvesRequests(string scope, DateTimeOffset effectiveAt)
         {
-            CreateAndUpsertOisCurve(scope, effectiveAt, "USD");
-            CreateAndUpsertOisCurveHighRates(scope, effectiveAt, "JPY");
-            CreateAndUpsert6MRateCurve(scope, effectiveAt, "USD"); // this would be necessary for valuation of swaps paying every 6M
+            List<Dictionary<string, UpsertComplexMarketDataRequest>> curverequests =
+                new List<Dictionary<string, UpsertComplexMarketDataRequest>>();
+            curverequests.Add(BuildOisCurveRequest(scope, effectiveAt, "USD"));
+            curverequests.Add(BuildOisCurveHighRatesRequest(scope, effectiveAt, "JPY"));
+            curverequests.Add(Build6MRateCurveRequest(scope, effectiveAt, "USD")); // this would be necessary for valuation of swaps paying every 6M
+            return curverequests;
         }
 
         /// <summary>
-        /// Upsert Ois curve for a specific currency.
-        /// The market asset string under which the curve is upserted is the one that is looked up by default during valuation calls for instruments.
+        /// Helper method to construct complex market data request for OIS interest rate curve to be used in IComplexMarketDataApi
         /// </summary>
-        public void CreateAndUpsertOisCurve(string scope, DateTimeOffset effectiveAt, string currency)
+        public static Dictionary<string, UpsertComplexMarketDataRequest> BuildOisCurveRequest(string scope, DateTimeOffset effectiveAt, string currency)
         {
             var complexMarketData = CreateDiscountCurve(effectiveAt);
             var complexMarketDataId = new ComplexMarketDataId(
@@ -490,18 +335,15 @@ namespace Lusid.Sdk.Tests.Utilities
             var upsertRequest = new Dictionary<string, UpsertComplexMarketDataRequest>
                 {{"0", new UpsertComplexMarketDataRequest(complexMarketDataId, complexMarketData)}};
 
-            // CHECK upsert was successful
-            var upsertResponse = _complexMarketDataApi.UpsertComplexMarketData(scope, upsertRequest);
-            Assert.That(upsertResponse.Values.Values, Is.Not.Null);
-            Assert.That(upsertResponse.Values.Values.Count, Is.EqualTo(upsertRequest.Count));
+            return upsertRequest;
         }
 
         /// <summary>
-        /// Similar to <see cref="CreateAndUpsertOisCurve"/>, but with higher rates.
-        /// This is relevant as some valuations (e.g. fx forwards) depend on the difference between the rates curves in two currencies
+        /// Helper method to construct complex market data request for OIS interest rate curve to be used in IComplexMarketDataApi
         /// </summary>
-        public void CreateAndUpsertOisCurveHighRates(string scope, DateTimeOffset effectiveAt, string currency)
+        public static Dictionary<string, UpsertComplexMarketDataRequest> BuildOisCurveHighRatesRequest(string scope, DateTimeOffset effectiveAt, string currency)
         {
+            // different rates as the valuation for some instruments such as fx forwards depend on the difference between the rates curves in two currencies
             var complexMarketData = CreateDiscountCurveHighRates(effectiveAt);
             var complexMarketDataId = new ComplexMarketDataId(
                 provider: "Lusid",
@@ -511,13 +353,10 @@ namespace Lusid.Sdk.Tests.Utilities
             var upsertRequest = new Dictionary<string, UpsertComplexMarketDataRequest>
                 {{"0", new UpsertComplexMarketDataRequest(complexMarketDataId, complexMarketData)}};
 
-            // CHECK upsert was successful
-            var upsertResponse = _complexMarketDataApi.UpsertComplexMarketData(scope, upsertRequest);
-            Assert.That(upsertResponse.Values.Values, Is.Not.Null);
-            Assert.That(upsertResponse.Values.Values.Count, Is.EqualTo(upsertRequest.Count));
+            return upsertRequest;
         }
 
-        private DiscountFactorCurveData CreateDiscountCurve(DateTimeOffset effectiveAt)
+        private static DiscountFactorCurveData CreateDiscountCurve(DateTimeOffset effectiveAt)
         {
             var discountDates = new List<DateTimeOffset>
                 { effectiveAt, effectiveAt.AddMonths(3), effectiveAt.AddMonths(6), effectiveAt.AddMonths(9), effectiveAt.AddMonths(12), effectiveAt.AddYears(5) };
@@ -525,7 +364,7 @@ namespace Lusid.Sdk.Tests.Utilities
             return new DiscountFactorCurveData(effectiveAt, discountDates, rates, ComplexMarketData.MarketDataTypeEnum.DiscountFactorCurveData);
         }
 
-        private DiscountFactorCurveData CreateDiscountCurveHighRates(DateTimeOffset effectiveAt)
+        private static DiscountFactorCurveData CreateDiscountCurveHighRates(DateTimeOffset effectiveAt)
         {
             var discountDates = new List<DateTimeOffset>
                 { effectiveAt, effectiveAt.AddMonths(3), effectiveAt.AddMonths(6), effectiveAt.AddMonths(9), effectiveAt.AddMonths(12), effectiveAt.AddYears(5) };
@@ -533,7 +372,10 @@ namespace Lusid.Sdk.Tests.Utilities
             return new DiscountFactorCurveData(effectiveAt, discountDates, rates, ComplexMarketData.MarketDataTypeEnum.DiscountFactorCurveData);
         }
 
-        public void CreateAndUpsert6MRateCurve(string scope, DateTimeOffset effectiveAt, string currency)
+        /// <summary>
+        /// Helper method to construct complex market data request for interest rate curve to be used in IComplexMarketDataApi
+        /// </summary>
+        public static Dictionary<string, UpsertComplexMarketDataRequest> Build6MRateCurveRequest(string scope, DateTimeOffset effectiveAt, string currency)
         {
             var complexMarketData = GetRateCurveJsonFromFile("USD6M.json");
             var complexMarketDataId = new ComplexMarketDataId(
@@ -545,33 +387,7 @@ namespace Lusid.Sdk.Tests.Utilities
             var upsertRequest = new Dictionary<string, UpsertComplexMarketDataRequest>
                 {{"0", new UpsertComplexMarketDataRequest(complexMarketDataId, complexMarketData)}};
 
-            // CHECK upsert was successful
-            var upsertResponse = _complexMarketDataApi.UpsertComplexMarketData(scope, upsertRequest);
-            Assert.That(upsertResponse.Values.Values, Is.Not.Null);
-            Assert.That(upsertResponse.Values.Values.Count, Is.EqualTo(upsertRequest.Count));
-        }
-
-        /// <summary>
-        /// One-point vol surface for a given equity option - thus the surface is constant.
-        /// </summary>
-        public void CreateAndUpsertConstantVolSurface(string scope, DateTimeOffset effectiveAt, EquityOption option, ModelSelection.ModelEnum model, decimal vol = 0.2m)
-        {
-            var instruments = new List<LusidInstrument> {option};
-            var volType = model == ModelSelection.ModelEnum.Bachelier ? MarketQuote.QuoteTypeEnum.NormalVol : MarketQuote.QuoteTypeEnum.LogNormalVol;
-            var quotes = new List<MarketQuote> {new MarketQuote(volType, vol)};
-            var complexMarketData = new EquityVolSurfaceData(effectiveAt, instruments, quotes, ComplexMarketData.MarketDataTypeEnum.EquityVolSurfaceData);
-
-            var complexMarketDataId = new ComplexMarketDataId(
-                provider: "Lusid",
-                effectiveAt: effectiveAt.ToString("o"),
-                marketAsset: $"{option.Code}/{option.DomCcy}/" + (volType == MarketQuote.QuoteTypeEnum.NormalVol ? "N" : "LN"));
-            var upsertRequest = new Dictionary<string, UpsertComplexMarketDataRequest>
-                {{"0", new UpsertComplexMarketDataRequest(complexMarketDataId, complexMarketData)}};
-
-            // CHECK upsert was successful
-            var upsertResponse = _complexMarketDataApi.UpsertComplexMarketData(scope, upsertRequest);
-            Assert.That(upsertResponse.Values.Values, Is.Not.Null);
-            Assert.That(upsertResponse.Values.Values.Count, Is.EqualTo(upsertRequest.Count));
+            return upsertRequest;
         }
 
         private static ComplexMarketData GetRateCurveJsonFromFile(string filename)
@@ -580,69 +396,12 @@ namespace Lusid.Sdk.Tests.Utilities
             var jsonString = reader.ReadToEnd();
             return JsonConvert.DeserializeObject<DiscountFactorCurveData>(jsonString);
         }
-
-        /// <summary>
-        /// Helper to upsert a given LusidInstrument and ensure that the process is successful
-        /// </summary>
-        public UpsertInstrumentsResponse UpsertOtcInstrumentToLusid(LusidInstrument instrument, string name, string idUniqueToInstrument)
-        {
-            // PACKAGE instrument for upsert
-            var instrumentDefinition = new InstrumentDefinition(
-                name: name,
-                identifiers: new Dictionary<string, InstrumentIdValue>
-                {
-                    ["ClientInternal"] = new InstrumentIdValue(value: idUniqueToInstrument)
-                },
-                definition: instrument
-            );
-
-            // put instrument into Lusid
-            var response = _instrumentsApi.UpsertInstruments(new Dictionary<string, InstrumentDefinition>
-            {
-                ["someId1"] = instrumentDefinition
-            });
-
-            // Check the response succeeded and has no errors.
-            Assert.That(response.Failed.Count, Is.EqualTo(0));
-            Assert.That(response.Values.Count, Is.EqualTo(1));
-            return response;
-        }
-
-        /// <summary>
-        /// Helper to query the definition of an instrument stored in Lusid
-        /// </summary>
-        public LusidInstrument QueryOtcInstrumentFromLusid(string idUniqueToInstrument)
-        {
-            var response = _instrumentsApi.GetInstruments("ClientInternal",
-                new List<string>
-                {
-                    idUniqueToInstrument
-                });
-
-            // Check the response succeeded and has no errors.
-            Assert.That(response.Failed.Count, Is.EqualTo(0));
-            Assert.That(response.Values.Count, Is.EqualTo(1));
-
-            Assert.That(response.Values.First().Key, Is.EqualTo(idUniqueToInstrument));
-            return response.Values.First().Value.InstrumentDefinition;
-        }
-
-        /// <summary>
-        /// Simple wrapper to upsert a recipe to Lusid and ensure that the process is successful
-        /// </summary>
-        public UpsertSingleStructuredDataResponse UpsertRecipe(ConfigurationRecipe recipe)
-        {
-            var upsertRecipeRequest = new UpsertRecipeRequest(recipe);
-            var response = _recipeApi.UpsertConfigurationRecipe(upsertRecipeRequest);
-            Assert.That(response.Value, Is.Not.Null);
-            return response;
-        }
-
+        
         private static ComplexMarketData GetSpreadCurveJsonFromFile(string filename)
         {
             using var reader = new StreamReader(ExampleMarketDataDirectory + filename);
             var jsonString = reader.ReadToEnd();
-            
+
             var cdsCurve = new OpaqueMarketData(
                 jsonString,
                 "Json",
@@ -650,6 +409,159 @@ namespace Lusid.Sdk.Tests.Utilities
                 ComplexMarketData.MarketDataTypeEnum.OpaqueMarketData
             );
             return cdsCurve;
+        }
+
+        public static Dictionary<string, UpsertComplexMarketDataRequest> BuildCdsSpreadCurvesRequest(string scope, DateTimeOffset effectiveAt, string ticker, string ccy, CdsProtectionDetailSpecification.SeniorityEnum seniority, CdsProtectionDetailSpecification.RestructuringTypeEnum restructType)
+        {
+            var marketDataId = new ComplexMarketDataId
+            (
+                provider: "Lusid",
+                effectiveAt: effectiveAt.ToString("o"),
+                marketAsset: $"{ticker}/{ccy}/{seniority}/{restructType}",
+                priceSource: "",
+                lineage: ""
+            );
+
+            var marketData = GetSpreadCurveJsonFromFile("XYZCorp.json");
+            var request = new UpsertComplexMarketDataRequest(marketDataId, marketData);
+            return new Dictionary<string, UpsertComplexMarketDataRequest>() {{"Request", request}}; 
+        }
+
+        public static Dictionary<string, UpsertQuoteRequest> BuildQuoteRequest(string scope, string id, QuoteSeriesId.InstrumentIdTypeEnum instrumentIdType, decimal price, string ccy, DateTimeOffset effectiveAt)
+        {
+            var quoteRequest = BuildSimpleQuoteUpsertRequest(id, instrumentIdType, price, ccy, effectiveAt);
+            var upsertRequests = new Dictionary<string, UpsertQuoteRequest> {{"req1", quoteRequest}};
+            return upsertRequests; 
+        }
+
+        public static ComplexMarketData CreateVolSurfaceData(
+            DateTimeOffset effectiveAt,
+            List<LusidInstrument> instruments,
+            List<MarketQuote> quotes,
+            ComplexMarketData.MarketDataTypeEnum type)
+        {
+            ComplexMarketData volData = new ComplexMarketData();
+            if(type == ComplexMarketData.MarketDataTypeEnum.EquityVolSurfaceData)
+                volData = new EquityVolSurfaceData(effectiveAt, instruments, quotes, ComplexMarketData.MarketDataTypeEnum.EquityVolSurfaceData);
+            if(type == ComplexMarketData.MarketDataTypeEnum.FxVolSurfaceData)
+                volData =  new FxVolSurfaceData(effectiveAt, instruments, quotes,
+                   ComplexMarketData.MarketDataTypeEnum.FxVolSurfaceData);
+
+            return volData;
+
+        }
+
+        public static string GetMarketAsset(LusidInstrument option, MarketQuote.QuoteTypeEnum volType)
+        {
+            string marketAsset = "";
+            if (option.InstrumentType == LusidInstrument.InstrumentTypeEnum.EquityOption)
+            {
+                EquityOption eoption = (EquityOption) option;
+                marketAsset =  $"{eoption.Code}/{eoption.DomCcy}/" + (volType == MarketQuote.QuoteTypeEnum.NormalVol ? "N" : "LN"); 
+            }
+
+            if (option.InstrumentType == LusidInstrument.InstrumentTypeEnum.FxOption)
+            {
+                FxOption fxoption = (FxOption) option;
+                marketAsset = $"{fxoption.DomCcy}/{fxoption.FgnCcy}/" + (volType == MarketQuote.QuoteTypeEnum.NormalVol ? "N" : "LN");
+            }
+
+            return marketAsset;
+
+        }
+
+        /// <summary>
+        /// One-point vol surface for a given option - thus the surface is constant.
+        /// </summary>
+        public static Dictionary<string, UpsertComplexMarketDataRequest> ConstantVolSurfaceRequest(string scope, DateTimeOffset effectiveAt, LusidInstrument option, ModelSelection.ModelEnum model, decimal vol = 0.2m)
+        {
+            ComplexMarketData.MarketDataTypeEnum type = ComplexMarketData.MarketDataTypeEnum.OpaqueMarketData;
+            if (option.InstrumentType == LusidInstrument.InstrumentTypeEnum.EquityOption)
+                type = ComplexMarketData.MarketDataTypeEnum.EquityVolSurfaceData;
+            if (option.InstrumentType == LusidInstrument.InstrumentTypeEnum.FxOption)
+                type = ComplexMarketData.MarketDataTypeEnum.FxVolSurfaceData; 
+            
+            var instruments = new List<LusidInstrument> {option};
+            var volType = model == ModelSelection.ModelEnum.Bachelier ? MarketQuote.QuoteTypeEnum.NormalVol : MarketQuote.QuoteTypeEnum.LogNormalVol;
+            var quotes = new List<MarketQuote> {new MarketQuote(volType, vol)};
+            var complexMarketData = CreateVolSurfaceData(effectiveAt, instruments, quotes, type);
+
+            var marketAsset = GetMarketAsset(option, volType);
+
+            var complexMarketDataId = new ComplexMarketDataId(
+                provider: "Lusid",
+                effectiveAt: effectiveAt.ToString("o"),
+                marketAsset: marketAsset);
+            
+            var upsertRequest = new Dictionary<string, UpsertComplexMarketDataRequest>
+                {{"0", new UpsertComplexMarketDataRequest(complexMarketDataId, complexMarketData)}};
+
+            return upsertRequest;
+        }
+
+        /// <summary>
+        /// Simple wrapper to upsert a recipe to Lusid and ensure that the process is successful
+        /// </summary>
+        public static UpsertRecipeRequest BuildRecipeRequest(string recipeCode, string scope, ModelSelection.ModelEnum model)
+        {
+            var pricingOptions = new PricingOptions(new ModelSelection(ModelSelection.LibraryEnum.Lusid, model));
+            var resetRule = new MarketDataKeyRule("Equity.RIC.*", "Lusid", scope, MarketDataKeyRule.QuoteTypeEnum.Price, "mid", quoteInterval: "1Y");
+            
+            var recipe = new ConfigurationRecipe(
+                scope,
+                recipeCode,
+                market: new MarketContext(
+                    marketRules: new List<MarketDataKeyRule>{resetRule}, 
+                    options: new MarketOptions(defaultSupplier: "Lusid", defaultScope: scope, defaultInstrumentCodeType: "RIC")),
+                pricing: new PricingContext(options: pricingOptions),
+                description: $"Recipe for {model} pricing");
+            
+            var upsertRecipeRequest = new UpsertRecipeRequest(recipe);
+            return upsertRecipeRequest;
+        }
+
+        /// <summary>
+        /// Helper function to perform valuation of instrument. Can either perform inline valuation or valuation through a portfolio.
+        /// If it is through a portfolio then a new portfolio and transaction against the instrument is created which is deleted at the end. 
+        /// </summary>
+        public static ValuationRequest ValuationRequest(LusidInstrument instrument,  string scope, ModelSelection.ModelEnum model, DateTimeOffset effectiveAt, string recipeCode, string portfolioCode)
+        {
+           
+            // CREATE valuation request
+            var valuationSchedule = new ValuationSchedule(effectiveAt: effectiveAt);
+            
+            var valuationRequest = new ValuationRequest(
+                recipeId: new ResourceId(scope, recipeCode),
+                metrics: TestDataUtilities.valuationSpec,
+                valuationSchedule: valuationSchedule,
+                sort: new List<OrderBySpec> {new OrderBySpec(TestDataUtilities.ValuationDateKey, OrderBySpec.SortOrderEnum.Ascending)},
+                portfolioEntityIds: new List<PortfolioEntityId> {new PortfolioEntityId(scope, portfolioCode)},
+                reportCurrency: "USD");
+
+            return valuationRequest;
+        }
+        
+         /// <summary>
+        /// Helper function to perform valuation of instrument. Can either perform inline valuation or valuation through a portfolio.
+        /// If it is through a portfolio then a new portfolio and transaction against the instrument is created which is deleted at the end. 
+        /// </summary>
+        public static InlineValuationRequest InLineValuationRequest(LusidInstrument instrument,  string scope, ModelSelection.ModelEnum model, DateTimeOffset effectiveAt, string recipeCode)
+        {
+            
+            // CREATE valuation request
+            var valuationSchedule = new ValuationSchedule(effectiveAt: effectiveAt);
+            
+            var instruments = new List<WeightedInstrument> {new WeightedInstrument(1, "some-holding-identifier", instrument)}; 
+            
+            // CONSTRUCT and PERFORM valuation request
+            var inlineValuationRequest = new InlineValuationRequest(
+                recipeId: new ResourceId(scope, recipeCode),
+                metrics: TestDataUtilities.valuationSpec,
+                sort: new List<OrderBySpec> {new OrderBySpec(TestDataUtilities.ValuationDateKey, OrderBySpec.SortOrderEnum.Ascending)},
+                valuationSchedule: valuationSchedule,
+                instruments: instruments);
+
+            return inlineValuationRequest;
         }
     }
 }

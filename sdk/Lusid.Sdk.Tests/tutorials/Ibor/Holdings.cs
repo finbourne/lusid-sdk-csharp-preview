@@ -11,21 +11,15 @@ using NUnit.Framework;
 namespace Lusid.Sdk.Tests.Tutorials.Ibor
 {
     [TestFixture]
-    public class Holdings
+    public class Holdings: TutorialBase
     {
-        private ITransactionPortfoliosApi _transactionPortfoliosApi;
-        private TestDataUtilities _testDataUtilities;
         private IList<string> _instrumentIds;
 
         [OneTimeSetUp]
         public void SetUp()
         {
-            var apiFactory = TestLusidApiFactoryBuilder.CreateApiFactory("secrets.json");
-            _transactionPortfoliosApi = apiFactory.Api<ITransactionPortfoliosApi>();
-            
-            _testDataUtilities = new TestDataUtilities(_transactionPortfoliosApi);
 
-            var instrumentsLoader = new InstrumentLoader(apiFactory);
+            var instrumentsLoader = new InstrumentLoader(_apiFactory);
             _instrumentIds = instrumentsLoader.LoadInstruments().OrderBy(x => x).ToList();
         }
         
@@ -43,28 +37,30 @@ namespace Lusid.Sdk.Tests.Tutorials.Ibor
             var dayTPlus10 = new DateTimeOffset(2018, 1, 10, 0, 0, 0, TimeSpan.Zero);
             
             //    Create a portfolio
-            var portfolioId = _testDataUtilities.CreateTransactionPortfolio(TestDataUtilities.TutorialScope);
-            
+            //var portfolioId = _testDataUtilities.CreateTransactionPortfolio(TestDataUtilities.TutorialScope);
+            var portfolioRequest = TestDataUtilities.BuildTransactionPortfolioRequest();
+            var portfolio = _transactionPortfoliosApi.CreatePortfolio(TestDataUtilities.TutorialScope, portfolioRequest);
+            Assert.That(portfolio?.Id.Code, Is.EqualTo(portfolioRequest.Code));
             //    The list of transactions to add to LUSID
             var transactions = new List<TransactionRequest>();
             
             //    Add the starting cash position
-            transactions.Add(_testDataUtilities.BuildCashFundsInTransactionRequest(100000, currency, dayT1));
+            transactions.Add(TestDataUtilities.BuildCashFundsInTransactionRequest(100000, currency, dayT1));
             
             //    Add initial transactions on dayT1
-            transactions.Add(_testDataUtilities.BuildTransactionRequest(_instrumentIds[0], 100.0M, 101.0M, currency, dayT1, "Buy"));
-            transactions.Add(_testDataUtilities.BuildTransactionRequest(_instrumentIds[1], 100.0M, 102.0M, currency, dayT1, "Buy"));
-            transactions.Add(_testDataUtilities.BuildTransactionRequest(_instrumentIds[2], 100.0M, 103.0M, currency, dayT1, "Buy"));
+            transactions.Add(TestDataUtilities.BuildTransactionRequest(_instrumentIds[0], 100.0M, 101.0M, currency, dayT1, "Buy"));
+            transactions.Add(TestDataUtilities.BuildTransactionRequest(_instrumentIds[1], 100.0M, 102.0M, currency, dayT1, "Buy"));
+            transactions.Add(TestDataUtilities.BuildTransactionRequest(_instrumentIds[2], 100.0M, 103.0M, currency, dayT1, "Buy"));
             
             //    On T+5, add a transaction in another instrument and another to increase the amount of instrument 1
-            transactions.Add(_testDataUtilities.BuildTransactionRequest(_instrumentIds[1], 100.0M, 104.0M, currency, dayTPlus5, "Buy"));
-            transactions.Add(_testDataUtilities.BuildTransactionRequest(_instrumentIds[3], 100.0M, 105.0M, currency, dayTPlus5, "Buy"));
+            transactions.Add(TestDataUtilities.BuildTransactionRequest(_instrumentIds[1], 100.0M, 104.0M, currency, dayTPlus5, "Buy"));
+            transactions.Add(TestDataUtilities.BuildTransactionRequest(_instrumentIds[3], 100.0M, 105.0M, currency, dayTPlus5, "Buy"));
             
             //    Upload the transactions to LUSID
-            _transactionPortfoliosApi.UpsertTransactions(TestDataUtilities.TutorialScope, portfolioId, transactions);
+            _transactionPortfoliosApi.UpsertTransactions(TestDataUtilities.TutorialScope, portfolioRequest.Code, transactions);
             
             //    Get the portfolio holdings on T+10
-            var holdings = _transactionPortfoliosApi.GetHoldings(TestDataUtilities.TutorialScope, portfolioId, effectiveAt: dayTPlus10);
+            var holdings = _transactionPortfoliosApi.GetHoldings(TestDataUtilities.TutorialScope, portfolioRequest.Code, effectiveAt: dayTPlus10);
             
             //    Ensure we have 5 holdings: 1 cash position and a position in 4 instruments that aggregates the 5 transactions
             Assert.That(holdings.Values.Count(), Is.EqualTo(5));
@@ -109,7 +105,10 @@ namespace Lusid.Sdk.Tests.Tutorials.Ibor
             var day1 = new DateTimeOffset(2018, 1, 1, 0, 0, 0, TimeSpan.Zero);
             var day2 = new DateTimeOffset(2018, 1, 5, 0, 0, 0, TimeSpan.Zero);
 
-            var portfolioCode = _testDataUtilities.CreateTransactionPortfolio(TestDataUtilities.TutorialScope);
+            //var portfolioCode = _testDataUtilities.CreateTransactionPortfolio(TestDataUtilities.TutorialScope);
+            var portfolioRequest = TestDataUtilities.BuildTransactionPortfolioRequest();
+            var portfolio = _transactionPortfoliosApi.CreatePortfolio(TestDataUtilities.TutorialScope, portfolioRequest);
+            Assert.That(portfolio?.Id.Code, Is.EqualTo(portfolioRequest.Code));
 
             var instrument1 = _instrumentIds[0];
             var instrument2 = _instrumentIds[1];
@@ -160,18 +159,18 @@ namespace Lusid.Sdk.Tests.Tutorials.Ibor
             };
             
             //    set the initial holdings on day 1
-            _transactionPortfoliosApi.SetHoldings(TestDataUtilities.TutorialScope, portfolioCode, day1, holdingAdjustmentsRequest);
+            _transactionPortfoliosApi.SetHoldings(TestDataUtilities.TutorialScope, portfolioRequest.Code, day1, holdingAdjustmentsRequest);
             
             //    add subsequent transactions on day 2
-            _transactionPortfoliosApi.UpsertTransactions(TestDataUtilities.TutorialScope, portfolioCode,
+            _transactionPortfoliosApi.UpsertTransactions(TestDataUtilities.TutorialScope, portfolioRequest.Code,
                 new List<TransactionRequest>
                 {
-                    _testDataUtilities.BuildTransactionRequest(instrument1, units: 100.0M, price: 104.0M, currency: currency, tradeDate: day2, transactionType: "Buy"),
-                    _testDataUtilities.BuildTransactionRequest(instrument3, units: 100.0M, price: 103.0M, currency: currency, tradeDate: day2, transactionType: "Buy")
+                    TestDataUtilities.BuildTransactionRequest(instrument1, units: 100.0M, price: 104.0M, currency: currency, tradeDate: day2, transactionType: "Buy"),
+                    TestDataUtilities.BuildTransactionRequest(instrument3, units: 100.0M, price: 103.0M, currency: currency, tradeDate: day2, transactionType: "Buy")
                 });
             
             //    get the holdings for day 2
-            var holdingsResult = _transactionPortfoliosApi.GetHoldings(TestDataUtilities.TutorialScope, portfolioCode, effectiveAt: day2);
+            var holdingsResult = _transactionPortfoliosApi.GetHoldings(TestDataUtilities.TutorialScope, portfolioRequest.Code, effectiveAt: day2);
             var holdings = holdingsResult.Values.OrderBy(h => h.InstrumentUid).ToList();
             
             //    cash balance + 3 holdings
@@ -201,7 +200,7 @@ namespace Lusid.Sdk.Tests.Tutorials.Ibor
             Assert.That(holdings[3].Cost.Amount, Is.EqualTo(10300.0));
 
             // Get all the holding adjustments in the portfolio
-            var holdingAdjustments = _transactionPortfoliosApi.ListHoldingsAdjustments(TestDataUtilities.TutorialScope, portfolioCode);
+            var holdingAdjustments = _transactionPortfoliosApi.ListHoldingsAdjustments(TestDataUtilities.TutorialScope, portfolioRequest.Code);
 
             // The list should contain one record containing the effective date of the holding adjustment
             Assert.That(holdingAdjustments.Values.Select(ha => ha.EffectiveAt), Is.EquivalentTo(new [] { day1 }));

@@ -11,13 +11,10 @@ using NUnit.Framework;
 namespace Lusid.Sdk.Tests.Tutorials.Ibor
 {
     [TestFixture]
-    public class Valuations
+    public class Valuations: TutorialBase
     {
-        private ILusidApiFactory _apiFactory;
         private InstrumentLoader _instrumentLoader;
-        private TestDataUtilities _testDataUtilities;
         private IList<string> _instrumentIds;
-        private static IConfigurationRecipeApi _recipeApi;
 
         private static readonly string ValuationDateKey = "Analytic/default/ValuationDate";
         private static readonly string HoldingPvKey = "Holding/default/PV";
@@ -35,23 +32,14 @@ namespace Lusid.Sdk.Tests.Tutorials.Ibor
         private static readonly DateTimeOffset TestEffectiveFrom = new DateTimeOffset(2020, 2, 16, 0, 0, 0, TimeSpan.Zero);
         private static readonly DateTimeOffset TestEffectiveAt = new DateTimeOffset(2020, 2, 23, 0, 0, 0, TimeSpan.Zero);
 
-        //    This defines the scope that entities will be created in
-        private const string TutorialScope = "Testdemo";
+        
 
 
         [OneTimeSetUp]
         public void SetUp()
         {
-            _apiFactory = TestLusidApiFactoryBuilder.CreateApiFactory("secrets.json");
-
             _instrumentLoader = new InstrumentLoader(_apiFactory);
             _instrumentIds = _instrumentLoader.LoadInstruments();
-            _recipeApi = _apiFactory.Api<IConfigurationRecipeApi>();
-            _testDataUtilities = new TestDataUtilities(
-                _apiFactory.Api<ITransactionPortfoliosApi>(),
-                _apiFactory.Api<IInstrumentsApi>(),
-                _apiFactory.Api<IQuotesApi>(),
-                _apiFactory.Api<IComplexMarketDataApi>());
         }
         
         [LusidFeature("F36")]
@@ -61,8 +49,10 @@ namespace Lusid.Sdk.Tests.Tutorials.Ibor
             var effectiveDate = new DateTimeOffset(2018, 1, 1, 0, 0, 0, TimeSpan.Zero);
 
             //    Create the transaction portfolio
-            var portfolioId = _testDataUtilities.CreateTransactionPortfolio(TutorialScope);
-
+            var portfolioRequest = TestDataUtilities.BuildTransactionPortfolioRequest();
+            var portfolio = _transactionPortfoliosApi.CreatePortfolio(TestDataUtilities.TutorialScope, portfolioRequest);
+            Assert.That(portfolio?.Id.Code, Is.EqualTo(portfolioRequest.Code));
+            
             var transactionSpecs = new[]
                 {
                     (Id: _instrumentIds[0], Price: 101, TradeDate: effectiveDate),
@@ -71,10 +61,10 @@ namespace Lusid.Sdk.Tests.Tutorials.Ibor
                 }
                 .OrderBy(i => i.Id);
 
-            var newTransactions = transactionSpecs.Select(id => _testDataUtilities.BuildTransactionRequest(id.Id, 100.0M, id.Price, "GBP", id.TradeDate, "Buy"));
+            var newTransactions = transactionSpecs.Select(id => TestDataUtilities.BuildTransactionRequest(id.Id, 100.0M, id.Price, "GBP", id.TradeDate, "Buy"));
 
             //    Add transactions to the portfolio
-            _apiFactory.Api<ITransactionPortfoliosApi>().UpsertTransactions(TutorialScope, portfolioId, newTransactions.ToList());
+            _apiFactory.Api<ITransactionPortfoliosApi>().UpsertTransactions(TestDataUtilities.TutorialScope, portfolioRequest.Code, newTransactions.ToList());
 
             var scope = Guid.NewGuid().ToString();
 
@@ -122,7 +112,8 @@ namespace Lusid.Sdk.Tests.Tutorials.Ibor
             );
 
             //    Upload recipe to Lusid (only need to do once, i.e. no need to repeat in non-demo code.)
-            UpsertRecipe(recipe);
+            var upsertRecipeRequest = new UpsertRecipeRequest(recipe);
+            var response = _recipeApi.UpsertConfigurationRecipe(upsertRecipeRequest);
 
             //    Upload the quote
             _apiFactory.Api<IQuotesApi>().UpsertQuotes(scope, quotes);
@@ -138,7 +129,7 @@ namespace Lusid.Sdk.Tests.Tutorials.Ibor
                 },
                 valuationSchedule: new ValuationSchedule(effectiveAt: effectiveDate),
                 groupBy: new List<string> { "Instrument/default/Name" },
-                portfolioEntityIds: new List<PortfolioEntityId> { new PortfolioEntityId(TutorialScope, portfolioId) }
+                portfolioEntityIds: new List<PortfolioEntityId> { new PortfolioEntityId(TestDataUtilities.TutorialScope, portfolioRequest.Code) }
                 );
 
             //    Do the aggregation
@@ -203,7 +194,8 @@ namespace Lusid.Sdk.Tests.Tutorials.Ibor
 
             // POPULATE with required market data for valuation of the instruments
             var scope = Guid.NewGuid().ToString();
-            _testDataUtilities.UpsertFxRate(scope, TestEffectiveAt);
+            var upsertFxRateRequestreq = TestDataUtilities.BuildFxRateRequest(scope, TestEffectiveAt);
+            _quotesApi.UpsertQuotes(scope, upsertFxRateRequestreq);
             
             // CREATE and upsert recipe for pricing the portfolio of instruments 
             var constantTimeValueOfMoneyRecipeCode = "ConstantTimeValueOfMoneyRecipe";
@@ -250,9 +242,16 @@ namespace Lusid.Sdk.Tests.Tutorials.Ibor
             // POPULATE stores with required market data to value Fx-Forward using discounting model
             // Fx rates are upserted for both models
             // Rate curves are upserted for the discounting pricing model
-            _testDataUtilities.UpsertFxRate(scope, TestEffectiveAt);
-            _testDataUtilities.UpsertRateCurves(scope, TestEffectiveAt);
-
+            var upsertFxRateRequestreq = TestDataUtilities.BuildFxRateRequest(scope, TestEffectiveAt);
+            var upsertQuoteResponse = _quotesApi.UpsertQuotes(scope, upsertFxRateRequestreq);
+            List<Dictionary<string, UpsertComplexMarketDataRequest>> complexMarket =
+                new List<Dictionary<string, UpsertComplexMarketDataRequest>>();
+            complexMarket.AddRange(TestDataUtilities.BuildRateCurvesRequests(scope, TestEffectiveAt));
+            foreach (var r in complexMarket)
+            {
+                var upsertmarketResponse = _complexMarketDataApi.UpsertComplexMarketData(scope, r);
+                ValidateComplexMarketDataUpsert(upsertmarketResponse, r.Count);
+            }
             // CREATE a Fx-Forward as an inline instrument 
             var instruments = new List<WeightedInstrument>
             {
@@ -299,16 +298,18 @@ namespace Lusid.Sdk.Tests.Tutorials.Ibor
         {
             // CREATE a portfolio with instrument
             var scope = Guid.NewGuid().ToString();
-            var portfolioId = _testDataUtilities.CreateTransactionPortfolio(scope);
+            var portfolioRequest = TestDataUtilities.BuildTransactionPortfolioRequest();
+            var portfolio = _transactionPortfoliosApi.CreatePortfolio(scope, portfolioRequest);
+            Assert.That(portfolio?.Id.Code, Is.EqualTo(portfolioRequest.Code));
             LusidInstrument instrument = InstrumentExamples.GetExampleInstrument(instrumentName);
             
             // UPSERT the above instrument to portfolio as well as populating stores with required market data
-            _testDataUtilities.AddInstrumentsTransactionPortfolioAndPopulateRequiredMarketData(
+            AddInstrumentsTransactionPortfolioAndPopulateRequiredMarketData(
                 scope, 
-                portfolioId,
+                portfolioRequest.Code,
                 TestEffectiveAt,
                 TestEffectiveAt,
-                instrument);
+                new List<LusidInstrument> {instrument});
 
             // CREATE and upsert recipe specifying discount pricing model
             var discountingRecipeCode = "DiscountingRecipe";
@@ -321,7 +322,7 @@ namespace Lusid.Sdk.Tests.Tutorials.Ibor
                 metrics: ValuationSpec,
                 valuationSchedule: valuationSchedule,
                 sort: new List<OrderBySpec> {new OrderBySpec(ValuationDateKey, OrderBySpec.SortOrderEnum.Ascending)},
-                portfolioEntityIds: new List<PortfolioEntityId> {new PortfolioEntityId(scope, portfolioId)},
+                portfolioEntityIds: new List<PortfolioEntityId> {new PortfolioEntityId(scope, portfolioRequest.Code)},
                 reportCurrency: "USD");
 
             // CALL valuation
@@ -414,9 +415,11 @@ namespace Lusid.Sdk.Tests.Tutorials.Ibor
         public void SingleDateValuationOfAnInstrumentPortfolio()
         {
             // CREATE a portfolio 
-            var scope = Guid.NewGuid().ToString();
-            var portfolioId = _testDataUtilities.CreateTransactionPortfolio(scope);
-            
+            //var portfolioId = _testDataUtilities.CreateTransactionPortfolio(scope);
+            //    Create the transaction portfolio
+            var portfolioRequest = TestDataUtilities.BuildTransactionPortfolioRequest();
+            var portfolio = _transactionPortfoliosApi.CreatePortfolio(TestDataUtilities.TutorialScope, portfolioRequest);
+            Assert.That(portfolio?.Id.Code, Is.EqualTo(portfolioRequest.Code));
             // CREATE our instrument set
             var instruments = new List<LusidInstrument>
             {
@@ -427,24 +430,24 @@ namespace Lusid.Sdk.Tests.Tutorials.Ibor
             };
             
             // UPSERT the above instrument set to portfolio as well as populating stores with required market data
-            _testDataUtilities.AddInstrumentsTransactionPortfolioAndPopulateRequiredMarketData(
-                scope,
-                portfolioId,
+            AddInstrumentsTransactionPortfolioAndPopulateRequiredMarketData(
+                TestDataUtilities.TutorialScope,
+                portfolioRequest.Code,
                 TestEffectiveAt,
                 TestEffectiveAt,
                 instruments);
 
             // CREATE and upsert recipe specifying discount pricing model
             var discountingRecipeCode = "DiscountingRecipe";
-            CreateAndUpsertRecipe(discountingRecipeCode, scope, ModelSelection.ModelEnum.Discounting);
+            CreateAndUpsertRecipe(discountingRecipeCode, TestDataUtilities.TutorialScope, ModelSelection.ModelEnum.Discounting);
             
             var valuationSchedule = new ValuationSchedule(effectiveAt: TestEffectiveAt);
             var valuationRequest = new ValuationRequest(
-                recipeId: new ResourceId(scope, discountingRecipeCode),
+                recipeId: new ResourceId(TestDataUtilities.TutorialScope, discountingRecipeCode),
                 metrics: ValuationSpec,
                 valuationSchedule: valuationSchedule,
                 sort: new List<OrderBySpec> {new OrderBySpec(ValuationDateKey, OrderBySpec.SortOrderEnum.Ascending)},
-                portfolioEntityIds: new List<PortfolioEntityId> {new PortfolioEntityId(scope, portfolioId)},
+                portfolioEntityIds: new List<PortfolioEntityId> {new PortfolioEntityId(TestDataUtilities.TutorialScope, portfolioRequest.Code)},
                 reportCurrency: "USD");
 
             // CALL valuation
@@ -470,8 +473,10 @@ namespace Lusid.Sdk.Tests.Tutorials.Ibor
         public void MultiDateValuationOfAnInstrumentPortfolio()
         {
             // CREATE a portfolio 
-            var scope = Guid.NewGuid().ToString();
-            var portfolioId = _testDataUtilities.CreateTransactionPortfolio(scope);
+            var effectiveDate = new DateTimeOffset(2018, 1, 1, 0, 0, 0, TimeSpan.Zero);
+            var portfolioRequest = TestDataUtilities.BuildTransactionPortfolioRequest(effectiveDate);
+            var portfolio = _transactionPortfoliosApi.CreatePortfolio(TestDataUtilities.TutorialScope, portfolioRequest);
+            Assert.That(portfolio?.Id.Code, Is.EqualTo(portfolioRequest.Code));
             
             var instruments = new List<LusidInstrument>
             {
@@ -480,9 +485,9 @@ namespace Lusid.Sdk.Tests.Tutorials.Ibor
             };
             
             // Upsert instrument set to portfolio as well as populating stores with required market data
-            _testDataUtilities.AddInstrumentsTransactionPortfolioAndPopulateRequiredMarketData(
-                scope,
-                portfolioId,
+            AddInstrumentsTransactionPortfolioAndPopulateRequiredMarketData(
+                TestDataUtilities.TutorialScope,
+                portfolioRequest.Code,
                 TestEffectiveFrom,
                 TestEffectiveAt,
                 instruments,
@@ -490,16 +495,16 @@ namespace Lusid.Sdk.Tests.Tutorials.Ibor
             
             // CREATE and upsert recipe for pricing the portfolio of instruments 
             var constantTimeValueOfMoneyRecipeCode = "ConstantTimeValueOfMoneyRecipe";
-            CreateAndUpsertRecipe(constantTimeValueOfMoneyRecipeCode, scope, ModelSelection.ModelEnum.ConstantTimeValueOfMoney);
+            CreateAndUpsertRecipe(constantTimeValueOfMoneyRecipeCode, TestDataUtilities.TutorialScope, ModelSelection.ModelEnum.ConstantTimeValueOfMoney);
 
             // CREATE valuation schedule and request
             var valuationSchedule = new ValuationSchedule(effectiveFrom: TestEffectiveFrom, effectiveAt: TestEffectiveAt);
             var valuationRequest = new ValuationRequest(
-                recipeId: new ResourceId(scope, constantTimeValueOfMoneyRecipeCode),
+                recipeId: new ResourceId(TestDataUtilities.TutorialScope, constantTimeValueOfMoneyRecipeCode),
                 metrics: ValuationSpec,
                 valuationSchedule: valuationSchedule,
                 sort: new List<OrderBySpec> {new OrderBySpec(ValuationDateKey, OrderBySpec.SortOrderEnum.Ascending)},
-                portfolioEntityIds: new List<PortfolioEntityId> {new PortfolioEntityId(scope, portfolioId)},
+                portfolioEntityIds: new List<PortfolioEntityId> {new PortfolioEntityId(TestDataUtilities.TutorialScope, portfolioRequest.Code)},
                 reportCurrency: "USD");
 
             // CALL valuation
@@ -516,30 +521,30 @@ namespace Lusid.Sdk.Tests.Tutorials.Ibor
                 Assert.That(result[HoldingPvKey], Is.GreaterThanOrEqualTo(0));
             }
         }
-
-        internal static void CreateAndUpsertRecipe(string code, string scope, ModelSelection.ModelEnum model)
-        {
-            // CREATE a rule for reset quotes
-            var resetRule = new MarketDataKeyRule("Equity.RIC.*", "Lusid", scope, MarketDataKeyRule.QuoteTypeEnum.Price, "mid", quoteInterval: "1Y");
-            
-            // CREATE recipe for pricing
-            var pricingOptions = new PricingOptions(new ModelSelection(ModelSelection.LibraryEnum.Lusid, model));
-            var recipe = new ConfigurationRecipe(
-                scope,
-                code,
-                market: new MarketContext(new List<MarketDataKeyRule>{resetRule}, options: new MarketOptions(defaultScope: scope)),
-                pricing: new PricingContext(options: pricingOptions),
-                description: $"Recipe for {model} pricing");
-            
-            UpsertRecipe(recipe);
-        }
-
-        private static void UpsertRecipe(ConfigurationRecipe recipe)
-        {
-            // UPSERT recipe and check upsert was successful
-            var upsertRecipeRequest = new UpsertRecipeRequest(recipe);
-            var response = _recipeApi.UpsertConfigurationRecipe(upsertRecipeRequest);
-            Assert.That(response.Value, Is.Not.Null);
-        }
+        //
+        // internal void CreateAndUpsertRecipe(string code, string scope, ModelSelection.ModelEnum model)
+        // {
+        //     // CREATE a rule for reset quotes
+        //     var resetRule = new MarketDataKeyRule("Equity.RIC.*", "Lusid", scope, MarketDataKeyRule.QuoteTypeEnum.Price, "mid", quoteInterval: "1Y");
+        //     
+        //     // CREATE recipe for pricing
+        //     var pricingOptions = new PricingOptions(new ModelSelection(ModelSelection.LibraryEnum.Lusid, model));
+        //     var recipe = new ConfigurationRecipe(
+        //         scope,
+        //         code,
+        //         market: new MarketContext(new List<MarketDataKeyRule>{resetRule}, options: new MarketOptions(defaultScope: scope)),
+        //         pricing: new PricingContext(options: pricingOptions),
+        //         description: $"Recipe for {model} pricing");
+        //     
+        //     UpsertRecipe(recipe);
+        // }
+        //
+        // private  void UpsertRecipe(ConfigurationRecipe recipe)
+        // {
+        //     // UPSERT recipe and check upsert was successful
+        //     var upsertRecipeRequest = new UpsertRecipeRequest(recipe);
+        //     var response = _recipeApi.UpsertConfigurationRecipe(upsertRecipeRequest);
+        //     Assert.That(response.Value, Is.Not.Null);
+        // }
     }
 }

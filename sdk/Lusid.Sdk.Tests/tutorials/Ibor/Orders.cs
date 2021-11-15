@@ -17,11 +17,9 @@ namespace Lusid.Sdk.Tests.Tutorials.Ibor
     /// security.
     /// </summary>
     [TestFixture]
-    public class Orders
+    public class Orders: TutorialBase
     {
-        private ILusidApiFactory _apiFactory;
         private InstrumentLoader _instrumentLoader;
-        private IOrdersApi _ordersApi;
         private IList<string> _instrumentIds;
         
         private readonly IDictionary<string, string> TutorialScopes = new Dictionary<string, string> {
@@ -43,10 +41,9 @@ namespace Lusid.Sdk.Tests.Tutorials.Ibor
         [OneTimeSetUp]
         public void SetUp()
         {
-            _apiFactory = TestLusidApiFactoryBuilder.CreateApiFactory("secrets.json");
             _instrumentLoader = new InstrumentLoader(_apiFactory);
             _instrumentIds = _instrumentLoader.LoadInstruments();
-            _ordersApi = _apiFactory.Api<IOrdersApi>();
+            
             LoadProperties();
         }
 
