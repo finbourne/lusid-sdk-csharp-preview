@@ -14,14 +14,14 @@ namespace Lusid.Sdk.Tests.Utilities
         public const string MarketDataScope = "FinbourneMarketData";
         public static string ValuationDateKey = "Analytic/default/ValuationDate";
         public static string InstrumentTag = "Analytic/default/InstrumentTag";
-        public static string HoldingPvKey = "Holding/default/PV";
+        public static string ValuationPvKey = "Valuation/PV/Amount";
         public static string InstrumentName = "Instrument/default/Name";
         
         public static readonly List<AggregateSpec> ValuationSpec = new List<AggregateSpec>
         {
             new AggregateSpec(ValuationDateKey, AggregateSpec.OpEnum.Value),
             new AggregateSpec(InstrumentName, AggregateSpec.OpEnum.Value),
-            new AggregateSpec(HoldingPvKey, AggregateSpec.OpEnum.Value),
+            new AggregateSpec(ValuationPvKey, AggregateSpec.OpEnum.Value),
             new AggregateSpec(InstrumentTag, AggregateSpec.OpEnum.Value)
         };
         //    Specific key used to denote cash in LUSID
@@ -316,9 +316,10 @@ namespace Lusid.Sdk.Tests.Utilities
                 Build6MRateCurveRequest(effectiveAt, "USD") // this would be necessary for valuation of swaps paying every 6M
             };
 
-            var upsertComplexMarketDataRequests = curveRequests.ToDictionary(
-                req => req.MarketDataId.ToString(),
-                req => req);
+            // ENUMERATE the request
+            var upsertComplexMarketDataRequests = curveRequests
+                .Select((idx, upsertRequest) => (idx, upsertRequest))
+                .ToDictionary(tuple => tuple.idx.ToString(), tuple => tuple.idx);
             return upsertComplexMarketDataRequests;
         }
 

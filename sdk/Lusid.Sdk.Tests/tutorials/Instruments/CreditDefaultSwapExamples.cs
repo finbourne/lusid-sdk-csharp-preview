@@ -14,17 +14,16 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
     {
         internal override void CreateAndUpsertMarketDataToLusid(string scope, ModelSelection.ModelEnum model, LusidInstrument instrument)
         {
-            CreditDefaultSwap cds = (CreditDefaultSwap) instrument;
             // POPULATE with required market data for valuation of the instruments
-            var upsertFxRateRequestreq = TestDataUtilities.BuildFxRateRequest(scope, TestDataUtilities.EffectiveAt);
-            var upsertQuoteResponse = _quotesApi.UpsertQuotes(scope, upsertFxRateRequestreq);
-            
-            ValidateQuoteUpsert(upsertQuoteResponse, upsertFxRateRequestreq.Count);
+            CreditDefaultSwap cds = (CreditDefaultSwap) instrument;
+            var upsertFxRateRequestReq = TestDataUtilities.BuildFxRateRequest(scope, TestDataUtilities.EffectiveAt);
+            var upsertFxQuoteResponse = _quotesApi.UpsertQuotes(scope, upsertFxRateRequestReq);
+            ValidateQuoteUpsert(upsertFxQuoteResponse, upsertFxRateRequestReq.Count);
 
             var upsertQuoteRequests = TestDataUtilities.BuildResetQuotesRequest(scope, TestDataUtilities.EffectiveAt.AddDays(-4));
-            var upsertResponse = _quotesApi.UpsertQuotes(scope, upsertQuoteRequests);
-            Assert.That(upsertResponse.Failed.Count, Is.EqualTo(0));
-            Assert.That(upsertResponse.Values.Count, Is.EqualTo(upsertQuoteRequests.Count));
+            var upsertQuoteResponse = _quotesApi.UpsertQuotes(scope, upsertQuoteRequests);
+            Assert.That(upsertQuoteResponse.Failed.Count, Is.EqualTo(0));
+            Assert.That(upsertQuoteResponse.Values.Count, Is.EqualTo(upsertQuoteRequests.Count));
             
             // CREATE a dictionary of complex market data to be upserted for the CDS. We always need a CDS spread curve.
             var cdsSpreadCurveUpsertRequest = TestDataUtilities.BuildCdsSpreadCurvesRequest(

@@ -115,7 +115,7 @@ namespace Lusid.Sdk.Tests.Utilities
 
             foreach (var r in result.Data)
             {
-                var pv = (double) r[TestDataUtilities.HoldingPvKey]; //todo-jz : change key to new one.
+                var pv = (double) r[TestDataUtilities.ValuationPvKey]; //todo-jz : change key to new one.
                 Assert.That(pv, Is.Not.EqualTo(0).Within(1e-5));
                 Assert.That(pv, Is.GreaterThanOrEqualTo(0));
             }

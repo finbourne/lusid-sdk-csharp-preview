@@ -28,11 +28,11 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
             }
             if (model == ModelSelection.ModelEnum.BlackScholes)
             {
-                upsertComplexMarketDataRequest.Add("BlackScholesVolSurface", TestDataUtilities.ConstantVolSurfaceRequest(TestDataUtilities.EffectiveAt, fxOption, model, 0.2m));
+                upsertComplexMarketDataRequest.Add("VolSurface", TestDataUtilities.ConstantVolSurfaceRequest(TestDataUtilities.EffectiveAt, fxOption, model, 0.2m));
             }
             if (model == ModelSelection.ModelEnum.Bachelier)
             { 
-                upsertComplexMarketDataRequest.Add("BachelierVolSurface", TestDataUtilities.ConstantVolSurfaceRequest(TestDataUtilities.EffectiveAt, fxOption, model, 10m));
+                upsertComplexMarketDataRequest.Add("VolSurface", TestDataUtilities.ConstantVolSurfaceRequest(TestDataUtilities.EffectiveAt, fxOption, model, 10m));
             }
 
             var upsertComplexMarketDataResponse = _complexMarketDataApi.UpsertComplexMarketData(scope, upsertComplexMarketDataRequest);
@@ -109,7 +109,7 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
         [TestCase("Discounting")]
         [TestCase("BlackScholes")]
         [TestCase("Bachelier")]
-        public void DemoFxOptionValuation(string modelName, bool inLineValuation = true)
+        public void FxOptionValuationExample(string modelName, bool inLineValuation = true)
         {
             ModelSelection.ModelEnum model = Enum.Parse<ModelSelection.ModelEnum>(modelName);
             CallLusidValuationEndpoint(model, inLineValuation);
@@ -119,7 +119,7 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
         [TestCase("Discounting")]
         [TestCase("BlackScholes")]
         [TestCase("Bachelier")]
-        public void DemoFxOptionCashFlows(string modelName)
+        public void FxOptionPortfolioCashFlowsExample(string modelName)
         {
             var model = Enum.Parse<ModelSelection.ModelEnum>(modelName);
             CallLusidGetPortfolioCashFlowsEndpoint(model);
