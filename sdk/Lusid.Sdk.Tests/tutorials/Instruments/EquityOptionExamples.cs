@@ -17,24 +17,28 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
             Assert.That(upsertResponse.Failed.Count, Is.EqualTo(0));
             Assert.That(upsertResponse.Values.Count, Is.EqualTo(quoteRequest.Count));
 
-            List<Dictionary<string, UpsertComplexMarketDataRequest>> complexMarket = new List<Dictionary<string, UpsertComplexMarketDataRequest>>();
+            Dictionary<string, UpsertComplexMarketDataRequest> upsertComplexMarketDataRequest = new Dictionary<string, UpsertComplexMarketDataRequest>()
+            {
+                {"discountCurve", TestDataUtilities.BuildOisCurveRequest(TestDataUtilities.EffectiveAt, "USD")}
+            };
             if (model != ModelSelection.ModelEnum.ConstantTimeValueOfMoney)
             {
-                complexMarket.Add(TestDataUtilities.BuildOisCurveRequest(TestDataUtilities.EffectiveAt, "USD"));
+                foreach (var kv in TestDataUtilities.BuildRateCurvesRequests(TestDataUtilities.EffectiveAt))
+                {
+                    upsertComplexMarketDataRequest.Add(kv.Key, kv.Value);
+                }
             }
             if (model == ModelSelection.ModelEnum.BlackScholes)
             {
-                complexMarket.Add(TestDataUtilities.ConstantVolSurfaceRequest(TestDataUtilities.EffectiveAt, option, model, 0.2m));
+                upsertComplexMarketDataRequest.Add("BlackScholesVolSurface", TestDataUtilities.ConstantVolSurfaceRequest(TestDataUtilities.EffectiveAt, option, model, 0.2m));
             }
             if (model == ModelSelection.ModelEnum.Bachelier)
             { 
-                complexMarket.Add(TestDataUtilities.ConstantVolSurfaceRequest(TestDataUtilities.EffectiveAt, option, model, 10m));
+                upsertComplexMarketDataRequest.Add("BachelierVolSurface", TestDataUtilities.ConstantVolSurfaceRequest(TestDataUtilities.EffectiveAt, option, model, 10m));
             }
-            foreach (var r in complexMarket)
-            {
-                var upsertmarketResponse = _complexMarketDataApi.UpsertComplexMarketData(scope, r);
-                ValidateComplexMarketDataUpsert(upsertmarketResponse, r.Count);
-            }
+
+            var upsertComplexMarketDataResponse = _complexMarketDataApi.UpsertComplexMarketData(scope, upsertComplexMarketDataRequest);
+            ValidateComplexMarketDataUpsert(upsertComplexMarketDataResponse, upsertComplexMarketDataRequest.Count);
         }
         
         internal override LusidInstrument CreateExampleInstrument()

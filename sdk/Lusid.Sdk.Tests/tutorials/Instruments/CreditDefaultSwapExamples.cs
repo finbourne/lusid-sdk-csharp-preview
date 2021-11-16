@@ -26,29 +26,30 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
             Assert.That(upsertResponse.Failed.Count, Is.EqualTo(0));
             Assert.That(upsertResponse.Values.Count, Is.EqualTo(upsertQuoteRequests.Count));
             
-            // CREATE a dictionary of complex market data to be upserted 
-            Dictionary<string, UpsertComplexMarketDataRequest> complexMarketNew = new Dictionary<string, UpsertComplexMarketDataRequest>();
-            List<Dictionary<string, UpsertComplexMarketDataRequest>> complexMarket = new List<Dictionary<string, UpsertComplexMarketDataRequest>>();
-            
-            // UPSERT CDS spread curve before upserting recipe
-            complexMarket.Add(TestDataUtilities.BuildCdsSpreadCurvesRequest(
+            // CREATE a dictionary of complex market data to be upserted for the CDS. We always need a CDS spread curve.
+            var cdsSpreadCurveUpsertRequest = TestDataUtilities.BuildCdsSpreadCurvesRequest(
                 TestDataUtilities.EffectiveAt,
                 cds.Ticker,
                 cds.FlowConventions.Currency,
                 cds.ProtectionDetailSpecification.Seniority,
-                cds.ProtectionDetailSpecification.RestructuringType));
-            
+                cds.ProtectionDetailSpecification.RestructuringType);
+
+            Dictionary<string, UpsertComplexMarketDataRequest> upsertComplexMarketDataRequest = new Dictionary<string, UpsertComplexMarketDataRequest>()
+            {
+                {"CdsSpread", cdsSpreadCurveUpsertRequest}
+            };
+
             // For models that is not ConstantTimeValueOfMoney, we require discount curves. We add them to the market data upsert.
             if (model != ModelSelection.ModelEnum.ConstantTimeValueOfMoney)
             {
-                complexMarket.AddRange(TestDataUtilities.BuildRateCurvesRequests(TestDataUtilities.EffectiveAt));
+                foreach (var kv in TestDataUtilities.BuildRateCurvesRequests(TestDataUtilities.EffectiveAt))
+                {
+                    upsertComplexMarketDataRequest.Add(kv.Key, kv.Value);
+                }
             }
 
-            foreach (var r in complexMarket)
-            {
-                var upsertmarketResponse = _complexMarketDataApi.UpsertComplexMarketData(scope, r);
-                ValidateComplexMarketDataUpsert(upsertmarketResponse, r.Count);
-            }
+            var upsertComplexMarketDataResponse = _complexMarketDataApi.UpsertComplexMarketData(scope, upsertComplexMarketDataRequest);
+            ValidateComplexMarketDataUpsert(upsertComplexMarketDataResponse, upsertComplexMarketDataRequest.Count);
         }
 
         internal override LusidInstrument CreateExampleInstrument()

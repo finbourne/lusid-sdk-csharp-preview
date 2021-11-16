@@ -161,16 +161,11 @@ namespace Lusid.Sdk.Utilities
             var upsertResponse = _quotesApi.UpsertQuotes(scope, upsertQuoteRequests);
             Assert.That(upsertResponse.Failed.Count, Is.EqualTo(0));
             Assert.That(upsertResponse.Values.Count, Is.EqualTo(upsertQuoteRequests.Count));
-            
-            List<Dictionary<string, UpsertComplexMarketDataRequest>> complexMarket =
-                new List<Dictionary<string, UpsertComplexMarketDataRequest>>();
-            complexMarket.AddRange(TestDataUtilities.BuildRateCurvesRequests(effectiveAt));
-            
-            foreach (var r in complexMarket)
-            {
-                var upsertmarketResponse = _complexMarketDataApi.UpsertComplexMarketData(scope, r);
-                ValidateComplexMarketDataUpsert(upsertmarketResponse, r.Count);
-            }
+
+            Dictionary<string, UpsertComplexMarketDataRequest> complexMarketUpsertRequests = TestDataUtilities.BuildRateCurvesRequests(effectiveAt);
+            var upsertmarketResponse = _complexMarketDataApi.UpsertComplexMarketData(scope, complexMarketUpsertRequests);
+            ValidateComplexMarketDataUpsert(upsertmarketResponse, complexMarketUpsertRequests.Count);
+
             // UPSERT equity quotes, if an equityIdentifier is present
             if (!equityIdentifier.IsNullOrEmpty())
             {

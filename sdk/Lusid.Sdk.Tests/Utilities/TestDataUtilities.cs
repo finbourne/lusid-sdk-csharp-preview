@@ -307,20 +307,25 @@ namespace Lusid.Sdk.Tests.Utilities
         /// JPY/JPYOIS and USD/USDOIS are used for discounting pricing models
         /// USD 6M rate is used for pricing interest rate swap
         /// </summary>
-        public static List<Dictionary<string, UpsertComplexMarketDataRequest>> BuildRateCurvesRequests(DateTimeOffset effectiveAt)
+        public static Dictionary<string, UpsertComplexMarketDataRequest> BuildRateCurvesRequests(DateTimeOffset effectiveAt)
         {
-            List<Dictionary<string, UpsertComplexMarketDataRequest>> curverequests =
-                new List<Dictionary<string, UpsertComplexMarketDataRequest>>();
-            curverequests.Add(BuildOisCurveRequest(effectiveAt, "USD"));
-            curverequests.Add(BuildOisCurveHighRatesRequest(effectiveAt, "JPY"));
-            curverequests.Add(Build6MRateCurveRequest(effectiveAt, "USD")); // this would be necessary for valuation of swaps paying every 6M
-            return curverequests;
+            var curveRequests = new[]
+            {
+                BuildOisCurveRequest(effectiveAt, "USD"),
+                BuildOisCurveHighRatesRequest(effectiveAt, "JPY"),
+                Build6MRateCurveRequest(effectiveAt, "USD") // this would be necessary for valuation of swaps paying every 6M
+            };
+
+            var upsertComplexMarketDataRequests = curveRequests.ToDictionary(
+                req => req.MarketDataId.ToString(),
+                req => req);
+            return upsertComplexMarketDataRequests;
         }
 
         /// <summary>
         /// Helper method to construct complex market data request for OIS interest rate curve to be used in IComplexMarketDataApi
         /// </summary>
-        public static Dictionary<string, UpsertComplexMarketDataRequest> BuildOisCurveRequest(DateTimeOffset effectiveAt, string currency)
+        public static UpsertComplexMarketDataRequest BuildOisCurveRequest(DateTimeOffset effectiveAt, string currency)
         {
             var complexMarketData = CreateDiscountCurve(effectiveAt);
             var complexMarketDataId = new ComplexMarketDataId(
@@ -328,16 +333,14 @@ namespace Lusid.Sdk.Tests.Utilities
                 effectiveAt: effectiveAt.ToString("o"),
                 marketAsset: $"{currency}/{currency}OIS",
                 priceSource: "");
-            var upsertRequest = new Dictionary<string, UpsertComplexMarketDataRequest>
-                {{"0", new UpsertComplexMarketDataRequest(complexMarketDataId, complexMarketData)}};
-
+            var upsertRequest = new UpsertComplexMarketDataRequest(complexMarketDataId, complexMarketData);
             return upsertRequest;
         }
 
         /// <summary>
         /// Helper method to construct complex market data request for OIS interest rate curve to be used in IComplexMarketDataApi
         /// </summary>
-        public static Dictionary<string, UpsertComplexMarketDataRequest> BuildOisCurveHighRatesRequest(DateTimeOffset effectiveAt, string currency)
+        public static UpsertComplexMarketDataRequest BuildOisCurveHighRatesRequest(DateTimeOffset effectiveAt, string currency)
         {
             // different rates as the valuation for some instruments such as fx forwards depend on the difference between the rates curves in two currencies
             var complexMarketData = CreateDiscountCurveHighRates(effectiveAt);
@@ -346,9 +349,7 @@ namespace Lusid.Sdk.Tests.Utilities
                 effectiveAt: effectiveAt.ToString("o"),
                 marketAsset: $"{currency}/{currency}OIS",
                 priceSource: "");
-            var upsertRequest = new Dictionary<string, UpsertComplexMarketDataRequest>
-                {{"0", new UpsertComplexMarketDataRequest(complexMarketDataId, complexMarketData)}};
-
+            var upsertRequest = new UpsertComplexMarketDataRequest(complexMarketDataId, complexMarketData);
             return upsertRequest;
         }
 
@@ -371,7 +372,7 @@ namespace Lusid.Sdk.Tests.Utilities
         /// <summary>
         /// Helper method to construct complex market data request for interest rate curve to be used in IComplexMarketDataApi
         /// </summary>
-        public static Dictionary<string, UpsertComplexMarketDataRequest> Build6MRateCurveRequest(DateTimeOffset effectiveAt, string currency)
+        public static UpsertComplexMarketDataRequest Build6MRateCurveRequest(DateTimeOffset effectiveAt, string currency)
         {
             var complexMarketData = GetRateCurveJsonFromFile("USD6M.json");
             var complexMarketDataId = new ComplexMarketDataId(
@@ -380,9 +381,7 @@ namespace Lusid.Sdk.Tests.Utilities
                 marketAsset: $"{currency}/6M",
                 priceSource: "");
 
-            var upsertRequest = new Dictionary<string, UpsertComplexMarketDataRequest>
-                {{"0", new UpsertComplexMarketDataRequest(complexMarketDataId, complexMarketData)}};
-
+            var upsertRequest = new UpsertComplexMarketDataRequest(complexMarketDataId, complexMarketData);
             return upsertRequest;
         }
 
@@ -407,7 +406,7 @@ namespace Lusid.Sdk.Tests.Utilities
             return cdsCurve;
         }
 
-        public static Dictionary<string, UpsertComplexMarketDataRequest> BuildCdsSpreadCurvesRequest(DateTimeOffset effectiveAt, string ticker, string ccy, CdsProtectionDetailSpecification.SeniorityEnum seniority, CdsProtectionDetailSpecification.RestructuringTypeEnum restructType)
+        public static UpsertComplexMarketDataRequest BuildCdsSpreadCurvesRequest(DateTimeOffset effectiveAt, string ticker, string ccy, CdsProtectionDetailSpecification.SeniorityEnum seniority, CdsProtectionDetailSpecification.RestructuringTypeEnum restructType)
         {
             var marketDataId = new ComplexMarketDataId
             (
@@ -420,7 +419,7 @@ namespace Lusid.Sdk.Tests.Utilities
 
             var marketData = GetSpreadCurveJsonFromFile("XYZCorp.json");
             var request = new UpsertComplexMarketDataRequest(marketDataId, marketData);
-            return new Dictionary<string, UpsertComplexMarketDataRequest>() {{"Request", request}}; 
+            return request;
         }
 
         public static Dictionary<string, UpsertQuoteRequest> BuildQuoteRequest(string scope, string id, QuoteSeriesId.InstrumentIdTypeEnum instrumentIdType, decimal price, string ccy, DateTimeOffset effectiveAt)
@@ -469,7 +468,7 @@ namespace Lusid.Sdk.Tests.Utilities
         /// <summary>
         /// One-point vol surface for a given option - thus the surface is constant.
         /// </summary>
-        public static Dictionary<string, UpsertComplexMarketDataRequest> ConstantVolSurfaceRequest(DateTimeOffset effectiveAt, LusidInstrument option, ModelSelection.ModelEnum model, decimal vol = 0.2m)
+        public static UpsertComplexMarketDataRequest ConstantVolSurfaceRequest(DateTimeOffset effectiveAt, LusidInstrument option, ModelSelection.ModelEnum model, decimal vol = 0.2m)
         {
             ComplexMarketData.MarketDataTypeEnum type = ComplexMarketData.MarketDataTypeEnum.OpaqueMarketData;
             if (option.InstrumentType == LusidInstrument.InstrumentTypeEnum.EquityOption)
@@ -488,10 +487,8 @@ namespace Lusid.Sdk.Tests.Utilities
                 provider: "Lusid",
                 effectiveAt: effectiveAt.ToString("o"),
                 marketAsset: marketAsset);
-            
-            var upsertRequest = new Dictionary<string, UpsertComplexMarketDataRequest>
-                {{"0", new UpsertComplexMarketDataRequest(complexMarketDataId, complexMarketData)}};
 
+            var upsertRequest = new UpsertComplexMarketDataRequest(complexMarketDataId, complexMarketData);
             return upsertRequest;
         }
 
