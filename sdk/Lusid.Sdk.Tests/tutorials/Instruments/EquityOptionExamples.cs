@@ -118,13 +118,12 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
             CallLusidValuationEndpoint(model, inLineValuation);
         }
 
-        [TestCase("ConstantTimeValueOfMoney")]
-        [TestCase("Discounting")]
-        [TestCase("BlackScholes")]
-        [TestCase("Bachelier")]
-        public void EquityOptionPortfolioCashFlowsExample(string modelName)
+        [TestCase(ModelSelection.ModelEnum.ConstantTimeValueOfMoney)]
+        [TestCase(ModelSelection.ModelEnum.Discounting)]
+        [TestCase(ModelSelection.ModelEnum.Bachelier)]
+        [TestCase(ModelSelection.ModelEnum.BlackScholes)]
+        public void EquityOptionPortfolioCashFlowsExample(ModelSelection.ModelEnum model)
         {
-            var model = Enum.Parse<ModelSelection.ModelEnum>(modelName);
             CallLusidGetPortfolioCashFlowsEndpoint(model);
         }
     }

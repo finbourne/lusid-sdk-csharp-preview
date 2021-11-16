@@ -157,17 +157,20 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
             _instrumentsApi.DeleteInstrument("ClientInternal", uniqueId); 
         }
         
-        [TestCase(true)]
-        [TestCase(false)]
-        public void CreditDefaultSwapValuationExample(bool inLineValuation)
+        [TestCase(ModelSelection.ModelEnum.ConstantTimeValueOfMoney, true)]
+        [TestCase(ModelSelection.ModelEnum.ConstantTimeValueOfMoney, false)]
+        [TestCase(ModelSelection.ModelEnum.Discounting, true)]
+        [TestCase(ModelSelection.ModelEnum.Discounting, false)]
+        public void CreditDefaultSwapValuationExample(ModelSelection.ModelEnum model, bool inLineValuation)
         {
-            CallLusidValuationEndpoint(ModelSelection.ModelEnum.Discounting, inLineValuation);
+            CallLusidValuationEndpoint(model, inLineValuation);
         }
 
-        [Test]
-        public void CreditDefaultSwapGetPortfolioCashFlowsExample()
+        [TestCase(ModelSelection.ModelEnum.ConstantTimeValueOfMoney)]
+        [TestCase(ModelSelection.ModelEnum.Discounting)]
+        public void CreditDefaultSwapGetPortfolioCashFlowsExample(ModelSelection.ModelEnum model)
         {
-            CallLusidGetPortfolioCashFlowsEndpoint(ModelSelection.ModelEnum.Discounting);
+            CallLusidGetPortfolioCashFlowsEndpoint(model);
         }
     }
 }
