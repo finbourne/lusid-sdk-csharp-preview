@@ -35,8 +35,11 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
                 upsertComplexMarketDataRequest.Add("VolSurface", TestDataUtilities.ConstantVolSurfaceRequest(TestDataUtilities.EffectiveAt, fxOption, model, 10m));
             }
 
-            var upsertComplexMarketDataResponse = _complexMarketDataApi.UpsertComplexMarketData(scope, upsertComplexMarketDataRequest);
-            ValidateComplexMarketDataUpsert(upsertComplexMarketDataResponse, upsertComplexMarketDataRequest.Count);
+            if(upsertComplexMarketDataRequest.Any())
+            {
+                var upsertComplexMarketDataResponse = _complexMarketDataApi.UpsertComplexMarketData(scope, upsertComplexMarketDataRequest);
+                ValidateComplexMarketDataUpsert(upsertComplexMarketDataResponse, upsertComplexMarketDataRequest.Count);            
+            }
         }
 
         internal override LusidInstrument CreateExampleInstrument()

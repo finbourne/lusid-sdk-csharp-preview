@@ -139,60 +139,6 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
             Assert.That(roundTripFuture.Underlying.InstrumentType, Is.EqualTo(futureDefinition.Underlying.InstrumentType));
             Assert.That(roundTripFuture.Underlying.InstrumentType, Is.EqualTo(LusidInstrument.InstrumentTypeEnum.ExoticInstrument));
         }
-        
-        [LusidFeature("F22-4")]
-        [Test]
-        public void DemonstrateCreationOfBond()
-        {
-            // CREATE the flow conventions for bond
-            var flowConventions = new FlowConventions(
-                scope: null,
-                code: null,
-                currency: "GBP",
-                paymentFrequency: "6M",
-                rollConvention: "MF",
-                dayCountConvention: "Act365",
-                paymentCalendars:new List<string>(),
-                resetCalendars:new List<string>(),
-                settleDays: 2,
-                resetDays: 2
-            );
-
-            var bond = new Bond(
-                startDate: new DateTimeOffset(2020, 2, 7, 0, 0, 0, TimeSpan.Zero),
-                maturityDate: new DateTimeOffset(2020, 9, 18, 0, 0, 0, TimeSpan.Zero),
-                domCcy: "GBP",
-                principal: 100m,
-                couponRate: 0.05m,
-                flowConventions: flowConventions,
-                identifiers: new Dictionary<string, string>(),
-                instrumentType: LusidInstrument.InstrumentTypeEnum.Bond
-            );
-
-            // ASSERT that it was created
-            Assert.That(bond, Is.Not.Null);
-
-            // CAN NOW UPSERT TO LUSID
-            string uniqueId = "id-bond-1";
-            UpsertOtcToLusid(bond, "some-name-for-this-bond", uniqueId);
-
-            // CAN NOW QUERY FROM LUSID
-            var retrieved = QueryOtcFromLusid(uniqueId);
-            Assert.That(retrieved.InstrumentType == LusidInstrument.InstrumentTypeEnum.Bond);
-            var roundTripBond = retrieved as Bond;
-            Assert.That(roundTripBond, Is.Not.Null);
-            Assert.That(roundTripBond.Principal, Is.EqualTo(bond.Principal));
-            Assert.That(roundTripBond.CouponRate, Is.EqualTo(bond.CouponRate));
-            Assert.That(roundTripBond.DomCcy, Is.EqualTo(bond.DomCcy));
-            Assert.That(roundTripBond.MaturityDate, Is.EqualTo(bond.MaturityDate));
-            Assert.That(roundTripBond.StartDate, Is.EqualTo(bond.StartDate));
-            Assert.That(roundTripBond.FlowConventions.Currency, Is.EqualTo(bond.FlowConventions.Currency));
-            Assert.That(roundTripBond.FlowConventions.PaymentFrequency, Is.EqualTo(bond.FlowConventions.PaymentFrequency));
-            Assert.That(roundTripBond.FlowConventions.ResetDays, Is.EqualTo(bond.FlowConventions.ResetDays));
-            Assert.That(roundTripBond.FlowConventions.SettleDays, Is.EqualTo(bond.FlowConventions.SettleDays));
-            Assert.That(roundTripBond.FlowConventions.PaymentCalendars.Count, Is.EqualTo(bond.FlowConventions.PaymentCalendars.Count));
-            Assert.That(roundTripBond.FlowConventions.PaymentCalendars, Is.EquivalentTo(bond.FlowConventions.PaymentCalendars));
-        }
 
         [LusidFeature("F22-5")]
         [Test]
