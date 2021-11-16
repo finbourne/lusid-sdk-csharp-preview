@@ -17,6 +17,7 @@ namespace Lusid.Sdk.Tests.Utilities
         public static string ValuationPvKey = "Valuation/PV/Amount";
         public static string InstrumentName = "Instrument/default/Name";
         
+        // Items to return back on a GetValuation call. 
         public static readonly List<AggregateSpec> ValuationSpec = new List<AggregateSpec>
         {
             new AggregateSpec(ValuationDateKey, AggregateSpec.OpEnum.Value),

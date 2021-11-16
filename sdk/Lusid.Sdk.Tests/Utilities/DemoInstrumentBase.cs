@@ -14,20 +14,7 @@ namespace Lusid.Sdk.Tests.Utilities
         internal abstract LusidInstrument CreateExampleInstrument();
 
         internal abstract void GetAndValidatePortfolioCashFlows(LusidInstrument instrument, string scope, string portfolioCode, string recipeCode, string instrumentID);
-
-        internal void CallLusidValuationEndpoint(ModelSelection.ModelEnum model, bool inLineValuation)
-        {
-            var scope = Guid.NewGuid().ToString();
-
-            LusidInstrument instrument = CreateExampleInstrument();
-            
-            CreateAndUpsertMarketDataToLusid(scope, model, instrument);
-
-            string recipeCode = CreateAndUpsertRecipe(scope, model);
-            
-            CallLusidValuationEndpoint(scope, model, inLineValuation, instrument, recipeCode);
-        }
-
+        
         internal void CallLusidGetPortfolioCashFlowsEndpoint(ModelSelection.ModelEnum model)
         {
             // CREATE demo instrument
@@ -61,7 +48,7 @@ namespace Lusid.Sdk.Tests.Utilities
         /// <summary>
         /// Utility method to create a new portfolio that contains one transaction against the instrument. 
         /// </summary>
-        /// <returns></returns>
+        /// <returns>Returns a tuple of instrumentId and portfolio code</returns>
         internal (string, string) CreatePortfolioAndInstrument(string scope, LusidInstrument instrument)
         {
             // CREATE portfolio
@@ -71,7 +58,7 @@ namespace Lusid.Sdk.Tests.Utilities
 
             // BUILD upsert instrument request
             var instrumentID = instrument.InstrumentType+Guid.NewGuid().ToString();
-            List<(LusidInstrument, string)> instrumentsIds = new List<(LusidInstrument, string)>{(instrument, instrumentID)};
+            var instrumentsIds = new List<(LusidInstrument, string)>{(instrument, instrumentID)};
             var definitions = TestDataUtilities.BuildInstrumentUpsertRequest(instrumentsIds);
             
             // UPSERT the instrument and validate it was successful
@@ -87,6 +74,19 @@ namespace Lusid.Sdk.Tests.Utilities
             _transactionPortfoliosApi.UpsertTransactions(scope, portfolioRequest.Code, transactionRequest);
 
             return (instrumentID, portfolioRequest.Code);
+        }
+
+        internal void CallLusidValuationEndpoint(ModelSelection.ModelEnum model, bool inLineValuation)
+        {
+            var scope = Guid.NewGuid().ToString();
+
+            LusidInstrument instrument = CreateExampleInstrument();
+            
+            CreateAndUpsertMarketDataToLusid(scope, model, instrument);
+
+            string recipeCode = CreateAndUpsertRecipe(scope, model);
+            
+            CallLusidValuationEndpoint(scope, model, inLineValuation, instrument, recipeCode);
         }
         
         /// <summary>

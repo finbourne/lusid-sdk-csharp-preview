@@ -80,15 +80,15 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
             Assert.That(fxOption, Is.Not.Null);
 
             // CAN NOW UPSERT TO LUSID
-            string uniqueId = fxOption.InstrumentType+Guid.NewGuid().ToString(); 
-            List<(LusidInstrument, string)> instrumentsIds = new List<(LusidInstrument, string)>(){(fxOption, uniqueId)};
+            var uniqueId = fxOption.InstrumentType+Guid.NewGuid().ToString(); 
+            var instrumentsIds = new List<(LusidInstrument, string)>(){(fxOption, uniqueId)};
             var definitions = TestDataUtilities.BuildInstrumentUpsertRequest(instrumentsIds);
             
-            UpsertInstrumentsResponse upsertResponse = _instrumentsApi.UpsertInstruments(definitions);
+            var upsertResponse = _instrumentsApi.UpsertInstruments(definitions);
             ValidateUpsertInstrumentResponse(upsertResponse);
 
             // CAN NOW QUERY FROM LUSID
-            GetInstrumentsResponse getResponse = _instrumentsApi.GetInstruments("ClientInternal", new List<string> { uniqueId });
+            var getResponse = _instrumentsApi.GetInstruments("ClientInternal", new List<string> { uniqueId });
             ValidateInstrumentResponse(getResponse ,uniqueId);
             
             var retrieved = getResponse.Values.First().Value.InstrumentDefinition;

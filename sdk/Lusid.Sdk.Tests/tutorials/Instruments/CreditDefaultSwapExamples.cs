@@ -3,9 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Lusid.Sdk.Model;
 using Lusid.Sdk.Tests.Utilities;
-using Lusid.Sdk.Utilities;
 using NUnit.Framework;
-using NUnit.Framework.Internal;
 
 namespace Lusid.Sdk.Tests.Tutorials.Instruments
 {
@@ -127,8 +125,8 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
             Assert.That(cds, Is.Not.Null);
 
             // CAN NOW UPSERT TO LUSID
-            string uniqueId = cds.InstrumentType+Guid.NewGuid().ToString(); 
-            List<(LusidInstrument, string)> instrumentsIds = new List<(LusidInstrument, string)>{(cds, uniqueId)};
+            var uniqueId = cds.InstrumentType+Guid.NewGuid().ToString(); 
+            var instrumentsIds = new List<(LusidInstrument, string)>{(cds, uniqueId)};
             var definitions = TestDataUtilities.BuildInstrumentUpsertRequest(instrumentsIds);
             
             UpsertInstrumentsResponse upsertResponse = _instrumentsApi.UpsertInstruments(definitions);
