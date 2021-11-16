@@ -73,7 +73,6 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
             ValidateInstrumentResponse(getResponse ,uniqueId);
             
             var retrieved = getResponse.Values.First().Value.InstrumentDefinition;
-            Assert.That(retrieved.InstrumentType == LusidInstrument.InstrumentTypeEnum.FxOption);
             Assert.That(retrieved.InstrumentType == LusidInstrument.InstrumentTypeEnum.Bond);
             var roundTripBond = retrieved as Bond;
             Assert.That(roundTripBond, Is.Not.Null);
