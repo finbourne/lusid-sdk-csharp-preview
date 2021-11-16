@@ -246,7 +246,7 @@ namespace Lusid.Sdk.Tests.Tutorials.Ibor
             var upsertQuoteResponse = _quotesApi.UpsertQuotes(scope, upsertFxRateRequestreq);
             List<Dictionary<string, UpsertComplexMarketDataRequest>> complexMarket =
                 new List<Dictionary<string, UpsertComplexMarketDataRequest>>();
-            complexMarket.AddRange(TestDataUtilities.BuildRateCurvesRequests(scope, TestEffectiveAt));
+            complexMarket.AddRange(TestDataUtilities.BuildRateCurvesRequests(TestEffectiveAt));
             foreach (var r in complexMarket)
             {
                 var upsertmarketResponse = _complexMarketDataApi.UpsertComplexMarketData(scope, r);

@@ -3,36 +3,32 @@ using System.Collections.Generic;
 using System.Linq;
 using Lusid.Sdk.Model;
 using Lusid.Sdk.Tests.Utilities;
-using Lusid.Sdk.Utilities;
 using NUnit.Framework;
-using NUnit.Framework.Internal;
 
 namespace Lusid.Sdk.Tests.Tutorials.Instruments
 {
     [TestFixture]
-    public class DemoEquityOption: DemoInstrumentBase
+    public class EquityOptionExamples: DemoInstrumentBase
     {
-        internal override void CreateMarketData(string scope, ModelSelection.ModelEnum model, LusidInstrument option)
+        internal override void CreateAndUpsertMarketDataToLusid(string scope, ModelSelection.ModelEnum model, LusidInstrument option)
         {
-            
             var quoteRequest = TestDataUtilities.BuildQuoteRequest(scope, "ACME", QuoteSeriesId.InstrumentIdTypeEnum.RIC, 135m, "USD", TestDataUtilities.EffectiveAt);
             var upsertResponse = _quotesApi.UpsertQuotes(scope, quoteRequest);
             Assert.That(upsertResponse.Failed.Count, Is.EqualTo(0));
             Assert.That(upsertResponse.Values.Count, Is.EqualTo(quoteRequest.Count));
 
-            List<Dictionary<string, UpsertComplexMarketDataRequest>> complexMarket =
-                new List<Dictionary<string, UpsertComplexMarketDataRequest>>();
+            List<Dictionary<string, UpsertComplexMarketDataRequest>> complexMarket = new List<Dictionary<string, UpsertComplexMarketDataRequest>>();
             if (model != ModelSelection.ModelEnum.ConstantTimeValueOfMoney)
             {
-                complexMarket.Add(TestDataUtilities.BuildOisCurveRequest(scope, TestDataUtilities.EffectiveAt, "USD"));
+                complexMarket.Add(TestDataUtilities.BuildOisCurveRequest(TestDataUtilities.EffectiveAt, "USD"));
             }
             if (model == ModelSelection.ModelEnum.BlackScholes)
             {
-                complexMarket.Add(TestDataUtilities.ConstantVolSurfaceRequest(scope, TestDataUtilities.EffectiveAt, option, model, 0.2m));
+                complexMarket.Add(TestDataUtilities.ConstantVolSurfaceRequest(TestDataUtilities.EffectiveAt, option, model, 0.2m));
             }
             if (model == ModelSelection.ModelEnum.Bachelier)
             { 
-                complexMarket.Add(TestDataUtilities.ConstantVolSurfaceRequest(scope, TestDataUtilities.EffectiveAt, option, model, 10m));
+                complexMarket.Add(TestDataUtilities.ConstantVolSurfaceRequest(TestDataUtilities.EffectiveAt, option, model, 10m));
             }
             foreach (var r in complexMarket)
             {
@@ -41,13 +37,12 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
             }
         }
         
-        internal override LusidInstrument CreateInstrument()
+        internal override LusidInstrument CreateExampleInstrument()
         {
             return InstrumentExamples.CreateExampleEquityOption();
         }
 
-
-        internal override void GetAndValidateCashFlows(LusidInstrument instrument, string scope, string portfolioCode,
+        internal override void GetAndValidatePortfolioCashFlows(LusidInstrument instrument, string scope, string portfolioCode,
             string recipeCode, string instrumentID)
         {
             var option = (EquityOption) instrument;
@@ -65,12 +60,13 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
             Assert.That(cashflows.Count, Is.EqualTo(1));
             Assert.That(cashflows[0].Amount, Is.EqualTo(-option.Strike));
             
+            // CLEAN up - delete instrument and portfolio
             _instrumentsApi.DeleteInstrument("ClientInternal", instrumentID);
             _portfoliosApi.DeletePortfolio(scope, portfolioCode);
         }
 
         [Test]
-        public void DemoEquityOptionCreation()
+        public void EquityOptionCreationAndUpsertionExample()
         {
             // CREATE an Equity-Option (that can then be upserted into LUSID)
             var equityOption = (EquityOption) InstrumentExamples.CreateExampleEquityOption();
@@ -84,7 +80,7 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
             var definitions = TestDataUtilities.BuildInstrumentUpsertRequest(instrumentsIds);
             
             UpsertInstrumentsResponse upsertResponse = _instrumentsApi.UpsertInstruments(definitions);
-            ValidateInstrumentResponse(upsertResponse);
+            ValidateUpsertInstrumentResponse(upsertResponse);
 
             // CAN NOW QUERY FROM LUSID
             GetInstrumentsResponse getResponse = _instrumentsApi.GetInstruments("ClientInternal", new List<string> { uniqueId });
@@ -104,7 +100,7 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
             Assert.That(roundTripEquityOption.OptionSettlementDate, Is.EqualTo(equityOption.OptionSettlementDate));
             Assert.That(roundTripEquityOption.UnderlyingIdentifier, Is.EqualTo(equityOption.UnderlyingIdentifier));
             
-            // Delete Instrument 
+            // DELETE Instrument 
             _instrumentsApi.DeleteInstrument("ClientInternal", uniqueId); 
         }
         
@@ -116,22 +112,20 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
         [TestCase("Discounting", false)]
         [TestCase("BlackScholes", false)]
         [TestCase("Bachelier", false)]
-        public void DemoEquityOptionValuation(string modelName, bool inLineValuation)
+        public void EquityOptionValuationExample(string modelName, bool inLineValuation)
         {
             ModelSelection.ModelEnum model = Enum.Parse<ModelSelection.ModelEnum>(modelName);
-            DemoValuation(model, inLineValuation);
+            CallLusidValuationEndpoint(model, inLineValuation);
         }
 
-        
         [TestCase("ConstantTimeValueOfMoney")]
         [TestCase("Discounting")]
         [TestCase("BlackScholes")]
         [TestCase("Bachelier")]
-        public void DemoEquityOptionCashFlows(string modelName)
+        public void EquityOptionPortfolioCashFlowsExample(string modelName)
         {
             var model = Enum.Parse<ModelSelection.ModelEnum>(modelName);
-            DemoCashFlows(model);
+            CallLusidGetPortfolioCashFlowsEndpoint(model);
         }
-        
     }
 }

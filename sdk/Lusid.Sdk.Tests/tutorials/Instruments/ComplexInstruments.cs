@@ -1,9 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Lusid.Sdk.Api;
 using Lusid.Sdk.Model;
-using Lusid.Sdk.Tests.Utilities;
 using Lusid.Sdk.Utilities;
 using LusidFeatures;
 using NUnit.Framework;
@@ -13,7 +11,6 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
     [TestFixture]
     public class ComplexInstruments: TutorialBase
     {
-
         [LusidFeature("F22-1")]
         [Test]
         public void DemonstrateCreationOfFxForward()

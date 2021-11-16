@@ -10,9 +10,9 @@ using NUnit.Framework.Internal;
 namespace Lusid.Sdk.Tests.Tutorials.Instruments
 {
     [TestFixture]
-    public class DemoCreditDefaultSwap: DemoInstrumentBase
+    public class CreditDefaultSwapExamples: DemoInstrumentBase
     {
-        internal override void CreateMarketData(string scope, ModelSelection.ModelEnum model, LusidInstrument instrument)
+        internal override void CreateAndUpsertMarketDataToLusid(string scope, ModelSelection.ModelEnum model, LusidInstrument instrument)
         {
             CreditDefaultSwap cds = (CreditDefaultSwap) instrument;
             // POPULATE with required market data for valuation of the instruments
@@ -26,16 +26,24 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
             Assert.That(upsertResponse.Failed.Count, Is.EqualTo(0));
             Assert.That(upsertResponse.Values.Count, Is.EqualTo(upsertQuoteRequests.Count));
             
-            List<Dictionary<string, UpsertComplexMarketDataRequest>> complexMarket =
-                new List<Dictionary<string, UpsertComplexMarketDataRequest>>();
-            if (model != ModelSelection.ModelEnum.ConstantTimeValueOfMoney)
-            {
-                complexMarket.AddRange(TestDataUtilities.BuildRateCurvesRequests(scope, TestDataUtilities.EffectiveAt));
-            }
+            // CREATE a dictionary of complex market data to be upserted 
+            Dictionary<string, UpsertComplexMarketDataRequest> complexMarketNew = new Dictionary<string, UpsertComplexMarketDataRequest>();
+            List<Dictionary<string, UpsertComplexMarketDataRequest>> complexMarket = new List<Dictionary<string, UpsertComplexMarketDataRequest>>();
             
             // UPSERT CDS spread curve before upserting recipe
-            complexMarket.Add(TestDataUtilities.BuildCdsSpreadCurvesRequest(scope, TestDataUtilities.EffectiveAt, cds.Ticker, cds.FlowConventions.Currency, cds.ProtectionDetailSpecification.Seniority,
-                cds.ProtectionDetailSpecification.RestructuringType)); 
+            complexMarket.Add(TestDataUtilities.BuildCdsSpreadCurvesRequest(
+                TestDataUtilities.EffectiveAt,
+                cds.Ticker,
+                cds.FlowConventions.Currency,
+                cds.ProtectionDetailSpecification.Seniority,
+                cds.ProtectionDetailSpecification.RestructuringType));
+            
+            // For models that is not ConstantTimeValueOfMoney, we require discount curves. We add them to the market data upsert.
+            if (model != ModelSelection.ModelEnum.ConstantTimeValueOfMoney)
+            {
+                complexMarket.AddRange(TestDataUtilities.BuildRateCurvesRequests(TestDataUtilities.EffectiveAt));
+            }
+
             foreach (var r in complexMarket)
             {
                 var upsertmarketResponse = _complexMarketDataApi.UpsertComplexMarketData(scope, r);
@@ -43,12 +51,12 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
             }
         }
 
-        internal override LusidInstrument CreateInstrument()
+        internal override LusidInstrument CreateExampleInstrument()
         {
-            return  InstrumentExamples.CreateExampleCreditDefaultSwap(); 
+            return InstrumentExamples.CreateExampleCreditDefaultSwap(); 
         }
         
-        internal override void GetAndValidateCashFlows(LusidInstrument instrument, string scope, string portfolioCode, string recipeCode, string instrumentID)
+        internal override void GetAndValidatePortfolioCashFlows(LusidInstrument instrument, string scope, string portfolioCode, string recipeCode, string instrumentID)
         {
             CreditDefaultSwap cds = (CreditDefaultSwap) instrument;
             var maturity = cds.MaturityDate;
@@ -83,7 +91,7 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
         }
         
         [Test]
-        public void DemoCreditDefaultSwapCreation()
+        public void CreditDefaultSwapCreationAndUpsertionExample()
         {
             // CREATE the cds flow conventions for credit default swap
             var cdsFlowConventions = new CdsFlowConventions(
@@ -117,15 +125,14 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
             );
             // ASSERT that it was created
             Assert.That(cds, Is.Not.Null);
-            
 
             // CAN NOW UPSERT TO LUSID
             string uniqueId = cds.InstrumentType+Guid.NewGuid().ToString(); 
-            List<(LusidInstrument, string)> instrumentsIds = new List<(LusidInstrument, string)>(){(cds, uniqueId)};
+            List<(LusidInstrument, string)> instrumentsIds = new List<(LusidInstrument, string)>{(cds, uniqueId)};
             var definitions = TestDataUtilities.BuildInstrumentUpsertRequest(instrumentsIds);
             
             UpsertInstrumentsResponse upsertResponse = _instrumentsApi.UpsertInstruments(definitions);
-            ValidateInstrumentResponse(upsertResponse);
+            ValidateUpsertInstrumentResponse(upsertResponse);
 
             // CAN NOW QUERY FROM LUSID
             GetInstrumentsResponse getResponse = _instrumentsApi.GetInstruments("ClientInternal", new List<string> { uniqueId });
@@ -146,23 +153,21 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
             Assert.That(roundTripCds.FlowConventions.PaymentCalendars.Count, Is.EqualTo(cds.FlowConventions.PaymentCalendars.Count));
             Assert.That(roundTripCds.FlowConventions.PaymentCalendars, Is.EquivalentTo(cds.FlowConventions.PaymentCalendars));
             
-            // Delete Instrument 
+            // DELETE Instrument 
             _instrumentsApi.DeleteInstrument("ClientInternal", uniqueId); 
         }
         
         [TestCase(true)]
         [TestCase(false)]
-        public void DemoCreditDefaultSwapValuation(bool inLineValuation)
+        public void CreditDefaultSwapValuationExample(bool inLineValuation)
         {
-            DemoValuation(ModelSelection.ModelEnum.Discounting, inLineValuation);
+            CallLusidValuationEndpoint(ModelSelection.ModelEnum.Discounting, inLineValuation);
         }
 
-        
         [Test]
-        public void DemoCreditDefaultSwapCashFlows()
+        public void CreditDefaultSwapGetPortfolioCashFlowsExample()
         {
-            DemoCashFlows(ModelSelection.ModelEnum.Discounting);
+            CallLusidGetPortfolioCashFlowsEndpoint(ModelSelection.ModelEnum.Discounting);
         }
-        
     }
 }

@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using Castle.Core.Internal;
 using Lusid.Sdk.Api;
@@ -43,7 +42,7 @@ namespace Lusid.Sdk.Utilities
             _conventionsApi = _apiFactory.Api<IConventionsApi>();
         }
         
-        internal void ValidateInstrumentResponse(UpsertInstrumentsResponse response)
+        internal void ValidateUpsertInstrumentResponse(UpsertInstrumentsResponse response)
         {
             Assert.That(response.Failed.Count, Is.EqualTo(0));
             Assert.That(response.Values.Count, Is.EqualTo(1));
@@ -165,7 +164,7 @@ namespace Lusid.Sdk.Utilities
             
             List<Dictionary<string, UpsertComplexMarketDataRequest>> complexMarket =
                 new List<Dictionary<string, UpsertComplexMarketDataRequest>>();
-            complexMarket.AddRange(TestDataUtilities.BuildRateCurvesRequests(scope, effectiveAt));
+            complexMarket.AddRange(TestDataUtilities.BuildRateCurvesRequests(effectiveAt));
             
             foreach (var r in complexMarket)
             {

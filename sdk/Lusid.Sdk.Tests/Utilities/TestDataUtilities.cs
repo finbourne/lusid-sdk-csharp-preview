@@ -2,11 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using Castle.Core.Internal;
-using Lusid.Sdk.Api;
 using Lusid.Sdk.Model;
 using Newtonsoft.Json;
-using NUnit.Framework;
 
 namespace Lusid.Sdk.Tests.Utilities
 {
@@ -20,7 +17,7 @@ namespace Lusid.Sdk.Tests.Utilities
         public static string HoldingPvKey = "Holding/default/PV";
         public static string InstrumentName = "Instrument/default/Name";
         
-        public static readonly List<AggregateSpec> valuationSpec = new List<AggregateSpec>
+        public static readonly List<AggregateSpec> ValuationSpec = new List<AggregateSpec>
         {
             new AggregateSpec(ValuationDateKey, AggregateSpec.OpEnum.Value),
             new AggregateSpec(InstrumentName, AggregateSpec.OpEnum.Value),
@@ -208,7 +205,6 @@ namespace Lusid.Sdk.Tests.Utilities
                 .ToList();
             return transactionRequests;
         }
-
         
         /// <summary>
         /// This method upserts JPY/USD and USD/JPY fx quotes for the given effectiveAt date
@@ -311,20 +307,20 @@ namespace Lusid.Sdk.Tests.Utilities
         /// JPY/JPYOIS and USD/USDOIS are used for discounting pricing models
         /// USD 6M rate is used for pricing interest rate swap
         /// </summary>
-        public static List<Dictionary<string, UpsertComplexMarketDataRequest>> BuildRateCurvesRequests(string scope, DateTimeOffset effectiveAt)
+        public static List<Dictionary<string, UpsertComplexMarketDataRequest>> BuildRateCurvesRequests(DateTimeOffset effectiveAt)
         {
             List<Dictionary<string, UpsertComplexMarketDataRequest>> curverequests =
                 new List<Dictionary<string, UpsertComplexMarketDataRequest>>();
-            curverequests.Add(BuildOisCurveRequest(scope, effectiveAt, "USD"));
-            curverequests.Add(BuildOisCurveHighRatesRequest(scope, effectiveAt, "JPY"));
-            curverequests.Add(Build6MRateCurveRequest(scope, effectiveAt, "USD")); // this would be necessary for valuation of swaps paying every 6M
+            curverequests.Add(BuildOisCurveRequest(effectiveAt, "USD"));
+            curverequests.Add(BuildOisCurveHighRatesRequest(effectiveAt, "JPY"));
+            curverequests.Add(Build6MRateCurveRequest(effectiveAt, "USD")); // this would be necessary for valuation of swaps paying every 6M
             return curverequests;
         }
 
         /// <summary>
         /// Helper method to construct complex market data request for OIS interest rate curve to be used in IComplexMarketDataApi
         /// </summary>
-        public static Dictionary<string, UpsertComplexMarketDataRequest> BuildOisCurveRequest(string scope, DateTimeOffset effectiveAt, string currency)
+        public static Dictionary<string, UpsertComplexMarketDataRequest> BuildOisCurveRequest(DateTimeOffset effectiveAt, string currency)
         {
             var complexMarketData = CreateDiscountCurve(effectiveAt);
             var complexMarketDataId = new ComplexMarketDataId(
@@ -341,7 +337,7 @@ namespace Lusid.Sdk.Tests.Utilities
         /// <summary>
         /// Helper method to construct complex market data request for OIS interest rate curve to be used in IComplexMarketDataApi
         /// </summary>
-        public static Dictionary<string, UpsertComplexMarketDataRequest> BuildOisCurveHighRatesRequest(string scope, DateTimeOffset effectiveAt, string currency)
+        public static Dictionary<string, UpsertComplexMarketDataRequest> BuildOisCurveHighRatesRequest(DateTimeOffset effectiveAt, string currency)
         {
             // different rates as the valuation for some instruments such as fx forwards depend on the difference between the rates curves in two currencies
             var complexMarketData = CreateDiscountCurveHighRates(effectiveAt);
@@ -375,7 +371,7 @@ namespace Lusid.Sdk.Tests.Utilities
         /// <summary>
         /// Helper method to construct complex market data request for interest rate curve to be used in IComplexMarketDataApi
         /// </summary>
-        public static Dictionary<string, UpsertComplexMarketDataRequest> Build6MRateCurveRequest(string scope, DateTimeOffset effectiveAt, string currency)
+        public static Dictionary<string, UpsertComplexMarketDataRequest> Build6MRateCurveRequest(DateTimeOffset effectiveAt, string currency)
         {
             var complexMarketData = GetRateCurveJsonFromFile("USD6M.json");
             var complexMarketDataId = new ComplexMarketDataId(
@@ -411,7 +407,7 @@ namespace Lusid.Sdk.Tests.Utilities
             return cdsCurve;
         }
 
-        public static Dictionary<string, UpsertComplexMarketDataRequest> BuildCdsSpreadCurvesRequest(string scope, DateTimeOffset effectiveAt, string ticker, string ccy, CdsProtectionDetailSpecification.SeniorityEnum seniority, CdsProtectionDetailSpecification.RestructuringTypeEnum restructType)
+        public static Dictionary<string, UpsertComplexMarketDataRequest> BuildCdsSpreadCurvesRequest(DateTimeOffset effectiveAt, string ticker, string ccy, CdsProtectionDetailSpecification.SeniorityEnum seniority, CdsProtectionDetailSpecification.RestructuringTypeEnum restructType)
         {
             var marketDataId = new ComplexMarketDataId
             (
@@ -473,7 +469,7 @@ namespace Lusid.Sdk.Tests.Utilities
         /// <summary>
         /// One-point vol surface for a given option - thus the surface is constant.
         /// </summary>
-        public static Dictionary<string, UpsertComplexMarketDataRequest> ConstantVolSurfaceRequest(string scope, DateTimeOffset effectiveAt, LusidInstrument option, ModelSelection.ModelEnum model, decimal vol = 0.2m)
+        public static Dictionary<string, UpsertComplexMarketDataRequest> ConstantVolSurfaceRequest(DateTimeOffset effectiveAt, LusidInstrument option, ModelSelection.ModelEnum model, decimal vol = 0.2m)
         {
             ComplexMarketData.MarketDataTypeEnum type = ComplexMarketData.MarketDataTypeEnum.OpaqueMarketData;
             if (option.InstrumentType == LusidInstrument.InstrumentTypeEnum.EquityOption)
@@ -532,7 +528,7 @@ namespace Lusid.Sdk.Tests.Utilities
             
             var valuationRequest = new ValuationRequest(
                 recipeId: new ResourceId(scope, recipeCode),
-                metrics: TestDataUtilities.valuationSpec,
+                metrics: TestDataUtilities.ValuationSpec,
                 valuationSchedule: valuationSchedule,
                 sort: new List<OrderBySpec> {new OrderBySpec(TestDataUtilities.ValuationDateKey, OrderBySpec.SortOrderEnum.Ascending)},
                 portfolioEntityIds: new List<PortfolioEntityId> {new PortfolioEntityId(scope, portfolioCode)},
@@ -556,7 +552,7 @@ namespace Lusid.Sdk.Tests.Utilities
             // CONSTRUCT and PERFORM valuation request
             var inlineValuationRequest = new InlineValuationRequest(
                 recipeId: new ResourceId(scope, recipeCode),
-                metrics: TestDataUtilities.valuationSpec,
+                metrics: TestDataUtilities.ValuationSpec,
                 sort: new List<OrderBySpec> {new OrderBySpec(TestDataUtilities.ValuationDateKey, OrderBySpec.SortOrderEnum.Ascending)},
                 valuationSchedule: valuationSchedule,
                 instruments: instruments);
