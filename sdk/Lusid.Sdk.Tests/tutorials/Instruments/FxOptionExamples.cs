@@ -108,23 +108,25 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
             _instrumentsApi.DeleteInstrument("ClientInternal", uniqueId); 
         }
         
-        [TestCase("ConstantTimeValueOfMoney")]
-        [TestCase("Discounting")]
-        [TestCase("BlackScholes")]
-        [TestCase("Bachelier")]
-        public void FxOptionValuationExample(string modelName, bool inLineValuation = true)
+        [TestCase(ModelSelection.ModelEnum.ConstantTimeValueOfMoney, true)]
+        [TestCase(ModelSelection.ModelEnum.ConstantTimeValueOfMoney, false)]
+        [TestCase(ModelSelection.ModelEnum.Discounting, true)]
+        [TestCase(ModelSelection.ModelEnum.Discounting, false)]
+        [TestCase(ModelSelection.ModelEnum.Bachelier, true)]
+        [TestCase(ModelSelection.ModelEnum.Bachelier, false)]
+        [TestCase(ModelSelection.ModelEnum.BlackScholes, true)]
+        [TestCase(ModelSelection.ModelEnum.BlackScholes, false)]
+        public void FxOptionValuationExample(ModelSelection.ModelEnum model, bool inLineValuation)
         {
-            ModelSelection.ModelEnum model = Enum.Parse<ModelSelection.ModelEnum>(modelName);
             CallLusidValuationEndpoint(model, inLineValuation);
         }
 
-        [TestCase("ConstantTimeValueOfMoney")]
-        [TestCase("Discounting")]
-        [TestCase("BlackScholes")]
-        [TestCase("Bachelier")]
-        public void FxOptionPortfolioCashFlowsExample(string modelName)
+        [TestCase(ModelSelection.ModelEnum.ConstantTimeValueOfMoney)]
+        [TestCase(ModelSelection.ModelEnum.Discounting)]
+        [TestCase(ModelSelection.ModelEnum.Bachelier)]
+        [TestCase(ModelSelection.ModelEnum.BlackScholes)]
+        public void FxOptionPortfolioCashFlowsExample(ModelSelection.ModelEnum model)
         {
-            var model = Enum.Parse<ModelSelection.ModelEnum>(modelName);
             CallLusidGetPortfolioCashFlowsEndpoint(model);
         }
     }

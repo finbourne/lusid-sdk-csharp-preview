@@ -105,17 +105,16 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
             _instrumentsApi.DeleteInstrument("ClientInternal", uniqueId); 
         }
         
-        [TestCase("ConstantTimeValueOfMoney", true)]
-        [TestCase("Discounting", true)]
-        [TestCase("BlackScholes", true)]
-        [TestCase("Bachelier", true)]
-        [TestCase("ConstantTimeValueOfMoney", false)]
-        [TestCase("Discounting", false)]
-        [TestCase("BlackScholes", false)]
-        [TestCase("Bachelier", false)]
-        public void EquityOptionValuationExample(string modelName, bool inLineValuation)
+        [TestCase(ModelSelection.ModelEnum.ConstantTimeValueOfMoney, true)]
+        [TestCase(ModelSelection.ModelEnum.ConstantTimeValueOfMoney, false)]
+        [TestCase(ModelSelection.ModelEnum.Discounting, true)]
+        [TestCase(ModelSelection.ModelEnum.Discounting, false)]
+        [TestCase(ModelSelection.ModelEnum.Bachelier, true)]
+        [TestCase(ModelSelection.ModelEnum.Bachelier, false)]
+        [TestCase(ModelSelection.ModelEnum.BlackScholes, true)]
+        [TestCase(ModelSelection.ModelEnum.BlackScholes, false)]
+        public void EquityOptionValuationExample(ModelSelection.ModelEnum model, bool inLineValuation)
         {
-            ModelSelection.ModelEnum model = Enum.Parse<ModelSelection.ModelEnum>(modelName);
             CallLusidValuationEndpoint(model, inLineValuation);
         }
 

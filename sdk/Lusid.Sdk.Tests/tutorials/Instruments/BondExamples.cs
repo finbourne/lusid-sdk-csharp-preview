@@ -13,14 +13,15 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
     {
         internal override void CreateAndUpsertMarketDataToLusid(string scope, ModelSelection.ModelEnum model, LusidInstrument fxOption)
         {
-            Dictionary<string, UpsertComplexMarketDataRequest> upsertComplexMarketDataRequest = new Dictionary<string, UpsertComplexMarketDataRequest>();
             if (model != ModelSelection.ModelEnum.ConstantTimeValueOfMoney)
             {
-                upsertComplexMarketDataRequest.Add("discountCurve", TestDataUtilities.BuildOisCurveRequest(TestDataUtilities.EffectiveAt, "USD"));
+                Dictionary<string, UpsertComplexMarketDataRequest> upsertComplexMarketDataRequest = new Dictionary<string, UpsertComplexMarketDataRequest>
+                {
+                    {"discountCurve", TestDataUtilities.BuildOisCurveRequest(TestDataUtilities.EffectiveAt, "USD")}
+                };
+                var upsertComplexMarketDataResponse = _complexMarketDataApi.UpsertComplexMarketData(scope, upsertComplexMarketDataRequest);
+                ValidateComplexMarketDataUpsert(upsertComplexMarketDataResponse, upsertComplexMarketDataRequest.Count);
             }
-
-            var upsertComplexMarketDataResponse = _complexMarketDataApi.UpsertComplexMarketData(scope, upsertComplexMarketDataRequest);
-            ValidateComplexMarketDataUpsert(upsertComplexMarketDataResponse, upsertComplexMarketDataRequest.Count);
         }
 
         internal override LusidInstrument CreateExampleInstrument() => InstrumentExamples.CreateExampleBond();
@@ -39,9 +40,12 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
                 filter:null,
                 recipeIdScope: scope,
                 recipeIdCode: recipeCode).Values;
-            
-            Assert.That(cashflows.Count, Is.EqualTo(2));
-            
+
+            // CHECK that expected cash flows at maturity are not 0.
+            Assert.That(cashflows.Count, Is.EqualTo(3));
+            var allCashFlowsPositive = cashflows.All(cf => cf.Amount > 0);
+            Assert.That(allCashFlowsPositive, Is.True);
+
             _instrumentsApi.DeleteInstrument("ClientInternal", instrumentID);
             _portfoliosApi.DeletePortfolio(scope, portfolioCode);
         }
@@ -89,20 +93,18 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
             _instrumentsApi.DeleteInstrument("ClientInternal", uniqueId); 
         }
         
-        [TestCase("ConstantTimeValueOfMoney")]
-        [TestCase("Discounting")]
-        public void BondValuationExample(string modelName, bool inLineValuation = true)
+        [TestCase(ModelSelection.ModelEnum.ConstantTimeValueOfMoney)]
+        [TestCase(ModelSelection.ModelEnum.Discounting)]
+        public void BondValuationExample(ModelSelection.ModelEnum modelName, bool inLineValuation = true)
         {
-            ModelSelection.ModelEnum model = Enum.Parse<ModelSelection.ModelEnum>(modelName);
-            CallLusidValuationEndpoint(model, inLineValuation);
+            CallLusidValuationEndpoint(modelName, inLineValuation);
         }
 
-        [TestCase("ConstantTimeValueOfMoney")]
-        [TestCase("Discounting")]
-        public void BondPortfolioCashFlowsExample(string modelName)
+        [TestCase(ModelSelection.ModelEnum.ConstantTimeValueOfMoney)]
+        [TestCase(ModelSelection.ModelEnum.Discounting)]
+        public void BondPortfolioCashFlowsExample(ModelSelection.ModelEnum modelName)
         {
-            var model = Enum.Parse<ModelSelection.ModelEnum>(modelName);
-            CallLusidGetPortfolioCashFlowsEndpoint(model);
+            CallLusidGetPortfolioCashFlowsEndpoint(modelName);
         }
     }
 }
