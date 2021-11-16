@@ -505,13 +505,35 @@ namespace Lusid.Sdk.Tests.Utilities
         public static UpsertRecipeRequest BuildRecipeRequest(string recipeCode, string scope, ModelSelection.ModelEnum model)
         {
             var pricingOptions = new PricingOptions(new ModelSelection(ModelSelection.LibraryEnum.Lusid, model));
-            var resetRule = new MarketDataKeyRule("Equity.RIC.*", "Lusid", scope, MarketDataKeyRule.QuoteTypeEnum.Price, "mid", quoteInterval: "1Y");
+            var resetRule = new MarketDataKeyRule(
+                key: "Equity.RIC.*",
+                supplier: "Lusid",
+                scope,
+                MarketDataKeyRule.QuoteTypeEnum.Price,
+                field: "mid",
+                quoteInterval: "1Y");
+            // We use long quote intervals here because we are happy to use old market data,
+            // as pricing is not a concern in the cash flow demos this is used in.
+            var creditRule = new MarketDataKeyRule(
+                key: "Credit.*.*.*.*",
+                supplier: "Lusid",
+                scope,
+                MarketDataKeyRule.QuoteTypeEnum.Spread,
+                field: "mid",
+                quoteInterval: "10Y");
+            var ratesRule = new MarketDataKeyRule(
+                key: "Rates.*.*",
+                supplier: "Lusid",
+                scope,
+                MarketDataKeyRule.QuoteTypeEnum.Price,
+                field: "mid",
+                quoteInterval: "10Y");
             
             var recipe = new ConfigurationRecipe(
                 scope,
                 recipeCode,
                 market: new MarketContext(
-                    marketRules: new List<MarketDataKeyRule>{resetRule}, 
+                    marketRules: new List<MarketDataKeyRule>{resetRule, creditRule, ratesRule},
                     options: new MarketOptions(defaultSupplier: "Lusid", defaultScope: scope, defaultInstrumentCodeType: "RIC")),
                 pricing: new PricingContext(options: pricingOptions),
                 description: $"Recipe for {model} pricing");
