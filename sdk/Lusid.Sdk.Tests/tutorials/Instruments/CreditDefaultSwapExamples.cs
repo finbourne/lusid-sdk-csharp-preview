@@ -10,45 +10,53 @@ using NUnit.Framework.Internal;
 namespace Lusid.Sdk.Tests.Tutorials.Instruments
 {
     [TestFixture]
-    public class DemoCreditDefaultSwap: DemoInstrumentBase
+    public class CreditDefaultSwapExamples: DemoInstrumentBase
     {
-        internal override void CreateMarketData(string scope, ModelSelection.ModelEnum model, LusidInstrument instrument)
+        internal override void CreateAndUpsertMarketDataToLusid(string scope, ModelSelection.ModelEnum model, LusidInstrument instrument)
         {
-            CreditDefaultSwap cds = (CreditDefaultSwap) instrument;
             // POPULATE with required market data for valuation of the instruments
-            var upsertFxRateRequestreq = TestDataUtilities.BuildFxRateRequest(scope, TestDataUtilities.EffectiveAt);
-            var upsertQuoteResponse = _quotesApi.UpsertQuotes(scope, upsertFxRateRequestreq);
-            
-            ValidateQuoteUpsert(upsertQuoteResponse, upsertFxRateRequestreq.Count);
+            CreditDefaultSwap cds = (CreditDefaultSwap) instrument;
+            var upsertFxRateRequestReq = TestDataUtilities.BuildFxRateRequest(scope, TestDataUtilities.EffectiveAt);
+            var upsertFxQuoteResponse = _quotesApi.UpsertQuotes(scope, upsertFxRateRequestReq);
+            ValidateQuoteUpsert(upsertFxQuoteResponse, upsertFxRateRequestReq.Count);
 
             var upsertQuoteRequests = TestDataUtilities.BuildResetQuotesRequest(scope, TestDataUtilities.EffectiveAt.AddDays(-4));
-            var upsertResponse = _quotesApi.UpsertQuotes(scope, upsertQuoteRequests);
-            Assert.That(upsertResponse.Failed.Count, Is.EqualTo(0));
-            Assert.That(upsertResponse.Values.Count, Is.EqualTo(upsertQuoteRequests.Count));
+            var upsertQuoteResponse = _quotesApi.UpsertQuotes(scope, upsertQuoteRequests);
+            Assert.That(upsertQuoteResponse.Failed.Count, Is.EqualTo(0));
+            Assert.That(upsertQuoteResponse.Values.Count, Is.EqualTo(upsertQuoteRequests.Count));
             
-            List<Dictionary<string, UpsertComplexMarketDataRequest>> complexMarket =
-                new List<Dictionary<string, UpsertComplexMarketDataRequest>>();
+            // CREATE a dictionary of complex market data to be upserted for the CDS. We always need a CDS spread curve.
+            var cdsSpreadCurveUpsertRequest = TestDataUtilities.BuildCdsSpreadCurvesRequest(
+                TestDataUtilities.EffectiveAt,
+                cds.Ticker,
+                cds.FlowConventions.Currency,
+                cds.ProtectionDetailSpecification.Seniority,
+                cds.ProtectionDetailSpecification.RestructuringType);
+
+            Dictionary<string, UpsertComplexMarketDataRequest> upsertComplexMarketDataRequest = new Dictionary<string, UpsertComplexMarketDataRequest>()
+            {
+                {"CdsSpread", cdsSpreadCurveUpsertRequest}
+            };
+
+            // For models that is not ConstantTimeValueOfMoney, we require discount curves. We add them to the market data upsert.
             if (model != ModelSelection.ModelEnum.ConstantTimeValueOfMoney)
             {
-                complexMarket.AddRange(TestDataUtilities.BuildRateCurvesRequests(scope, TestDataUtilities.EffectiveAt));
+                foreach (var kv in TestDataUtilities.BuildRateCurvesRequests(TestDataUtilities.EffectiveAt))
+                {
+                    upsertComplexMarketDataRequest.Add(kv.Key, kv.Value);
+                }
             }
-            
-            // UPSERT CDS spread curve before upserting recipe
-            complexMarket.Add(TestDataUtilities.BuildCdsSpreadCurvesRequest(scope, TestDataUtilities.EffectiveAt, cds.Ticker, cds.FlowConventions.Currency, cds.ProtectionDetailSpecification.Seniority,
-                cds.ProtectionDetailSpecification.RestructuringType)); 
-            foreach (var r in complexMarket)
-            {
-                var upsertmarketResponse = _complexMarketDataApi.UpsertComplexMarketData(scope, r);
-                ValidateComplexMarketDataUpsert(upsertmarketResponse, r.Count);
-            }
+
+            var upsertComplexMarketDataResponse = _complexMarketDataApi.UpsertComplexMarketData(scope, upsertComplexMarketDataRequest);
+            ValidateComplexMarketDataUpsert(upsertComplexMarketDataResponse, upsertComplexMarketDataRequest.Count);
         }
 
-        internal override LusidInstrument CreateInstrument()
+        internal override LusidInstrument CreateExampleInstrument()
         {
-            return  InstrumentExamples.CreateExampleCreditDefaultSwap(); 
+            return InstrumentExamples.CreateExampleCreditDefaultSwap(); 
         }
         
-        internal override void GetAndValidateCashFlows(LusidInstrument instrument, string scope, string portfolioCode, string recipeCode, string instrumentID)
+        internal override void GetAndValidatePortfolioCashFlows(LusidInstrument instrument, string scope, string portfolioCode, string recipeCode, string instrumentID)
         {
             CreditDefaultSwap cds = (CreditDefaultSwap) instrument;
             var maturity = cds.MaturityDate;
@@ -83,7 +91,7 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
         }
         
         [Test]
-        public void DemoCreditDefaultSwapCreation()
+        public void CreditDefaultSwapCreationAndUpsertionExample()
         {
             // CREATE the cds flow conventions for credit default swap
             var cdsFlowConventions = new CdsFlowConventions(
@@ -117,15 +125,14 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
             );
             // ASSERT that it was created
             Assert.That(cds, Is.Not.Null);
-            
 
             // CAN NOW UPSERT TO LUSID
             string uniqueId = cds.InstrumentType+Guid.NewGuid().ToString(); 
-            List<(LusidInstrument, string)> instrumentsIds = new List<(LusidInstrument, string)>(){(cds, uniqueId)};
+            List<(LusidInstrument, string)> instrumentsIds = new List<(LusidInstrument, string)>{(cds, uniqueId)};
             var definitions = TestDataUtilities.BuildInstrumentUpsertRequest(instrumentsIds);
             
             UpsertInstrumentsResponse upsertResponse = _instrumentsApi.UpsertInstruments(definitions);
-            ValidateInstrumentResponse(upsertResponse);
+            ValidateUpsertInstrumentResponse(upsertResponse);
 
             // CAN NOW QUERY FROM LUSID
             GetInstrumentsResponse getResponse = _instrumentsApi.GetInstruments("ClientInternal", new List<string> { uniqueId });
@@ -146,23 +153,24 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
             Assert.That(roundTripCds.FlowConventions.PaymentCalendars.Count, Is.EqualTo(cds.FlowConventions.PaymentCalendars.Count));
             Assert.That(roundTripCds.FlowConventions.PaymentCalendars, Is.EquivalentTo(cds.FlowConventions.PaymentCalendars));
             
-            // Delete Instrument 
+            // DELETE Instrument 
             _instrumentsApi.DeleteInstrument("ClientInternal", uniqueId); 
         }
         
-        [TestCase(true)]
-        [TestCase(false)]
-        public void DemoCreditDefaultSwapValuation(bool inLineValuation)
+        [TestCase(ModelSelection.ModelEnum.ConstantTimeValueOfMoney, true)]
+        [TestCase(ModelSelection.ModelEnum.ConstantTimeValueOfMoney, false)]
+        [TestCase(ModelSelection.ModelEnum.Discounting, true)]
+        [TestCase(ModelSelection.ModelEnum.Discounting, false)]
+        public void CreditDefaultSwapValuationExample(ModelSelection.ModelEnum model, bool inLineValuation)
         {
-            DemoValuation(ModelSelection.ModelEnum.Discounting, inLineValuation);
+            CallLusidValuationEndpoint(model, inLineValuation);
         }
 
-        
-        [Test]
-        public void DemoCreditDefaultSwapCashFlows()
+        [TestCase(ModelSelection.ModelEnum.ConstantTimeValueOfMoney)]
+        [TestCase(ModelSelection.ModelEnum.Discounting)]
+        public void CreditDefaultSwapGetPortfolioCashFlowsExample(ModelSelection.ModelEnum model)
         {
-            DemoCashFlows(ModelSelection.ModelEnum.Discounting);
+            CallLusidGetPortfolioCashFlowsEndpoint(model);
         }
-        
     }
 }

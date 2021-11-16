@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using Castle.Core.Internal;
 using Lusid.Sdk.Api;
@@ -43,7 +42,7 @@ namespace Lusid.Sdk.Utilities
             _conventionsApi = _apiFactory.Api<IConventionsApi>();
         }
         
-        internal void ValidateInstrumentResponse(UpsertInstrumentsResponse response)
+        internal void ValidateUpsertInstrumentResponse(UpsertInstrumentsResponse response)
         {
             Assert.That(response.Failed.Count, Is.EqualTo(0));
             Assert.That(response.Values.Count, Is.EqualTo(1));
@@ -162,16 +161,11 @@ namespace Lusid.Sdk.Utilities
             var upsertResponse = _quotesApi.UpsertQuotes(scope, upsertQuoteRequests);
             Assert.That(upsertResponse.Failed.Count, Is.EqualTo(0));
             Assert.That(upsertResponse.Values.Count, Is.EqualTo(upsertQuoteRequests.Count));
-            
-            List<Dictionary<string, UpsertComplexMarketDataRequest>> complexMarket =
-                new List<Dictionary<string, UpsertComplexMarketDataRequest>>();
-            complexMarket.AddRange(TestDataUtilities.BuildRateCurvesRequests(scope, effectiveAt));
-            
-            foreach (var r in complexMarket)
-            {
-                var upsertmarketResponse = _complexMarketDataApi.UpsertComplexMarketData(scope, r);
-                ValidateComplexMarketDataUpsert(upsertmarketResponse, r.Count);
-            }
+
+            Dictionary<string, UpsertComplexMarketDataRequest> complexMarketUpsertRequests = TestDataUtilities.BuildRateCurvesRequests(effectiveAt);
+            var upsertmarketResponse = _complexMarketDataApi.UpsertComplexMarketData(scope, complexMarketUpsertRequests);
+            ValidateComplexMarketDataUpsert(upsertmarketResponse, complexMarketUpsertRequests.Count);
+
             // UPSERT equity quotes, if an equityIdentifier is present
             if (!equityIdentifier.IsNullOrEmpty())
             {

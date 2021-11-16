@@ -1,7 +1,5 @@
 using System.Collections.Generic;
-using Lusid.Sdk.Api;
 using Lusid.Sdk.Model;
-using Lusid.Sdk.Tests.Utilities;
 using Lusid.Sdk.Utilities;
 using NUnit.Framework;
 
@@ -9,8 +7,6 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
 {
     public class InstrumentData: TutorialBase
     {
-       
-
         [Test]
         public void UpsertConventions()
         {

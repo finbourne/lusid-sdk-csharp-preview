@@ -50,49 +50,6 @@ namespace Lusid.Sdk.Tests.tutorials.Ibor
         {
             _portfoliosApi.DeletePortfolio(_portfolioScope, _portfolioCode); 
         }
-        
-        
-        [Test]
-        public void ExamplePortfolioCashFlowsForBonds()
-        {
-            // CREATE portfolio
-            
-            //var portfolioId = _testDataUtilities.CreateTransactionPortfolio(portfolioScope);
-            // CREATE bond
-            var bond = InstrumentExamples.CreateExampleBond() as Bond;
-        
-            // UPSERT bond to portfolio and populating stores with required market data
-            
-           AddInstrumentsTransactionPortfolioAndPopulateRequiredMarketData(
-               _portfolioScope, 
-                _portfolioCode,
-               _effectiveAt,
-               _effectiveAt,
-                new List<LusidInstrument>(){bond});
-            
-            // CALL api to get cashflows at maturity
-            var maturity = bond.MaturityDate;
-            var cashFlowsAtMaturity = _transactionPortfoliosApi.GetPortfolioCashFlows(
-                _portfolioScope,
-                _portfolioCode,
-                maturity.AddMilliseconds(-1),
-                maturity.AddMilliseconds(-1),
-                maturity.AddMilliseconds(1));
-            
-            // CHECK correct number of cashflow at bond maturity: There are 2 cash flows corresponding to the last coupon amount and the principal.
-            var expectedNumber = 2;
-            Assert.That(cashFlowsAtMaturity.Values.Count, Is.EqualTo(expectedNumber));
-            
-            var cashFlows = cashFlowsAtMaturity.Values.Select(cf => cf)
-                .Select(cf => (cf.PaymentDate, cf.Amount, cf.Currency))
-                .ToList();
-            
-            // CHECK that expected cash flows at maturity are not 0.
-            var allCashFlowsPositive = cashFlows.All(cf => cf.Amount > 0);
-            Assert.That(allCashFlowsPositive, Is.True);
-            
-            
-        }
 
         [TestCase(true)]
         [TestCase(false)]

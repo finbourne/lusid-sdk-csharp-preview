@@ -3,16 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using Lusid.Sdk.Model;
 using Lusid.Sdk.Tests.Utilities;
-using Lusid.Sdk.Utilities;
 using NUnit.Framework;
-using NUnit.Framework.Internal;
 
 namespace Lusid.Sdk.Tests.Tutorials.Instruments
 {
     [TestFixture]
-    public class DemoFxOption: DemoInstrumentBase
+    public class FxOptionExamples: DemoInstrumentBase
     {
-        internal override void CreateMarketData(string scope, ModelSelection.ModelEnum model, LusidInstrument fxOption)
+        internal override void CreateAndUpsertMarketDataToLusid(string scope, ModelSelection.ModelEnum model, LusidInstrument fxOption)
         {
             // POPULATE with required market data for valuation of the instruments
             var upsertFxRateRequestreq = TestDataUtilities.BuildFxRateRequest(scope, TestDataUtilities.EffectiveAt);
@@ -20,33 +18,36 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
             
             ValidateQuoteUpsert(upsertQuoteResponse, upsertFxRateRequestreq.Count);
 
-            List<Dictionary<string, UpsertComplexMarketDataRequest>> complexMarket =
-                new List<Dictionary<string, UpsertComplexMarketDataRequest>>();
+            Dictionary<string, UpsertComplexMarketDataRequest> upsertComplexMarketDataRequest = new Dictionary<string, UpsertComplexMarketDataRequest>();
             if (model != ModelSelection.ModelEnum.ConstantTimeValueOfMoney)
             {
-                complexMarket.AddRange(TestDataUtilities.BuildRateCurvesRequests(scope, TestDataUtilities.EffectiveAt));
+                foreach (var kv in TestDataUtilities.BuildRateCurvesRequests(TestDataUtilities.EffectiveAt))
+                {
+                    upsertComplexMarketDataRequest.Add(kv.Key, kv.Value);
+                }
             }
             if (model == ModelSelection.ModelEnum.BlackScholes)
             {
-                complexMarket.Add(TestDataUtilities.ConstantVolSurfaceRequest(scope, TestDataUtilities.EffectiveAt, fxOption, model, 0.2m));
+                upsertComplexMarketDataRequest.Add("VolSurface", TestDataUtilities.ConstantVolSurfaceRequest(TestDataUtilities.EffectiveAt, fxOption, model, 0.2m));
             }
             if (model == ModelSelection.ModelEnum.Bachelier)
             { 
-                complexMarket.Add(TestDataUtilities.ConstantVolSurfaceRequest(scope, TestDataUtilities.EffectiveAt, fxOption, model, 10m));
+                upsertComplexMarketDataRequest.Add("VolSurface", TestDataUtilities.ConstantVolSurfaceRequest(TestDataUtilities.EffectiveAt, fxOption, model, 10m));
             }
-            foreach (var r in complexMarket)
+
+            if(upsertComplexMarketDataRequest.Any())
             {
-                var upsertmarketResponse = _complexMarketDataApi.UpsertComplexMarketData(scope, r);
-                ValidateComplexMarketDataUpsert(upsertmarketResponse, r.Count);
+                var upsertComplexMarketDataResponse = _complexMarketDataApi.UpsertComplexMarketData(scope, upsertComplexMarketDataRequest);
+                ValidateComplexMarketDataUpsert(upsertComplexMarketDataResponse, upsertComplexMarketDataRequest.Count);            
             }
         }
 
-        internal override LusidInstrument CreateInstrument()
+        internal override LusidInstrument CreateExampleInstrument()
         {
-            return  InstrumentExamples.CreateExampleFxOption(); 
+            return InstrumentExamples.CreateExampleFxOption(); 
         }
 
-        internal override void GetAndValidateCashFlows(LusidInstrument instrument, string scope, string portfolioCode,
+        internal override void GetAndValidatePortfolioCashFlows(LusidInstrument instrument, string scope, string portfolioCode,
             string recipeCode, string instrumentID)
         {
             var fxOption = (FxOption) instrument;
@@ -70,7 +71,7 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
         }
 
         [Test]
-        public void DemonstrateFxOptionCreation()
+        public void FxOptionCreationAndUpsertionExample()
         {
             // CREATE an Fx-Option (that can then be upserted into LUSID)
             var fxOption = (FxOption) InstrumentExamples.CreateExampleFxOption();
@@ -84,7 +85,7 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
             var definitions = TestDataUtilities.BuildInstrumentUpsertRequest(instrumentsIds);
             
             UpsertInstrumentsResponse upsertResponse = _instrumentsApi.UpsertInstruments(definitions);
-            ValidateInstrumentResponse(upsertResponse);
+            ValidateUpsertInstrumentResponse(upsertResponse);
 
             // CAN NOW QUERY FROM LUSID
             GetInstrumentsResponse getResponse = _instrumentsApi.GetInstruments("ClientInternal", new List<string> { uniqueId });
@@ -107,26 +108,26 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
             _instrumentsApi.DeleteInstrument("ClientInternal", uniqueId); 
         }
         
-        [TestCase("ConstantTimeValueOfMoney")]
-        [TestCase("Discounting")]
-        [TestCase("BlackScholes")]
-        [TestCase("Bachelier")]
-        public void DemoFxOptionValuation(string modelName, bool inLineValuation = true)
+        [TestCase(ModelSelection.ModelEnum.ConstantTimeValueOfMoney, true)]
+        [TestCase(ModelSelection.ModelEnum.ConstantTimeValueOfMoney, false)]
+        [TestCase(ModelSelection.ModelEnum.Discounting, true)]
+        [TestCase(ModelSelection.ModelEnum.Discounting, false)]
+        [TestCase(ModelSelection.ModelEnum.Bachelier, true)]
+        [TestCase(ModelSelection.ModelEnum.Bachelier, false)]
+        [TestCase(ModelSelection.ModelEnum.BlackScholes, true)]
+        [TestCase(ModelSelection.ModelEnum.BlackScholes, false)]
+        public void FxOptionValuationExample(ModelSelection.ModelEnum model, bool inLineValuation)
         {
-            ModelSelection.ModelEnum model = Enum.Parse<ModelSelection.ModelEnum>(modelName);
-            DemoValuation(model, inLineValuation);
+            CallLusidValuationEndpoint(model, inLineValuation);
         }
 
-        
-        [TestCase("ConstantTimeValueOfMoney")]
-        [TestCase("Discounting")]
-        [TestCase("BlackScholes")]
-        [TestCase("Bachelier")]
-        public void DemoFxOptionCashFlows(string modelName)
+        [TestCase(ModelSelection.ModelEnum.ConstantTimeValueOfMoney)]
+        [TestCase(ModelSelection.ModelEnum.Discounting)]
+        [TestCase(ModelSelection.ModelEnum.Bachelier)]
+        [TestCase(ModelSelection.ModelEnum.BlackScholes)]
+        public void FxOptionPortfolioCashFlowsExample(ModelSelection.ModelEnum model)
         {
-            var model = Enum.Parse<ModelSelection.ModelEnum>(modelName);
-            DemoCashFlows(model);
+            CallLusidGetPortfolioCashFlowsEndpoint(model);
         }
-        
     }
 }

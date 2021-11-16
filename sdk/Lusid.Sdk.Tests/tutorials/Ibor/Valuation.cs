@@ -242,16 +242,13 @@ namespace Lusid.Sdk.Tests.Tutorials.Ibor
             // POPULATE stores with required market data to value Fx-Forward using discounting model
             // Fx rates are upserted for both models
             // Rate curves are upserted for the discounting pricing model
-            var upsertFxRateRequestreq = TestDataUtilities.BuildFxRateRequest(scope, TestEffectiveAt);
-            var upsertQuoteResponse = _quotesApi.UpsertQuotes(scope, upsertFxRateRequestreq);
-            List<Dictionary<string, UpsertComplexMarketDataRequest>> complexMarket =
-                new List<Dictionary<string, UpsertComplexMarketDataRequest>>();
-            complexMarket.AddRange(TestDataUtilities.BuildRateCurvesRequests(scope, TestEffectiveAt));
-            foreach (var r in complexMarket)
-            {
-                var upsertmarketResponse = _complexMarketDataApi.UpsertComplexMarketData(scope, r);
-                ValidateComplexMarketDataUpsert(upsertmarketResponse, r.Count);
-            }
+            var upsertFxRateRequestReq = TestDataUtilities.BuildFxRateRequest(scope, TestEffectiveAt);
+            var upsertQuoteResponse = _quotesApi.UpsertQuotes(scope, upsertFxRateRequestReq);
+            
+            Dictionary<string, UpsertComplexMarketDataRequest> complexMarketUpsertRequests = TestDataUtilities.BuildRateCurvesRequests(TestEffectiveAt);
+            var upsertmarketResponse = _complexMarketDataApi.UpsertComplexMarketData(scope, complexMarketUpsertRequests);
+            ValidateComplexMarketDataUpsert(upsertmarketResponse, complexMarketUpsertRequests.Count);
+
             // CREATE a Fx-Forward as an inline instrument 
             var instruments = new List<WeightedInstrument>
             {
