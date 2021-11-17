@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Lusid.Sdk.Model;
 using Lusid.Sdk.Tests.Utilities;
+using LusidFeatures;
 using NUnit.Framework;
 
 namespace Lusid.Sdk.Tests.Tutorials.Instruments
@@ -88,6 +89,7 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
             _portfoliosApi.DeletePortfolio(scope, portfolioCode); 
         }
         
+        [LusidFeature("F22-6")]
         [Test]
         public void CreditDefaultSwapCreationAndUpsertionExample()
         {
@@ -134,7 +136,7 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
 
             // CAN NOW QUERY FROM LUSID
             GetInstrumentsResponse getResponse = _instrumentsApi.GetInstruments("ClientInternal", new List<string> { uniqueId });
-            ValidateInstrumentResponse(getResponse ,uniqueId);
+            ValidateInstrumentResponse(getResponse, uniqueId);
             
             var retrieved = getResponse.Values.First().Value.InstrumentDefinition;
             Assert.That(retrieved.InstrumentType == LusidInstrument.InstrumentTypeEnum.CreditDefaultSwap);

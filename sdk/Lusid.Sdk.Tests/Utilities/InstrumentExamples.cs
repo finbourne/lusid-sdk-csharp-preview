@@ -16,7 +16,7 @@ namespace Lusid.Sdk.Tests.Utilities
                 nameof(Bond) => CreateExampleBond(),
                 nameof(FxForward) => CreateExampleFxForward(),
                 nameof(FxOption) => CreateExampleFxOption(),
-                nameof(InterestRateSwap) => CreateExampleSwap(),
+                nameof(InterestRateSwap) => CreateExampleInterestRateSwap(),
                 nameof(CreditDefaultSwap) => CreateExampleCreditDefaultSwap(),
                 _ => throw new ArgumentOutOfRangeException($"Please implement case for instrument {instrumentName}")
             };
@@ -91,7 +91,7 @@ namespace Lusid.Sdk.Tests.Utilities
                 instrumentType: LusidInstrument.InstrumentTypeEnum.Bond
             );
 
-        internal static LusidInstrument CreateExampleSwap()
+        internal static LusidInstrument CreateExampleInterestRateSwap()
         {
             // CREATE an Interest Rate Swap (IRS) (that can then be upserted into LUSID)
             var startDate = TestEffectiveAt;
@@ -155,6 +155,93 @@ namespace Lusid.Sdk.Tests.Utilities
             );
         }
 
+        internal static InterestRateSwaption CreateExampleInterestRateSwaption()
+        {
+                        // CREATE an Interest Rate Swap (IRS)
+            var startDate = new DateTimeOffset(2020, 2, 7, 0, 0, 0, TimeSpan.Zero);
+            var maturityDate = new DateTimeOffset(2030, 2, 7, 0, 0, 0, TimeSpan.Zero);
+
+            // CREATE the flow conventions, index convention for swap
+            var flowConventions = new FlowConventions(
+                scope: null,
+                code: null,
+                currency: "GBP",
+                paymentFrequency: "6M",
+                rollConvention: "MF",
+                dayCountConvention: "Act365",
+                paymentCalendars: new List<string>(),
+                resetCalendars: new List<string>(),
+                settleDays: 2,
+                resetDays: 2
+                );
+
+            var idxConvention = new IndexConvention(
+                code: "GbpLibor6m",
+                publicationDayLag: 0,
+                currency: "GBP",
+                paymentTenor: "6M",
+                dayCountConvention: "Act365",
+                fixingReference: "BP00"
+            );
+
+            // CREATE the leg definitions
+            var fixedLegDef = new LegDefinition(
+                rateOrSpread: 0.05m, // fixed leg rate (swap rate)
+                stubType: "Front",
+                payReceive: "Pay",
+                notionalExchangeType: "None",
+                conventions: flowConventions
+            );
+
+            var floatLegDef = new LegDefinition(
+                rateOrSpread: 0.002m, // float leg spread over curve rate, often zero
+                stubType: "Front",
+                payReceive: "Receive",
+                notionalExchangeType: "None",
+                conventions: flowConventions,
+                indexConvention: idxConvention
+            );
+
+            // CREATE the fixed leg
+            var fixedLeg = new FixedLeg(
+                notional: 100m,
+                startDate: startDate,
+                maturityDate: maturityDate,
+                legDefinition: fixedLegDef,
+                instrumentType: LusidInstrument.InstrumentTypeEnum.FixedLeg
+                );
+
+            // CREATE the floating leg
+            var floatLeg = new FloatingLeg(
+                notional: 100m,
+                startDate: startDate,
+                maturityDate: maturityDate,
+                legDefinition: floatLegDef,
+                instrumentType: LusidInstrument.InstrumentTypeEnum.FloatingLeg
+            );
+
+            var swap = new InterestRateSwap(
+                startDate: startDate,
+                maturityDate: maturityDate,
+                legs: new List<InstrumentLeg>
+                {
+                    floatLeg,
+                    fixedLeg
+                },
+                instrumentType: LusidInstrument.InstrumentTypeEnum.InterestRateSwap
+            );
+            
+            // CREATE swaption to upsert to LUSID
+            var swaption = new InterestRateSwaption(
+                startDate: new DateTimeOffset(2020, 1, 15, 0, 0, 0, TimeSpan.Zero),
+                payOrReceiveFixed: "Pay",
+                deliveryMethod: "Cash",
+                swap: swap,
+                instrumentType: LusidInstrument.InstrumentTypeEnum.InterestRateSwaption);
+
+            return swaption;
+        }
+
         private static CdsFlowConventions CreateExampleCdsFlowConventions()
             => new CdsFlowConventions(
                 scope: null,
@@ -186,5 +273,66 @@ namespace Lusid.Sdk.Tests.Utilities
                 ),
                 instrumentType: LusidInstrument.InstrumentTypeEnum.CreditDefaultSwap
             );
+        
+        internal static LusidInstrument CreateExampleTermDeposit()
+            => new TermDeposit(
+                startDate: new DateTimeOffset(2020, 2, 5, 0, 0, 0, TimeSpan.Zero),
+                maturityDate: new DateTimeOffset(2020, 8, 5, 0, 0, 0, TimeSpan.Zero),
+                contractSize: 1_000_000m,
+                flowConvention: new FlowConventions(
+                    scope: null,
+                    code: null,
+                    currency: "GBP",
+                    paymentFrequency: "6M",
+                    rollConvention: "MF",
+                    dayCountConvention: "Act365",
+                    paymentCalendars: new List<string>(),
+                    resetCalendars: new List<string>(),
+                    settleDays: 1,
+                    resetDays: 0),
+                rate: 0.03m,
+                instrumentType: LusidInstrument.InstrumentTypeEnum.TermDeposit
+        );
+
+        internal static ExoticInstrument CreateExampleExotic()
+            => new ExoticInstrument(
+                instrumentFormat: new InstrumentDefinitionFormat("source", "someVendor", "1.1"),
+                content: "{\"data\":\"exoticInstrument\"}",
+                instrumentType: LusidInstrument.InstrumentTypeEnum.ExoticInstrument
+            );
+
+        internal static Future CreateExampleFuture()
+        {
+            // CREATE an future (that can then be upserted into LUSID)
+            var contractDetails = new FuturesContractDetails(
+                domCcy: "USD",
+                contractCode: "CL",
+                contractMonth: "F",
+                contractSize: 42000,
+                convention: "Actual365",
+                country: "US",
+                description: "Crude Oil Nymex future Jan21",
+                exchangeCode: "NYM",
+                exchangeName: "NYM",
+                tickerStep: 0.01m,
+                unitValue: 4.2m
+            );
+            
+            var futureDefinition = new Future(
+                startDate: new DateTimeOffset(2020, 09, 11, 0, 0, 0, TimeSpan.Zero),
+                maturityDate: new DateTimeOffset(2020, 12, 31, 0, 0, 0, TimeSpan.Zero),
+                identifiers : new Dictionary<string, string>(),
+                contractDetails: contractDetails,
+                contracts: 1,
+                refSpotPrice: 100,
+                underlying: new ExoticInstrument(
+                    new InstrumentDefinitionFormat("custom", "custom", "0.0.0"),
+                    content: "{}",
+                    LusidInstrument.InstrumentTypeEnum.ExoticInstrument),
+                instrumentType: LusidInstrument.InstrumentTypeEnum.Future 
+            );
+
+            return futureDefinition;
+        }
     }
 }

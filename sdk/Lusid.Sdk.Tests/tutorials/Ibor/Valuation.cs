@@ -423,7 +423,7 @@ namespace Lusid.Sdk.Tests.Tutorials.Ibor
                 InstrumentExamples.CreateExampleFxForward(),
                 InstrumentExamples.CreateExampleBond(),
                 InstrumentExamples.CreateExampleFxOption(),
-                InstrumentExamples.CreateExampleSwap()
+                InstrumentExamples.CreateExampleInterestRateSwap()
             };
             
             // UPSERT the above instrument set to portfolio as well as populating stores with required market data
