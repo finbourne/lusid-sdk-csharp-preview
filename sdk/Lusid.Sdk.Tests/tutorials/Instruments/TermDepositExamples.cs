@@ -41,9 +41,7 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
                 recipeIdScope: scope,
                 recipeIdCode: recipeCode).Values;
             
-            Assert.That(cashflows.Count, Is.EqualTo(2));
-            Assert.That(cashflows[0].Amount, Is.EqualTo(1.0m));
-            
+            Assert.That(cashflows.Count, Is.EqualTo(1));
             _instrumentsApi.DeleteInstrument("ClientInternal", instrumentID);
             _portfoliosApi.DeletePortfolio(scope, portfolioCode);
         }
@@ -91,15 +89,12 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
         
         [TestCase(ModelSelection.ModelEnum.ConstantTimeValueOfMoney, true)]
         [TestCase(ModelSelection.ModelEnum.ConstantTimeValueOfMoney, false)]
-        [TestCase(ModelSelection.ModelEnum.Discounting, true)]
-        [TestCase(ModelSelection.ModelEnum.Discounting, false)]
         public void TermDepositValuationExample(ModelSelection.ModelEnum model, bool inLineValuation)
         {
             CallLusidValuationEndpoint(model, inLineValuation);
         }
 
         [TestCase(ModelSelection.ModelEnum.ConstantTimeValueOfMoney)]
-        [TestCase(ModelSelection.ModelEnum.Discounting)]
         public void TermDepositPortfolioCashFlowsExample(ModelSelection.ModelEnum model)
         {
             CallLusidGetPortfolioCashFlowsEndpoint(model);
