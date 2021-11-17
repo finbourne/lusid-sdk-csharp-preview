@@ -24,7 +24,7 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
             }
         }
 
-        internal override LusidInstrument CreateExampleInstrument() => InstrumentExamples.CreateExampleTermDeposit();
+        internal override LusidInstrument CreateExampleInstrument() => InstrumentExamples.CreateExampleTermDeposit(TestDataUtilities.EffectiveAt);
 
         internal override void GetAndValidatePortfolioCashFlows(LusidInstrument instrument, string scope, string portfolioCode,
             string recipeCode, string instrumentID)
@@ -89,12 +89,15 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
         
         [TestCase(ModelSelection.ModelEnum.ConstantTimeValueOfMoney, true)]
         [TestCase(ModelSelection.ModelEnum.ConstantTimeValueOfMoney, false)]
+        [TestCase(ModelSelection.ModelEnum.Discounting, true)]
+        [TestCase(ModelSelection.ModelEnum.Discounting, false)]
         public void TermDepositValuationExample(ModelSelection.ModelEnum model, bool inLineValuation)
         {
             CallLusidValuationEndpoint(model, inLineValuation);
         }
 
         [TestCase(ModelSelection.ModelEnum.ConstantTimeValueOfMoney)]
+        [TestCase(ModelSelection.ModelEnum.Discounting)]
         public void TermDepositPortfolioCashFlowsExample(ModelSelection.ModelEnum model)
         {
             CallLusidGetPortfolioCashFlowsEndpoint(model);

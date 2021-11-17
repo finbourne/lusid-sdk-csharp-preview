@@ -274,10 +274,10 @@ namespace Lusid.Sdk.Tests.Utilities
                 instrumentType: LusidInstrument.InstrumentTypeEnum.CreditDefaultSwap
             );
         
-        internal static LusidInstrument CreateExampleTermDeposit()
+        internal static LusidInstrument CreateExampleTermDeposit(DateTimeOffset startDate)
             => new TermDeposit(
-                startDate: new DateTimeOffset(2020, 2, 5, 0, 0, 0, TimeSpan.Zero),
-                maturityDate: new DateTimeOffset(2020, 8, 5, 0, 0, 0, TimeSpan.Zero),
+                startDate: startDate,
+                maturityDate: startDate.AddYears(1),
                 contractSize: 1_000_000m,
                 flowConvention: new FlowConventions(
                     scope: null,
