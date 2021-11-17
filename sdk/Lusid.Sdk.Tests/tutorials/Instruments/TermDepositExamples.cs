@@ -17,7 +17,7 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
             {
                 var upsertComplexMarketDataRequest = new Dictionary<string, UpsertComplexMarketDataRequest>
                 {
-                    {"discountCurve", TestDataUtilities.BuildOisCurveRequest(TestDataUtilities.EffectiveAt, "GBP")}
+                    {"discountCurve", TestDataUtilities.BuildOisCurveRequest(TestDataUtilities.EffectiveAt, "USD")}
                 };
                 var upsertComplexMarketDataResponse = _complexMarketDataApi.UpsertComplexMarketData(scope, upsertComplexMarketDataRequest);
                 ValidateComplexMarketDataUpsert(upsertComplexMarketDataResponse, upsertComplexMarketDataRequest.Count);
