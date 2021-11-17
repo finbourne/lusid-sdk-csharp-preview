@@ -282,7 +282,7 @@ namespace Lusid.Sdk.Tests.Utilities
                 flowConvention: new FlowConventions(
                     scope: null,
                     code: null,
-                    currency: "GBP",
+                    currency: "USD",
                     paymentFrequency: "6M",
                     rollConvention: "MF",
                     dayCountConvention: "Act365",

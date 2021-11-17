@@ -86,26 +86,26 @@ namespace Lusid.Sdk.Tests.Utilities
 
             string recipeCode = CreateAndUpsertRecipe(scope, model);
             
-            CallLusidValuationEndpoint(scope, model, inLineValuation, instrument, recipeCode);
+            CallLusidValuationEndpoint(scope, inLineValuation, instrument, recipeCode);
         }
         
         /// <summary>
         /// Perform a valuation of a given instrument. Valuation will either be inline (without portfolio and transaction) or through a portfolio and transaction.
         /// It is assumed that the required market data for the model has already been upserted in the same scope.
         /// </summary>
-        internal void CallLusidValuationEndpoint(string scope, ModelSelection.ModelEnum model, bool inLineValuation, LusidInstrument instrument, string recipeCode)
+        internal void CallLusidValuationEndpoint(string scope, bool inLineValuation, LusidInstrument instrument, string recipeCode)
         { 
             // CALL valuation and check the PVs makes sense.
             var result = new ListAggregationResponse();
             if (inLineValuation)
             {
-                var valuation = TestDataUtilities.InLineValuationRequest(instrument, scope, model, TestDataUtilities.EffectiveAt, recipeCode);
+                var valuation = TestDataUtilities.InLineValuationRequest(instrument, scope, TestDataUtilities.EffectiveAt, recipeCode);
                 result = _aggregationApi.GetValuationOfWeightedInstruments(valuation);
             }
             else
             {
                 var (instrumentID, portfolioCode) = CreatePortfolioAndInstrument(scope, instrument);
-                var valuation = TestDataUtilities.ValuationRequest(instrument, scope, model, TestDataUtilities.EffectiveAt, recipeCode, portfolioCode);
+                var valuation = TestDataUtilities.ValuationRequest(scope, TestDataUtilities.EffectiveAt, recipeCode, portfolioCode);
                 result = _aggregationApi.GetValuation(valuation);
                 _portfoliosApi.DeletePortfolio(scope, portfolioCode);
             }

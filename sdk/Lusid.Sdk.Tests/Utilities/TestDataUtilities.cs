@@ -541,17 +541,16 @@ namespace Lusid.Sdk.Tests.Utilities
         /// Helper function to perform valuation of instrument. Can either perform inline valuation or valuation through a portfolio.
         /// If it is through a portfolio then a new portfolio and transaction against the instrument is created which is deleted at the end. 
         /// </summary>
-        public static ValuationRequest ValuationRequest(LusidInstrument instrument,  string scope, ModelSelection.ModelEnum model, DateTimeOffset effectiveAt, string recipeCode, string portfolioCode)
+        public static ValuationRequest ValuationRequest(string scope, DateTimeOffset effectiveAt, string recipeCode, string portfolioCode)
         {
-           
             // CREATE valuation request
             var valuationSchedule = new ValuationSchedule(effectiveAt: effectiveAt);
             
             var valuationRequest = new ValuationRequest(
                 recipeId: new ResourceId(scope, recipeCode),
-                metrics: TestDataUtilities.ValuationSpec,
+                metrics: ValuationSpec,
                 valuationSchedule: valuationSchedule,
-                sort: new List<OrderBySpec> {new OrderBySpec(TestDataUtilities.ValuationDateKey, OrderBySpec.SortOrderEnum.Ascending)},
+                sort: new List<OrderBySpec> {new OrderBySpec(ValuationDateKey, OrderBySpec.SortOrderEnum.Ascending)},
                 portfolioEntityIds: new List<PortfolioEntityId> {new PortfolioEntityId(scope, portfolioCode)},
                 reportCurrency: "USD");
 
@@ -562,9 +561,8 @@ namespace Lusid.Sdk.Tests.Utilities
         /// Helper function to perform valuation of instrument. Can either perform inline valuation or valuation through a portfolio.
         /// If it is through a portfolio then a new portfolio and transaction against the instrument is created which is deleted at the end. 
         /// </summary>
-        public static InlineValuationRequest InLineValuationRequest(LusidInstrument instrument,  string scope, ModelSelection.ModelEnum model, DateTimeOffset effectiveAt, string recipeCode)
+        public static InlineValuationRequest InLineValuationRequest(LusidInstrument instrument, string scope, DateTimeOffset effectiveAt, string recipeCode)
         {
-            
             // CREATE valuation request
             var valuationSchedule = new ValuationSchedule(effectiveAt: effectiveAt);
             
@@ -573,8 +571,8 @@ namespace Lusid.Sdk.Tests.Utilities
             // CONSTRUCT and PERFORM valuation request
             var inlineValuationRequest = new InlineValuationRequest(
                 recipeId: new ResourceId(scope, recipeCode),
-                metrics: TestDataUtilities.ValuationSpec,
-                sort: new List<OrderBySpec> {new OrderBySpec(TestDataUtilities.ValuationDateKey, OrderBySpec.SortOrderEnum.Ascending)},
+                metrics: ValuationSpec,
+                sort: new List<OrderBySpec> {new OrderBySpec(ValuationDateKey, OrderBySpec.SortOrderEnum.Ascending)},
                 valuationSchedule: valuationSchedule,
                 instruments: instruments);
 
