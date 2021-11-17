@@ -51,7 +51,7 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
         public void TermDepositCreationAndUpsertionExample()
         {
             // CREATE an example Term Deposit (that can then be upserted into LUSID)
-            var termDeposit = (TermDeposit) InstrumentExamples.CreateExampleTermDeposit();
+            var termDeposit = (TermDeposit) InstrumentExamples.CreateExampleTermDeposit(TestDataUtilities.EffectiveAt);
             
             // ASSERT that it was created
             Assert.That(termDeposit, Is.Not.Null);
