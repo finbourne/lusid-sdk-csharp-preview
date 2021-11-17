@@ -163,8 +163,6 @@ namespace Lusid.Sdk.Tests.Utilities
 
             // CREATE the flow conventions, index convention for swap
             var flowConventions = new FlowConventions(
-                scope: null,
-                code: null,
                 currency: "GBP",
                 paymentFrequency: "6M",
                 rollConvention: "MF",
