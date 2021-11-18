@@ -13,6 +13,17 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
     {
         internal override void CreateAndUpsertMarketDataToLusid(string scope, ModelSelection.ModelEnum model, LusidInstrument instrument)
         {
+            // POPULATE with required market data for valuation of the instruments
+            var upsertFxRateRequestReq = TestDataUtilities.BuildFxRateRequest(scope, TestDataUtilities.EffectiveAt);
+            var upsertQuoteResponse = _quotesApi.UpsertQuotes(scope, upsertFxRateRequestReq);
+            ValidateQuoteUpsert(upsertQuoteResponse, upsertFxRateRequestReq.Count);
+
+            if (model == ModelSelection.ModelEnum.Discounting)
+            {
+                var upsertComplexMarketDataRequest =  TestDataUtilities.BuildRateCurvesRequests(TestDataUtilities.EffectiveAt);
+                var upsertComplexMarketDataResponse = _complexMarketDataApi.UpsertComplexMarketData(scope, upsertComplexMarketDataRequest);
+                ValidateComplexMarketDataUpsert(upsertComplexMarketDataResponse, upsertComplexMarketDataRequest.Count);
+            }
         }
 
         internal override LusidInstrument CreateExampleInstrument() => InstrumentExamples.CreateExampleFxForward();
