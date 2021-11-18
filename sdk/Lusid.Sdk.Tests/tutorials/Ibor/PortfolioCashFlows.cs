@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Lusid.Sdk.Api;
 using Lusid.Sdk.Model;
 using Lusid.Sdk.Tests.Utilities;
 using Lusid.Sdk.Utilities;
@@ -12,7 +11,6 @@ namespace Lusid.Sdk.Tests.tutorials.Ibor
     [TestFixture]
     public class PortfolioCashFlows: TutorialBase
     {
-        
         private static readonly string ValuationDateKey = "Analytic/default/ValuationDate";
         private static readonly string ValuationPv = "Valuation/PV/Amount";
         private static readonly string ValuationCcy = "Valuation/PV/Ccy";
@@ -55,9 +53,6 @@ namespace Lusid.Sdk.Tests.tutorials.Ibor
         [TestCase(false)]
         public void ExamplePortfolioCashFlowsForFxForwards(bool isNdf)
         {
-            // CREATE portfolio
-            //var portfolioScope = Guid.NewGuid().ToString();
-            //var portfolioId = _testDataUtilities.CreateTransactionPortfolio(portfolioScope);
             // CREATE Fx Forward
             var fxForward = InstrumentExamples.CreateExampleFxForward(isNdf) as FxForward;
         
@@ -113,10 +108,6 @@ namespace Lusid.Sdk.Tests.tutorials.Ibor
         [Test]
         public void ExampleUpsertablePortfolioCashFlowsForBonds()
         {
-            // CREATE portfolio
-            //var portfolioScope = Guid.NewGuid().ToString();
-            //var portfolioId = _testDataUtilities.CreateTransactionPortfolio(portfolioScope);
-
             // CREATE bond
             var bond = InstrumentExamples.CreateExampleBond() as Bond;
         
@@ -170,17 +161,12 @@ namespace Lusid.Sdk.Tests.tutorials.Ibor
                 Assert.That(getExpectedTransactions.Type, Is.EqualTo(transaction.Type));
                 Assert.That(getExpectedTransactions.Units, Is.EqualTo(transaction.Units));
             }
-
         }
         
         [TestCase(true)]
         [TestCase(false)]
         public void ExampleUpsertablePortfolioCashFlowsForFxForwards(bool isNdf)
         {
-            // CREATE portfolio
-            //var portfolioScope = Guid.NewGuid().ToString();
-            //var portfolioId = _testDataUtilities.CreateTransactionPortfolio(portfolioScope);
-
             // CREATE Fx Forward
             var fxForward = InstrumentExamples.CreateExampleFxForward(isNdf) as FxForward;
         
@@ -237,10 +223,6 @@ namespace Lusid.Sdk.Tests.tutorials.Ibor
         [Test]
         public void LifeCycleManagementForFxForward()
         {
-            // CREATE portfolio
-            //var portfolioScope = Guid.NewGuid().ToString();
-            // var portfolioId = _testDataUtilities.CreateTransactionPortfolio(portfolioScope);
-
             // CREATE FX Forward
             var fxForward = (FxForward) InstrumentExamples.CreateExampleFxForward(isNdf: false);
             
@@ -354,10 +336,6 @@ namespace Lusid.Sdk.Tests.tutorials.Ibor
         [Test]
         public void LifeCycleManagementForCashSettledEquityOption()
         {
-            // CREATE portfolio
-            //var portfolioScope = Guid.NewGuid().ToString();
-            // var portfolioId = _testDataUtilities.CreateTransactionPortfolio(portfolioScope);
-
             // CREATE EquityOption
             var equityOption = (EquityOption) InstrumentExamples.CreateExampleEquityOption(isCashSettled: true);
             
@@ -384,15 +362,15 @@ namespace Lusid.Sdk.Tests.tutorials.Ibor
 
             // GET all upsertable cashflows (transactions) for the EquityOption
             var allEquityOptionCashFlows = _transactionPortfoliosApi.GetUpsertablePortfolioCashFlows(
+                    _portfolioScope, 
+                    _portfolioCode, 
+                    effectiveAt, 
+                    windowStart, 
+                    windowEnd,
+                    null,
+                    null,
                     _portfolioScope,
-                    _portfolioCode,
-                effectiveAt,
-                windowStart,
-                windowEnd,
-                null,
-                null,
-                _portfolioScope,
-                modelRecipeCode)
+                    modelRecipeCode)
                 .Values;
 
             // We expect exactly one cashflow associated to a cash settled EquityOption and it occurs at expiry.
@@ -515,7 +493,5 @@ namespace Lusid.Sdk.Tests.tutorials.Ibor
                 transaction.Source)
             );
         }
-
-       
     }
 }

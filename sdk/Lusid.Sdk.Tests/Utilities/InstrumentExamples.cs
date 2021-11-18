@@ -150,6 +150,64 @@ namespace Lusid.Sdk.Tests.Utilities
                 instrumentType: LusidInstrument.InstrumentTypeEnum.InterestRateSwap
             );
         }
+        
+        /// <summary>
+        /// One can define an IRS (interest rate swap) by explicitly defining all parameters and in particular the flow and index convention variables.
+        /// LUSID allows us to book flow IRS without the need to explicitly write out the flow and index convention by providing a semantic name for commonly understood ones.
+        /// For example, new FlowConventionName(currency: "GBP", tenor: "3M") and new FlowConventionName(currency: "GBP", tenor: "3M", indexName:"LIBOR")
+        /// </summary>
+        internal static InterestRateSwap CreateSwapByNamedConventions(DateTimeOffset startDate, DateTimeOffset maturityDate, decimal fixedRate, FlowConventionName flowConventionName, FlowConventionName indexConventionName, string fixedLegDirection = "Pay", decimal notional=100m)
+        {
+            var floatingLegDirection = fixedLegDirection == "Pay" ? "Receive" : "Pay";
+
+            // CREATE the leg definitions
+            var fixedLegDef = new LegDefinition(
+                rateOrSpread: fixedRate, // fixed leg rate (swap rate)
+                stubType: "Front",
+                payReceive: fixedLegDirection,
+                notionalExchangeType: "None",
+                conventionName: flowConventionName
+            );
+
+            var floatLegDef = new LegDefinition(
+                rateOrSpread: 0,
+                stubType: "Front",
+                payReceive: floatingLegDirection,
+                notionalExchangeType: "None",
+                conventionName: flowConventionName,
+                indexConventionName: indexConventionName
+            );
+
+            // CREATE the fixed leg
+            var fixedLeg = new FixedLeg(
+                notional: notional,
+                startDate: startDate,
+                maturityDate: maturityDate,
+                legDefinition: fixedLegDef,
+                instrumentType: LusidInstrument.InstrumentTypeEnum.FixedLeg
+                );
+
+            // CREATE the floating leg
+            var floatLeg = new FloatingLeg(
+                notional: notional,
+                startDate: startDate,
+                maturityDate: maturityDate,
+                legDefinition: floatLegDef,
+                instrumentType: LusidInstrument.InstrumentTypeEnum.FloatingLeg
+            );
+
+            var irs = new InterestRateSwap(
+                startDate: startDate,
+                maturityDate: maturityDate,
+                legs: new List<InstrumentLeg>
+                {
+                    floatLeg,
+                    fixedLeg
+                },
+                instrumentType: LusidInstrument.InstrumentTypeEnum.InterestRateSwap
+            );
+            return irs;
+        }
 
         internal static InterestRateSwaption CreateExampleInterestRateSwaption()
         {
