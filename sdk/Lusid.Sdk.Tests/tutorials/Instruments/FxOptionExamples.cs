@@ -105,10 +105,10 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
             _instrumentsApi.DeleteInstrument("ClientInternal", uniqueId); 
         }
         
-        [TestCase(ModelSelection.ModelEnum.ConstantTimeValueOfMoney, true)]
-        [TestCase(ModelSelection.ModelEnum.Discounting, false)]
-        [TestCase(ModelSelection.ModelEnum.Bachelier, true)]
-        [TestCase(ModelSelection.ModelEnum.BlackScholes, true)]
+        [TestCase(ModelSelection.ModelEnum.ConstantTimeValueOfMoney)]
+        [TestCase(ModelSelection.ModelEnum.Discounting)]
+        [TestCase(ModelSelection.ModelEnum.Bachelier)]
+        [TestCase(ModelSelection.ModelEnum.BlackScholes)]
         public void FxOptionValuationExample(ModelSelection.ModelEnum model)
         {
             var fxOption = InstrumentExamples.CreateExampleFxOption();
