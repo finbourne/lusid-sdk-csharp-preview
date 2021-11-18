@@ -129,6 +129,9 @@ namespace Lusid.Sdk.Tests.Utilities
             // CREATE recipe to price the portfolio with
             var recipeCode = CreateAndUpsertRecipe(scope, model);
 
+            // UPSERT market data sufficient to price the instrument
+            CreateAndUpsertMarketDataToLusid(scope, model, instrument);
+
             // CREATE valuation request
             var valuationSchedule = new ValuationSchedule(effectiveAt: TestDataUtilities.EffectiveAt);
             var instruments = new List<WeightedInstrument> {new WeightedInstrument(1, "some-holding-identifier", instrument)}; 
