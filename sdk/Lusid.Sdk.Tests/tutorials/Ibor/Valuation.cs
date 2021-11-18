@@ -32,9 +32,6 @@ namespace Lusid.Sdk.Tests.Tutorials.Ibor
         private static readonly DateTimeOffset TestEffectiveFrom = new DateTimeOffset(2020, 2, 16, 0, 0, 0, TimeSpan.Zero);
         private static readonly DateTimeOffset TestEffectiveAt = new DateTimeOffset(2020, 2, 23, 0, 0, 0, TimeSpan.Zero);
 
-        
-
-
         [OneTimeSetUp]
         public void SetUp()
         {
@@ -412,8 +409,6 @@ namespace Lusid.Sdk.Tests.Tutorials.Ibor
         public void SingleDateValuationOfAnInstrumentPortfolio()
         {
             // CREATE a portfolio 
-            //var portfolioId = _testDataUtilities.CreateTransactionPortfolio(scope);
-            //    Create the transaction portfolio
             var portfolioRequest = TestDataUtilities.BuildTransactionPortfolioRequest();
             var portfolio = _transactionPortfoliosApi.CreatePortfolio(TestDataUtilities.TutorialScope, portfolioRequest);
             Assert.That(portfolio?.Id.Code, Is.EqualTo(portfolioRequest.Code));
@@ -423,7 +418,7 @@ namespace Lusid.Sdk.Tests.Tutorials.Ibor
                 InstrumentExamples.CreateExampleFxForward(),
                 InstrumentExamples.CreateExampleBond(),
                 InstrumentExamples.CreateExampleFxOption(),
-                InstrumentExamples.CreateExampleSwap()
+                InstrumentExamples.CreateExampleInterestRateSwap()
             };
             
             // UPSERT the above instrument set to portfolio as well as populating stores with required market data
@@ -518,30 +513,5 @@ namespace Lusid.Sdk.Tests.Tutorials.Ibor
                 Assert.That(result[HoldingPvKey], Is.GreaterThanOrEqualTo(0));
             }
         }
-        //
-        // internal void CreateAndUpsertRecipe(string code, string scope, ModelSelection.ModelEnum model)
-        // {
-        //     // CREATE a rule for reset quotes
-        //     var resetRule = new MarketDataKeyRule("Equity.RIC.*", "Lusid", scope, MarketDataKeyRule.QuoteTypeEnum.Price, "mid", quoteInterval: "1Y");
-        //     
-        //     // CREATE recipe for pricing
-        //     var pricingOptions = new PricingOptions(new ModelSelection(ModelSelection.LibraryEnum.Lusid, model));
-        //     var recipe = new ConfigurationRecipe(
-        //         scope,
-        //         code,
-        //         market: new MarketContext(new List<MarketDataKeyRule>{resetRule}, options: new MarketOptions(defaultScope: scope)),
-        //         pricing: new PricingContext(options: pricingOptions),
-        //         description: $"Recipe for {model} pricing");
-        //     
-        //     UpsertRecipe(recipe);
-        // }
-        //
-        // private  void UpsertRecipe(ConfigurationRecipe recipe)
-        // {
-        //     // UPSERT recipe and check upsert was successful
-        //     var upsertRecipeRequest = new UpsertRecipeRequest(recipe);
-        //     var response = _recipeApi.UpsertConfigurationRecipe(upsertRecipeRequest);
-        //     Assert.That(response.Value, Is.Not.Null);
-        // }
     }
 }

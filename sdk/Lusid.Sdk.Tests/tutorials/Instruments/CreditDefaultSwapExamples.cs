@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Lusid.Sdk.Model;
 using Lusid.Sdk.Tests.Utilities;
+using LusidFeatures;
 using NUnit.Framework;
 
 namespace Lusid.Sdk.Tests.Tutorials.Instruments
@@ -49,11 +50,6 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
             ValidateComplexMarketDataUpsert(upsertComplexMarketDataResponse, upsertComplexMarketDataRequest.Count);
         }
 
-        internal override LusidInstrument CreateExampleInstrument()
-        {
-            return InstrumentExamples.CreateExampleCreditDefaultSwap(); 
-        }
-        
         internal override void GetAndValidatePortfolioCashFlows(LusidInstrument instrument, string scope, string portfolioCode, string recipeCode, string instrumentID)
         {
             CreditDefaultSwap cds = (CreditDefaultSwap) instrument;
@@ -88,6 +84,7 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
             _portfoliosApi.DeletePortfolio(scope, portfolioCode); 
         }
         
+        [LusidFeature("F22-6")]
         [Test]
         public void CreditDefaultSwapCreationAndUpsertionExample()
         {
@@ -134,7 +131,7 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
 
             // CAN NOW QUERY FROM LUSID
             GetInstrumentsResponse getResponse = _instrumentsApi.GetInstruments("ClientInternal", new List<string> { uniqueId });
-            ValidateInstrumentResponse(getResponse ,uniqueId);
+            ValidateInstrumentResponse(getResponse, uniqueId);
             
             var retrieved = getResponse.Values.First().Value.InstrumentDefinition;
             Assert.That(retrieved.InstrumentType == LusidInstrument.InstrumentTypeEnum.CreditDefaultSwap);
@@ -155,20 +152,28 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
             _instrumentsApi.DeleteInstrument("ClientInternal", uniqueId); 
         }
         
-        [TestCase(ModelSelection.ModelEnum.ConstantTimeValueOfMoney, true)]
-        [TestCase(ModelSelection.ModelEnum.ConstantTimeValueOfMoney, false)]
-        [TestCase(ModelSelection.ModelEnum.Discounting, true)]
-        [TestCase(ModelSelection.ModelEnum.Discounting, false)]
-        public void CreditDefaultSwapValuationExample(ModelSelection.ModelEnum model, bool inLineValuation)
+        [TestCase(ModelSelection.ModelEnum.ConstantTimeValueOfMoney)]
+        [TestCase(ModelSelection.ModelEnum.Discounting)]
+        public void CreditDefaultSwapValuationExample(ModelSelection.ModelEnum model)
         {
-            CallLusidValuationEndpoint(model, inLineValuation);
+            var cds = InstrumentExamples.CreateExampleCreditDefaultSwap();
+            CallLusidGetValuationEndpoint(cds, model);
+        }
+        
+        [TestCase(ModelSelection.ModelEnum.ConstantTimeValueOfMoney)]
+        [TestCase(ModelSelection.ModelEnum.Discounting)]
+        public void CreditDefaultSwapInlineValuationExample(ModelSelection.ModelEnum model)
+        {
+            var cds = InstrumentExamples.CreateExampleCreditDefaultSwap();
+            CallLusidInlineValuationEndpoint(cds, model);
         }
 
         [TestCase(ModelSelection.ModelEnum.ConstantTimeValueOfMoney)]
         [TestCase(ModelSelection.ModelEnum.Discounting)]
         public void CreditDefaultSwapGetPortfolioCashFlowsExample(ModelSelection.ModelEnum model)
         {
-            CallLusidGetPortfolioCashFlowsEndpoint(model);
+            var cds = InstrumentExamples.CreateExampleCreditDefaultSwap();
+            CallLusidGetPortfolioCashFlowsEndpoint(cds, model);
         }
     }
 }

@@ -10,15 +10,11 @@ namespace Lusid.Sdk.Tests.Utilities
     public abstract class DemoInstrumentBase: TutorialBase
     {
         internal abstract void CreateAndUpsertMarketDataToLusid(string scope, ModelSelection.ModelEnum model, LusidInstrument instrument);
-        
-        internal abstract LusidInstrument CreateExampleInstrument();
 
         internal abstract void GetAndValidatePortfolioCashFlows(LusidInstrument instrument, string scope, string portfolioCode, string recipeCode, string instrumentID);
         
-        internal void CallLusidGetPortfolioCashFlowsEndpoint(ModelSelection.ModelEnum model)
+        internal void CallLusidGetPortfolioCashFlowsEndpoint(LusidInstrument instrument, ModelSelection.ModelEnum model)
         {
-            // CREATE demo instrument
-            LusidInstrument instrument = CreateExampleInstrument();
             var scope = Guid.NewGuid().ToString();
 
             // CREATE portfolio and book instrument to the portfolio            
@@ -75,40 +71,81 @@ namespace Lusid.Sdk.Tests.Utilities
 
             return (instrumentID, portfolioRequest.Code);
         }
-
-        internal void CallLusidValuationEndpoint(ModelSelection.ModelEnum model, bool inLineValuation)
+        
+        /// <summary>
+        /// Perform a valuation of a portfolio consisting of the instrument.
+        /// In the below code, we create a portfolio and book the instrument onto the portfolio via a transaction.
+        /// </summary>
+        internal void CallLusidGetValuationEndpoint(LusidInstrument instrument, ModelSelection.ModelEnum model)
         {
             var scope = Guid.NewGuid().ToString();
-
-            LusidInstrument instrument = CreateExampleInstrument();
             
+            // CREATE portfolio and add instrument to the portfolio
+            var (instrumentID, portfolioCode) = CreatePortfolioAndInstrument(scope, instrument);
+
+            // CREATE recipe to price the portfolio with
+            var recipeCode = CreateAndUpsertRecipe(scope, model);
+
+            // UPSERT market data sufficient to price the instrument
             CreateAndUpsertMarketDataToLusid(scope, model, instrument);
-
-            string recipeCode = CreateAndUpsertRecipe(scope, model);
             
-            CallLusidValuationEndpoint(scope, model, inLineValuation, instrument, recipeCode);
+            // CREATE valuation request
+            var valuationSchedule = new ValuationSchedule(effectiveAt: TestDataUtilities.EffectiveAt);
+            var valuationRequest = new ValuationRequest(
+                recipeId: new ResourceId(scope, recipeCode),
+                metrics: TestDataUtilities.ValuationSpec,
+                valuationSchedule: valuationSchedule,
+                sort: new List<OrderBySpec> {new OrderBySpec(TestDataUtilities.ValuationDateKey, OrderBySpec.SortOrderEnum.Ascending)},
+                portfolioEntityIds: new List<PortfolioEntityId> {new PortfolioEntityId(scope, portfolioCode)},
+                reportCurrency: "USD");
+
+            
+            // CALL valuation and assert that the PVs makes sense.
+            var result = _aggregationApi.GetValuation(valuationRequest);
+            _portfoliosApi.DeletePortfolio(scope, portfolioCode);
+
+            Assert.That(result, Is.Not.Null);
+            Assert.That(result.Data.Count, Is.GreaterThanOrEqualTo(1));
+
+            foreach (var r in result.Data)
+            {
+                var pv = (double) r[TestDataUtilities.ValuationPvKey];
+                Assert.That(pv, Is.Not.EqualTo(0).Within(1e-5));
+                Assert.That(pv, Is.GreaterThanOrEqualTo(0));
+            }
+            _recipeApi.DeleteConfigurationRecipe(scope, recipeCode);
         }
         
         /// <summary>
-        /// Perform a valuation of a given instrument. Valuation will either be inline (without portfolio and transaction) or through a portfolio and transaction.
-        /// It is assumed that the required market data for the model has already been upserted in the same scope.
+        /// Perform an inline valuation of a given instrument.
+        /// Inline valuation means that we do not need to create a portfolio and book an instrument onto it.
+        /// In particular, the instrument is also not persisted into any portfolio nor database, it gets deleted at the end.
+        /// This endpoint makes it easy to experiment with pricing with less overhead.
         /// </summary>
-        internal void CallLusidValuationEndpoint(string scope, ModelSelection.ModelEnum model, bool inLineValuation, LusidInstrument instrument, string recipeCode)
-        { 
-            // CALL valuation and check the PVs makes sense.
-            var result = new ListAggregationResponse();
-            if (inLineValuation)
-            {
-                var valuation = TestDataUtilities.InLineValuationRequest(instrument, scope, model, TestDataUtilities.EffectiveAt, recipeCode);
-                result = _aggregationApi.GetValuationOfWeightedInstruments(valuation);
-            }
-            else
-            {
-                var (instrumentID, portfolioCode) = CreatePortfolioAndInstrument(scope, instrument);
-                var valuation = TestDataUtilities.ValuationRequest(instrument, scope, model, TestDataUtilities.EffectiveAt, recipeCode, portfolioCode);
-                result = _aggregationApi.GetValuation(valuation);
-                _portfoliosApi.DeletePortfolio(scope, portfolioCode);
-            }
+        internal void CallLusidInlineValuationEndpoint(LusidInstrument instrument, ModelSelection.ModelEnum model)
+        {
+            var scope = Guid.NewGuid().ToString();
+            
+            // CREATE recipe to price the portfolio with
+            var recipeCode = CreateAndUpsertRecipe(scope, model);
+
+            // UPSERT market data sufficient to price the instrument
+            CreateAndUpsertMarketDataToLusid(scope, model, instrument);
+
+            // CREATE valuation request
+            var valuationSchedule = new ValuationSchedule(effectiveAt: TestDataUtilities.EffectiveAt);
+            var instruments = new List<WeightedInstrument> {new WeightedInstrument(1, "some-holding-identifier", instrument)}; 
+            
+            // CONSTRUCT valuation request
+            var inlineValuationRequest = new InlineValuationRequest(
+                recipeId: new ResourceId(scope, recipeCode),
+                metrics: TestDataUtilities.ValuationSpec,
+                sort: new List<OrderBySpec> {new OrderBySpec(TestDataUtilities.ValuationDateKey, OrderBySpec.SortOrderEnum.Ascending)},
+                valuationSchedule: valuationSchedule,
+                instruments: instruments);
+
+            // CALL LUSID's inline GetValuationOfWeightedInstruments endpoint
+            var result = _aggregationApi.GetValuationOfWeightedInstruments(inlineValuationRequest);
 
             Assert.That(result, Is.Not.Null);
             Assert.That(result.Data.Count, Is.GreaterThanOrEqualTo(1));

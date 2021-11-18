@@ -126,7 +126,7 @@ namespace Lusid.Sdk.Utilities
             // UPSERT instruments and return the upsert response to attain LusidInstrumentIds
             var instrumentID = Guid.NewGuid().ToString();
 
-            List<(LusidInstrument, string)> instrumentsIds = instruments.Select(x => (x, x.InstrumentType+instrumentID)).ToList();
+            var instrumentsIds = instruments.Select(x => (x, x.InstrumentType+instrumentID)).ToList();
             
             var definitions = TestDataUtilities.BuildInstrumentUpsertRequest(instrumentsIds);
             if (!equityIdentifier.IsNullOrEmpty())
@@ -146,23 +146,22 @@ namespace Lusid.Sdk.Utilities
                 .Select(inst => inst.Value.LusidInstrumentId)
                 .ToList();
             
-
             // ADD instruments to the portfolio via their LusidInstrumentId
             var transactionRequest = TestDataUtilities.BuildTransactionRequest(luids, scope, portfolioCode, effectiveFrom);
             _transactionPortfoliosApi.UpsertTransactions(scope, portfolioCode, transactionRequest);
 
             // UPSERT fx quotes and rate curves required pricing instruments
-            var upsertFxRateRequestreq = TestDataUtilities.BuildFxRateRequest(scope, effectiveFrom, effectiveAt, useConstantFxRate);
-            var upsertQuoteResponse = _quotesApi.UpsertQuotes(scope, upsertFxRateRequestreq);
+            var upsertFxRateRequestReq = TestDataUtilities.BuildFxRateRequest(scope, effectiveFrom, effectiveAt, useConstantFxRate);
+            var upsertQuoteResponse = _quotesApi.UpsertQuotes(scope, upsertFxRateRequestReq);
             
-            ValidateQuoteUpsert(upsertQuoteResponse, upsertFxRateRequestreq.Count);
+            ValidateQuoteUpsert(upsertQuoteResponse, upsertFxRateRequestReq.Count);
 
             var upsertQuoteRequests = TestDataUtilities.BuildResetQuotesRequest(scope, effectiveAt.AddDays(-4));
             var upsertResponse = _quotesApi.UpsertQuotes(scope, upsertQuoteRequests);
             Assert.That(upsertResponse.Failed.Count, Is.EqualTo(0));
             Assert.That(upsertResponse.Values.Count, Is.EqualTo(upsertQuoteRequests.Count));
 
-            Dictionary<string, UpsertComplexMarketDataRequest> complexMarketUpsertRequests = TestDataUtilities.BuildRateCurvesRequests(effectiveAt);
+            var complexMarketUpsertRequests = TestDataUtilities.BuildRateCurvesRequests(effectiveAt);
             var upsertmarketResponse = _complexMarketDataApi.UpsertComplexMarketData(scope, complexMarketUpsertRequests);
             ValidateComplexMarketDataUpsert(upsertmarketResponse, complexMarketUpsertRequests.Count);
 

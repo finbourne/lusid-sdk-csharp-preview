@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Lusid.Sdk.Model;
 using Lusid.Sdk.Tests.Utilities;
+using LusidFeatures;
 using NUnit.Framework;
 
 namespace Lusid.Sdk.Tests.Tutorials.Instruments
@@ -38,11 +39,6 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
             }
         }
         
-        internal override LusidInstrument CreateExampleInstrument()
-        {
-            return InstrumentExamples.CreateExampleEquityOption();
-        }
-
         internal override void GetAndValidatePortfolioCashFlows(LusidInstrument instrument, string scope, string portfolioCode,
             string recipeCode, string instrumentID)
         {
@@ -66,6 +62,7 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
             _portfoliosApi.DeletePortfolio(scope, portfolioCode);
         }
 
+        [LusidFeature("F22-11")]
         [Test]
         public void EquityOptionCreationAndUpsertionExample()
         {
@@ -76,16 +73,16 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
             Assert.That(equityOption, Is.Not.Null);
 
             // CAN NOW UPSERT TO LUSID
-            string uniqueId = equityOption.InstrumentType+Guid.NewGuid().ToString(); 
-            List<(LusidInstrument, string)> instrumentsIds = new List<(LusidInstrument, string)>(){(equityOption, uniqueId)};
+            var uniqueId = equityOption.InstrumentType+Guid.NewGuid().ToString(); 
+            var instrumentsIds = new List<(LusidInstrument, string)>(){(equityOption, uniqueId)};
             var definitions = TestDataUtilities.BuildInstrumentUpsertRequest(instrumentsIds);
             
-            UpsertInstrumentsResponse upsertResponse = _instrumentsApi.UpsertInstruments(definitions);
+            var upsertResponse = _instrumentsApi.UpsertInstruments(definitions);
             ValidateUpsertInstrumentResponse(upsertResponse);
 
             // CAN NOW QUERY FROM LUSID
-            GetInstrumentsResponse getResponse = _instrumentsApi.GetInstruments("ClientInternal", new List<string> { uniqueId });
-            ValidateInstrumentResponse(getResponse ,uniqueId);
+            var getResponse = _instrumentsApi.GetInstruments("ClientInternal", new List<string> { uniqueId });
+            ValidateInstrumentResponse(getResponse, uniqueId);
             
             var retrieved = getResponse.Values.First().Value.InstrumentDefinition;
             Assert.That(retrieved.InstrumentType == LusidInstrument.InstrumentTypeEnum.EquityOption);
@@ -105,17 +102,24 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
             _instrumentsApi.DeleteInstrument("ClientInternal", uniqueId); 
         }
         
-        [TestCase(ModelSelection.ModelEnum.ConstantTimeValueOfMoney, true)]
-        [TestCase(ModelSelection.ModelEnum.ConstantTimeValueOfMoney, false)]
-        [TestCase(ModelSelection.ModelEnum.Discounting, true)]
-        [TestCase(ModelSelection.ModelEnum.Discounting, false)]
-        [TestCase(ModelSelection.ModelEnum.Bachelier, true)]
-        [TestCase(ModelSelection.ModelEnum.Bachelier, false)]
-        [TestCase(ModelSelection.ModelEnum.BlackScholes, true)]
-        [TestCase(ModelSelection.ModelEnum.BlackScholes, false)]
-        public void EquityOptionValuationExample(ModelSelection.ModelEnum model, bool inLineValuation)
+        [TestCase(ModelSelection.ModelEnum.ConstantTimeValueOfMoney)]
+        [TestCase(ModelSelection.ModelEnum.Discounting)]
+        [TestCase(ModelSelection.ModelEnum.Bachelier)]
+        [TestCase(ModelSelection.ModelEnum.BlackScholes)]
+        public void EquityOptionValuationExample(ModelSelection.ModelEnum model)
         {
-            CallLusidValuationEndpoint(model, inLineValuation);
+            var equityOption = InstrumentExamples.CreateExampleEquityOption();
+            CallLusidGetValuationEndpoint(equityOption, model);
+        }
+        
+        [TestCase(ModelSelection.ModelEnum.ConstantTimeValueOfMoney)]
+        [TestCase(ModelSelection.ModelEnum.Discounting)]
+        [TestCase(ModelSelection.ModelEnum.Bachelier)]
+        [TestCase(ModelSelection.ModelEnum.BlackScholes)]
+        public void EquityOptionInlineValuationExample(ModelSelection.ModelEnum model)
+        {
+            var equityOption = InstrumentExamples.CreateExampleEquityOption();
+            CallLusidInlineValuationEndpoint(equityOption, model);
         }
 
         [TestCase(ModelSelection.ModelEnum.ConstantTimeValueOfMoney)]
@@ -124,7 +128,8 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
         [TestCase(ModelSelection.ModelEnum.BlackScholes)]
         public void EquityOptionPortfolioCashFlowsExample(ModelSelection.ModelEnum model)
         {
-            CallLusidGetPortfolioCashFlowsEndpoint(model);
+            var equityOption = InstrumentExamples.CreateExampleEquityOption();
+            CallLusidGetPortfolioCashFlowsEndpoint(equityOption, model);
         }
     }
 }
