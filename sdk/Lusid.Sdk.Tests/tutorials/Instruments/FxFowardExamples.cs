@@ -89,6 +89,14 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
         
         [TestCase(ModelSelection.ModelEnum.ConstantTimeValueOfMoney)]
         [TestCase(ModelSelection.ModelEnum.Discounting)]
+        public void FxForwardInlineValuationExample(ModelSelection.ModelEnum model)
+        {
+            var fxForward = InstrumentExamples.CreateExampleFxForward();
+            CallLusidInlineValuationEndpoint(fxForward, model);
+        }
+        
+        [TestCase(ModelSelection.ModelEnum.ConstantTimeValueOfMoney)]
+        [TestCase(ModelSelection.ModelEnum.Discounting)]
         public void FxForwardPortfolioCashFlowsExample(ModelSelection.ModelEnum model)
         {
             var fxForward = InstrumentExamples.CreateExampleFxForward();

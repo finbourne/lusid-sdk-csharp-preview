@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Lusid.Sdk.Api;
 using Lusid.Sdk.Model;
 using Lusid.Sdk.Tests.Utilities;
 using Lusid.Sdk.Utilities;
@@ -55,9 +54,6 @@ namespace Lusid.Sdk.Tests.tutorials.Ibor
         [TestCase(false)]
         public void ExamplePortfolioCashFlowsForFxForwards(bool isNdf)
         {
-            // CREATE portfolio
-            //var portfolioScope = Guid.NewGuid().ToString();
-            //var portfolioId = _testDataUtilities.CreateTransactionPortfolio(portfolioScope);
             // CREATE Fx Forward
             var fxForward = InstrumentExamples.CreateExampleFxForward(isNdf) as FxForward;
         
@@ -113,10 +109,6 @@ namespace Lusid.Sdk.Tests.tutorials.Ibor
         [Test]
         public void ExampleUpsertablePortfolioCashFlowsForBonds()
         {
-            // CREATE portfolio
-            //var portfolioScope = Guid.NewGuid().ToString();
-            //var portfolioId = _testDataUtilities.CreateTransactionPortfolio(portfolioScope);
-
             // CREATE bond
             var bond = InstrumentExamples.CreateExampleBond() as Bond;
         
@@ -177,10 +169,6 @@ namespace Lusid.Sdk.Tests.tutorials.Ibor
         [TestCase(false)]
         public void ExampleUpsertablePortfolioCashFlowsForFxForwards(bool isNdf)
         {
-            // CREATE portfolio
-            //var portfolioScope = Guid.NewGuid().ToString();
-            //var portfolioId = _testDataUtilities.CreateTransactionPortfolio(portfolioScope);
-
             // CREATE Fx Forward
             var fxForward = InstrumentExamples.CreateExampleFxForward(isNdf) as FxForward;
         
@@ -237,10 +225,6 @@ namespace Lusid.Sdk.Tests.tutorials.Ibor
         [Test]
         public void LifeCycleManagementForFxForward()
         {
-            // CREATE portfolio
-            //var portfolioScope = Guid.NewGuid().ToString();
-            // var portfolioId = _testDataUtilities.CreateTransactionPortfolio(portfolioScope);
-
             // CREATE FX Forward
             var fxForward = (FxForward) InstrumentExamples.CreateExampleFxForward(isNdf: false);
             
@@ -384,8 +368,8 @@ namespace Lusid.Sdk.Tests.tutorials.Ibor
 
             // GET all upsertable cashflows (transactions) for the EquityOption
             var allEquityOptionCashFlows = _transactionPortfoliosApi.GetUpsertablePortfolioCashFlows(
-                    _portfolioScope,
-                    _portfolioCode,
+                 _portfolioScope,
+                 _portfolioCode,
                 effectiveAt,
                 windowStart,
                 windowEnd,
