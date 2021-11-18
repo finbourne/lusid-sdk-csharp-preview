@@ -26,8 +26,6 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
             }
         }
 
-        internal override LusidInstrument CreateExampleInstrument() => InstrumentExamples.CreateExampleFxForward();
-
         internal override void GetAndValidatePortfolioCashFlows(LusidInstrument instrument, string scope, string portfolioCode, string recipeCode, string instrumentID)
         {
             var fxForward = (FxForward) instrument;
@@ -83,9 +81,18 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
         
         [TestCase(ModelSelection.ModelEnum.ConstantTimeValueOfMoney)]
         [TestCase(ModelSelection.ModelEnum.Discounting)]
+        public void FxForwardValuationExample(ModelSelection.ModelEnum model)
+        {
+            var fxForward = InstrumentExamples.CreateExampleFxForward();
+            CallLusidGetValuationEndpoint(fxForward, model);
+        }
+        
+        [TestCase(ModelSelection.ModelEnum.ConstantTimeValueOfMoney)]
+        [TestCase(ModelSelection.ModelEnum.Discounting)]
         public void FxForwardPortfolioCashFlowsExample(ModelSelection.ModelEnum model)
         {
-            CallLusidGetPortfolioCashFlowsEndpoint(model);
+            var fxForward = InstrumentExamples.CreateExampleFxForward();
+            CallLusidGetPortfolioCashFlowsEndpoint(fxForward, model);
         }
     }
 }

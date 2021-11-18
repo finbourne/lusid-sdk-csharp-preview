@@ -6,8 +6,7 @@ namespace Lusid.Sdk.Tests.Utilities
 {
     public static class InstrumentExamples
     {
-        private static readonly DateTimeOffset TestEffectiveAt
-            = new DateTimeOffset(2020, 2, 23, 0, 0, 0, TimeSpan.Zero);
+        private static readonly DateTimeOffset TestEffectiveAt = new DateTimeOffset(2020, 2, 23, 0, 0, 0, TimeSpan.Zero);
 
         public static LusidInstrument GetExampleInstrument(string instrumentName)
         {
@@ -67,8 +66,6 @@ namespace Lusid.Sdk.Tests.Utilities
 
         private static FlowConventions CreateExampleFlowConventions()
             => new FlowConventions(
-                scope: null,
-                code: null,
                 currency: "USD",
                 paymentFrequency: "6M",
                 rollConvention: "MF",
@@ -76,8 +73,7 @@ namespace Lusid.Sdk.Tests.Utilities
                 paymentCalendars: new List<string>(),
                 resetCalendars: new List<string>(),
                 settleDays: 2,
-                resetDays: 2
-            );
+                resetDays: 2);
 
         internal static LusidInstrument CreateExampleBond()
             => new Bond(
@@ -242,8 +238,6 @@ namespace Lusid.Sdk.Tests.Utilities
 
         private static CdsFlowConventions CreateExampleCdsFlowConventions()
             => new CdsFlowConventions(
-                scope: null,
-                code: null,
                 currency: "USD",
                 paymentFrequency: "3M",
                 rollConvention: "F",
@@ -252,8 +246,7 @@ namespace Lusid.Sdk.Tests.Utilities
                 resetCalendars: new List<string>(),
                 rollFrequency: "6M",
                 settleDays: 0,
-                resetDays: 0
-            );
+                resetDays: 0);
 
         internal static LusidInstrument CreateExampleCreditDefaultSwap()
             => new CreditDefaultSwap(
@@ -278,8 +271,6 @@ namespace Lusid.Sdk.Tests.Utilities
                 maturityDate: startDate.AddYears(1),
                 contractSize: 1_000_000m,
                 flowConvention: new FlowConventions(
-                    scope: null,
-                    code: null,
                     currency: "USD",
                     paymentFrequency: "6M",
                     rollConvention: "MF",
@@ -296,8 +287,7 @@ namespace Lusid.Sdk.Tests.Utilities
             => new ExoticInstrument(
                 instrumentFormat: new InstrumentDefinitionFormat("source", "someVendor", "1.1"),
                 content: "{\"data\":\"exoticInstrument\"}",
-                instrumentType: LusidInstrument.InstrumentTypeEnum.ExoticInstrument
-            );
+                instrumentType: LusidInstrument.InstrumentTypeEnum.ExoticInstrument);
 
         internal static Future CreateExampleFuture()
         {

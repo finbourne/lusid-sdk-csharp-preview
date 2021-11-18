@@ -16,8 +16,6 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
         {
         }
 
-        internal override LusidInstrument CreateExampleInstrument() => InstrumentExamples.CreateExampleFuture();
-
         internal override void GetAndValidatePortfolioCashFlows(LusidInstrument instrument, string scope, string portfolioCode, string recipeCode, string instrumentID)
         {
             var cashflows = _transactionPortfoliosApi.GetPortfolioCashFlows(

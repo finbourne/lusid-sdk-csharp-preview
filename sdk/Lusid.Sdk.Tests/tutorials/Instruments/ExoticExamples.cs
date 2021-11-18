@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using Lusid.Sdk.Model;
 using Lusid.Sdk.Tests.Utilities;
-using Lusid.Sdk.Utilities;
 using LusidFeatures;
 using NUnit.Framework;
 
@@ -15,8 +14,6 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
         internal override void CreateAndUpsertMarketDataToLusid(string scope, ModelSelection.ModelEnum model, LusidInstrument instrument)
         {
         }
-
-        internal override LusidInstrument CreateExampleInstrument() => InstrumentExamples.CreateExampleExotic();
 
         internal override void GetAndValidatePortfolioCashFlows(LusidInstrument instrument, string scope, string portfolioCode, string recipeCode, string instrumentID)
         {

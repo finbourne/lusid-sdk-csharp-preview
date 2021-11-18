@@ -24,8 +24,6 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
             }
         }
 
-        internal override LusidInstrument CreateExampleInstrument() => InstrumentExamples.CreateExampleBond();
-
         internal override void GetAndValidatePortfolioCashFlows(LusidInstrument instrument, string scope, string portfolioCode,
             string recipeCode, string instrumentID)
         {
@@ -94,16 +92,28 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
         
         [TestCase(ModelSelection.ModelEnum.ConstantTimeValueOfMoney)]
         [TestCase(ModelSelection.ModelEnum.Discounting)]
-        public void BondValuationExample(ModelSelection.ModelEnum modelName, bool inLineValuation = true)
+        public void BondGetValuationExample(ModelSelection.ModelEnum modelName)
         {
-            CallLusidValuationEndpoint(modelName, inLineValuation);
+            // CREATE a Bond to be priced by LUSID
+            var bond = InstrumentExamples.CreateExampleBond();
+            CallLusidGetValuationEndpoint(bond, modelName);
+        }
+        
+        [TestCase(ModelSelection.ModelEnum.ConstantTimeValueOfMoney)]
+        [TestCase(ModelSelection.ModelEnum.Discounting)]
+        public void BondGetInlineValuationExample(ModelSelection.ModelEnum modelName)
+        {
+            // CREATE a Bond to be priced by LUSID
+            var bond = InstrumentExamples.CreateExampleBond();
+            CallLusidInlineValuationEndpoint(bond, modelName);
         }
 
         [TestCase(ModelSelection.ModelEnum.ConstantTimeValueOfMoney)]
         [TestCase(ModelSelection.ModelEnum.Discounting)]
         public void BondPortfolioCashFlowsExample(ModelSelection.ModelEnum modelName)
         {
-            CallLusidGetPortfolioCashFlowsEndpoint(modelName);
+            var bond = InstrumentExamples.CreateExampleBond();
+            CallLusidGetPortfolioCashFlowsEndpoint(bond, modelName);
         }
     }
 }

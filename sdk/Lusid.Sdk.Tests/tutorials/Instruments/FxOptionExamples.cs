@@ -43,11 +43,6 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
             }
         }
 
-        internal override LusidInstrument CreateExampleInstrument()
-        {
-            return InstrumentExamples.CreateExampleFxOption(); 
-        }
-
         internal override void GetAndValidatePortfolioCashFlows(LusidInstrument instrument, string scope, string portfolioCode,
             string recipeCode, string instrumentID)
         {
@@ -111,16 +106,23 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
         }
         
         [TestCase(ModelSelection.ModelEnum.ConstantTimeValueOfMoney, true)]
-        [TestCase(ModelSelection.ModelEnum.ConstantTimeValueOfMoney, false)]
-        [TestCase(ModelSelection.ModelEnum.Discounting, true)]
         [TestCase(ModelSelection.ModelEnum.Discounting, false)]
         [TestCase(ModelSelection.ModelEnum.Bachelier, true)]
-        [TestCase(ModelSelection.ModelEnum.Bachelier, false)]
         [TestCase(ModelSelection.ModelEnum.BlackScholes, true)]
-        [TestCase(ModelSelection.ModelEnum.BlackScholes, false)]
-        public void FxOptionValuationExample(ModelSelection.ModelEnum model, bool inLineValuation)
+        public void FxOptionValuationExample(ModelSelection.ModelEnum model)
         {
-            CallLusidValuationEndpoint(model, inLineValuation);
+            var fxOption = InstrumentExamples.CreateExampleFxOption();
+            CallLusidGetValuationEndpoint(fxOption, model);
+        }
+        
+        [TestCase(ModelSelection.ModelEnum.ConstantTimeValueOfMoney)]
+        [TestCase(ModelSelection.ModelEnum.Discounting)]
+        [TestCase(ModelSelection.ModelEnum.Bachelier)]
+        [TestCase(ModelSelection.ModelEnum.BlackScholes)]
+        public void FxOptionInlineValuationExample(ModelSelection.ModelEnum model)
+        {
+            var fxOption = InstrumentExamples.CreateExampleFxOption();
+            CallLusidInlineValuationEndpoint(fxOption, model);
         }
 
         [TestCase(ModelSelection.ModelEnum.ConstantTimeValueOfMoney)]
@@ -129,7 +131,8 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
         [TestCase(ModelSelection.ModelEnum.BlackScholes)]
         public void FxOptionPortfolioCashFlowsExample(ModelSelection.ModelEnum model)
         {
-            CallLusidGetPortfolioCashFlowsEndpoint(model);
+            var fxOption = InstrumentExamples.CreateExampleFxOption();
+            CallLusidGetPortfolioCashFlowsEndpoint(fxOption, model);
         }
     }
 }
