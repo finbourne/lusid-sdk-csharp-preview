@@ -362,15 +362,15 @@ namespace Lusid.Sdk.Tests.tutorials.Ibor
 
             // GET all upsertable cashflows (transactions) for the EquityOption
             var allEquityOptionCashFlows = _transactionPortfoliosApi.GetUpsertablePortfolioCashFlows(
-                 _portfolioScope,
-                 _portfolioCode,
-                effectiveAt,
-                windowStart,
-                windowEnd,
-                null,
-                null,
-                _portfolioScope,
-                modelRecipeCode)
+                    _portfolioScope, 
+                    _portfolioCode, 
+                    effectiveAt, 
+                    windowStart, 
+                    windowEnd,
+                    null,
+                    null,
+                    _portfolioScope,
+                    modelRecipeCode)
                 .Values;
 
             // We expect exactly one cashflow associated to a cash settled EquityOption and it occurs at expiry.
