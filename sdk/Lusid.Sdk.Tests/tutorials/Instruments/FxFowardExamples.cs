@@ -30,6 +30,7 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
 
         internal override void GetAndValidatePortfolioCashFlows(LusidInstrument instrument, string scope, string portfolioCode, string recipeCode, string instrumentID)
         {
+            var fxForward = (FxForward) instrument;
             var cashflows = _transactionPortfoliosApi.GetPortfolioCashFlows(
                 scope: scope,
                 code: portfolioCode,
@@ -41,7 +42,7 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
                 recipeIdScope: scope,
                 recipeIdCode: recipeCode).Values;
             
-            Assert.That(cashflows.Count, Is.EqualTo(2));
+            Assert.That(cashflows.Count, Is.EqualTo(fxForward.IsNdf ? 1 : 2)); // deliverable FxForward has 2 cashflows while non-delivered has 1.
             
             _instrumentsApi.DeleteInstrument("ClientInternal", instrumentID);
             _portfoliosApi.DeletePortfolio(scope, portfolioCode);
