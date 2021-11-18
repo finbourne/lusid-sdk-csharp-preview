@@ -98,8 +98,6 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
             // To be recognised as a zero coupon bond, the paymentFrequency must be "0Invalid"
             // and the coupon rate must be 0.
             var flowConventions = new FlowConventions(
-                scope: null,
-                code: null,
                 currency: "GBP",
                 paymentFrequency: "0Invalid",
                 rollConvention: "None",

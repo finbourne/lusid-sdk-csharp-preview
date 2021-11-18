@@ -11,7 +11,6 @@ namespace Lusid.Sdk.Tests.tutorials.Ibor
     [TestFixture]
     public class PortfolioCashFlows: TutorialBase
     {
-        
         private static readonly string ValuationDateKey = "Analytic/default/ValuationDate";
         private static readonly string ValuationPv = "Valuation/PV/Amount";
         private static readonly string ValuationCcy = "Valuation/PV/Ccy";
@@ -162,7 +161,6 @@ namespace Lusid.Sdk.Tests.tutorials.Ibor
                 Assert.That(getExpectedTransactions.Type, Is.EqualTo(transaction.Type));
                 Assert.That(getExpectedTransactions.Units, Is.EqualTo(transaction.Units));
             }
-
         }
         
         [TestCase(true)]
@@ -338,10 +336,6 @@ namespace Lusid.Sdk.Tests.tutorials.Ibor
         [Test]
         public void LifeCycleManagementForCashSettledEquityOption()
         {
-            // CREATE portfolio
-            //var portfolioScope = Guid.NewGuid().ToString();
-            // var portfolioId = _testDataUtilities.CreateTransactionPortfolio(portfolioScope);
-
             // CREATE EquityOption
             var equityOption = (EquityOption) InstrumentExamples.CreateExampleEquityOption(isCashSettled: true);
             
@@ -499,7 +493,5 @@ namespace Lusid.Sdk.Tests.tutorials.Ibor
                 transaction.Source)
             );
         }
-
-       
     }
 }

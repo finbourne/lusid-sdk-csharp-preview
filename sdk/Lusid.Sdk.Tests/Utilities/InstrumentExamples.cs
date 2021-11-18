@@ -151,9 +151,14 @@ namespace Lusid.Sdk.Tests.Utilities
             );
         }
         
+        /// <summary>
+        /// One can define an IRS (interest rate swap) by explicitly defining all parameters and in particular the flow and index convention variables.
+        /// LUSID allows us to book flow IRS without the need to explicitly write out the flow and index convention by providing a semantic name for commonly understood ones.
+        /// For example, new FlowConventionName(currency: "GBP", tenor: "3M") and new FlowConventionName(currency: "GBP", tenor: "3M", indexName:"LIBOR")
+        /// </summary>
         internal static InterestRateSwap CreateSwapByNamedConventions(DateTimeOffset startDate, DateTimeOffset maturityDate, decimal fixedRate, FlowConventionName flowConventionName, FlowConventionName indexConventionName, string fixedLegDirection = "Pay", decimal notional=100m)
         {
-            string floatingLegDirection = fixedLegDirection == "Pay" ? "Receive" : "Pay";
+            var floatingLegDirection = fixedLegDirection == "Pay" ? "Receive" : "Pay";
 
             // CREATE the leg definitions
             var fixedLegDef = new LegDefinition(
@@ -203,7 +208,6 @@ namespace Lusid.Sdk.Tests.Utilities
             );
             return irs;
         }
-
 
         internal static InterestRateSwaption CreateExampleInterestRateSwaption()
         {
