@@ -541,7 +541,7 @@ namespace Lusid.Sdk.Tests.Utilities
         /// Helper function to perform valuation of instrument. Can either perform inline valuation or valuation through a portfolio.
         /// If it is through a portfolio then a new portfolio and transaction against the instrument is created which is deleted at the end. 
         /// </summary>
-        public static ValuationRequest ValuationRequest(string scope, DateTimeOffset effectiveAt, string recipeCode, string portfolioCode)
+        public static ValuationRequest CreateValuationRequest(string scope, DateTimeOffset effectiveAt, string recipeCode, string portfolioCode)
         {
             // CREATE valuation request
             var valuationSchedule = new ValuationSchedule(effectiveAt: effectiveAt);
@@ -561,7 +561,7 @@ namespace Lusid.Sdk.Tests.Utilities
         /// Helper function to perform valuation of instrument. Can either perform inline valuation or valuation through a portfolio.
         /// If it is through a portfolio then a new portfolio and transaction against the instrument is created which is deleted at the end. 
         /// </summary>
-        public static InlineValuationRequest InLineValuationRequest(LusidInstrument instrument, string scope, DateTimeOffset effectiveAt, string recipeCode)
+        public static InlineValuationRequest CreateInLineValuationRequest(LusidInstrument instrument, string scope, DateTimeOffset effectiveAt, string recipeCode)
         {
             // CREATE valuation request
             var valuationSchedule = new ValuationSchedule(effectiveAt: effectiveAt);

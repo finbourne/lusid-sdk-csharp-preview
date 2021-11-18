@@ -157,7 +157,7 @@ namespace Lusid.Sdk.Tests.Utilities
 
         internal static InterestRateSwaption CreateExampleInterestRateSwaption()
         {
-                        // CREATE an Interest Rate Swap (IRS)
+            // CREATE an Interest Rate Swap (IRS)
             var startDate = new DateTimeOffset(2020, 2, 7, 0, 0, 0, TimeSpan.Zero);
             var maturityDate = new DateTimeOffset(2030, 2, 7, 0, 0, 0, TimeSpan.Zero);
 

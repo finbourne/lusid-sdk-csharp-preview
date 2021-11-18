@@ -68,5 +68,12 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
             Assert.That(retrFxFwd.DomCcy, Is.EqualTo(fxForward.DomCcy));
             Assert.That(retrFxFwd.FgnCcy, Is.EqualTo(fxForward.FgnCcy));
         }
+        
+        [TestCase(ModelSelection.ModelEnum.ConstantTimeValueOfMoney)]
+        [TestCase(ModelSelection.ModelEnum.Discounting)]
+        public void FxForwardPortfolioCashFlowsExample(ModelSelection.ModelEnum model)
+        {
+            CallLusidGetPortfolioCashFlowsEndpoint(model);
+        }
     }
 }

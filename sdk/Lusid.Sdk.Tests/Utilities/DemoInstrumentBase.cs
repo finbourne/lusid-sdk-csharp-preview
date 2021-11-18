@@ -99,13 +99,13 @@ namespace Lusid.Sdk.Tests.Utilities
             var result = new ListAggregationResponse();
             if (inLineValuation)
             {
-                var valuation = TestDataUtilities.InLineValuationRequest(instrument, scope, TestDataUtilities.EffectiveAt, recipeCode);
+                var valuation = TestDataUtilities.CreateInLineValuationRequest(instrument, scope, TestDataUtilities.EffectiveAt, recipeCode);
                 result = _aggregationApi.GetValuationOfWeightedInstruments(valuation);
             }
             else
             {
                 var (instrumentID, portfolioCode) = CreatePortfolioAndInstrument(scope, instrument);
-                var valuation = TestDataUtilities.ValuationRequest(scope, TestDataUtilities.EffectiveAt, recipeCode, portfolioCode);
+                var valuation = TestDataUtilities.CreateValuationRequest(scope, TestDataUtilities.EffectiveAt, recipeCode, portfolioCode);
                 result = _aggregationApi.GetValuation(valuation);
                 _portfoliosApi.DeletePortfolio(scope, portfolioCode);
             }
