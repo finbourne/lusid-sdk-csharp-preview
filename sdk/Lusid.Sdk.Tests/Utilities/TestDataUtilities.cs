@@ -500,6 +500,13 @@ namespace Lusid.Sdk.Tests.Utilities
         public static UpsertRecipeRequest BuildRecipeRequest(string recipeCode, string scope, ModelSelection.ModelEnum model)
         {
             var pricingOptions = new PricingOptions(new ModelSelection(ModelSelection.LibraryEnum.Lusid, model));
+            var simpleStaticLuidRule = new MarketDataKeyRule(
+                key: "Equity.LusidInstrumentId.*",
+                supplier: "Lusid",
+                scope,
+                MarketDataKeyRule.QuoteTypeEnum.Price,
+                field: "mid",
+                quoteInterval: "5D");
             var resetRule = new MarketDataKeyRule(
                 key: "Equity.RIC.*",
                 supplier: "Lusid",
@@ -528,7 +535,7 @@ namespace Lusid.Sdk.Tests.Utilities
                 scope,
                 recipeCode,
                 market: new MarketContext(
-                    marketRules: new List<MarketDataKeyRule>{resetRule, creditRule, ratesRule},
+                    marketRules: new List<MarketDataKeyRule>{simpleStaticLuidRule, resetRule, creditRule, ratesRule},
                     options: new MarketOptions(defaultSupplier: "Lusid", defaultScope: scope, defaultInstrumentCodeType: "RIC")),
                 pricing: new PricingContext(options: pricingOptions),
                 description: $"Recipe for {model} pricing");

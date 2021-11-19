@@ -83,7 +83,6 @@ namespace Lusid.Sdk.Tests.Utilities
             // CREATE portfolio and add instrument to the portfolio
             var (instrumentID, portfolioCode) = CreatePortfolioAndInstrument(scope, instrument);
 
-
             if (model == ModelSelection.ModelEnum.SimpleStatic)
             {
                 // todo-jz: add comment
