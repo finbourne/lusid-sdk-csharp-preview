@@ -83,11 +83,23 @@ namespace Lusid.Sdk.Tests.Utilities
             // CREATE portfolio and add instrument to the portfolio
             var (instrumentID, portfolioCode) = CreatePortfolioAndInstrument(scope, instrument);
 
+
+            if (model == ModelSelection.ModelEnum.SimpleStatic)
+            {
+                // todo-jz: add comment
+                var quoteRequest = TestDataUtilities.BuildQuoteRequest(scope, instrumentID, QuoteSeriesId.InstrumentIdTypeEnum.LusidInstrumentId, 100m, "USD", TestDataUtilities.EffectiveAt);
+                var upsertResponse = _quotesApi.UpsertQuotes(scope, quoteRequest);
+                Assert.That(upsertResponse.Failed.Count, Is.EqualTo(0));
+                Assert.That(upsertResponse.Values.Count, Is.EqualTo(quoteRequest.Count));
+            }
+            else
+            {
+                // UPSERT market data sufficient to price the instrument depending on the model.
+                CreateAndUpsertMarketDataToLusid(scope, model, instrument);
+            }
+
             // CREATE recipe to price the portfolio with
             var recipeCode = CreateAndUpsertRecipe(scope, model);
-
-            // UPSERT market data sufficient to price the instrument
-            CreateAndUpsertMarketDataToLusid(scope, model, instrument);
             
             // CREATE valuation request
             var valuationSchedule = new ValuationSchedule(effectiveAt: TestDataUtilities.EffectiveAt);
