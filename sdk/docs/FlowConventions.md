@@ -13,7 +13,6 @@ Name | Type | Description | Notes
 **ResetCalendars** | **List&lt;string&gt;** | An array of strings denoting holiday calendars that apply to generation of reset schedules. | 
 **SettleDays** | **int** | Number of Good Business Days between the trade date and the effective or settlement date of the instrument. | 
 **ResetDays** | **int** | The number of Good Business Days between determination and payment of reset. | 
-**LeapDaysIncluded** | **bool?** | If this flag is set to true, the 29th of February is included in the date schedule when the business roll convention is applied.  If this flag is set to false, the business roll convention ignores February 29 for date schedules, cash flow payments etc.  This flag defaults to true if not specified, i.e., leap days are included in a date schedule generation. | [optional] 
 **Scope** | **string** | The scope used when updating or inserting the convention. | [optional] 
 **Code** | **string** | The code of the convention. | [optional] 
 
