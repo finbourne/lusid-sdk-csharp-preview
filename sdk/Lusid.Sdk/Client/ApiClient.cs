@@ -137,14 +137,16 @@ namespace Lusid.Sdk.Client
             }
 
             // at this point, it must be a model (json)
-            try
-            {
-                return JsonConvert.DeserializeObject(response.Content, type, _serializerSettings);
-            }
-            catch (Exception e)
-            {
-                throw new ApiException(500, e.Message);
-            }
+            // try
+            // {
+            //     return JsonConvert.DeserializeObject(response.Content, type, _serializerSettings);
+            // }
+            // catch (Exception e)
+            // {
+            //     throw new ApiException(500, e.Message);
+            // }
+            throw new ApiException(500, "Why does this not bubble up an exception, but rather returns an null response?");
+            
         }
 
         public string RootElement { get; set; }
