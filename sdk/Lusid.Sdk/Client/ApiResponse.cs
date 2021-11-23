@@ -12,6 +12,7 @@
 using System;
 using System.Collections.Generic;
 using System.Net;
+using RestSharp;
 
 namespace Lusid.Sdk.Client
 {
@@ -24,6 +25,7 @@ namespace Lusid.Sdk.Client
         /// The data type of <see cref="Content"/>
         /// </summary>
         Type ResponseType { get; }
+        
 
         /// <summary>
         /// The content of this response
@@ -56,6 +58,16 @@ namespace Lusid.Sdk.Client
         /// The raw content of this response
         /// </summary>
         string RawContent { get; }
+        
+        /// <summary>
+        /// Status of the response. Indicates whether any internal errors have been thrown.
+        /// </summary>
+        ResponseStatus ResponseStatus { get; }
+        
+        /// <summary>
+        /// Potential internal exception that might occur with the processing of the API call
+        /// </summary>
+        Exception InternalException { get; }
     }
 
     /// <summary>
@@ -108,6 +120,16 @@ namespace Lusid.Sdk.Client
         {
             get { return Data; }
         }
+        
+        /// <summary>
+        /// Status of the response. Indicates whether any internal errors have been thrown.
+        /// </summary>
+        public ResponseStatus ResponseStatus { get; }
+        
+        /// <summary>
+        /// Potential internal exception that might occur with the processing of the API call
+        /// </summary>
+        public Exception InternalException { get; }
 
         /// <summary>
         /// The raw content
@@ -125,8 +147,16 @@ namespace Lusid.Sdk.Client
         /// <param name="headers">HTTP headers.</param>
         /// <param name="data">Data (parsed HTTP body)</param>
         /// <param name="rawContent">Raw content.</param>
-        public ApiResponse(HttpStatusCode statusCode, Multimap<string, string> headers, T data, string rawContent)
+        public ApiResponse(
+            HttpStatusCode statusCode, 
+            Multimap<string, string> headers, 
+            T data, 
+            string rawContent, 
+            ResponseStatus responseStatus,
+            Exception ex=null)
         {
+            ResponseStatus = responseStatus;
+            InternalException = ex;
             StatusCode = statusCode;
             Headers = headers;
             Data = data;
@@ -139,7 +169,13 @@ namespace Lusid.Sdk.Client
         /// <param name="statusCode">HTTP status code.</param>
         /// <param name="headers">HTTP headers.</param>
         /// <param name="data">Data (parsed HTTP body)</param>
-        public ApiResponse(HttpStatusCode statusCode, Multimap<string, string> headers, T data) : this(statusCode, headers, data, null)
+        public ApiResponse(
+            HttpStatusCode statusCode, 
+            Multimap<string, string> headers, 
+            T data, 
+            ResponseStatus responseStatus, 
+            Exception ex=null) 
+            : this(statusCode, headers, data, null, responseStatus, ex)
         {
         }
 
@@ -149,7 +185,13 @@ namespace Lusid.Sdk.Client
         /// <param name="statusCode">HTTP status code.</param>
         /// <param name="data">Data (parsed HTTP body)</param>
         /// <param name="rawContent">Raw content.</param>
-        public ApiResponse(HttpStatusCode statusCode, T data, string rawContent) : this(statusCode, null, data, rawContent)
+        public ApiResponse(
+            HttpStatusCode statusCode, 
+            T data, 
+            string rawContent, 
+            ResponseStatus responseStatus, 
+            Exception ex=null) 
+            : this(statusCode, null, data, rawContent, responseStatus, ex)
         {
         }
 
@@ -158,7 +200,12 @@ namespace Lusid.Sdk.Client
         /// </summary>
         /// <param name="statusCode">HTTP status code.</param>
         /// <param name="data">Data (parsed HTTP body)</param>
-        public ApiResponse(HttpStatusCode statusCode, T data) : this(statusCode, data, null)
+        public ApiResponse(
+            HttpStatusCode statusCode, 
+            T data, 
+            ResponseStatus responseStatus, 
+            Exception ex=null) 
+            : this(statusCode, data, null, responseStatus, ex)
         {
         }
 
