@@ -11,6 +11,11 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
     [TestFixture]
     public class BondExamples: DemoInstrumentBase
     {
+        internal static bool IsZeroCouponBond(Bond bond)
+        {
+            return bond.FlowConventions.PaymentFrequency == "0Invalid";
+        }
+        
         internal override void CreateAndUpsertMarketDataToLusid(string scope, ModelSelection.ModelEnum model, LusidInstrument bond)
         {
             if (model != ModelSelection.ModelEnum.ConstantTimeValueOfMoney)
@@ -40,7 +45,7 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
                 recipeIdCode: recipeCode).Values;
 
             // CHECK that expected cash flows at maturity are not 0.
-            Assert.That(cashflows.Count, Is.EqualTo(3));
+            Assert.That(cashflows.Count, Is.EqualTo(IsZeroCouponBond(bond)?1:3));
             var allCashFlowsPositive = cashflows.All(cf => cf.Amount > 0);
             Assert.That(allCashFlowsPositive, Is.True);
 
@@ -162,20 +167,24 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
             CallLusidGetValuationEndpoint(bond, modelName);
         }
         
-        [TestCase(ModelSelection.ModelEnum.ConstantTimeValueOfMoney)]
-        [TestCase(ModelSelection.ModelEnum.Discounting)]
-        public void BondGetInlineValuationExample(ModelSelection.ModelEnum modelName)
+        [TestCase(ModelSelection.ModelEnum.ConstantTimeValueOfMoney,false)]
+        [TestCase(ModelSelection.ModelEnum.ConstantTimeValueOfMoney,true)]
+        [TestCase(ModelSelection.ModelEnum.Discounting,false)]
+        [TestCase(ModelSelection.ModelEnum.Discounting,true)]
+        public void BondGetInlineValuationExample(ModelSelection.ModelEnum modelName,bool isZeroCouponBond)
         {
             // CREATE a Bond to be priced by LUSID
-            var bond = InstrumentExamples.CreateExampleBond();
+            var bond = isZeroCouponBond ? InstrumentExamples.CreateExampleZeroCouponBond() : InstrumentExamples.CreateExampleBond();
             CallLusidInlineValuationEndpoint(bond, modelName);
         }
 
-        [TestCase(ModelSelection.ModelEnum.ConstantTimeValueOfMoney)]
-        [TestCase(ModelSelection.ModelEnum.Discounting)]
-        public void BondPortfolioCashFlowsExample(ModelSelection.ModelEnum modelName)
+        [TestCase(ModelSelection.ModelEnum.ConstantTimeValueOfMoney,false)]
+        [TestCase(ModelSelection.ModelEnum.ConstantTimeValueOfMoney,true)]
+        [TestCase(ModelSelection.ModelEnum.Discounting,false)]
+        [TestCase(ModelSelection.ModelEnum.Discounting,true)]
+        public void BondPortfolioCashFlowsExample(ModelSelection.ModelEnum modelName,bool isZeroCouponBond)
         {
-            var bond = InstrumentExamples.CreateExampleBond();
+            var bond = isZeroCouponBond ? InstrumentExamples.CreateExampleZeroCouponBond() : InstrumentExamples.CreateExampleBond();
             CallLusidGetPortfolioCashFlowsEndpoint(bond, modelName);
         }
     }

@@ -87,6 +87,27 @@ namespace Lusid.Sdk.Tests.Utilities
                 instrumentType: LusidInstrument.InstrumentTypeEnum.Bond
             );
 
+        internal static LusidInstrument CreateExampleZeroCouponBond()
+            => new Bond(
+                startDate: new DateTimeOffset(2020, 2, 7, 0, 0, 0, TimeSpan.Zero),
+                maturityDate: new DateTimeOffset(2020, 9, 18, 0, 0, 0, TimeSpan.Zero),
+                domCcy: "USD",
+                principal: 100m,
+                couponRate: 0m,
+                flowConventions: 
+                    new FlowConventions(
+                        currency: "USD",
+                        paymentFrequency: "0Invalid",
+                        rollConvention: "MF",
+                        dayCountConvention: "Act365",
+                        paymentCalendars: new List<string>(),
+                        resetCalendars: new List<string>(),
+                        settleDays: 2
+                    ),
+                identifiers: new Dictionary<string, string>(),
+                instrumentType: LusidInstrument.InstrumentTypeEnum.Bond
+            );
+
         internal static LusidInstrument CreateExampleInterestRateSwap()
         {
             // CREATE an Interest Rate Swap (IRS) (that can then be upserted into LUSID)
