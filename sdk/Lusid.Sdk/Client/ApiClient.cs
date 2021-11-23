@@ -65,14 +65,12 @@ namespace Lusid.Sdk.Client
         public string Serialize(object obj)
         {
             if (obj != null && obj is Lusid.Sdk.Model.AbstractOpenAPISchema)
-            {
                 // the object to be serialized is an oneOf/anyOf schema
                 return ((Lusid.Sdk.Model.AbstractOpenAPISchema) obj).ToJson();
-            }
-            else
-            {
-                return JsonConvert.SerializeObject(obj, _serializerSettings);
-            }
+            
+
+            return JsonConvert.SerializeObject(obj, _serializerSettings);
+            
         }
 
         public T Deserialize<T>(IRestResponse response)
@@ -98,7 +96,6 @@ namespace Lusid.Sdk.Client
             if (type == typeof(Stream))
             {
                 var bytes = response.RawBytes;
-                if (response.Headers != null)
                 {
                     var filePath = string.IsNullOrEmpty(_configuration.TempFolderPath)
                         ? Path.GetTempPath()
@@ -108,8 +105,9 @@ namespace Lusid.Sdk.Client
                     {
                         var match = regex.Match(header.ToString());
                         if (!match.Success) continue;
-                        var fileName = 
-                            filePath + ClientUtils.SanitizeFilename(match.Groups[1].Value.Replace("\"", "").Replace("'", ""));
+                        var fileName =
+                            filePath + ClientUtils.SanitizeFilename(match.Groups[1].Value.Replace("\"", "")
+                                .Replace("'", ""));
                         File.WriteAllBytes(fileName, bytes);
                         return new FileStream(fileName, FileMode.Open);
                     }
@@ -125,10 +123,10 @@ namespace Lusid.Sdk.Client
             if (type == typeof(string) || type.Name.StartsWith("System.Nullable")) // return primitive type
                 return Convert.ChangeType(response.Content, type);
 
-            // If for some reason the response is a null or whitespace, the serialisation will succeed. It should fail.
-            if (string.IsNullOrWhiteSpace(response.Content)) 
-                throw new DeserializationException(response, new Exception("Api response was null or whitespace"));
-            
+            // If for some reason the response is a null, empty, or whitespace, the serialisation should fail.
+            if (string.IsNullOrWhiteSpace(response.Content))
+                throw new DeserializationException(response, new Exception($"API Response Content was invalid: '{response.Content}'"));
+
             // at this point, it must be a model (json)
             return JsonConvert.DeserializeObject(response.Content, type, _serializerSettings);
         }
@@ -148,6 +146,7 @@ namespace Lusid.Sdk.Client
     /// Provides a default implementation of an Api client (both synchronous and asynchronous implementations),
     /// encapsulating general REST accessor use cases.
     /// </summary>
+    // TODO: Classes should be separated by files
     public partial class ApiClient : ISynchronousClient, IAsynchronousClient
     {
         private readonly string _baseUrl;
@@ -236,7 +235,7 @@ namespace Lusid.Sdk.Client
                     other = RestSharpMethod.PATCH;
                     break;
                 default:
-                    throw new ArgumentOutOfRangeException("method", method, null);
+                    throw new ArgumentOutOfRangeException(nameof(method), method, null);
             }
 
             return other;
@@ -279,7 +278,6 @@ namespace Lusid.Sdk.Client
                 foreach (var value in queryParam.Value)
                     request.AddQueryParameter(queryParam.Key, value);
             
-
             if (configuration.DefaultHeaders != null)
                 foreach (var headerParam in configuration.DefaultHeaders)
                     request.AddHeader(headerParam.Key, headerParam.Value);
@@ -288,18 +286,17 @@ namespace Lusid.Sdk.Client
                 foreach (var headerParam in options.HeaderParameters)
                 foreach (var value in headerParam.Value)
                     request.AddHeader(headerParam.Key, value);
-            
+
             if (options.FormParameters != null)
                 foreach (var formParam in options.FormParameters)
                     request.AddParameter(formParam.Key, formParam.Value);
             
-
             if (options.Data != null)
                 switch (options.Data)
                 {
                     case Stream stream:
                     {
-                        var defaultContentType = "application/octet-stream";
+                        const string defaultContentType = "application/octet-stream";
                         var contentType =
                             (options.HeaderParameters == null)
                                 ? defaultContentType
@@ -345,7 +342,7 @@ namespace Lusid.Sdk.Client
                         break;
                     }
                 }
-            
+
 
             if (options.FileParameters != null)
                 foreach (var fileParam in options.FileParameters)
@@ -364,22 +361,19 @@ namespace Lusid.Sdk.Client
                 {
                     request.AddCookie(cookie.Name, cookie.Value);
                 }
-            
+
 
             return request;
         }
 
         private ApiResponse<T> ToApiResponse<T>(IRestResponse<T> response)
         {
-            T result = response.Data;
-            var rawContent = response.Content;
-            
             var transformed =
                 new ApiResponse<T>(
-                    response.StatusCode, 
-                    new Multimap<string, string>(), 
-                    result, 
-                    rawContent, 
+                    response.StatusCode,
+                    new Multimap<string, string>(),
+                    response.Data,
+                    response.Content,
                     response.ResponseStatus,
                     response.ErrorException)
                 {
@@ -389,7 +383,7 @@ namespace Lusid.Sdk.Client
 
             foreach (var responseHeader in response.Headers)
                 transformed.Headers.Add(responseHeader.Name, ClientUtils.ParameterToString(responseHeader.Value));
-            
+
 
             foreach (var responseCookies in response.Cookies)
                 transformed.Cookies.Add(
@@ -399,7 +393,7 @@ namespace Lusid.Sdk.Client
                         responseCookies.Path,
                         responseCookies.Domain)
                 );
-            
+
 
             return transformed;
         }
@@ -470,7 +464,6 @@ namespace Lusid.Sdk.Client
 
             // if the response type is oneOf/anyOf, call FromJSON to deserialize the data
             if (typeof(Lusid.Sdk.Model.AbstractOpenAPISchema).IsAssignableFrom(typeof(T)))
-            {
                 try
                 {
                     response.Data = (T) typeof(T).GetMethod("FromJson").Invoke(null, new object[] {response.Content});
@@ -479,17 +472,15 @@ namespace Lusid.Sdk.Client
                 {
                     throw ex.InnerException ?? ex;
                 }
-            }
+            
             else if (typeof(T).Name == "Stream") // for binary response
             {
                 response.Data = (T) (object) new MemoryStream(response.RawBytes);
             }
 
             InterceptResponse(req, response);
-            
-            // Why do we call this ToApiResponse? It removes important codes such as the 'response.ResponseStatus'
+
             var result = ToApiResponse(response);
-            result.ErrorText = response.ErrorMessage;
 
             if (response.Cookies.Count <= 0) return result;
             if (result.Cookies == null) result.Cookies = new List<Cookie>();
@@ -528,8 +519,7 @@ namespace Lusid.Sdk.Client
             };
 
             client.ClearHandlers();
-            var existingDeserializer = req.JsonSerializer as IDeserializer;
-            if (existingDeserializer != null)
+            if (req.JsonSerializer is IDeserializer existingDeserializer)
             {
                 client.AddHandler("application/json", () => existingDeserializer);
                 client.AddHandler("text/json", () => existingDeserializer);
@@ -599,7 +589,6 @@ namespace Lusid.Sdk.Client
             InterceptResponse(req, response);
 
             var result = ToApiResponse(response);
-            result.ErrorText = response.ErrorMessage;
 
             if (response.Cookies.Count <= 0) return result;
             if (result.Cookies == null) result.Cookies = new List<Cookie>();

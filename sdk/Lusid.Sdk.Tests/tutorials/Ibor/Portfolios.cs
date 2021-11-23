@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Lusid.Sdk.Api;
+using Lusid.Sdk.Client;
 using Lusid.Sdk.Model;
 using Lusid.Sdk.Tests.Utilities;
 using Lusid.Sdk.Utilities;
@@ -253,6 +254,7 @@ namespace Lusid.Sdk.Tests.Tutorials.Ibor
         
         [LusidFeature("F2-4")]
         [Test]
+        // TODO: These tests names need to be renamed and be in line with the standard https://docs.microsoft.com/en-us/dotnet/core/testing/unit-testing-best-practices
         public void List_Portfolios()
         {
             //    This defines the scope that the portfolios will be retrieved from
@@ -282,6 +284,16 @@ namespace Lusid.Sdk.Tests.Tutorials.Ibor
             var scopes = _apiFactory.Api<IScopesApi>().ListScopes();
 
             Assert.That(scopes.Values.Count(), Is.GreaterThan(0));
+        }
+        
+        [Test]
+        public void GetPortfolio_WhenPortfolioNotFound_Throws404Error()
+        {
+            var ex = Assert.Throws<ApiException>(
+                () => _apiFactory.Api<IPortfoliosApi>().GetPortfolio("some-non-existent-scope", "ThisPortfolioDoesntExist")
+            );
+
+            Assert.That(ex.ErrorCode, Is.EqualTo(404));
         }
 
     }
