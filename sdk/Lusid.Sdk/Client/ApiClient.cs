@@ -107,14 +107,11 @@ namespace Lusid.Sdk.Client
                     foreach (var header in response.Headers)
                     {
                         var match = regex.Match(header.ToString());
-                        if (match.Success)
-                        {
-                            string fileName = filePath +
-                                              ClientUtils.SanitizeFilename(match.Groups[1].Value.Replace("\"", "")
-                                                  .Replace("'", ""));
-                            File.WriteAllBytes(fileName, bytes);
-                            return new FileStream(fileName, FileMode.Open);
-                        }
+                        if (!match.Success) continue;
+                        var fileName = 
+                            filePath + ClientUtils.SanitizeFilename(match.Groups[1].Value.Replace("\"", "").Replace("'", ""));
+                        File.WriteAllBytes(fileName, bytes);
+                        return new FileStream(fileName, FileMode.Open);
                     }
                 }
 
@@ -123,17 +120,13 @@ namespace Lusid.Sdk.Client
             }
 
             if (type.Name.StartsWith("System.Nullable`1[[System.DateTime")) // return a datetime object
-            {
                 return DateTime.Parse(response.Content, null, System.Globalization.DateTimeStyles.RoundtripKind);
-            }
 
             if (type == typeof(string) || type.Name.StartsWith("System.Nullable")) // return primitive type
-            {
                 return Convert.ChangeType(response.Content, type);
-            }
 
             // If for some reason the response is a null or whitespace, the serialisation will succeed. It should fail.
-            if(string.IsNullOrWhiteSpace(response.Content)) 
+            if (string.IsNullOrWhiteSpace(response.Content)) 
                 throw new DeserializationException(response, new Exception("Api response was null or whitespace"));
             
             // at this point, it must be a model (json)
@@ -146,8 +139,8 @@ namespace Lusid.Sdk.Client
 
         public string ContentType
         {
-            get { return _contentType; }
-            set { throw new InvalidOperationException("Not allowed to set content type."); }
+            get => _contentType;
+            set => throw new InvalidOperationException("Not allowed to set content type.");
         }
     }
 
@@ -267,112 +260,94 @@ namespace Lusid.Sdk.Client
             RequestOptions options,
             IReadableConfiguration configuration)
         {
-            if (path == null) throw new ArgumentNullException("path");
-            if (options == null) throw new ArgumentNullException("options");
-            if (configuration == null) throw new ArgumentNullException("configuration");
+            if (path == null) throw new ArgumentNullException(nameof(path));
+            if (options == null) throw new ArgumentNullException(nameof(options));
+            if (configuration == null) throw new ArgumentNullException(nameof(configuration));
 
-            RestRequest request = new RestRequest(Method(method))
+            var request = new RestRequest(Method(method))
             {
                 Resource = path,
                 JsonSerializer = new CustomJsonCodec(SerializerSettings, configuration)
             };
 
             if (options.PathParameters != null)
-            {
                 foreach (var pathParam in options.PathParameters)
-                {
                     request.AddParameter(pathParam.Key, pathParam.Value, ParameterType.UrlSegment);
-                }
-            }
 
             if (options.QueryParameters != null)
-            {
                 foreach (var queryParam in options.QueryParameters)
-                {
-                    foreach (var value in queryParam.Value)
-                    {
-                        request.AddQueryParameter(queryParam.Key, value);
-                    }
-                }
-            }
+                foreach (var value in queryParam.Value)
+                    request.AddQueryParameter(queryParam.Key, value);
+            
 
             if (configuration.DefaultHeaders != null)
-            {
                 foreach (var headerParam in configuration.DefaultHeaders)
-                {
                     request.AddHeader(headerParam.Key, headerParam.Value);
-                }
-            }
 
             if (options.HeaderParameters != null)
-            {
                 foreach (var headerParam in options.HeaderParameters)
-                {
-                    foreach (var value in headerParam.Value)
-                    {
-                        request.AddHeader(headerParam.Key, value);
-                    }
-                }
-            }
-
+                foreach (var value in headerParam.Value)
+                    request.AddHeader(headerParam.Key, value);
+            
             if (options.FormParameters != null)
-            {
                 foreach (var formParam in options.FormParameters)
-                {
                     request.AddParameter(formParam.Key, formParam.Value);
-                }
-            }
+            
 
             if (options.Data != null)
-            {
-                if (options.Data is Stream stream)
+                switch (options.Data)
                 {
-                    var defaultContentType = "application/octet-stream";
-                    var contentType =
-                        (options.HeaderParameters == null)
-                            ? defaultContentType
-                            : options.HeaderParameters["Content-Type"][0];
-
-                    var bytes = ClientUtils.ReadAsBytes(stream);
-                    request.AddParameter(contentType, bytes, ParameterType.RequestBody);
-                }
-                else if (options.Data is byte[])
-                {
-                    var defaultContentType = "application/octet-stream";
-                    var contentType =
-                        (options.HeaderParameters == null)
-                            ? defaultContentType
-                            : options.HeaderParameters["Content-Type"][0];
-
-                    var bytes = options.Data;
-                    request.AddParameter(contentType, bytes, ParameterType.RequestBody);
-                }
-                else
-                {
-                    if (options.HeaderParameters != null)
+                    case Stream stream:
                     {
-                        var contentTypes = options.HeaderParameters["Content-Type"];
-                        if (contentTypes == null || contentTypes.Any(header => header.Contains("application/json")))
+                        var defaultContentType = "application/octet-stream";
+                        var contentType =
+                            (options.HeaderParameters == null)
+                                ? defaultContentType
+                                : options.HeaderParameters["Content-Type"][0];
+
+                        var bytes = ClientUtils.ReadAsBytes(stream);
+                        request.AddParameter(contentType, bytes, ParameterType.RequestBody);
+                        break;
+                    }
+                    case byte[] _:
+                    {
+                        const string defaultContentType = "application/octet-stream";
+                        var contentType =
+                            (options.HeaderParameters == null)
+                                ? defaultContentType
+                                : options.HeaderParameters["Content-Type"][0];
+
+                        var bytes = options.Data;
+                        request.AddParameter(contentType, bytes, ParameterType.RequestBody);
+                        break;
+                    }
+                    default:
+                    {
+                        if (options.HeaderParameters != null)
                         {
-                            request.RequestFormat = DataFormat.Json;
+                            var contentTypes = options.HeaderParameters["Content-Type"];
+                            if (contentTypes == null || contentTypes.Any(header => header.Contains("application/json")))
+                            {
+                                request.RequestFormat = DataFormat.Json;
+                            }
+                            else
+                            {
+                                // TODO: Generated client user should add additional handlers. RestSharp only supports XML and JSON, with XML as default.
+                            }
                         }
                         else
                         {
-                            // TODO: Generated client user should add additional handlers. RestSharp only supports XML and JSON, with XML as default.
+                            // Here, we'll assume JSON APIs are more common. XML can be forced by adding produces/consumes to openapi spec explicitly.
+                            request.RequestFormat = DataFormat.Json;
                         }
-                    }
-                    else
-                    {
-                        // Here, we'll assume JSON APIs are more common. XML can be forced by adding produces/consumes to openapi spec explicitly.
-                        request.RequestFormat = DataFormat.Json;
-                    }
 
-                    request.AddJsonBody(options.Data);
+                        request.AddJsonBody(options.Data);
+                        break;
+                    }
                 }
-            }
+            
 
             if (options.FileParameters != null)
-            {
                 foreach (var fileParam in options.FileParameters)
                 {
                     var bytes = ClientUtils.ReadAsBytes(fileParam.Value);
@@ -383,15 +358,13 @@ namespace Lusid.Sdk.Client
                     else
                         request.Files.Add(FileParameter.Create(fileParam.Key, bytes, "no_file_name_provided"));
                 }
-            }
 
             if (options.Cookies != null && options.Cookies.Count > 0)
-            {
                 foreach (var cookie in options.Cookies)
                 {
                     request.AddCookie(cookie.Name, cookie.Value);
                 }
-            }
+            
 
             return request;
         }
@@ -399,7 +372,7 @@ namespace Lusid.Sdk.Client
         private ApiResponse<T> ToApiResponse<T>(IRestResponse<T> response)
         {
             T result = response.Data;
-            string rawContent = response.Content;
+            var rawContent = response.Content;
             
             var transformed =
                 new ApiResponse<T>(
@@ -414,27 +387,19 @@ namespace Lusid.Sdk.Client
                     Cookies = new List<Cookie>()
                 };
 
-            if (response.Headers != null)
-            {
-                foreach (var responseHeader in response.Headers)
-                {
-                    transformed.Headers.Add(responseHeader.Name, ClientUtils.ParameterToString(responseHeader.Value));
-                }
-            }
+            foreach (var responseHeader in response.Headers)
+                transformed.Headers.Add(responseHeader.Name, ClientUtils.ParameterToString(responseHeader.Value));
+            
 
-            if (response.Cookies != null)
-            {
-                foreach (var responseCookies in response.Cookies)
-                {
-                    transformed.Cookies.Add(
-                        new Cookie(
-                            responseCookies.Name,
-                            responseCookies.Value,
-                            responseCookies.Path,
-                            responseCookies.Domain)
-                    );
-                }
-            }
+            foreach (var responseCookies in response.Cookies)
+                transformed.Cookies.Add(
+                    new Cookie(
+                        responseCookies.Name,
+                        responseCookies.Value,
+                        responseCookies.Path,
+                        responseCookies.Domain)
+                );
+            
 
             return transformed;
         }
@@ -448,8 +413,7 @@ namespace Lusid.Sdk.Client
             };
 
             client.ClearHandlers();
-            var existingDeserializer = req.JsonSerializer as IDeserializer;
-            if (existingDeserializer != null)
+            if (req.JsonSerializer is IDeserializer existingDeserializer)
             {
                 client.AddHandler("application/json", () => existingDeserializer);
                 client.AddHandler("text/json", () => existingDeserializer);
@@ -476,19 +440,13 @@ namespace Lusid.Sdk.Client
             client.Timeout = configuration.Timeout;
 
             if (configuration.Proxy != null)
-            {
                 client.Proxy = configuration.Proxy;
-            }
 
             if (configuration.UserAgent != null)
-            {
                 client.UserAgent = configuration.UserAgent;
-            }
 
             if (configuration.ClientCertificates != null)
-            {
                 client.ClientCertificates = configuration.ClientCertificates;
-            }
 
             InterceptRequest(req);
 
@@ -519,7 +477,7 @@ namespace Lusid.Sdk.Client
                 }
                 catch (Exception ex)
                 {
-                    throw ex.InnerException != null ? ex.InnerException : ex;
+                    throw ex.InnerException ?? ex;
                 }
             }
             else if (typeof(T).Name == "Stream") // for binary response
@@ -531,36 +489,31 @@ namespace Lusid.Sdk.Client
             
             // Why do we call this ToApiResponse? It removes important codes such as the 'response.ResponseStatus'
             var result = ToApiResponse(response);
-            if (response.ErrorMessage != null)
-            {
-                result.ErrorText = response.ErrorMessage;
-            }
+            result.ErrorText = response.ErrorMessage;
 
-            if (response.Cookies != null && response.Cookies.Count > 0)
+            if (response.Cookies.Count <= 0) return result;
+            if (result.Cookies == null) result.Cookies = new List<Cookie>();
+            foreach (var restResponseCookie in response.Cookies)
             {
-                if (result.Cookies == null) result.Cookies = new List<Cookie>();
-                foreach (var restResponseCookie in response.Cookies)
+                var cookie = new Cookie(
+                    restResponseCookie.Name,
+                    restResponseCookie.Value,
+                    restResponseCookie.Path,
+                    restResponseCookie.Domain
+                )
                 {
-                    var cookie = new Cookie(
-                        restResponseCookie.Name,
-                        restResponseCookie.Value,
-                        restResponseCookie.Path,
-                        restResponseCookie.Domain
-                    )
-                    {
-                        Comment = restResponseCookie.Comment,
-                        CommentUri = restResponseCookie.CommentUri,
-                        Discard = restResponseCookie.Discard,
-                        Expired = restResponseCookie.Expired,
-                        Expires = restResponseCookie.Expires,
-                        HttpOnly = restResponseCookie.HttpOnly,
-                        Port = restResponseCookie.Port,
-                        Secure = restResponseCookie.Secure,
-                        Version = restResponseCookie.Version
-                    };
+                    Comment = restResponseCookie.Comment,
+                    CommentUri = restResponseCookie.CommentUri,
+                    Discard = restResponseCookie.Discard,
+                    Expired = restResponseCookie.Expired,
+                    Expires = restResponseCookie.Expires,
+                    HttpOnly = restResponseCookie.HttpOnly,
+                    Port = restResponseCookie.Port,
+                    Secure = restResponseCookie.Secure,
+                    Version = restResponseCookie.Version
+                };
 
-                    result.Cookies.Add(cookie);
-                }
+                result.Cookies.Add(cookie);
             }
 
             return result;
@@ -569,7 +522,7 @@ namespace Lusid.Sdk.Client
         private async Task<ApiResponse<T>> ExecAsync<T>(RestRequest req, IReadableConfiguration configuration,
             System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
-            RestClient client = new RestClient(_baseUrl)
+            var client = new RestClient(_baseUrl)
             {
                 FailOnDeserializationError = true // Needed for internal exceptions to be thrown
             };
@@ -603,19 +556,13 @@ namespace Lusid.Sdk.Client
             client.Timeout = configuration.Timeout;
 
             if (configuration.Proxy != null)
-            {
                 client.Proxy = configuration.Proxy;
-            }
 
             if (configuration.UserAgent != null)
-            {
                 client.UserAgent = configuration.UserAgent;
-            }
 
             if (configuration.ClientCertificates != null)
-            {
                 client.ClientCertificates = configuration.ClientCertificates;
-            }
 
             InterceptRequest(req);
 
@@ -652,36 +599,31 @@ namespace Lusid.Sdk.Client
             InterceptResponse(req, response);
 
             var result = ToApiResponse(response);
-            if (response.ErrorMessage != null)
-            {
-                result.ErrorText = response.ErrorMessage;
-            }
+            result.ErrorText = response.ErrorMessage;
 
-            if (response.Cookies != null && response.Cookies.Count > 0)
+            if (response.Cookies.Count <= 0) return result;
+            if (result.Cookies == null) result.Cookies = new List<Cookie>();
+            foreach (var restResponseCookie in response.Cookies)
             {
-                if (result.Cookies == null) result.Cookies = new List<Cookie>();
-                foreach (var restResponseCookie in response.Cookies)
+                var cookie = new Cookie(
+                    restResponseCookie.Name,
+                    restResponseCookie.Value,
+                    restResponseCookie.Path,
+                    restResponseCookie.Domain
+                )
                 {
-                    var cookie = new Cookie(
-                        restResponseCookie.Name,
-                        restResponseCookie.Value,
-                        restResponseCookie.Path,
-                        restResponseCookie.Domain
-                    )
-                    {
-                        Comment = restResponseCookie.Comment,
-                        CommentUri = restResponseCookie.CommentUri,
-                        Discard = restResponseCookie.Discard,
-                        Expired = restResponseCookie.Expired,
-                        Expires = restResponseCookie.Expires,
-                        HttpOnly = restResponseCookie.HttpOnly,
-                        Port = restResponseCookie.Port,
-                        Secure = restResponseCookie.Secure,
-                        Version = restResponseCookie.Version
-                    };
+                    Comment = restResponseCookie.Comment,
+                    CommentUri = restResponseCookie.CommentUri,
+                    Discard = restResponseCookie.Discard,
+                    Expired = restResponseCookie.Expired,
+                    Expires = restResponseCookie.Expires,
+                    HttpOnly = restResponseCookie.HttpOnly,
+                    Port = restResponseCookie.Port,
+                    Secure = restResponseCookie.Secure,
+                    Version = restResponseCookie.Version
+                };
 
-                    result.Cookies.Add(cookie);
-                }
+                result.Cookies.Add(cookie);
             }
 
             return result;
