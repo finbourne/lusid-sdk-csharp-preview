@@ -18,6 +18,7 @@ using System.Net;
 using System.Reflection;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
+using RestSharp;
 
 namespace Lusid.Sdk.Client
 {
@@ -51,11 +52,24 @@ namespace Lusid.Sdk.Client
         public static readonly ExceptionFactory DefaultExceptionFactory = (methodName, response) =>
         {
             var status = (int)response.StatusCode;
+            
+            // First throw 
             if (status >= 400)
             {
                 return new ApiException(status,
-                    string.Format("Error calling {0}: {1}", methodName, response.RawContent),
+                    $"Error calling {methodName}: {response.RawContent}",
                     response.RawContent, response.Headers);
+            }
+            
+            // Throw whenever an internal SDK error has been thrown
+            if (response.ResponseStatus == ResponseStatus.Error)
+            {
+                return new ApiException(500,
+                    $"Internal SDK error occured when calling {methodName}: {response.ErrorText}",
+                    response.InternalException.StackTrace, response.Headers);
+                
+                // TODO: Since we can't log this potentially sensitive information.
+                // consider sending the full response body here into a safe storage for debugging
             }
             return null;
         };

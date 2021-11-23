@@ -12,6 +12,7 @@ using Lusid.Sdk.Utilities;
 using Newtonsoft.Json;
 using NUnit.Framework;
 using System.Net;
+using RestSharp;
 
 namespace Lusid.Sdk.Tests
 {
@@ -389,7 +390,8 @@ namespace Lusid.Sdk.Tests
                 {
                     {"Date", "Tue, 09 Feb 2021 05:18:41 GMT"},
                 },
-                data: new VersionSummaryDto()
+                data: new VersionSummaryDto(),
+                responseStatus: ResponseStatus.None
             );
             var date = apiResponse.GetRequestDateTime();
             Assert.That(date, Is.EqualTo(new DateTimeOffset(2021, 2, 9, 5, 18, 41, new TimeSpan())));
