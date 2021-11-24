@@ -44,8 +44,11 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
                 recipeIdScope: scope,
                 recipeIdCode: recipeCode).Values;
 
-            // CHECK that expected cash flows at maturity are not 0.
+            // In case of a zero coupon bond we expect only a single payment at the bond maturity.
+            // Otherwise, we expect regular payments (=cashflows) depending on the bond face value and
+            // coupon rate.
             Assert.That(cashflows.Count, Is.EqualTo(IsZeroCouponBond(bond)?1:3));
+            // We perform here a very simple check that a bond cashflow must be positive.
             var allCashFlowsPositive = cashflows.All(cf => cf.Amount > 0);
             Assert.That(allCashFlowsPositive, Is.True);
 
