@@ -139,8 +139,7 @@ namespace Lusid.Sdk.Client
             // If for some reason the response is a null, empty, or whitespace, the serialisation should fail.
             if (string.IsNullOrWhiteSpace(response.Content))
                 throw new DeserializationException(response, new Exception($"API Response Content was invalid: '{response.Content}'"));
-
-            // at this point, it must be a model (json)
+            
             return JsonConvert.DeserializeObject(response.Content, type, _serializerSettings);
         }
 
@@ -404,12 +403,12 @@ namespace Lusid.Sdk.Client
             string rawContent = response.Content;
 
             var transformed = new ApiResponse<T>(response.StatusCode, new Multimap<string, string>(), result, rawContent)
-                {
-                    ErrorText = response.ErrorMessage,
-                    ResponseStatus = response.ResponseStatus,
-                    InternalException = response.ErrorException,
-                    Cookies = new List<Cookie>()
-                };
+            {
+                ErrorText = response.ErrorMessage,
+                ResponseStatus = response.ResponseStatus,
+                InternalException = response.ErrorException,
+                Cookies = new List<Cookie>()
+            };
 
             if (response.Headers != null)
             {

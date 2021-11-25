@@ -76,6 +76,8 @@ namespace Lusid.Sdk.Utilities
                     throw new Exception($"Unable to create type {api}");
                 }
 
+                impl.ExceptionFactory = LusidExceptionHandler.CustomExceptionFactory;
+
                 var @interface = api.GetInterfaces()
                     .First(i => typeof(IApiAccessor).IsAssignableFrom(i));
 

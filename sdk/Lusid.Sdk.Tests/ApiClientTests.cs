@@ -1,12 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
-using System.Net;
 using Lusid.Sdk.Client;
 using Lusid.Sdk.Model;
-using Lusid.Sdk.Tests.Utilities;
-using Lusid.Sdk.Utilities;
-using Moq;
 using NUnit.Framework;
 using RestSharp;
 
@@ -15,14 +9,12 @@ namespace Lusid.Sdk.Tests
     [TestFixture]
     public class ApiClientTests
     {
-        private ILusidApiFactory _apiFactory;
         private ApiClient _apiClient;
         private CustomJsonCodec _customJsonCodec;
 
         [OneTimeSetUp]
         public void SetUp()
         {
-            _apiFactory = TestLusidApiFactoryBuilder.CreateApiFactory("secrets.json");
             _apiClient = new ApiClient();
             _customJsonCodec = new CustomJsonCodec(_apiClient.SerializerSettings, GlobalConfiguration.Instance);
         }
@@ -69,52 +61,6 @@ namespace Lusid.Sdk.Tests
             Assert.That(exception.Message, Is.Not.EqualTo(""));
             Assert.That(exception.Message, Is.Not.EqualTo(" "));
             Assert.That(exception.Message, Is.EqualTo(expectedError));
-        }
-
-        [Test]
-        public void CallDefaultExceptionFactory_FailsWithInternalError_Returns500Exception()
-        {
-            var mockException = new Mock<Exception>();
-            const string stackTraceOfError = "Test stack trace";
-            mockException.Setup(e => e.StackTrace).Returns(stackTraceOfError);
-            
-            const string methodName = "someMethod";
-            const string errorText = "some error text";
-            var response = new ApiResponse<Portfolio>(
-                HttpStatusCode.NoContent,
-                new Multimap<string, string>(),
-                null,
-                "Some internal error")
-            {
-                ErrorText = errorText,
-                ResponseStatus = ResponseStatus.Error,
-                InternalException = mockException.Object
-            };
-            
-            var returnedError = (ApiException) Configuration.DefaultExceptionFactory.Invoke(methodName, response);
-
-            Assert.That(returnedError.Message, Is.EqualTo($"Internal SDK error occured when calling {methodName}: {errorText}"));
-            Assert.That(returnedError.ErrorCode, Is.EqualTo(500));
-            Assert.That(returnedError.ErrorContent, Is.EqualTo(stackTraceOfError));
-        }
-        
-        [Test]
-        public void CallDefaultExceptionFactory_FailsWithApiError_TheSameErrorCodeNoStackTrace()
-        {
-            const string rawContent = "Not found portfolio";
-            const string methodName = "someMethod";
-            var expectedErrorContent= $"Error calling someMethod: {rawContent}";
-            var response = new ApiResponse<Portfolio>(
-                HttpStatusCode.NotFound,
-                new Multimap<string, string>(),
-                null,
-                rawContent);
-            
-            var returnedError = (ApiException) Configuration.DefaultExceptionFactory.Invoke(methodName, response);
-
-            Assert.That(returnedError.Message, Is.EqualTo(expectedErrorContent));
-            Assert.That(returnedError.ErrorCode, Is.EqualTo(404));
-            Assert.That(returnedError.ErrorContent, Is.EqualTo(rawContent));
         }
     }
 }
