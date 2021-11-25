@@ -10,7 +10,8 @@ namespace Lusid.Sdk.Utilities
     public static class LusidExceptionHandler
     {
         /// <summary>
-        /// Generate exceptions from the ApiResponse when the ErrorText exists
+        /// Generate exceptions from the ApiResponse when ResponseStatus is an Error,
+        /// and StatusCode has no content or is less than 400
         /// </summary>
         /// <param name="methodName">The name of the method</param>
         /// <param name="response">The ApiResponse</param>
@@ -26,7 +27,7 @@ namespace Lusid.Sdk.Utilities
                     response.RawContent, response.Headers);
             }
 
-            // Throw whenever an internal SDK error has been thrown
+            // Throw whenever an internal SDK error has been thrown. This will result in ResponseStatus = Error
             if (response.ResponseStatus == ResponseStatus.Error)
             {
                 return new ApiException(500,
