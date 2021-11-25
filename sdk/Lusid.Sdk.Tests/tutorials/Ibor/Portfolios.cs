@@ -254,7 +254,6 @@ namespace Lusid.Sdk.Tests.Tutorials.Ibor
         
         [LusidFeature("F2-4")]
         [Test]
-        // TODO: These tests names need to be renamed and be in line with the standard https://docs.microsoft.com/en-us/dotnet/core/testing/unit-testing-best-practices
         public void List_Portfolios()
         {
             //    This defines the scope that the portfolios will be retrieved from
@@ -287,7 +286,7 @@ namespace Lusid.Sdk.Tests.Tutorials.Ibor
         }
         
         [Test]
-        public void GetPortfolio_WhenPortfolioNotFound_Throws404Error()
+        public void GetPortfolio_WhenPortfolioNotFound_ThrowsApiException()
         {
             var ex = Assert.Throws<ApiException>(
                 () => _apiFactory.Api<IPortfoliosApi>().GetPortfolio("some-non-existent-scope", "ThisPortfolioDoesntExist")

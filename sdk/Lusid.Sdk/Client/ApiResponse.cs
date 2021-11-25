@@ -152,7 +152,7 @@ namespace Lusid.Sdk.Client
             Multimap<string, string> headers, 
             T data, 
             string rawContent, 
-            ResponseStatus responseStatus,
+            ResponseStatus responseStatus=default,
             Exception ex=null)
         {
             ResponseStatus = responseStatus;
@@ -172,10 +172,8 @@ namespace Lusid.Sdk.Client
         public ApiResponse(
             HttpStatusCode statusCode, 
             Multimap<string, string> headers, 
-            T data, 
-            ResponseStatus responseStatus, 
-            Exception ex=null) 
-            : this(statusCode, headers, data, null, responseStatus, ex)
+            T data) 
+            : this(statusCode, headers, data, null)
         {
         }
 
@@ -188,10 +186,8 @@ namespace Lusid.Sdk.Client
         public ApiResponse(
             HttpStatusCode statusCode, 
             T data, 
-            string rawContent, 
-            ResponseStatus responseStatus, 
-            Exception ex=null) 
-            : this(statusCode, null, data, rawContent, responseStatus, ex)
+            string rawContent) 
+            : this(statusCode, null, data, rawContent)
         {
         }
 
@@ -202,10 +198,8 @@ namespace Lusid.Sdk.Client
         /// <param name="data">Data (parsed HTTP body)</param>
         public ApiResponse(
             HttpStatusCode statusCode, 
-            T data, 
-            ResponseStatus responseStatus, 
-            Exception ex=null) 
-            : this(statusCode, data, null, responseStatus, ex)
+            T data) 
+            : this(statusCode, data, null)
         {
         }
 

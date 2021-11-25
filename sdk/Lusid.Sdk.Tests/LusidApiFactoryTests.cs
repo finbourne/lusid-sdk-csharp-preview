@@ -390,8 +390,7 @@ namespace Lusid.Sdk.Tests
                 {
                     {"Date", "Tue, 09 Feb 2021 05:18:41 GMT"},
                 },
-                data: new VersionSummaryDto(),
-                responseStatus: ResponseStatus.None
+                data: new VersionSummaryDto()
             );
             var date = apiResponse.GetRequestDateTime();
             Assert.That(date, Is.EqualTo(new DateTimeOffset(2021, 2, 9, 5, 18, 41, new TimeSpan())));
