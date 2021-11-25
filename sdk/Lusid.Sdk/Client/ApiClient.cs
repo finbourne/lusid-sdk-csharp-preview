@@ -438,10 +438,7 @@ namespace Lusid.Sdk.Client
 
         private ApiResponse<T> Exec<T>(RestRequest req, IReadableConfiguration configuration)
         {
-            RestClient client = new RestClient(_baseUrl)
-            {
-                FailOnDeserializationError = true // Needed for internal exceptions to be thrown
-            };
+            RestClient client = new RestClient(_baseUrl);
 
             client.ClearHandlers();
             var existingDeserializer = req.JsonSerializer as IDeserializer;
@@ -560,10 +557,7 @@ namespace Lusid.Sdk.Client
 
         private async Task<ApiResponse<T>> ExecAsync<T>(RestRequest req, IReadableConfiguration configuration, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
-            RestClient client = new RestClient(_baseUrl)
-            {
-                FailOnDeserializationError = true // Needed for internal exceptions to be thrown
-            };
+            RestClient client = new RestClient(_baseUrl);
 
             client.ClearHandlers();
             var existingDeserializer = req.JsonSerializer as IDeserializer;
