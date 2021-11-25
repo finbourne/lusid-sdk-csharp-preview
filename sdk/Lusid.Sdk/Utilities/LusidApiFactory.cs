@@ -75,7 +75,8 @@ namespace Lusid.Sdk.Utilities
                 {
                     throw new Exception($"Unable to create type {api}");
                 }
-
+                
+                // Replace the default implementation of the ExceptionFactory with a custom one defined by FINBOURNE
                 impl.ExceptionFactory = LusidExceptionHandler.CustomExceptionFactory;
 
                 var @interface = api.GetInterfaces()
