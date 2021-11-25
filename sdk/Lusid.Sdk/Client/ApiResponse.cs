@@ -124,12 +124,12 @@ namespace Lusid.Sdk.Client
         /// <summary>
         /// Status of the response. Indicates whether any internal errors have been thrown.
         /// </summary>
-        public ResponseStatus ResponseStatus { get; }
+        public ResponseStatus ResponseStatus { get; set; }
         
         /// <summary>
         /// Potential internal exception that might occur with the processing of the API call
         /// </summary>
-        public Exception InternalException { get; }
+        public Exception InternalException { get; set;  }
 
         /// <summary>
         /// The raw content
@@ -151,12 +151,8 @@ namespace Lusid.Sdk.Client
             HttpStatusCode statusCode, 
             Multimap<string, string> headers, 
             T data, 
-            string rawContent, 
-            ResponseStatus responseStatus=default,
-            Exception ex=null)
+            string rawContent)
         {
-            ResponseStatus = responseStatus;
-            InternalException = ex;
             StatusCode = statusCode;
             Headers = headers;
             Data = data;

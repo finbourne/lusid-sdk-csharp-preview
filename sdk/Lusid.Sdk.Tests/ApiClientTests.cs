@@ -84,11 +84,11 @@ namespace Lusid.Sdk.Tests
                 HttpStatusCode.NoContent,
                 new Multimap<string, string>(),
                 null,
-                "Some internal error",
-                ResponseStatus.Error,
-                mockException.Object)
+                "Some internal error")
             {
-                ErrorText = errorText
+                ErrorText = errorText,
+                ResponseStatus = ResponseStatus.Error,
+                InternalException = mockException.Object
             };
             
             var returnedError = (ApiException) Configuration.DefaultExceptionFactory.Invoke(methodName, response);
@@ -108,8 +108,7 @@ namespace Lusid.Sdk.Tests
                 HttpStatusCode.NotFound,
                 new Multimap<string, string>(),
                 null,
-                rawContent,
-                ResponseStatus.None);
+                rawContent);
             
             var returnedError = (ApiException) Configuration.DefaultExceptionFactory.Invoke(methodName, response);
 

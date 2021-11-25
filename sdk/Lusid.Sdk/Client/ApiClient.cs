@@ -404,15 +404,11 @@ namespace Lusid.Sdk.Client
             string rawContent = response.Content;
 
             var transformed =
-                new ApiResponse<T>(
-                    response.StatusCode,
-                    new Multimap<string, string>(),
-                    result,
-                    rawContent,
-                    response.ResponseStatus,
-                    response.ErrorException)
+                new ApiResponse<T>(response.StatusCode, new Multimap<string, string>(), result, rawContent)
                 {
                     ErrorText = response.ErrorMessage,
+                    ResponseStatus = response.ResponseStatus,
+                    InternalException = response.ErrorException,
                     Cookies = new List<Cookie>()
                 };
 
