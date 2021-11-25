@@ -403,8 +403,7 @@ namespace Lusid.Sdk.Client
             T result = response.Data;
             string rawContent = response.Content;
 
-            var transformed =
-                new ApiResponse<T>(response.StatusCode, new Multimap<string, string>(), result, rawContent)
+            var transformed = new ApiResponse<T>(response.StatusCode, new Multimap<string, string>(), result, rawContent)
                 {
                     ErrorText = response.ErrorMessage,
                     ResponseStatus = response.ResponseStatus,
