@@ -12,7 +12,6 @@
 using System;
 using System.Collections.Generic;
 using System.Net;
-using RestSharp;
 
 namespace Lusid.Sdk.Client
 {
@@ -46,7 +45,7 @@ namespace Lusid.Sdk.Client
         /// <summary>
         /// Gets or sets any error text defined by the calling client.
         /// </summary>
-        string ErrorText { get; set; }
+        String ErrorText { get; set; }
 
         /// <summary>
         /// Gets or sets any cookies passed along on the response.
@@ -57,16 +56,6 @@ namespace Lusid.Sdk.Client
         /// The raw content of this response
         /// </summary>
         string RawContent { get; }
-
-        /// <summary>
-        /// Status of the response. Indicates whether any internal errors have been thrown.
-        /// </summary>
-        ResponseStatus ResponseStatus { get; }
-
-        /// <summary>
-        /// Potential internal exception that might occur with the processing of the API call
-        /// </summary>
-        Exception InternalException { get; }
     }
 
     /// <summary>
@@ -75,6 +64,7 @@ namespace Lusid.Sdk.Client
     public class ApiResponse<T> : IApiResponse
     {
         #region Properties
+
         /// <summary>
         /// Gets or sets the status code (HTTP status code)
         /// </summary>
@@ -96,7 +86,7 @@ namespace Lusid.Sdk.Client
         /// <summary>
         /// Gets or sets any error text defined by the calling client.
         /// </summary>
-        public string ErrorText { get; set; }
+        public String ErrorText { get; set; }
 
         /// <summary>
         /// Gets or sets any cookies passed along on the response.
@@ -123,16 +113,6 @@ namespace Lusid.Sdk.Client
         /// The raw content
         /// </summary>
         public string RawContent { get; }
-
-        /// <summary>
-        /// Status of the response. Indicates whether any internal errors have been thrown.
-        /// </summary>
-        public ResponseStatus ResponseStatus { get; set; }
-
-        /// <summary>
-        /// Potential internal exception that might occur with the processing of the API call
-        /// </summary>
-        public Exception InternalException { get; set; }
 
         #endregion Properties
 

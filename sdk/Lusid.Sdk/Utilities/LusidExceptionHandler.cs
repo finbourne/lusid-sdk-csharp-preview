@@ -27,16 +27,23 @@ namespace Lusid.Sdk.Utilities
                     response.RawContent, response.Headers);
             }
 
-            // Throw whenever an internal SDK error has been thrown. This will result in ResponseStatus = Error
-            if (response.ResponseStatus == ResponseStatus.Error)
+            // Throw whenever an internal SDK error has been thrown. This will result in ErrorText to Existvvfbldnvccgcugjejirkbieldtdkbldbhivefrhnujgg
+            
+            if (response.ErrorText != null)
             {
-                return new ApiException(500,
-                    $"Internal SDK error occured when calling {methodName}: {response.ErrorText}",
-                    response.InternalException.StackTrace, response.Headers);
+                return new ApiException(status,
+                    $"Internal SDK error occured when calling {methodName}",
+                    response.ErrorText, response.Headers);
 
                 // TODO: Since we can't log this potentially sensitive information.
                 // consider sending the full response body here into a safe storage for debugging
             }
+
+            if (response.Content == null)
+            {
+                
+            }
+            
             return null;
         }
     }

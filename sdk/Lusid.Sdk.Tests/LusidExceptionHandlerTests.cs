@@ -32,7 +32,7 @@ namespace Lusid.Sdk.Tests
             const string methodName = "someMethod";
             const string errorText = "some error text";
             var response = new ApiResponse<Portfolio>(
-                HttpStatusCode.NoContent,
+                HttpStatusCode.OK,
                 new Multimap<string, string>(),
                 null,
                 "Some internal error")
@@ -45,7 +45,7 @@ namespace Lusid.Sdk.Tests
             var returnedError = (ApiException) LusidExceptionHandler.CustomExceptionFactory(methodName, response);
 
             Assert.That(returnedError.Message, Is.EqualTo($"Internal SDK error occured when calling {methodName}: {errorText}"));
-            Assert.That(returnedError.ErrorCode, Is.EqualTo(500));
+            Assert.That(returnedError.ErrorCode, Is.EqualTo(200));
             Assert.That(returnedError.ErrorContent, Is.EqualTo(stackTraceOfError));
         }
         
@@ -77,7 +77,7 @@ namespace Lusid.Sdk.Tests
             const string methodName = "someMethod";
             const string errorText = "some error text";
             var response = new ApiResponse<Portfolio>(
-                HttpStatusCode.NoContent,
+                default,
                 new Multimap<string, string>(),
                 null,
                 "Some internal error")
@@ -92,7 +92,7 @@ namespace Lusid.Sdk.Tests
 
             // Assert that the error has correct values
             Assert.That(customExceptionHandlerError.Message, Is.EqualTo($"Internal SDK error occured when calling {methodName}: {errorText}"));
-            Assert.That(customExceptionHandlerError.ErrorCode, Is.EqualTo(500));
+            Assert.That(customExceptionHandlerError.ErrorCode, Is.EqualTo(0));
             Assert.That(customExceptionHandlerError.ErrorContent, Is.EqualTo(stackTraceOfError));
             
             // Assert that the custom exception handler errors are the same as the errors on the API
