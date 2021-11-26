@@ -1,13 +1,10 @@
-﻿using System;
-using System.Net;
+﻿using System.Net;
 using Lusid.Sdk.Api;
 using Lusid.Sdk.Client;
 using Lusid.Sdk.Model;
 using Lusid.Sdk.Tests.Utilities;
 using Lusid.Sdk.Utilities;
-using Moq;
 using NUnit.Framework;
-using RestSharp;
 
 namespace Lusid.Sdk.Tests
 {
@@ -26,9 +23,6 @@ namespace Lusid.Sdk.Tests
         [Test]
         public void CallCustomExceptionFactory_FailsWithInternalError_Returns500Exception()
         {
-            var mockException = new Mock<Exception>();
-            const string stackTraceOfError = "Test stack trace";
-            mockException.Setup(e => e.StackTrace).Returns(stackTraceOfError);
             const string methodName = "someMethod";
             const string errorText = "some error text";
             var response = new ApiResponse<Portfolio>(
@@ -37,20 +31,18 @@ namespace Lusid.Sdk.Tests
                 null,
                 "Some internal error")
             {
-                ErrorText = errorText,
-                ResponseStatus = ResponseStatus.Error,
-                InternalException = mockException.Object
+                ErrorText = errorText
             };
             
             var returnedError = (ApiException) LusidExceptionHandler.CustomExceptionFactory(methodName, response);
 
             Assert.That(returnedError.Message, Is.EqualTo($"Internal SDK error occured when calling {methodName}: {errorText}"));
             Assert.That(returnedError.ErrorCode, Is.EqualTo(200));
-            Assert.That(returnedError.ErrorContent, Is.EqualTo(stackTraceOfError));
+            Assert.That(returnedError.ErrorContent, Is.EqualTo(errorText));
         }
         
         [Test]
-        public void CallCustomExceptionFactory_FailsWithApiError_ReturnsTheSameErrorCodeAsApiWithNoStackTrace()
+        public void CallCustomExceptionFactory_FailsWithApiError_ReturnsTheSameErrorCodeAsApi()
         {
             const string rawContent = "Not found portfolio";
             const string methodName = "someMethod";
@@ -71,9 +63,6 @@ namespace Lusid.Sdk.Tests
         [Test]
         public void CallPortfoliosApiExceptionFactory_DefaultIsOverriden_ExceptionFactoryOfApiIsSameAsCustomOne()
         {
-            var mockException = new Mock<Exception>();
-            const string stackTraceOfError = "Test stack trace";
-            mockException.Setup(e => e.StackTrace).Returns(stackTraceOfError);
             const string methodName = "someMethod";
             const string errorText = "some error text";
             var response = new ApiResponse<Portfolio>(
@@ -82,9 +71,7 @@ namespace Lusid.Sdk.Tests
                 null,
                 "Some internal error")
             {
-                ErrorText = errorText,
-                ResponseStatus = ResponseStatus.Error,
-                InternalException = mockException.Object
+                ErrorText = errorText
             };
 
             var customExceptionHandlerError = (ApiException) LusidExceptionHandler.CustomExceptionFactory(methodName, response);
@@ -93,7 +80,7 @@ namespace Lusid.Sdk.Tests
             // Assert that the error has correct values
             Assert.That(customExceptionHandlerError.Message, Is.EqualTo($"Internal SDK error occured when calling {methodName}: {errorText}"));
             Assert.That(customExceptionHandlerError.ErrorCode, Is.EqualTo(0));
-            Assert.That(customExceptionHandlerError.ErrorContent, Is.EqualTo(stackTraceOfError));
+            Assert.That(customExceptionHandlerError.ErrorContent, Is.EqualTo(errorText));
             
             // Assert that the custom exception handler errors are the same as the errors on the API
             Assert.That(customExceptionHandlerError.Message, Is.EqualTo(errorOnTheApi.Message));
@@ -104,9 +91,7 @@ namespace Lusid.Sdk.Tests
         [Test]
         public void CallDefaultExceptionFactory_ItIsDifferentThanOnApi_DefaultExceptionFactoryResponseIsNullAndApiOneIsNot()
         {
-            var mockException = new Mock<Exception>();
-            const string stackTraceOfError = "Test stack trace";
-            mockException.Setup(e => e.StackTrace).Returns(stackTraceOfError);
+
             const string methodName = "someMethod";
             const string errorText = "some error text";
             var response = new ApiResponse<Portfolio>(
@@ -116,8 +101,6 @@ namespace Lusid.Sdk.Tests
                 "Some internal error")
             {
                 ErrorText = errorText,
-                ResponseStatus = ResponseStatus.Error,
-                InternalException = mockException.Object
             };
             
             var defaultExceptionFactoryError = (ApiException) Configuration.DefaultExceptionFactory.Invoke(methodName, response);
@@ -127,5 +110,27 @@ namespace Lusid.Sdk.Tests
             Assert.That(errorOnTheApi, Is.Not.Null);
             
         }
+        
+        [Test]
+        [TestCase(" ")]
+        [TestCase("")]
+        [TestCase(null)]
+        public void CallCustomExceptionFactory_RestResponseBodyIsNullOrEmpty_ThrowsError(string apiResponseString)
+        {
+            var expectedError =
+                $"API response body was invalid: '{apiResponseString}'. " +
+                "Please check the logs for this request and potentially raise the issue with the API team.";
+            const string methodName = "someMethod";
+            var response = new ApiResponse<Portfolio>(
+                HttpStatusCode.NoContent,
+                new Multimap<string, string>(),
+                null,
+                apiResponseString);
+            
+            var customExceptionHandlerError = (ApiException) LusidExceptionHandler.CustomExceptionFactory(methodName, response);
+            
+            Assert.That(customExceptionHandlerError.ErrorContent, Is.EqualTo(expectedError));
+        }
+        
     }
 }
