@@ -12,7 +12,6 @@ using Lusid.Sdk.Utilities;
 using Newtonsoft.Json;
 using NUnit.Framework;
 using System.Net;
-using RestSharp;
 
 namespace Lusid.Sdk.Tests
 {
