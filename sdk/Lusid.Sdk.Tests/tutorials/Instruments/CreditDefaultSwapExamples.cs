@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using Lusid.Sdk.Model;
 using Lusid.Sdk.Tests.Utilities;
@@ -174,6 +175,86 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
         {
             var cds = InstrumentExamples.CreateExampleCreditDefaultSwap();
             CallLusidGetPortfolioCashFlowsEndpoint(cds, model);
+        }
+
+        [TestCase("2020-01-01T00:00:00.0000000+00:00")] // calculate upfront charge for cds contract
+        [TestCase("2021-01-01T00:00:00.0000000+00:00")] // calculate pv of cds
+        public void CreditDefaultSwapIsdaCdsValuationExample(string sTestNow)
+        {
+            // Purpose: Demo the valuation of a credit default swap using the IsdaCds vendor library via Lusid
+            var testScope = Guid.NewGuid().ToString();
+            var testNow = DateTimeOffset.Parse(sTestNow);
+            var cds = InstrumentExamples.CreateExampleCreditDefaultSwap() as CreditDefaultSwap;
+
+            // CREATE the configuration Recipe
+            var pricingOptions = new PricingOptions();
+            // tell Lusid that CDS instruments should be valued with the default model in IsdaCds
+            var modelRules = new List<VendorModelRule>
+                {new VendorModelRule(VendorModelRule.SupplierEnum.IsdaCds, "VendorDefault", "CreditDefaultSwap")};
+            var pricingContext = new PricingContext(options: pricingOptions, modelRules: modelRules);
+            // tell Lusid where to find data for IsdaCreditCurves; the IsdaYieldCurve is found according to a default rule
+            var mktRules = new List<MarketDataKeyRule> {new MarketDataKeyRule("Credit.IsdaCreditCurve.*.*", "Lusid", testScope, MarketDataKeyRule.QuoteTypeEnum.Rate, "mid")};
+            var mktOptions = new MarketOptions("Lusid", null, testScope);
+            var mktContext = new MarketContext(mktRules, options: mktOptions);
+            var recipeName = "IsdaCdsRecipe";
+            var recipe = new ConfigurationRecipe(
+                testScope,
+                recipeName,
+                mktContext,
+                pricingContext,
+                description: "Isda cds valuation demo"
+            );
+
+            // UPSERT the configuration recipe
+            var upsertRecipeRequest = new UpsertRecipeRequest(recipe, null);
+            var upsertRecipeResponse = _recipeApi.UpsertConfigurationRecipe(upsertRecipeRequest);
+            Assert.That(upsertRecipeResponse.Value, Is.Not.Null);
+
+            // CREATE the required market data, in this case a credit curve and a yield curve
+            string ycXml = File.ReadAllText("../../../tutorials/Ibor/ExampleMarketData/IsdaYieldCurve_USD_20181218.xml");
+            var ycOpaque = new OpaqueMarketData(ycXml, "xml", "Example isda yield curve", ComplexMarketData.MarketDataTypeEnum.OpaqueMarketData);
+            var upsertYcId = new ComplexMarketDataId("Lusid", effectiveAt: testNow, marketAsset: "IsdaYieldCurve/USD");
+            var ccOpaque = ycOpaque; // dummy data in IsdaYieldCurve format until we fix a credit curve representation format
+            var upsertCcId = new ComplexMarketDataId("Lusid", effectiveAt: testNow, marketAsset: "IsdaCreditCurve/XYZCorp/USD");
+
+            // UPSERT market data
+            var upsertYcRequest = new UpsertComplexMarketDataRequest(upsertYcId, ycOpaque);
+            var upsertCcRequest = new UpsertComplexMarketDataRequest(upsertCcId, ccOpaque);
+            var upsertCmdResponse = _complexMarketDataApi.UpsertComplexMarketData(testScope,
+                new Dictionary<string, UpsertComplexMarketDataRequest>
+                {
+                    {"yc", upsertYcRequest},
+                    {"cc", upsertCcRequest}
+                });
+            Assert.That(upsertCmdResponse.Failed, Is.Empty);
+
+            // CREATE a inline valuation request with an example CDS instrument
+            var pvKey = "Holding/default/PV";
+            var valRequest = new InlineValuationRequest(
+                recipeId: new ResourceId(testScope, recipeName),
+                metrics: new List<AggregateSpec>
+                {
+                    new AggregateSpec("Analytic/default/InstrumentTag", AggregateSpec.OpEnum.Value),
+                    new AggregateSpec("Analytic/default/ValuationDate", AggregateSpec.OpEnum.Value),
+                    new AggregateSpec(pvKey, AggregateSpec.OpEnum.Value),
+                },
+                reportCurrency: "USD",
+                valuationSchedule: new ValuationSchedule(effectiveAt: new DateTimeOrCutLabel(testNow)),
+                instruments: new List<WeightedInstrument>
+                {
+                    new WeightedInstrument(1, $"{cds.Ticker}-{cds.FlowConventions.Currency}-TestCds", cds)
+                });
+
+            // GET the result
+            var result = _aggregationApi.GetValuationOfWeightedInstruments(valRequest);
+
+            // CHECK that the valuation was performed
+            Assert.That(result.Data, Is.Not.Empty);
+            Assert.That(result.AggregationFailures, Is.Empty);
+            foreach (var val in result.Data)
+            {
+                Console.WriteLine(val.GetValueOrDefault(pvKey));
+            }
         }
     }
 }
