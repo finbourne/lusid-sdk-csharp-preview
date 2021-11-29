@@ -21,7 +21,7 @@ namespace Lusid.Sdk.Tests
 
 
         [Test]
-        public void CallCustomExceptionFactory_FailsWithInternalError_Returns500Exception()
+        public void CallCustomExceptionFactory_FailsWithInternalError_ReturnsErrorAsException()
         {
             const string methodName = "someMethod";
             const string errorText = "some error text";
