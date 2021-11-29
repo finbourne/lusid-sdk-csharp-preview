@@ -513,4 +513,4 @@ namespace Lusid.Sdk.Client
         }
         #endregion Static Members
     }
-} 
+}
