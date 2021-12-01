@@ -177,8 +177,7 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
             CallLusidGetPortfolioCashFlowsEndpoint(cds, model);
         }
 
-        [TestCase("2020-01-01T00:00:00.0000000+00:00")] // calculate upfront charge for cds contract
-        [TestCase("2021-01-01T00:00:00.0000000+00:00")] // calculate pv of cds
+        [TestCase("2018-06-05T00:00:00.0000000+00:00")] // calculate upfront charge for cds contract
         public void CreditDefaultSwapIsdaCdsValuationExample(string sTestNow)
         {
             // Purpose: Demo the valuation of a credit default swap using the IsdaCds vendor library via Lusid
@@ -211,14 +210,14 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
             Assert.That(upsertRecipeResponse.Value, Is.Not.Null);
 
             // CREATE the required market data, in this case a credit curve and a yield curve
-            string ycXml = File.ReadAllText("../../../tutorials/Ibor/ExampleMarketData/IsdaYieldCurve_USD_20181218.xml");
+            string ycXml = File.ReadAllText("../../../tutorials/Ibor/ExampleMarketData/IsdaYieldCurve_USD_20200605.xml");
             var ycOpaque = new OpaqueMarketData(ycXml, "xml", "Example isda yield curve", ComplexMarketData.MarketDataTypeEnum.OpaqueMarketData);
             var upsertYcId = new ComplexMarketDataId("Lusid", effectiveAt: testNow, marketAsset: "IsdaYieldCurve/USD");
             var ccData = new CreditSpreadCurveData(
-                baseDate: new DateTimeOffset(2020, 06, 05, 0, 0, 0, TimeSpan.Zero),
+                baseDate: testNow,
                 domCcy: "USD",
-                tenors: new List<string> {"6M", "1Y", "5Y"},
-                spreads: new List<decimal> {0.002m, 0.0018m, 0.001m},
+                tenors: new List<string> {"6M", "1Y", "5Y", "10Y"},
+                spreads: new List<decimal> {0.001m, 0.0011m, 0.0015m, 0.002m},
                 recoveryRate: 0.4m,
                 marketDataType: ComplexMarketData.MarketDataTypeEnum.CreditSpreadCurveData);
             var upsertCcId = new ComplexMarketDataId("Lusid", effectiveAt: testNow, marketAsset: "IsdaCreditCurve/XYZCorp/USD");
