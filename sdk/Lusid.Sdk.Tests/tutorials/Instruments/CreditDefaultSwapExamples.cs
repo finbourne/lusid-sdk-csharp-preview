@@ -215,11 +215,12 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
             var ycOpaque = new OpaqueMarketData(ycXml, "xml", "Example isda yield curve", ComplexMarketData.MarketDataTypeEnum.OpaqueMarketData);
             var upsertYcId = new ComplexMarketDataId("Lusid", effectiveAt: testNow, marketAsset: "IsdaYieldCurve/USD");
             var ccData = new CreditSpreadCurveData(
-                new DateTimeOffset(2020, 06, 05, 0, 0, 0, TimeSpan.Zero),
-                "USD",
-                new List<string> {"6M", "1Y", "5Y"},
-                new List<double> {0.002, 0.0018, 0.001},
-                0.4m);
+                baseDate: new DateTimeOffset(2020, 06, 05, 0, 0, 0, TimeSpan.Zero),
+                domCcy: "USD",
+                tenors: new List<string> {"6M", "1Y", "5Y"},
+                spreads: new List<decimal> {0.002m, 0.0018m, 0.001m},
+                recoveryRate: 0.4m,
+                marketDataType: ComplexMarketData.MarketDataTypeEnum.CreditSpreadCurveData);
             var upsertCcId = new ComplexMarketDataId("Lusid", effectiveAt: testNow, marketAsset: "IsdaCreditCurve/XYZCorp/USD");
 
             // UPSERT market data
