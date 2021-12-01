@@ -214,12 +214,17 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
             string ycXml = File.ReadAllText("../../../tutorials/Ibor/ExampleMarketData/IsdaYieldCurve_USD_20181218.xml");
             var ycOpaque = new OpaqueMarketData(ycXml, "xml", "Example isda yield curve", ComplexMarketData.MarketDataTypeEnum.OpaqueMarketData);
             var upsertYcId = new ComplexMarketDataId("Lusid", effectiveAt: testNow, marketAsset: "IsdaYieldCurve/USD");
-            var ccOpaque = ycOpaque; // dummy data in IsdaYieldCurve format until we fix a credit curve representation format
+            var ccData = new CreditSpreadCurveData(
+                new DateTimeOffset(2020, 06, 05, 0, 0, 0, TimeSpan.Zero),
+                "USD",
+                new List<string> {"6M", "1Y", "5Y"},
+                new List<double> {0.002, 0.0018, 0.001},
+                0.4m);
             var upsertCcId = new ComplexMarketDataId("Lusid", effectiveAt: testNow, marketAsset: "IsdaCreditCurve/XYZCorp/USD");
 
             // UPSERT market data
             var upsertYcRequest = new UpsertComplexMarketDataRequest(upsertYcId, ycOpaque);
-            var upsertCcRequest = new UpsertComplexMarketDataRequest(upsertCcId, ccOpaque);
+            var upsertCcRequest = new UpsertComplexMarketDataRequest(upsertCcId, ccData);
             var upsertCmdResponse = _complexMarketDataApi.UpsertComplexMarketData(testScope,
                 new Dictionary<string, UpsertComplexMarketDataRequest>
                 {
