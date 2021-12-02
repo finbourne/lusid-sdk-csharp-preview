@@ -177,7 +177,7 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
             CallLusidGetPortfolioCashFlowsEndpoint(cds, model);
         }
 
-        [TestCase("2018-06-05T00:00:00.0000000+00:00")] // calculate upfront charge for cds contract
+        [TestCase("2020-06-05T00:00:00.0000000+00:00")] // calculate upfront charge for cds contract
         public void CreditDefaultSwapIsdaCdsValuationExample(string sTestNow)
         {
             // Purpose: Demo the valuation of a credit default swap using the IsdaCds vendor library via Lusid
