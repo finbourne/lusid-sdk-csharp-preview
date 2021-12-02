@@ -330,7 +330,7 @@ namespace Lusid.Sdk.Tests.Utilities
         internal static LusidInstrument CreateExampleCreditDefaultSwap()
             => new CreditDefaultSwap(
                 ticker: "XYZCorp",
-                startDate: new DateTimeOffset(2020, 3, 20, 0, 0, 0, TimeSpan.Zero),
+                startDate: new DateTimeOffset(2020, 6, 20, 0, 0, 0, TimeSpan.Zero),
                 maturityDate: new DateTimeOffset(2025, 6, 20, 0, 0, 0, TimeSpan.Zero),
                 flowConventions: CreateExampleCdsFlowConventions(),
                 couponRate: 0.05m,
