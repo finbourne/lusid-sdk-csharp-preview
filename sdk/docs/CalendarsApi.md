@@ -1,6 +1,6 @@
 # Lusid.Sdk.Api.CalendarsApi
 
-All URIs are relative to *http://local-unit-test-server.lusid.com:48588*
+All URIs are relative to *http://local-unit-test-server.lusid.com:34947*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
@@ -13,7 +13,7 @@ Method | HTTP request | Description
 [**GetCalendar**](CalendarsApi.md#getcalendar) | **GET** /api/calendars/generic/{scope}/{code} | [BETA] GetCalendar: Get a calendar in its generic form
 [**GetDates**](CalendarsApi.md#getdates) | **GET** /api/calendars/generic/{scope}/{code}/dates | [BETA] GetDates: Get dates for a specific calendar
 [**IsBusinessDateTime**](CalendarsApi.md#isbusinessdatetime) | **GET** /api/calendars/businessday/{scope}/{code} | [BETA] IsBusinessDateTime: Check whether a DateTime is a \&quot;Business DateTime\&quot;
-[**ListCalendars**](CalendarsApi.md#listcalendars) | **GET** /api/calendars/generic | [BETA] ListCalendars: List Calenders
+[**ListCalendars**](CalendarsApi.md#listcalendars) | **GET** /api/calendars/generic | [BETA] ListCalendars: List Calendars
 [**ListCalendarsInScope**](CalendarsApi.md#listcalendarsinscope) | **GET** /api/calendars/generic/{scope} | [BETA] ListCalendarsInScope: List all calenders in a specified scope
 [**UpdateCalendar**](CalendarsApi.md#updatecalendar) | **POST** /api/calendars/generic/{scope}/{code} | [BETA] UpdateCalendar: Update a calendar
 
@@ -41,7 +41,7 @@ namespace Example
         public static void Main()
         {
             Configuration config = new Configuration();
-            config.BasePath = "http://local-unit-test-server.lusid.com:48588";
+            config.BasePath = "http://local-unit-test-server.lusid.com:34947";
             // Configure OAuth2 access token for authorization: oauth2
             config.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -119,7 +119,7 @@ namespace Example
         public static void Main()
         {
             Configuration config = new Configuration();
-            config.BasePath = "http://local-unit-test-server.lusid.com:48588";
+            config.BasePath = "http://local-unit-test-server.lusid.com:34947";
             // Configure OAuth2 access token for authorization: oauth2
             config.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -199,7 +199,7 @@ namespace Example
         public static void Main()
         {
             Configuration config = new Configuration();
-            config.BasePath = "http://local-unit-test-server.lusid.com:48588";
+            config.BasePath = "http://local-unit-test-server.lusid.com:34947";
             // Configure OAuth2 access token for authorization: oauth2
             config.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -275,7 +275,7 @@ namespace Example
         public static void Main()
         {
             Configuration config = new Configuration();
-            config.BasePath = "http://local-unit-test-server.lusid.com:48588";
+            config.BasePath = "http://local-unit-test-server.lusid.com:34947";
             // Configure OAuth2 access token for authorization: oauth2
             config.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -353,7 +353,7 @@ namespace Example
         public static void Main()
         {
             Configuration config = new Configuration();
-            config.BasePath = "http://local-unit-test-server.lusid.com:48588";
+            config.BasePath = "http://local-unit-test-server.lusid.com:34947";
             // Configure OAuth2 access token for authorization: oauth2
             config.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -433,7 +433,7 @@ namespace Example
         public static void Main()
         {
             Configuration config = new Configuration();
-            config.BasePath = "http://local-unit-test-server.lusid.com:48588";
+            config.BasePath = "http://local-unit-test-server.lusid.com:34947";
             // Configure OAuth2 access token for authorization: oauth2
             config.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -513,7 +513,7 @@ namespace Example
         public static void Main()
         {
             Configuration config = new Configuration();
-            config.BasePath = "http://local-unit-test-server.lusid.com:48588";
+            config.BasePath = "http://local-unit-test-server.lusid.com:34947";
             // Configure OAuth2 access token for authorization: oauth2
             config.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -593,7 +593,7 @@ namespace Example
         public static void Main()
         {
             Configuration config = new Configuration();
-            config.BasePath = "http://local-unit-test-server.lusid.com:48588";
+            config.BasePath = "http://local-unit-test-server.lusid.com:34947";
             // Configure OAuth2 access token for authorization: oauth2
             config.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -679,7 +679,7 @@ namespace Example
         public static void Main()
         {
             Configuration config = new Configuration();
-            config.BasePath = "http://local-unit-test-server.lusid.com:48588";
+            config.BasePath = "http://local-unit-test-server.lusid.com:34947";
             // Configure OAuth2 access token for authorization: oauth2
             config.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -742,7 +742,7 @@ Name | Type | Description  | Notes
 # **ListCalendars**
 > PagedResourceListOfCalendar ListCalendars (DateTimeOffset? asAt = null, string page = null, int? limit = null, string filter = null)
 
-[BETA] ListCalendars: List Calenders
+[BETA] ListCalendars: List Calendars
 
 List calendars at a point in AsAt time.
 
@@ -761,7 +761,7 @@ namespace Example
         public static void Main()
         {
             Configuration config = new Configuration();
-            config.BasePath = "http://local-unit-test-server.lusid.com:48588";
+            config.BasePath = "http://local-unit-test-server.lusid.com:34947";
             // Configure OAuth2 access token for authorization: oauth2
             config.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -773,7 +773,7 @@ namespace Example
 
             try
             {
-                // [BETA] ListCalendars: List Calenders
+                // [BETA] ListCalendars: List Calendars
                 PagedResourceListOfCalendar result = apiInstance.ListCalendars(asAt, page, limit, filter);
                 Debug.WriteLine(result);
             }
@@ -843,7 +843,7 @@ namespace Example
         public static void Main()
         {
             Configuration config = new Configuration();
-            config.BasePath = "http://local-unit-test-server.lusid.com:48588";
+            config.BasePath = "http://local-unit-test-server.lusid.com:34947";
             // Configure OAuth2 access token for authorization: oauth2
             config.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -929,7 +929,7 @@ namespace Example
         public static void Main()
         {
             Configuration config = new Configuration();
-            config.BasePath = "http://local-unit-test-server.lusid.com:48588";
+            config.BasePath = "http://local-unit-test-server.lusid.com:34947";
             // Configure OAuth2 access token for authorization: oauth2
             config.AccessToken = "YOUR_ACCESS_TOKEN";
 
