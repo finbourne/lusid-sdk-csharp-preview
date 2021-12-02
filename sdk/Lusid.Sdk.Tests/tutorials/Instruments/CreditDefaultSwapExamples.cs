@@ -191,10 +191,15 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
             var modelRules = new List<VendorModelRule>
                 {new VendorModelRule(VendorModelRule.SupplierEnum.IsdaCds, "VendorDefault", "CreditDefaultSwap")};
             var pricingContext = new PricingContext(options: pricingOptions, modelRules: modelRules);
-            // tell Lusid where to find data for IsdaCreditCurves; the IsdaYieldCurve is found according to a default rule
-            var mktRules = new List<MarketDataKeyRule> {new MarketDataKeyRule("Credit.IsdaCreditCurve.*.*", "Lusid", testScope, MarketDataKeyRule.QuoteTypeEnum.Rate, "mid")};
-            var mktOptions = new MarketOptions("Lusid", null, testScope);
-            var mktContext = new MarketContext(mktRules, options: mktOptions);
+            // IsdaCds will request market data corresponding to the key "Credit.IsdaCreditCurve.{Ticker}.{Currency}", in this case "Credit.IsdaCreditCurve.XYZCorp.USD".
+            // Similarly, IsdaCds will request an Isda yield curve stored under the key "Rates.IsdaYieldCurve.{Currency}".
+            // The following MarketDataKeyRules tell it to look for the data in Lusid in scope testScope. The * symbols are wildcards for the requested keys.
+            var mktRules = new List<MarketDataKeyRule>
+            {
+                new MarketDataKeyRule("Credit.IsdaCreditCurve.*.*", "Lusid", testScope, MarketDataKeyRule.QuoteTypeEnum.Rate, "mid"),
+                new MarketDataKeyRule("Rates.IsdaYieldCurve.*", "Lusid", testScope, MarketDataKeyRule.QuoteTypeEnum.Rate, "mid")
+            };
+            var mktContext = new MarketContext(mktRules);
             var recipeName = "IsdaCdsRecipe";
             var recipe = new ConfigurationRecipe(
                 testScope,
@@ -210,6 +215,8 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
             Assert.That(upsertRecipeResponse.Value, Is.Not.Null);
 
             // CREATE the required market data, in this case a credit curve and a yield curve
+            // The IsdaYieldCurve for a currency can be sourced from the daily set published by ISDA
+            // The credit spreads can be sourced from an appropriate market data provider or internal marks
             string ycXml = File.ReadAllText("../../../tutorials/Ibor/ExampleMarketData/IsdaYieldCurve_USD_20200605.xml");
             var ycOpaque = new OpaqueMarketData(ycXml, "xml", "Example isda yield curve", ComplexMarketData.MarketDataTypeEnum.OpaqueMarketData);
             var upsertYcId = new ComplexMarketDataId("Lusid", effectiveAt: testNow, marketAsset: "IsdaYieldCurve/USD");
@@ -227,7 +234,8 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
             var upsertCcRequest = new UpsertComplexMarketDataRequest(upsertCcId, ccData);
             var upsertCmdResponse = _complexMarketDataApi.UpsertComplexMarketData(testScope,
                 new Dictionary<string, UpsertComplexMarketDataRequest>
-                {
+                { // the strings yc and cc are correlation ids that should be unique per call
+                  // they serve no purpose other than for the client/user to identify the item(s) in the result.
                     {"yc", upsertYcRequest},
                     {"cc", upsertCcRequest}
                 });
