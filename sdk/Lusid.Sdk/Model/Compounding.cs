@@ -27,58 +27,52 @@ using OpenAPIDateConverter = Lusid.Sdk.Client.OpenAPIDateConverter;
 namespace Lusid.Sdk.Model
 {
     /// <summary>
-    /// DeletedEntityResponse
+    /// The compounding settings used on interest rate.
     /// </summary>
-    [DataContract(Name = "DeletedEntityResponse")]
-    public partial class DeletedEntityResponse : IEquatable<DeletedEntityResponse>
+    [DataContract(Name = "Compounding")]
+    public partial class Compounding : IEquatable<Compounding>
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="DeletedEntityResponse" /> class.
+        /// Initializes a new instance of the <see cref="Compounding" /> class.
         /// </summary>
         [JsonConstructorAttribute]
-        protected DeletedEntityResponse() { }
+        protected Compounding() { }
         /// <summary>
-        /// Initializes a new instance of the <see cref="DeletedEntityResponse" /> class.
+        /// Initializes a new instance of the <see cref="Compounding" /> class.
         /// </summary>
-        /// <param name="href">The specific Uniform Resource Identifier (URI) for this resource at the requested effective and asAt datetime..</param>
-        /// <param name="effectiveFrom">The effective datetime at which the deletion became valid. May be null in the case where multiple date times are applicable..</param>
-        /// <param name="asAt">The asAt datetime at which the deletion was committed to LUSID. (required).</param>
-        /// <param name="links">Collection of links..</param>
-        public DeletedEntityResponse(string href = default(string), DateTimeOffset? effectiveFrom = default(DateTimeOffset?), DateTimeOffset asAt = default(DateTimeOffset), List<Link> links = default(List<Link>))
+        /// <param name="compoundingMethod">If the interest rate is simple or compounded.  Supported string (enumeration) values are: [Average, Compounded, None]. (required).</param>
+        /// <param name="resetFrequency">The interest payment frequency. (required).</param>
+        /// <param name="spreadCompoundingMethod">Defines how the computed leg spread is applied to compounded rate.  It applies only when CompoundingMethod &#x3D; ‘Compounded‘.  Supported string (enumeration) values are: [IsdaCompounding, NoCompounding, IsdaFlatCompounding, None]. (required).</param>
+        public Compounding(string compoundingMethod = default(string), string resetFrequency = default(string), string spreadCompoundingMethod = default(string))
         {
-            this.AsAt = asAt;
-            this.Href = href;
-            this.EffectiveFrom = effectiveFrom;
-            this.Links = links;
+            // to ensure "compoundingMethod" is required (not null)
+            this.CompoundingMethod = compoundingMethod ?? throw new ArgumentNullException("compoundingMethod is a required property for Compounding and cannot be null");
+            // to ensure "resetFrequency" is required (not null)
+            this.ResetFrequency = resetFrequency ?? throw new ArgumentNullException("resetFrequency is a required property for Compounding and cannot be null");
+            // to ensure "spreadCompoundingMethod" is required (not null)
+            this.SpreadCompoundingMethod = spreadCompoundingMethod ?? throw new ArgumentNullException("spreadCompoundingMethod is a required property for Compounding and cannot be null");
         }
 
         /// <summary>
-        /// The specific Uniform Resource Identifier (URI) for this resource at the requested effective and asAt datetime.
+        /// If the interest rate is simple or compounded.  Supported string (enumeration) values are: [Average, Compounded, None].
         /// </summary>
-        /// <value>The specific Uniform Resource Identifier (URI) for this resource at the requested effective and asAt datetime.</value>
-        [DataMember(Name = "href", EmitDefaultValue = true)]
-        public string Href { get; set; }
+        /// <value>If the interest rate is simple or compounded.  Supported string (enumeration) values are: [Average, Compounded, None].</value>
+        [DataMember(Name = "compoundingMethod", IsRequired = true, EmitDefaultValue = false)]
+        public string CompoundingMethod { get; set; }
 
         /// <summary>
-        /// The effective datetime at which the deletion became valid. May be null in the case where multiple date times are applicable.
+        /// The interest payment frequency.
         /// </summary>
-        /// <value>The effective datetime at which the deletion became valid. May be null in the case where multiple date times are applicable.</value>
-        [DataMember(Name = "effectiveFrom", EmitDefaultValue = true)]
-        public DateTimeOffset? EffectiveFrom { get; set; }
+        /// <value>The interest payment frequency.</value>
+        [DataMember(Name = "resetFrequency", IsRequired = true, EmitDefaultValue = false)]
+        public string ResetFrequency { get; set; }
 
         /// <summary>
-        /// The asAt datetime at which the deletion was committed to LUSID.
+        /// Defines how the computed leg spread is applied to compounded rate.  It applies only when CompoundingMethod &#x3D; ‘Compounded‘.  Supported string (enumeration) values are: [IsdaCompounding, NoCompounding, IsdaFlatCompounding, None].
         /// </summary>
-        /// <value>The asAt datetime at which the deletion was committed to LUSID.</value>
-        [DataMember(Name = "asAt", IsRequired = true, EmitDefaultValue = false)]
-        public DateTimeOffset AsAt { get; set; }
-
-        /// <summary>
-        /// Collection of links.
-        /// </summary>
-        /// <value>Collection of links.</value>
-        [DataMember(Name = "links", EmitDefaultValue = true)]
-        public List<Link> Links { get; set; }
+        /// <value>Defines how the computed leg spread is applied to compounded rate.  It applies only when CompoundingMethod &#x3D; ‘Compounded‘.  Supported string (enumeration) values are: [IsdaCompounding, NoCompounding, IsdaFlatCompounding, None].</value>
+        [DataMember(Name = "spreadCompoundingMethod", IsRequired = true, EmitDefaultValue = false)]
+        public string SpreadCompoundingMethod { get; set; }
 
         /// <summary>
         /// Returns the string presentation of the object
@@ -87,11 +81,10 @@ namespace Lusid.Sdk.Model
         public override string ToString()
         {
             var sb = new StringBuilder();
-            sb.Append("class DeletedEntityResponse {\n");
-            sb.Append("  Href: ").Append(Href).Append("\n");
-            sb.Append("  EffectiveFrom: ").Append(EffectiveFrom).Append("\n");
-            sb.Append("  AsAt: ").Append(AsAt).Append("\n");
-            sb.Append("  Links: ").Append(Links).Append("\n");
+            sb.Append("class Compounding {\n");
+            sb.Append("  CompoundingMethod: ").Append(CompoundingMethod).Append("\n");
+            sb.Append("  ResetFrequency: ").Append(ResetFrequency).Append("\n");
+            sb.Append("  SpreadCompoundingMethod: ").Append(SpreadCompoundingMethod).Append("\n");
             sb.Append("}\n");
             return sb.ToString();
         }
@@ -112,40 +105,34 @@ namespace Lusid.Sdk.Model
         /// <returns>Boolean</returns>
         public override bool Equals(object input)
         {
-            return this.Equals(input as DeletedEntityResponse);
+            return this.Equals(input as Compounding);
         }
 
         /// <summary>
-        /// Returns true if DeletedEntityResponse instances are equal
+        /// Returns true if Compounding instances are equal
         /// </summary>
-        /// <param name="input">Instance of DeletedEntityResponse to be compared</param>
+        /// <param name="input">Instance of Compounding to be compared</param>
         /// <returns>Boolean</returns>
-        public bool Equals(DeletedEntityResponse input)
+        public bool Equals(Compounding input)
         {
             if (input == null)
                 return false;
 
             return 
                 (
-                    this.Href == input.Href ||
-                    (this.Href != null &&
-                    this.Href.Equals(input.Href))
+                    this.CompoundingMethod == input.CompoundingMethod ||
+                    (this.CompoundingMethod != null &&
+                    this.CompoundingMethod.Equals(input.CompoundingMethod))
                 ) && 
                 (
-                    this.EffectiveFrom == input.EffectiveFrom ||
-                    (this.EffectiveFrom != null &&
-                    this.EffectiveFrom.Equals(input.EffectiveFrom))
+                    this.ResetFrequency == input.ResetFrequency ||
+                    (this.ResetFrequency != null &&
+                    this.ResetFrequency.Equals(input.ResetFrequency))
                 ) && 
                 (
-                    this.AsAt == input.AsAt ||
-                    (this.AsAt != null &&
-                    this.AsAt.Equals(input.AsAt))
-                ) && 
-                (
-                    this.Links == input.Links ||
-                    this.Links != null &&
-                    input.Links != null &&
-                    this.Links.SequenceEqual(input.Links)
+                    this.SpreadCompoundingMethod == input.SpreadCompoundingMethod ||
+                    (this.SpreadCompoundingMethod != null &&
+                    this.SpreadCompoundingMethod.Equals(input.SpreadCompoundingMethod))
                 );
         }
 
@@ -158,14 +145,12 @@ namespace Lusid.Sdk.Model
             unchecked // Overflow is fine, just wrap
             {
                 int hashCode = 41;
-                if (this.Href != null)
-                    hashCode = hashCode * 59 + this.Href.GetHashCode();
-                if (this.EffectiveFrom != null)
-                    hashCode = hashCode * 59 + this.EffectiveFrom.GetHashCode();
-                if (this.AsAt != null)
-                    hashCode = hashCode * 59 + this.AsAt.GetHashCode();
-                if (this.Links != null)
-                    hashCode = hashCode * 59 + this.Links.GetHashCode();
+                if (this.CompoundingMethod != null)
+                    hashCode = hashCode * 59 + this.CompoundingMethod.GetHashCode();
+                if (this.ResetFrequency != null)
+                    hashCode = hashCode * 59 + this.ResetFrequency.GetHashCode();
+                if (this.SpreadCompoundingMethod != null)
+                    hashCode = hashCode * 59 + this.SpreadCompoundingMethod.GetHashCode();
                 return hashCode;
             }
         }
