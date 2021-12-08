@@ -6,6 +6,7 @@ using Lusid.Sdk.Utilities;
 using NUnit.Framework;
 using NUnit.Framework.Constraints;
 using Polly;
+using Polly.Retry;
 using RestSharp;
 
 namespace Lusid.Sdk.Tests.Utilities
@@ -17,7 +18,6 @@ namespace Lusid.Sdk.Tests.Utilities
         private readonly Policy<IRestResponse> _initialRetryPolicy = RetryConfiguration.RetryPolicy;
         private HttpListener _httpListener;
         private const string ListenerUriPrefix = "http://localhost:4444/";
-        public static bool PollyWorks = false;
         
         [SetUp]
         public void SetUp()
@@ -47,32 +47,32 @@ namespace Lusid.Sdk.Tests.Utilities
         [Test]
         public void CallGetPortfoliosApi_WhenPollyRetryPolicyConfigured_PollyIsTriggered()
         {
+            const int numberOfRetries = ApiRetryHandler.MaxRetryAttempts;
+            var apiCallNumber = 0;
+            const int expectedNumberOfApiCalls = numberOfRetries + 1;
             _httpListener.Start();
-            var result = _httpListener.BeginGetContext(ListenerCallback, _httpListener);
-            // Applications can do some work here while waiting for the
-            // request. If no work can be done until you have processed a request,
-            // use a wait handle to prevent this thread from terminating
-            // while the asynchronous operation completes.
-
-            Policy<IRestResponse> testRetryPolicy = 
-                Policy
-                .HandleResult<IRestResponse>(restResponse => restResponse.StatusCode == 0)
-                .Retry(
-                    1,
-                    onRetry: (retryResult, retryCount, context) =>
-                    {
-                        PollyWorks = true;
-                        throw new Exception("We should see this message thrown when we implement exception factory");
-                    });
-            RetryConfiguration.RetryPolicy = testRetryPolicy;
+            for (var i = 0; i < expectedNumberOfApiCalls; i++)
+            {
+                _httpListener.BeginGetContext(result =>
+                {
+                    apiCallNumber++;
+                    var listener = (HttpListener) result.AsyncState;
+                    // Call EndGetContext to complete the asynchronous operation.
+                    var context = listener.EndGetContext(result);
             
-            // Calling GetPortfolio or any other API triggers the flow that triggers polly
-            var response = _apiFactory.Api<IPortfoliosApi>().GetPortfolio("any", "any");
+                    // Obtain a response object.
+                    var response = context.Response;
 
-            Assert.That(PollyWorks, Is.True);
-            RetryConfiguration.RetryPolicy = _initialRetryPolicy;
-            // Make sure that the new retry policy is not the same as the test retry policy
-            Assert.That(RetryConfiguration.RetryPolicy, Is.Not.EqualTo(testRetryPolicy));
+                    // Abort the response. This returns 0 status code.
+                    response.Abort();
+                }, _httpListener);
+            }
+
+            // Calling GetPortfolio or any other API triggers the flow that triggers polly
+            var sdkResponse = _apiFactory.Api<IPortfoliosApi>().GetPortfolio("any", "any");
+
+            Assert.That(apiCallNumber, Is.EqualTo(expectedNumberOfApiCalls));
+            Assert.That(sdkResponse, Is.Null);
         }
 
         [Test]
@@ -104,7 +104,6 @@ namespace Lusid.Sdk.Tests.Utilities
             RetryConfiguration.RetryPolicy = _initialRetryPolicy;
             // Request is processed at this point and can be closed
             _httpListener.Close();
-            PollyWorks = false;
         }
         
         

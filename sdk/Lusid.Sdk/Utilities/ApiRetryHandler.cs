@@ -9,7 +9,10 @@ namespace Lusid.Sdk.Utilities
     /// </summary>
     public static class ApiRetryHandler
     {
-        private const int MaxRetryAttempts = 3;
+        /// <summary>
+        /// Number of max retry attempts
+        /// </summary>
+        public const int MaxRetryAttempts = 3;
 
         /// <summary>
         /// Get the internal exception condition on which to retry.
