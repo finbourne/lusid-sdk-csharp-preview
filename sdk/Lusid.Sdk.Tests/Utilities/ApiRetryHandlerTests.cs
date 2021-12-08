@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Net;
+using System.Threading;
 using Lusid.Sdk.Api;
 using Lusid.Sdk.Client;
 using Lusid.Sdk.Utilities;
@@ -39,10 +40,9 @@ namespace Lusid.Sdk.Tests.Utilities
             var currentApiCall = 0;
             const int expectedNumberOfApiCalls = numberOfRetries + 1;
             _httpListener.Start();
-            var httpListenerResults = new List<IAsyncResult>();
             for (var i = 0; i < expectedNumberOfApiCalls; i++)
             {
-                var result = _httpListener.BeginGetContext(result =>
+                 _httpListener.BeginGetContext(result =>
                 {
                     currentApiCall++;
                     var listener = (HttpListener) result.AsyncState;
@@ -55,8 +55,6 @@ namespace Lusid.Sdk.Tests.Utilities
                     // Abort the response. This returns 0 status code.
                     response.Abort();
                 }, _httpListener);
-                
-                httpListenerResults.Add(result);
             }
 
             var testRetryPolicy = Policy
@@ -72,8 +70,8 @@ namespace Lusid.Sdk.Tests.Utilities
 
             // Calling GetPortfolio or any other API triggers the flow that triggers polly
             var sdkResponse = _apiFactory.Api<IPortfoliosApi>().GetPortfolio("any", "any");
-            
-            httpListenerResults.ForEach(listener => listener.AsyncWaitHandle.WaitOne());
+
+            Thread.Sleep(10000);
             
             Assert.That(currentApiCall, Is.EqualTo(expectedNumberOfApiCalls));
             // In the future 0 error codes with throw an error after retries exceeded
