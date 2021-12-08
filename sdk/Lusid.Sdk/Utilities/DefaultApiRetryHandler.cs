@@ -7,9 +7,10 @@ namespace Lusid.Sdk.Utilities
 {
     /// <summary>
     /// Class used to define API error retry rules for all API calls. Designed to handle openAPI v5 internal SDK exceptions only.
-    /// Clients wanting to implement their own retry policy will also need to handle internal SDK exceptions while they exist.
+    /// Clients wanting to implement their own retry policy may set their Configuraiton.RetryPolicy to the contents found here
+    /// and then .Wrap() their own retry policy on top, so that internal SDK exceptions are already handled by Finbourne
     /// </summary>
-    public static class ApiRetryHandler
+    public static class DefaultApiRetryHandler
     {
         private const int MaxRetryAttempts = 3;
 
