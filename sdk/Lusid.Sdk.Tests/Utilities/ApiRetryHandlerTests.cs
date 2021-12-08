@@ -31,35 +31,22 @@ namespace Lusid.Sdk.Tests.Utilities
             _apiFactory = new LusidApiFactory(testApiConfig);
         }
 
-        private static void ListenerCallback(IAsyncResult result)
-        {
-            var listener = (HttpListener) result.AsyncState;
-            // Call EndGetContext to complete the asynchronous operation.
-            var context = listener.EndGetContext(result);
-            
-            // Obtain a response object.
-            var response = context.Response;
-
-            // Abort the response. This returns 0 status code.
-            response.Abort();
-        }
-
         [Test]
         public void CallGetPortfoliosApi_WhenPollyRetryPolicyConfigured_PollyIsTriggered()
         {
             const int numberOfRetries = ApiRetryHandler.MaxRetryAttempts;
-            var apiCallNumber = 0;
+            CallbackCounter.Counter = 0;
             const int expectedNumberOfApiCalls = numberOfRetries + 1;
             _httpListener.Start();
             for (var i = 0; i < expectedNumberOfApiCalls; i++)
             {
                 _httpListener.BeginGetContext(result =>
                 {
-                    apiCallNumber++;
+                    CallbackCounter.Counter++;
                     var listener = (HttpListener) result.AsyncState;
                     // Call EndGetContext to complete the asynchronous operation.
                     var context = listener.EndGetContext(result);
-            
+
                     // Obtain a response object.
                     var response = context.Response;
 
@@ -68,10 +55,22 @@ namespace Lusid.Sdk.Tests.Utilities
                 }, _httpListener);
             }
 
+            var testRetryPolicy = Policy
+                .HandleResult<IRestResponse>(restResponse => restResponse.StatusCode == 0)
+                .Retry(
+                    retryCount: numberOfRetries,
+                    (result, i) =>
+                    {
+                        Console.WriteLine($"If you see this, then polly retry works. Retry number: {i}");
+                    });
+
+            RetryConfiguration.RetryPolicy = testRetryPolicy;
+
             // Calling GetPortfolio or any other API triggers the flow that triggers polly
             var sdkResponse = _apiFactory.Api<IPortfoliosApi>().GetPortfolio("any", "any");
 
-            Assert.That(apiCallNumber, Is.EqualTo(expectedNumberOfApiCalls));
+            Assert.That(CallbackCounter.Counter, Is.EqualTo(expectedNumberOfApiCalls));
+            // In the future 0 error codes with throw an error after retries exceeded
             Assert.That(sdkResponse, Is.Null);
         }
 
@@ -104,6 +103,11 @@ namespace Lusid.Sdk.Tests.Utilities
             RetryConfiguration.RetryPolicy = _initialRetryPolicy;
             // Request is processed at this point and can be closed
             _httpListener.Close();
+        }
+
+        public static class CallbackCounter
+        {
+            public static int Counter { get; set; }
         }
         
         
