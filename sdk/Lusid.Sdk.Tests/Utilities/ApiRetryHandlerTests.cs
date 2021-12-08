@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Net;
 using Lusid.Sdk.Api;
 using Lusid.Sdk.Client;
@@ -35,14 +36,15 @@ namespace Lusid.Sdk.Tests.Utilities
         public void CallGetPortfoliosApi_WhenPollyRetryPolicyConfigured_PollyIsTriggered()
         {
             const int numberOfRetries = ApiRetryHandler.MaxRetryAttempts;
-            CallbackCounter.Counter = 0;
+            var currentApiCall = 0;
             const int expectedNumberOfApiCalls = numberOfRetries + 1;
             _httpListener.Start();
+            var httpListenerResults = new List<IAsyncResult>();
             for (var i = 0; i < expectedNumberOfApiCalls; i++)
             {
-                _httpListener.BeginGetContext(result =>
+                var result = _httpListener.BeginGetContext(result =>
                 {
-                    CallbackCounter.Counter++;
+                    currentApiCall++;
                     var listener = (HttpListener) result.AsyncState;
                     // Call EndGetContext to complete the asynchronous operation.
                     var context = listener.EndGetContext(result);
@@ -53,6 +55,8 @@ namespace Lusid.Sdk.Tests.Utilities
                     // Abort the response. This returns 0 status code.
                     response.Abort();
                 }, _httpListener);
+                
+                httpListenerResults.Add(result);
             }
 
             var testRetryPolicy = Policy
@@ -68,8 +72,10 @@ namespace Lusid.Sdk.Tests.Utilities
 
             // Calling GetPortfolio or any other API triggers the flow that triggers polly
             var sdkResponse = _apiFactory.Api<IPortfoliosApi>().GetPortfolio("any", "any");
-
-            Assert.That(CallbackCounter.Counter, Is.EqualTo(expectedNumberOfApiCalls));
+            
+            httpListenerResults.ForEach(listener => listener.AsyncWaitHandle.WaitOne());
+            
+            Assert.That(currentApiCall, Is.EqualTo(expectedNumberOfApiCalls));
             // In the future 0 error codes with throw an error after retries exceeded
             Assert.That(sdkResponse, Is.Null);
         }
@@ -104,12 +110,5 @@ namespace Lusid.Sdk.Tests.Utilities
             // Request is processed at this point and can be closed
             _httpListener.Close();
         }
-
-        public static class CallbackCounter
-        {
-            public static int Counter { get; set; }
-        }
-        
-        
     }
 }
