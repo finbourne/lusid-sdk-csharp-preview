@@ -1,40 +1,34 @@
 ﻿using System;
-using Lusid.Sdk.Client;
 using Polly;
 using RestSharp;
 
 namespace Lusid.Sdk.Utilities
 {
     /// <summary>
-    /// Class used to define API error retry rules for all API calls. Designed to handle openAPI v5 internal SDK exceptions only.
-    /// Clients wanting to implement their own retry policy may set their Configuraiton.RetryPolicy to the contents found here
-    /// and then .Wrap() their own retry policy on top, so that internal SDK exceptions are already handled by Finbourne
+    /// Class used to define API error retry rules for all API calls.
     /// </summary>
-    public static class DefaultApiRetryHandler
+    public static class ApiRetryHandler
     {
         private const int MaxRetryAttempts = 3;
 
         /// <summary>
-        /// Get the retry condition on which to retry.
+        /// Get the internal exception condition on which to retry.
         /// </summary>
         /// <param name="restResponse">Response object that comes from the API Client</param>
         /// <returns></returns>
-        private static bool GetRetryCondition(IRestResponse restResponse)
+        private static bool GetInternalExceptionRetryCondition(IRestResponse restResponse)
         {
             return restResponse.ErrorException != null || restResponse.StatusCode == 0;
         }
 
         /// <summary>
         /// Define Polly retry policy for synchronous API calls. Handles internal SDK exceptions only.
+        /// Use .Wrap() method to combine this policy with your other custom policies
         /// </summary>
-        public static Policy<IRestResponse> GetSyncRetryPolicy()
-        {
-            // If there is a configuration policy already defined before the LusidFactory has been created, use it.
-            if (RetryConfiguration.RetryPolicy != null) return RetryConfiguration.RetryPolicy;
-
-            return Policy
+        public static Policy<IRestResponse> GetInternalExceptionRetryPolicy() =>
+            Policy
                 .Handle<SystemException>()
-                .OrResult<IRestResponse>(GetRetryCondition)
+                .OrResult<IRestResponse>(GetInternalExceptionRetryCondition)
                 .Retry(
                     MaxRetryAttempts,
                     onRetry: (result, retryCount, context) =>
@@ -44,21 +38,18 @@ namespace Lusid.Sdk.Utilities
 
                         Console.WriteLine(
                             "Temporarily logging the exception stack trace for finding the underlying root cause of this exception:\n" +
-                            $"{result.Result.ErrorException}");
+                            $"{result.Result.ErrorException}\n");
                     });
-        }
-        
+
+
         /// <summary>
         /// Define Polly retry policy for asynchronous API calls. Handles internal SDK exceptions only.
+        /// Use .Wrap() method to combine this policy with your other custom policies
         /// </summary>
-        public static AsyncPolicy<IRestResponse> GetAsyncRetryPolicy()
-        {
-            // If there is a configuration policy already defined before the LusidFactory has been created, use it.
-            if (RetryConfiguration.AsyncRetryPolicy != null) return RetryConfiguration.AsyncRetryPolicy;
-
-            return Policy
+        public static AsyncPolicy<IRestResponse> GetInternalExceptionAsyncRetryPolicy() =>
+            Policy
                 .Handle<SystemException>()
-                .OrResult<IRestResponse>(GetRetryCondition)
+                .OrResult<IRestResponse>(GetInternalExceptionRetryCondition)
                 .RetryAsync(
                     MaxRetryAttempts,
                     onRetry: (result, retryCount, context) =>
@@ -68,8 +59,7 @@ namespace Lusid.Sdk.Utilities
 
                         Console.WriteLine(
                             "Temporarily logging the exception stack trace for finding the underlying root cause of this exception:\n" +
-                            $"{result.Result.ErrorException}");
+                            $"{result.Result.ErrorException}\n");
                     });
-        }
     }
 }

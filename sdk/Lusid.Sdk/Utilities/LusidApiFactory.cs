@@ -68,8 +68,14 @@ namespace Lusid.Sdk.Utilities
 
         private static Dictionary<Type, IApiAccessor> Init(Configuration configuration)
         {
-            RetryConfiguration.RetryPolicy = DefaultApiRetryHandler.GetSyncRetryPolicy();
-            RetryConfiguration.AsyncRetryPolicy = DefaultApiRetryHandler.GetAsyncRetryPolicy();
+            // If some retry policy has already been assigned, use it.
+            // Users can combine their own policy with the default policy by using the .Wrap() method.
+            RetryConfiguration.RetryPolicy = 
+                RetryConfiguration.RetryPolicy ?? ApiRetryHandler.GetInternalExceptionRetryPolicy();
+            
+            // If some async retry policy has already been assigned, use it.
+            RetryConfiguration.AsyncRetryPolicy =
+                RetryConfiguration.AsyncRetryPolicy ?? ApiRetryHandler.GetInternalExceptionAsyncRetryPolicy();
 
             var dict = new Dictionary<Type, IApiAccessor>();
             foreach (Type api in ApiTypes)
