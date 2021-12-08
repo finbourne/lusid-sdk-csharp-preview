@@ -4,6 +4,7 @@ using Lusid.Sdk.Api;
 using Lusid.Sdk.Client;
 using Lusid.Sdk.Utilities;
 using NUnit.Framework;
+using NUnit.Framework.Constraints;
 using Polly;
 using RestSharp;
 
@@ -16,6 +17,7 @@ namespace Lusid.Sdk.Tests.Utilities
         private readonly Policy<IRestResponse> _initialRetryPolicy = RetryConfiguration.RetryPolicy;
         private HttpListener _httpListener;
         private const string ListenerUriPrefix = "http://localhost:4444/";
+        public static bool PollyWorks = false;
         
         [SetUp]
         public void SetUp()
@@ -52,7 +54,6 @@ namespace Lusid.Sdk.Tests.Utilities
             // use a wait handle to prevent this thread from terminating
             // while the asynchronous operation completes.
 
-            var pollyWorks = false;
             Policy<IRestResponse> testRetryPolicy = 
                 Policy
                 .HandleResult<IRestResponse>(restResponse => restResponse.StatusCode == 0)
@@ -60,7 +61,7 @@ namespace Lusid.Sdk.Tests.Utilities
                     1,
                     onRetry: (retryResult, retryCount, context) =>
                     {
-                        pollyWorks = true;
+                        PollyWorks = true;
                         throw new Exception("We should see this message thrown when we implement exception factory");
                     });
             RetryConfiguration.RetryPolicy = testRetryPolicy;
@@ -68,7 +69,7 @@ namespace Lusid.Sdk.Tests.Utilities
             // Calling GetPortfolio or any other API triggers the flow that triggers polly
             var response = _apiFactory.Api<IPortfoliosApi>().GetPortfolio("any", "any");
 
-            Assert.That(pollyWorks, Is.True);
+            Assert.That(PollyWorks, Is.True);
             RetryConfiguration.RetryPolicy = _initialRetryPolicy;
             // Make sure that the new retry policy is not the same as the test retry policy
             Assert.That(RetryConfiguration.RetryPolicy, Is.Not.EqualTo(testRetryPolicy));
@@ -103,6 +104,7 @@ namespace Lusid.Sdk.Tests.Utilities
             RetryConfiguration.RetryPolicy = _initialRetryPolicy;
             // Request is processed at this point and can be closed
             _httpListener.Close();
+            PollyWorks = false;
         }
         
         
