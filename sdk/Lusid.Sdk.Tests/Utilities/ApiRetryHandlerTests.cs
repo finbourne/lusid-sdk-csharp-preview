@@ -16,6 +16,25 @@ namespace Lusid.Sdk.Tests.Utilities
         private HttpListener _httpListener;
         private const string ListenerUriPrefix = "http://localhost:4444/";
         
+        private static Policy<IRestResponse> GetTestRetryPolicy(
+            PollyRetryTestUtil pollyRetryTestUtilReference, 
+            int expectedNumberOfRetries = ApiRetryHandler.MaxRetryAttempts)
+        {
+            return Policy
+                .HandleResult<IRestResponse>(ApiRetryHandler.GetInternalExceptionRetryCondition)
+                .Retry(
+                    retryCount: expectedNumberOfRetries,
+                    (result, i) =>
+                    {
+                        pollyRetryTestUtilReference.RetryCount = i;
+                    });
+        }
+    
+        private class PollyRetryTestUtil
+        {
+            public int RetryCount { get; set; }
+        }
+        
         [SetUp]
         public void SetUp()
         {
@@ -27,9 +46,88 @@ namespace Lusid.Sdk.Tests.Utilities
             
             _apiFactory = new LusidApiFactory(testApiConfig);
         }
+        
+        [Test]
+        public void CallGetPortfoliosApi_WhenHttpStatusIs400AndRetryConditionIsDefault_ThrowsApiExceptionWithoutRetry()
+        {
+            _httpListener.Start();
+            
+            _httpListener.BeginGetContext(result =>
+            {
+                var listener = (HttpListener) result.AsyncState;
+                // Call EndGetContext to complete the asynchronous operation.
+                var context = listener.EndGetContext(result);
+
+                // Obtain a response object.
+                var response = context.Response;
+
+                // Construct a response.
+                const string apiResponseString = "{\"some\": \"JsonResponseHere\"}";
+                var buffer = System.Text.Encoding.UTF8.GetBytes(apiResponseString);
+                
+                // Get a response stream and write the response to it.
+                response.ContentLength64 = buffer.Length;
+                response.StatusCode = 400;
+                
+                var output = response.OutputStream;
+                output.Write(buffer,0,buffer.Length);
+                // You must close the output stream.
+                output.Close();
+                
+            }, _httpListener);
+            
+            var counter = new PollyRetryTestUtil();
+            RetryConfiguration.RetryPolicy = GetTestRetryPolicy(counter);
+
+            // This will still fail at deserialization
+            var exception = Assert.Throws<ApiException>(
+                () => _apiFactory.Api<IPortfoliosApi>().GetPortfolio("any", "any")
+                );
+            
+            Assert.That(exception.ErrorContent, Is.EqualTo("{\"some\": \"JsonResponseHere\"}"));
+            Assert.That(exception.ErrorCode, Is.EqualTo(400));
+            Assert.That(counter.RetryCount, Is.EqualTo(0));
+        }
 
         [Test]
-        public void CallGetPortfoliosApi_WhenPollyRetryPolicyConfigured_PollyIsTriggered()
+        public void CallGetPortfoliosApi_WhenHttpStatusIs200AndRetryConditionIsDefault_NoRetryIsTriggeredOnDefaultPolicy()
+        {
+            _httpListener.Start();
+            _httpListener.BeginGetContext(result =>
+            {
+                var listener = (HttpListener) result.AsyncState;
+                // Call EndGetContext to complete the asynchronous operation.
+                var context = listener.EndGetContext(result);
+
+                // Obtain a response object.
+                var response = context.Response;
+
+                // Construct a response.
+                const string apiResponseString = "{\"some\": \"JsonResponseHere\"}";
+                var buffer = System.Text.Encoding.UTF8.GetBytes(apiResponseString);
+                
+                // Get a response stream and write the response to it.
+                response.ContentLength64 = buffer.Length;
+                response.StatusCode = 200;
+                
+                var output = response.OutputStream;
+                output.Write(buffer,0,buffer.Length);
+                // You must close the output stream.
+                output.Close();
+                
+            }, _httpListener);
+            
+            var counter = new PollyRetryTestUtil();
+            RetryConfiguration.RetryPolicy = GetTestRetryPolicy(counter);
+
+            // This will still fail at deserialization
+            var sdkResponse = _apiFactory.Api<IPortfoliosApi>().GetPortfolio("any", "any");
+            
+            Assert.That(counter.RetryCount, Is.EqualTo(0));
+        }
+
+        [Test]
+        public void CallGetPortfoliosApi_WhenApiResponseCrashesHttpClient_PollyIsTriggered()
         {
             const int expectedNumberOfRetries = ApiRetryHandler.MaxRetryAttempts;
             _httpListener.Start();
@@ -49,7 +147,7 @@ namespace Lusid.Sdk.Tests.Utilities
                 }, _httpListener);
             }
             
-            var counter = new PollyRetryCounter();
+            var counter = new PollyRetryTestUtil();
             RetryConfiguration.RetryPolicy = GetTestRetryPolicy(counter, expectedNumberOfRetries);
 
             // Calling GetPortfolio or any other API triggers the flow that triggers polly
@@ -59,6 +157,13 @@ namespace Lusid.Sdk.Tests.Utilities
             // In the future 0 error codes with throw an error after retries exceeded
             Assert.That(sdkResponse, Is.Null);
         }
+
+        [Test]
+        public void UsePolicyWrap_WhenCallingGetPortfolio_BothPoliciesAreUsed()
+        {
+            
+        }
+        
 
         [Test]
         public void CreateLusidFactory_WhenRetryPolicyIsNull_AssignsDefaultRetryPolicy()
@@ -89,25 +194,6 @@ namespace Lusid.Sdk.Tests.Utilities
             RetryConfiguration.RetryPolicy = _initialRetryPolicy;
             // Request is processed at this point and can be closed
             _httpListener.Close();
-        }
-
-        private static Policy<IRestResponse> GetTestRetryPolicy(
-            PollyRetryCounter pollyRetryCounterReference, 
-            int expectedNumberOfRetries = ApiRetryHandler.MaxRetryAttempts)
-        {
-            return Policy
-                .HandleResult<IRestResponse>(restResponse => restResponse.StatusCode == 0)
-                .Retry(
-                    retryCount: expectedNumberOfRetries,
-                    (result, i) =>
-                    {
-                        pollyRetryCounterReference.RetryCount = i;
-                    });
-        }
-
-        private class PollyRetryCounter
-        {
-            public int RetryCount { get; set; }
         }
     }
 }
