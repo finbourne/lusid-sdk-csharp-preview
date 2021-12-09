@@ -31,18 +31,14 @@ namespace Lusid.Sdk.Tests.Utilities
         }
 
         [Test]
-        [Explicit("This test passes locally but not in the pipeline for unknown reasons. Will be marked as explicit until resolved.")]
         public void CallGetPortfoliosApi_WhenPollyRetryPolicyConfigured_PollyIsTriggered()
         {
-            const int numberOfRetries = ApiRetryHandler.MaxRetryAttempts;
-            var currentApiCall = 0;
-            const int expectedNumberOfApiCalls = numberOfRetries + 1;
+            const int expectedNumberOfRetries = ApiRetryHandler.MaxRetryAttempts;
             _httpListener.Start();
-            for (var i = 0; i < expectedNumberOfApiCalls; i++)
+            for (var i = 0; i < expectedNumberOfRetries + 1; i++)
             {
                  _httpListener.BeginGetContext(result =>
                 {
-                    currentApiCall++;
                     var listener = (HttpListener) result.AsyncState;
                     // Call EndGetContext to complete the asynchronous operation.
                     var context = listener.EndGetContext(result);
@@ -54,14 +50,16 @@ namespace Lusid.Sdk.Tests.Utilities
                     response.Abort();
                 }, _httpListener);
             }
-
+            
+            var currentRetry = 0;
             var testRetryPolicy = Policy
                 .HandleResult<IRestResponse>(restResponse => restResponse.StatusCode == 0)
                 .Retry(
-                    retryCount: numberOfRetries,
+                    retryCount: expectedNumberOfRetries,
                     (result, i) =>
                     {
                         Console.WriteLine($"If you see this, then polly retry works. Retry number: {i}");
+                        currentRetry = i;
                     });
 
             RetryConfiguration.RetryPolicy = testRetryPolicy;
@@ -69,7 +67,7 @@ namespace Lusid.Sdk.Tests.Utilities
             // Calling GetPortfolio or any other API triggers the flow that triggers polly
             var sdkResponse = _apiFactory.Api<IPortfoliosApi>().GetPortfolio("any", "any");
             
-            Assert.That(currentApiCall, Is.EqualTo(expectedNumberOfApiCalls));
+            Assert.That(currentRetry, Is.EqualTo(expectedNumberOfRetries));
             // In the future 0 error codes with throw an error after retries exceeded
             Assert.That(sdkResponse, Is.Null);
         }
