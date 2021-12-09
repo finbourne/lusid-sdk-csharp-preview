@@ -1,6 +1,4 @@
-﻿using System;
-using System.Net;
-using System.Threading;
+﻿using System.Net;
 using Lusid.Sdk.Api;
 using Lusid.Sdk.Client;
 using Lusid.Sdk.Utilities;
@@ -31,7 +29,6 @@ namespace Lusid.Sdk.Tests.Utilities
         }
 
         [Test]
-        [Explicit("This passes locally, but not in the pipeline, and no idea why. Setting to explicit until resolved.")]
         public void CallGetPortfoliosApi_WhenPollyRetryPolicyConfigured_PollyIsTriggered()
         {
             const int expectedNumberOfRetries = ApiRetryHandler.MaxRetryAttempts;
@@ -52,23 +49,13 @@ namespace Lusid.Sdk.Tests.Utilities
                 }, _httpListener);
             }
             
-            var currentRetry = 0;
-            var testRetryPolicy = Policy
-                .HandleResult<IRestResponse>(restResponse => restResponse.StatusCode == 0)
-                .Retry(
-                    retryCount: expectedNumberOfRetries,
-                    (result, i) =>
-                    {
-                        Console.WriteLine($"If you see this, then polly retry works. Retry number: {i}");
-                        currentRetry = i;
-                    });
-
-            RetryConfiguration.RetryPolicy = testRetryPolicy;
+            var counter = new PollyRetryCounter();
+            RetryConfiguration.RetryPolicy = GetTestRetryPolicy(counter, expectedNumberOfRetries);
 
             // Calling GetPortfolio or any other API triggers the flow that triggers polly
             var sdkResponse = _apiFactory.Api<IPortfoliosApi>().GetPortfolio("any", "any");
-            
-            Assert.That(currentRetry, Is.EqualTo(expectedNumberOfRetries));
+
+            Assert.That(counter.RetryCount, Is.EqualTo(expectedNumberOfRetries));
             // In the future 0 error codes with throw an error after retries exceeded
             Assert.That(sdkResponse, Is.Null);
         }
@@ -102,6 +89,25 @@ namespace Lusid.Sdk.Tests.Utilities
             RetryConfiguration.RetryPolicy = _initialRetryPolicy;
             // Request is processed at this point and can be closed
             _httpListener.Close();
+        }
+
+        private static Policy<IRestResponse> GetTestRetryPolicy(
+            PollyRetryCounter pollyRetryCounterReference, 
+            int expectedNumberOfRetries = ApiRetryHandler.MaxRetryAttempts)
+        {
+            return Policy
+                .HandleResult<IRestResponse>(restResponse => restResponse.StatusCode == 0)
+                .Retry(
+                    retryCount: expectedNumberOfRetries,
+                    (result, i) =>
+                    {
+                        pollyRetryCounterReference.RetryCount = i;
+                    });
+        }
+
+        private class PollyRetryCounter
+        {
+            public int RetryCount { get; set; }
         }
     }
 }
