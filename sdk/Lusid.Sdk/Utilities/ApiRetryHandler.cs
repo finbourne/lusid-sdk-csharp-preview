@@ -18,10 +18,20 @@ namespace Lusid.Sdk.Utilities
         /// Get the internal exception condition on which to retry.
         /// </summary>
         /// <param name="restResponse">Response object that comes from the API Client</param>
-        /// <returns></returns>
-        private static bool GetInternalExceptionRetryCondition(IRestResponse restResponse)
+        /// <returns>The boolean of whether the internal exception condition is satisfied</returns>
+        public static bool GetInternalExceptionRetryCondition(IRestResponse restResponse)
         {
             return restResponse.ErrorException != null || restResponse.StatusCode == 0;
+        }
+
+        private static void HandleRetryAction(DelegateResult<IRestResponse> result, int retryCount, Context context)
+        {
+            Console.WriteLine("An internal exception has occurred. Retrying. " +
+                              $"Retry attempt: {retryCount}. Max retry attempts: {MaxRetryAttempts}");
+
+            Console.WriteLine(
+                "Temporarily logging the exception stack trace for finding the underlying root cause of this exception:\n" +
+                $"{result.Result.ErrorException}\n");
         }
 
         /// <summary>
@@ -32,17 +42,7 @@ namespace Lusid.Sdk.Utilities
             Policy
                 .Handle<SystemException>()
                 .OrResult<IRestResponse>(GetInternalExceptionRetryCondition)
-                .Retry(
-                    MaxRetryAttempts,
-                    onRetry: (result, retryCount, context) =>
-                    {
-                        Console.WriteLine("An internal exception has occurred. Retrying. " +
-                                          $"Retry attempt: {retryCount}. Max retry attempts: {MaxRetryAttempts}");
-
-                        Console.WriteLine(
-                            "Temporarily logging the exception stack trace for finding the underlying root cause of this exception:\n" +
-                            $"{result.Result.ErrorException}\n");
-                    });
+                .Retry(retryCount: MaxRetryAttempts, onRetry: HandleRetryAction);
 
 
         /// <summary>
@@ -53,16 +53,6 @@ namespace Lusid.Sdk.Utilities
             Policy
                 .Handle<SystemException>()
                 .OrResult<IRestResponse>(GetInternalExceptionRetryCondition)
-                .RetryAsync(
-                    MaxRetryAttempts,
-                    onRetry: (result, retryCount, context) =>
-                    {
-                        Console.WriteLine("An internal exception has occurred. Retrying. " +
-                                          $"Retry attempt: {retryCount}. Max retry attempts: {MaxRetryAttempts}");
-
-                        Console.WriteLine(
-                            "Temporarily logging the exception stack trace for finding the underlying root cause of this exception:\n" +
-                            $"{result.Result.ErrorException}\n");
-                    });
+                .RetryAsync(retryCount: MaxRetryAttempts, onRetry: HandleRetryAction);
     }
 }
