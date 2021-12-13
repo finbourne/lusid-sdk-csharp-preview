@@ -177,8 +177,18 @@ namespace Lusid.Sdk.Tests.Utilities
         /// LUSID allows us to book flow IRS without the need to explicitly write out the flow and index convention by providing a semantic name for commonly understood ones.
         /// For example, new FlowConventionName(currency: "GBP", tenor: "3M") and new FlowConventionName(currency: "GBP", tenor: "3M", indexName:"LIBOR")
         /// </summary>
-        internal static InterestRateSwap CreateSwapByNamedConventions(DateTimeOffset startDate, DateTimeOffset maturityDate, decimal fixedRate, FlowConventionName flowConventionName, FlowConventionName indexConventionName, string fixedLegDirection = "Pay", decimal notional=100m)
+        internal static InterestRateSwap CreateSwapByNamedConventions()
         {
+            var startDate = new DateTimeOffset(2020, 2, 7, 0, 0, 0, TimeSpan.Zero);
+            var maturityDate = new DateTimeOffset(2030, 2, 7, 0, 0, 0, TimeSpan.Zero);
+            decimal fixedRate = 0.02m;
+            string fixedLegDirection = "Pay";
+            decimal notional = 100m;
+            
+            // CREATE the flow conventions, index convention
+            FlowConventionName flowConventionName = new FlowConventionName(currency: "GBP", tenor: "3M");
+            FlowConventionName indexConventionName = new FlowConventionName(currency: "GBP", tenor: "3M", indexName:"LIBOR");
+
             var floatingLegDirection = fixedLegDirection == "Pay" ? "Receive" : "Pay";
 
             // CREATE the leg definitions

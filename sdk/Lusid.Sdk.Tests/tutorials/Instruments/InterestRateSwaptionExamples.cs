@@ -13,6 +13,18 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
     {
         internal override void CreateAndUpsertMarketDataToLusid(string scope, ModelSelection.ModelEnum model, LusidInstrument instrument)
         {
+            var upsertComplexMarketDataRequest = new Dictionary<string, UpsertComplexMarketDataRequest>();
+            if (model != ModelSelection.ModelEnum.ConstantTimeValueOfMoney)
+            {
+                upsertComplexMarketDataRequest.Add("discount_curve", TestDataUtilities.BuildOisCurveRequest(TestDataUtilities.EffectiveAt, "USD"));
+                upsertComplexMarketDataRequest.Add("6M_rate_Curve", TestDataUtilities.Build6MRateCurveRequest(TestDataUtilities.EffectiveAt, "USD"));
+            }
+            
+            if(upsertComplexMarketDataRequest.Any())
+            {
+                var upsertComplexMarketDataResponse = _complexMarketDataApi.UpsertComplexMarketData(scope, upsertComplexMarketDataRequest);
+                ValidateComplexMarketDataUpsert(upsertComplexMarketDataResponse, upsertComplexMarketDataRequest.Count);
+            }
         }
 
         internal override void GetAndValidatePortfolioCashFlows(LusidInstrument instrument, string scope, string portfolioCode,
@@ -53,6 +65,13 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
             Assert.That(roundTripSwaption.Swap.InstrumentType, Is.EqualTo(LusidInstrument.InstrumentTypeEnum.InterestRateSwap));            
             // Delete Instrument
             _instrumentsApi.DeleteInstrument("ClientInternal", uniqueId); 
+        }
+        
+        [TestCase(ModelSelection.ModelEnum.SimpleStatic)]
+        public void InterestRateSwaptionValuationExample(ModelSelection.ModelEnum model)
+        {
+            var swaption = InstrumentExamples.CreateExampleInterestRateSwaption();
+            CallLusidGetValuationEndpoint(swaption, model);
         }
     }
 }
