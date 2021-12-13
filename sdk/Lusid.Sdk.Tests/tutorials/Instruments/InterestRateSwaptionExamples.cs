@@ -68,8 +68,6 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
         }
         
         [TestCase(ModelSelection.ModelEnum.SimpleStatic)]
-        [TestCase(ModelSelection.ModelEnum.ConstantTimeValueOfMoney)]
-        [TestCase(ModelSelection.ModelEnum.Discounting)]
         public void InterestRateSwaptionValuationExample(ModelSelection.ModelEnum model)
         {
             var swaption = InstrumentExamples.CreateExampleInterestRateSwaption();
