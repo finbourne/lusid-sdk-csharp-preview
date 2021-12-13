@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using Lusid.Sdk.Model;
 using Lusid.Sdk.Tests.Utilities;
-using Lusid.Sdk.Utilities;
 using LusidFeatures;
 using NUnit.Framework;
 
@@ -70,6 +69,13 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
             Assert.That(roundTripFuture.ContractDetails.ContractMonth, Is.EqualTo(future.ContractDetails.ContractMonth));
             Assert.That(roundTripFuture.Underlying.InstrumentType, Is.EqualTo(future.Underlying.InstrumentType));
             Assert.That(roundTripFuture.Underlying.InstrumentType, Is.EqualTo(LusidInstrument.InstrumentTypeEnum.ExoticInstrument));
+        }
+        
+        [TestCase(ModelSelection.ModelEnum.SimpleStatic)]
+        public void FutureValuationExample(ModelSelection.ModelEnum model)
+        {
+            var future = InstrumentExamples.CreateExampleFuture();
+            CallLusidGetValuationEndpoint(future, model);
         }
     }
 }

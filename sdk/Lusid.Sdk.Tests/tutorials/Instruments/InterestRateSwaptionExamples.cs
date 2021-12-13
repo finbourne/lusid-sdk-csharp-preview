@@ -54,5 +54,12 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
             // Delete Instrument
             _instrumentsApi.DeleteInstrument("ClientInternal", uniqueId); 
         }
+        
+        [TestCase(ModelSelection.ModelEnum.SimpleStatic)]
+        public void InterestRateSwaptionValuationExample(ModelSelection.ModelEnum model)
+        {
+            var swaption = InstrumentExamples.CreateExampleInterestRateSwaption();
+            CallLusidGetValuationEndpoint(swaption, model);
+        }
     }
 }

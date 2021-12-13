@@ -499,15 +499,9 @@ namespace Lusid.Sdk.Tests.Utilities
         /// </summary>
         public static UpsertRecipeRequest BuildRecipeRequest(string recipeCode, string scope, ModelSelection.ModelEnum model)
         {
-            var pricingOptions = new PricingOptions(new ModelSelection(ModelSelection.LibraryEnum.Lusid, model));
+            // Note that inside CreatePortfolioAndInstrument, the method TestDataUtilities.BuildInstrumentUpsertRequest books the instrument using "ClientInternal".
+            // As such the quote upserted using "ClientInternal". The market rule key needs to be "ClientInternal" also to find the quote.  
             var simpleStaticLuidRule = new MarketDataKeyRule(
-                key: "Equity.LusidInstrumentId.*",
-                supplier: "Lusid",
-                scope,
-                MarketDataKeyRule.QuoteTypeEnum.Price,
-                field: "mid",
-                quoteInterval: "5D");
-            var simpleStaticLuidRule2 = new MarketDataKeyRule(
                 key: "Equity.ClientInternal.*",
                 supplier: "Lusid",
                 scope,
@@ -537,12 +531,13 @@ namespace Lusid.Sdk.Tests.Utilities
                 MarketDataKeyRule.QuoteTypeEnum.Price,
                 field: "mid",
                 quoteInterval: "10Y");
-            
+
+            var pricingOptions = new PricingOptions(new ModelSelection(ModelSelection.LibraryEnum.Lusid, model));
             var recipe = new ConfigurationRecipe(
                 scope,
                 recipeCode,
                 market: new MarketContext(
-                    marketRules: new List<MarketDataKeyRule>{simpleStaticLuidRule, simpleStaticLuidRule2, resetRule, creditRule, ratesRule},
+                    marketRules: new List<MarketDataKeyRule>{simpleStaticLuidRule, resetRule, creditRule, ratesRule},
                     options: new MarketOptions(defaultSupplier: "Lusid", defaultScope: scope, defaultInstrumentCodeType: "RIC")),
                 pricing: new PricingContext(options: pricingOptions),
                 description: $"Recipe for {model} pricing");

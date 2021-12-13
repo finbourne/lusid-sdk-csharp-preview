@@ -31,8 +31,8 @@ namespace Lusid.Sdk.Tests.Utilities
 
             GetAndValidatePortfolioCashFlows(instrument, scope, portfolioCode, recipeCode, instrumentID);
         }
-        
-        internal string CreateAndUpsertRecipe(string scope, ModelSelection.ModelEnum model)
+
+        private string CreateAndUpsertRecipe(string scope, ModelSelection.ModelEnum model)
         {
             var recipeCode = Guid.NewGuid().ToString();
             var recipeReq = TestDataUtilities.BuildRecipeRequest(recipeCode, scope, model);
@@ -45,7 +45,7 @@ namespace Lusid.Sdk.Tests.Utilities
         /// Utility method to create a new portfolio that contains one transaction against the instrument. 
         /// </summary>
         /// <returns>Returns a tuple of instrumentId and portfolio code</returns>
-        internal (string, string) CreatePortfolioAndInstrument(string scope, LusidInstrument instrument)
+        private (string, string) CreatePortfolioAndInstrument(string scope, LusidInstrument instrument)
         {
             // CREATE portfolio
             var portfolioRequest = TestDataUtilities.BuildTransactionPortfolioRequest( TestDataUtilities.EffectiveAt);
@@ -83,17 +83,19 @@ namespace Lusid.Sdk.Tests.Utilities
             // CREATE portfolio and add instrument to the portfolio
             var (instrumentID, portfolioCode) = CreatePortfolioAndInstrument(scope, instrument);
 
+            // UPSERT market data sufficient to price the instrument depending on the model.
             if (model == ModelSelection.ModelEnum.SimpleStatic)
             {
-                // todo-jz: add comment
+                // SimpleStatic pricing is lookup pricing. As such, we upsert a quote.
+                // Note that inside CreatePortfolioAndInstrument, the method TestDataUtilities.BuildInstrumentUpsertRequest books the instrument using "ClientInternal".
+                // Hence upsert a quote using ClientInternal as the instrumentIdType.
                 var quoteRequest = TestDataUtilities.BuildQuoteRequest(scope, instrumentID, QuoteSeriesId.InstrumentIdTypeEnum.ClientInternal, 100m, "USD", TestDataUtilities.EffectiveAt);
                 var upsertResponse = _quotesApi.UpsertQuotes(scope, quoteRequest);
                 Assert.That(upsertResponse.Failed.Count, Is.EqualTo(0));
                 Assert.That(upsertResponse.Values.Count, Is.EqualTo(quoteRequest.Count));
             }
-            else
+            else // upsert complex market data
             {
-                // UPSERT market data sufficient to price the instrument depending on the model.
                 CreateAndUpsertMarketDataToLusid(scope, model, instrument);
             }
 
