@@ -79,7 +79,6 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
             Assert.That(retrFxFwd.FgnCcy, Is.EqualTo(fxForward.FgnCcy));
         }
         
-        [TestCase(ModelSelection.ModelEnum.SimpleStatic)]
         [TestCase(ModelSelection.ModelEnum.ConstantTimeValueOfMoney)]
         [TestCase(ModelSelection.ModelEnum.Discounting)]
         public void FxForwardValuationExample(ModelSelection.ModelEnum model)
