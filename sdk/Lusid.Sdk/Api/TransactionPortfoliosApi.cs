@@ -151,7 +151,7 @@ namespace Lusid.Sdk.Api
         /// <param name="scope">The scope in which to create the transaction portfolio.</param>
         /// <param name="createTransactionPortfolioRequest">The definition of the transaction portfolio.</param>
         /// <returns>Portfolio</returns>
-        Portfolio  CreatePortfolio(string scope, CreateTransactionPortfolioRequest createTransactionPortfolioRequest);
+        Portfolio CreatePortfolio(string scope, CreateTransactionPortfolioRequest createTransactionPortfolioRequest);
 
         /// <summary>
         /// CreatePortfolio: Create portfolio

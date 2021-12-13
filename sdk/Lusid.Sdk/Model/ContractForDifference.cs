@@ -43,11 +43,11 @@ namespace Lusid.Sdk.Model
         /// Initializes a new instance of the <see cref="ContractForDifference" /> class.
         /// </summary>
         /// <param name="startDate">The start date of the CFD. (required).</param>
-        /// <param name="maturityDate">The maturity date for the CFD. If CFDType is Futures, this should be set to be the maturity date of the underlying  future. If CFDType is Cash, this should not be set.</param>
+        /// <param name="maturityDate">The maturity date for the CFD. If CFDType is Futures, this should be set to be the maturity date of the underlying  future. If CFDType is Cash, this should not be set..</param>
         /// <param name="code">The code of the underlying. (required).</param>
         /// <param name="contractSize">The size of the CFD contract, this should represent the total number of stocks that the CFD represents. (required).</param>
         /// <param name="payCcy">The currency that this CFD pays out, this can be different to the UnderlyingCcy. (required).</param>
-        /// <param name="referenceRate">The reference rate of the CFD, this can be set to 0 but not negative values.  This field is optional, if not set it will default to 0.</param>
+        /// <param name="referenceRate">The reference rate of the CFD, this can be set to 0 but not negative values.  This field is optional, if not set it will default to 0..</param>
         /// <param name="type">The type of CFD.  Supported string (enumeration) values are: [Cash, Futures]. (required).</param>
         /// <param name="underlyingCcy">The currency of the underlying (required).</param>
         /// <param name="underlyingIdentifier">external market codes and identifiers for the CFD, e.g. RIC.  Supported string (enumeration) values are: [LusidInstrumentId, Isin, Sedol, Cusip, ClientInternal, Figi, RIC, QuotePermId, REDCode, BBGId, ICECode]. (required).</param>

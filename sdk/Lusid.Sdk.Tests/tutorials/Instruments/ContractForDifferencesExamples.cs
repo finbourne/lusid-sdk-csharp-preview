@@ -15,15 +15,14 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
         internal override void CreateAndUpsertMarketDataToLusid(string scope,ModelSelection.ModelEnum model, LusidInstrument cfd)
         {
             var equityRequest = TestDataUtilities.BuildEquityQuoteRequest(
-                "some-id",
-                new DateTimeOffset(2019, 2, 7, 0, 0, 0, TimeSpan.Zero),
-                new DateTimeOffset(2020, 4, 3, 0, 0, 0, TimeSpan.Zero),
-                QuoteSeriesId.InstrumentIdTypeEnum.RIC
+                instrumentId: "some-id",
+                effectiveFrom:new DateTimeOffset(2019, 2, 7, 0, 0, 0, TimeSpan.Zero),
+                effectiveAt:new DateTimeOffset(2020, 4, 3, 0, 0, 0, TimeSpan.Zero),
+                instrumentIdType:QuoteSeriesId.InstrumentIdTypeEnum.RIC
             );
             var upsertEquityResponse = _quotesApi.UpsertQuotes(scope, equityRequest);
             Assert.That(upsertEquityResponse.Failed.Count, Is.EqualTo(0));
             Assert.That(upsertEquityResponse.Values.Count, Is.EqualTo(equityRequest.Count));
-            //BuildInstrumentUpsertRequest(List<(LusidInstrument, string)> instruments)
 
             Dictionary<string, UpsertComplexMarketDataRequest> upsertComplexMarketDataRequest = new Dictionary<string, UpsertComplexMarketDataRequest>();
             if (model != ModelSelection.ModelEnum.ConstantTimeValueOfMoney)
@@ -32,8 +31,6 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
                 var upsertComplexMarketDataResponse = _complexMarketDataApi.UpsertComplexMarketData(scope, upsertComplexMarketDataRequest);
                 ValidateComplexMarketDataUpsert(upsertComplexMarketDataResponse, upsertComplexMarketDataRequest.Count);
             }
-            
-            
         }
 
         internal override void GetAndValidatePortfolioCashFlows(LusidInstrument instrument, string scope, string portfolioCode,
