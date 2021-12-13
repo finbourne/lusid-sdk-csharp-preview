@@ -13,6 +13,12 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
     {
         internal override void CreateAndUpsertMarketDataToLusid(string scope, ModelSelection.ModelEnum model, LusidInstrument instrument)
         {
+            var upsertComplexMarketDataRequest = new Dictionary<string, UpsertComplexMarketDataRequest>();
+            if (model != ModelSelection.ModelEnum.ConstantTimeValueOfMoney)
+            {
+                upsertComplexMarketDataRequest.Add("discount_curve", TestDataUtilities.BuildOisCurveRequest(TestDataUtilities.EffectiveAt, "USD"));
+                upsertComplexMarketDataRequest.Add("6M_rate_Curve", TestDataUtilities.Build6MRateCurveRequest(TestDataUtilities.EffectiveAt, "USD"));
+            }
         }
 
         internal override void GetAndValidatePortfolioCashFlows(LusidInstrument instrument, string scope, string portfolioCode,
@@ -56,6 +62,8 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
         }
         
         [TestCase(ModelSelection.ModelEnum.SimpleStatic)]
+        [TestCase(ModelSelection.ModelEnum.ConstantTimeValueOfMoney)]
+        [TestCase(ModelSelection.ModelEnum.Discounting)]
         public void InterestRateSwaptionValuationExample(ModelSelection.ModelEnum model)
         {
             var swaption = InstrumentExamples.CreateExampleInterestRateSwaption();

@@ -19,7 +19,7 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
             
             ValidateQuoteUpsert(upsertQuoteResponse, upsertFxRateRequestreq.Count);
 
-            Dictionary<string, UpsertComplexMarketDataRequest> upsertComplexMarketDataRequest = new Dictionary<string, UpsertComplexMarketDataRequest>();
+            var upsertComplexMarketDataRequest = new Dictionary<string, UpsertComplexMarketDataRequest>();
             if (model != ModelSelection.ModelEnum.ConstantTimeValueOfMoney)
             {
                 foreach (var kv in TestDataUtilities.BuildRateCurvesRequests(TestDataUtilities.EffectiveAt))

@@ -66,7 +66,7 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
         }
         
         [TestCase(ModelSelection.ModelEnum.SimpleStatic)]
-        public void InterestRateSwapValuationExample(ModelSelection.ModelEnum model)
+        public void ExoticValuationExample(ModelSelection.ModelEnum model)
         {
             var exotic = InstrumentExamples.CreateExampleExotic();
             CallLusidGetValuationEndpoint(exotic, model);
