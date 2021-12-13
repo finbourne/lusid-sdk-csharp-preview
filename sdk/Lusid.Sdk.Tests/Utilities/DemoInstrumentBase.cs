@@ -86,7 +86,7 @@ namespace Lusid.Sdk.Tests.Utilities
             if (model == ModelSelection.ModelEnum.SimpleStatic)
             {
                 // todo-jz: add comment
-                var quoteRequest = TestDataUtilities.BuildQuoteRequest(scope, instrumentID, QuoteSeriesId.InstrumentIdTypeEnum.LusidInstrumentId, 100m, "USD", TestDataUtilities.EffectiveAt);
+                var quoteRequest = TestDataUtilities.BuildQuoteRequest(scope, instrumentID, QuoteSeriesId.InstrumentIdTypeEnum.ClientInternal, 100m, "USD", TestDataUtilities.EffectiveAt);
                 var upsertResponse = _quotesApi.UpsertQuotes(scope, quoteRequest);
                 Assert.That(upsertResponse.Failed.Count, Is.EqualTo(0));
                 Assert.That(upsertResponse.Values.Count, Is.EqualTo(quoteRequest.Count));

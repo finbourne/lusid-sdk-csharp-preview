@@ -507,6 +507,13 @@ namespace Lusid.Sdk.Tests.Utilities
                 MarketDataKeyRule.QuoteTypeEnum.Price,
                 field: "mid",
                 quoteInterval: "5D");
+            var simpleStaticLuidRule2 = new MarketDataKeyRule(
+                key: "Equity.ClientInternal.*",
+                supplier: "Lusid",
+                scope,
+                MarketDataKeyRule.QuoteTypeEnum.Price,
+                field: "mid",
+                quoteInterval: "5D");
             var resetRule = new MarketDataKeyRule(
                 key: "Equity.RIC.*",
                 supplier: "Lusid",
@@ -535,7 +542,7 @@ namespace Lusid.Sdk.Tests.Utilities
                 scope,
                 recipeCode,
                 market: new MarketContext(
-                    marketRules: new List<MarketDataKeyRule>{simpleStaticLuidRule, resetRule, creditRule, ratesRule},
+                    marketRules: new List<MarketDataKeyRule>{simpleStaticLuidRule, simpleStaticLuidRule2, resetRule, creditRule, ratesRule},
                     options: new MarketOptions(defaultSupplier: "Lusid", defaultScope: scope, defaultInstrumentCodeType: "RIC")),
                 pricing: new PricingContext(options: pricingOptions),
                 description: $"Recipe for {model} pricing");
