@@ -64,5 +64,12 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
             Assert.That(roundTripExotic.Content, Is.EqualTo(exotic.Content));
             Assert.That(roundTripExotic.InstrumentFormat, Is.EqualTo(exotic.InstrumentFormat)); 
         }
+        
+        [TestCase(ModelSelection.ModelEnum.SimpleStatic)]
+        public void InterestRateSwapValuationExample(ModelSelection.ModelEnum model)
+        {
+            var exotic = InstrumentExamples.CreateExampleExotic();
+            CallLusidGetValuationEndpoint(exotic, model);
+        }
     }
 }
