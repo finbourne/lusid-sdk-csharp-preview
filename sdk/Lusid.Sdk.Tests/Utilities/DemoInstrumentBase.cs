@@ -124,7 +124,11 @@ namespace Lusid.Sdk.Tests.Utilities
             {
                 var pv = (double) r[TestDataUtilities.ValuationPvKey];
                 Assert.That(pv, Is.Not.EqualTo(0).Within(1e-5));
-                Assert.That(pv, Is.GreaterThanOrEqualTo(0));
+
+                if (instrument.InstrumentType != LusidInstrument.InstrumentTypeEnum.InterestRateSwap)
+                {
+                    Assert.That(pv, Is.GreaterThanOrEqualTo(0));
+                }
             }
             _recipeApi.DeleteConfigurationRecipe(scope, recipeCode);
         }

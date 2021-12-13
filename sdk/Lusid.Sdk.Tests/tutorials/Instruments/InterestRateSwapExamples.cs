@@ -19,6 +19,12 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
                 upsertComplexMarketDataRequest.Add("discount_curve", TestDataUtilities.BuildOisCurveRequest(TestDataUtilities.EffectiveAt, "USD"));
                 upsertComplexMarketDataRequest.Add("6M_rate_Curve", TestDataUtilities.Build6MRateCurveRequest(TestDataUtilities.EffectiveAt, "USD"));
             }
+            
+            if(upsertComplexMarketDataRequest.Any())
+            {
+                var upsertComplexMarketDataResponse = _complexMarketDataApi.UpsertComplexMarketData(scope, upsertComplexMarketDataRequest);
+                ValidateComplexMarketDataUpsert(upsertComplexMarketDataResponse, upsertComplexMarketDataRequest.Count);
+            }
         }
 
         internal override void GetAndValidatePortfolioCashFlows(LusidInstrument instrument, string scope, string portfolioCode,

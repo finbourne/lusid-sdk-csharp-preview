@@ -19,6 +19,12 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
                 upsertComplexMarketDataRequest.Add("discount_curve", TestDataUtilities.BuildOisCurveRequest(TestDataUtilities.EffectiveAt, "USD"));
                 upsertComplexMarketDataRequest.Add("6M_rate_Curve", TestDataUtilities.Build6MRateCurveRequest(TestDataUtilities.EffectiveAt, "USD"));
             }
+            
+            if(upsertComplexMarketDataRequest.Any())
+            {
+                var upsertComplexMarketDataResponse = _complexMarketDataApi.UpsertComplexMarketData(scope, upsertComplexMarketDataRequest);
+                ValidateComplexMarketDataUpsert(upsertComplexMarketDataResponse, upsertComplexMarketDataRequest.Count);
+            }
         }
 
         internal override void GetAndValidatePortfolioCashFlows(LusidInstrument instrument, string scope, string portfolioCode, string recipeCode, string instrumentID)
@@ -29,16 +35,8 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
         [Test]
         public void InterestRateSwapWithNamedConventionsCreationAndUpsertionExample()
         {
-            // CREATE an Interest Rate Swap (IRS) (that can then be upserted into LUSID)
-            var startDate = new DateTimeOffset(2020, 2, 7, 0, 0, 0, TimeSpan.Zero);
-            var maturityDate = new DateTimeOffset(2030, 2, 7, 0, 0, 0, TimeSpan.Zero);
-
-            // CREATE the flow conventions, index convention
-            FlowConventionName flowConventionName = new FlowConventionName(currency: "GBP", tenor: "3M");
-            FlowConventionName indexConventionName = new FlowConventionName(currency: "GBP", tenor: "3M", indexName:"LIBOR");
-
-            // CREATE the swap
-            var swap = InstrumentExamples.CreateSwapByNamedConventions(startDate, maturityDate, 0.02m, flowConventionName, indexConventionName);
+            // CREATE a named convention Interest Rate Swap (IRS) (that can then be upserted into LUSID)
+            var swap = InstrumentExamples.CreateSwapByNamedConventions();
 
             // ASSERT that it was created
             Assert.That(swap, Is.Not.Null);
@@ -72,7 +70,7 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
         [TestCase(ModelSelection.ModelEnum.Discounting)]
         public void InterestRateSwapValuationExample(ModelSelection.ModelEnum model)
         {
-            var irs = InstrumentExamples.CreateExampleInterestRateSwap();
+            var irs = InstrumentExamples.CreateSwapByNamedConventions();
             CallLusidGetValuationEndpoint(irs, model);
         }
     }
