@@ -59,9 +59,7 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
                 recipeIdCode: recipeCode).Values;
             
             Assert.That(cashflows.Count, Is.EqualTo(2));
-            Assert.That(cashflows[1].Amount, Is.EqualTo(fxOption.Strike));
-            Assert.That(cashflows[0].Amount, Is.EqualTo(1.0m));
-            
+
             _instrumentsApi.DeleteInstrument("ClientInternal", instrumentID);
             _portfoliosApi.DeletePortfolio(scope, portfolioCode);
         }
