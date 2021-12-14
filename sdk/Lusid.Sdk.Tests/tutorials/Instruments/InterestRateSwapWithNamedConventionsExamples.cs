@@ -52,11 +52,52 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
             // Delete Instrument
             _instrumentsApi.DeleteInstrument("ClientInternal", uniqueId); 
         }
+
+        private void UpsertNamedConventionsToLusid()
+        {
+            // CREATE the flow conventions and index convention for swap
+            string scope = "Conventions";
+            string flowConventionsCode = "GBP-3M";
+            string indexConventionCode = "GBP-3M-LIBOR";
+
+            var flowConventions = new FlowConventions(
+                scope: scope,
+                code: flowConventionsCode,
+                currency: "GBP",
+                paymentFrequency: "3M",
+                rollConvention: "ModifiedFollowing",
+                dayCountConvention: "Actual365",
+                paymentCalendars: new List<string>(),
+                resetCalendars: new List<string>(),
+                settleDays: 2,
+                resetDays: 2
+            );
+
+            var indexConvention = new IndexConvention(
+                scope: scope,
+                code: indexConventionCode,
+                publicationDayLag: 0,
+                currency: "GBP",
+                paymentTenor: "3M",
+                dayCountConvention: "Actual365",
+                fixingReference: "BP00"
+            );
+            
+            // UPSERT the conventions to Lusid
+            var flowConventionsResponse =  _conventionsApi.UpsertFlowConventions(new UpsertFlowConventionsRequest(flowConventions));
+            Assert.That(flowConventionsResponse, Is.Not.Null);
+            Assert.That(flowConventionsResponse.Value, Is.Not.Null);
+
+            var indexConventionsResponse = _conventionsApi.UpsertIndexConvention(new UpsertIndexConventionRequest(indexConvention));
+            Assert.That(indexConventionsResponse, Is.Not.Null);
+            Assert.That(indexConventionsResponse.Value, Is.Not.Null);
+        }
         
         [TestCase(ModelSelection.ModelEnum.SimpleStatic)]
-        public void InterestRateSwapValuationExample(ModelSelection.ModelEnum model)
+        public void InterestRateSwapWithNamedConventionsValuationExample(ModelSelection.ModelEnum model)
         {
             var irs = InstrumentExamples.CreateSwapByNamedConventions();
+            UpsertNamedConventionsToLusid();
             CallLusidGetValuationEndpoint(irs, model);
         }
     }
