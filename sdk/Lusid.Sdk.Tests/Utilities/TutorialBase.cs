@@ -11,7 +11,6 @@ namespace Lusid.Sdk.Utilities
 {
     public class TutorialBase
     {
-        
         internal readonly ILusidApiFactory _apiFactory;
         internal readonly ITransactionPortfoliosApi _transactionPortfoliosApi;
         internal readonly IInstrumentsApi _instrumentsApi;
