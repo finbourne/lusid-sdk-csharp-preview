@@ -480,6 +480,7 @@ namespace Lusid.Sdk.Tests.tutorials.Ibor
                 transaction.TransactionId + $"{i}",
                 transaction.Type,
                 transaction.InstrumentIdentifiers,
+                transaction.InstrumentScope,
                 transaction.InstrumentUid,
                 transaction.TransactionDate,
                 transaction.SettlementDate,
