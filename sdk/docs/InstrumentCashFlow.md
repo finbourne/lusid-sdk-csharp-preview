@@ -9,6 +9,7 @@ Name | Type | Description | Notes
 **Amount** | **decimal?** | The quantity (amount) that will be paid. Note that this can be empty if the payment is in the future and a model is used that cannot estimate it. | [optional] 
 **Currency** | **string** | The payment currency of the cash flow. | 
 **SourceTransactionId** | **string** | The identifier for the parent transaction on the instrument that will pay/receive this cash flow. | 
+**SourceInstrumentScope** | **string** | The unqiue Lusid Instrument Id (LUID) of the instrument that the holding is in. | 
 **SourceInstrumentId** | **string** | The unqiue Lusid Instrument Id (LUID) of the instrument that the holding is in. | 
 **Diagnostics** | **Dictionary&lt;string, string&gt;** | Whilst a cash flow is defined by an (amount,ccy) pair and the date it is paid on there is additional information required for diagnostics. This includes a range of information and can be empty in the case of a simple cash quantity or where further information is not available. Typical information includes items such as reset dates, RIC, accrual start/end, number of days and curve data. | 
 **Links** | [**List&lt;Link&gt;**](Link.md) | Collection of links. | [optional] 

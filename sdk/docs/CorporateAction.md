@@ -6,7 +6,7 @@ A corporate action
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **CorporateActionCode** | **string** | The unique identifier of this corporate action | 
-**Description** | **string** |  | [optional] 
+**Description** | **string** | The description of the corporate action. | [optional] 
 **AnnouncementDate** | **DateTimeOffset** | The announcement date of the corporate action | [optional] 
 **ExDate** | **DateTimeOffset** | The ex date of the corporate action | [optional] 
 **RecordDate** | **DateTimeOffset** | The record date of the corporate action | [optional] 
