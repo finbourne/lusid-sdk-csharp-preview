@@ -5,7 +5,7 @@
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **StartDate** | **DateTimeOffset** | The start date of the instrument. This is normally synonymous with the trade-date. If settle days &#x3D; 0 then this is the initial accrual date of the bond. | 
-**MaturityDate** | **DateTimeOffset** | The final maturity date of the instrument. This means the last date on which the instruments makes a payment of any amount.  For the avoidance of doubt, that is not necessarily prior to its last sensitivity date for the purposes of risk; e.g. instruments such as  Constant Maturity Swaps (CMS) often have sensitivities to rates beyond their last payment date | 
+**MaturityDate** | **DateTimeOffset** | The final maturity date of the instrument. This means the last date on which the instruments makes a payment of any amount.  For the avoidance of doubt, that is not necessarily prior to its last sensitivity date for the purposes of risk; e.g. instruments such as  Constant Maturity Swaps (CMS) often have sensitivities to rates beyond their last payment date. | 
 **DomCcy** | **string** | The domestic currency of the instrument. | 
 **FlowConventions** | [**FlowConventions**](FlowConventions.md) |  | 
 **Principal** | **decimal** | The face-value or principal for the bond at outset.  This might be reduced through its lifetime in the event of amortization or similar. | 
