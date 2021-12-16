@@ -17,6 +17,7 @@ namespace Lusid.Sdk.Tests.Utilities
                 nameof(FxOption) => CreateExampleFxOption(),
                 nameof(InterestRateSwap) => CreateExampleInterestRateSwap(),
                 nameof(CreditDefaultSwap) => CreateExampleCreditDefaultSwap(),
+                nameof(ContractForDifference) => CreateExampleCfd(),
                 _ => throw new ArgumentOutOfRangeException($"Please implement case for instrument {instrumentName}")
             };
         }
@@ -87,6 +88,20 @@ namespace Lusid.Sdk.Tests.Utilities
                 instrumentType: LusidInstrument.InstrumentTypeEnum.Bond
             );
 
+        internal static LusidInstrument CreateExampleCfd()
+            => new ContractForDifference(
+                startDate: new DateTimeOffset(2020, 1, 2, 0, 0, 0, TimeSpan.Zero),
+                maturityDate: new DateTimeOffset(2020, 2, 2, 0, 0, 0, TimeSpan.Zero),
+                code: "some-id",
+                contractSize: 10m,
+                payCcy: "USD",
+                referenceRate: 0,
+                type: "Futures",
+                underlyingCcy: "USD",
+                underlyingIdentifier: "RIC",
+                instrumentType: LusidInstrument.InstrumentTypeEnum.ContractForDifference
+            );
+        
         internal static LusidInstrument CreateExampleZeroCouponBond()
             => new Bond(
                 startDate: new DateTimeOffset(2020, 2, 7, 0, 0, 0, TimeSpan.Zero),
