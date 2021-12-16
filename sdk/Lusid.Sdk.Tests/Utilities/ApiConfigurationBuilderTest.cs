@@ -54,10 +54,21 @@ namespace Lusid.Sdk.Tests.Utilities
             File.Delete(_secretsFile);
         }
 
-        [Test]
-        public void Throw_Exception_For_Missing_Secrets_File()
+        [TestCase(null)]
+        [TestCase("invalidFileName.json")]
+        public void Fallback_To_Env_Variables_When_Missing_Secrets_File(string fileName)
         {
-            Assert.Throws<FileNotFoundException>(() => ApiConfigurationBuilder.Build("i_do_not_exist.json"));
+            try
+            {
+                var result = ApiConfigurationBuilder.Build(fileName);
+                // assuming env variables are set:
+                Assert.IsFalse(result.HasMissingConfig());
+            }
+            catch (MissingConfigException e)
+            {
+                // note: this test is likely to fail when run locally if you're missing the env variables but they are set on the build server so allowing the failure as well:
+                Assert.AreEqual(e.Message,"The following required environment variables are not set: ['FBN_TOKEN_URL', 'FBN_USERNAME', 'FBN_PASSWORD', 'FBN_CLIENT_ID', 'FBN_CLIENT_SECRET', 'FBN_LUSID_API_URL']");
+            }
         }
 
         [Test]
