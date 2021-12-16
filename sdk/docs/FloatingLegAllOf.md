@@ -7,7 +7,7 @@ Name | Type | Description | Notes
 **StartDate** | **DateTimeOffset** |  | 
 **MaturityDate** | **DateTimeOffset** |  | 
 **LegDefinition** | [**LegDefinition**](LegDefinition.md) |  | 
-**Notional** | **decimal** | Scaling factor to apply to leg quantities. | 
+**Notional** | **decimal** | scaling factor to apply to leg quantities. | 
 **Overrides** | [**FixedLegAllOfOverrides**](FixedLegAllOfOverrides.md) |  | [optional] 
 **InstrumentType** | **string** | The available values are: QuotedSecurity, InterestRateSwap, FxForward, Future, ExoticInstrument, FxOption, CreditDefaultSwap, InterestRateSwaption, Bond, EquityOption, FixedLeg, FloatingLeg, BespokeCashFlowsLeg, Unknown, TermDeposit, ContractForDifference, EquitySwap, CashPerpetual, CapFloor, CashSettled, CdsIndex, Basket, FundingLeg, CrossCurrencySwap, FxSwap, ForwardRateAgreement, SimpleInstrument, Repo, Equity, ExchangeTradedOption | 
 

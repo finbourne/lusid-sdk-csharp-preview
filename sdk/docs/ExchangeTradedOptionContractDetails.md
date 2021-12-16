@@ -12,12 +12,12 @@ Name | Type | Description | Notes
 **DeliveryType** | **string** | The delivery type, cash or physical. An option on a future is physically settled if upon exercising the  holder receives a future.  Supported string (enumeration) values are: [Cash, Physical]. | 
 **Description** | **string** | Description of contract | 
 **ExchangeCode** | **string** | Exchange code for contract  Supported string (enumeration) values are: [ASX, CBOT, CBF, CME, CMX, EOP, HKG, KFE, MFM, OSE, SGX, NYBOT, KCBT, MGE, MATIF, SFE, NYFE, NYM, LIFFE, EUREX, ICE, MSE, NASDAQ, EEX, LME]. | 
-**ExerciseDate** | **DateTimeOffset** | Exercise Date. | 
-**ExerciseType** | **string** | The exercise type, European, American or Bermudan.  Supported string (enumeration) values are: [European, Bermudan, American]. | 
+**ExerciseDate** | **DateTimeOffset** | Exercise Date | 
+**ExerciseType** | **string** | The exercise type, European, American or Bermudan  Supported string (enumeration) values are: [None, European, Bermudan, American]. | 
 **OptionCode** | **string** | Option Contract Code, typically one or two letters, e.g. OG &#x3D;&gt; Option on Gold. | 
-**OptionType** | **string** | The option type, Call or Put.  Supported string (enumeration) values are: [Call, Put]. | 
+**OptionType** | **string** | The option type, Call or Put.  Supported string (enumeration) values are: [None, Call, Put]. | 
 **Underlying** | [**LusidInstrument**](LusidInstrument.md) |  | 
-**UnderlyingCode** | **string** | Code of the underlying, for an option on futures this should be the futures code. | 
+**UnderlyingCode** | **string** | Code of the underlying, for an option on futures this should be the futures code | 
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 
