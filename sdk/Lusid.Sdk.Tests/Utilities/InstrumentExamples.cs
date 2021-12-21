@@ -18,6 +18,7 @@ namespace Lusid.Sdk.Tests.Utilities
                 nameof(InterestRateSwap) => CreateExampleInterestRateSwap(),
                 nameof(CreditDefaultSwap) => CreateExampleCreditDefaultSwap(),
                 nameof(ContractForDifference) => CreateExampleCfd(),
+                nameof(Equity) => CreateExampleEquity(),
                 _ => throw new ArgumentOutOfRangeException($"Please implement case for instrument {instrumentName}")
             };
         }
@@ -63,6 +64,14 @@ namespace Lusid.Sdk.Tests.Utilities
                 underlyingIdentifier: EquityOption.UnderlyingIdentifierEnum.RIC,
                 code: "ACME",
                 instrumentType: LusidInstrument.InstrumentTypeEnum.EquityOption
+            );
+
+        internal static LusidInstrument CreateExampleEquity()
+            => new SimpleInstrument(
+                instrumentType: LusidInstrument.InstrumentTypeEnum.SimpleInstrument, 
+                domCcy: "USD", 
+                assetClass: SimpleInstrument.AssetClassEnum.Equities, 
+                simpleInstrumentType: "Equity"
             );
 
         private static FlowConventions CreateExampleFlowConventions()
