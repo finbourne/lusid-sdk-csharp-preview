@@ -13,22 +13,14 @@ using NUnit.Framework;
 namespace Lusid.Sdk.Tests.Tutorials.MarketData
 {
     [TestFixture]
-    public class CorporateActions
+    public class CorporateActions : TutorialBase
     {
-        private ILusidApiFactory _apiFactory;
-        private ICorporateActionSourcesApi _corporateActionSourcesApi;
-        private ITransactionPortfoliosApi _transactionPortfoliosApi;
         private IList<string> _instrumentIds;
         private string _corpActionTestSource;
 
         [OneTimeSetUp]
         public void SetUp()
         {
-            _apiFactory = TestLusidApiFactoryBuilder.CreateApiFactory("secrets.json");
-
-            _transactionPortfoliosApi = _apiFactory.Api<ITransactionPortfoliosApi>();
-            _corporateActionSourcesApi = _apiFactory.Api<ICorporateActionSourcesApi>();
-
             var instrumentsLoader = new InstrumentLoader(_apiFactory);
             _instrumentIds = instrumentsLoader.LoadInstruments().OrderBy(x => x).ToList();
 
@@ -251,8 +243,6 @@ namespace Lusid.Sdk.Tests.Tutorials.MarketData
             var portfolioCode = $"id-{uuid}";
             var transactions = new List<TransactionRequest>();
 
-            var currencyLuid = "CCY_GBP";
-
             // Create the portfolio
             var request = new CreateTransactionPortfolioRequest(
                 code: portfolioCode,
@@ -305,11 +295,6 @@ namespace Lusid.Sdk.Tests.Tutorials.MarketData
             var holdingsResultPreExDate = _transactionPortfoliosApi.GetHoldings(TestDataUtilities.TutorialScope, portfolioCode, effectiveAt: announcementDate);
             var holdingsPreExDate = holdingsResultPreExDate.Values.OrderBy(h => h.InstrumentUid).ToList();
 
-            //  check cash balance hasn't changed
-            Assert.That(holdingsPreExDate[0].InstrumentUid, Is.EqualTo(currencyLuid));
-            Assert.That(holdingsPreExDate[0].Units, Is.EqualTo(2960000));
-            Assert.That(holdingsPreExDate[0].HoldingType, Is.EqualTo("B"));
-
             //  check stock quantity hasn't changed
             Assert.That(holdingsPreExDate[1].InstrumentUid, Is.EqualTo(_instrumentIds[0]));
             Assert.That(holdingsPreExDate[1].Units, Is.EqualTo(132000));
@@ -322,11 +307,6 @@ namespace Lusid.Sdk.Tests.Tutorials.MarketData
             var holdingsResultPostExDate = _transactionPortfoliosApi.GetHoldings(TestDataUtilities.TutorialScope, portfolioCode, effectiveAt: recordDate);
             var holdingsPostExDate = holdingsResultPostExDate.Values.OrderBy(h => h.InstrumentUid).ToList();
 
-            //  check cash balance hasn't changed
-            Assert.That(holdingsPostExDate[0].InstrumentUid, Is.EqualTo(currencyLuid));
-            Assert.That(holdingsPostExDate[0].Units, Is.EqualTo(2960000));
-            Assert.That(holdingsPostExDate[0].HoldingType, Is.EqualTo("B"));
-
             //  check stock quantity has doubled for unsettled units
             Assert.That(holdingsPostExDate[1].InstrumentUid, Is.EqualTo(_instrumentIds[0]));
             Assert.That(holdingsPostExDate[1].Units, Is.EqualTo(264000));
@@ -338,11 +318,6 @@ namespace Lusid.Sdk.Tests.Tutorials.MarketData
             //
             var holdingsResultPostPayDate = _transactionPortfoliosApi.GetHoldings(TestDataUtilities.TutorialScope, portfolioCode, effectiveAt: postSplitDate);
             var holdingsPostPayDate = holdingsResultPostPayDate.Values.OrderBy(h => h.InstrumentUid).ToList();
-
-            //  check cash balance hasn't changed
-            Assert.That(holdingsPostPayDate[0].InstrumentUid, Is.EqualTo(currencyLuid));
-            Assert.That(holdingsPostPayDate[0].Units, Is.EqualTo(2960000));
-            Assert.That(holdingsPostPayDate[0].HoldingType, Is.EqualTo("B"));
 
             //  check stock quantity has doubled for settled and unseltted units
             Assert.That(holdingsPostPayDate[1].InstrumentUid, Is.EqualTo(_instrumentIds[0]));
@@ -445,6 +420,9 @@ namespace Lusid.Sdk.Tests.Tutorials.MarketData
             var holdingsPostNameChangeList = holdingsPostNameChange.Values.OrderBy(h => h.InstrumentUid).ToList();
 
             Assert.That(holdingsPostNameChangeList[0].InstrumentUid, Is.EqualTo(luidNew));
+
+            _apiFactory.Api<IInstrumentsApi>().DeleteInstrument("Figi", originalInstrument.Figi);
+            _apiFactory.Api<IInstrumentsApi>().DeleteInstrument("Figi", newInstrument.Figi);
         }
     }
 }
