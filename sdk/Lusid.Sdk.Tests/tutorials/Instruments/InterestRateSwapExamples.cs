@@ -20,7 +20,7 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
         {
         }
 
-        [LusidFeature("F22-4")]
+        [LusidFeature("F22-7")]
         [Test]
         public void InterestRateSwapCreationAndUpsertionExample()
         {
