@@ -89,7 +89,12 @@ namespace Lusid.Sdk.Tests.Utilities
                 // SimpleStatic pricing is lookup pricing. As such, we upsert a quote.
                 // Note that inside CreatePortfolioAndInstrument, the method TestDataUtilities.BuildInstrumentUpsertRequest books the instrument using "ClientInternal".
                 // Hence upsert a quote using ClientInternal as the instrumentIdType.
-                var quoteRequest = TestDataUtilities.BuildQuoteRequest(instrumentID, QuoteSeriesId.InstrumentIdTypeEnum.ClientInternal, 100m, "USD", TestDataUtilities.EffectiveAt);
+                var quoteRequest = TestDataUtilities.BuildQuoteRequest(
+                    instrumentID,
+                    QuoteSeriesId.InstrumentIdTypeEnum.ClientInternal,
+                    100m,
+                    "USD",
+                    TestDataUtilities.EffectiveAt);
                 var upsertResponse = _quotesApi.UpsertQuotes(scope, quoteRequest);
                 Assert.That(upsertResponse.Failed.Count, Is.EqualTo(0));
                 Assert.That(upsertResponse.Values.Count, Is.EqualTo(quoteRequest.Count));

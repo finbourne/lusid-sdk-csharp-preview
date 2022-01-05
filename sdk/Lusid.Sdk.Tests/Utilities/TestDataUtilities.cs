@@ -346,6 +346,11 @@ namespace Lusid.Sdk.Tests.Utilities
             return upsertRequest;
         }
 
+        /// <summary>
+        /// Creates a CreateComplexMarketDataId.
+        /// When one upserts a ComplexMarketData, one upserts with it a CreateComplexMarketDataId as to
+        /// identify the data, specify its effectiveAt and priceSource (if any).
+        /// </summary>
         private static ComplexMarketDataId CreateComplexMarketDataId(DateTimeOffset effectiveAt, string currency)
         {
             return new ComplexMarketDataId(
@@ -429,7 +434,12 @@ namespace Lusid.Sdk.Tests.Utilities
             return request;
         }
 
-        public static Dictionary<string, UpsertQuoteRequest> BuildQuoteRequest(string id, QuoteSeriesId.InstrumentIdTypeEnum instrumentIdType, decimal price, string ccy, DateTimeOffset effectiveAt)
+        public static Dictionary<string, UpsertQuoteRequest> BuildQuoteRequest(
+            string id,
+            QuoteSeriesId.InstrumentIdTypeEnum instrumentIdType,
+            decimal price,
+            string ccy,
+            DateTimeOffset effectiveAt)
         {
             var quoteRequest = BuildSimpleQuoteUpsertRequest(id, instrumentIdType, price, ccy, effectiveAt);
             var upsertRequests = new Dictionary<string, UpsertQuoteRequest> {{"req1", quoteRequest}};
@@ -462,7 +472,7 @@ namespace Lusid.Sdk.Tests.Utilities
         /// For example, suppose we want to price an equity option on XYZ (listed on the NYSE) using the Black Scholes model.
         /// To price the option, we require a volatility surface.
         /// When we upsert the volatility surface, we give it a MarketAsset of XYZ/USD/LN to indicate this volatility
-        /// surface is for XYZ listed in the US and the volatility type if LN (log-normal).
+        /// surface is for XYZ listed in the US and the volatility type is LN (log-normal).
         /// When Lusid is pricing this equity option, it would look for this complex market data with this identifier.
         /// </summary>
         private static string GetMarketAsset(LusidInstrument option, MarketQuote.QuoteTypeEnum volType)
