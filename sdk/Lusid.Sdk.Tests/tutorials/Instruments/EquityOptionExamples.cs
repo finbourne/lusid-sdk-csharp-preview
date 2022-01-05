@@ -13,7 +13,7 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
     {
         internal override void CreateAndUpsertMarketDataToLusid(string scope, ModelSelection.ModelEnum model, LusidInstrument option)
         {
-            var quoteRequest = TestDataUtilities.BuildQuoteRequest(scope, "ACME", QuoteSeriesId.InstrumentIdTypeEnum.RIC, 135m, "USD", TestDataUtilities.EffectiveAt);
+            var quoteRequest = TestDataUtilities.BuildQuoteRequest("ACME", QuoteSeriesId.InstrumentIdTypeEnum.RIC, 135m, "USD", TestDataUtilities.EffectiveAt);
             var upsertResponse = _quotesApi.UpsertQuotes(scope, quoteRequest);
             Assert.That(upsertResponse.Failed.Count, Is.EqualTo(0));
             Assert.That(upsertResponse.Values.Count, Is.EqualTo(quoteRequest.Count));
@@ -25,11 +25,11 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
             }
             if (model == ModelSelection.ModelEnum.BlackScholes)
             {
-                upsertComplexMarketDataRequest.Add("BlackScholesVolSurface", TestDataUtilities.ConstantVolSurfaceRequest(TestDataUtilities.EffectiveAt, option, model, 0.2m));
+                upsertComplexMarketDataRequest.Add("BlackScholesVolSurface", TestDataUtilities.ConstantVolatilitySurfaceRequest(TestDataUtilities.EffectiveAt, option, model, 0.2m));
             }
             if (model == ModelSelection.ModelEnum.Bachelier)
             { 
-                upsertComplexMarketDataRequest.Add("BachelierVolSurface", TestDataUtilities.ConstantVolSurfaceRequest(TestDataUtilities.EffectiveAt, option, model, 10m));
+                upsertComplexMarketDataRequest.Add("BachelierVolSurface", TestDataUtilities.ConstantVolatilitySurfaceRequest(TestDataUtilities.EffectiveAt, option, model, 10m));
             }
 
             if(upsertComplexMarketDataRequest.Any())
@@ -39,8 +39,12 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
             }
         }
         
-        internal override void GetAndValidatePortfolioCashFlows(LusidInstrument instrument, string scope, string portfolioCode,
-            string recipeCode, string instrumentID)
+        internal override void GetAndValidatePortfolioCashFlows(
+            LusidInstrument instrument,
+            string scope,
+            string portfolioCode,
+            string recipeCode,
+            string instrumentID)
         {
             var option = (EquityOption) instrument;
             var cashflows = _transactionPortfoliosApi.GetPortfolioCashFlows(
@@ -97,8 +101,8 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
             Assert.That(roundTripEquityOption.OptionSettlementDate, Is.EqualTo(equityOption.OptionSettlementDate));
             Assert.That(roundTripEquityOption.UnderlyingIdentifier, Is.EqualTo(equityOption.UnderlyingIdentifier));
             
-            // DELETE Instrument 
-            _instrumentsApi.DeleteInstrument("ClientInternal", uniqueId); 
+            // DELETE instrument
+            _instrumentsApi.DeleteInstrument("ClientInternal", uniqueId);
         }
         
         [TestCase(ModelSelection.ModelEnum.SimpleStatic)]

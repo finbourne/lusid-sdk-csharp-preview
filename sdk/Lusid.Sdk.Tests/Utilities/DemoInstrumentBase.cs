@@ -66,7 +66,7 @@ namespace Lusid.Sdk.Tests.Utilities
                 .ToList();
 
             // CREATE transaction to book the instrument onto the portfolio via their LusidInstrumentId
-            var transactionRequest = TestDataUtilities.BuildTransactionRequest(luids, scope, portfolioRequest.Code, TestDataUtilities.EffectiveAt);
+            var transactionRequest = TestDataUtilities.BuildTransactionRequest(luids, TestDataUtilities.EffectiveAt);
             _transactionPortfoliosApi.UpsertTransactions(scope, portfolioRequest.Code, transactionRequest);
 
             return (instrumentID, portfolioRequest.Code);
@@ -89,7 +89,12 @@ namespace Lusid.Sdk.Tests.Utilities
                 // SimpleStatic pricing is lookup pricing. As such, we upsert a quote.
                 // Note that inside CreatePortfolioAndInstrument, the method TestDataUtilities.BuildInstrumentUpsertRequest books the instrument using "ClientInternal".
                 // Hence upsert a quote using ClientInternal as the instrumentIdType.
-                var quoteRequest = TestDataUtilities.BuildQuoteRequest(scope, instrumentID, QuoteSeriesId.InstrumentIdTypeEnum.ClientInternal, 100m, "USD", TestDataUtilities.EffectiveAt);
+                var quoteRequest = TestDataUtilities.BuildQuoteRequest(
+                    instrumentID,
+                    QuoteSeriesId.InstrumentIdTypeEnum.ClientInternal,
+                    100m,
+                    "USD",
+                    TestDataUtilities.EffectiveAt);
                 var upsertResponse = _quotesApi.UpsertQuotes(scope, quoteRequest);
                 Assert.That(upsertResponse.Failed.Count, Is.EqualTo(0));
                 Assert.That(upsertResponse.Values.Count, Is.EqualTo(quoteRequest.Count));
@@ -111,7 +116,6 @@ namespace Lusid.Sdk.Tests.Utilities
                 sort: new List<OrderBySpec> {new OrderBySpec(TestDataUtilities.ValuationDateKey, OrderBySpec.SortOrderEnum.Ascending)},
                 portfolioEntityIds: new List<PortfolioEntityId> {new PortfolioEntityId(scope, portfolioCode)},
                 reportCurrency: "USD");
-
             
             // CALL valuation and assert that the PVs makes sense.
             var result = _aggregationApi.GetValuation(valuationRequest);
@@ -171,7 +175,11 @@ namespace Lusid.Sdk.Tests.Utilities
             {
                 var pv = (double) r[TestDataUtilities.ValuationPvKey];
                 Assert.That(pv, Is.Not.EqualTo(0).Within(1e-5));
-                Assert.That(pv, Is.GreaterThanOrEqualTo(0));
+                
+                if (instrument.InstrumentType != LusidInstrument.InstrumentTypeEnum.InterestRateSwap)
+                {
+                    Assert.That(pv, Is.GreaterThanOrEqualTo(0));
+                }
             }
             _recipeApi.DeleteConfigurationRecipe(scope, recipeCode);
         }

@@ -62,7 +62,10 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
             var roundTripExotic = retrieved as ExoticInstrument;
             Assert.That(roundTripExotic, Is.Not.Null);
             Assert.That(roundTripExotic.Content, Is.EqualTo(exotic.Content));
-            Assert.That(roundTripExotic.InstrumentFormat, Is.EqualTo(exotic.InstrumentFormat)); 
+            Assert.That(roundTripExotic.InstrumentFormat, Is.EqualTo(exotic.InstrumentFormat));
+            
+            // DELETE instrument
+            _instrumentsApi.DeleteInstrument("ClientInternal", uniqueId);
         }
         
         [TestCase(ModelSelection.ModelEnum.SimpleStatic)]

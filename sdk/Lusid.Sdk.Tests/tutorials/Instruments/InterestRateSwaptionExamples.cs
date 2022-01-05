@@ -62,9 +62,10 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
             Assert.That(roundTripSwaption.StartDate, Is.EqualTo(swaption.StartDate));
             Assert.That(roundTripSwaption.PayOrReceiveFixed, Is.EqualTo(swaption.PayOrReceiveFixed));
             Assert.That(roundTripSwaption.Swap, Is.Not.Null);
-            Assert.That(roundTripSwaption.Swap.InstrumentType, Is.EqualTo(LusidInstrument.InstrumentTypeEnum.InterestRateSwap));            
-            // Delete Instrument
-            _instrumentsApi.DeleteInstrument("ClientInternal", uniqueId); 
+            Assert.That(roundTripSwaption.Swap.InstrumentType, Is.EqualTo(LusidInstrument.InstrumentTypeEnum.InterestRateSwap));
+
+            // DELETE instrument 
+            _instrumentsApi.DeleteInstrument("ClientInternal", uniqueId);
         }
         
         [TestCase(ModelSelection.ModelEnum.SimpleStatic)]

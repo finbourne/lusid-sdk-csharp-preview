@@ -77,6 +77,9 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
             Assert.That(retrFxFwd.FgnAmount, Is.EqualTo(fxForward.FgnAmount));
             Assert.That(retrFxFwd.DomCcy, Is.EqualTo(fxForward.DomCcy));
             Assert.That(retrFxFwd.FgnCcy, Is.EqualTo(fxForward.FgnCcy));
+            
+            // DELETE instrument 
+            _instrumentsApi.DeleteInstrument("ClientInternal", uniqueId); 
         }
         
         [TestCase(ModelSelection.ModelEnum.ConstantTimeValueOfMoney)]

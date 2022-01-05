@@ -81,8 +81,8 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
             Assert.That(roundTripTermDeposit.FlowConvention.PaymentCalendars.Count, Is.EqualTo(termDeposit.FlowConvention.PaymentCalendars.Count));
             Assert.That(roundTripTermDeposit.FlowConvention.PaymentCalendars, Is.EquivalentTo(termDeposit.FlowConvention.PaymentCalendars));
             
-            // Delete Instrument 
-            _instrumentsApi.DeleteInstrument("ClientInternal", uniqueId); 
+            // DELETE instrument
+            _instrumentsApi.DeleteInstrument("ClientInternal", uniqueId);
         }
         
         [TestCase(ModelSelection.ModelEnum.SimpleStatic)]
