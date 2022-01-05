@@ -174,7 +174,7 @@ namespace Lusid.Sdk.Tests.Utilities
         }
 
         /// <summary>
-        /// Helper to upsert a given LusidInstrument 
+        /// Helper to create an upsert request for a given LusidInstrument 
         /// </summary>
         public static Dictionary<string, InstrumentDefinition> BuildInstrumentUpsertRequest(List<(LusidInstrument, string)> instruments)
         {
@@ -196,11 +196,9 @@ namespace Lusid.Sdk.Tests.Utilities
         /// </summary>
         public static List<TransactionRequest> BuildTransactionRequest(
             List<string> luids,
-            string scope,
-            string portfolioCode,
             DateTimeOffset effectiveAt)
         {
-            // CREATE instrument transaction request
+            // CREATE instrument transaction requests
             var transactionRequests = luids.Select(luid =>
                     BuildTransactionRequest(luid, 1, 0.0m, "USD", effectiveAt, "Buy"))
                 .ToList();
@@ -208,12 +206,12 @@ namespace Lusid.Sdk.Tests.Utilities
         }
         
         /// <summary>
-        /// This method upserts JPY/USD and USD/JPY fx quotes for the given effectiveAt date
+        /// This method upserts JPY/USD and USD/JPY FX quotes for the given effectiveAt date
         /// </summary>
         public static Dictionary<string, UpsertQuoteRequest> BuildFxRateRequest(string scope, DateTimeOffset effectiveAt) => BuildFxRateRequest(scope, effectiveAt, effectiveAt);
 
         /// <summary>
-        /// This method upserts JPY/USD and USD/JPY fx quotes for every day in the date range
+        /// This method upserts JPY/USD and USD/JPY FX quotes for every day in the date range
         /// </summary>
         public static Dictionary<string, UpsertQuoteRequest> BuildFxRateRequest(string scope, DateTimeOffset effectiveFrom,  DateTimeOffset effectiveAt, bool useConstantFxRate = false)
         {
@@ -245,15 +243,16 @@ namespace Lusid.Sdk.Tests.Utilities
         }
 
         /// <summary>
-        /// This method upserts the reset quotes for the floating leg of a swap
+        /// This method upserts the reset quotes for a CDS
         /// </summary>
-        public static Dictionary<string, UpsertQuoteRequest> BuildResetQuotesRequest(string scope, DateTimeOffset effectiveAt)
+        public static Dictionary<string, UpsertQuoteRequest> BuildResetQuotesRequest(DateTimeOffset effectiveAt)
         {
             // CREATE reset quotes in the desired date range
-            var upsertQuoteRequests = new Dictionary<string, UpsertQuoteRequest>();
-
             var resetQuote = BuildSimpleQuoteUpsertRequest("BP00", QuoteSeriesId.InstrumentIdTypeEnum.RIC, 150, "USD", effectiveAt);
-            upsertQuoteRequests.Add($"resetQuote", resetQuote);
+            var upsertQuoteRequests = new Dictionary<string, UpsertQuoteRequest>
+            {
+                {"resetQuote", resetQuote}
+            };
 
             return upsertQuoteRequests;
         }
@@ -283,9 +282,9 @@ namespace Lusid.Sdk.Tests.Utilities
 
 
         /// <summary>
-        /// Helper method to create simple equity or fx quote upsert request
+        /// Helper method to create simple equity or FX quote upsert request
         /// </summary>
-        internal static UpsertQuoteRequest BuildSimpleQuoteUpsertRequest(
+        private static UpsertQuoteRequest BuildSimpleQuoteUpsertRequest(
             string id,
             QuoteSeriesId.InstrumentIdTypeEnum instrumentIdType,
             decimal price,
@@ -305,8 +304,8 @@ namespace Lusid.Sdk.Tests.Utilities
 
         /// <summary>
         /// This method upserts the 3 rate curves:
-        /// JPY/JPYOIS and USD/USDOIS are used for discounting pricing models
-        /// USD 6M rate is used for pricing interest rate swap
+        /// JPY/JPYOIS and USD/USDOIS curves are used for discounting pricing models
+        /// USD 6M curves is used for projecting interest rate swap reset rate
         /// </summary>
         public static Dictionary<string, UpsertComplexMarketDataRequest> BuildRateCurvesRequests(DateTimeOffset effectiveAt)
         {
@@ -325,34 +324,35 @@ namespace Lusid.Sdk.Tests.Utilities
         }
 
         /// <summary>
-        /// Helper method to construct complex market data request for OIS interest rate curve to be used in IComplexMarketDataApi
+        /// Helper method to construct a upsert complex market data request for OIS interest rate curve to be upserted by IComplexMarketDataApi
         /// </summary>
         public static UpsertComplexMarketDataRequest BuildOisCurveRequest(DateTimeOffset effectiveAt, string currency)
         {
             var complexMarketData = CreateDiscountCurve(effectiveAt);
-            var complexMarketDataId = new ComplexMarketDataId(
-                provider: "Lusid",
-                effectiveAt: effectiveAt.ToString("o"),
-                marketAsset: $"{currency}/{currency}OIS",
-                priceSource: "");
+            var complexMarketDataId = CreateComplexMarketDataId(effectiveAt, currency);
             var upsertRequest = new UpsertComplexMarketDataRequest(complexMarketDataId, complexMarketData);
             return upsertRequest;
         }
 
         /// <summary>
-        /// Helper method to construct complex market data request for OIS interest rate curve to be used in IComplexMarketDataApi
+        /// Helper method to construct a upsert complex market data request for OIS interest rate curve to be upserted by IComplexMarketDataApi
         /// </summary>
         public static UpsertComplexMarketDataRequest BuildOisCurveHighRatesRequest(DateTimeOffset effectiveAt, string currency)
         {
             // different rates as the valuation for some instruments such as fx forwards depend on the difference between the rates curves in two currencies
             var complexMarketData = CreateDiscountCurveHighRates(effectiveAt);
-            var complexMarketDataId = new ComplexMarketDataId(
+            var complexMarketDataId = CreateComplexMarketDataId(effectiveAt, currency);
+            var upsertRequest = new UpsertComplexMarketDataRequest(complexMarketDataId, complexMarketData);
+            return upsertRequest;
+        }
+
+        private static ComplexMarketDataId CreateComplexMarketDataId(DateTimeOffset effectiveAt, string currency)
+        {
+            return new ComplexMarketDataId(
                 provider: "Lusid",
                 effectiveAt: effectiveAt.ToString("o"),
                 marketAsset: $"{currency}/{currency}OIS",
                 priceSource: "");
-            var upsertRequest = new UpsertComplexMarketDataRequest(complexMarketDataId, complexMarketData);
-            return upsertRequest;
         }
 
         private static DiscountFactorCurveData CreateDiscountCurve(DateTimeOffset effectiveAt)
@@ -372,7 +372,7 @@ namespace Lusid.Sdk.Tests.Utilities
         }
 
         /// <summary>
-        /// Helper method to construct complex market data request for interest rate curve to be used in IComplexMarketDataApi
+        /// Helper method to construct a upsert complex market data request for interest rate curve to be upserted by IComplexMarketDataApi
         /// </summary>
         public static UpsertComplexMarketDataRequest Build6MRateCurveRequest(DateTimeOffset effectiveAt, string currency)
         {
@@ -394,7 +394,7 @@ namespace Lusid.Sdk.Tests.Utilities
             return JsonConvert.DeserializeObject<DiscountFactorCurveData>(jsonString);
         }
         
-        private static ComplexMarketData GetSpreadCurveJsonFromFile(string filename)
+        private static ComplexMarketData GetCdsSpreadCurveJsonFromFile(string filename)
         {
             using var reader = new StreamReader(ExampleMarketDataDirectory + filename);
             var jsonString = reader.ReadToEnd();
@@ -408,7 +408,12 @@ namespace Lusid.Sdk.Tests.Utilities
             return cdsCurve;
         }
 
-        public static UpsertComplexMarketDataRequest BuildCdsSpreadCurvesRequest(DateTimeOffset effectiveAt, string ticker, string ccy, CdsProtectionDetailSpecification.SeniorityEnum seniority, CdsProtectionDetailSpecification.RestructuringTypeEnum restructType)
+        public static UpsertComplexMarketDataRequest BuildCdsSpreadCurvesUpsertRequest(
+            DateTimeOffset effectiveAt,
+            string ticker,
+            string ccy,
+            CdsProtectionDetailSpecification.SeniorityEnum seniority,
+            CdsProtectionDetailSpecification.RestructuringTypeEnum restructType)
         {
             var marketDataId = new ComplexMarketDataId
             (
@@ -419,19 +424,22 @@ namespace Lusid.Sdk.Tests.Utilities
                 lineage: ""
             );
 
-            var marketData = GetSpreadCurveJsonFromFile("XYZCorp.json");
+            var marketData = GetCdsSpreadCurveJsonFromFile("XYZCorp.json");
             var request = new UpsertComplexMarketDataRequest(marketDataId, marketData);
             return request;
         }
 
-        public static Dictionary<string, UpsertQuoteRequest> BuildQuoteRequest(string scope, string id, QuoteSeriesId.InstrumentIdTypeEnum instrumentIdType, decimal price, string ccy, DateTimeOffset effectiveAt)
+        public static Dictionary<string, UpsertQuoteRequest> BuildQuoteRequest(string id, QuoteSeriesId.InstrumentIdTypeEnum instrumentIdType, decimal price, string ccy, DateTimeOffset effectiveAt)
         {
             var quoteRequest = BuildSimpleQuoteUpsertRequest(id, instrumentIdType, price, ccy, effectiveAt);
             var upsertRequests = new Dictionary<string, UpsertQuoteRequest> {{"req1", quoteRequest}};
             return upsertRequests; 
         }
 
-        public static ComplexMarketData CreateVolSurfaceData(
+        /// <summary>
+        /// For pricing options using models such as Black Scholes, one requires a volatility surface. We create one here.
+        /// </summary>
+        public static ComplexMarketData CreateVolatilitySurfaceData(
             DateTimeOffset effectiveAt,
             List<LusidInstrument> instruments,
             List<MarketQuote> quotes,
@@ -445,10 +453,19 @@ namespace Lusid.Sdk.Tests.Utilities
                    ComplexMarketData.MarketDataTypeEnum.FxVolSurfaceData);
 
             return volData;
-
         }
 
-        public static string GetMarketAsset(LusidInstrument option, MarketQuote.QuoteTypeEnum volType)
+        /// <summary>
+        /// Creates a MarketAsset string that is to be upserted with a piece of complex market data.
+        /// The MarketAsset acts as an name or identifier for a piece of complex market data.
+        /// 
+        /// For example, suppose we want to price an equity option on XYZ (listed on the NYSE) using the Black Scholes model.
+        /// To price the option, we require a volatility surface.
+        /// When we upsert the volatility surface, we give it a MarketAsset of XYZ/USD/LN to indicate this volatility
+        /// surface is for XYZ listed in the US and the volatility type if LN (log-normal).
+        /// When Lusid is pricing this equity option, it would look for this complex market data with this identifier.
+        /// </summary>
+        private static string GetMarketAsset(LusidInstrument option, MarketQuote.QuoteTypeEnum volType)
         {
             string marketAsset = "";
             if (option.InstrumentType == LusidInstrument.InstrumentTypeEnum.EquityOption)
@@ -464,13 +481,17 @@ namespace Lusid.Sdk.Tests.Utilities
             }
 
             return marketAsset;
-
         }
 
         /// <summary>
         /// One-point vol surface for a given option - thus the surface is constant.
+        /// This code creates a surface for both equity and FX options and for both Black Scholes and Bachelier model.
         /// </summary>
-        public static UpsertComplexMarketDataRequest ConstantVolSurfaceRequest(DateTimeOffset effectiveAt, LusidInstrument option, ModelSelection.ModelEnum model, decimal vol = 0.2m)
+        public static UpsertComplexMarketDataRequest ConstantVolatilitySurfaceRequest(
+            DateTimeOffset effectiveAt,
+            LusidInstrument option,
+            ModelSelection.ModelEnum model,
+            decimal vol = 0.2m)
         {
             ComplexMarketData.MarketDataTypeEnum type = ComplexMarketData.MarketDataTypeEnum.OpaqueMarketData;
             if (option.InstrumentType == LusidInstrument.InstrumentTypeEnum.EquityOption)
@@ -481,7 +502,7 @@ namespace Lusid.Sdk.Tests.Utilities
             var instruments = new List<LusidInstrument> {option};
             var volType = model == ModelSelection.ModelEnum.Bachelier ? MarketQuote.QuoteTypeEnum.NormalVol : MarketQuote.QuoteTypeEnum.LogNormalVol;
             var quotes = new List<MarketQuote> {new MarketQuote(volType, vol)};
-            var complexMarketData = CreateVolSurfaceData(effectiveAt, instruments, quotes, type);
+            var complexMarketData = CreateVolatilitySurfaceData(effectiveAt, instruments, quotes, type);
 
             var marketAsset = GetMarketAsset(option, volType);
 
@@ -495,11 +516,12 @@ namespace Lusid.Sdk.Tests.Utilities
         }
 
         /// <summary>
-        /// Simple wrapper to upsert a recipe to Lusid and ensure that the process is successful
+        /// This method creates a recipe and wraps it up into an UpsertRecipeRequest.
+        /// It consists of rules capable of finding both simple quote and complex market data for a range of instruments. 
         /// </summary>
         public static UpsertRecipeRequest BuildRecipeRequest(string recipeCode, string scope, ModelSelection.ModelEnum model)
         {
-            // Note that inside CreatePortfolioAndInstrument, the method TestDataUtilities.BuildInstrumentUpsertRequest books the instrument using "ClientInternal".
+            // For simpleStaticRule, note that inside CreatePortfolioAndInstrument, the method TestDataUtilities.BuildInstrumentUpsertRequest books the instrument using "ClientInternal".
             // As such the quote upserted using "ClientInternal". The market rule key needs to be "ClientInternal" also to find the quote.  
             var simpleStaticRule = new MarketDataKeyRule(
                 key: "Equity.ClientInternal.*",
@@ -508,6 +530,8 @@ namespace Lusid.Sdk.Tests.Utilities
                 MarketDataKeyRule.QuoteTypeEnum.Price,
                 field: "mid",
                 quoteInterval: "5D");
+            
+            // resetRule is used to locate reset rates such as that for interest rate swaps.
             var resetRule = new MarketDataKeyRule(
                 key: "Equity.RIC.*",
                 supplier: "Lusid",
@@ -515,6 +539,8 @@ namespace Lusid.Sdk.Tests.Utilities
                 MarketDataKeyRule.QuoteTypeEnum.Price,
                 field: "mid",
                 quoteInterval: "1Y");
+            
+            // creditRule here is used by Lusid to locate the credit spread curve.
             // We use long quote intervals here because we are happy to use old market data,
             // as pricing is not a concern in the cash flow demos this is used in.
             var creditRule = new MarketDataKeyRule(
@@ -524,6 +550,9 @@ namespace Lusid.Sdk.Tests.Utilities
                 MarketDataKeyRule.QuoteTypeEnum.Spread,
                 field: "mid",
                 quoteInterval: "10Y");
+            
+            // ratesRule here is used by Lusid to locate the rate curves such as discount rate curves
+            // for pricing interest rate swaps and options (when priced with discounting models)
             var ratesRule = new MarketDataKeyRule(
                 key: "Rates.*.*",
                 supplier: "Lusid",
@@ -542,8 +571,7 @@ namespace Lusid.Sdk.Tests.Utilities
                 pricing: new PricingContext(options: pricingOptions),
                 description: $"Recipe for {model} pricing");
             
-            var upsertRecipeRequest = new UpsertRecipeRequest(recipe);
-            return upsertRecipeRequest;
+            return new UpsertRecipeRequest(recipe);
         }
     }
 }

@@ -29,11 +29,11 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
             }
             if (model == ModelSelection.ModelEnum.BlackScholes)
             {
-                upsertComplexMarketDataRequest.Add("VolSurface", TestDataUtilities.ConstantVolSurfaceRequest(TestDataUtilities.EffectiveAt, fxOption, model, 0.2m));
+                upsertComplexMarketDataRequest.Add("VolSurface", TestDataUtilities.ConstantVolatilitySurfaceRequest(TestDataUtilities.EffectiveAt, fxOption, model, 0.2m));
             }
             if (model == ModelSelection.ModelEnum.Bachelier)
             { 
-                upsertComplexMarketDataRequest.Add("VolSurface", TestDataUtilities.ConstantVolSurfaceRequest(TestDataUtilities.EffectiveAt, fxOption, model, 10m));
+                upsertComplexMarketDataRequest.Add("VolSurface", TestDataUtilities.ConstantVolatilitySurfaceRequest(TestDataUtilities.EffectiveAt, fxOption, model, 10m));
             }
 
             if(upsertComplexMarketDataRequest.Any())

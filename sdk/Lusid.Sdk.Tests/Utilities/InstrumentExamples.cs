@@ -210,8 +210,8 @@ namespace Lusid.Sdk.Tests.Utilities
             decimal notional = 100m;
             
             // CREATE the flow conventions, index convention
-            FlowConventionName flowConventionName = new FlowConventionName(currency: "GBP", tenor: "3M");
-            FlowConventionName indexConventionName = new FlowConventionName(currency: "GBP", tenor: "3M", indexName:"LIBOR");
+            FlowConventionName flowConventionName = new FlowConventionName(currency: "USD", tenor: "6M");
+            FlowConventionName indexConventionName = new FlowConventionName(currency: "USD", tenor: "6M", indexName:"LIBOR");
 
             var floatingLegDirection = fixedLegDirection == "Pay" ? "Receive" : "Pay";
 

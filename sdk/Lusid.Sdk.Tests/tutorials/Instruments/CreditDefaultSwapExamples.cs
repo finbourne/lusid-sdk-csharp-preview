@@ -20,13 +20,13 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
             var upsertFxQuoteResponse = _quotesApi.UpsertQuotes(scope, upsertFxRateRequestReq);
             ValidateQuoteUpsert(upsertFxQuoteResponse, upsertFxRateRequestReq.Count);
 
-            var upsertQuoteRequests = TestDataUtilities.BuildResetQuotesRequest(scope, TestDataUtilities.EffectiveAt.AddDays(-4));
+            var upsertQuoteRequests = TestDataUtilities.BuildResetQuotesRequest(TestDataUtilities.EffectiveAt.AddDays(-4));
             var upsertQuoteResponse = _quotesApi.UpsertQuotes(scope, upsertQuoteRequests);
             Assert.That(upsertQuoteResponse.Failed.Count, Is.EqualTo(0));
             Assert.That(upsertQuoteResponse.Values.Count, Is.EqualTo(upsertQuoteRequests.Count));
             
             // CREATE a dictionary of complex market data to be upserted for the CDS. We always need a CDS spread curve.
-            var cdsSpreadCurveUpsertRequest = TestDataUtilities.BuildCdsSpreadCurvesRequest(
+            var cdsSpreadCurveUpsertRequest = TestDataUtilities.BuildCdsSpreadCurvesUpsertRequest(
                 TestDataUtilities.EffectiveAt,
                 cds.Ticker,
                 cds.FlowConventions.Currency,

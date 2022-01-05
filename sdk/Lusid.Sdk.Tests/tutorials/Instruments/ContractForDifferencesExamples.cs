@@ -90,19 +90,20 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
             _instrumentsApi.DeleteInstrument("ClientInternal", uniqueId); 
         }
 
-        [TestCase(ModelSelection.ModelEnum.Discounting)]
+        [TestCase(ModelSelection.ModelEnum.SimpleStatic)]
         [TestCase(ModelSelection.ModelEnum.ConstantTimeValueOfMoney)]
+        [TestCase(ModelSelection.ModelEnum.Discounting)]
         public void CfdValuationExample(ModelSelection.ModelEnum model)
         {
             var cfd = (ContractForDifference) InstrumentExamples.CreateExampleCfd();
             CallLusidGetValuationEndpoint(cfd, model);
         }
 
-        [TestCase(ModelSelection.ModelEnum.Discounting)]
         [TestCase(ModelSelection.ModelEnum.ConstantTimeValueOfMoney)]
+        [TestCase(ModelSelection.ModelEnum.Discounting)]
         public void CfdInlineValuationExample(ModelSelection.ModelEnum model)
         {
-            var cfd = (ContractForDifference) InstrumentExamples.CreateExampleCfd();
+            var cfd = InstrumentExamples.CreateExampleCfd();
             CallLusidInlineValuationEndpoint(cfd, model);
         }
 

@@ -13,10 +13,45 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
     {
         internal override void CreateAndUpsertMarketDataToLusid(string scope, ModelSelection.ModelEnum model, LusidInstrument instrument)
         {
+            // The price of a swap is determined by the price of the fixed leg and floating leg.
+            // The price of a floating leg is determined by historic resets rates and projected rates.
+            // In this method, we upsert reset rates.
+            // For LUSID to pick up these quotes, we have added a RIC rule to the recipe (see BuildRecipeRequest in TestDataUtilities.cs) 
+            // The RIC rule has a quote interval of 2 years, this means that we can use one reset quote for all the resets.
+            // For accurate pricing, one would want to upsert a quote per reset. 
+            var quoteRequest = TestDataUtilities.BuildQuoteRequest("USD6M", QuoteSeriesId.InstrumentIdTypeEnum.ClientInternal, 0.05m, "USD", TestDataUtilities.EffectiveAt);
+            var upsertResponse = _quotesApi.UpsertQuotes(scope, quoteRequest);
+            Assert.That(upsertResponse.Failed.Count, Is.EqualTo(0));
+            Assert.That(upsertResponse.Values.Count, Is.EqualTo(quoteRequest.Count));
+            
+            // For models requiring discount curves, we upsert them below. ConstantTimeValueOfMoney does not require any discount curves. 
+            if (model != ModelSelection.ModelEnum.ConstantTimeValueOfMoney)
+            {
+                var upsertComplexMarketDataRequest = TestDataUtilities.BuildRateCurvesRequests(TestDataUtilities.EffectiveAt);
+                var upsertComplexMarketDataResponse = _complexMarketDataApi.UpsertComplexMarketData(scope, upsertComplexMarketDataRequest);
+                ValidateComplexMarketDataUpsert(upsertComplexMarketDataResponse, upsertComplexMarketDataRequest.Count);
+            }
         }
 
         internal override void GetAndValidatePortfolioCashFlows(LusidInstrument instrument, string scope, string portfolioCode, string recipeCode, string instrumentID)
         {
+            var swap = (InterestRateSwap) instrument;
+            var cashflows = _transactionPortfoliosApi.GetPortfolioCashFlows(
+                scope: scope,
+                code: portfolioCode,
+                effectiveAt: TestDataUtilities.EffectiveAt,
+                windowStart: swap.StartDate.AddDays(-3),
+                windowEnd: swap.MaturityDate.AddDays(3),
+                asAt:null,
+                filter:null,
+                recipeIdScope: scope,
+                recipeIdCode: recipeCode).Values;
+            
+            Assert.That(cashflows.Count, Is.GreaterThanOrEqualTo(1));
+
+            // CLEAN up - delete instrument and portfolio
+            _instrumentsApi.DeleteInstrument("ClientInternal", instrumentID);
+            _portfoliosApi.DeletePortfolio(scope, portfolioCode);
         }
         
         [LusidFeature("F22-8")]
@@ -30,7 +65,7 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
             Assert.That(swap, Is.Not.Null);
 
             // CAN NOW UPSERT TO LUSID
-            var uniqueId = swap.InstrumentType+Guid.NewGuid().ToString(); 
+            var uniqueId = swap.InstrumentType + Guid.NewGuid().ToString(); 
             var instrumentsIds = new List<(LusidInstrument, string)>{(swap, uniqueId)};
             var definitions = TestDataUtilities.BuildInstrumentUpsertRequest(instrumentsIds);
             
@@ -57,14 +92,14 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
         {
             // CREATE the flow conventions and index convention for swap
             string scope = "Conventions";
-            string flowConventionsCode = "GBP-3M";
-            string indexConventionCode = "GBP-3M-LIBOR";
+            string flowConventionsCode = "USD-6M";
+            string indexConventionCode = "USD-6M-LIBOR";
 
             var flowConventions = new FlowConventions(
                 scope: scope,
                 code: flowConventionsCode,
-                currency: "GBP",
-                paymentFrequency: "3M",
+                currency: "USD",
+                paymentFrequency: "6M",
                 rollConvention: "ModifiedFollowing",
                 dayCountConvention: "Actual365",
                 paymentCalendars: new List<string>(),
@@ -77,8 +112,8 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
                 scope: scope,
                 code: indexConventionCode,
                 publicationDayLag: 0,
-                currency: "GBP",
-                paymentTenor: "3M",
+                currency: "USD",
+                paymentTenor: "6M",
                 dayCountConvention: "Actual365",
                 fixingReference: "BP00"
             );
@@ -94,11 +129,30 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
         }
         
         [TestCase(ModelSelection.ModelEnum.SimpleStatic)]
+        [TestCase(ModelSelection.ModelEnum.ConstantTimeValueOfMoney)]
+        [TestCase(ModelSelection.ModelEnum.Discounting)]
         public void InterestRateSwapWithNamedConventionsValuationExample(ModelSelection.ModelEnum model)
         {
             var irs = InstrumentExamples.CreateSwapByNamedConventions();
             UpsertNamedConventionsToLusid();
             CallLusidGetValuationEndpoint(irs, model);
+        }
+        
+        [TestCase(ModelSelection.ModelEnum.ConstantTimeValueOfMoney)]
+        [TestCase(ModelSelection.ModelEnum.Discounting)]
+        public void InterestRateSwapWithNamedConventionsInlineValuationExample(ModelSelection.ModelEnum model)
+        {
+            var irs = InstrumentExamples.CreateSwapByNamedConventions();
+            UpsertNamedConventionsToLusid();
+            CallLusidGetValuationEndpoint(irs, model);
+        }
+        
+        [TestCase(ModelSelection.ModelEnum.ConstantTimeValueOfMoney)]
+        [TestCase(ModelSelection.ModelEnum.Discounting)]
+        public void EquityOptionPortfolioCashFlowsExample(ModelSelection.ModelEnum model)
+        {
+            var irs = InstrumentExamples.CreateExampleInterestRateSwap();
+            CallLusidGetPortfolioCashFlowsEndpoint(irs, model);
         }
     }
 }
