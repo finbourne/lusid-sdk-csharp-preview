@@ -108,7 +108,7 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
         
         [TestCase(ModelSelection.ModelEnum.ConstantTimeValueOfMoney)]
         [TestCase(ModelSelection.ModelEnum.Discounting)]
-        public void EquityOptionPortfolioCashFlowsExample(ModelSelection.ModelEnum model)
+        public void InterestRateSwapPortfolioCashFlowsExample(ModelSelection.ModelEnum model)
         {
             var irs = InstrumentExamples.CreateExampleInterestRateSwap();
             CallLusidGetPortfolioCashFlowsEndpoint(irs, model);
