@@ -84,8 +84,8 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
             Assert.That(roundTripSwap.StartDate, Is.EqualTo(swap.StartDate));
             Assert.That(roundTripSwap.Legs.Count, Is.EqualTo(swap.Legs.Count));            
             
-            // Delete Instrument
-            _instrumentsApi.DeleteInstrument("ClientInternal", uniqueId); 
+            // DELETE instrument
+            _instrumentsApi.DeleteInstrument("ClientInternal", uniqueId);
         }
 
         private void UpsertNamedConventionsToLusid()

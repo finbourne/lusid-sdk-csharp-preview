@@ -99,8 +99,8 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
             Assert.That(roundTripFxOption.IsCallNotPut, Is.EqualTo(fxOption.IsCallNotPut));
             Assert.That(roundTripFxOption.IsDeliveryNotCash, Is.EqualTo(fxOption.IsDeliveryNotCash));
             
-            // Delete Instrument 
-            _instrumentsApi.DeleteInstrument("ClientInternal", uniqueId); 
+            // DELETE instrument
+            _instrumentsApi.DeleteInstrument("ClientInternal", uniqueId);
         }
         
         [TestCase(ModelSelection.ModelEnum.SimpleStatic)]

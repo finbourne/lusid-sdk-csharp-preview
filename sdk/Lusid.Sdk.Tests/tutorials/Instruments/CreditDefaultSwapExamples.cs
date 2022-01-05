@@ -33,7 +33,7 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
                 cds.ProtectionDetailSpecification.Seniority,
                 cds.ProtectionDetailSpecification.RestructuringType);
 
-            Dictionary<string, UpsertComplexMarketDataRequest> upsertComplexMarketDataRequest = new Dictionary<string, UpsertComplexMarketDataRequest>()
+            var upsertComplexMarketDataRequest = new Dictionary<string, UpsertComplexMarketDataRequest>()
             {
                 {"CdsSpread", cdsSpreadCurveUpsertRequest}
             };
@@ -70,16 +70,16 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
                 .Select(cf => (cf.PaymentDate, cf.Amount, cf.Currency))
                 .ToList();
             var allCashFlowsPositive = cashFlows.All(cf => cf.Amount > 0);
-
             Assert.That(allCashFlowsPositive, Is.True);
 
             // CHECK correct number of CDS premium leg cash flows at maturity: If CDS reaches maturity (that would be if no default event is triggered) there is 1 expected cash flow,
             // which is the last coupon payment of the premium leg.
-            var expectedNumber = 1;
-            var couponCashFlows = cashFlowsAtMaturity.Values.Where(cf => cf.Diagnostics["CashFlowType"] == "Premium")
+            var expectedNumberOfCouponCashFlows = 1;
+            var couponCashFlows = cashFlowsAtMaturity.Values
+                .Where(cf => cf.Diagnostics["CashFlowType"] == "Premium")
                 .ToList();
 
-            Assert.That(couponCashFlows.Count, Is.EqualTo(expectedNumber));
+            Assert.That(couponCashFlows.Count, Is.EqualTo(expectedNumberOfCouponCashFlows));
              
             _instrumentsApi.DeleteInstrument("ClientInternal", instrumentID);
             _portfoliosApi.DeletePortfolio(scope, portfolioCode); 
@@ -89,7 +89,7 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
         [Test]
         public void CreditDefaultSwapCreationAndUpsertionExample()
         {
-            // CREATE the cds flow conventions for credit default swap
+            // CREATE CDS flow conventions for the credit default swap
             var cdsFlowConventions = new CdsFlowConventions(
                 scope: null,
                 code: null,
@@ -149,8 +149,8 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
             Assert.That(roundTripCds.FlowConventions.PaymentCalendars.Count, Is.EqualTo(cds.FlowConventions.PaymentCalendars.Count));
             Assert.That(roundTripCds.FlowConventions.PaymentCalendars, Is.EquivalentTo(cds.FlowConventions.PaymentCalendars));
             
-            // DELETE Instrument 
-            _instrumentsApi.DeleteInstrument("ClientInternal", uniqueId); 
+            // DELETE instrument
+            _instrumentsApi.DeleteInstrument("ClientInternal", uniqueId);
         }
         
         [TestCase(ModelSelection.ModelEnum.SimpleStatic)]
@@ -207,7 +207,7 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
                 recipeName,
                 mktContext,
                 pricingContext,
-                description: "Isda cds valuation demo"
+                description: "ISDA CDS valuation demo"
             );
 
             // UPSERT the configuration recipe

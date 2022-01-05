@@ -39,8 +39,12 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
             }
         }
         
-        internal override void GetAndValidatePortfolioCashFlows(LusidInstrument instrument, string scope, string portfolioCode,
-            string recipeCode, string instrumentID)
+        internal override void GetAndValidatePortfolioCashFlows(
+            LusidInstrument instrument,
+            string scope,
+            string portfolioCode,
+            string recipeCode,
+            string instrumentID)
         {
             var option = (EquityOption) instrument;
             var cashflows = _transactionPortfoliosApi.GetPortfolioCashFlows(
@@ -97,8 +101,8 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
             Assert.That(roundTripEquityOption.OptionSettlementDate, Is.EqualTo(equityOption.OptionSettlementDate));
             Assert.That(roundTripEquityOption.UnderlyingIdentifier, Is.EqualTo(equityOption.UnderlyingIdentifier));
             
-            // DELETE Instrument 
-            _instrumentsApi.DeleteInstrument("ClientInternal", uniqueId); 
+            // DELETE instrument
+            _instrumentsApi.DeleteInstrument("ClientInternal", uniqueId);
         }
         
         [TestCase(ModelSelection.ModelEnum.SimpleStatic)]

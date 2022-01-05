@@ -11,16 +11,13 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
     [TestFixture]
     public class BondExamples: DemoInstrumentBase
     {
-        internal static bool IsZeroCouponBond(Bond bond)
-        {
-            return bond.FlowConventions.PaymentFrequency == "0Invalid";
-        }
+        private static bool IsZeroCouponBond(Bond bond) => bond.FlowConventions.PaymentFrequency == "0Invalid";
         
         internal override void CreateAndUpsertMarketDataToLusid(string scope, ModelSelection.ModelEnum model, LusidInstrument bond)
         {
             if (model != ModelSelection.ModelEnum.ConstantTimeValueOfMoney)
             {
-                Dictionary<string, UpsertComplexMarketDataRequest> upsertComplexMarketDataRequest = new Dictionary<string, UpsertComplexMarketDataRequest>
+                var upsertComplexMarketDataRequest = new Dictionary<string, UpsertComplexMarketDataRequest>
                 {
                     {"discountCurve", TestDataUtilities.BuildOisCurveRequest(TestDataUtilities.EffectiveAt, "USD")}
                 };
@@ -29,8 +26,12 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
             }
         }
 
-        internal override void GetAndValidatePortfolioCashFlows(LusidInstrument instrument, string scope, string portfolioCode,
-            string recipeCode, string instrumentID)
+        internal override void GetAndValidatePortfolioCashFlows(
+            LusidInstrument instrument,
+            string scope,
+            string portfolioCode,
+            string recipeCode,
+            string instrumentID)
         {
             var bond = (Bond) instrument;
             var cashflows = _transactionPortfoliosApi.GetPortfolioCashFlows(
@@ -44,10 +45,10 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
                 recipeIdScope: scope,
                 recipeIdCode: recipeCode).Values;
 
-            // In case of a zero coupon bond we expect only a single payment at the bond maturity.
+            // In case of a zero coupon bond, we expect only a single payment at the bond maturity.
             // Otherwise, we expect regular payments (=cashflows) depending on the bond face value and
             // coupon rate.
-            Assert.That(cashflows.Count, Is.EqualTo(IsZeroCouponBond(bond)?1:3));
+            Assert.That(cashflows.Count, Is.EqualTo(IsZeroCouponBond(bond) ? 1 : 3));
             // We perform here a very simple check that a bond cashflow must be positive.
             var allCashFlowsPositive = cashflows.All(cf => cf.Amount > 0);
             Assert.That(allCashFlowsPositive, Is.True);
@@ -67,7 +68,7 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
             Assert.That(bond, Is.Not.Null);
 
             // CAN NOW UPSERT TO LUSID
-            string uniqueId = bond.InstrumentType+Guid.NewGuid().ToString(); 
+            string uniqueId = bond.InstrumentType + Guid.NewGuid().ToString(); 
             var instrumentsIds = new List<(LusidInstrument, string)>{(bond, uniqueId)};
             var definitions = TestDataUtilities.BuildInstrumentUpsertRequest(instrumentsIds);
             
@@ -94,7 +95,7 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
             Assert.That(roundTripBond.FlowConventions.PaymentCalendars.Count, Is.EqualTo(bond.FlowConventions.PaymentCalendars.Count));
             Assert.That(roundTripBond.FlowConventions.PaymentCalendars, Is.EquivalentTo(bond.FlowConventions.PaymentCalendars));
             
-            // Delete Instrument 
+            // DELETE Instrument 
             _instrumentsApi.DeleteInstrument("ClientInternal", uniqueId); 
         }
         
@@ -130,7 +131,7 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
             Assert.That(bond, Is.Not.Null);
 
             // CAN NOW UPSERT TO LUSID
-            var uniqueId = bond.InstrumentType+Guid.NewGuid().ToString(); 
+            var uniqueId = bond.InstrumentType + Guid.NewGuid().ToString(); 
             var instrumentsIds = new List<(LusidInstrument, string)>{(bond, uniqueId)};
             var definitions = TestDataUtilities.BuildInstrumentUpsertRequest(instrumentsIds);
             
@@ -157,8 +158,8 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
             Assert.That(roundTripBond.FlowConventions.PaymentCalendars.Count, Is.EqualTo(bond.FlowConventions.PaymentCalendars.Count));
             Assert.That(roundTripBond.FlowConventions.PaymentCalendars, Is.EquivalentTo(bond.FlowConventions.PaymentCalendars));
             
-            // DELETE Instrument 
-            _instrumentsApi.DeleteInstrument("ClientInternal", uniqueId); 
+            // DELETE instrument
+            _instrumentsApi.DeleteInstrument("ClientInternal", uniqueId);
         }
         
         [TestCase(ModelSelection.ModelEnum.SimpleStatic)]

@@ -48,8 +48,7 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
             var uniqueId = future.InstrumentType+Guid.NewGuid().ToString(); 
             var instrumentsIds = new List<(LusidInstrument, string)>{(future, uniqueId)};
             var definitions = TestDataUtilities.BuildInstrumentUpsertRequest(instrumentsIds);
-            
-            UpsertInstrumentsResponse upsertResponse = _instrumentsApi.UpsertInstruments(definitions);
+            var upsertResponse = _instrumentsApi.UpsertInstruments(definitions);
             ValidateUpsertInstrumentResponse(upsertResponse);
 
             // CAN NOW QUERY FROM LUSID
@@ -69,6 +68,9 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
             Assert.That(roundTripFuture.ContractDetails.ContractMonth, Is.EqualTo(future.ContractDetails.ContractMonth));
             Assert.That(roundTripFuture.Underlying.InstrumentType, Is.EqualTo(future.Underlying.InstrumentType));
             Assert.That(roundTripFuture.Underlying.InstrumentType, Is.EqualTo(LusidInstrument.InstrumentTypeEnum.ExoticInstrument));
+            
+            // DELETE instrument 
+            _instrumentsApi.DeleteInstrument("ClientInternal", uniqueId); 
         }
         
         [TestCase(ModelSelection.ModelEnum.SimpleStatic)]
