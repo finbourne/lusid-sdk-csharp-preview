@@ -144,7 +144,7 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
         {
             var irs = InstrumentExamples.CreateSwapByNamedConventions();
             UpsertNamedConventionsToLusid();
-            CallLusidGetValuationEndpoint(irs, model);
+            CallLusidInlineValuationEndpoint(irs, model);
         }
         
         [TestCase(ModelSelection.ModelEnum.ConstantTimeValueOfMoney)]

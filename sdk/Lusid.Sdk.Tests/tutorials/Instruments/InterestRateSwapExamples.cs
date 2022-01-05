@@ -103,7 +103,7 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
         public void InterestRateSwapInlineValuationExample(ModelSelection.ModelEnum model)
         {
             var irs = InstrumentExamples.CreateExampleInterestRateSwap();
-            CallLusidGetValuationEndpoint(irs, model);
+            CallLusidInlineValuationEndpoint(irs, model);
         }
         
         [TestCase(ModelSelection.ModelEnum.ConstantTimeValueOfMoney)]
