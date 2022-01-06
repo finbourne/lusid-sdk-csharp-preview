@@ -7,12 +7,12 @@ namespace Lusid.Sdk.Utilities
     /// <summary>
     /// Class used to define API error retry rules for all API calls.
     /// </summary>
-    public static class ApiRetryHandler
+    public static class PollyApiRetryHandler
     {
         /// <summary>
         /// Number of max retry attempts
         /// </summary>
-        public const int MaxRetryAttempts = 3;
+        private const int MaxRetryAttempts = 2;
 
         /// <summary>
         /// Get the internal exception condition on which to retry.
