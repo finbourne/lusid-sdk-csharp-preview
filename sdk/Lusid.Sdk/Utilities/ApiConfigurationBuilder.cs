@@ -126,7 +126,7 @@ namespace Lusid.Sdk.Utilities
 
             if (apiConfig.HasMissingConfig())
             {
-                var missingValues = apiConfig.MissingConfig()
+                var missingValues = apiConfig.GetMissingConfig()
                     .Select(value => $"'{value}'");
                 var message = $"[{string.Join(", ", missingValues)}]";
                 throw new MissingConfigException(
