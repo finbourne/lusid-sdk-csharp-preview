@@ -46,7 +46,7 @@ namespace Lusid.Sdk.Utilities
 
         /// <summary>
         /// Define Polly retry policy for asynchronous API calls. Handles internal SDK exceptions only.
-        /// Use .Wrap() method to combine this policy with your other custom policies
+        /// Use .WrapAsync() method to combine this policy with your other custom policies
         /// </summary>
         public static AsyncPolicy<IRestResponse> GetInternalExceptionAsyncRetryPolicy() =>
             Policy
