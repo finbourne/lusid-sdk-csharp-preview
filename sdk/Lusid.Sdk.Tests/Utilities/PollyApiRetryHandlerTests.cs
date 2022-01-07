@@ -96,15 +96,20 @@ namespace Lusid.Sdk.Tests.Utilities
             for (var i = 0; i < expectedNumberOfRetries + 1; i++)
             {
                 _httpListener.BeginGetContext(
-                    result => { GetHttpResponseHandler(result, statusCode: returnedStatusCode, responseContent: ""); },
+                    result => { GetHttpResponseHandler(result, statusCode: returnedStatusCode, responseContent: "", 100); },
                     _httpListener);
             }
 
             var retryCount = 0;
             RetryConfiguration.RetryPolicy = Policy
-                .HandleResult<IRestResponse>(apiResponse =>
-                    apiResponse.StatusCode == (HttpStatusCode) returnedStatusCode)
-                .Retry(expectedNumberOfRetries, onRetry: (result, i) => retryCount++);
+                .HandleResult<IRestResponse>(PollyApiRetryHandler.GetInternalExceptionRetryCondition)
+                .Retry(expectedNumberOfRetries, onRetry: (result, i) =>
+                {
+                    retryCount++;
+                    Console.WriteLine($"ERRROR: {result.Exception}");
+                    Console.WriteLine($"ERRROR: {result.Result.ErrorException}");
+
+                });
 
             // Calling GetPortfolio or any other API triggers the flow that triggers polly
             var sdkResponse = _apiFactory.Api<IPortfoliosApi>().GetPortfolio("any", "any");
@@ -204,7 +209,10 @@ namespace Lusid.Sdk.Tests.Utilities
             var retryCount = 0;
             RetryConfiguration.RetryPolicy = Policy
                 .HandleResult<IRestResponse>(PollyApiRetryHandler.GetInternalExceptionRetryCondition)
-                .Retry(retryCount: 2, onRetry: (result, i) => retryCount++);
+                .Retry(retryCount: 2, onRetry: (result, i) =>
+                {
+                    retryCount++;
+                });
 
             // Calling GetPortfolio or any other API triggers the flow that triggers polly
             var sdkResponse = _apiFactory.Api<IPortfoliosApi>().GetPortfolio("any", "any");
@@ -258,6 +266,38 @@ namespace Lusid.Sdk.Tests.Utilities
 
             Assert.That(policy1TriggerCount, Is.EqualTo(2));
             Assert.That(policy2TriggerCount, Is.EqualTo(1));
+        }
+        
+        // Show that polly retries are triggered on regular API timeouts as well.
+        // Default timeout config is 100000 seconds (1min40s)
+        [Test]
+        public void CallGetPortfoliosApi_WhenRequestTimeExceedsTimeoutConfigured_PollyRetryIsStillTriggered()
+        {
+            var timeoutAfter = GlobalConfiguration.Instance.Timeout;
+
+            const int returnedStatusCode = 200; // Doesn't matter what code is here, will always return 0 on timeout
+            const int expectedNumberOfRetries = 1;
+            _httpListener.Start();
+            for (var i = 0; i < expectedNumberOfRetries + 1; i++)
+            {
+                _httpListener.BeginGetContext(
+                    result => { GetHttpResponseHandler(result, statusCode: returnedStatusCode, responseContent: "", timeToRespond: timeoutAfter + 1); },
+                    _httpListener);
+            }
+
+            var retryCount = 0;
+            RetryConfiguration.RetryPolicy = Policy
+                .HandleResult<IRestResponse>(apiResponse => apiResponse.StatusCode == 0)
+                .Retry(retryCount: expectedNumberOfRetries, 
+                    onRetry: (result, i) => retryCount++);
+
+            // Calling GetPortfolio or any other API triggers the flow that triggers polly
+            var sdkResponse = _apiFactory.Api<IPortfoliosApi>().GetPortfolio("any", "any");
+
+            Assert.That(retryCount, Is.EqualTo(expectedNumberOfRetries));
+            
+            // Todo: In the future 0 error codes with throw an error after retries exceeded
+            Assert.That(sdkResponse, Is.Null);
         }
 
 
