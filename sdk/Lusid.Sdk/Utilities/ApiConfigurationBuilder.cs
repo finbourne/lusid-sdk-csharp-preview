@@ -19,7 +19,7 @@ namespace Lusid.Sdk.Utilities
             {"ClientSecret", "FBN_CLIENT_SECRET"},
             {"Username", "FBN_USERNAME"},
             {"Password", "FBN_PASSWORD"},
-            {"PersonalAccessToken", "FBN_LUSID_ACCESS_TOKEN"}
+            {"PersonalAccessToken", "FBN_ACCESS_TOKEN"}
         };
         
         private static readonly Dictionary<string, string> ConfigNamesToSecrets = new Dictionary<string, string>()
@@ -66,8 +66,8 @@ namespace Lusid.Sdk.Utilities
                            Environment.GetEnvironmentVariable("fbn_password"),
                 ApplicationName = Environment.GetEnvironmentVariable("FBN_APP_NAME") ??
                                   Environment.GetEnvironmentVariable("fbn_app_name"),
-                PersonalAccessToken = Environment.GetEnvironmentVariable("FBN_LUSID_ACCESS_TOKEN") ?? 
-                                Environment.GetEnvironmentVariable("fbn_lusid_access_token")
+                PersonalAccessToken = Environment.GetEnvironmentVariable("FBN_ACCESS_TOKEN") ?? 
+                                Environment.GetEnvironmentVariable("fbn_access_token")
             };
             
             if (apiConfig.HasMissingConfig())

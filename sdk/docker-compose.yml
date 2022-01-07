@@ -14,6 +14,6 @@ services:
       - FBN_CLIENT_SECRET
       - FBN_LUSID_API_URL
       - FBN_APP_NAME
-      - FBN_LUSID_ACCESS_TOKEN
+      - FBN_ACCESS_TOKEN
     volumes:
       - .:/usr/src
