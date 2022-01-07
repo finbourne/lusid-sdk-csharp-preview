@@ -32,10 +32,13 @@ namespace Lusid.Sdk.Tests.Utilities
             GetAndValidatePortfolioCashFlows(instrument, scope, portfolioCode, recipeCode, instrumentID);
         }
 
-        private string CreateAndUpsertRecipe(string scope, ModelSelection.ModelEnum model)
+        protected string CreateAndUpsertRecipe(
+            string scope,
+            ModelSelection.ModelEnum model,
+            bool windowValuationOnInstrumentStartEnd = false)
         {
             var recipeCode = Guid.NewGuid().ToString();
-            var recipeReq = TestDataUtilities.BuildRecipeRequest(recipeCode, scope, model);
+            var recipeReq = TestDataUtilities.BuildRecipeRequest(recipeCode, scope, model, windowValuationOnInstrumentStartEnd);
             var response = _recipeApi.UpsertConfigurationRecipe(recipeReq);
             Assert.That(response.Value, Is.Not.Null);
             return recipeCode;
@@ -45,15 +48,15 @@ namespace Lusid.Sdk.Tests.Utilities
         /// Utility method to create a new portfolio that contains one transaction against the instrument. 
         /// </summary>
         /// <returns>Returns a tuple of instrumentId and portfolio code</returns>
-        private (string, string) CreatePortfolioAndInstrument(string scope, LusidInstrument instrument)
+        protected (string, string) CreatePortfolioAndInstrument(string scope, LusidInstrument instrument)
         {
             // CREATE portfolio
-            var portfolioRequest = TestDataUtilities.BuildTransactionPortfolioRequest( TestDataUtilities.EffectiveAt);
+            var portfolioRequest = TestDataUtilities.BuildTransactionPortfolioRequest(TestDataUtilities.EffectiveAt);
             var portfolio = _transactionPortfoliosApi.CreatePortfolio(scope, portfolioRequest);
             Assert.That(portfolio?.Id.Code, Is.EqualTo(portfolioRequest.Code));
 
             // BUILD upsert instrument request
-            var instrumentID = instrument.InstrumentType+Guid.NewGuid().ToString();
+            var instrumentID = instrument.InstrumentType + Guid.NewGuid().ToString();
             var instrumentsIds = new List<(LusidInstrument, string)>{(instrument, instrumentID)};
             var definitions = TestDataUtilities.BuildInstrumentUpsertRequest(instrumentsIds);
             
@@ -71,19 +74,14 @@ namespace Lusid.Sdk.Tests.Utilities
 
             return (instrumentID, portfolioRequest.Code);
         }
-        
-        /// <summary>
-        /// Perform a valuation of a portfolio consisting of the instrument.
-        /// In the below code, we create a portfolio and book the instrument onto the portfolio via a transaction.
-        /// </summary>
-        internal void CallLusidGetValuationEndpoint(LusidInstrument instrument, ModelSelection.ModelEnum model)
-        {
-            var scope = Guid.NewGuid().ToString();
-            
-            // CREATE portfolio and add instrument to the portfolio
-            var (instrumentID, portfolioCode) = CreatePortfolioAndInstrument(scope, instrument);
 
-            // UPSERT market data sufficient to price the instrument depending on the model.
+        // UPSERT market data sufficient to price the instrument depending on the model.
+        private void UpsertMarketDataForInstrument(
+            LusidInstrument instrument,
+            ModelSelection.ModelEnum model,
+            string instrumentID,
+            string scope)
+        {
             if (model == ModelSelection.ModelEnum.SimpleStatic)
             {
                 // SimpleStatic pricing is lookup pricing. As such, we upsert a quote.
@@ -103,38 +101,37 @@ namespace Lusid.Sdk.Tests.Utilities
             {
                 CreateAndUpsertMarketDataToLusid(scope, model, instrument);
             }
+        }
+        
+        /// <summary>
+        /// Perform a valuation of a portfolio consisting of the instrument.
+        /// In the below code, we create a portfolio and book the instrument onto the portfolio via a transaction.
+        /// </summary>
+        internal void CallLusidGetValuationEndpoint(LusidInstrument instrument, ModelSelection.ModelEnum model)
+        {
+            var scope = Guid.NewGuid().ToString();
+            
+            // CREATE portfolio and add instrument to the portfolio
+            var (instrumentID, portfolioCode) = CreatePortfolioAndInstrument(scope, instrument);
+
+            // UPSERT market data sufficient to price the instrument depending on the model.
+            UpsertMarketDataForInstrument(instrument, model, instrumentID, scope);
 
             // CREATE recipe to price the portfolio with
             var recipeCode = CreateAndUpsertRecipe(scope, model);
             
             // CREATE valuation request
-            var valuationSchedule = new ValuationSchedule(effectiveAt: TestDataUtilities.EffectiveAt);
-            var valuationRequest = new ValuationRequest(
-                recipeId: new ResourceId(scope, recipeCode),
-                metrics: TestDataUtilities.ValuationSpec,
-                valuationSchedule: valuationSchedule,
-                sort: new List<OrderBySpec> {new OrderBySpec(TestDataUtilities.ValuationDateKey, OrderBySpec.SortOrderEnum.Ascending)},
-                portfolioEntityIds: new List<PortfolioEntityId> {new PortfolioEntityId(scope, portfolioCode)},
-                reportCurrency: "USD");
+            var valuationRequest = TestDataUtilities.CreateValuationRequest(scope, portfolioCode, recipeCode, TestDataUtilities.EffectiveAt);
             
             // CALL valuation and assert that the PVs makes sense.
             var result = _aggregationApi.GetValuation(valuationRequest);
-            _portfoliosApi.DeletePortfolio(scope, portfolioCode);
-
             Assert.That(result, Is.Not.Null);
             Assert.That(result.Data.Count, Is.GreaterThanOrEqualTo(1));
-
-            foreach (var r in result.Data)
-            {
-                var pv = (double) r[TestDataUtilities.ValuationPvKey];
-                Assert.That(pv, Is.Not.EqualTo(0).Within(1e-5));
-
-                if (instrument.InstrumentType != LusidInstrument.InstrumentTypeEnum.InterestRateSwap)
-                {
-                    Assert.That(pv, Is.GreaterThanOrEqualTo(0));
-                }
-            }
+            TestDataUtilities.CheckPvResultsMakeSense(result, instrument.InstrumentType);
+            
+            // CLEAN up
             _recipeApi.DeleteConfigurationRecipe(scope, recipeCode);
+            _portfoliosApi.DeletePortfolio(scope, portfolioCode);
         }
         
         /// <summary>
@@ -170,17 +167,8 @@ namespace Lusid.Sdk.Tests.Utilities
 
             Assert.That(result, Is.Not.Null);
             Assert.That(result.Data.Count, Is.GreaterThanOrEqualTo(1));
+            TestDataUtilities.CheckPvResultsMakeSense(result, instrument.InstrumentType);
 
-            foreach (var r in result.Data)
-            {
-                var pv = (double) r[TestDataUtilities.ValuationPvKey];
-                Assert.That(pv, Is.Not.EqualTo(0).Within(1e-5));
-                
-                if (instrument.InstrumentType != LusidInstrument.InstrumentTypeEnum.InterestRateSwap)
-                {
-                    Assert.That(pv, Is.GreaterThanOrEqualTo(0));
-                }
-            }
             _recipeApi.DeleteConfigurationRecipe(scope, recipeCode);
         }
     }

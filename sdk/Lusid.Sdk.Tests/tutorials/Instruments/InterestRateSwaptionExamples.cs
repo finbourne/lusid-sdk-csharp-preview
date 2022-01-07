@@ -12,7 +12,25 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
     public class InterestRateSwaptionExamples: DemoInstrumentBase
     {
         internal override void CreateAndUpsertMarketDataToLusid(string scope, ModelSelection.ModelEnum model, LusidInstrument instrument)
-        {
+        {            
+            // The price of a swaption depends on its swap underlying which in turn
+            // itself is determined by the price of the fixed leg and floating leg.
+            // The price of a floating leg is determined by historic resets rates and projected rates.
+            // In this method, we upsert reset rates.
+            // For LUSID to pick up these quotes, we have added a RIC rule to the recipe (see BuildRecipeRequest in TestDataUtilities.cs) 
+            // The RIC rule has a large quote interval, this means that we can use one reset quote for all the resets.
+            // For accurate pricing, one would want to upsert a quote per reset. 
+            var quoteRequest = TestDataUtilities.BuildQuoteRequest(
+                "BP00",
+                QuoteSeriesId.InstrumentIdTypeEnum.RIC,
+                0.05m,
+                "USD",
+                new DateTimeOffset(2020, 01, 01, 0, 0, 0, 0, TimeSpan.Zero));
+            var upsertResponse = _quotesApi.UpsertQuotes(scope, quoteRequest);
+            Assert.That(upsertResponse.Failed.Count, Is.EqualTo(0));
+            Assert.That(upsertResponse.Values.Count, Is.EqualTo(quoteRequest.Count));
+            
+            // For models requiring discount curves, we upsert them below. ConstantTimeValueOfMoney does not require any discount curves. 
             var upsertComplexMarketDataRequest = new Dictionary<string, UpsertComplexMarketDataRequest>();
             if (model != ModelSelection.ModelEnum.ConstantTimeValueOfMoney)
             {
@@ -69,10 +87,20 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
         }
         
         [TestCase(ModelSelection.ModelEnum.SimpleStatic)]
+        [TestCase(ModelSelection.ModelEnum.ConstantTimeValueOfMoney)]
+        [TestCase(ModelSelection.ModelEnum.Discounting)]
         public void InterestRateSwaptionValuationExample(ModelSelection.ModelEnum model)
         {
             var swaption = InstrumentExamples.CreateExampleInterestRateSwaption();
             CallLusidGetValuationEndpoint(swaption, model);
+        }
+        
+        [TestCase(ModelSelection.ModelEnum.ConstantTimeValueOfMoney)]
+        [TestCase(ModelSelection.ModelEnum.Discounting)]
+        public void InterestRateSwaptionInlineValuationExample(ModelSelection.ModelEnum model)
+        {
+            var swaption = InstrumentExamples.CreateExampleInterestRateSwaption();
+            CallLusidInlineValuationEndpoint(swaption, model);
         }
     }
 }

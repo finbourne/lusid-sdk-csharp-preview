@@ -272,7 +272,7 @@ namespace Lusid.Sdk.Tests.Utilities
 
             // CREATE the flow conventions, index convention for swap
             var flowConventions = new FlowConventions(
-                currency: "GBP",
+                currency: "USD",
                 paymentFrequency: "6M",
                 rollConvention: "MF",
                 dayCountConvention: "Act365",
@@ -283,9 +283,9 @@ namespace Lusid.Sdk.Tests.Utilities
                 );
 
             var idxConvention = new IndexConvention(
-                code: "GbpLibor6m",
+                code: "UsdLibor6m",
                 publicationDayLag: 0,
-                currency: "GBP",
+                currency: "USD",
                 paymentTenor: "6M",
                 dayCountConvention: "Act365",
                 fixingReference: "BP00"
