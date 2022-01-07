@@ -30,28 +30,22 @@ namespace Lusid.Sdk.Tests.Utilities
             testApiConfig.ApiUrl = ListenerUriPrefix;
 
             _apiFactory = new LusidApiFactory(testApiConfig);
+            
+            _httpListener.Start();
         }
 
         [Test]
-        public void
-            CallGetPortfoliosApi_WhenHttpStatusIs400AndRetryConditionIsNotSatisfied_ThrowsApiExceptionWithoutRetry()
+        public void CallGetPortfoliosApi_WhenHttpStatusIs400AndRetryConditionIsNotSatisfied_ThrowsApiExceptionWithoutRetry()
         {
             // It should not retry on codes >400 by default, unless specified
             const int expectedStatusCode = 400;
-            _httpListener.Start();
-
-            _httpListener.BeginGetContext(
-                result =>
-                {
-                    GetHttpResponseHandler(result, statusCode: expectedStatusCode,
-                        responseContent: "{\"some\": \"JsonResponseHere\"}");
-                }, _httpListener);
-
+            // Add the next response returned by api
+            AddHttpResponseToQueue(_httpListener, statusCode: expectedStatusCode, responseContent: "{\"some\": \"JsonResponseHere\"}");
             var retryCount = 0;
             RetryConfiguration.RetryPolicy = Policy
                 .HandleResult<IRestResponse>(PollyApiRetryHandler.GetInternalExceptionRetryCondition)
                 .Retry(retryCount: 3, onRetry: (result, i) => retryCount++);
-
+            
             var exception = Assert.Throws<ApiException>(
                 () => _apiFactory.Api<IPortfoliosApi>().GetPortfolio("any", "any")
             );
@@ -66,14 +60,8 @@ namespace Lusid.Sdk.Tests.Utilities
         {
             // It should do nothing when response code is 200
             const int expectedStatusCode = 200;
-            _httpListener.Start();
-            _httpListener.BeginGetContext(
-                result =>
-                {
-                    GetHttpResponseHandler(result, statusCode: expectedStatusCode,
-                        responseContent: "{\"some\": \"JsonResponseHere\"}");
-                }, _httpListener);
-
+            // Add the next response returned by api
+            AddHttpResponseToQueue(_httpListener, statusCode: expectedStatusCode, responseContent: "{\"some\": \"JsonResponseHere\"}");
             var retryCount = 0;
             RetryConfiguration.RetryPolicy = Policy
                 .HandleResult<IRestResponse>(PollyApiRetryHandler.GetInternalExceptionRetryCondition)
@@ -92,24 +80,12 @@ namespace Lusid.Sdk.Tests.Utilities
         {
             const int returnedStatusCode = 499;
             const int expectedNumberOfRetries = 2;
-            _httpListener.Start();
             for (var i = 0; i < expectedNumberOfRetries + 1; i++)
-            {
-                _httpListener.BeginGetContext(
-                    result => { GetHttpResponseHandler(result, statusCode: returnedStatusCode, responseContent: "", 100); },
-                    _httpListener);
-            }
-
+                AddHttpResponseToQueue(_httpListener, statusCode: returnedStatusCode, responseContent: "");
             var retryCount = 0;
             RetryConfiguration.RetryPolicy = Policy
-                .HandleResult<IRestResponse>(PollyApiRetryHandler.GetInternalExceptionRetryCondition)
-                .Retry(expectedNumberOfRetries, onRetry: (result, i) =>
-                {
-                    retryCount++;
-                    Console.WriteLine($"ERRROR: {result.Exception}");
-                    Console.WriteLine($"ERRROR: {result.Result.ErrorException}");
-
-                });
+                .HandleResult<IRestResponse>(response => response.StatusCode == (HttpStatusCode) returnedStatusCode)
+                .Retry(expectedNumberOfRetries, onRetry: (result, i) => retryCount++);
 
             // Calling GetPortfolio or any other API triggers the flow that triggers polly
             var sdkResponse = _apiFactory.Api<IPortfoliosApi>().GetPortfolio("any", "any");
@@ -120,19 +96,12 @@ namespace Lusid.Sdk.Tests.Utilities
         }
 
         [Test]
-        public void
-            CallGetPortfoliosApi_WhenApiResponseStatusCodeSatisfiesRetryCriteria_PollyRetryWithBackoffIsTriggered()
+        public void CallGetPortfoliosApi_WhenApiResponseStatusCodeSatisfiesRetryCriteria_PollyRetryWithBackoffIsTriggered()
         {
             const int returnedStatusCode = 499;
             const int expectedNumberOfRetries = 2;
-            _httpListener.Start();
             for (var i = 0; i < expectedNumberOfRetries + 1; i++)
-            {
-                _httpListener.BeginGetContext(
-                    result => { GetHttpResponseHandler(result, statusCode: returnedStatusCode, responseContent: ""); },
-                    _httpListener);
-            }
-
+                AddHttpResponseToQueue(_httpListener, statusCode: returnedStatusCode, responseContent: "");
             var retryCount = 0;
             // Polly retry policy with a backoff example
             RetryConfiguration.RetryPolicy = Policy
@@ -150,7 +119,6 @@ namespace Lusid.Sdk.Tests.Utilities
             var sdkResponse = _apiFactory.Api<IPortfoliosApi>().GetPortfolio("any", "any");
 
             Assert.That(retryCount, Is.EqualTo(expectedNumberOfRetries));
-
             // Todo: In the future 0 error codes with throw an error after retries exceeded
             Assert.That(sdkResponse, Is.Null);
         }
@@ -160,18 +128,11 @@ namespace Lusid.Sdk.Tests.Utilities
         {
             const int returnedStatusCode = 499;
             const int expectedNumberOfRetries = 2;
-            _httpListener.Start();
             for (var i = 0; i < expectedNumberOfRetries + 1; i++)
-            {
-                _httpListener.BeginGetContext(
-                    result => { GetHttpResponseHandler(result, statusCode: returnedStatusCode, responseContent: ""); },
-                    _httpListener);
-            }
-
+                AddHttpResponseToQueue(_httpListener, statusCode: returnedStatusCode, responseContent: "");
             var retryCount = 0;
             RetryConfiguration.AsyncRetryPolicy = Policy
-                .Handle<SystemException>()
-                .OrResult<IRestResponse>((apiResponse => apiResponse.StatusCode == (HttpStatusCode) returnedStatusCode))
+                .HandleResult<IRestResponse>(apiResponse => apiResponse.StatusCode == (HttpStatusCode) returnedStatusCode)
                 .RetryAsync(retryCount: expectedNumberOfRetries, onRetry: (result, i) => retryCount++);
 
             // Calling GetPortfolio or any other API triggers the flow that triggers polly
@@ -185,11 +146,9 @@ namespace Lusid.Sdk.Tests.Utilities
         [Test]
         [Explicit("This test only works on Windows as when running on a Linux Docker image. " +
                   "Linux seems to handle aborted connections differently, resulting always in a 200 status rather than 0.")]
-        public void
-            CallGetPortfoliosApi_WhenApiResponseStatusCodeSatisfiesRetryCriteria_PollyIsTriggered_Returns100Code()
+        public void CallGetPortfoliosApi_WhenApiResponseStatusCodeSatisfiesRetryCriteria_PollyIsTriggered_Returns100Code()
         {
             const int expectedNumberOfRetries = 2;
-            _httpListener.Start();
             for (var i = 0; i < expectedNumberOfRetries + 1; i++)
             {
                 _httpListener.BeginGetContext(result =>
@@ -205,7 +164,6 @@ namespace Lusid.Sdk.Tests.Utilities
                     response.Abort();
                 }, _httpListener);
             }
-
             var retryCount = 0;
             RetryConfiguration.RetryPolicy = Policy
                 .HandleResult<IRestResponse>(PollyApiRetryHandler.GetInternalExceptionRetryCondition)
@@ -218,7 +176,6 @@ namespace Lusid.Sdk.Tests.Utilities
             var sdkResponse = _apiFactory.Api<IPortfoliosApi>().GetPortfolio("any", "any");
 
             Assert.That(retryCount, Is.EqualTo(expectedNumberOfRetries));
-
             // In the future 0 error codes with throw an error after retries exceeded. This will come in a separate PR.
             Assert.That(sdkResponse, Is.Null);
         }
@@ -226,39 +183,24 @@ namespace Lusid.Sdk.Tests.Utilities
         [Test]
         public void UsePolicyWrap_WhenCallingGetPortfolio_BothPoliciesAreUsed()
         {
-            var policy1TriggerCount = 0;
-            var policy2TriggerCount = 0;
             const int statusCodeResponse1 = 498;
             const int statusCodeResponse2 = 499;
-            
-            _httpListener.Start();
-            
             // First Response
-            _httpListener.BeginGetContext(
-                result => { GetHttpResponseHandler(result, statusCode: statusCodeResponse1, responseContent: ""); },
-                _httpListener);
+            AddHttpResponseToQueue(_httpListener, statusCode: statusCodeResponse1, responseContent: "");
             // Second Response - same, triggers another retry
-            _httpListener.BeginGetContext(
-                result => { GetHttpResponseHandler(result, statusCode: statusCodeResponse1, responseContent: ""); },
-                _httpListener);
+            AddHttpResponseToQueue(_httpListener, statusCode: statusCodeResponse1, responseContent: "");
             // Third response - First policy retries stop, second policy retries kick in
-            _httpListener.BeginGetContext(
-                result => { GetHttpResponseHandler(result, statusCode: statusCodeResponse2, responseContent: ""); },
-                _httpListener);
+            AddHttpResponseToQueue(_httpListener, statusCode: statusCodeResponse2, responseContent: "");
             // Fourth response - No more retries as response is a success
-            _httpListener.BeginGetContext(
-                result => { GetHttpResponseHandler(result, statusCode: 200, responseContent: ""); },
-                _httpListener);
-
-            
+            AddHttpResponseToQueue(_httpListener, statusCode: 200, responseContent: "");
+            var policy1TriggerCount = 0;
+            var policy2TriggerCount = 0;
             var policy1 = Policy
                 .HandleResult<IRestResponse>(apiResponse => apiResponse.StatusCode == (HttpStatusCode) statusCodeResponse1)
                 .Retry(retryCount: 3, onRetry: (result, i) => policy1TriggerCount++);
-            
             var policy2 = Policy
                 .HandleResult<IRestResponse>(apiResponse => apiResponse.StatusCode == (HttpStatusCode) statusCodeResponse2)
                 .Retry(retryCount: 3, onRetry: (result, i) => policy2TriggerCount++);
-
             RetryConfiguration.RetryPolicy = policy1.Wrap(policy2);
             
             // Calling GetPortfolio or any other API triggers the flow that triggers polly
@@ -274,17 +216,12 @@ namespace Lusid.Sdk.Tests.Utilities
         public void CallGetPortfoliosApi_WhenRequestTimeExceedsTimeoutConfigured_PollyRetryIsStillTriggered()
         {
             var timeoutAfter = GlobalConfiguration.Instance.Timeout;
-
-            const int returnedStatusCode = 200; // Doesn't matter what code is here, will always return 0 on timeout
+            const int returnedStatusCode = 200; // Doesn't matter what code is on timeout, will always return 0
             const int expectedNumberOfRetries = 1;
-            _httpListener.Start();
-            for (var i = 0; i < expectedNumberOfRetries + 1; i++)
-            {
-                _httpListener.BeginGetContext(
-                    result => { GetHttpResponseHandler(result, statusCode: returnedStatusCode, responseContent: "", timeToRespond: timeoutAfter + 1); },
-                    _httpListener);
-            }
-
+            // First call will cause a timeout
+            AddHttpResponseToQueue(_httpListener, statusCode: returnedStatusCode, responseContent: "", timeToRespond: timeoutAfter + 10);
+            // No timeout on the second call
+            AddHttpResponseToQueue(_httpListener, statusCode: returnedStatusCode, responseContent: "");
             var retryCount = 0;
             RetryConfiguration.RetryPolicy = Policy
                 .HandleResult<IRestResponse>(apiResponse => apiResponse.StatusCode == 0)
@@ -295,7 +232,6 @@ namespace Lusid.Sdk.Tests.Utilities
             var sdkResponse = _apiFactory.Api<IPortfoliosApi>().GetPortfolio("any", "any");
 
             Assert.That(retryCount, Is.EqualTo(expectedNumberOfRetries));
-            
             // Todo: In the future 0 error codes with throw an error after retries exceeded
             Assert.That(sdkResponse, Is.Null);
         }
@@ -329,6 +265,13 @@ namespace Lusid.Sdk.Tests.Utilities
             RetryConfiguration.RetryPolicy = _initialRetryPolicy;
             // Request is processed at this point and can be closed
             _httpListener.Close();
+        }
+
+        private static void AddHttpResponseToQueue(HttpListener httpListener, int statusCode, string responseContent, int timeToRespond=0)
+        {
+            httpListener.BeginGetContext(
+                result => GetHttpResponseHandler(result, statusCode, responseContent, timeToRespond),
+                httpListener);
         }
 
         private static void GetHttpResponseHandler(IAsyncResult result, int statusCode, string responseContent, int timeToRespond=0)
