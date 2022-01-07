@@ -21,7 +21,7 @@ namespace Lusid.Sdk.Utilities
             {"Password", "FBN_PASSWORD"},
             {"PersonalAccessToken", "FBN_ACCESS_TOKEN"}
         };
-        
+
         private static readonly Dictionary<string, string> ConfigNamesToSecrets = new Dictionary<string, string>()
         {
             {"TokenUrl", "tokenUrl"},
@@ -31,7 +31,7 @@ namespace Lusid.Sdk.Utilities
             {"Username", "username"},
             {"Password", "password"}
         };
-        
+
         /// <summary>
         /// Builds an ApiConfiguration. using the supplied configuration file (if supplied)
         /// or environment variables.
@@ -42,9 +42,9 @@ namespace Lusid.Sdk.Utilities
         /// <returns></returns>
         public static ApiConfiguration Build(string apiSecretsFilename)
         {
-            return apiSecretsFilename == null
-                ? BuildFromEnvironmentVariables()
-                : BuildFromSecretsFile(apiSecretsFilename);
+            var result = BuildFromSecretsFile(apiSecretsFilename);
+            result = result.HasMissingConfig() ? BuildFromEnvironmentVariables() : result;
+            return result;
         }
 
         private static ApiConfiguration BuildFromEnvironmentVariables()
@@ -69,23 +69,28 @@ namespace Lusid.Sdk.Utilities
                 PersonalAccessToken = Environment.GetEnvironmentVariable("FBN_ACCESS_TOKEN") ?? 
                                 Environment.GetEnvironmentVariable("fbn_access_token")
             };
-            
+
             if (apiConfig.HasMissingConfig())
             {
                 var missingValues = apiConfig.GetMissingConfig()
                     .Select(value => $"'{ConfigNamesToEnvVariables[value]}'");
                 var message = $"[{string.Join(", ", missingValues)}]";
-                throw new MissingConfigException($"The following required environment variables are not set: {message}");
+                throw new MissingConfigException(
+                    $"The following required environment variables are not set: {message}");
             }
-            
+
             return apiConfig;
         }
-        
+
         private static ApiConfiguration BuildFromSecretsFile(string apiSecretsFilename)
         {
             Console.WriteLine($"Loaded values from {apiSecretsFilename}");
             
             var apiConfig = new ApiConfiguration();
+            if (apiSecretsFilename == null || !File.Exists(Path.Combine(Directory.GetCurrentDirectory(),apiSecretsFilename)))
+            {
+                return apiConfig;
+            }
             var config = new ConfigurationBuilder()
                 .SetBasePath(Directory.GetCurrentDirectory())
                 .AddJsonFile(apiSecretsFilename)
@@ -97,9 +102,37 @@ namespace Lusid.Sdk.Utilities
                 var missingValues = apiConfig.GetMissingConfig()
                     .Select(value => $"'{ConfigNamesToSecrets[value]}'");
                 var message = $"[{string.Join(", ", missingValues)}]";
-                throw new MissingConfigException($"The provided secrets file is missing the following required values: {message}");
+                throw new MissingConfigException(
+                    $"The provided secrets file is missing the following required values: {message}");
             }
-            
+
+            return apiConfig;
+        }
+
+        /// <summary>
+        /// Builds an ApiConfiguration using the supplied configuration section.
+        ///
+        /// For further details refer to https://github.com/finbourne/lusid-sdk-csharp/wiki/API-credentials
+        /// </summary>
+        /// <param name="config">section of ASP Core configuration with required fields</param>
+        /// <returns></returns>
+        public static ApiConfiguration BuildFromConfiguration(IConfigurationSection config)
+        {
+            if (config == null) throw new ArgumentNullException(nameof(config));
+            Console.WriteLine($"Loaded values from configuration");
+
+            var apiConfig = new ApiConfiguration();
+            config.Bind(apiConfig);
+
+            if (apiConfig.HasMissingConfig())
+            {
+                var missingValues = apiConfig.MissingConfig()
+                    .Select(value => $"'{value}'");
+                var message = $"[{string.Join(", ", missingValues)}]";
+                throw new MissingConfigException(
+                    $"The provided configuration section is missing the following required values: {message}");
+            }
+
             return apiConfig;
         }
     }

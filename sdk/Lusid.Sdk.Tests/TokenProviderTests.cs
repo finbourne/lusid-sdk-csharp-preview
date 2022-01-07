@@ -14,7 +14,7 @@ namespace Lusid.Sdk.Tests
     public class TokenProviderTests
     {
         private static readonly Lazy<ApiConfiguration> ApiConfig =
-            new Lazy<ApiConfiguration>(() => TestLusidApiFactoryBuilder.CreateApiConfiguration("secret.json"));
+            new Lazy<ApiConfiguration>(() => TestLusidApiFactoryBuilder.CreateApiConfiguration("secrets.json"));
 
         [Test]
         public async Task CanGetToken()
@@ -155,8 +155,10 @@ namespace Lusid.Sdk.Tests
             // WHEN we pretend to delay until both...
             // (1) the original token has expired (for expediency update the expires_on on the token)
             provider.ExpireToken();
+            provider.ExpireRefreshToken();
             // (2) the refresh token has expired (for expediency update the refresh_token to an invalid value that will not be found)
             provider.GetLastToken().RefreshToken = "InvalidRefreshToken";
+            provider.GetLastToken().Token = "invalidToken";
 
             Assert.That(DateTimeOffset.UtcNow, Is.GreaterThan(firstTokenDetails.ExpiresOn));
             var refreshedToken = await provider.GetAuthenticationTokenAsync();
@@ -165,7 +167,6 @@ namespace Lusid.Sdk.Tests
             Assert.That(refreshedToken, Is.Not.Empty);
             Assert.That(provider.GetLastToken().ExpiresOn, Is.GreaterThan(DateTimeOffset.UtcNow));
         }
-
     }
 }
 

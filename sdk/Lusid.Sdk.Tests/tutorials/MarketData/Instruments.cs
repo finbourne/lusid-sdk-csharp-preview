@@ -12,10 +12,8 @@ using NUnit.Framework;
 namespace Lusid.Sdk.Tests.Tutorials.MarketData
 {
     [TestFixture]
-    public class Instruments
+    public class Instruments: TutorialBase
     {
-        private ILusidApiFactory _apiFactory;
-        private IInstrumentsApi _instrumentsApi;
         
         private const string FigiScheme = "Figi";
         private const string CustomInternalScheme = "ClientInternal";
@@ -29,9 +27,6 @@ namespace Lusid.Sdk.Tests.Tutorials.MarketData
         [OneTimeSetUp]
         public void SetUp()
         {
-            _apiFactory = TestLusidApiFactoryBuilder.CreateApiFactory("secret.json");
-            _instrumentsApi = _apiFactory.Api<IInstrumentsApi>();
-
             EnsurePropertyDefinition("CustomSector");
             SeedInstrumentMaster();
         }

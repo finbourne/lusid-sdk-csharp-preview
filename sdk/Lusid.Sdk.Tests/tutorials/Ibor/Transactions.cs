@@ -11,25 +11,34 @@ using NUnit.Framework;
 namespace Lusid.Sdk.Tests.Tutorials.Ibor
 {
     [TestFixture]
-    public class Transactions
+    public class Transactions: TutorialBase
     {
-        private IInstrumentsApi _instrumentsApi;
-        private ITransactionPortfoliosApi _transactionPortfoliosApi;
         private IList<string> _instrumentIds;
         
-        private TestDataUtilities _testDataUtilities;
 
         [OneTimeSetUp]
+        public void OnetimeSetUp()
+        {
+
+            
+            var instrumentLoader = new InstrumentLoader(_apiFactory);
+            _instrumentIds = instrumentLoader.LoadInstruments();
+        }
+        
+        internal string _portfolioCode;
+        [SetUp]
         public void SetUp()
         {
-            var apiFactory = TestLusidApiFactoryBuilder.CreateApiFactory("secret.json");
+            var portfolioRequest = TestDataUtilities.BuildTransactionPortfolioRequest();
+            var portfolio = _transactionPortfoliosApi.CreatePortfolio(TestDataUtilities.TutorialScope, portfolioRequest);
+            _portfolioCode = portfolioRequest.Code;
+            Assert.That(portfolio?.Id.Code, Is.EqualTo(_portfolioCode));
+        }
 
-            _instrumentsApi = apiFactory.Api<IInstrumentsApi>();
-            _transactionPortfoliosApi = apiFactory.Api<ITransactionPortfoliosApi>();
-            
-            var instrumentLoader = new InstrumentLoader(apiFactory);
-            _instrumentIds = instrumentLoader.LoadInstruments();
-            _testDataUtilities = new TestDataUtilities(apiFactory.Api<ITransactionPortfoliosApi>());
+        [TearDown]
+        public void TearDown()
+        {
+            //_portfoliosApi.DeletePortfolio(_portfolioScope, _portfolioCode); 
         }
         
         [LusidFeature("F17")]
@@ -39,8 +48,7 @@ namespace Lusid.Sdk.Tests.Tutorials.Ibor
             var effectiveDate = new DateTimeOffset(2018, 1, 1, 0, 0, 0, TimeSpan.Zero);
             
             //    create the portfolio
-            var portfolioCode = _testDataUtilities.CreateTransactionPortfolio(TestDataUtilities.TutorialScope);
-            
+            //var portfolioCode = _testDataUtilities.CreateTransactionPortfolio(TestDataUtilities.TutorialScope);
             //    create the transaction request
             var transaction = new TransactionRequest(
                 
@@ -62,10 +70,10 @@ namespace Lusid.Sdk.Tests.Tutorials.Ibor
                 source: "Custodian");
             
             //    add the transaction
-            _transactionPortfoliosApi.UpsertTransactions(TestDataUtilities.TutorialScope, portfolioCode, new List<TransactionRequest> {transaction});
+            _transactionPortfoliosApi.UpsertTransactions(TestDataUtilities.TutorialScope, _portfolioCode, new List<TransactionRequest> {transaction});
             
             //    get the transaction
-            var transactions = _transactionPortfoliosApi.GetTransactions(TestDataUtilities.TutorialScope, portfolioCode);
+            var transactions = _transactionPortfoliosApi.GetTransactions(TestDataUtilities.TutorialScope, _portfolioCode);
             
             Assert.That(transactions.Values, Has.Count.EqualTo(1));
             Assert.That(transactions.Values[0].TransactionId, Is.EqualTo(transaction.TransactionId));
@@ -78,8 +86,7 @@ namespace Lusid.Sdk.Tests.Tutorials.Ibor
             var effectiveDate = new DateTimeOffset(2018, 1, 1, 0, 0, 0, TimeSpan.Zero);
             
             //    create the portfolio
-            var portfolioCode = _testDataUtilities.CreateTransactionPortfolio(TestDataUtilities.TutorialScope);
-            
+            //var portfolioCode = _testDataUtilities.CreateTransactionPortfolio(TestDataUtilities.TutorialScope);
             //    create the transaction request
             var transaction = new TransactionRequest(
                 
@@ -101,10 +108,10 @@ namespace Lusid.Sdk.Tests.Tutorials.Ibor
                 source: "Custodian");
             
             //    add the transaction
-            _transactionPortfoliosApi.UpsertTransactions(TestDataUtilities.TutorialScope, portfolioCode, new List<TransactionRequest> {transaction});
+            _transactionPortfoliosApi.UpsertTransactions(TestDataUtilities.TutorialScope, _portfolioCode, new List<TransactionRequest> {transaction});
             
             //    get the transaction
-            var transactions = _transactionPortfoliosApi.GetTransactions(TestDataUtilities.TutorialScope, portfolioCode);
+            var transactions = _transactionPortfoliosApi.GetTransactions(TestDataUtilities.TutorialScope, _portfolioCode);
             
             Assert.That(transactions.Values, Has.Count.EqualTo(1));
             Assert.That(transactions.Values[0].TransactionId, Is.EqualTo(transaction.TransactionId));
@@ -116,7 +123,7 @@ namespace Lusid.Sdk.Tests.Tutorials.Ibor
             var effectiveDate = new DateTimeOffset(2018, 1, 1, 0, 0, 0, TimeSpan.Zero);
             
             //    create the portfolio
-            var portfolioCode = _testDataUtilities.CreateTransactionPortfolio(TestDataUtilities.TutorialScope);
+            //var portfolioCode = _testDataUtilities.CreateTransactionPortfolio(TestDataUtilities.TutorialScope);
             
             //    swap definition, this is uploaded in a client custom format
             var swapDefinition = new InstrumentDefinition(
@@ -160,10 +167,10 @@ namespace Lusid.Sdk.Tests.Tutorials.Ibor
                 source: "Custodian");
             
             //    add the transaction
-            _transactionPortfoliosApi.UpsertTransactions(TestDataUtilities.TutorialScope, portfolioCode, new List<TransactionRequest> {transaction});
+            _transactionPortfoliosApi.UpsertTransactions(TestDataUtilities.TutorialScope, _portfolioCode, new List<TransactionRequest> {transaction});
             
             //    get the transaction
-            var transactions = _transactionPortfoliosApi.GetTransactions(TestDataUtilities.TutorialScope, portfolioCode);
+            var transactions = _transactionPortfoliosApi.GetTransactions(TestDataUtilities.TutorialScope, _portfolioCode);
             
             Assert.That(transactions.Values, Has.Count.EqualTo(1));
             Assert.That(transactions.Values[0].TransactionId, Is.EqualTo(transaction.TransactionId));
@@ -177,7 +184,7 @@ namespace Lusid.Sdk.Tests.Tutorials.Ibor
             var effectiveDate = new DateTimeOffset(2018, 1, 1, 0, 0, 0, TimeSpan.Zero);
             
             //    create the portfolio
-            var portfolioCode = _testDataUtilities.CreateTransactionPortfolio(TestDataUtilities.TutorialScope);
+            //var portfolioCode = _testDataUtilities.CreateTransactionPortfolio(TestDataUtilities.TutorialScope);
             
             //    create the transaction requests
             var transactionRequests = new[]
@@ -221,19 +228,19 @@ namespace Lusid.Sdk.Tests.Tutorials.Ibor
             };
 
             //    add the transactions
-            _transactionPortfoliosApi.UpsertTransactions(TestDataUtilities.TutorialScope, portfolioCode, transactionRequests.ToList());
+            _transactionPortfoliosApi.UpsertTransactions(TestDataUtilities.TutorialScope, _portfolioCode, transactionRequests.ToList());
             
             //    get the transactions
-            var transactions = _transactionPortfoliosApi.GetTransactions(TestDataUtilities.TutorialScope, portfolioCode);
+            var transactions = _transactionPortfoliosApi.GetTransactions(TestDataUtilities.TutorialScope, _portfolioCode);
             
             Assert.That(transactions.Values, Has.Count.EqualTo(2));
             Assert.That(transactions.Values.Select(t => t.TransactionId), Is.EquivalentTo(transactionRequests.Select(t => t.TransactionId)));
 
             //    cancel the transactions
-            _transactionPortfoliosApi.CancelTransactions(TestDataUtilities.TutorialScope, portfolioCode, transactions.Values.Select(t => t.TransactionId).ToList());
+            _transactionPortfoliosApi.CancelTransactions(TestDataUtilities.TutorialScope, _portfolioCode, transactions.Values.Select(t => t.TransactionId).ToList());
 
             //    verify the portfolio is now empty
-            var noTransactions = _transactionPortfoliosApi.GetTransactions(TestDataUtilities.TutorialScope, portfolioCode);
+            var noTransactions = _transactionPortfoliosApi.GetTransactions(TestDataUtilities.TutorialScope, _portfolioCode);
 
             Assert.That(noTransactions.Values, Is.Empty);
         }

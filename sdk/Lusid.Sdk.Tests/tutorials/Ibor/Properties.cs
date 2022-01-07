@@ -16,17 +16,11 @@ namespace Lusid.Sdk.Tests.tutorials.Ibor
     /// LUSID API.
     /// </summary>
     [TestFixture]
-    public class Properties
+    public class Properties: TutorialBase
     {
-        private ILusidApiFactory _apiFactory;
 
-        [OneTimeSetUp]
-        public void SetUp()
-        {
-            _apiFactory = TestLusidApiFactoryBuilder.CreateApiFactory("secret.json");
-        }
         
-        [LusidFeature("F14")]
+        [LusidFeature("F1-5")]
         [Test]
         public void Create_Portfolio_With_Label_Property()
         {
@@ -89,7 +83,7 @@ namespace Lusid.Sdk.Tests.tutorials.Ibor
             Assert.That(labelProperty.Value.LabelValue, Is.EqualTo(labelPropertyValueRequest.LabelValue));
         }
         
-        [LusidFeature("F15")]
+        [LusidFeature("F1-6")]
         [Test]
         public void Create_Portfolio_With_Metric_Property()
         {
@@ -154,7 +148,7 @@ namespace Lusid.Sdk.Tests.tutorials.Ibor
             Assert.That(metricProperty.Value.MetricValue.Unit, Is.EqualTo(metricPropertyValueRequest.MetricValue.Unit));
         }
         
-        [LusidFeature("F35")]
+        [LusidFeature("F1-7")]
         [Test]
         public void Create_Portfolio_With_MultiValue_Property()
         {

@@ -1,26 +1,24 @@
 # Lusid.Sdk.Api.ReferencePortfolioApi
 
-All URIs are relative to *http://local-unit-test-server.lusid.com:35378*
+All URIs are relative to *http://local-unit-test-server.lusid.com:56542*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
-[**CreateReferencePortfolio**](ReferencePortfolioApi.md#createreferenceportfolio) | **POST** /api/referenceportfolios/{scope} | Create reference portfolio
-[**GetReferencePortfolioConstituents**](ReferencePortfolioApi.md#getreferenceportfolioconstituents) | **GET** /api/referenceportfolios/{scope}/{code}/constituents | Get reference portfolio constituents
-[**ListConstituentsAdjustments**](ReferencePortfolioApi.md#listconstituentsadjustments) | **GET** /api/referenceportfolios/{scope}/{code}/constituentsadjustments | List constituents adjustments
-[**UpsertReferencePortfolioConstituents**](ReferencePortfolioApi.md#upsertreferenceportfolioconstituents) | **POST** /api/referenceportfolios/{scope}/{code}/constituents | Upsert reference portfolio constituents
+[**CreateReferencePortfolio**](ReferencePortfolioApi.md#createreferenceportfolio) | **POST** /api/referenceportfolios/{scope} | CreateReferencePortfolio: Create reference portfolio
+[**GetReferencePortfolioConstituents**](ReferencePortfolioApi.md#getreferenceportfolioconstituents) | **GET** /api/referenceportfolios/{scope}/{code}/constituents | GetReferencePortfolioConstituents: Get reference portfolio constituents
+[**ListConstituentsAdjustments**](ReferencePortfolioApi.md#listconstituentsadjustments) | **GET** /api/referenceportfolios/{scope}/{code}/constituentsadjustments | ListConstituentsAdjustments: List constituents adjustments
+[**UpsertReferencePortfolioConstituents**](ReferencePortfolioApi.md#upsertreferenceportfolioconstituents) | **POST** /api/referenceportfolios/{scope}/{code}/constituents | UpsertReferencePortfolioConstituents: Upsert reference portfolio constituents
 
 
-
-## CreateReferencePortfolio
-
+<a name="createreferenceportfolio"></a>
+# **CreateReferencePortfolio**
 > Portfolio CreateReferencePortfolio (string scope, CreateReferencePortfolioRequest createReferencePortfolioRequest)
 
-Create reference portfolio
+CreateReferencePortfolio: Create reference portfolio
 
 Create a reference portfolio in a particular scope.
 
 ### Example
-
 ```csharp
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -34,21 +32,22 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:35378";
+            Configuration config = new Configuration();
+            config.BasePath = "http://local-unit-test-server.lusid.com:56542";
             // Configure OAuth2 access token for authorization: oauth2
-            Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
+            config.AccessToken = "YOUR_ACCESS_TOKEN";
 
-            var apiInstance = new ReferencePortfolioApi(Configuration.Default);
+            var apiInstance = new ReferencePortfolioApi(config);
             var scope = scope_example;  // string | The scope in which to create the reference portfolio.
             var createReferencePortfolioRequest = new CreateReferencePortfolioRequest(); // CreateReferencePortfolioRequest | The definition of the reference portfolio.
 
             try
             {
-                // Create reference portfolio
+                // CreateReferencePortfolio: Create reference portfolio
                 Portfolio result = apiInstance.CreateReferencePortfolio(scope, createReferencePortfolioRequest);
                 Debug.WriteLine(result);
             }
-            catch (ApiException e)
+            catch (ApiException  e)
             {
                 Debug.Print("Exception when calling ReferencePortfolioApi.CreateReferencePortfolio: " + e.Message );
                 Debug.Print("Status Code: "+ e.ErrorCode);
@@ -60,7 +59,6 @@ namespace Example
 ```
 
 ### Parameters
-
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
@@ -77,8 +75,9 @@ Name | Type | Description  | Notes
 
 ### HTTP request headers
 
-- **Content-Type**: application/json-patch+json, application/json, text/json, application/_*+json
-- **Accept**: text/plain, application/json, text/json
+ - **Content-Type**: application/json-patch+json, application/json, text/json, application/_*+json
+ - **Accept**: text/plain, application/json, text/json
+
 
 ### HTTP response details
 | Status code | Description | Response headers |
@@ -87,22 +86,17 @@ Name | Type | Description  | Notes
 | **400** | The details of the input related failure |  -  |
 | **0** | Error response |  -  |
 
-[[Back to top]](#)
-[[Back to API list]](../README.md#documentation-for-api-endpoints)
-[[Back to Model list]](../README.md#documentation-for-models)
-[[Back to README]](../README.md)
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
-
-## GetReferencePortfolioConstituents
-
+<a name="getreferenceportfolioconstituents"></a>
+# **GetReferencePortfolioConstituents**
 > GetReferencePortfolioConstituentsResponse GetReferencePortfolioConstituents (string scope, string code, DateTimeOrCutLabel effectiveAt = null, DateTimeOffset? asAt = null, List<string> propertyKeys = null)
 
-Get reference portfolio constituents
+GetReferencePortfolioConstituents: Get reference portfolio constituents
 
 Get constituents from a reference portfolio at a particular effective time.
 
 ### Example
-
 ```csharp
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -116,11 +110,12 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:35378";
+            Configuration config = new Configuration();
+            config.BasePath = "http://local-unit-test-server.lusid.com:56542";
             // Configure OAuth2 access token for authorization: oauth2
-            Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
+            config.AccessToken = "YOUR_ACCESS_TOKEN";
 
-            var apiInstance = new ReferencePortfolioApi(Configuration.Default);
+            var apiInstance = new ReferencePortfolioApi(config);
             var scope = scope_example;  // string | The scope of the reference portfolio.
             var code = code_example;  // string | The code of the reference portfolio. Together with the scope this uniquely identifies              the reference portfolio.
             var effectiveAt = effectiveAt_example;  // DateTimeOrCutLabel | The effective date of the constituents to retrieve. Defaults to the current LUSID system datetime if not specified. (optional) 
@@ -129,11 +124,11 @@ namespace Example
 
             try
             {
-                // Get reference portfolio constituents
+                // GetReferencePortfolioConstituents: Get reference portfolio constituents
                 GetReferencePortfolioConstituentsResponse result = apiInstance.GetReferencePortfolioConstituents(scope, code, effectiveAt, asAt, propertyKeys);
                 Debug.WriteLine(result);
             }
-            catch (ApiException e)
+            catch (ApiException  e)
             {
                 Debug.Print("Exception when calling ReferencePortfolioApi.GetReferencePortfolioConstituents: " + e.Message );
                 Debug.Print("Status Code: "+ e.ErrorCode);
@@ -145,7 +140,6 @@ namespace Example
 ```
 
 ### Parameters
-
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
@@ -165,8 +159,9 @@ Name | Type | Description  | Notes
 
 ### HTTP request headers
 
-- **Content-Type**: Not defined
-- **Accept**: text/plain, application/json, text/json
+ - **Content-Type**: Not defined
+ - **Accept**: text/plain, application/json, text/json
+
 
 ### HTTP response details
 | Status code | Description | Response headers |
@@ -175,22 +170,17 @@ Name | Type | Description  | Notes
 | **400** | The details of the input related failure |  -  |
 | **0** | Error response |  -  |
 
-[[Back to top]](#)
-[[Back to API list]](../README.md#documentation-for-api-endpoints)
-[[Back to Model list]](../README.md#documentation-for-models)
-[[Back to README]](../README.md)
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
-
-## ListConstituentsAdjustments
-
+<a name="listconstituentsadjustments"></a>
+# **ListConstituentsAdjustments**
 > ResourceListOfConstituentsAdjustmentHeader ListConstituentsAdjustments (string scope, string code, DateTimeOrCutLabel fromEffectiveAt, DateTimeOrCutLabel toEffectiveAt, DateTimeOffset? asAtTime = null)
 
-List constituents adjustments
+ListConstituentsAdjustments: List constituents adjustments
 
 List adjustments made to constituents in a reference portfolio.
 
 ### Example
-
 ```csharp
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -204,24 +194,25 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:35378";
+            Configuration config = new Configuration();
+            config.BasePath = "http://local-unit-test-server.lusid.com:56542";
             // Configure OAuth2 access token for authorization: oauth2
-            Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
+            config.AccessToken = "YOUR_ACCESS_TOKEN";
 
-            var apiInstance = new ReferencePortfolioApi(Configuration.Default);
+            var apiInstance = new ReferencePortfolioApi(config);
             var scope = scope_example;  // string | The scope of the reference portfolio.
             var code = code_example;  // string | The code of the reference portfolio. Together with the scope this uniquely identifies              the reference portfolio.
             var fromEffectiveAt = fromEffectiveAt_example;  // DateTimeOrCutLabel | Events between this time (inclusive) and the toEffectiveAt are returned.
             var toEffectiveAt = toEffectiveAt_example;  // DateTimeOrCutLabel | Events between this time (inclusive) and the fromEffectiveAt are returned.
-            var asAtTime = 2013-10-20T19:20:30+01:00;  // DateTimeOffset? | The as-at time for which the result is valid. (optional) 
+            var asAtTime = 2013-10-20T19:20:30+01:00;  // DateTimeOffset? | The asAt time for which the result is valid. (optional) 
 
             try
             {
-                // List constituents adjustments
+                // ListConstituentsAdjustments: List constituents adjustments
                 ResourceListOfConstituentsAdjustmentHeader result = apiInstance.ListConstituentsAdjustments(scope, code, fromEffectiveAt, toEffectiveAt, asAtTime);
                 Debug.WriteLine(result);
             }
-            catch (ApiException e)
+            catch (ApiException  e)
             {
                 Debug.Print("Exception when calling ReferencePortfolioApi.ListConstituentsAdjustments: " + e.Message );
                 Debug.Print("Status Code: "+ e.ErrorCode);
@@ -234,14 +225,13 @@ namespace Example
 
 ### Parameters
 
-
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **scope** | **string**| The scope of the reference portfolio. | 
  **code** | **string**| The code of the reference portfolio. Together with the scope this uniquely identifies              the reference portfolio. | 
  **fromEffectiveAt** | **DateTimeOrCutLabel**| Events between this time (inclusive) and the toEffectiveAt are returned. | 
  **toEffectiveAt** | **DateTimeOrCutLabel**| Events between this time (inclusive) and the fromEffectiveAt are returned. | 
- **asAtTime** | **DateTimeOffset?**| The as-at time for which the result is valid. | [optional] 
+ **asAtTime** | **DateTimeOffset?**| The asAt time for which the result is valid. | [optional] 
 
 ### Return type
 
@@ -253,8 +243,9 @@ Name | Type | Description  | Notes
 
 ### HTTP request headers
 
-- **Content-Type**: Not defined
-- **Accept**: text/plain, application/json, text/json
+ - **Content-Type**: Not defined
+ - **Accept**: text/plain, application/json, text/json
+
 
 ### HTTP response details
 | Status code | Description | Response headers |
@@ -263,22 +254,17 @@ Name | Type | Description  | Notes
 | **400** | The details of the input related failure |  -  |
 | **0** | Error response |  -  |
 
-[[Back to top]](#)
-[[Back to API list]](../README.md#documentation-for-api-endpoints)
-[[Back to Model list]](../README.md#documentation-for-models)
-[[Back to README]](../README.md)
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
-
-## UpsertReferencePortfolioConstituents
-
+<a name="upsertreferenceportfolioconstituents"></a>
+# **UpsertReferencePortfolioConstituents**
 > UpsertReferencePortfolioConstituentsResponse UpsertReferencePortfolioConstituents (string scope, string code, UpsertReferencePortfolioConstituentsRequest upsertReferencePortfolioConstituentsRequest)
 
-Upsert reference portfolio constituents
+UpsertReferencePortfolioConstituents: Upsert reference portfolio constituents
 
 Add constituents to a reference portfolio.
 
 ### Example
-
 ```csharp
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -292,22 +278,23 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:35378";
+            Configuration config = new Configuration();
+            config.BasePath = "http://local-unit-test-server.lusid.com:56542";
             // Configure OAuth2 access token for authorization: oauth2
-            Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
+            config.AccessToken = "YOUR_ACCESS_TOKEN";
 
-            var apiInstance = new ReferencePortfolioApi(Configuration.Default);
+            var apiInstance = new ReferencePortfolioApi(config);
             var scope = scope_example;  // string | The scope of the reference portfolio.
             var code = code_example;  // string | The code of the reference portfolio. Together with the scope this uniquely identifies              the reference portfolio.
             var upsertReferencePortfolioConstituentsRequest = new UpsertReferencePortfolioConstituentsRequest(); // UpsertReferencePortfolioConstituentsRequest | The constituents to upload to the reference portfolio.
 
             try
             {
-                // Upsert reference portfolio constituents
+                // UpsertReferencePortfolioConstituents: Upsert reference portfolio constituents
                 UpsertReferencePortfolioConstituentsResponse result = apiInstance.UpsertReferencePortfolioConstituents(scope, code, upsertReferencePortfolioConstituentsRequest);
                 Debug.WriteLine(result);
             }
-            catch (ApiException e)
+            catch (ApiException  e)
             {
                 Debug.Print("Exception when calling ReferencePortfolioApi.UpsertReferencePortfolioConstituents: " + e.Message );
                 Debug.Print("Status Code: "+ e.ErrorCode);
@@ -319,7 +306,6 @@ namespace Example
 ```
 
 ### Parameters
-
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
@@ -337,8 +323,9 @@ Name | Type | Description  | Notes
 
 ### HTTP request headers
 
-- **Content-Type**: application/json-patch+json, application/json, text/json, application/_*+json
-- **Accept**: text/plain, application/json, text/json
+ - **Content-Type**: application/json-patch+json, application/json, text/json, application/_*+json
+ - **Accept**: text/plain, application/json, text/json
+
 
 ### HTTP response details
 | Status code | Description | Response headers |
@@ -347,8 +334,5 @@ Name | Type | Description  | Notes
 | **400** | The details of the input related failure |  -  |
 | **0** | Error response |  -  |
 
-[[Back to top]](#)
-[[Back to API list]](../README.md#documentation-for-api-endpoints)
-[[Back to Model list]](../README.md#documentation-for-models)
-[[Back to README]](../README.md)
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 

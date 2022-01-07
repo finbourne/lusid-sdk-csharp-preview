@@ -1,28 +1,26 @@
 # Lusid.Sdk.Api.CorporateActionSourcesApi
 
-All URIs are relative to *http://local-unit-test-server.lusid.com:35378*
+All URIs are relative to *http://local-unit-test-server.lusid.com:56542*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
-[**BatchUpsertCorporateActions**](CorporateActionSourcesApi.md#batchupsertcorporateactions) | **POST** /api/corporateactionsources/{scope}/{code}/corporateactions | [BETA] Upsert corporate actions
-[**CreateCorporateActionSource**](CorporateActionSourcesApi.md#createcorporateactionsource) | **POST** /api/corporateactionsources | [BETA] Create Corporate Action Source
-[**DeleteCorporateActionSource**](CorporateActionSourcesApi.md#deletecorporateactionsource) | **DELETE** /api/corporateactionsources/{scope}/{code} | [BETA] Delete a corporate action source
-[**DeleteCorporateActions**](CorporateActionSourcesApi.md#deletecorporateactions) | **DELETE** /api/corporateactionsources/{scope}/{code}/corporateactions | [EXPERIMENTAL] Delete one or more corporate actions
-[**GetCorporateActions**](CorporateActionSourcesApi.md#getcorporateactions) | **GET** /api/corporateactionsources/{scope}/{code}/corporateactions | [BETA] Get corporate actions
-[**ListCorporateActionSources**](CorporateActionSourcesApi.md#listcorporateactionsources) | **GET** /api/corporateactionsources | [BETA] List corporate action sources
+[**BatchUpsertCorporateActions**](CorporateActionSourcesApi.md#batchupsertcorporateactions) | **POST** /api/corporateactionsources/{scope}/{code}/corporateactions | [BETA] BatchUpsertCorporateActions: Upsert corporate actions
+[**CreateCorporateActionSource**](CorporateActionSourcesApi.md#createcorporateactionsource) | **POST** /api/corporateactionsources | [BETA] CreateCorporateActionSource: Create corporate action source
+[**DeleteCorporateActionSource**](CorporateActionSourcesApi.md#deletecorporateactionsource) | **DELETE** /api/corporateactionsources/{scope}/{code} | [BETA] DeleteCorporateActionSource: Delete a corporate action source
+[**DeleteCorporateActions**](CorporateActionSourcesApi.md#deletecorporateactions) | **DELETE** /api/corporateactionsources/{scope}/{code}/corporateactions | [EXPERIMENTAL] DeleteCorporateActions: Delete corporate actions
+[**GetCorporateActions**](CorporateActionSourcesApi.md#getcorporateactions) | **GET** /api/corporateactionsources/{scope}/{code}/corporateactions | [BETA] GetCorporateActions: Get corporate actions
+[**ListCorporateActionSources**](CorporateActionSourcesApi.md#listcorporateactionsources) | **GET** /api/corporateactionsources | [BETA] ListCorporateActionSources: List corporate action sources
 
 
-
-## BatchUpsertCorporateActions
-
+<a name="batchupsertcorporateactions"></a>
+# **BatchUpsertCorporateActions**
 > UpsertCorporateActionsResponse BatchUpsertCorporateActions (string scope, string code, List<UpsertCorporateActionRequest> upsertCorporateActionRequest = null)
 
-[BETA] Upsert corporate actions
+[BETA] BatchUpsertCorporateActions: Upsert corporate actions
 
-Attempt to create/update one or more corporate action in a specified corporate action source. Failed actions will be identified in the body of the response.
+Create or update one or more corporate actions in a particular corporate action source. Failures are identified in the body of the response.                If a corporate action is upserted at exactly the same effective datetime as a transaction for the same instrument, the corporate action takes precedence. Depending on the nature of the corporate action, this may mean it affects the transaction.
 
 ### Example
-
 ```csharp
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -36,22 +34,23 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:35378";
+            Configuration config = new Configuration();
+            config.BasePath = "http://local-unit-test-server.lusid.com:56542";
             // Configure OAuth2 access token for authorization: oauth2
-            Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
+            config.AccessToken = "YOUR_ACCESS_TOKEN";
 
-            var apiInstance = new CorporateActionSourcesApi(Configuration.Default);
+            var apiInstance = new CorporateActionSourcesApi(config);
             var scope = scope_example;  // string | The scope of corporate action source
             var code = code_example;  // string | The code of the corporate action source
             var upsertCorporateActionRequest = new List<UpsertCorporateActionRequest>(); // List<UpsertCorporateActionRequest> | The corporate action definitions (optional) 
 
             try
             {
-                // [BETA] Upsert corporate actions
+                // [BETA] BatchUpsertCorporateActions: Upsert corporate actions
                 UpsertCorporateActionsResponse result = apiInstance.BatchUpsertCorporateActions(scope, code, upsertCorporateActionRequest);
                 Debug.WriteLine(result);
             }
-            catch (ApiException e)
+            catch (ApiException  e)
             {
                 Debug.Print("Exception when calling CorporateActionSourcesApi.BatchUpsertCorporateActions: " + e.Message );
                 Debug.Print("Status Code: "+ e.ErrorCode);
@@ -63,7 +62,6 @@ namespace Example
 ```
 
 ### Parameters
-
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
@@ -81,8 +79,9 @@ Name | Type | Description  | Notes
 
 ### HTTP request headers
 
-- **Content-Type**: application/json-patch+json, application/json, text/json, application/_*+json
-- **Accept**: text/plain, application/json, text/json
+ - **Content-Type**: application/json-patch+json, application/json, text/json, application/_*+json
+ - **Accept**: text/plain, application/json, text/json
+
 
 ### HTTP response details
 | Status code | Description | Response headers |
@@ -91,22 +90,17 @@ Name | Type | Description  | Notes
 | **400** | The details of the input related failure |  -  |
 | **0** | Error response |  -  |
 
-[[Back to top]](#)
-[[Back to API list]](../README.md#documentation-for-api-endpoints)
-[[Back to Model list]](../README.md#documentation-for-models)
-[[Back to README]](../README.md)
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
-
-## CreateCorporateActionSource
-
+<a name="createcorporateactionsource"></a>
+# **CreateCorporateActionSource**
 > CorporateActionSource CreateCorporateActionSource (CreateCorporateActionSourceRequest createCorporateActionSourceRequest)
 
-[BETA] Create Corporate Action Source
+[BETA] CreateCorporateActionSource: Create corporate action source
 
-Attempt to create a corporate action source.
+Create a corporate action source.
 
 ### Example
-
 ```csharp
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -120,20 +114,21 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:35378";
+            Configuration config = new Configuration();
+            config.BasePath = "http://local-unit-test-server.lusid.com:56542";
             // Configure OAuth2 access token for authorization: oauth2
-            Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
+            config.AccessToken = "YOUR_ACCESS_TOKEN";
 
-            var apiInstance = new CorporateActionSourcesApi(Configuration.Default);
+            var apiInstance = new CorporateActionSourcesApi(config);
             var createCorporateActionSourceRequest = new CreateCorporateActionSourceRequest(); // CreateCorporateActionSourceRequest | The corporate action source definition
 
             try
             {
-                // [BETA] Create Corporate Action Source
+                // [BETA] CreateCorporateActionSource: Create corporate action source
                 CorporateActionSource result = apiInstance.CreateCorporateActionSource(createCorporateActionSourceRequest);
                 Debug.WriteLine(result);
             }
-            catch (ApiException e)
+            catch (ApiException  e)
             {
                 Debug.Print("Exception when calling CorporateActionSourcesApi.CreateCorporateActionSource: " + e.Message );
                 Debug.Print("Status Code: "+ e.ErrorCode);
@@ -145,7 +140,6 @@ namespace Example
 ```
 
 ### Parameters
-
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
@@ -161,8 +155,9 @@ Name | Type | Description  | Notes
 
 ### HTTP request headers
 
-- **Content-Type**: application/json-patch+json, application/json, text/json, application/_*+json
-- **Accept**: text/plain, application/json, text/json
+ - **Content-Type**: application/json-patch+json, application/json, text/json, application/_*+json
+ - **Accept**: text/plain, application/json, text/json
+
 
 ### HTTP response details
 | Status code | Description | Response headers |
@@ -171,22 +166,17 @@ Name | Type | Description  | Notes
 | **400** | The details of the input related failure |  -  |
 | **0** | Error response |  -  |
 
-[[Back to top]](#)
-[[Back to API list]](../README.md#documentation-for-api-endpoints)
-[[Back to Model list]](../README.md#documentation-for-models)
-[[Back to README]](../README.md)
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
-
-## DeleteCorporateActionSource
-
+<a name="deletecorporateactionsource"></a>
+# **DeleteCorporateActionSource**
 > DeletedEntityResponse DeleteCorporateActionSource (string scope, string code)
 
-[BETA] Delete a corporate action source
+[BETA] DeleteCorporateActionSource: Delete a corporate action source
 
 Deletes a single corporate action source
 
 ### Example
-
 ```csharp
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -200,21 +190,22 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:35378";
+            Configuration config = new Configuration();
+            config.BasePath = "http://local-unit-test-server.lusid.com:56542";
             // Configure OAuth2 access token for authorization: oauth2
-            Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
+            config.AccessToken = "YOUR_ACCESS_TOKEN";
 
-            var apiInstance = new CorporateActionSourcesApi(Configuration.Default);
-            var scope = scope_example;  // string | The Scope of the Corporate Action Source to be deleted
-            var code = code_example;  // string | The Code of the Corporate Action Source to be deleted
+            var apiInstance = new CorporateActionSourcesApi(config);
+            var scope = scope_example;  // string | The scope of the corporate action source to be deleted
+            var code = code_example;  // string | The code of the corporate action source to be deleted
 
             try
             {
-                // [BETA] Delete a corporate action source
+                // [BETA] DeleteCorporateActionSource: Delete a corporate action source
                 DeletedEntityResponse result = apiInstance.DeleteCorporateActionSource(scope, code);
                 Debug.WriteLine(result);
             }
-            catch (ApiException e)
+            catch (ApiException  e)
             {
                 Debug.Print("Exception when calling CorporateActionSourcesApi.DeleteCorporateActionSource: " + e.Message );
                 Debug.Print("Status Code: "+ e.ErrorCode);
@@ -227,11 +218,10 @@ namespace Example
 
 ### Parameters
 
-
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **scope** | **string**| The Scope of the Corporate Action Source to be deleted | 
- **code** | **string**| The Code of the Corporate Action Source to be deleted | 
+ **scope** | **string**| The scope of the corporate action source to be deleted | 
+ **code** | **string**| The code of the corporate action source to be deleted | 
 
 ### Return type
 
@@ -243,8 +233,9 @@ Name | Type | Description  | Notes
 
 ### HTTP request headers
 
-- **Content-Type**: Not defined
-- **Accept**: text/plain, application/json, text/json
+ - **Content-Type**: Not defined
+ - **Accept**: text/plain, application/json, text/json
+
 
 ### HTTP response details
 | Status code | Description | Response headers |
@@ -253,22 +244,17 @@ Name | Type | Description  | Notes
 | **400** | The details of the input related failure |  -  |
 | **0** | Error response |  -  |
 
-[[Back to top]](#)
-[[Back to API list]](../README.md#documentation-for-api-endpoints)
-[[Back to Model list]](../README.md#documentation-for-models)
-[[Back to README]](../README.md)
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
-
-## DeleteCorporateActions
-
+<a name="deletecorporateactions"></a>
+# **DeleteCorporateActions**
 > DeletedEntityResponse DeleteCorporateActions (string scope, string code, List<string> corporateActionIds)
 
-[EXPERIMENTAL] Delete one or more corporate actions
+[EXPERIMENTAL] DeleteCorporateActions: Delete corporate actions
 
-Deletes one or more corporate actions from the specified corporate action source
+Delete one or more corporate actions from a particular corporate action source.
 
 ### Example
-
 ```csharp
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -282,22 +268,23 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:35378";
+            Configuration config = new Configuration();
+            config.BasePath = "http://local-unit-test-server.lusid.com:56542";
             // Configure OAuth2 access token for authorization: oauth2
-            Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
+            config.AccessToken = "YOUR_ACCESS_TOKEN";
 
-            var apiInstance = new CorporateActionSourcesApi(Configuration.Default);
+            var apiInstance = new CorporateActionSourcesApi(config);
             var scope = scope_example;  // string | The scope of the corporate action source
             var code = code_example;  // string | The code of the corporate action source
-            var corporateActionIds = new List<string>(); // List<string> | The ids of the corporate actions to delete
+            var corporateActionIds = new List<string>(); // List<string> | The IDs of the corporate actions to delete
 
             try
             {
-                // [EXPERIMENTAL] Delete one or more corporate actions
+                // [EXPERIMENTAL] DeleteCorporateActions: Delete corporate actions
                 DeletedEntityResponse result = apiInstance.DeleteCorporateActions(scope, code, corporateActionIds);
                 Debug.WriteLine(result);
             }
-            catch (ApiException e)
+            catch (ApiException  e)
             {
                 Debug.Print("Exception when calling CorporateActionSourcesApi.DeleteCorporateActions: " + e.Message );
                 Debug.Print("Status Code: "+ e.ErrorCode);
@@ -310,12 +297,11 @@ namespace Example
 
 ### Parameters
 
-
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **scope** | **string**| The scope of the corporate action source | 
  **code** | **string**| The code of the corporate action source | 
- **corporateActionIds** | [**List&lt;string&gt;**](string.md)| The ids of the corporate actions to delete | 
+ **corporateActionIds** | [**List&lt;string&gt;**](string.md)| The IDs of the corporate actions to delete | 
 
 ### Return type
 
@@ -327,8 +313,9 @@ Name | Type | Description  | Notes
 
 ### HTTP request headers
 
-- **Content-Type**: Not defined
-- **Accept**: text/plain, application/json, text/json
+ - **Content-Type**: Not defined
+ - **Accept**: text/plain, application/json, text/json
+
 
 ### HTTP response details
 | Status code | Description | Response headers |
@@ -337,22 +324,17 @@ Name | Type | Description  | Notes
 | **400** | The details of the input related failure |  -  |
 | **0** | Error response |  -  |
 
-[[Back to top]](#)
-[[Back to API list]](../README.md#documentation-for-api-endpoints)
-[[Back to Model list]](../README.md#documentation-for-models)
-[[Back to README]](../README.md)
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
-
-## GetCorporateActions
-
+<a name="getcorporateactions"></a>
+# **GetCorporateActions**
 > ResourceListOfCorporateAction GetCorporateActions (string scope, string code, DateTimeOrCutLabel fromEffectiveAt = null, DateTimeOrCutLabel toEffectiveAt = null, DateTimeOffset? asAt = null, List<string> sortBy = null, int? limit = null, string filter = null)
 
-[BETA] Get corporate actions
+[BETA] GetCorporateActions: Get corporate actions
 
-Gets corporate actions from a specific corporate action source
+Get corporate actions from a particular corporate action source.
 
 ### Example
-
 ```csharp
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -366,27 +348,28 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:35378";
+            Configuration config = new Configuration();
+            config.BasePath = "http://local-unit-test-server.lusid.com:56542";
             // Configure OAuth2 access token for authorization: oauth2
-            Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
+            config.AccessToken = "YOUR_ACCESS_TOKEN";
 
-            var apiInstance = new CorporateActionSourcesApi(Configuration.Default);
-            var scope = scope_example;  // string | The scope of the corporate action source
-            var code = code_example;  // string | The code of the corporate action source
-            var fromEffectiveAt = fromEffectiveAt_example;  // DateTimeOrCutLabel | Optional. The start effective date of the data range (optional) 
-            var toEffectiveAt = toEffectiveAt_example;  // DateTimeOrCutLabel | Optional. The end effective date of the data range (optional) 
-            var asAt = 2013-10-20T19:20:30+01:00;  // DateTimeOffset? | Optional. The AsAt date of the data (optional) 
+            var apiInstance = new CorporateActionSourcesApi(config);
+            var scope = scope_example;  // string | The scope of the corporate action source.
+            var code = code_example;  // string | The code of the corporate action source.
+            var fromEffectiveAt = fromEffectiveAt_example;  // DateTimeOrCutLabel | Optional. The start effective date of the data range. (optional) 
+            var toEffectiveAt = toEffectiveAt_example;  // DateTimeOrCutLabel | Optional. The end effective date of the data range. (optional) 
+            var asAt = 2013-10-20T19:20:30+01:00;  // DateTimeOffset? | Optional. The AsAt date of the data. (optional) 
             var sortBy = new List<string>(); // List<string> | Optional. Order the results by these fields. Use use the '-' sign to denote descending order e.g. -MyFieldName (optional) 
-            var limit = 56;  // int? | Optional. When paginating, limit the number of returned results to this many (optional) 
+            var limit = 56;  // int? | Optional. When paginating, limit the results to this number. (optional) 
             var filter = filter_example;  // string | Optional. Expression to filter the result set.              For example, to filter on the Announcement Date, use \"announcementDate eq '2020-03-06'\"              Read more about filtering results from LUSID here https://support.lusid.com/filtering-results-from-lusid. (optional) 
 
             try
             {
-                // [BETA] Get corporate actions
+                // [BETA] GetCorporateActions: Get corporate actions
                 ResourceListOfCorporateAction result = apiInstance.GetCorporateActions(scope, code, fromEffectiveAt, toEffectiveAt, asAt, sortBy, limit, filter);
                 Debug.WriteLine(result);
             }
-            catch (ApiException e)
+            catch (ApiException  e)
             {
                 Debug.Print("Exception when calling CorporateActionSourcesApi.GetCorporateActions: " + e.Message );
                 Debug.Print("Status Code: "+ e.ErrorCode);
@@ -399,16 +382,15 @@ namespace Example
 
 ### Parameters
 
-
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **scope** | **string**| The scope of the corporate action source | 
- **code** | **string**| The code of the corporate action source | 
- **fromEffectiveAt** | **DateTimeOrCutLabel**| Optional. The start effective date of the data range | [optional] 
- **toEffectiveAt** | **DateTimeOrCutLabel**| Optional. The end effective date of the data range | [optional] 
- **asAt** | **DateTimeOffset?**| Optional. The AsAt date of the data | [optional] 
+ **scope** | **string**| The scope of the corporate action source. | 
+ **code** | **string**| The code of the corporate action source. | 
+ **fromEffectiveAt** | **DateTimeOrCutLabel**| Optional. The start effective date of the data range. | [optional] 
+ **toEffectiveAt** | **DateTimeOrCutLabel**| Optional. The end effective date of the data range. | [optional] 
+ **asAt** | **DateTimeOffset?**| Optional. The AsAt date of the data. | [optional] 
  **sortBy** | [**List&lt;string&gt;**](string.md)| Optional. Order the results by these fields. Use use the &#39;-&#39; sign to denote descending order e.g. -MyFieldName | [optional] 
- **limit** | **int?**| Optional. When paginating, limit the number of returned results to this many | [optional] 
+ **limit** | **int?**| Optional. When paginating, limit the results to this number. | [optional] 
  **filter** | **string**| Optional. Expression to filter the result set.              For example, to filter on the Announcement Date, use \&quot;announcementDate eq &#39;2020-03-06&#39;\&quot;              Read more about filtering results from LUSID here https://support.lusid.com/filtering-results-from-lusid. | [optional] 
 
 ### Return type
@@ -421,8 +403,9 @@ Name | Type | Description  | Notes
 
 ### HTTP request headers
 
-- **Content-Type**: Not defined
-- **Accept**: text/plain, application/json, text/json
+ - **Content-Type**: Not defined
+ - **Accept**: text/plain, application/json, text/json
+
 
 ### HTTP response details
 | Status code | Description | Response headers |
@@ -431,22 +414,17 @@ Name | Type | Description  | Notes
 | **400** | The details of the input related failure |  -  |
 | **0** | Error response |  -  |
 
-[[Back to top]](#)
-[[Back to API list]](../README.md#documentation-for-api-endpoints)
-[[Back to Model list]](../README.md#documentation-for-models)
-[[Back to README]](../README.md)
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
-
-## ListCorporateActionSources
-
+<a name="listcorporateactionsources"></a>
+# **ListCorporateActionSources**
 > PagedResourceListOfCorporateActionSource ListCorporateActionSources (DateTimeOffset? asAt = null, List<string> sortBy = null, int? limit = null, string filter = null, string page = null)
 
-[BETA] List corporate action sources
+[BETA] ListCorporateActionSources: List corporate action sources
 
 Gets a list of all corporate action sources
 
 ### Example
-
 ```csharp
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -460,11 +438,12 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:35378";
+            Configuration config = new Configuration();
+            config.BasePath = "http://local-unit-test-server.lusid.com:56542";
             // Configure OAuth2 access token for authorization: oauth2
-            Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
+            config.AccessToken = "YOUR_ACCESS_TOKEN";
 
-            var apiInstance = new CorporateActionSourcesApi(Configuration.Default);
+            var apiInstance = new CorporateActionSourcesApi(config);
             var asAt = 2013-10-20T19:20:30+01:00;  // DateTimeOffset? | Optional. The AsAt date of the data (optional) 
             var sortBy = new List<string>(); // List<string> | Optional. Order the results by these fields. Use use the '-' sign to denote descending order e.g. -MyFieldName (optional) 
             var limit = 56;  // int? | Optional. When paginating, limit the number of returned results to this many. If not specified, a default  of 100 is used. (optional)  (default to 100)
@@ -473,11 +452,11 @@ namespace Example
 
             try
             {
-                // [BETA] List corporate action sources
+                // [BETA] ListCorporateActionSources: List corporate action sources
                 PagedResourceListOfCorporateActionSource result = apiInstance.ListCorporateActionSources(asAt, sortBy, limit, filter, page);
                 Debug.WriteLine(result);
             }
-            catch (ApiException e)
+            catch (ApiException  e)
             {
                 Debug.Print("Exception when calling CorporateActionSourcesApi.ListCorporateActionSources: " + e.Message );
                 Debug.Print("Status Code: "+ e.ErrorCode);
@@ -489,7 +468,6 @@ namespace Example
 ```
 
 ### Parameters
-
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
@@ -509,8 +487,9 @@ Name | Type | Description  | Notes
 
 ### HTTP request headers
 
-- **Content-Type**: Not defined
-- **Accept**: text/plain, application/json, text/json
+ - **Content-Type**: Not defined
+ - **Accept**: text/plain, application/json, text/json
+
 
 ### HTTP response details
 | Status code | Description | Response headers |
@@ -519,8 +498,5 @@ Name | Type | Description  | Notes
 | **400** | The details of the input related failure |  -  |
 | **0** | Error response |  -  |
 
-[[Back to top]](#)
-[[Back to API list]](../README.md#documentation-for-api-endpoints)
-[[Back to Model list]](../README.md#documentation-for-models)
-[[Back to README]](../README.md)
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 

@@ -1,3 +1,4 @@
+using System;
 using System.IO;
 using Lusid.Sdk.Utilities;
 
@@ -15,7 +16,7 @@ namespace Lusid.Sdk.Tests.Utilities
         public static ApiConfiguration CreateApiConfiguration(string secretsFile)
         {
             return File.Exists(secretsFile)
-                ? ApiConfigurationBuilder.Build("file")
+                ? ApiConfigurationBuilder.Build(secretsFile)
                 : ApiConfigurationBuilder.Build(null);
         }
     }

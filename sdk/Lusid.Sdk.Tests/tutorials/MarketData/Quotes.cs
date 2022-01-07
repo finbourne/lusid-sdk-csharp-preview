@@ -4,22 +4,15 @@ using System.Linq;
 using Lusid.Sdk.Api;
 using Lusid.Sdk.Model;
 using Lusid.Sdk.Tests.Utilities;
+using Lusid.Sdk.Utilities;
 using LusidFeatures;
 using NUnit.Framework;
 
 namespace Lusid.Sdk.Tests.Tutorials.MarketData
 {
     [TestFixture]
-    public class Quotes
+    public class Quotes: TutorialBase
     {
-        private IQuotesApi _quotesApi;
-
-        [OneTimeSetUp]
-        public void SetUp()
-        {
-            var apiFactory = TestLusidApiFactoryBuilder.CreateApiFactory("secret.json");
-            _quotesApi = apiFactory.Api<IQuotesApi>();
-        }
         
         [LusidFeature("F28")]
         [Test]

@@ -1,5 +1,5 @@
-
 # Lusid.Sdk.Model.QuoteAccessMetadataRuleId
+An identifier that uniquely identifies a set of Quote access control metadata.
 
 ## Properties
 
@@ -12,7 +12,5 @@ Name | Type | Description | Notes
 **QuoteType** | **string** | The type of the quote. This allows for quotes other than prices e.g. rates or spreads to be used. | [optional] 
 **Field** | **string** | The field of the quote e.g. bid, mid, ask etc. This should be consistent across a time series of quotes. The allowed values are dependant on the specified Provider. | [optional] 
 
-[[Back to Model list]](../README.md#documentation-for-models)
-[[Back to API list]](../README.md#documentation-for-api-endpoints)
-[[Back to README]](../README.md)
+[[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 

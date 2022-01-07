@@ -1,26 +1,24 @@
 # Lusid.Sdk.Api.AggregationApi
 
-All URIs are relative to *http://local-unit-test-server.lusid.com:35378*
+All URIs are relative to *http://local-unit-test-server.lusid.com:56542*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
-[**GenerateConfigurationRecipe**](AggregationApi.md#generateconfigurationrecipe) | **POST** /api/aggregation/{scope}/{code}/$generateconfigurationrecipe | [EXPERIMENTAL] Generates a recipe sufficient to perform valuations for the given portfolio.
-[**GetQueryableKeys**](AggregationApi.md#getqueryablekeys) | **GET** /api/results/queryable/keys | [EXPERIMENTAL] Query the set of supported \&quot;addresses\&quot; that can be queried from the aggregation endpoint.
-[**GetValuation**](AggregationApi.md#getvaluation) | **POST** /api/aggregation/$valuation | [EXPERIMENTAL] Perform valuation for a list of portfolios and/or portfolio groups
-[**GetValuationOfWeightedInstruments**](AggregationApi.md#getvaluationofweightedinstruments) | **POST** /api/aggregation/$valuationinlined | [EXPERIMENTAL] Perform valuation for an inlined portfolio
+[**GenerateConfigurationRecipe**](AggregationApi.md#generateconfigurationrecipe) | **POST** /api/aggregation/{scope}/{code}/$generateconfigurationrecipe | [EXPERIMENTAL] GenerateConfigurationRecipe: Generates a recipe sufficient to perform valuations for the given portfolio.
+[**GetQueryableKeys**](AggregationApi.md#getqueryablekeys) | **GET** /api/results/queryable/keys | [EXPERIMENTAL] GetQueryableKeys: Query the set of supported \&quot;addresses\&quot; that can be queried from the aggregation endpoint.
+[**GetValuation**](AggregationApi.md#getvaluation) | **POST** /api/aggregation/$valuation | [BETA] GetValuation: Perform valuation for a list of portfolios and/or portfolio groups
+[**GetValuationOfWeightedInstruments**](AggregationApi.md#getvaluationofweightedinstruments) | **POST** /api/aggregation/$valuationinlined | [BETA] GetValuationOfWeightedInstruments: Perform valuation for an inlined portfolio
 
 
-
-## GenerateConfigurationRecipe
-
+<a name="generateconfigurationrecipe"></a>
+# **GenerateConfigurationRecipe**
 > ConfigurationRecipe GenerateConfigurationRecipe (string scope, string code, CreateRecipeRequest createRecipeRequest = null)
 
-[EXPERIMENTAL] Generates a recipe sufficient to perform valuations for the given portfolio.
+[EXPERIMENTAL] GenerateConfigurationRecipe: Generates a recipe sufficient to perform valuations for the given portfolio.
 
 Given a set of scopes, a portfolio Id and a basic recipe, this endpoint generates a configuration recipe with relevant rules that can value the instruments in the portfolio.
 
 ### Example
-
 ```csharp
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -34,22 +32,23 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:35378";
+            Configuration config = new Configuration();
+            config.BasePath = "http://local-unit-test-server.lusid.com:56542";
             // Configure OAuth2 access token for authorization: oauth2
-            Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
+            config.AccessToken = "YOUR_ACCESS_TOKEN";
 
-            var apiInstance = new AggregationApi(Configuration.Default);
+            var apiInstance = new AggregationApi(config);
             var scope = scope_example;  // string | The scope of the portfolio
             var code = code_example;  // string | The code of the portfolio
             var createRecipeRequest = new CreateRecipeRequest(); // CreateRecipeRequest | The request specifying the parameters to generating the recipe (optional) 
 
             try
             {
-                // [EXPERIMENTAL] Generates a recipe sufficient to perform valuations for the given portfolio.
+                // [EXPERIMENTAL] GenerateConfigurationRecipe: Generates a recipe sufficient to perform valuations for the given portfolio.
                 ConfigurationRecipe result = apiInstance.GenerateConfigurationRecipe(scope, code, createRecipeRequest);
                 Debug.WriteLine(result);
             }
-            catch (ApiException e)
+            catch (ApiException  e)
             {
                 Debug.Print("Exception when calling AggregationApi.GenerateConfigurationRecipe: " + e.Message );
                 Debug.Print("Status Code: "+ e.ErrorCode);
@@ -61,7 +60,6 @@ namespace Example
 ```
 
 ### Parameters
-
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
@@ -79,8 +77,9 @@ Name | Type | Description  | Notes
 
 ### HTTP request headers
 
-- **Content-Type**: application/json-patch+json, application/json, text/json, application/_*+json
-- **Accept**: text/plain, application/json, text/json
+ - **Content-Type**: application/json-patch+json, application/json, text/json, application/_*+json
+ - **Accept**: text/plain, application/json, text/json
+
 
 ### HTTP response details
 | Status code | Description | Response headers |
@@ -89,22 +88,17 @@ Name | Type | Description  | Notes
 | **400** | The details of the input related failure |  -  |
 | **0** | Error response |  -  |
 
-[[Back to top]](#)
-[[Back to API list]](../README.md#documentation-for-api-endpoints)
-[[Back to Model list]](../README.md#documentation-for-models)
-[[Back to README]](../README.md)
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
-
-## GetQueryableKeys
-
+<a name="getqueryablekeys"></a>
+# **GetQueryableKeys**
 > ResourceListOfAggregationQuery GetQueryableKeys (string page = null, int? limit = null, string filter = null)
 
-[EXPERIMENTAL] Query the set of supported \"addresses\" that can be queried from the aggregation endpoint.
+[EXPERIMENTAL] GetQueryableKeys: Query the set of supported \"addresses\" that can be queried from the aggregation endpoint.
 
 When a request is made for aggregation, the user needs to know what keys can be passed to it for queryable data. This endpoint allows to queries to provide the set of keys,  what they are and what they return.
 
 ### Example
-
 ```csharp
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -118,22 +112,23 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:35378";
+            Configuration config = new Configuration();
+            config.BasePath = "http://local-unit-test-server.lusid.com:56542";
             // Configure OAuth2 access token for authorization: oauth2
-            Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
+            config.AccessToken = "YOUR_ACCESS_TOKEN";
 
-            var apiInstance = new AggregationApi(Configuration.Default);
+            var apiInstance = new AggregationApi(config);
             var page = page_example;  // string | The pagination token to use to continue listing queryable keys from a previous call to list queryable keys.              This value is returned from the previous call. (optional) 
             var limit = 56;  // int? | When paginating, limit the number of returned results to this many. (optional) 
             var filter = filter_example;  // string | Expression to filter the result set.              Read more about filtering results from LUSID here https://support.lusid.com/filtering-results-from-lusid. (optional) 
 
             try
             {
-                // [EXPERIMENTAL] Query the set of supported \"addresses\" that can be queried from the aggregation endpoint.
+                // [EXPERIMENTAL] GetQueryableKeys: Query the set of supported \"addresses\" that can be queried from the aggregation endpoint.
                 ResourceListOfAggregationQuery result = apiInstance.GetQueryableKeys(page, limit, filter);
                 Debug.WriteLine(result);
             }
-            catch (ApiException e)
+            catch (ApiException  e)
             {
                 Debug.Print("Exception when calling AggregationApi.GetQueryableKeys: " + e.Message );
                 Debug.Print("Status Code: "+ e.ErrorCode);
@@ -145,7 +140,6 @@ namespace Example
 ```
 
 ### Parameters
-
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
@@ -163,8 +157,9 @@ Name | Type | Description  | Notes
 
 ### HTTP request headers
 
-- **Content-Type**: Not defined
-- **Accept**: text/plain, application/json, text/json
+ - **Content-Type**: Not defined
+ - **Accept**: text/plain, application/json, text/json
+
 
 ### HTTP response details
 | Status code | Description | Response headers |
@@ -173,22 +168,17 @@ Name | Type | Description  | Notes
 | **400** | The details of the input related failure |  -  |
 | **0** | Error response |  -  |
 
-[[Back to top]](#)
-[[Back to API list]](../README.md#documentation-for-api-endpoints)
-[[Back to Model list]](../README.md#documentation-for-models)
-[[Back to README]](../README.md)
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
-
-## GetValuation
-
+<a name="getvaluation"></a>
+# **GetValuation**
 > ListAggregationResponse GetValuation (ValuationRequest valuationRequest = null)
 
-[EXPERIMENTAL] Perform valuation for a list of portfolios and/or portfolio groups
+[BETA] GetValuation: Perform valuation for a list of portfolios and/or portfolio groups
 
 Perform valuation on specified list of portfolio and/or portfolio groups for a set of dates.
 
 ### Example
-
 ```csharp
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -202,20 +192,21 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:35378";
+            Configuration config = new Configuration();
+            config.BasePath = "http://local-unit-test-server.lusid.com:56542";
             // Configure OAuth2 access token for authorization: oauth2
-            Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
+            config.AccessToken = "YOUR_ACCESS_TOKEN";
 
-            var apiInstance = new AggregationApi(Configuration.Default);
+            var apiInstance = new AggregationApi(config);
             var valuationRequest = new ValuationRequest(); // ValuationRequest | The request specifying the set of portfolios and dates on which to calculate a set of valuation metrics (optional) 
 
             try
             {
-                // [EXPERIMENTAL] Perform valuation for a list of portfolios and/or portfolio groups
+                // [BETA] GetValuation: Perform valuation for a list of portfolios and/or portfolio groups
                 ListAggregationResponse result = apiInstance.GetValuation(valuationRequest);
                 Debug.WriteLine(result);
             }
-            catch (ApiException e)
+            catch (ApiException  e)
             {
                 Debug.Print("Exception when calling AggregationApi.GetValuation: " + e.Message );
                 Debug.Print("Status Code: "+ e.ErrorCode);
@@ -227,7 +218,6 @@ namespace Example
 ```
 
 ### Parameters
-
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
@@ -243,8 +233,9 @@ Name | Type | Description  | Notes
 
 ### HTTP request headers
 
-- **Content-Type**: application/json-patch+json, application/json, text/json, application/_*+json
-- **Accept**: text/plain, application/json, text/json
+ - **Content-Type**: application/json-patch+json, application/json, text/json, application/_*+json
+ - **Accept**: text/plain, application/json, text/json
+
 
 ### HTTP response details
 | Status code | Description | Response headers |
@@ -253,22 +244,17 @@ Name | Type | Description  | Notes
 | **400** | The details of the input related failure |  -  |
 | **0** | Error response |  -  |
 
-[[Back to top]](#)
-[[Back to API list]](../README.md#documentation-for-api-endpoints)
-[[Back to Model list]](../README.md#documentation-for-models)
-[[Back to README]](../README.md)
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
-
-## GetValuationOfWeightedInstruments
-
+<a name="getvaluationofweightedinstruments"></a>
+# **GetValuationOfWeightedInstruments**
 > ListAggregationResponse GetValuationOfWeightedInstruments (InlineValuationRequest inlineValuationRequest = null)
 
-[EXPERIMENTAL] Perform valuation for an inlined portfolio
+[BETA] GetValuationOfWeightedInstruments: Perform valuation for an inlined portfolio
 
 Perform valuation on the portfolio that is defined by the weighted set of instruments passed to the request.
 
 ### Example
-
 ```csharp
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -282,20 +268,21 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:35378";
+            Configuration config = new Configuration();
+            config.BasePath = "http://local-unit-test-server.lusid.com:56542";
             // Configure OAuth2 access token for authorization: oauth2
-            Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
+            config.AccessToken = "YOUR_ACCESS_TOKEN";
 
-            var apiInstance = new AggregationApi(Configuration.Default);
+            var apiInstance = new AggregationApi(config);
             var inlineValuationRequest = new InlineValuationRequest(); // InlineValuationRequest | The request specifying the set of portfolios and dates on which to calculate a set of valuation metrics (optional) 
 
             try
             {
-                // [EXPERIMENTAL] Perform valuation for an inlined portfolio
+                // [BETA] GetValuationOfWeightedInstruments: Perform valuation for an inlined portfolio
                 ListAggregationResponse result = apiInstance.GetValuationOfWeightedInstruments(inlineValuationRequest);
                 Debug.WriteLine(result);
             }
-            catch (ApiException e)
+            catch (ApiException  e)
             {
                 Debug.Print("Exception when calling AggregationApi.GetValuationOfWeightedInstruments: " + e.Message );
                 Debug.Print("Status Code: "+ e.ErrorCode);
@@ -307,7 +294,6 @@ namespace Example
 ```
 
 ### Parameters
-
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
@@ -323,8 +309,9 @@ Name | Type | Description  | Notes
 
 ### HTTP request headers
 
-- **Content-Type**: application/json-patch+json, application/json, text/json, application/_*+json
-- **Accept**: text/plain, application/json, text/json
+ - **Content-Type**: application/json-patch+json, application/json, text/json, application/_*+json
+ - **Accept**: text/plain, application/json, text/json
+
 
 ### HTTP response details
 | Status code | Description | Response headers |
@@ -333,8 +320,5 @@ Name | Type | Description  | Notes
 | **400** | The details of the input related failure |  -  |
 | **0** | Error response |  -  |
 
-[[Back to top]](#)
-[[Back to API list]](../README.md#documentation-for-api-endpoints)
-[[Back to Model list]](../README.md#documentation-for-models)
-[[Back to README]](../README.md)
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 

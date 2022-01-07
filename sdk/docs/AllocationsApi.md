@@ -1,26 +1,24 @@
 # Lusid.Sdk.Api.AllocationsApi
 
-All URIs are relative to *http://local-unit-test-server.lusid.com:35378*
+All URIs are relative to *http://local-unit-test-server.lusid.com:56542*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
-[**DeleteAllocation**](AllocationsApi.md#deleteallocation) | **DELETE** /api/allocations/{scope}/{code} | [EXPERIMENTAL] Delete allocation
-[**GetAllocation**](AllocationsApi.md#getallocation) | **GET** /api/allocations/{scope}/{code} | [EXPERIMENTAL] Get Allocation
-[**ListAllocations**](AllocationsApi.md#listallocations) | **GET** /api/allocations | [EXPERIMENTAL] List Allocations
-[**UpsertAllocations**](AllocationsApi.md#upsertallocations) | **POST** /api/allocations | [EXPERIMENTAL] Upsert Allocations
+[**DeleteAllocation**](AllocationsApi.md#deleteallocation) | **DELETE** /api/allocations/{scope}/{code} | [EARLY ACCESS] DeleteAllocation: Delete allocation
+[**GetAllocation**](AllocationsApi.md#getallocation) | **GET** /api/allocations/{scope}/{code} | [EARLY ACCESS] GetAllocation: Get Allocation
+[**ListAllocations**](AllocationsApi.md#listallocations) | **GET** /api/allocations | [EARLY ACCESS] ListAllocations: List Allocations
+[**UpsertAllocations**](AllocationsApi.md#upsertallocations) | **POST** /api/allocations | [EARLY ACCESS] UpsertAllocations: Upsert Allocations
 
 
-
-## DeleteAllocation
-
+<a name="deleteallocation"></a>
+# **DeleteAllocation**
 > DeletedEntityResponse DeleteAllocation (string scope, string code)
 
-[EXPERIMENTAL] Delete allocation
+[EARLY ACCESS] DeleteAllocation: Delete allocation
 
 Delete an allocation. Deletion will be valid from the allocation's creation datetime.  This means that the allocation will no longer exist at any effective datetime from the asAt datetime of deletion.
 
 ### Example
-
 ```csharp
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -34,21 +32,22 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:35378";
+            Configuration config = new Configuration();
+            config.BasePath = "http://local-unit-test-server.lusid.com:56542";
             // Configure OAuth2 access token for authorization: oauth2
-            Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
+            config.AccessToken = "YOUR_ACCESS_TOKEN";
 
-            var apiInstance = new AllocationsApi(Configuration.Default);
+            var apiInstance = new AllocationsApi(config);
             var scope = scope_example;  // string | The allocation scope.
             var code = code_example;  // string | The allocation's code. This, together with the scope uniquely identifies the allocation to delete.
 
             try
             {
-                // [EXPERIMENTAL] Delete allocation
+                // [EARLY ACCESS] DeleteAllocation: Delete allocation
                 DeletedEntityResponse result = apiInstance.DeleteAllocation(scope, code);
                 Debug.WriteLine(result);
             }
-            catch (ApiException e)
+            catch (ApiException  e)
             {
                 Debug.Print("Exception when calling AllocationsApi.DeleteAllocation: " + e.Message );
                 Debug.Print("Status Code: "+ e.ErrorCode);
@@ -60,7 +59,6 @@ namespace Example
 ```
 
 ### Parameters
-
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
@@ -77,8 +75,9 @@ Name | Type | Description  | Notes
 
 ### HTTP request headers
 
-- **Content-Type**: Not defined
-- **Accept**: text/plain, application/json, text/json
+ - **Content-Type**: Not defined
+ - **Accept**: text/plain, application/json, text/json
+
 
 ### HTTP response details
 | Status code | Description | Response headers |
@@ -87,22 +86,17 @@ Name | Type | Description  | Notes
 | **400** | The details of the input related failure |  -  |
 | **0** | Error response |  -  |
 
-[[Back to top]](#)
-[[Back to API list]](../README.md#documentation-for-api-endpoints)
-[[Back to Model list]](../README.md#documentation-for-models)
-[[Back to README]](../README.md)
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
-
-## GetAllocation
-
+<a name="getallocation"></a>
+# **GetAllocation**
 > Allocation GetAllocation (string scope, string code, DateTimeOffset? asAt = null, List<string> propertyKeys = null)
 
-[EXPERIMENTAL] Get Allocation
+[EARLY ACCESS] GetAllocation: Get Allocation
 
 Fetch an Allocation matching the provided identifier
 
 ### Example
-
 ```csharp
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -116,11 +110,12 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:35378";
+            Configuration config = new Configuration();
+            config.BasePath = "http://local-unit-test-server.lusid.com:56542";
             // Configure OAuth2 access token for authorization: oauth2
-            Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
+            config.AccessToken = "YOUR_ACCESS_TOKEN";
 
-            var apiInstance = new AllocationsApi(Configuration.Default);
+            var apiInstance = new AllocationsApi(config);
             var scope = scope_example;  // string | The scope to which the allocation belongs.
             var code = code_example;  // string | The allocation's unique identifier.
             var asAt = 2013-10-20T19:20:30+01:00;  // DateTimeOffset? | The asAt datetime at which to retrieve the allocation. Defaults to return the latest version of the allocation if not specified. (optional) 
@@ -128,11 +123,11 @@ namespace Example
 
             try
             {
-                // [EXPERIMENTAL] Get Allocation
+                // [EARLY ACCESS] GetAllocation: Get Allocation
                 Allocation result = apiInstance.GetAllocation(scope, code, asAt, propertyKeys);
                 Debug.WriteLine(result);
             }
-            catch (ApiException e)
+            catch (ApiException  e)
             {
                 Debug.Print("Exception when calling AllocationsApi.GetAllocation: " + e.Message );
                 Debug.Print("Status Code: "+ e.ErrorCode);
@@ -144,7 +139,6 @@ namespace Example
 ```
 
 ### Parameters
-
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
@@ -163,8 +157,9 @@ Name | Type | Description  | Notes
 
 ### HTTP request headers
 
-- **Content-Type**: Not defined
-- **Accept**: text/plain, application/json, text/json
+ - **Content-Type**: Not defined
+ - **Accept**: text/plain, application/json, text/json
+
 
 ### HTTP response details
 | Status code | Description | Response headers |
@@ -173,22 +168,17 @@ Name | Type | Description  | Notes
 | **400** | The details of the input related failure |  -  |
 | **0** | Error response |  -  |
 
-[[Back to top]](#)
-[[Back to API list]](../README.md#documentation-for-api-endpoints)
-[[Back to Model list]](../README.md#documentation-for-models)
-[[Back to README]](../README.md)
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
-
-## ListAllocations
-
+<a name="listallocations"></a>
+# **ListAllocations**
 > PagedResourceListOfAllocation ListAllocations (DateTimeOffset? asAt = null, string page = null, List<string> sortBy = null, int? start = null, int? limit = null, string filter = null, List<string> propertyKeys = null)
 
-[EXPERIMENTAL] List Allocations
+[EARLY ACCESS] ListAllocations: List Allocations
 
 Fetch the last pre-AsAt date version of each allocation in scope (does not fetch the entire history).
 
 ### Example
-
 ```csharp
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -202,11 +192,12 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:35378";
+            Configuration config = new Configuration();
+            config.BasePath = "http://local-unit-test-server.lusid.com:56542";
             // Configure OAuth2 access token for authorization: oauth2
-            Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
+            config.AccessToken = "YOUR_ACCESS_TOKEN";
 
-            var apiInstance = new AllocationsApi(Configuration.Default);
+            var apiInstance = new AllocationsApi(config);
             var asAt = 2013-10-20T19:20:30+01:00;  // DateTimeOffset? | The asAt datetime at which to retrieve the allocation. Defaults to return the latest version of the allocation if not specified. (optional) 
             var page = page_example;  // string | The pagination token to use to continue listing allocations from a previous call to list allocations.              This value is returned from the previous call. If a pagination token is provided the sortBy, filter, effectiveAt, and asAt fields              must not have changed since the original request. Also, if set, a start value cannot be provided. (optional) 
             var sortBy = new List<string>(); // List<string> | Allocation the results by these fields. Use use the '-' sign to denote descending allocation e.g. -MyFieldName. (optional) 
@@ -217,11 +208,11 @@ namespace Example
 
             try
             {
-                // [EXPERIMENTAL] List Allocations
+                // [EARLY ACCESS] ListAllocations: List Allocations
                 PagedResourceListOfAllocation result = apiInstance.ListAllocations(asAt, page, sortBy, start, limit, filter, propertyKeys);
                 Debug.WriteLine(result);
             }
-            catch (ApiException e)
+            catch (ApiException  e)
             {
                 Debug.Print("Exception when calling AllocationsApi.ListAllocations: " + e.Message );
                 Debug.Print("Status Code: "+ e.ErrorCode);
@@ -233,7 +224,6 @@ namespace Example
 ```
 
 ### Parameters
-
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
@@ -255,8 +245,9 @@ Name | Type | Description  | Notes
 
 ### HTTP request headers
 
-- **Content-Type**: Not defined
-- **Accept**: text/plain, application/json, text/json
+ - **Content-Type**: Not defined
+ - **Accept**: text/plain, application/json, text/json
+
 
 ### HTTP response details
 | Status code | Description | Response headers |
@@ -265,22 +256,17 @@ Name | Type | Description  | Notes
 | **400** | The details of the input related failure |  -  |
 | **0** | Error response |  -  |
 
-[[Back to top]](#)
-[[Back to API list]](../README.md#documentation-for-api-endpoints)
-[[Back to Model list]](../README.md#documentation-for-models)
-[[Back to README]](../README.md)
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
-
-## UpsertAllocations
-
+<a name="upsertallocations"></a>
+# **UpsertAllocations**
 > ResourceListOfAllocation UpsertAllocations (AllocationSetRequest allocationSetRequest = null)
 
-[EXPERIMENTAL] Upsert Allocations
+[EARLY ACCESS] UpsertAllocations: Upsert Allocations
 
 Upsert; update existing allocations with given ids, or create new allocations otherwise.
 
 ### Example
-
 ```csharp
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -294,20 +280,21 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:35378";
+            Configuration config = new Configuration();
+            config.BasePath = "http://local-unit-test-server.lusid.com:56542";
             // Configure OAuth2 access token for authorization: oauth2
-            Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
+            config.AccessToken = "YOUR_ACCESS_TOKEN";
 
-            var apiInstance = new AllocationsApi(Configuration.Default);
+            var apiInstance = new AllocationsApi(config);
             var allocationSetRequest = new AllocationSetRequest(); // AllocationSetRequest | The collection of allocation requests. (optional) 
 
             try
             {
-                // [EXPERIMENTAL] Upsert Allocations
+                // [EARLY ACCESS] UpsertAllocations: Upsert Allocations
                 ResourceListOfAllocation result = apiInstance.UpsertAllocations(allocationSetRequest);
                 Debug.WriteLine(result);
             }
-            catch (ApiException e)
+            catch (ApiException  e)
             {
                 Debug.Print("Exception when calling AllocationsApi.UpsertAllocations: " + e.Message );
                 Debug.Print("Status Code: "+ e.ErrorCode);
@@ -319,7 +306,6 @@ namespace Example
 ```
 
 ### Parameters
-
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
@@ -335,8 +321,9 @@ Name | Type | Description  | Notes
 
 ### HTTP request headers
 
-- **Content-Type**: application/json-patch+json, application/json, text/json, application/_*+json
-- **Accept**: text/plain, application/json, text/json
+ - **Content-Type**: application/json-patch+json, application/json, text/json, application/_*+json
+ - **Accept**: text/plain, application/json, text/json
+
 
 ### HTTP response details
 | Status code | Description | Response headers |
@@ -345,8 +332,5 @@ Name | Type | Description  | Notes
 | **400** | The details of the input related failure |  -  |
 | **0** | Error response |  -  |
 
-[[Back to top]](#)
-[[Back to API list]](../README.md#documentation-for-api-endpoints)
-[[Back to Model list]](../README.md#documentation-for-models)
-[[Back to README]](../README.md)
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 

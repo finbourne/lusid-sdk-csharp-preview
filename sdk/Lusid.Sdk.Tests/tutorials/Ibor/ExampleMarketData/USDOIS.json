@@ -1,17 +1,16 @@
 {
 	"BaseDate": "2020-01-01T 00:00:00.00Z",
-	"Points": [
+	"Dates": [
 		"2020-04-01T 00:00:00.00Z",
 		"2020-07-01T 00:00:00.00Z",
 		"2020-10-01T 00:00:00.00Z",
 		"2021-01-01T 00:00:00.00Z"
 		],
-	"Values": [
+	"DiscountFactors": [
 		0.995026109593975,
 		0.990076958773721,
 		0.985098445011387,
 		0.980144965261876
 		],
-	"DayCountConvention": "Act365",
-	"MarketElementType": "ZC"
+	"MarketDataType":"DiscountFactorCurveData"
 }

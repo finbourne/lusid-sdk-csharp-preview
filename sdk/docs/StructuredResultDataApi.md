@@ -1,27 +1,25 @@
 # Lusid.Sdk.Api.StructuredResultDataApi
 
-All URIs are relative to *http://local-unit-test-server.lusid.com:35378*
+All URIs are relative to *http://local-unit-test-server.lusid.com:56542*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
-[**CreateDataMap**](StructuredResultDataApi.md#createdatamap) | **POST** /api/unitresults/datamap/{scope} | [EXPERIMENTAL] Upsert a set of structured result address definition maps. This creates or updates the data in Lusid.
-[**DeleteStructuredResultData**](StructuredResultDataApi.md#deletestructuredresultdata) | **POST** /api/unitresults/{scope}/$delete | [EXPERIMENTAL] Delete one or more items of structured result data, assuming they are present.
-[**GetDataMap**](StructuredResultDataApi.md#getdatamap) | **POST** /api/unitresults/datamap/{scope}/$get | [EXPERIMENTAL] Get the result address definition maps from the store
-[**GetStructuredResultData**](StructuredResultDataApi.md#getstructuredresultdata) | **POST** /api/unitresults/{scope}/$get | [EXPERIMENTAL] Get structured result data
-[**UpsertStructuredResultData**](StructuredResultDataApi.md#upsertstructuredresultdata) | **POST** /api/unitresults/{scope} | [EXPERIMENTAL] Upsert a set of structured result data items. This creates or updates the data in Lusid.
+[**CreateDataMap**](StructuredResultDataApi.md#createdatamap) | **POST** /api/unitresults/datamap/{scope} | [EXPERIMENTAL] CreateDataMap: Create data map
+[**DeleteStructuredResultData**](StructuredResultDataApi.md#deletestructuredresultdata) | **POST** /api/unitresults/{scope}/$delete | [EXPERIMENTAL] DeleteStructuredResultData: Delete structured result data
+[**GetDataMap**](StructuredResultDataApi.md#getdatamap) | **POST** /api/unitresults/datamap/{scope}/$get | [EXPERIMENTAL] GetDataMap: Get data map
+[**GetStructuredResultData**](StructuredResultDataApi.md#getstructuredresultdata) | **POST** /api/unitresults/{scope}/$get | [EXPERIMENTAL] GetStructuredResultData: Get structured result data
+[**UpsertStructuredResultData**](StructuredResultDataApi.md#upsertstructuredresultdata) | **POST** /api/unitresults/{scope} | [BETA] UpsertStructuredResultData: Upsert structured result data
 
 
-
-## CreateDataMap
-
+<a name="createdatamap"></a>
+# **CreateDataMap**
 > UpsertStructuredDataResponse CreateDataMap (string scope, Dictionary<string, CreateDataMapRequest> requestBody)
 
-[EXPERIMENTAL] Upsert a set of structured result address definition maps. This creates or updates the data in Lusid.
+[EXPERIMENTAL] CreateDataMap: Create data map
 
-Create one or more structured result address definition map items in a single scope. These are immutable and cannot be changed once inserted                In the request each data map item must be keyed by a unique correlation id. This id is ephemeral and is not stored by LUSID.  It serves only as a way to easily identify each structured result data in the response.                The response will return both the collection of successfully updated or inserted data maps, as well as those that failed.  For the failures a reason will be provided explaining why the item could not be updated or inserted.                It is important to always check the failed set for any unsuccessful results.
+Create or update one or more structured result store address definition data maps in a particular scope. Note these are immutable and cannot be changed once created.                In the request, each data map must be keyed by a unique correlation ID. This ID is ephemeral and not stored by LUSID.  It serves only to easily identify each data map object in the response.                The response returns both the collection of successfully created or updated data maps, as well as those that failed.  For each failure, a reason is provided.                It is important to check the failed set for any unsuccessful results.
 
 ### Example
-
 ```csharp
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -35,21 +33,22 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:35378";
+            Configuration config = new Configuration();
+            config.BasePath = "http://local-unit-test-server.lusid.com:56542";
             // Configure OAuth2 access token for authorization: oauth2
-            Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
+            config.AccessToken = "YOUR_ACCESS_TOKEN";
 
-            var apiInstance = new StructuredResultDataApi(Configuration.Default);
-            var scope = scope_example;  // string | Scope in which to upsert the result address definition maps
-            var requestBody = new Dictionary<string, CreateDataMapRequest>(); // Dictionary<string, CreateDataMapRequest> | Individual result address definition map creation requests
+            var apiInstance = new StructuredResultDataApi(config);
+            var scope = scope_example;  // string | The scope in which to create or update data maps.
+            var requestBody = new Dictionary<string, CreateDataMapRequest>(); // Dictionary<string, CreateDataMapRequest> | Individual data map creation requests.
 
             try
             {
-                // [EXPERIMENTAL] Upsert a set of structured result address definition maps. This creates or updates the data in Lusid.
+                // [EXPERIMENTAL] CreateDataMap: Create data map
                 UpsertStructuredDataResponse result = apiInstance.CreateDataMap(scope, requestBody);
                 Debug.WriteLine(result);
             }
-            catch (ApiException e)
+            catch (ApiException  e)
             {
                 Debug.Print("Exception when calling StructuredResultDataApi.CreateDataMap: " + e.Message );
                 Debug.Print("Status Code: "+ e.ErrorCode);
@@ -62,11 +61,10 @@ namespace Example
 
 ### Parameters
 
-
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **scope** | **string**| Scope in which to upsert the result address definition maps | 
- **requestBody** | [**Dictionary&lt;string, CreateDataMapRequest&gt;**](CreateDataMapRequest.md)| Individual result address definition map creation requests | 
+ **scope** | **string**| The scope in which to create or update data maps. | 
+ **requestBody** | [**Dictionary&lt;string, CreateDataMapRequest&gt;**](CreateDataMapRequest.md)| Individual data map creation requests. | 
 
 ### Return type
 
@@ -78,32 +76,28 @@ Name | Type | Description  | Notes
 
 ### HTTP request headers
 
-- **Content-Type**: application/json-patch+json, application/json, text/json, application/_*+json
-- **Accept**: text/plain, application/json, text/json
+ - **Content-Type**: application/json-patch+json, application/json, text/json, application/_*+json
+ - **Accept**: text/plain, application/json, text/json
+
 
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
-| **200** | The successfully created data maps along with any failures |  -  |
+| **200** | The successfully created or updated data maps along with any failures. |  -  |
 | **400** | The details of the input related failure |  -  |
 | **0** | Error response |  -  |
 
-[[Back to top]](#)
-[[Back to API list]](../README.md#documentation-for-api-endpoints)
-[[Back to Model list]](../README.md#documentation-for-models)
-[[Back to README]](../README.md)
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
-
-## DeleteStructuredResultData
-
+<a name="deletestructuredresultdata"></a>
+# **DeleteStructuredResultData**
 > AnnulStructuredDataResponse DeleteStructuredResultData (string scope, Dictionary<string, StructuredResultDataId> requestBody)
 
-[EXPERIMENTAL] Delete one or more items of structured result data, assuming they are present.
+[EXPERIMENTAL] DeleteStructuredResultData: Delete structured result data
 
-Delete one or more specified structured result data items from a single scope. Each item is identified by a unique id which includes  information about its type as well as the exact effective datetime (to the microsecond) at which it entered the system (became valid).                In the request each market data item must be keyed by a unique correlation id. This id is ephemeral and is not stored by LUSID.  It serves only as a way to easily identify each quote in the response.                The response will return both the collection of successfully deleted market data items, as well as those that failed.  For the failures a reason will be provided explaining why the it could not be deleted.                It is important to always check the failed set for any unsuccessful results.
+Delete one or more structured result data items from a particular scope. Each item is identified by a unique ID which includes  information about its type as well as the exact effective datetime (to the microsecond) at which it entered the system (became valid).                In the request, each data item must be keyed by a unique correlation ID. This ID is ephemeral and not stored by LUSID.  It serves only to easily identify each data item in the response.                The response returns both the collection of successfully deleted data items, as well as those that failed.  For each failure, a reason is provided.                It is important to check the failed set for any unsuccessful results.
 
 ### Example
-
 ```csharp
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -117,21 +111,22 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:35378";
+            Configuration config = new Configuration();
+            config.BasePath = "http://local-unit-test-server.lusid.com:56542";
             // Configure OAuth2 access token for authorization: oauth2
-            Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
+            config.AccessToken = "YOUR_ACCESS_TOKEN";
 
-            var apiInstance = new StructuredResultDataApi(Configuration.Default);
-            var scope = scope_example;  // string | The scope of the structured result data to delete.
-            var requestBody = new Dictionary<string, StructuredResultDataId>(); // Dictionary<string, StructuredResultDataId> | The structured result data Ids to delete, each keyed by a unique correlation id.
+            var apiInstance = new StructuredResultDataApi(config);
+            var scope = scope_example;  // string | The scope from which to delete data items.
+            var requestBody = new Dictionary<string, StructuredResultDataId>(); // Dictionary<string, StructuredResultDataId> | The data IDs to delete, each keyed by a unique, ephemeral correlation ID.
 
             try
             {
-                // [EXPERIMENTAL] Delete one or more items of structured result data, assuming they are present.
+                // [EXPERIMENTAL] DeleteStructuredResultData: Delete structured result data
                 AnnulStructuredDataResponse result = apiInstance.DeleteStructuredResultData(scope, requestBody);
                 Debug.WriteLine(result);
             }
-            catch (ApiException e)
+            catch (ApiException  e)
             {
                 Debug.Print("Exception when calling StructuredResultDataApi.DeleteStructuredResultData: " + e.Message );
                 Debug.Print("Status Code: "+ e.ErrorCode);
@@ -144,11 +139,10 @@ namespace Example
 
 ### Parameters
 
-
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **scope** | **string**| The scope of the structured result data to delete. | 
- **requestBody** | [**Dictionary&lt;string, StructuredResultDataId&gt;**](StructuredResultDataId.md)| The structured result data Ids to delete, each keyed by a unique correlation id. | 
+ **scope** | **string**| The scope from which to delete data items. | 
+ **requestBody** | [**Dictionary&lt;string, StructuredResultDataId&gt;**](StructuredResultDataId.md)| The data IDs to delete, each keyed by a unique, ephemeral correlation ID. | 
 
 ### Return type
 
@@ -160,32 +154,28 @@ Name | Type | Description  | Notes
 
 ### HTTP request headers
 
-- **Content-Type**: application/json-patch+json, application/json, text/json, application/_*+json
-- **Accept**: text/plain, application/json, text/json
+ - **Content-Type**: application/json-patch+json, application/json, text/json, application/_*+json
+ - **Accept**: text/plain, application/json, text/json
+
 
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
-| **200** | The successfully deleted result data along with any failures |  -  |
+| **200** | The successfully deleted data items along with any failures. |  -  |
 | **400** | The details of the input related failure |  -  |
 | **0** | Error response |  -  |
 
-[[Back to top]](#)
-[[Back to API list]](../README.md#documentation-for-api-endpoints)
-[[Back to Model list]](../README.md#documentation-for-models)
-[[Back to README]](../README.md)
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
-
-## GetDataMap
-
+<a name="getdatamap"></a>
+# **GetDataMap**
 > GetDataMapResponse GetDataMap (string scope, Dictionary<string, DataMapKey> requestBody)
 
-[EXPERIMENTAL] Get the result address definition maps from the store
+[EXPERIMENTAL] GetDataMap: Get data map
 
-Get one or more result address definition map from a single scope.                Each item can be identified by its invariant Data Map key, which can be thought of as a permanent URL.                For each id LUSID will return the most recent matched item.                In the request each structured result data id must be keyed by a unique correlation id. This id is ephemeral and is not stored by LUSID.  It serves only as a way to easily identify each item in the response.                The response will return three collections. One, the successfully retrieved structured result data. Two, those that had a  valid identifier but could not be found. Three, those that failed because LUSID could not construct a valid identifier from the request.                For the ids that failed to resolve or could not be found a reason will be provided explaining why that is the case.                It is important to always check the failed and not found sets for any unsuccessful results.
+Retrieve one or more structured result store address definition data maps from a particular scope.                Each data map can be identified by its invariant key, which can be thought of as a permanent URL.  For each ID, LUSID returns the most recently matched item.                In the request, each data map must be keyed by a unique correlation ID. This ID is ephemeral and not stored by LUSID.  It serves only to easily identify each data map in the response.                The response returns three collections. The first contains successfully retrieved data maps. The second contains those with a  valid identifier but that could not be found. The third contains those that failed because LUSID could not construct a valid identifier from the request.                For the IDs that failed to resolve or could not be found, a reason is provided.                It is important to check the failed sets for any unsuccessful results.
 
 ### Example
-
 ```csharp
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -199,21 +189,22 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:35378";
+            Configuration config = new Configuration();
+            config.BasePath = "http://local-unit-test-server.lusid.com:56542";
             // Configure OAuth2 access token for authorization: oauth2
-            Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
+            config.AccessToken = "YOUR_ACCESS_TOKEN";
 
-            var apiInstance = new StructuredResultDataApi(Configuration.Default);
-            var scope = scope_example;  // string | The scope of the result address definition map keys
-            var requestBody = new Dictionary<string, DataMapKey>(); // Dictionary<string, DataMapKey> | The result address definition map keys to lookup
+            var apiInstance = new StructuredResultDataApi(config);
+            var scope = scope_example;  // string | The scope from which to retrieve data maps.
+            var requestBody = new Dictionary<string, DataMapKey>(); // Dictionary<string, DataMapKey> | The data map keys to look up, each keyed by a unique, ephemeral correlation ID.
 
             try
             {
-                // [EXPERIMENTAL] Get the result address definition maps from the store
+                // [EXPERIMENTAL] GetDataMap: Get data map
                 GetDataMapResponse result = apiInstance.GetDataMap(scope, requestBody);
                 Debug.WriteLine(result);
             }
-            catch (ApiException e)
+            catch (ApiException  e)
             {
                 Debug.Print("Exception when calling StructuredResultDataApi.GetDataMap: " + e.Message );
                 Debug.Print("Status Code: "+ e.ErrorCode);
@@ -226,11 +217,10 @@ namespace Example
 
 ### Parameters
 
-
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **scope** | **string**| The scope of the result address definition map keys | 
- **requestBody** | [**Dictionary&lt;string, DataMapKey&gt;**](DataMapKey.md)| The result address definition map keys to lookup | 
+ **scope** | **string**| The scope from which to retrieve data maps. | 
+ **requestBody** | [**Dictionary&lt;string, DataMapKey&gt;**](DataMapKey.md)| The data map keys to look up, each keyed by a unique, ephemeral correlation ID. | 
 
 ### Return type
 
@@ -242,32 +232,28 @@ Name | Type | Description  | Notes
 
 ### HTTP request headers
 
-- **Content-Type**: application/json-patch+json, application/json, text/json, application/_*+json
-- **Accept**: text/plain, application/json, text/json
+ - **Content-Type**: application/json-patch+json, application/json, text/json, application/_*+json
+ - **Accept**: text/plain, application/json, text/json
+
 
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
-| **200** | The successfully retrieved data maps along with any failures |  -  |
+| **200** | The successfully retrieved data maps along with any failures. |  -  |
 | **400** | The details of the input related failure |  -  |
 | **0** | Error response |  -  |
 
-[[Back to top]](#)
-[[Back to API list]](../README.md#documentation-for-api-endpoints)
-[[Back to Model list]](../README.md#documentation-for-models)
-[[Back to README]](../README.md)
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
-
-## GetStructuredResultData
-
+<a name="getstructuredresultdata"></a>
+# **GetStructuredResultData**
 > GetStructuredResultDataResponse GetStructuredResultData (string scope, Dictionary<string, StructuredResultDataId> requestBody, DateTimeOffset? asAt = null, string maxAge = null)
 
-[EXPERIMENTAL] Get structured result data
+[EXPERIMENTAL] GetStructuredResultData: Get structured result data
 
-Get one or more items of structured result data from a single scope.                Each item can be identified by its time invariant structured result data identifier.                For each id LUSID will return the most recent matched item with respect to the provided (or default) effective datetime.                 An optional maximum age range window can be specified which defines how far back to look back for data from the specified effective datetime.  LUSID will return the most recent item within this window.                In the request each structured result data id must be keyed by a unique correlation id. This id is ephemeral and is not stored by LUSID.  It serves only as a way to easily identify each item in the response.                The response will return three collections. One, the successfully retrieved structured result data. Two, those that had a  valid identifier but could not be found. Three, those that failed because LUSID could not construct a valid identifier from the request.    For the ids that failed to resolve or could not be found a reason will be provided explaining why that is the case.                It is important to always check the failed and not found sets for any unsuccessful results.
+Retrieve one or more structured result data items from a particular scope.                Each item can be identified by its time invariant structured result data identifier. For each ID, LUSID  returns the most recently matched item with respect to the provided (or default) effective datetime.                 An optional maximum age range window can be specified to control how far back to look from the specified  effective datetime. LUSID returns the most recent item within this window.                In the request, each data item must be keyed by a unique correlation ID. This ID is ephemeral and not stored by LUSID.  It serves only to easily identify each data item in the response.    The response returns three collections. The first contains successfully retrieved data items. The second contains those with a  valid identifier but that could not be found. The third contains those that failed because LUSID could not construct a valid identifier from the request.    For the IDs that failed to resolve or could not be found, a reason is provided.                It is important to check the failed sets for any unsuccessful results.
 
 ### Example
-
 ```csharp
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -281,23 +267,24 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:35378";
+            Configuration config = new Configuration();
+            config.BasePath = "http://local-unit-test-server.lusid.com:56542";
             // Configure OAuth2 access token for authorization: oauth2
-            Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
+            config.AccessToken = "YOUR_ACCESS_TOKEN";
 
-            var apiInstance = new StructuredResultDataApi(Configuration.Default);
-            var scope = scope_example;  // string | The scope of the structured result data to retrieve.
-            var requestBody = new Dictionary<string, StructuredResultDataId>(); // Dictionary<string, StructuredResultDataId> | The time invariant set of structured data identifiers to retrieve the data for. These need to be               keyed by a unique correlation id allowing the retrieved item to be identified in the response.
-            var asAt = 2013-10-20T19:20:30+01:00;  // DateTimeOffset? | The asAt datetime at which to retrieve the structured result data. Defaults to return the latest version if not specified. (optional) 
-            var maxAge = maxAge_example;  // string | The duration of the look back window in an ISO8601 time interval format e.g. P1Y2M3DT4H30M (1 year, 2 months, 3 days, 4 hours and 30 minutes).               This is subtracted from the provided effectiveAt datetime to generate a effective datetime window inside which a structured result data item must exist to be retrieved. (optional) 
+            var apiInstance = new StructuredResultDataApi(config);
+            var scope = scope_example;  // string | The scope from which to retrieve data items.
+            var requestBody = new Dictionary<string, StructuredResultDataId>(); // Dictionary<string, StructuredResultDataId> | The time invariant set of structured data identifiers to retrieve, keyed by a unique, ephemeral correlation ID.
+            var asAt = 2013-10-20T19:20:30+01:00;  // DateTimeOffset? | The asAt datetime at which to retrieve the structured result data. Defaults to returning the latest version if not specified. (optional) 
+            var maxAge = maxAge_example;  // string | The duration of the look-back window in ISO8601 time interval format, for example 'P1Y2M3DT4H30M' (1 year, 2 months, 3 days, 4 hours and 30 minutes).               This is subtracted from the provided effectiveAt datetime to generate a effective datetime window inside which a data item must exist to be retrieved. (optional) 
 
             try
             {
-                // [EXPERIMENTAL] Get structured result data
+                // [EXPERIMENTAL] GetStructuredResultData: Get structured result data
                 GetStructuredResultDataResponse result = apiInstance.GetStructuredResultData(scope, requestBody, asAt, maxAge);
                 Debug.WriteLine(result);
             }
-            catch (ApiException e)
+            catch (ApiException  e)
             {
                 Debug.Print("Exception when calling StructuredResultDataApi.GetStructuredResultData: " + e.Message );
                 Debug.Print("Status Code: "+ e.ErrorCode);
@@ -310,13 +297,12 @@ namespace Example
 
 ### Parameters
 
-
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **scope** | **string**| The scope of the structured result data to retrieve. | 
- **requestBody** | [**Dictionary&lt;string, StructuredResultDataId&gt;**](StructuredResultDataId.md)| The time invariant set of structured data identifiers to retrieve the data for. These need to be               keyed by a unique correlation id allowing the retrieved item to be identified in the response. | 
- **asAt** | **DateTimeOffset?**| The asAt datetime at which to retrieve the structured result data. Defaults to return the latest version if not specified. | [optional] 
- **maxAge** | **string**| The duration of the look back window in an ISO8601 time interval format e.g. P1Y2M3DT4H30M (1 year, 2 months, 3 days, 4 hours and 30 minutes).               This is subtracted from the provided effectiveAt datetime to generate a effective datetime window inside which a structured result data item must exist to be retrieved. | [optional] 
+ **scope** | **string**| The scope from which to retrieve data items. | 
+ **requestBody** | [**Dictionary&lt;string, StructuredResultDataId&gt;**](StructuredResultDataId.md)| The time invariant set of structured data identifiers to retrieve, keyed by a unique, ephemeral correlation ID. | 
+ **asAt** | **DateTimeOffset?**| The asAt datetime at which to retrieve the structured result data. Defaults to returning the latest version if not specified. | [optional] 
+ **maxAge** | **string**| The duration of the look-back window in ISO8601 time interval format, for example &#39;P1Y2M3DT4H30M&#39; (1 year, 2 months, 3 days, 4 hours and 30 minutes).               This is subtracted from the provided effectiveAt datetime to generate a effective datetime window inside which a data item must exist to be retrieved. | [optional] 
 
 ### Return type
 
@@ -328,32 +314,28 @@ Name | Type | Description  | Notes
 
 ### HTTP request headers
 
-- **Content-Type**: application/json-patch+json, application/json, text/json, application/_*+json
-- **Accept**: text/plain, application/json, text/json
+ - **Content-Type**: application/json-patch+json, application/json, text/json, application/_*+json
+ - **Accept**: text/plain, application/json, text/json
+
 
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
-| **200** | The successfully retrieved structured result data along with any failures |  -  |
+| **200** | The successfully retrieved data items along with any failures. |  -  |
 | **400** | The details of the input related failure |  -  |
 | **0** | Error response |  -  |
 
-[[Back to top]](#)
-[[Back to API list]](../README.md#documentation-for-api-endpoints)
-[[Back to Model list]](../README.md#documentation-for-models)
-[[Back to README]](../README.md)
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
-
-## UpsertStructuredResultData
-
+<a name="upsertstructuredresultdata"></a>
+# **UpsertStructuredResultData**
 > UpsertStructuredDataResponse UpsertStructuredResultData (string scope, Dictionary<string, UpsertStructuredResultDataRequest> requestBody)
 
-[EXPERIMENTAL] Upsert a set of structured result data items. This creates or updates the data in Lusid.
+[BETA] UpsertStructuredResultData: Upsert structured result data
 
-Update or insert one or more structured result data items in a single scope. An item will be updated if it already exists  and inserted if it does not.                In the request each structured result data item must be keyed by a unique correlation id. This id is ephemeral and is not stored by LUSID.  It serves only as a way to easily identify each structured result data in the response.                The response will return both the collection of successfully updated or inserted structured result data, as well as those that failed.  For the failures a reason will be provided explaining why the item could not be updated or inserted.                It is important to always check the failed set for any unsuccessful results.
+Create or update one or more structured result data items in a particular scope. An item is updated if it already exists  and created if it does not.                In the request, each data item must be keyed by a unique correlation ID. This ID is ephemeral and not stored by LUSID.  It serves only to easily identify each data item in the response.                The response returns both the collection of successfully created or updated data items, as well as those that failed.  For each failure, a reason is provided.                It is important to check the failed set for any unsuccessful results.
 
 ### Example
-
 ```csharp
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -367,21 +349,22 @@ namespace Example
     {
         public static void Main()
         {
-            Configuration.Default.BasePath = "http://local-unit-test-server.lusid.com:35378";
+            Configuration config = new Configuration();
+            config.BasePath = "http://local-unit-test-server.lusid.com:56542";
             // Configure OAuth2 access token for authorization: oauth2
-            Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
+            config.AccessToken = "YOUR_ACCESS_TOKEN";
 
-            var apiInstance = new StructuredResultDataApi(Configuration.Default);
-            var scope = scope_example;  // string | The scope to use when updating or inserting the structured result data.
-            var requestBody = new Dictionary<string, UpsertStructuredResultDataRequest>(); // Dictionary<string, UpsertStructuredResultDataRequest> | The set of structured result data items to update or insert keyed by a unique correlation id.
+            var apiInstance = new StructuredResultDataApi(config);
+            var scope = scope_example;  // string | The scope in which to create or update data items.
+            var requestBody = new Dictionary<string, UpsertStructuredResultDataRequest>(); // Dictionary<string, UpsertStructuredResultDataRequest> | The set of data items to create or update, keyed by a unique, ephemeral correlation ID.
 
             try
             {
-                // [EXPERIMENTAL] Upsert a set of structured result data items. This creates or updates the data in Lusid.
+                // [BETA] UpsertStructuredResultData: Upsert structured result data
                 UpsertStructuredDataResponse result = apiInstance.UpsertStructuredResultData(scope, requestBody);
                 Debug.WriteLine(result);
             }
-            catch (ApiException e)
+            catch (ApiException  e)
             {
                 Debug.Print("Exception when calling StructuredResultDataApi.UpsertStructuredResultData: " + e.Message );
                 Debug.Print("Status Code: "+ e.ErrorCode);
@@ -394,11 +377,10 @@ namespace Example
 
 ### Parameters
 
-
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **scope** | **string**| The scope to use when updating or inserting the structured result data. | 
- **requestBody** | [**Dictionary&lt;string, UpsertStructuredResultDataRequest&gt;**](UpsertStructuredResultDataRequest.md)| The set of structured result data items to update or insert keyed by a unique correlation id. | 
+ **scope** | **string**| The scope in which to create or update data items. | 
+ **requestBody** | [**Dictionary&lt;string, UpsertStructuredResultDataRequest&gt;**](UpsertStructuredResultDataRequest.md)| The set of data items to create or update, keyed by a unique, ephemeral correlation ID. | 
 
 ### Return type
 
@@ -410,18 +392,16 @@ Name | Type | Description  | Notes
 
 ### HTTP request headers
 
-- **Content-Type**: application/json-patch+json, application/json, text/json, application/_*+json
-- **Accept**: text/plain, application/json, text/json
+ - **Content-Type**: application/json-patch+json, application/json, text/json, application/_*+json
+ - **Accept**: text/plain, application/json, text/json
+
 
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
-| **200** | The successfully updated or inserted result data along with any failures |  -  |
+| **200** | The successfully created or updated data items along with any failures. |  -  |
 | **400** | The details of the input related failure |  -  |
 | **0** | Error response |  -  |
 
-[[Back to top]](#)
-[[Back to API list]](../README.md#documentation-for-api-endpoints)
-[[Back to Model list]](../README.md#documentation-for-models)
-[[Back to README]](../README.md)
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 

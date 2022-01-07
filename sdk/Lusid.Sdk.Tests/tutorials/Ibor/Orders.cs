@@ -1,7 +1,8 @@
 ﻿﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Lusid.Sdk.Api;
+ using System.Threading;
+ using Lusid.Sdk.Api;
 using Lusid.Sdk.Client;
 using Lusid.Sdk.Model;
  using Lusid.Sdk.Tests.Utilities;
@@ -16,11 +17,9 @@ namespace Lusid.Sdk.Tests.Tutorials.Ibor
     /// security.
     /// </summary>
     [TestFixture]
-    public class Orders
+    public class Orders: TutorialBase
     {
-        private ILusidApiFactory _apiFactory;
         private InstrumentLoader _instrumentLoader;
-        private IOrdersApi _ordersApi;
         private IList<string> _instrumentIds;
         
         private readonly IDictionary<string, string> TutorialScopes = new Dictionary<string, string> {
@@ -34,16 +33,17 @@ namespace Lusid.Sdk.Tests.Tutorials.Ibor
             "OrderBook",
             "PortfolioManager",
             "Account",
-            "Strategy"
+            "Strategy",
+            "Scope",
+            "Code"
         };
 
         [OneTimeSetUp]
         public void SetUp()
         {
-            _apiFactory = TestLusidApiFactoryBuilder.CreateApiFactory("secret.json");
             _instrumentLoader = new InstrumentLoader(_apiFactory);
             _instrumentIds = _instrumentLoader.LoadInstruments();
-            _ordersApi = _apiFactory.Api<IOrdersApi>();
+            
             LoadProperties();
         }
 
@@ -303,6 +303,8 @@ namespace Lusid.Sdk.Tests.Tutorials.Ibor
                             { $"Order/{testScope}/PortfolioManager", new PerpetualProperty($"Order/{testScope}/PortfolioManager", new PropertyValue("F Bar")) },
                             { $"Order/{testScope}/Account", new PerpetualProperty($"Order/{testScope}/Account", new PropertyValue("ZB123")) },
                             { $"Order/{testScope}/Strategy", new PerpetualProperty($"Order/{testScope}/Strategy", new PropertyValue("RiskArb")) },
+                            { $"Order/{testScope}/Scope", new PerpetualProperty($"Order/{testScope}/Scope", new PropertyValue(orderId1.Scope)) },
+                            { $"Order/{testScope}/Code", new PerpetualProperty($"Order/{testScope}/Code", new PropertyValue(orderId1.Code)) },
                         },
                         side: "Buy"
                     ),
@@ -327,6 +329,8 @@ namespace Lusid.Sdk.Tests.Tutorials.Ibor
                             { $"Order/{testScope}/PortfolioManager", new PerpetualProperty($"Order/{testScope}/PortfolioManager", new PropertyValue("F Bar")) },
                             { $"Order/{testScope}/Account", new PerpetualProperty($"Order/{testScope}/Account", new PropertyValue("J Wilson")) },
                             { $"Order/{testScope}/Strategy", new PerpetualProperty($"Order/{testScope}/Strategy", new PropertyValue("UK Growth")) },
+                            { $"Order/{testScope}/Scope", new PerpetualProperty($"Order/{testScope}/Scope", new PropertyValue(orderId2.Scope)) },
+                            { $"Order/{testScope}/Code", new PerpetualProperty($"Order/{testScope}/Code", new PropertyValue(orderId2.Code)) },
                         },
                         side: "Sell"
                     ),
@@ -351,6 +355,8 @@ namespace Lusid.Sdk.Tests.Tutorials.Ibor
                             { $"Order/{testScope}/PortfolioManager", new PerpetualProperty($"Order/{testScope}/PortfolioManager", new PropertyValue("F Bar")) },
                             { $"Order/{testScope}/Account", new PerpetualProperty($"Order/{testScope}/Account", new PropertyValue("J Wilson")) },
                             { $"Order/{testScope}/Strategy", new PerpetualProperty($"Order/{testScope}/Strategy", new PropertyValue("RiskArb")) },
+                            { $"Order/{testScope}/Scope", new PerpetualProperty($"Order/{testScope}/Scope", new PropertyValue(orderId3.Scope)) },
+                            { $"Order/{testScope}/Code", new PerpetualProperty($"Order/{testScope}/Code", new PropertyValue(orderId3.Code)) },
                         },
                         side: "Buy"
                     )
@@ -369,10 +375,18 @@ namespace Lusid.Sdk.Tests.Tutorials.Ibor
             var order1Filter = $"{order1}";
             var order2Filter = $"{order2}";
             var order3Filter = $"{order3}";
+            
+            // In order to enable efficient filtering, LUSID indexes upserted data under the hood. Here,
+            // we wait for a few seconds whilst this happens.
+            Thread.Sleep(5000);
 
-            var quantityFilter = _ordersApi.ListOrders(asAt:
-                t,
-                filter: $"Quantity gt 100 and Id.Scope eq '{testScope}' and Id.Code in ('{order1}', '{order2}', '{order3}')");
+            var quantityFilter = _ordersApi.ListOrders(
+                asAt: t,
+                filter:
+                      $"Quantity gt 100 "
+                    + $"and properties.Order/{testScope}/Scope eq '{testScope}' "
+                    + $"and properties.Order/{testScope}/Code in ('{order1}', '{order2}', '{order3}')"
+                );
 
             Assert.That(quantityFilter.Values.Count, Is.EqualTo(2));
             Assert.That(quantityFilter.Values.All(rl => rl.Quantity > 100));
