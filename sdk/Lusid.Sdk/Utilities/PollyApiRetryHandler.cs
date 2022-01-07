@@ -40,8 +40,7 @@ namespace Lusid.Sdk.Utilities
         /// </summary>
         public static Policy<IRestResponse> GetInternalExceptionRetryPolicy() =>
             Policy
-                .Handle<SystemException>()
-                .OrResult<IRestResponse>(GetInternalExceptionRetryCondition)
+                .HandleResult<IRestResponse>(GetInternalExceptionRetryCondition)
                 .Retry(retryCount: MaxRetryAttempts, onRetry: HandleRetryAction);
 
 
@@ -51,8 +50,7 @@ namespace Lusid.Sdk.Utilities
         /// </summary>
         public static AsyncPolicy<IRestResponse> GetInternalExceptionAsyncRetryPolicy() =>
             Policy
-                .Handle<SystemException>()
-                .OrResult<IRestResponse>(GetInternalExceptionRetryCondition)
+                .HandleResult<IRestResponse>(GetInternalExceptionRetryCondition)
                 .RetryAsync(retryCount: MaxRetryAttempts, onRetry: HandleRetryAction);
     }
 }
