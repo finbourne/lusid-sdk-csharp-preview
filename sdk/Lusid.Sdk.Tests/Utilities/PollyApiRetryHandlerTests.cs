@@ -40,7 +40,7 @@ namespace Lusid.Sdk.Tests.Utilities
             // It should not retry on codes >400 by default, unless specified
             const int expectedStatusCode = 400;
             // Add the next response returned by api
-            AddHttpResponseToQueue(_httpListener, statusCode: expectedStatusCode, responseContent: "{\"some\": \"JsonResponseHere\"}");
+            AddMockHttpResponseToQueue(_httpListener, statusCode: expectedStatusCode, responseContent: "{\"some\": \"JsonResponseHere\"}");
             var retryCount = 0;
             RetryConfiguration.RetryPolicy = Policy
                 .HandleResult<IRestResponse>(PollyApiRetryHandler.GetInternalExceptionRetryCondition)
@@ -61,7 +61,7 @@ namespace Lusid.Sdk.Tests.Utilities
             // It should do nothing when response code is 200
             const int expectedStatusCode = 200;
             // Add the next response returned by api
-            AddHttpResponseToQueue(_httpListener, statusCode: expectedStatusCode, responseContent: "{\"some\": \"JsonResponseHere\"}");
+            AddMockHttpResponseToQueue(_httpListener, statusCode: expectedStatusCode, responseContent: "{\"some\": \"JsonResponseHere\"}");
             var retryCount = 0;
             RetryConfiguration.RetryPolicy = Policy
                 .HandleResult<IRestResponse>(PollyApiRetryHandler.GetInternalExceptionRetryCondition)
@@ -81,7 +81,7 @@ namespace Lusid.Sdk.Tests.Utilities
             const int returnedStatusCode = 499;
             const int expectedNumberOfRetries = 2;
             for (var i = 0; i < expectedNumberOfRetries + 1; i++)
-                AddHttpResponseToQueue(_httpListener, statusCode: returnedStatusCode, responseContent: "");
+                AddMockHttpResponseToQueue(_httpListener, statusCode: returnedStatusCode, responseContent: "");
             var retryCount = 0;
             RetryConfiguration.RetryPolicy = Policy
                 .HandleResult<IRestResponse>(response => response.StatusCode == (HttpStatusCode) returnedStatusCode)
@@ -101,7 +101,7 @@ namespace Lusid.Sdk.Tests.Utilities
             const int returnedStatusCode = 499;
             const int expectedNumberOfRetries = 2;
             for (var i = 0; i < expectedNumberOfRetries + 1; i++)
-                AddHttpResponseToQueue(_httpListener, statusCode: returnedStatusCode, responseContent: "");
+                AddMockHttpResponseToQueue(_httpListener, statusCode: returnedStatusCode, responseContent: "");
             var retryCount = 0;
             // Polly retry policy with a backoff example
             RetryConfiguration.RetryPolicy = Policy
@@ -129,7 +129,7 @@ namespace Lusid.Sdk.Tests.Utilities
             const int returnedStatusCode = 499;
             const int expectedNumberOfRetries = 2;
             for (var i = 0; i < expectedNumberOfRetries + 1; i++)
-                AddHttpResponseToQueue(_httpListener, statusCode: returnedStatusCode, responseContent: "");
+                AddMockHttpResponseToQueue(_httpListener, statusCode: returnedStatusCode, responseContent: "");
             var retryCount = 0;
             RetryConfiguration.AsyncRetryPolicy = Policy
                 .HandleResult<IRestResponse>(apiResponse => apiResponse.StatusCode == (HttpStatusCode) returnedStatusCode)
@@ -167,10 +167,7 @@ namespace Lusid.Sdk.Tests.Utilities
             var retryCount = 0;
             RetryConfiguration.RetryPolicy = Policy
                 .HandleResult<IRestResponse>(PollyApiRetryHandler.GetInternalExceptionRetryCondition)
-                .Retry(retryCount: 2, onRetry: (result, i) =>
-                {
-                    retryCount++;
-                });
+                .Retry(retryCount: 2, onRetry: (result, i) => retryCount++);
 
             // Calling GetPortfolio or any other API triggers the flow that triggers polly
             var sdkResponse = _apiFactory.Api<IPortfoliosApi>().GetPortfolio("any", "any");
@@ -186,13 +183,13 @@ namespace Lusid.Sdk.Tests.Utilities
             const int statusCodeResponse1 = 498;
             const int statusCodeResponse2 = 499;
             // First Response
-            AddHttpResponseToQueue(_httpListener, statusCode: statusCodeResponse1, responseContent: "");
+            AddMockHttpResponseToQueue(_httpListener, statusCode: statusCodeResponse1, responseContent: "");
             // Second Response - same, triggers another retry
-            AddHttpResponseToQueue(_httpListener, statusCode: statusCodeResponse1, responseContent: "");
+            AddMockHttpResponseToQueue(_httpListener, statusCode: statusCodeResponse1, responseContent: "");
             // Third response - First policy retries stop, second policy retries kick in
-            AddHttpResponseToQueue(_httpListener, statusCode: statusCodeResponse2, responseContent: "");
+            AddMockHttpResponseToQueue(_httpListener, statusCode: statusCodeResponse2, responseContent: "");
             // Fourth response - No more retries as response is a success
-            AddHttpResponseToQueue(_httpListener, statusCode: 200, responseContent: "");
+            AddMockHttpResponseToQueue(_httpListener, statusCode: 200, responseContent: "");
             var policy1TriggerCount = 0;
             var policy2TriggerCount = 0;
             var policy1 = Policy
@@ -219,9 +216,9 @@ namespace Lusid.Sdk.Tests.Utilities
             const int returnedStatusCode = 200; // Doesn't matter what code is on timeout, will always return 0
             const int expectedNumberOfRetries = 1;
             // First call will cause a timeout
-            AddHttpResponseToQueue(_httpListener, statusCode: returnedStatusCode, responseContent: "", timeToRespond: timeoutAfter + 10);
+            AddMockHttpResponseToQueue(_httpListener, statusCode: returnedStatusCode, responseContent: "", timeToRespond: timeoutAfter + 10);
             // No timeout on the second call
-            AddHttpResponseToQueue(_httpListener, statusCode: returnedStatusCode, responseContent: "");
+            AddMockHttpResponseToQueue(_httpListener, statusCode: returnedStatusCode, responseContent: "");
             var retryCount = 0;
             RetryConfiguration.RetryPolicy = Policy
                 .HandleResult<IRestResponse>(apiResponse => apiResponse.StatusCode == 0)
@@ -267,7 +264,7 @@ namespace Lusid.Sdk.Tests.Utilities
             _httpListener.Close();
         }
 
-        private static void AddHttpResponseToQueue(HttpListener httpListener, int statusCode, string responseContent, int timeToRespond=0)
+        private static void AddMockHttpResponseToQueue(HttpListener httpListener, int statusCode, string responseContent, int timeToRespond=0)
         {
             httpListener.BeginGetContext(
                 result => GetHttpResponseHandler(result, statusCode, responseContent, timeToRespond),
