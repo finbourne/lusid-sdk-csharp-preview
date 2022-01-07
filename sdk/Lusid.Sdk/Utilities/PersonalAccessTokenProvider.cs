@@ -12,7 +12,7 @@ namespace Lusid.Sdk.Utilities
         private string _token;
         
         /// <summary>
-        /// Implementation of a TokenProvider for use with a Personal Access Token - generated in LUSID web and used in a FBN_ACCESS_TOKEN env variable.
+        /// Implementation of a TokenProvider for use with a Personal Access Token - generated in LUSID web and used in a FBN_LUSID_ACCESS_TOKEN env variable.
         /// </summary>
         /// <param name="personalAccessToken">the token to use</param>
         /// <remarks>FBN_LUSID_API_URL env variable will also need to be defined in order to use this approach</remarks>
@@ -26,7 +26,7 @@ namespace Lusid.Sdk.Utilities
         }
         
         /// <summary>
-        /// Gets the authentication token generated in LUSID web and stored as an env variable named FBN_ACCESS_TOKEN 
+        /// Gets the authentication token generated in LUSID web and stored as an env variable named FBN_LUSID_ACCESS_TOKEN
         /// </summary>
         /// <returns>the authentication token</returns>
         public async Task<string> GetAuthenticationTokenAsync()

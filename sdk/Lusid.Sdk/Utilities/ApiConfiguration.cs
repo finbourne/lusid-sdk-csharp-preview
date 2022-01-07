@@ -43,7 +43,7 @@ namespace Lusid.Sdk.Utilities
         public string ApplicationName { get; set; }
 
         /// <summary>
-        /// Configurable via FBN_ACCESS_TOKEN env variable - get the value from LUSID web 'Your Profile'->'Personal access tokens'.
+        /// Configurable via FBN_LUSID_ACCESS_TOKEN env variable - get the value from LUSID web 'Your Profile'->'Personal access tokens'.
         /// Takes precedence over other authentication factors if set.
         /// </summary>
         public string PersonalAccessToken { get; set; }
