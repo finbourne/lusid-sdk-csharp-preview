@@ -40,8 +40,7 @@ namespace Lusid.Sdk.Tests.Utilities
             // It should not retry on codes >400 by default, unless specified
             const int expectedStatusCode = 400;
             // Add the next response returned by api
-            AddMockHttpResponseToQueue(_httpListener, statusCode: expectedStatusCode,
-                responseContent: "{\"some\": \"JsonResponseHere\"}");
+            AddMockHttpResponseToQueue(_httpListener, statusCode: expectedStatusCode, responseContent: "{\"some\": \"JsonResponseHere\"}");
             var retryCount = 0;
             RetryConfiguration.RetryPolicy =
                 Policy.Wrap(
@@ -50,7 +49,7 @@ namespace Lusid.Sdk.Tests.Utilities
                         .HandleResult<IRestResponse>(PollyApiRetryHandler.GetInternalExceptionRetryCondition)
                         .Retry(retryCount: 3, onRetry: (result, i) => retryCount++)
                 );
-
+        
             var exception = Assert.Throws<ApiException>(
                 () => _apiFactory.Api<IPortfoliosApi>().GetPortfolio("any", "any")
             );
@@ -66,8 +65,7 @@ namespace Lusid.Sdk.Tests.Utilities
             // It should do nothing when response code is 200
             const int expectedStatusCode = 200;
             // Add the next response returned by api
-            AddMockHttpResponseToQueue(_httpListener, expectedStatusCode,
-                responseContent: "{\"some\": \"JsonResponseHere\"}");
+            AddMockHttpResponseToQueue(_httpListener, expectedStatusCode, responseContent: "{\"some\": \"JsonResponseHere\"}");
             var retryCount = 0;
             RetryConfiguration.RetryPolicy =
                 Policy.Wrap(
@@ -88,7 +86,7 @@ namespace Lusid.Sdk.Tests.Utilities
         [Test]
         public void CallGetPortfoliosApi_WhenApiResponseStatusCodeSatisfiesRetryCriteria_ExceedsPollyRetriesAndThrows()
         {
-            const int returnedStatusCode = 502;
+            const int returnedStatusCode = 502; // Or any other code that satisfies the policy retry criteria
             const int expectedNumberOfRetries = 2;
             const string returnedErrorMessage = "Some error response";
             for (var i = 0; i < expectedNumberOfRetries + 1; i++)
@@ -138,10 +136,9 @@ namespace Lusid.Sdk.Tests.Utilities
         }
 
         [Test]
-        public void
-            CallGetPortfoliosApi_WhenApiResponseStatusCodeSatisfiesRetryCriteria_DoesNotExceedRetriesAndDoesNotThrow()
+        public void CallGetPortfoliosApi_PollyRetryConditionIsSatisfied_RetriesUntilSuccess_DoesNotThrow()
         {
-            const int returnedStatusCode = 502;
+            const int returnedStatusCode = 499; // Or any custom defined code
             const int expectedNumberOfRetries = 2;
             // First Response is a failing code
             AddMockHttpResponseToQueue(_httpListener, statusCode: returnedStatusCode, responseContent: "");
@@ -166,8 +163,7 @@ namespace Lusid.Sdk.Tests.Utilities
 
         // Example of how an exponential backoff can be used with Polly
         [Test]
-        public void
-            CallGetPortfoliosApi_WhenApiResponseStatusCodeSatisfiesRetryCriteria_PollyRetryWithBackoffIsTriggered()
+        public void CallGetPortfoliosApi_WhenApiResponseStatusCodeSatisfiesRetryCriteria_PollyRetryWithBackoffIsTriggered()
         {
             const int returnedStatusCode = 499;
             const int expectedNumberOfRetries = 2;
@@ -195,7 +191,7 @@ namespace Lusid.Sdk.Tests.Utilities
         }
 
         [Test]
-        public void CallGetPortfoliosApiAsync_AsyncPollyIsTriggered_ThrowsWithExceededCallsFallback()
+        public void CallGetPortfoliosApiAsync_AsyncPollyIsTriggered_ThrowsWithExceededCallsFallbackPolicy()
         {
             const int returnedStatusCode = 499;
             const int expectedNumberOfRetries = 2;
@@ -223,7 +219,7 @@ namespace Lusid.Sdk.Tests.Utilities
         }
         
         [Test]
-        public async Task CallGetPortfoliosApiAsync_NoFallback_AsyncPollyIsTriggered_ReturnsNullResponseOnRetriesExceeded()
+        public async Task CallGetPortfoliosApiAsync_AsyncPollyIsTriggered_NoFallbackPolicy_ReturnsNullResponseOnRetriesExceeded()
         {
             const int returnedStatusCode = 499;
             const int expectedNumberOfRetries = 2;
@@ -268,6 +264,7 @@ namespace Lusid.Sdk.Tests.Utilities
 
             var retryCount = 0;
             RetryConfiguration.RetryPolicy = Policy
+                // Use default internal exception retry condition checker
                 .HandleResult<IRestResponse>(PollyApiRetryHandler.GetInternalExceptionRetryCondition)
                 .Retry(retryCount: 2, onRetry: (result, i) => retryCount++);
 
@@ -295,12 +292,10 @@ namespace Lusid.Sdk.Tests.Utilities
             var policy1TriggerCount = 0;
             var policy2TriggerCount = 0;
             var policy1 = Policy
-                .HandleResult<IRestResponse>(apiResponse =>
-                    apiResponse.StatusCode == (HttpStatusCode) statusCodeResponse1)
+                .HandleResult<IRestResponse>(apiResponse => apiResponse.StatusCode == (HttpStatusCode) statusCodeResponse1)
                 .Retry(retryCount: 3, onRetry: (result, i) => policy1TriggerCount++);
             var policy2 = Policy
-                .HandleResult<IRestResponse>(apiResponse =>
-                    apiResponse.StatusCode == (HttpStatusCode) statusCodeResponse2)
+                .HandleResult<IRestResponse>(apiResponse => apiResponse.StatusCode == (HttpStatusCode) statusCodeResponse2)
                 .Retry(retryCount: 3, onRetry: (result, i) => policy2TriggerCount++);
             RetryConfiguration.RetryPolicy = policy1.Wrap(policy2);
 
@@ -331,7 +326,8 @@ namespace Lusid.Sdk.Tests.Utilities
                 Policy.Wrap(
                     PollyApiRetryHandler.DefaultFallbackPolicy,
                     Policy
-                        .HandleResult<IRestResponse>(apiResponse => apiResponse.StatusCode == 0)
+                        // Use default internal exception retry condition checker
+                        .HandleResult<IRestResponse>(PollyApiRetryHandler.GetInternalExceptionRetryCondition)
                         .Retry(retryCount: expectedNumberOfRetries,
                             onRetry: (result, i) => retryCount++)
                 );
