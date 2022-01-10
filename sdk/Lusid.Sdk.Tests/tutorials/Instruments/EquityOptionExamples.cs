@@ -137,6 +137,20 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
             CallLusidGetPortfolioCashFlowsEndpoint(equityOption, model);
         }
         
+        /// <summary>
+        /// Lifecycle management of equity option
+        /// For both cash and physically settled equity option, we expected conservation
+        /// of PV (under CTVoM model) and in particular, equals to the payoff
+        /// i.e. pv(equity option) = max(spot - strike, 0) before maturity and
+        ///      pv(underlying) + pv(cashflow) = max(spot - strike, 0) after maturity
+        ///
+        /// Cash-settled case: works the same as the others. This means, we get the cashflow
+        /// and upsert that back into LUSID.
+        ///
+        /// Physically-settled case: Cashflow would be paying the strike to obtain the underlying.
+        /// There is additional code to get the underlying in the GetValuation call as well as then
+        /// upserting the underlying back into the portfolio. 
+        /// </summary>
         [TestCase(ModelSelection.ModelEnum.ConstantTimeValueOfMoney)]
         public void LifeCycleManagementForCashSettledEquityOption(ModelSelection.ModelEnum model)
         {

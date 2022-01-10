@@ -369,7 +369,7 @@ namespace Lusid.Sdk.Tests.Utilities
                 flowConventions: CreateExampleCdsFlowConventions(),
                 couponRate: 0.05m,
                 null,
-                new CdsProtectionDetailSpecification(
+                protectionDetailSpecification: new CdsProtectionDetailSpecification(
                     CdsProtectionDetailSpecification.SeniorityEnum.SNR,
                     CdsProtectionDetailSpecification.RestructuringTypeEnum.MM,
                     true,

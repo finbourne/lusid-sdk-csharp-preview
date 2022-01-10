@@ -32,6 +32,11 @@ namespace Lusid.Sdk.Tests.Utilities
             GetAndValidatePortfolioCashFlows(instrument, scope, portfolioCode, recipeCode, instrumentID);
         }
 
+        /// <summary>
+        /// Create and upsert a recipe specifying the scope in which to look for the data and the
+        /// model to be used to price the instrument.
+        /// If windowValuationOnInstrumentStartEnd is true, this sets the price of instruments to be zero after maturity
+        /// </summary>
         protected string CreateAndUpsertRecipe(
             string scope,
             ModelSelection.ModelEnum model,

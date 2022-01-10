@@ -531,7 +531,8 @@ namespace Lusid.Sdk.Tests.Utilities
 
         /// <summary>
         /// This method creates a recipe and wraps it up into an UpsertRecipeRequest.
-        /// It consists of rules capable of finding both simple quote and complex market data for a range of instruments. 
+        /// It consists of rules capable of finding both simple quote and complex market data for a range of instruments.
+        /// If windowValuationOnInstrumentStartEnd is true, this sets the price of instruments to be zero after maturity
         /// </summary>
         public static UpsertRecipeRequest BuildRecipeRequest(
             string recipeCode,
@@ -582,6 +583,7 @@ namespace Lusid.Sdk.Tests.Utilities
             var pricingOptions = new PricingOptions(
                 new ModelSelection(ModelSelection.LibraryEnum.Lusid, model),
                 windowValuationOnInstrumentStartEnd: windowValuationOnInstrumentStartEnd);
+            
             var recipe = new ConfigurationRecipe(
                 scope,
                 recipeCode,
