@@ -263,10 +263,14 @@ namespace Lusid.Sdk.Tests.Utilities
             }
 
             var retryCount = 0;
-            RetryConfiguration.RetryPolicy = Policy
-                // Use default internal exception retry condition checker
-                .HandleResult<IRestResponse>(PollyApiRetryHandler.GetInternalExceptionRetryCondition)
-                .Retry(retryCount: 2, onRetry: (result, i) => retryCount++);
+            RetryConfiguration.RetryPolicy =
+                Policy.Wrap(
+                    PollyApiRetryHandler.DefaultFallbackPolicy,
+                    Policy
+                        // Use default internal exception retry condition checker
+                        .HandleResult<IRestResponse>(PollyApiRetryHandler.GetInternalExceptionRetryCondition)
+                        .Retry(retryCount: 2, onRetry: (result, i) => retryCount++)
+                    );
 
             // Calling GetPortfolio or any other API triggers the flow that triggers polly
             var sdkResponse = _apiFactory.Api<IPortfoliosApi>().GetPortfolio("any", "any");
