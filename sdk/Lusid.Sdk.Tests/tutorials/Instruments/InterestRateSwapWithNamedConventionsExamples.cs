@@ -17,7 +17,7 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
             // The price of a floating leg is determined by historic resets rates and projected rates.
             // In this method, we upsert reset rates.
             // For LUSID to pick up these quotes, we have added a RIC rule to the recipe (see BuildRecipeRequest in TestDataUtilities.cs) 
-            // The RIC rule has a quote interval of 2 years, this means that we can use one reset quote for all the resets.
+            // The RIC rule has a large quote interval, this means that we can use one reset quote for all the resets.
             // For accurate pricing, one would want to upsert a quote per reset. 
             var quoteRequest = TestDataUtilities.BuildQuoteRequest("USD6M", QuoteSeriesId.InstrumentIdTypeEnum.ClientInternal, 0.05m, "USD", TestDataUtilities.EffectiveAt);
             var upsertResponse = _quotesApi.UpsertQuotes(scope, quoteRequest);

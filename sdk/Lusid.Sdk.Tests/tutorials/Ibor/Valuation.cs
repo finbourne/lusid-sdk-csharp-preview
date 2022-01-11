@@ -15,19 +15,6 @@ namespace Lusid.Sdk.Tests.Tutorials.Ibor
     {
         private InstrumentLoader _instrumentLoader;
         private IList<string> _instrumentIds;
-
-        private static readonly string ValuationDateKey = "Analytic/default/ValuationDate";
-        private static readonly string HoldingPvKey = "Holding/default/PV";
-        private static readonly string InstrumentName = "Instrument/default/Name";
-        private static readonly string InstrumentTag = "Analytic/default/InstrumentTag";
-
-        private static readonly List<AggregateSpec> ValuationSpec = new List<AggregateSpec>
-        {
-            new AggregateSpec(ValuationDateKey, AggregateSpec.OpEnum.Value),
-            new AggregateSpec(InstrumentName, AggregateSpec.OpEnum.Value),
-            new AggregateSpec(HoldingPvKey, AggregateSpec.OpEnum.Value),
-            new AggregateSpec(InstrumentTag, AggregateSpec.OpEnum.Value)
-        };
         
         private static readonly DateTimeOffset TestEffectiveFrom = new DateTimeOffset(2020, 2, 16, 0, 0, 0, TimeSpan.Zero);
         private static readonly DateTimeOffset TestEffectiveAt = new DateTimeOffset(2020, 2, 23, 0, 0, 0, TimeSpan.Zero);
@@ -120,9 +107,9 @@ namespace Lusid.Sdk.Tests.Tutorials.Ibor
                 recipeId: new ResourceId(recipeScope, "DataScope_Recipe"),
                 metrics: new List<AggregateSpec>
                 {
-                    new AggregateSpec(InstrumentName, AggregateSpec.OpEnum.Value),
-                    new AggregateSpec(HoldingPvKey, AggregateSpec.OpEnum.Proportion),
-                    new AggregateSpec(HoldingPvKey, AggregateSpec.OpEnum.Sum)
+                    new AggregateSpec(TestDataUtilities.InstrumentName, AggregateSpec.OpEnum.Value),
+                    new AggregateSpec(TestDataUtilities.ValuationPv, AggregateSpec.OpEnum.Proportion),
+                    new AggregateSpec(TestDataUtilities.ValuationPv, AggregateSpec.OpEnum.Sum)
                 },
                 valuationSchedule: new ValuationSchedule(effectiveAt: effectiveDate),
                 groupBy: new List<string> { "Instrument/default/Name" },
@@ -133,9 +120,9 @@ namespace Lusid.Sdk.Tests.Tutorials.Ibor
             var results = _apiFactory.Api<IAggregationApi>().GetValuation(valuationRequest);
 
             Assert.That(results.Data, Has.Count.EqualTo(4));
-            Assert.That(results.Data[0]["Sum(Holding/default/PV)"], Is.EqualTo(10000));
-            Assert.That(results.Data[2]["Sum(Holding/default/PV)"], Is.EqualTo(20000));
-            Assert.That(results.Data[3]["Sum(Holding/default/PV)"], Is.EqualTo(30000));
+            Assert.That(results.Data[0]["Sum(Valuation/PV/Amount)"], Is.EqualTo(10000));
+            Assert.That(results.Data[2]["Sum(Valuation/PV/Amount)"], Is.EqualTo(20000));
+            Assert.That(results.Data[3]["Sum(Valuation/PV/Amount)"], Is.EqualTo(30000));
         }
 
         [Test]
@@ -152,8 +139,8 @@ namespace Lusid.Sdk.Tests.Tutorials.Ibor
             var valuationSchedule = new ValuationSchedule(effectiveFrom: TestEffectiveFrom, effectiveAt: TestEffectiveAt);
             var inlineValuationRequest = new InlineValuationRequest(
                 recipeId: new ResourceId(scope, "default"),
-                metrics: ValuationSpec,
-                sort: new List<OrderBySpec> {new OrderBySpec(ValuationDateKey, OrderBySpec.SortOrderEnum.Ascending)},
+                metrics: TestDataUtilities.ValuationSpec,
+                sort: new List<OrderBySpec> {new OrderBySpec(TestDataUtilities.ValuationDateKey, OrderBySpec.SortOrderEnum.Ascending)},
                 valuationSchedule: valuationSchedule,
                 instruments: instruments);
 
@@ -165,7 +152,7 @@ namespace Lusid.Sdk.Tests.Tutorials.Ibor
 
             // GET the present values of the bond
             var presentValues = valuation.Data
-                .Select(data => (double) data[HoldingPvKey])
+                .Select(data => (double) data[TestDataUtilities.ValuationPv])
                 .ToList();
 
             // CHECK pvs are positive (true for bonds)
@@ -202,8 +189,8 @@ namespace Lusid.Sdk.Tests.Tutorials.Ibor
             var valuationSchedule = new ValuationSchedule(effectiveAt: TestEffectiveAt);
             var inlineValuationRequest = new InlineValuationRequest(
                 recipeId: new ResourceId(scope, constantTimeValueOfMoneyRecipeCode),
-                metrics: ValuationSpec,
-                sort: new List<OrderBySpec> {new OrderBySpec(ValuationDateKey, OrderBySpec.SortOrderEnum.Ascending)},
+                metrics: TestDataUtilities.ValuationSpec,
+                sort: new List<OrderBySpec> {new OrderBySpec(TestDataUtilities.ValuationDateKey, OrderBySpec.SortOrderEnum.Ascending)},
                 valuationSchedule: valuationSchedule,
                 instruments: instruments);
 
@@ -213,10 +200,10 @@ namespace Lusid.Sdk.Tests.Tutorials.Ibor
 
             foreach (var result in valuation.Data)
             {
-                var pv = (double) result[HoldingPvKey];
+                var pv = (double) result[TestDataUtilities.ValuationPv];
                 Assert.That(pv, Is.Not.EqualTo(0).Within(1e-5));
 
-                var instrumentTag = (string) result[InstrumentTag];
+                var instrumentTag = (string) result[TestDataUtilities.InstrumentTag];
                 if (instrumentTag != nameof(FxForward))
                 {
                     Assert.That(pv, Is.GreaterThanOrEqualTo(0));
@@ -258,15 +245,15 @@ namespace Lusid.Sdk.Tests.Tutorials.Ibor
             // CREATE inline valuation request for Simple Static and Discounting pricing model 
             var discountingInlineValuationRequest = new InlineValuationRequest(
                 recipeId: new ResourceId(scope, discountingRecipeCode),
-                metrics: ValuationSpec,
-                sort: new List<OrderBySpec> {new OrderBySpec(ValuationDateKey, OrderBySpec.SortOrderEnum.Ascending)},
+                metrics: TestDataUtilities.ValuationSpec,
+                sort: new List<OrderBySpec> {new OrderBySpec(TestDataUtilities.ValuationDateKey, OrderBySpec.SortOrderEnum.Ascending)},
                 valuationSchedule: valuationSchedule,
                 instruments: instruments);
 
             var constantTimeValueOfMoneyValuationRequest = new InlineValuationRequest(
                 recipeId: new ResourceId(scope, constantTimeValueOfMoneyRecipeCode),
-                metrics: ValuationSpec,
-                sort: new List<OrderBySpec> {new OrderBySpec(ValuationDateKey, OrderBySpec.SortOrderEnum.Ascending)},
+                metrics: TestDataUtilities.ValuationSpec,
+                sort: new List<OrderBySpec> {new OrderBySpec(TestDataUtilities.ValuationDateKey, OrderBySpec.SortOrderEnum.Ascending)},
                 valuationSchedule: valuationSchedule,
                 instruments: instruments);
 
@@ -279,8 +266,8 @@ namespace Lusid.Sdk.Tests.Tutorials.Ibor
             // ASSERT that the PV differs between the models and are not null
             Assert.That(discountingValuation, Is.Not.Null);
             Assert.That(constantTimeValueOfMoneyValuation, Is.Not.Null);
-            var diff = (double) discountingValuation.Data.First()[HoldingPvKey]
-                       - (double) constantTimeValueOfMoneyValuation.Data.First()[HoldingPvKey];
+            var diff = (double) discountingValuation.Data.First()[TestDataUtilities.ValuationPv]
+                       - (double) constantTimeValueOfMoneyValuation.Data.First()[TestDataUtilities.ValuationPv];
             Assert.That(diff, Is.Not.EqualTo(0).Within(1e-3));
         }
 
@@ -310,14 +297,11 @@ namespace Lusid.Sdk.Tests.Tutorials.Ibor
             CreateAndUpsertRecipe(discountingRecipeCode, scope, ModelSelection.ModelEnum.Discounting);
 
             // CREATE valuation request
-            var valuationSchedule = new ValuationSchedule(effectiveAt: TestEffectiveAt);
-            var valuationRequest = new ValuationRequest(
-                recipeId: new ResourceId(scope, discountingRecipeCode),
-                metrics: ValuationSpec,
-                valuationSchedule: valuationSchedule,
-                sort: new List<OrderBySpec> {new OrderBySpec(ValuationDateKey, OrderBySpec.SortOrderEnum.Ascending)},
-                portfolioEntityIds: new List<PortfolioEntityId> {new PortfolioEntityId(scope, portfolioRequest.Code)},
-                reportCurrency: "USD");
+            var valuationRequest = TestDataUtilities.CreateValuationRequest(
+                scope,
+                portfolioRequest.Code,
+                discountingRecipeCode,
+                TestEffectiveAt);
 
             // CALL valuation
             var valuation = _apiFactory.Api<IAggregationApi>().GetValuation(valuationRequest);
@@ -325,7 +309,7 @@ namespace Lusid.Sdk.Tests.Tutorials.Ibor
             Assert.That(valuation.Data.Count, Is.EqualTo(1));
 
             // CHECK PV - note that swaps/forwards can have negative PV
-            var pv = (double) valuation.Data.First()[HoldingPvKey];
+            var pv = (double) valuation.Data.First()[TestDataUtilities.ValuationPv];
             Assert.That(pv, Is.Not.Null);
             if (instrumentName != nameof(InterestRateSwap) && instrumentName != nameof(FxForward))
             {
@@ -433,14 +417,11 @@ namespace Lusid.Sdk.Tests.Tutorials.Ibor
             var discountingRecipeCode = "DiscountingRecipe";
             CreateAndUpsertRecipe(discountingRecipeCode, TestDataUtilities.TutorialScope, ModelSelection.ModelEnum.Discounting);
             
-            var valuationSchedule = new ValuationSchedule(effectiveAt: TestEffectiveAt);
-            var valuationRequest = new ValuationRequest(
-                recipeId: new ResourceId(TestDataUtilities.TutorialScope, discountingRecipeCode),
-                metrics: ValuationSpec,
-                valuationSchedule: valuationSchedule,
-                sort: new List<OrderBySpec> {new OrderBySpec(ValuationDateKey, OrderBySpec.SortOrderEnum.Ascending)},
-                portfolioEntityIds: new List<PortfolioEntityId> {new PortfolioEntityId(TestDataUtilities.TutorialScope, portfolioRequest.Code)},
-                reportCurrency: "USD");
+            var valuationRequest = TestDataUtilities.CreateValuationRequest(
+                TestDataUtilities.TutorialScope,
+                portfolioRequest.Code,
+                discountingRecipeCode,
+                TestEffectiveAt);
 
             // CALL valuation
             var valuation = _apiFactory.Api<IAggregationApi>().GetValuation(valuationRequest);
@@ -450,8 +431,8 @@ namespace Lusid.Sdk.Tests.Tutorials.Ibor
             // CHECK PV results make sense
             foreach (var result in valuation.Data)
             {
-                var inst = (string) result[InstrumentName];
-                var pv = (double) result[HoldingPvKey];
+                var inst = (string) result[TestDataUtilities.InstrumentName];
+                var pv = (double) result[TestDataUtilities.ValuationPv];
                 Assert.That(pv, Is.Not.Null);
 
                 if (inst != nameof(FxForward) && inst != nameof(InterestRateSwap))
@@ -490,15 +471,13 @@ namespace Lusid.Sdk.Tests.Tutorials.Ibor
             CreateAndUpsertRecipe(constantTimeValueOfMoneyRecipeCode, TestDataUtilities.TutorialScope, ModelSelection.ModelEnum.ConstantTimeValueOfMoney);
 
             // CREATE valuation schedule and request
-            var valuationSchedule = new ValuationSchedule(effectiveFrom: TestEffectiveFrom, effectiveAt: TestEffectiveAt);
-            var valuationRequest = new ValuationRequest(
-                recipeId: new ResourceId(TestDataUtilities.TutorialScope, constantTimeValueOfMoneyRecipeCode),
-                metrics: ValuationSpec,
-                valuationSchedule: valuationSchedule,
-                sort: new List<OrderBySpec> {new OrderBySpec(ValuationDateKey, OrderBySpec.SortOrderEnum.Ascending)},
-                portfolioEntityIds: new List<PortfolioEntityId> {new PortfolioEntityId(TestDataUtilities.TutorialScope, portfolioRequest.Code)},
-                reportCurrency: "USD");
-
+            var valuationRequest = TestDataUtilities.CreateValuationRequest(
+                TestDataUtilities.TutorialScope,
+                portfolioRequest.Code,
+                constantTimeValueOfMoneyRecipeCode,
+                TestEffectiveAt,
+                TestEffectiveFrom);
+            
             // CALL valuation
             var valuation = _apiFactory.Api<IAggregationApi>().GetValuation(valuationRequest);
             Assert.That(valuation, Is.Not.Null);
@@ -506,12 +485,7 @@ namespace Lusid.Sdk.Tests.Tutorials.Ibor
             // 3 instruments: bond, fx option, equity
             // So 6x3.
             Assert.That(valuation.Data.Count, Is.EqualTo(18)); 
-
-            // CHECK PV makes sense
-            foreach (var result in valuation.Data)
-            {
-                Assert.That(result[HoldingPvKey], Is.GreaterThanOrEqualTo(0));
-            }
+            TestDataUtilities.CheckPvResultsMakeSense(valuation);
         }
     }
 }

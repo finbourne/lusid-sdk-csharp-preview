@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Lusid.Sdk.Model;
+using Lusid.Sdk.Tests.tutorials.Ibor;
 using Lusid.Sdk.Tests.Utilities;
 using LusidFeatures;
 using NUnit.Framework;
@@ -134,6 +135,111 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
         {
             var equityOption = InstrumentExamples.CreateExampleEquityOption();
             CallLusidGetPortfolioCashFlowsEndpoint(equityOption, model);
+        }
+        
+        /// <summary>
+        /// Lifecycle management of equity option
+        /// For both cash and physically settled equity option, we expected conservation
+        /// of PV (under CTVoM model) and in particular, equals to the payoff
+        /// i.e. pv(equity option) = max(spot - strike, 0) before maturity and
+        ///      pv(underlying) + pv(cashflow) = max(spot - strike, 0) after maturity
+        ///
+        /// Cash-settled case: works the same as the others. This means, we get the cashflow
+        /// and upsert that back into LUSID.
+        ///
+        /// Physically-settled case: Cashflow would be paying the strike to obtain the underlying.
+        /// There is additional code to get the underlying in the GetValuation call as well as then
+        /// upserting the underlying back into the portfolio. 
+        /// </summary>
+        [TestCase(ModelSelection.ModelEnum.ConstantTimeValueOfMoney)]
+        public void LifeCycleManagementForCashSettledEquityOption(ModelSelection.ModelEnum model)
+        {
+            // CREATE EquityOption
+            var equityOption = (EquityOption) InstrumentExamples.CreateExampleEquityOption(isCashSettled: true);
+            
+            // CREATE wide enough window to pick up all cashflows associated to the EquityOption
+            var windowStart = equityOption.StartDate.AddMonths(-1);
+            var windowEnd = equityOption.OptionSettlementDate.AddMonths(1);
+            
+            // CREATE portfolio and add instrument to the portfolio
+            var scope = Guid.NewGuid().ToString();
+            var (instrumentID, portfolioCode) = CreatePortfolioAndInstrument(scope, equityOption);
+
+            // UPSERT EquityOption to portfolio and populating stores with required market data.
+            CreateAndUpsertMarketDataToLusid(scope, model, equityOption);
+            
+            // CREATE recipe to price the portfolio with
+            var recipeCode = CreateAndUpsertRecipe(scope, model, windowValuationOnInstrumentStartEnd: true);
+            
+            // GET all upsertable cashflows (transactions) for the EquityOption
+            var effectiveAt = equityOption.OptionSettlementDate;
+            var allEquityOptionCashFlows = _transactionPortfoliosApi.GetUpsertablePortfolioCashFlows(
+                    scope, 
+                    portfolioCode, 
+                    effectiveAt, 
+                    windowStart, 
+                    windowEnd,
+                    null,
+                    null,
+                    scope,
+                    recipeCode)
+                .Values;
+
+            // We expect exactly one cashflow associated to a cash settled EquityOption and it occurs at expiry.
+            Assert.That(allEquityOptionCashFlows.Count, Is.EqualTo(1));
+            Assert.That(allEquityOptionCashFlows.Last().TotalConsideration.Currency, Is.EqualTo("USD"));
+            var cashFlowDate = allEquityOptionCashFlows.First().TransactionDate;
+            
+            // CREATE valuation request for this portfolio consisting of the EquityOption,
+            // with valuation dates 2 days before, day of and 2 days after the expiration
+            // of the cashflow date = option expiry date.
+            var valuationRequest = TestDataUtilities.CreateValuationRequest(
+                scope,
+                portfolioCode,
+                recipeCode,
+                effectiveAt: cashFlowDate.AddDays(2),
+                effectiveFrom: cashFlowDate.AddDays(-2));
+            
+            // CALL GetValuation before upserting back the cashflows. We check
+            // (1) there is no cash holdings in the portfolio prior to expiration
+            // (2) that when the EquityOption has expired, the PV is zero.
+            var valuationBeforeAndAfterExpirationEquityOption = _aggregationApi.GetValuation(valuationRequest);
+            TestDataUtilities.CheckNoCashPositionsInValuationResults(
+                valuationBeforeAndAfterExpirationEquityOption,
+                equityOption.DomCcy);
+            TestDataUtilities.CheckNonZeroPvBeforeMaturityAndZeroAfter(
+                valuationBeforeAndAfterExpirationEquityOption,
+                equityOption.OptionMaturityDate);
+
+            // UPSERT the cashflows back into LUSID. We first populate the cashflow transactions with unique IDs.
+            var upsertCashFlowTransactions = PortfolioCashFlows.PopulateCashFlowTransactionWithUniqueIds(
+                allEquityOptionCashFlows,
+                equityOption.DomCcy);
+            
+            _transactionPortfoliosApi.UpsertTransactions(
+                scope,
+                portfolioCode,
+                PortfolioCashFlows.MapToCashFlowTransactionRequest(upsertCashFlowTransactions));
+            
+            // HAVING upserted cashflow into LUSID, we call GetValuation again.
+            var valuationAfterUpsertingCashFlows = _aggregationApi.GetValuation(valuationRequest);
+
+            // ASSERT that we have some cash in the portfolio
+            var containsCashAfterUpsertion = valuationAfterUpsertingCashFlows
+                .Data
+                .Select(d => (string) d[TestDataUtilities.Luid])
+                .Any(luid => luid != $"CCY_{equityOption.DomCcy}");
+            Assert.That(containsCashAfterUpsertion, Is.True);
+
+            // ASSERT portfolio PV is constant for each valuation date.
+            // We expect this to be true since we upserted the cashflows back in.
+            // That is instrument pv + cashflow = option payoff = = constant for each valuation date.
+            TestDataUtilities.CheckPvIsConstantAcrossDates(valuationAfterUpsertingCashFlows);
+    
+            // CLEAN up.
+            _recipeApi.DeleteConfigurationRecipe(scope, recipeCode);
+            _instrumentsApi.DeleteInstrument("ClientInternal", instrumentID);
+            _portfoliosApi.DeletePortfolio(scope, portfolioCode);
         }
     }
 }

@@ -4,18 +4,21 @@ using System.IO;
 using System.Linq;
 using Lusid.Sdk.Model;
 using Newtonsoft.Json;
+using NUnit.Framework;
 
 namespace Lusid.Sdk.Tests.Utilities
 {
     public static class TestDataUtilities
     {
-        internal static readonly string ExampleMarketDataDirectory = "../../../tutorials/Ibor/ExampleMarketData/";
+        private static readonly string ExampleMarketDataDirectory = "../../../tutorials/Ibor/ExampleMarketData/";
         public const string TutorialScope = "Testdemo";
         public const string MarketDataScope = "FinbourneMarketData";
         public static string ValuationDateKey = "Analytic/default/ValuationDate";
         public static string InstrumentTag = "Analytic/default/InstrumentTag";
         public static string ValuationPvKey = "Valuation/PV/Amount";
         public static string InstrumentName = "Instrument/default/Name";
+        public static readonly string ValuationPv = "Valuation/PV/Amount";
+        public static readonly string Luid = "Instrument/default/LusidInstrumentId";
         
         // Items to return back on a GetValuation call. 
         public static readonly List<AggregateSpec> ValuationSpec = new List<AggregateSpec>
@@ -23,7 +26,8 @@ namespace Lusid.Sdk.Tests.Utilities
             new AggregateSpec(ValuationDateKey, AggregateSpec.OpEnum.Value),
             new AggregateSpec(InstrumentName, AggregateSpec.OpEnum.Value),
             new AggregateSpec(ValuationPvKey, AggregateSpec.OpEnum.Value),
-            new AggregateSpec(InstrumentTag, AggregateSpec.OpEnum.Value)
+            new AggregateSpec(InstrumentTag, AggregateSpec.OpEnum.Value),
+            new AggregateSpec(Luid, AggregateSpec.OpEnum.Value)
         };
         //    Specific key used to denote cash in LUSID
         public const string LusidCashIdentifier = "Instrument/default/Currency";
@@ -527,9 +531,14 @@ namespace Lusid.Sdk.Tests.Utilities
 
         /// <summary>
         /// This method creates a recipe and wraps it up into an UpsertRecipeRequest.
-        /// It consists of rules capable of finding both simple quote and complex market data for a range of instruments. 
+        /// It consists of rules capable of finding both simple quote and complex market data for a range of instruments.
+        /// If windowValuationOnInstrumentStartEnd is true, this sets the price of instruments to be zero after maturity
         /// </summary>
-        public static UpsertRecipeRequest BuildRecipeRequest(string recipeCode, string scope, ModelSelection.ModelEnum model)
+        public static UpsertRecipeRequest BuildRecipeRequest(
+            string recipeCode,
+            string scope,
+            ModelSelection.ModelEnum model,
+            bool windowValuationOnInstrumentStartEnd = false)
         {
             // For simpleStaticRule, note that inside CreatePortfolioAndInstrument, the method TestDataUtilities.BuildInstrumentUpsertRequest books the instrument using "ClientInternal".
             // As such the quote upserted using "ClientInternal". The market rule key needs to be "ClientInternal" also to find the quote.  
@@ -541,14 +550,14 @@ namespace Lusid.Sdk.Tests.Utilities
                 field: "mid",
                 quoteInterval: "5D");
             
-            // resetRule is used to locate reset rates such as that for interest rate swaps.
+            // resetRule is used to locate reset rates such as that for interest rate swaps and swaptions
             var resetRule = new MarketDataKeyRule(
                 key: "Equity.RIC.*",
                 supplier: "Lusid",
                 scope,
                 MarketDataKeyRule.QuoteTypeEnum.Price,
                 field: "mid",
-                quoteInterval: "1Y");
+                quoteInterval: "10Y");
             
             // creditRule here is used by Lusid to locate the credit spread curve.
             // We use long quote intervals here because we are happy to use old market data,
@@ -571,7 +580,10 @@ namespace Lusid.Sdk.Tests.Utilities
                 field: "mid",
                 quoteInterval: "10Y");
 
-            var pricingOptions = new PricingOptions(new ModelSelection(ModelSelection.LibraryEnum.Lusid, model));
+            var pricingOptions = new PricingOptions(
+                new ModelSelection(ModelSelection.LibraryEnum.Lusid, model),
+                windowValuationOnInstrumentStartEnd: windowValuationOnInstrumentStartEnd);
+            
             var recipe = new ConfigurationRecipe(
                 scope,
                 recipeCode,
@@ -582,6 +594,98 @@ namespace Lusid.Sdk.Tests.Utilities
                 description: $"Recipe for {model} pricing");
             
             return new UpsertRecipeRequest(recipe);
+        }
+        
+        // CHECK we got non-null results and simple pricing checks e.g. positive for relevant instruments
+        // We default InstrumentType.Unknown for convenience and default to mean positive pv.
+        internal static void CheckPvResultsMakeSense(
+            ListAggregationResponse result, 
+            LusidInstrument.InstrumentTypeEnum instrumentType = LusidInstrument.InstrumentTypeEnum.Unknown)
+        {
+            foreach (var r in result.Data)
+            {
+                var pv = (double) r[ValuationPvKey];
+
+                // TODO: swaptions should have pv > 0 but code is suggesting otherwise. Needs investigation.
+                if (instrumentType == LusidInstrument.InstrumentTypeEnum.InterestRateSwaption)
+                {
+                    continue;
+                }
+                
+                Assert.That(pv, Is.Not.EqualTo(0).Within(1e-8));
+                
+                if (instrumentType != LusidInstrument.InstrumentTypeEnum.InterestRateSwap) // swaps can have negative pv
+                {
+                    Assert.That(pv, Is.GreaterThanOrEqualTo(0));
+                }
+            }
+        }
+
+        /// <summary>
+        /// Given an aggregation result on a portfolio of instruments,
+        /// we check that on each valuation date, the sum of PV is constant.
+        /// </summary>
+        internal static void CheckPvIsConstantAcrossDates(ListAggregationResponse result)
+        {
+            var uniquePvsAcrossDates = result
+                .Data // Access a list of result dictionaries
+                .GroupBy(d => (DateTime) d[ValuationDateKey]) // We group by date
+                .Select(pvGroup => pvGroup.Sum(record => (double) record[ValuationPv])) // We pick up the PV 
+                .Distinct() // Filter for unique values
+                .Count(); //  Count them
+            Assert.That(uniquePvsAcrossDates, Is.EqualTo(1)); // If true, this means the PV was constant across the valuation dates
+        }
+        
+        /// <summary>
+        /// Given an aggregation result on a portfolio, we check that the PV
+        /// is non-zero before maturity and zero after.
+        /// This method should only be called for a portfolio of only one instrument 
+        /// </summary>
+        internal static void CheckNonZeroPvBeforeMaturityAndZeroAfter(ListAggregationResponse result, DateTimeOffset maturityDate)
+        {
+            var valuationResultDictionaries = result.Data;
+            foreach (var valuationResult in valuationResultDictionaries)
+            {
+                var date = (DateTime) valuationResult[ValuationDateKey];
+                var pv = (double) valuationResult[ValuationPv];
+                if (date < maturityDate)
+                {
+                    Assert.That(pv, Is.Not.EqualTo(0).Within(1e-12));
+                }
+                else
+                {
+                    Assert.That(pv, Is.EqualTo(0).Within(1e-12));
+                }
+            }
+        }
+        
+        /// <summary>
+        /// Check there are no cash positions in the portfolio (of a given currency)
+        /// </summary>
+        internal static void CheckNoCashPositionsInValuationResults(ListAggregationResponse valuationResult, string currency)
+        {
+            var doesNotContainAnyCashBeforeExpiration = valuationResult
+                .Data
+                .Select(d => (string) d[Luid])
+                .All(luid => luid != $"CCY_{currency}");
+            Assert.That(doesNotContainAnyCashBeforeExpiration, Is.True);
+        }
+        
+        internal static ValuationRequest CreateValuationRequest(
+            string scope,
+            string portfolioCode,
+            string recipeCode,
+            DateTimeOffset effectiveAt,
+            DateTimeOffset? effectiveFrom = null)
+        {
+            var valuationSchedule = new ValuationSchedule(effectiveFrom, effectiveAt);
+            return new ValuationRequest(
+                recipeId: new ResourceId(scope, recipeCode),
+                metrics: ValuationSpec,
+                valuationSchedule: valuationSchedule,
+                sort: new List<OrderBySpec> {new OrderBySpec(ValuationDateKey, OrderBySpec.SortOrderEnum.Ascending)},
+                portfolioEntityIds: new List<PortfolioEntityId> {new PortfolioEntityId(scope, portfolioCode)},
+                reportCurrency: "USD");
         }
     }
 }
