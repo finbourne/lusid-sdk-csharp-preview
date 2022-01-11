@@ -28,6 +28,8 @@ namespace Lusid.Sdk.Utilities
 
         private static void HandleRetryAction(DelegateResult<IRestResponse> result, int retryCount, Context context)
         {
+            if (Environment.GetEnvironmentVariable("HIDE_INTERNAL_EXCEPTION_RETRY_LOGS") == "true") return;
+                
             Console.WriteLine("An internal exception has occurred. Retrying. " +
                               $"Retry attempt: {retryCount}. Max retry attempts: {MaxRetryAttempts}");
 
