@@ -97,7 +97,6 @@ namespace Lusid.Sdk.Tests.Utilities
                 // Every response fails
                 AddMockHttpResponseToQueue(_httpListener, returnedStatusCode, returnedErrorMessage);
             var retryCount = 0;
-
             RetryConfiguration.RetryPolicy = Policy.Wrap(
                 PollyApiRetryHandler.DefaultFallbackPolicy,
                 Policy
@@ -125,7 +124,6 @@ namespace Lusid.Sdk.Tests.Utilities
                 // Every response fails
                 AddMockHttpResponseToQueue(_httpListener, statusCode: returnedStatusCode, responseContent: "Error that was thrown");
             var retryCount = 0;
-
             RetryConfiguration.RetryPolicy =
                 Policy
                     .HandleResult<IRestResponse>(response => response.StatusCode == (HttpStatusCode) returnedStatusCode)
@@ -279,7 +277,6 @@ namespace Lusid.Sdk.Tests.Utilities
             AddMockHttpResponseToQueue(_httpListener, returnedStatusCode, responseContent: "", timeoutAfterMillis + 10);
             // No timeout on the second call
             AddMockHttpResponseToQueue(_httpListener, returnedStatusCode, responseContent: "");
-
             RetryConfiguration.RetryPolicy = PollyApiRetryHandler.InternalExceptionRetryPolicyWithFallback;
 
             // Calling GetPortfolio or any other API triggers the flow that triggers polly
@@ -298,6 +295,7 @@ namespace Lusid.Sdk.Tests.Utilities
             var newFactory = new LusidApiFactory(new Configuration());
 
             Assert.That(RetryConfiguration.RetryPolicy, Is.Not.Null);
+            Assert.That(RetryConfiguration.RetryPolicy, Is.EqualTo(PollyApiRetryHandler.InternalExceptionRetryPolicyWithFallback));
         }
 
         [Test]
@@ -313,6 +311,7 @@ namespace Lusid.Sdk.Tests.Utilities
         #endregion
         
         #region Async tests
+        
         [Test]
         public void CallGetPortfoliosApiAsync_AsyncPollyIsTriggered_ThrowsWithExceededCallsFallbackPolicy()
         {
@@ -364,6 +363,85 @@ namespace Lusid.Sdk.Tests.Utilities
             Assert.That(retryCount, Is.EqualTo(expectedNumberOfRetries));
             Assert.That(response, Is.Null);
             Assert.That(_apiCallCounter.GetCount(), Is.EqualTo(expectedNumberOfApiCalls));
+        }
+        
+        [Test]
+        [Explicit("This test only works on Windows as when running on a Linux Docker image. " +
+                  "Linux seems to handle aborted connections differently, resulting always in a 200 status rather than 0.")]
+        public async Task CallGetPortfoliosApiAsync_WhenApiResponseStatusCodeSatisfiesRetryCriteria_PollyIsTriggered_Returns0Code()
+        {
+            const int expectedNumberOfApiCalls = 3;
+            for (var i = 0; i < expectedNumberOfApiCalls; i++)
+            {
+                _httpListener.BeginGetContext(result =>
+                {
+                    _apiCallCounter.Increment();
+                    var listener = (HttpListener) result.AsyncState;
+                    // Call EndGetContext to complete the asynchronous operation.
+                    var context = listener.EndGetContext(result);
+
+                    // Obtain a response object.
+                    var response = context.Response;
+
+                    // Abort the response. This returns 0 status code when running on windows.
+                    // Dotnet does not allow specifying a return status code 0, so this is a workaround on windows.
+                    response.Abort();
+                }, _httpListener);
+            }
+
+            RetryConfiguration.AsyncRetryPolicy = PollyApiRetryHandler.InternalExceptionRetryPolicyWithFallbackAsync;
+
+            // Calling GetPortfolio or any other API triggers the flow that triggers polly
+            var sdkResponse = await _apiFactory.Api<IPortfoliosApi>().GetPortfolioAsync("any", "any");
+
+            Assert.That(_apiCallCounter.GetCount(), Is.EqualTo(expectedNumberOfApiCalls));
+            // In the future 0 error codes with throw an error after retries exceeded. This will come in a separate PR.
+            Assert.That(sdkResponse, Is.Null);
+        }
+        
+        // Show that polly retries are triggered on regular API timeouts as well.
+        // Default timeout config is 100000 seconds (1min40s)
+        [Test]
+        public async Task CallGetPortfoliosApiAsync_WhenRequestTimeExceedsTimeoutConfigured_PollyRetryIsStillTriggered()
+        {
+            var timeoutAfterMillis = GlobalConfiguration.Instance.Timeout;
+            const int returnedStatusCode = 200; // Doesn't matter what code is on timeout, will always return 0
+            const int expectedNumberOfApiCalls = 2;
+            // First call will cause a timeout
+            AddMockHttpResponseToQueue(_httpListener, returnedStatusCode, responseContent: "", timeoutAfterMillis + 10);
+            // No timeout on the second call
+            AddMockHttpResponseToQueue(_httpListener, returnedStatusCode, responseContent: "");
+            RetryConfiguration.AsyncRetryPolicy = PollyApiRetryHandler.InternalExceptionRetryPolicyWithFallbackAsync;
+
+            // Calling GetPortfolio or any other API triggers the flow that triggers polly
+            var sdkResponse = await _apiFactory.Api<IPortfoliosApi>().GetPortfolioAsync("any", "any");
+
+            Assert.That(_apiCallCounter.GetCount(), Is.EqualTo(expectedNumberOfApiCalls));
+            // Todo: In the future 0 error codes with throw an error after retries exceeded
+            Assert.That(sdkResponse, Is.Null);
+        }
+        
+        [Test]
+        public void CreateLusidFactory_WhenRetryPolicyIsNull_AssignsDefaultAsyncRetryPolicy()
+        {
+            RetryConfiguration.AsyncRetryPolicy = null;
+
+            var newFactory = new LusidApiFactory(new Configuration());
+
+            Assert.That(
+                RetryConfiguration.AsyncRetryPolicy, 
+                Is.EqualTo(PollyApiRetryHandler.InternalExceptionRetryPolicyWithFallbackAsync));
+        }
+
+        [Test]
+        public void CreateLusidFactory_WhenRetryPolicyIsAlreadyAssigned_ExistingAsyncRetryPolicyIsUsed()
+        {
+            var testPolicy = Policy.HandleResult<IRestResponse>(response => true).RetryAsync();
+
+            RetryConfiguration.AsyncRetryPolicy = testPolicy;
+            var newFactory = new LusidApiFactory(new Configuration());
+
+            Assert.That(RetryConfiguration.AsyncRetryPolicy, Is.EqualTo(testPolicy));
         }
         #endregion
 

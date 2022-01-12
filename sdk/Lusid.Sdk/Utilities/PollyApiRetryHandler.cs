@@ -44,7 +44,7 @@ namespace Lusid.Sdk.Utilities
         /// Retry policy with an action to return the failed response after retries have exceeded.
         /// Use .Wrap() method to combine this policy with your other custom policies
         /// </summary>
-        public static PolicyWrap<IRestResponse> InternalExceptionRetryPolicyWithFallback =>
+        public static readonly PolicyWrap<IRestResponse> InternalExceptionRetryPolicyWithFallback =
             Policy.Wrap(InternalExceptionRetryPolicy, DefaultFallbackPolicy);
 
         /// <summary>
@@ -79,7 +79,7 @@ namespace Lusid.Sdk.Utilities
         /// Retry policy with an action to return the failed response after retries have exceeded.
         /// Use .WrapAsync() method to combine this policy with your other custom policies
         /// </summary>
-        public static AsyncPolicyWrap<IRestResponse> InternalExceptionRetryPolicyWithFallbackAsync =>
+        public static readonly AsyncPolicyWrap<IRestResponse> InternalExceptionRetryPolicyWithFallbackAsync =
             Policy.WrapAsync(InternalExceptionRetryPolicyAsync, DefaultFallbackPolicyAsync);
 
         /// <summary>
