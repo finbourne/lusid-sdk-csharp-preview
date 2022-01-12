@@ -548,7 +548,7 @@ namespace Lusid.Sdk.Tests.Utilities
                 scope,
                 MarketDataKeyRule.QuoteTypeEnum.Price,
                 field: "mid",
-                quoteInterval: "5D");
+                quoteInterval: "1M");
             
             // resetRule is used to locate reset rates such as that for interest rate swaps and swaptions
             var resetRule = new MarketDataKeyRule(
@@ -671,17 +671,25 @@ namespace Lusid.Sdk.Tests.Utilities
             Assert.That(doesNotContainAnyCashBeforeExpiration, Is.True);
         }
         
+        // TODO: requestForUnderlying returns instrument underlying, if any. 
+        // TODO: It is currently used for EquityOption physically-settled lifecycle test.
+        // TODO: In the long term, we should not need this and LUSID auto-adds underlying of
+        // TODO: the option into LUSID upon expiration.
         internal static ValuationRequest CreateValuationRequest(
             string scope,
             string portfolioCode,
             string recipeCode,
             DateTimeOffset effectiveAt,
-            DateTimeOffset? effectiveFrom = null)
+            DateTimeOffset? effectiveFrom = null,
+            bool requestForUnderlying = false) 
         {
+            var valuationSpec = requestForUnderlying
+                ? ValuationSpec.Append(new AggregateSpec("Analytic/default/OnExercise", AggregateSpec.OpEnum.Value)).ToList()
+                : ValuationSpec;
             var valuationSchedule = new ValuationSchedule(effectiveFrom, effectiveAt);
             return new ValuationRequest(
                 recipeId: new ResourceId(scope, recipeCode),
-                metrics: ValuationSpec,
+                metrics: valuationSpec,
                 valuationSchedule: valuationSchedule,
                 sort: new List<OrderBySpec> {new OrderBySpec(ValuationDateKey, OrderBySpec.SortOrderEnum.Ascending)},
                 portfolioEntityIds: new List<PortfolioEntityId> {new PortfolioEntityId(scope, portfolioCode)},
