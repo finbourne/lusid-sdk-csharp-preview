@@ -125,13 +125,13 @@ namespace Lusid.Sdk.Utilities
             // UPSERT instruments and return the upsert response to attain LusidInstrumentIds
             var instrumentID = Guid.NewGuid().ToString();
 
-            var instrumentsIds = instruments.Select(x => (x, x.InstrumentType+instrumentID)).ToList();
+            var instrumentsIds = instruments.Select(x => (x, x.InstrumentType + instrumentID)).ToList();
             
             var definitions = TestDataUtilities.BuildInstrumentUpsertRequest(instrumentsIds);
             if (!equityIdentifier.IsNullOrEmpty())
             {
                 // MERGE into one upsert dictionary of instruments to upsert
-                var equityRequest =   new Dictionary<string, InstrumentDefinition>()
+                var equityRequest = new Dictionary<string, InstrumentDefinition>()
                 {
                     {equityIdentifier, new InstrumentDefinition(
                         equityIdentifier,

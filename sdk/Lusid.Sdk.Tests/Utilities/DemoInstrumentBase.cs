@@ -60,6 +60,21 @@ namespace Lusid.Sdk.Tests.Utilities
             var portfolio = _transactionPortfoliosApi.CreatePortfolio(scope, portfolioRequest);
             Assert.That(portfolio?.Id.Code, Is.EqualTo(portfolioRequest.Code));
 
+            // Book the instrument against the given portfolio scope and code
+            var instrumentID = BookInstrumentToPortfolio(instrument, scope, portfolioRequest.Code);
+
+            return (instrumentID, portfolioRequest.Code);
+        }
+
+        /// <summary>
+        /// Given an instrument, we book this into the portfolio provided.
+        /// We return the instrumentId.
+        /// </summary>
+        protected string BookInstrumentToPortfolio(
+            LusidInstrument instrument,
+            string portfolioScope,
+            string portfolioCode)
+        {
             // BUILD upsert instrument request
             var instrumentID = instrument.InstrumentType + Guid.NewGuid().ToString();
             var instrumentsIds = new List<(LusidInstrument, string)>{(instrument, instrumentID)};
@@ -75,9 +90,9 @@ namespace Lusid.Sdk.Tests.Utilities
 
             // CREATE transaction to book the instrument onto the portfolio via their LusidInstrumentId
             var transactionRequest = TestDataUtilities.BuildTransactionRequest(luids, TestDataUtilities.EffectiveAt);
-            _transactionPortfoliosApi.UpsertTransactions(scope, portfolioRequest.Code, transactionRequest);
-
-            return (instrumentID, portfolioRequest.Code);
+            _transactionPortfoliosApi.UpsertTransactions(portfolioScope, portfolioCode, transactionRequest);
+            
+            return instrumentID;
         }
 
         // UPSERT market data sufficient to price the instrument depending on the model.
