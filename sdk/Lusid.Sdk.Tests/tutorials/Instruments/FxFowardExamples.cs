@@ -148,13 +148,13 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
             var allFxFwdCashFlows = _transactionPortfoliosApi.GetUpsertablePortfolioCashFlows(
                     scope,
                     portfolioCode,
-                effectiveAt,
-                windowStart,
-                windowEnd,
-                null,
-                null,
-                scope,
-                recipeCode)
+                    effectiveAt,
+                    windowStart,
+                    windowEnd,
+                    null,
+                    null, 
+                    scope,
+                    recipeCode)
                 .Values;
 
             // There are exactly two cashflows associated to FX forward (one in each currency) both at maturity.
