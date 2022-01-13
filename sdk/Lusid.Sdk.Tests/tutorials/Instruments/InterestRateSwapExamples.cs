@@ -11,7 +11,8 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
     [TestFixture]
     public class InterestRateSwapExamples: DemoInstrumentBase
     {
-        internal override void CreateAndUpsertMarketDataToLusid(string scope, ModelSelection.ModelEnum model, LusidInstrument instrument)
+        /// <inheritdoc />
+        protected override void CreateAndUpsertMarketDataToLusid(string scope, ModelSelection.ModelEnum model, LusidInstrument instrument)
         {
             // The price of a swap is determined by the price of the fixed leg and floating leg.
             // The price of a floating leg is determined by historic resets rates and projected rates.
@@ -33,8 +34,12 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
             }
         }
 
-        internal override void GetAndValidatePortfolioCashFlows(LusidInstrument instrument, string scope, string portfolioCode,
-            string recipeCode, string instrumentID)
+        /// <inheritdoc />
+        protected override void GetAndValidatePortfolioCashFlows(
+            LusidInstrument instrument,
+            string scope, string portfolioCode,
+            string recipeCode,
+            string instrumentID)
         {
             var swap = (InterestRateSwap) instrument;
             var cashflows = _transactionPortfoliosApi.GetPortfolioCashFlows(
@@ -55,7 +60,7 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
             _portfoliosApi.DeletePortfolio(scope, portfolioCode);
         }
 
-        [LusidFeature("F22-7")]
+        [LusidFeature("F5-1")]
         [Test]
         public void InterestRateSwapCreationAndUpsertionExample()
         {
@@ -89,6 +94,7 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
             _instrumentsApi.DeleteInstrument("ClientInternal", uniqueId);
         }
         
+        [LusidFeature("F10-3")]
         [TestCase(ModelSelection.ModelEnum.SimpleStatic)]
         [TestCase(ModelSelection.ModelEnum.ConstantTimeValueOfMoney)]
         [TestCase(ModelSelection.ModelEnum.Discounting)]
@@ -98,6 +104,7 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
             CallLusidGetValuationEndpoint(irs, model);
         }
         
+        [LusidFeature("F10-3")]
         [TestCase(ModelSelection.ModelEnum.ConstantTimeValueOfMoney)]
         [TestCase(ModelSelection.ModelEnum.Discounting)]
         public void InterestRateSwapInlineValuationExample(ModelSelection.ModelEnum model)

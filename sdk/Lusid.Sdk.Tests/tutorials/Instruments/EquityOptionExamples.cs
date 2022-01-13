@@ -13,7 +13,8 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
     [TestFixture]
     public class EquityOptionExamples: DemoInstrumentBase
     {
-        internal override void CreateAndUpsertMarketDataToLusid(string scope, ModelSelection.ModelEnum model, LusidInstrument option)
+        /// <inheritdoc />
+        protected override void CreateAndUpsertMarketDataToLusid(string scope, ModelSelection.ModelEnum model, LusidInstrument option)
         {
             // UPSERT quote for pricing of the equity option. This quote is understood to be the reset price. 
             // In other words, this is the price of the underlying at the expiration of the equity option.
@@ -57,7 +58,8 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
             }
         }
         
-        internal override void GetAndValidatePortfolioCashFlows(
+        /// <inheritdoc />
+        protected override void GetAndValidatePortfolioCashFlows(
             LusidInstrument instrument,
             string scope,
             string portfolioCode,
@@ -123,6 +125,7 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
             _instrumentsApi.DeleteInstrument("ClientInternal", uniqueId);
         }
         
+        [LusidFeature("F10-3")]
         [TestCase(ModelSelection.ModelEnum.SimpleStatic)]
         [TestCase(ModelSelection.ModelEnum.ConstantTimeValueOfMoney)]
         [TestCase(ModelSelection.ModelEnum.Discounting)]
@@ -133,7 +136,8 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
             var equityOption = InstrumentExamples.CreateExampleEquityOption();
             CallLusidGetValuationEndpoint(equityOption, model);
         }
-        
+
+        [LusidFeature("F10-3")]
         [TestCase(ModelSelection.ModelEnum.ConstantTimeValueOfMoney)]
         [TestCase(ModelSelection.ModelEnum.Discounting)]
         [TestCase(ModelSelection.ModelEnum.Bachelier)]
@@ -250,7 +254,7 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
             // ASSERT portfolio PV is constant for each valuation date.
             // We expect this to be true since we upserted the cashflows back in.
             // That is instrument pv + cashflow = option payoff = = constant for each valuation date.
-            TestDataUtilities.CheckPvIsConstantAcrossDates(valuationAfterUpsertingCashFlows);
+            TestDataUtilities.CheckPvIsConstantAcrossDatesWithinTolerance(valuationAfterUpsertingCashFlows, relativeDifferenceTolerance: 0.0);
     
             // CLEAN up.
             _recipeApi.DeleteConfigurationRecipe(scope, recipeCode);
@@ -384,7 +388,7 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
             // ASSERT portfolio PV is constant for each valuation date.
             // We expect this to be true since we upserted the cashflows back in.
             // That is instrument pv + cashflow = option payoff = = constant for each valuation date.
-            TestDataUtilities.CheckPvIsConstantAcrossDates(valuationAfterUpsertingCashFlows);
+            TestDataUtilities.CheckPvIsConstantAcrossDatesWithinTolerance(valuationAfterUpsertingCashFlows, relativeDifferenceTolerance: 0.0);
     
             // CLEAN up.
             _recipeApi.DeleteConfigurationRecipe(scope, recipeCode);

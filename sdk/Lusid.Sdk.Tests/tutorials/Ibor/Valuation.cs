@@ -178,7 +178,7 @@ namespace Lusid.Sdk.Tests.Tutorials.Ibor
 
             // POPULATE with required market data for valuation of the instruments
             var scope = Guid.NewGuid().ToString();
-            var upsertFxRateRequestreq = TestDataUtilities.BuildFxRateRequest(scope, TestEffectiveAt);
+            var upsertFxRateRequestreq = TestDataUtilities.BuildFxRateRequest(TestEffectiveAt);
             _quotesApi.UpsertQuotes(scope, upsertFxRateRequestreq);
             
             // CREATE and upsert recipe for pricing the portfolio of instruments 
@@ -226,7 +226,7 @@ namespace Lusid.Sdk.Tests.Tutorials.Ibor
             // POPULATE stores with required market data to value Fx-Forward using discounting model
             // Fx rates are upserted for both models
             // Rate curves are upserted for the discounting pricing model
-            var upsertFxRateRequestReq = TestDataUtilities.BuildFxRateRequest(scope, TestEffectiveAt);
+            var upsertFxRateRequestReq = TestDataUtilities.BuildFxRateRequest(TestEffectiveAt);
             var upsertQuoteResponse = _quotesApi.UpsertQuotes(scope, upsertFxRateRequestReq);
             
             Dictionary<string, UpsertComplexMarketDataRequest> complexMarketUpsertRequests = TestDataUtilities.BuildRateCurvesRequests(TestEffectiveAt);

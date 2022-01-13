@@ -11,10 +11,11 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
     [TestFixture]
     public class FxOptionExamples: DemoInstrumentBase
     {
-        internal override void CreateAndUpsertMarketDataToLusid(string scope, ModelSelection.ModelEnum model, LusidInstrument fxOption)
+        /// <inheritdoc />
+        protected override void CreateAndUpsertMarketDataToLusid(string scope, ModelSelection.ModelEnum model, LusidInstrument fxOption)
         {
             // POPULATE with required market data for valuation of the instruments
-            var upsertFxRateRequestreq = TestDataUtilities.BuildFxRateRequest(scope, TestDataUtilities.EffectiveAt);
+            var upsertFxRateRequestreq = TestDataUtilities.BuildFxRateRequest(TestDataUtilities.EffectiveAt);
             var upsertQuoteResponse = _quotesApi.UpsertQuotes(scope, upsertFxRateRequestreq);
             
             ValidateQuoteUpsert(upsertQuoteResponse, upsertFxRateRequestreq.Count);
@@ -43,8 +44,12 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
             }
         }
 
-        internal override void GetAndValidatePortfolioCashFlows(LusidInstrument instrument, string scope, string portfolioCode,
-            string recipeCode, string instrumentID)
+        /// <inheritdoc />
+        protected override void GetAndValidatePortfolioCashFlows(
+            LusidInstrument instrument,
+            string scope, string portfolioCode,
+            string recipeCode,
+            string instrumentID)
         {
             var fxOption = (FxOption) instrument;
             var cashflows = _transactionPortfoliosApi.GetPortfolioCashFlows(
@@ -103,6 +108,7 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
             _instrumentsApi.DeleteInstrument("ClientInternal", uniqueId);
         }
         
+        [LusidFeature("F10-3")]
         [TestCase(ModelSelection.ModelEnum.SimpleStatic)]
         [TestCase(ModelSelection.ModelEnum.ConstantTimeValueOfMoney)]
         [TestCase(ModelSelection.ModelEnum.Discounting)]
@@ -114,6 +120,7 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
             CallLusidGetValuationEndpoint(fxOption, model);
         }
         
+        [LusidFeature("F10-3")]
         [TestCase(ModelSelection.ModelEnum.ConstantTimeValueOfMoney)]
         [TestCase(ModelSelection.ModelEnum.Discounting)]
         [TestCase(ModelSelection.ModelEnum.Bachelier)]

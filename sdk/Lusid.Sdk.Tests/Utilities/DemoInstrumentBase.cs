@@ -9,10 +9,20 @@ namespace Lusid.Sdk.Tests.Utilities
 {
     public abstract class DemoInstrumentBase: TutorialBase
     {
-        internal abstract void CreateAndUpsertMarketDataToLusid(string scope, ModelSelection.ModelEnum model, LusidInstrument instrument);
+        /// <summary>
+        /// Creates and upsert market data to LUSID required to price the instrument.
+        /// Each inheritor is for a different instrument type and hence requires different set of market data. 
+        /// </summary>
+        protected abstract void CreateAndUpsertMarketDataToLusid(string scope, ModelSelection.ModelEnum model, LusidInstrument instrument);
 
-        internal abstract void GetAndValidatePortfolioCashFlows(LusidInstrument instrument, string scope, string portfolioCode, string recipeCode, string instrumentID);
+        /// <summary>
+        /// Get portfolio cashflows specific to that instrument.
+        /// </summary>
+        protected abstract void GetAndValidatePortfolioCashFlows(LusidInstrument instrument, string scope, string portfolioCode, string recipeCode, string instrumentID);
         
+        /// <summary>
+        /// This method "wraps" around GetAndValidatePortfolioCashFlows method to provide scope and recipe etc.
+        /// </summary>
         internal void CallLusidGetPortfolioCashFlowsEndpoint(LusidInstrument instrument, ModelSelection.ModelEnum model)
         {
             var scope = Guid.NewGuid().ToString();
@@ -70,7 +80,7 @@ namespace Lusid.Sdk.Tests.Utilities
         /// Given an instrument, we book this into the portfolio provided.
         /// We return the instrumentId.
         /// </summary>
-        protected string BookInstrumentToPortfolio(
+        private string BookInstrumentToPortfolio(
             LusidInstrument instrument,
             string portfolioScope,
             string portfolioCode)

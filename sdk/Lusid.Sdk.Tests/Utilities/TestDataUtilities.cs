@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using Castle.Core.Internal;
 using Lusid.Sdk.Model;
 using Newtonsoft.Json;
 using NUnit.Framework;
@@ -19,6 +20,7 @@ namespace Lusid.Sdk.Tests.Utilities
         public static string InstrumentName = "Instrument/default/Name";
         public static readonly string ValuationPv = "Valuation/PV/Amount";
         public static readonly string Luid = "Instrument/default/LusidInstrumentId";
+        public static readonly string Currency = "Valuation/PV/Ccy";
         
         // Items to return back on a GetValuation call. 
         public static readonly List<AggregateSpec> ValuationSpec = new List<AggregateSpec>
@@ -27,7 +29,8 @@ namespace Lusid.Sdk.Tests.Utilities
             new AggregateSpec(InstrumentName, AggregateSpec.OpEnum.Value),
             new AggregateSpec(ValuationPvKey, AggregateSpec.OpEnum.Value),
             new AggregateSpec(InstrumentTag, AggregateSpec.OpEnum.Value),
-            new AggregateSpec(Luid, AggregateSpec.OpEnum.Value)
+            new AggregateSpec(Luid, AggregateSpec.OpEnum.Value),
+            new AggregateSpec(Currency, AggregateSpec.OpEnum.Value)
         };
         //    Specific key used to denote cash in LUSID
         public const string LusidCashIdentifier = "Instrument/default/Currency";
@@ -210,16 +213,16 @@ namespace Lusid.Sdk.Tests.Utilities
         }
         
         /// <summary>
-        /// This method upserts JPY/USD and USD/JPY FX quotes for the given effectiveAt date
+        /// This method upserts JPY/USD and USD/JPY FX quotes for the given effectiveAt date.
         /// </summary>
-        public static Dictionary<string, UpsertQuoteRequest> BuildFxRateRequest(string scope, DateTimeOffset effectiveAt) => BuildFxRateRequest(scope, effectiveAt, effectiveAt);
+        public static Dictionary<string, UpsertQuoteRequest> BuildFxRateRequest(DateTimeOffset effectiveAt) => BuildFxRateRequest(effectiveAt, effectiveAt);
 
         /// <summary>
-        /// This method upserts JPY/USD and USD/JPY FX quotes for every day in the date range
+        /// This method upserts JPY/USD and USD/JPY FX quotes for every day in the date range.
         /// </summary>
-        public static Dictionary<string, UpsertQuoteRequest> BuildFxRateRequest(string scope, DateTimeOffset effectiveFrom,  DateTimeOffset effectiveAt, bool useConstantFxRate = false)
+        public static Dictionary<string, UpsertQuoteRequest> BuildFxRateRequest(DateTimeOffset effectiveFrom,  DateTimeOffset effectiveAt, bool useConstantFxRate = false)
         {
-            // CREATE fx quotes and inverse fx rate in the desired date range
+            // CREATE FX quotes and inverse fx rate in the desired date range
             var upsertQuoteRequests = new Dictionary<string, UpsertQuoteRequest>();
             var numberOfDaysBetween = (effectiveAt - effectiveFrom).Days;
             for (var days = 0; days != numberOfDaysBetween + 1; ++days)
@@ -623,17 +626,33 @@ namespace Lusid.Sdk.Tests.Utilities
 
         /// <summary>
         /// Given an aggregation result on a portfolio of instruments,
-        /// we check that on each valuation date, the sum of PV is constant.
+        /// we check that on each valuation date, the pvs are constant within some (relative difference) tolerance)
         /// </summary>
-        internal static void CheckPvIsConstantAcrossDates(ListAggregationResponse result)
+        internal static void CheckPvIsConstantAcrossDatesWithinTolerance(ListAggregationResponse result, double relativeDifferenceTolerance = 0.01)
         {
-            var uniquePvsAcrossDates = result
+            var pvsAcrossDates = result
                 .Data // Access a list of result dictionaries
                 .GroupBy(d => (DateTime) d[ValuationDateKey]) // We group by date
-                .Select(pvGroup => pvGroup.Sum(record => (double) record[ValuationPv])) // We pick up the PV 
-                .Distinct() // Filter for unique values
-                .Count(); //  Count them
-            Assert.That(uniquePvsAcrossDates, Is.EqualTo(1)); // If true, this means the PV was constant across the valuation dates
+                .Select(pvGroup => pvGroup.Sum(record => (double) record[ValuationPv])); // we pick up the PV
+
+            var isWithinTolerance = ValuesWithinARelativeDiffTolerance(pvsAcrossDates, relativeDifferenceTolerance);
+            
+            // If true, this means the PV is constant across the valuation dates within given tolerance
+            Assert.That(isWithinTolerance, Is.True);
+        }
+        
+        /// <summary>
+        /// Returns true if all values are within 1% (by default) of the first value.
+        /// </summary>
+        internal static bool ValuesWithinARelativeDiffTolerance(IEnumerable<double> values, double relativeDifferenceTolerance = 0.01)
+        {
+            if (values.IsNullOrEmpty())
+            {
+                throw new ArgumentException("Developer error: We expectd at least one element in the list of numbers");
+            }
+            
+            var firstEntry = values.First();
+            return values.All(v => Math.Abs( (v - firstEntry) / firstEntry) <= relativeDifferenceTolerance);
         }
         
         /// <summary>
