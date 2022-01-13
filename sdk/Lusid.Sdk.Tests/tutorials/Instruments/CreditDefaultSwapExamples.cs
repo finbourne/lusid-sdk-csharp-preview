@@ -12,11 +12,12 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
     [TestFixture]
     public class CreditDefaultSwapExamples: DemoInstrumentBase
     {
-        internal override void CreateAndUpsertMarketDataToLusid(string scope, ModelSelection.ModelEnum model, LusidInstrument instrument)
+        /// <inheritdoc />
+        protected override void CreateAndUpsertMarketDataToLusid(string scope, ModelSelection.ModelEnum model, LusidInstrument instrument)
         {
             // POPULATE with required market data for valuation of the instruments
             CreditDefaultSwap cds = (CreditDefaultSwap) instrument;
-            var upsertFxRateRequestReq = TestDataUtilities.BuildFxRateRequest(scope, TestDataUtilities.EffectiveAt);
+            var upsertFxRateRequestReq = TestDataUtilities.BuildFxRateRequest(TestDataUtilities.EffectiveAt);
             var upsertFxQuoteResponse = _quotesApi.UpsertQuotes(scope, upsertFxRateRequestReq);
             ValidateQuoteUpsert(upsertFxQuoteResponse, upsertFxRateRequestReq.Count);
 
@@ -51,7 +52,8 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
             ValidateComplexMarketDataUpsert(upsertComplexMarketDataResponse, upsertComplexMarketDataRequest.Count);
         }
 
-        internal override void GetAndValidatePortfolioCashFlows(LusidInstrument instrument, string scope, string portfolioCode, string recipeCode, string instrumentID)
+        /// <inheritdoc />
+        protected override void GetAndValidatePortfolioCashFlows(LusidInstrument instrument, string scope, string portfolioCode, string recipeCode, string instrumentID)
         {
             CreditDefaultSwap cds = (CreditDefaultSwap) instrument;
             var maturity = cds.MaturityDate;
@@ -153,6 +155,7 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
             _instrumentsApi.DeleteInstrument("ClientInternal", uniqueId);
         }
         
+        [LusidFeature("F10-3")]
         [TestCase(ModelSelection.ModelEnum.SimpleStatic)]
         [TestCase(ModelSelection.ModelEnum.ConstantTimeValueOfMoney)]
         [TestCase(ModelSelection.ModelEnum.Discounting)]
@@ -162,6 +165,7 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
             CallLusidGetValuationEndpoint(cds, model);
         }
         
+        [LusidFeature("F10-3")]
         [TestCase(ModelSelection.ModelEnum.ConstantTimeValueOfMoney)]
         [TestCase(ModelSelection.ModelEnum.Discounting)]
         public void CreditDefaultSwapInlineValuationExample(ModelSelection.ModelEnum model)
@@ -178,6 +182,7 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
             CallLusidGetPortfolioCashFlowsEndpoint(cds, model);
         }
 
+        [LusidFeature("F10-3")]
         [TestCase("2020-06-05T00:00:00.0000000+00:00")] // calculate upfront charge for cds contract
         public void CreditDefaultSwapIsdaCdsValuationExample(string sTestNow)
         {

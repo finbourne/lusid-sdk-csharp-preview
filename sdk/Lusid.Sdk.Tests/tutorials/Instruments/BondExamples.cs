@@ -13,7 +13,8 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
     {
         private static bool IsZeroCouponBond(Bond bond) => bond.FlowConventions.PaymentFrequency == "0Invalid";
         
-        internal override void CreateAndUpsertMarketDataToLusid(string scope, ModelSelection.ModelEnum model, LusidInstrument bond)
+        /// <inheritdoc />
+        protected override void CreateAndUpsertMarketDataToLusid(string scope, ModelSelection.ModelEnum model, LusidInstrument bond)
         {
             if (model != ModelSelection.ModelEnum.ConstantTimeValueOfMoney)
             {
@@ -26,7 +27,8 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
             }
         }
 
-        internal override void GetAndValidatePortfolioCashFlows(
+        /// <inheritdoc />
+        protected override void GetAndValidatePortfolioCashFlows(
             LusidInstrument instrument,
             string scope,
             string portfolioCode,
@@ -99,7 +101,7 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
             _instrumentsApi.DeleteInstrument("ClientInternal", uniqueId); 
         }
         
-        [LusidFeature("F22-5")]
+        [LusidFeature("F5-7")]
         [Test]
         public void ZeroCouponBondCreationAndUpsertionExample()
         {
@@ -162,6 +164,7 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
             _instrumentsApi.DeleteInstrument("ClientInternal", uniqueId);
         }
         
+        [LusidFeature("F10-3")]
         [TestCase(ModelSelection.ModelEnum.SimpleStatic)]
         [TestCase(ModelSelection.ModelEnum.ConstantTimeValueOfMoney)]
         [TestCase(ModelSelection.ModelEnum.Discounting)]
@@ -172,6 +175,7 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
             CallLusidGetValuationEndpoint(bond, modelName);
         }
         
+        [LusidFeature("F10-3")]
         [TestCase(ModelSelection.ModelEnum.ConstantTimeValueOfMoney,false)]
         [TestCase(ModelSelection.ModelEnum.ConstantTimeValueOfMoney,true)]
         [TestCase(ModelSelection.ModelEnum.Discounting,false)]

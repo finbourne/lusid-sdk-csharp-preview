@@ -11,11 +11,14 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
     [TestFixture]
     public class FutureExamples: DemoInstrumentBase
     {
-        internal override void CreateAndUpsertMarketDataToLusid(string scope, ModelSelection.ModelEnum model, LusidInstrument instrument)
+        /// <inheritdoc />
+        protected override void CreateAndUpsertMarketDataToLusid(string scope, ModelSelection.ModelEnum model, LusidInstrument instrument)
         {
+            // Nothing to upsert specifically for Futures.
         }
 
-        internal override void GetAndValidatePortfolioCashFlows(LusidInstrument instrument, string scope, string portfolioCode, string recipeCode, string instrumentID)
+        /// <inheritdoc />
+        protected override void GetAndValidatePortfolioCashFlows(LusidInstrument instrument, string scope, string portfolioCode, string recipeCode, string instrumentID)
         {
             var cashflows = _transactionPortfoliosApi.GetPortfolioCashFlows(
                 scope: scope,
@@ -73,6 +76,7 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
             _instrumentsApi.DeleteInstrument("ClientInternal", uniqueId); 
         }
         
+        [LusidFeature("F10-1")]
         [TestCase(ModelSelection.ModelEnum.SimpleStatic)]
         public void FutureValuationExample(ModelSelection.ModelEnum model)
         {

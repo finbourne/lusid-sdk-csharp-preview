@@ -11,7 +11,8 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
     [TestFixture]
     public class TermDepositExamples: DemoInstrumentBase
     {
-        internal override void CreateAndUpsertMarketDataToLusid(string scope, ModelSelection.ModelEnum model, LusidInstrument instrument)
+        /// <inheritdoc />
+        protected override void CreateAndUpsertMarketDataToLusid(string scope, ModelSelection.ModelEnum model, LusidInstrument instrument)
         {
             if (model == ModelSelection.ModelEnum.Discounting)
             {
@@ -24,7 +25,8 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
             }
         }
 
-        internal override void GetAndValidatePortfolioCashFlows(LusidInstrument instrument, string scope, string portfolioCode,
+        /// <inheritdoc />
+        protected override void GetAndValidatePortfolioCashFlows(LusidInstrument instrument, string scope, string portfolioCode,
             string recipeCode, string instrumentID)
         {
             var termDeposit = (TermDeposit) instrument;
@@ -44,7 +46,7 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
             _portfoliosApi.DeletePortfolio(scope, portfolioCode);
         }
 
-        [LusidFeature("F22-12")]
+        [LusidFeature("F5-8")]
         [Test]
         public void TermDepositCreationAndUpsertionExample()
         {
@@ -85,6 +87,7 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
             _instrumentsApi.DeleteInstrument("ClientInternal", uniqueId);
         }
         
+        [LusidFeature("F10-3")]
         [TestCase(ModelSelection.ModelEnum.SimpleStatic)]
         [TestCase(ModelSelection.ModelEnum.ConstantTimeValueOfMoney)]
         [TestCase(ModelSelection.ModelEnum.Discounting)]
@@ -94,6 +97,7 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
             CallLusidGetValuationEndpoint(termDeposit, model);
         }
         
+        [LusidFeature("F10-3")]
         [TestCase(ModelSelection.ModelEnum.ConstantTimeValueOfMoney)]
         [TestCase(ModelSelection.ModelEnum.Discounting)]
         public void TermDepositInlineValuationExample(ModelSelection.ModelEnum model)

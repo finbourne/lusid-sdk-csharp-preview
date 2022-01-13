@@ -150,7 +150,7 @@ namespace Lusid.Sdk.Utilities
             _transactionPortfoliosApi.UpsertTransactions(scope, portfolioCode, transactionRequest);
 
             // UPSERT FX quotes and rate curves required pricing instruments
-            var upsertFxRateRequestReq = TestDataUtilities.BuildFxRateRequest(scope, effectiveFrom, effectiveAt, useConstantFxRate);
+            var upsertFxRateRequestReq = TestDataUtilities.BuildFxRateRequest(effectiveFrom, effectiveAt, useConstantFxRate);
             var upsertQuoteResponse = _quotesApi.UpsertQuotes(scope, upsertFxRateRequestReq);
             
             ValidateQuoteUpsert(upsertQuoteResponse, upsertFxRateRequestReq.Count);

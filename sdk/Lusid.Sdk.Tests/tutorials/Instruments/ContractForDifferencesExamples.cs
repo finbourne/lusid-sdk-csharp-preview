@@ -11,7 +11,8 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
     [TestFixture]
     public class ContractForDifferencesExamples: DemoInstrumentBase
     {
-        internal override void CreateAndUpsertMarketDataToLusid(string scope,ModelSelection.ModelEnum model, LusidInstrument cfd)
+        /// <inheritdoc />
+        protected override void CreateAndUpsertMarketDataToLusid(string scope,ModelSelection.ModelEnum model, LusidInstrument cfd)
         {
             var equityRequest = TestDataUtilities.BuildEquityQuoteRequest(
                 instrumentId: "some-id",
@@ -32,7 +33,8 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
             }
         }
 
-        internal override void GetAndValidatePortfolioCashFlows(LusidInstrument instrument, string scope, string portfolioCode,
+        /// <inheritdoc />
+        protected override void GetAndValidatePortfolioCashFlows(LusidInstrument instrument, string scope, string portfolioCode,
             string recipeCode, string instrumentID)
         {
             var cfd = (ContractForDifference) instrument;
@@ -90,6 +92,7 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
             _instrumentsApi.DeleteInstrument("ClientInternal", uniqueId);
         }
 
+        [LusidFeature("F10-3")]
         [TestCase(ModelSelection.ModelEnum.SimpleStatic)]
         [TestCase(ModelSelection.ModelEnum.ConstantTimeValueOfMoney)]
         [TestCase(ModelSelection.ModelEnum.Discounting)]
@@ -99,6 +102,7 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
             CallLusidGetValuationEndpoint(cfd, model);
         }
 
+        [LusidFeature("F10-3")]
         [TestCase(ModelSelection.ModelEnum.ConstantTimeValueOfMoney)]
         [TestCase(ModelSelection.ModelEnum.Discounting)]
         public void CfdInlineValuationExample(ModelSelection.ModelEnum model)

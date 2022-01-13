@@ -12,10 +12,11 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
     [TestFixture]
     public class FxFowardExamples: DemoInstrumentBase
     {
-        internal override void CreateAndUpsertMarketDataToLusid(string scope, ModelSelection.ModelEnum model, LusidInstrument instrument)
+        /// <inheritdoc />
+        protected override void CreateAndUpsertMarketDataToLusid(string scope, ModelSelection.ModelEnum model, LusidInstrument instrument)
         {
             // POPULATE with required market data for valuation of the instruments
-            var upsertFxRateRequestReq = TestDataUtilities.BuildFxRateRequest(scope, TestDataUtilities.EffectiveAt);
+            var upsertFxRateRequestReq = TestDataUtilities.BuildFxRateRequest(TestDataUtilities.EffectiveAt);
             var upsertQuoteResponse = _quotesApi.UpsertQuotes(scope, upsertFxRateRequestReq);
             ValidateQuoteUpsert(upsertQuoteResponse, upsertFxRateRequestReq.Count);
 
@@ -27,7 +28,8 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
             }
         }
 
-        internal override void GetAndValidatePortfolioCashFlows(LusidInstrument instrument, string scope, string portfolioCode, string recipeCode, string instrumentID)
+        /// <inheritdoc />
+        protected override void GetAndValidatePortfolioCashFlows(LusidInstrument instrument, string scope, string portfolioCode, string recipeCode, string instrumentID)
         {
             var fxForward = (FxForward) instrument;
             var cashflows = _transactionPortfoliosApi.GetPortfolioCashFlows(
@@ -47,7 +49,7 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
             _portfoliosApi.DeletePortfolio(scope, portfolioCode);
         }
 
-        [LusidFeature("F22-1")]
+        [LusidFeature("F5-2")]
         [Test]
         public void FxForwardCreationAndUpsertionExample()
         {
@@ -83,6 +85,7 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
             _instrumentsApi.DeleteInstrument("ClientInternal", uniqueId); 
         }
         
+        [LusidFeature("F10-3")]
         [TestCase(ModelSelection.ModelEnum.ConstantTimeValueOfMoney)]
         [TestCase(ModelSelection.ModelEnum.Discounting)]
         public void FxForwardValuationExample(ModelSelection.ModelEnum model)
@@ -91,6 +94,7 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
             CallLusidGetValuationEndpoint(fxForward, model);
         }
         
+        [LusidFeature("F10-3")]
         [TestCase(ModelSelection.ModelEnum.ConstantTimeValueOfMoney)]
         [TestCase(ModelSelection.ModelEnum.Discounting)]
         public void FxForwardInlineValuationExample(ModelSelection.ModelEnum model)
@@ -107,8 +111,14 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
             CallLusidGetPortfolioCashFlowsEndpoint(fxForward, model);
         }
         
-        [Test]
-        public void LifeCycleManagementForFxForward()
+        /// <summary>
+        /// Lifecycle management of FX Forwards
+        /// For deliverable FX Forwards, we expected conservation of PV (under CTVoM model) 
+        /// i.e. (1) before maturity pv(FX forward) and (2) after maturity: pv(cash in domestic currency)
+        /// to be the same numerically.
+        /// </summary>
+        [TestCase(ModelSelection.ModelEnum.ConstantTimeValueOfMoney)]
+        public void LifeCycleManagementForDeliverableFxForward(ModelSelection.ModelEnum model)
         {
             // CREATE FX Forward
             var fxForward = (FxForward) InstrumentExamples.CreateExampleFxForward(isNdf: false);
@@ -120,24 +130,19 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
             // CREATE portfolio and add instrument to the portfolio
             var scope = Guid.NewGuid().ToString();
             var (instrumentID, portfolioCode) = CreatePortfolioAndInstrument(scope, fxForward);
-        
+            
             // UPSERT FX Forward to portfolio and populating stores with required market data - use a constant FX rate USD/JPY = 150.
             var effectiveAt = windowStart;
-            AddInstrumentsTransactionPortfolioAndPopulateRequiredMarketData(
-                scope, 
-                portfolioCode,
-                windowStart,
-                windowEnd,
-                new List<LusidInstrument>(){fxForward},
+            var upsertFxRateRequestReq = TestDataUtilities.BuildFxRateRequest(
+                effectiveFrom: windowStart,
+                effectiveAt: windowEnd,
                 useConstantFxRate: true);
+            
+            var upsertQuoteResponse = _quotesApi.UpsertQuotes(scope, upsertFxRateRequestReq);
+            ValidateQuoteUpsert(upsertQuoteResponse, upsertFxRateRequestReq.Count);
 
-            // CREATE and upsert CTVoM recipe specifying discount pricing model
-            var modelRecipeCode = "CTVoMRecipe";
-            CreateAndUpsertRecipe(
-                modelRecipeCode,
-                scope,
-                ModelSelection.ModelEnum.ConstantTimeValueOfMoney,
-                windowValuationOnInstrumentStartEnd: true);
+            // CREATE recipe to price the portfolio with
+            var recipeCode = CreateAndUpsertRecipe(scope, model, windowValuationOnInstrumentStartEnd: true);
 
             // GET all upsertable cashflows (transactions) for the FX Forward
             var allFxFwdCashFlows = _transactionPortfoliosApi.GetUpsertablePortfolioCashFlows(
@@ -149,7 +154,7 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
                 null,
                 null,
                 scope,
-                modelRecipeCode)
+                recipeCode)
                 .Values;
 
             // There are exactly two cashflows associated to FX forward (one in each currency) both at maturity.
@@ -159,38 +164,23 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
             Assert.That(allFxFwdCashFlows.Select(c => c.TransactionDate).Distinct().Count(), Is.EqualTo(1));
             var cashFlowDate = allFxFwdCashFlows.First().TransactionDate;
             
-            // CREATE valuation schedule 2 days before, day of and 2 days after the cashflows. 
-            var valuationSchedule = new ValuationSchedule(
-                effectiveAt: cashFlowDate.AddDays(2).ToString("o"),
-                effectiveFrom: cashFlowDate.AddDays(-2).ToString("o"));
-            
             // CREATE valuation request for this FX Forward portfolio,
             // where the valuation schedule covers before, at and after the expiration of the FX Forward. 
-            var valuationRequest = new ValuationRequest(
-                new ResourceId(scope, modelRecipeCode),
-                portfolioEntityIds: new List<PortfolioEntityId> {new PortfolioEntityId(scope, portfolioCode)},
-                valuationSchedule: valuationSchedule,
-                metrics: TestDataUtilities.ValuationSpec,
-                groupBy:  null,
-                sort:  null,
-                asAt: null,
-                reportCurrency: "USD");
+            var valuationRequest = TestDataUtilities.CreateValuationRequest(
+                scope,
+                portfolioCode,
+                recipeCode,
+                effectiveAt: cashFlowDate.AddDays(5),
+                effectiveFrom: cashFlowDate.AddDays(-5));
             
             // CALL GetValuation before upserting back the cashflows. We check that when the FX Forward has expired, the PV is zero.
-            var valuationBeforeAndAfterExpirationOfFxForward = _aggregationApi.GetValuation(valuationRequest).Data;
-            foreach (var valuationResult in valuationBeforeAndAfterExpirationOfFxForward)
-            {
-                var date = (DateTime) valuationResult[TestDataUtilities.ValuationDateKey];
-                var fxForwardPv = (double) valuationResult[TestDataUtilities.ValuationPv];
-                if (date < fxForward.MaturityDate)
-                {
-                    Assert.That(fxForwardPv, Is.Not.EqualTo(0).Within(1e-12));
-                }
-                else
-                {
-                    Assert.That(fxForwardPv, Is.EqualTo(0).Within(1e-12));
-                }
-            }
+            var valuationBeforeAndAfterExpirationOfFxForward = _aggregationApi.GetValuation(valuationRequest);
+            TestDataUtilities.CheckNoCashPositionsInValuationResults(
+                valuationBeforeAndAfterExpirationOfFxForward,
+                fxForward.DomCcy);
+            TestDataUtilities.CheckNonZeroPvBeforeMaturityAndZeroAfter(
+                valuationBeforeAndAfterExpirationOfFxForward,
+                fxForward.MaturityDate);
 
             // UPSERT the cashflows back into LUSID. We first populate the cashflow transactions with unique IDs.
             var upsertCashFlowTransactions = PortfolioCashFlows.PopulateCashFlowTransactionWithUniqueIds(allFxFwdCashFlows, fxForward.DomCcy);
@@ -209,19 +199,17 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
             var pvsInUsd = resultsGroupedByDate
                 .Select(pvGroup => pvGroup.Sum(record =>
                 {
-                    var fxRate = ((string) record["Valuation/PV/Ccy"]).Equals("JPY") ? 1m/150 : 1;
-                    return Convert.ToDecimal(record[TestDataUtilities.ValuationPv]) * fxRate;
+                    var fxRate = ((string) record[TestDataUtilities.Currency]).Equals("JPY") ? 1.0/150 : 1;
+                    return Convert.ToDouble(record[TestDataUtilities.ValuationPv]) * fxRate;
                 }));
 
-            // ASSERT portfolio PV is constant over time within a tolerance
-            var uniquePvsAcrossDates = pvsInUsd
-                .Select(pv => Math.Round(pv, 12))
-                .Distinct()
-                .ToList();
-            Assert.That(uniquePvsAcrossDates.Count, Is.EqualTo(1));
+            // ASSERT portfolio PV is constant over time within a tolerance (so conversation of money)
+            TestDataUtilities.ValuesWithinARelativeDiffTolerance(pvsInUsd);
             
             // CLEAN up.
-            _recipeApi.DeleteConfigurationRecipe(scope, modelRecipeCode);
+            _recipeApi.DeleteConfigurationRecipe(scope, recipeCode);
+            _instrumentsApi.DeleteInstrument("ClientInternal", instrumentID);
+            _portfoliosApi.DeletePortfolio(scope, portfolioCode);
         }
     }
 }
