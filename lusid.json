@@ -9,7 +9,7 @@
       "url": "https://www.finbourne.com",
       "email": "info@finbourne.com"
     },
-    "version": "0.11.3886",
+    "version": "0.11.3888",
     "x-logo": {
       "url": "https://www.lusid.com/app/assets/logo_white.png",
       "backgroundColor": "#415464"
@@ -17,7 +17,7 @@
   },
   "servers": [
     {
-      "url": "http://local-unit-test-server.lusid.com:62646"
+      "url": "http://local-unit-test-server.lusid.com:55610"
     }
   ],
   "paths": {
@@ -69252,6 +69252,21 @@
                 "type": "number",
                 "description": "The recovery rate in default.",
                 "format": "double"
+              },
+              "referenceDate": {
+                "type": "string",
+                "description": "If tenors are provided, this is the date against which the tenors will be resolved.\r\nThis is of importance to CDX spread quotes, which are usually quoted in tenors relative to the CDX start date.\r\nIn this case, the ReferenceDate would be equal to the CDX start date, and the BaseDate would be the date for which the spreads are valid.\r\nIf not provided, this defaults to the BaseDate of the curve.",
+                "format": "date-time",
+                "nullable": true
+              },
+              "maturities": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "format": "date-time"
+                },
+                "description": "The maturity dates for which the rates apply.\r\nEither tenors or maturities should be provided, not both.",
+                "nullable": true
               },
               "marketDataType": {
                 "enum": [
