@@ -313,6 +313,28 @@ namespace Lusid.Sdk.Tests.Utilities
         #region Async tests
         
         [Test]
+        public async Task CallGetPortfoliosApiAsync_WhenHttpStatusIs200AndRetryConditionIsNotSatisfied_NoPollyRetryIsTriggered()
+        {
+            // It should do nothing when response code is 200
+            const int expectedStatusCode = 200;
+            const int expectedNumberOfApiCalls = 1;
+            // Add the next response returned by api
+            AddMockHttpResponseToQueue(
+                _httpListener, 
+                expectedStatusCode, 
+                responseContent: "{\"some\": \"JsonResponseHere\"}");
+                
+            RetryConfiguration.AsyncRetryPolicy = PollyApiRetryHandler.InternalExceptionRetryPolicyWithFallbackAsync;
+
+            // TODO: This will still fail at deserialization, which currently is not handled and returns null.
+            // Will be done under a different PR. Response string will also be changed.
+            var sdkResponse = await _apiFactory.Api<IPortfoliosApi>().GetPortfolioAsync("any", "any");
+            
+            // Api call should be just called once
+            Assert.That(_apiCallCounter.GetCount(), Is.EqualTo(expectedNumberOfApiCalls));
+        }
+        
+        [Test]
         public void CallGetPortfoliosApiAsync_AsyncPollyIsTriggered_ThrowsWithExceededCallsFallbackPolicy()
         {
             const int returnedStatusCode = 499;
