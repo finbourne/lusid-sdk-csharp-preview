@@ -38,6 +38,11 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
                 upsertComplexMarketDataRequest.Add("discount_curve", TestDataUtilities.BuildOisCurveRequest(TestDataUtilities.EffectiveAt, "USD"));
                 upsertComplexMarketDataRequest.Add("6M_rate_Curve", TestDataUtilities.Build6MRateCurveRequest(TestDataUtilities.EffectiveAt, "USD"));
             }
+            if (model == ModelSelection.ModelEnum.BlackScholes || model == ModelSelection.ModelEnum.Bachelier)
+            {
+                var volatility = (model == ModelSelection.ModelEnum.BlackScholes) ? 0.2m : 10m;
+                upsertComplexMarketDataRequest.Add("VolSurface", TestDataUtilities.ConstantVolatilitySurfaceRequest(TestDataUtilities.EffectiveAt, instrument, model, volatility));
+            }
             
             if(upsertComplexMarketDataRequest.Any())
             {
@@ -47,9 +52,26 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
         }
 
         /// <inheritdoc />
-        protected override void GetAndValidatePortfolioCashFlows(LusidInstrument instrument, string scope, string portfolioCode,
-            string recipeCode, string instrumentID)
+        protected override void GetAndValidatePortfolioCashFlows(
+            LusidInstrument instrument,
+            string scope,
+            string portfolioCode,
+            string recipeCode,
+            string instrumentID)
         {
+            var swaption = (InterestRateSwaption) instrument;
+            var cashflows = _transactionPortfoliosApi.GetPortfolioCashFlows(
+                scope: scope,
+                code: portfolioCode,
+                effectiveAt: TestDataUtilities.EffectiveAt,
+                windowStart: swaption.StartDate.AddDays(-3),
+                windowEnd: swaption.Swap.MaturityDate.AddDays(3),
+                asAt:null,
+                filter:null,
+                recipeIdScope: scope,
+                recipeIdCode: recipeCode).Values;
+            
+            Assert.That(cashflows.Count, Is.GreaterThanOrEqualTo(1));
         }
 
         [LusidFeature("F22-9")]
@@ -92,6 +114,8 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
         [TestCase(ModelSelection.ModelEnum.SimpleStatic)]
         [TestCase(ModelSelection.ModelEnum.ConstantTimeValueOfMoney)]
         [TestCase(ModelSelection.ModelEnum.Discounting)]
+        [TestCase(ModelSelection.ModelEnum.Bachelier)]
+        [TestCase(ModelSelection.ModelEnum.BlackScholes)]
         public void InterestRateSwaptionValuationExample(ModelSelection.ModelEnum model)
         {
             var swaption = InstrumentExamples.CreateExampleInterestRateSwaption();
@@ -101,6 +125,8 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
         [LusidFeature("F10-3")]
         [TestCase(ModelSelection.ModelEnum.ConstantTimeValueOfMoney)]
         [TestCase(ModelSelection.ModelEnum.Discounting)]
+        [TestCase(ModelSelection.ModelEnum.Bachelier)]
+        [TestCase(ModelSelection.ModelEnum.BlackScholes)]
         public void InterestRateSwaptionInlineValuationExample(ModelSelection.ModelEnum model)
         {
             var swaption = InstrumentExamples.CreateExampleInterestRateSwaption();

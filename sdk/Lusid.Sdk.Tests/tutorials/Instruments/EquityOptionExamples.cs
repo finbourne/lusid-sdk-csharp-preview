@@ -79,10 +79,6 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
                 recipeIdCode: recipeCode).Values;
             
             Assert.That(cashflows.Count, Is.EqualTo(1));
-
-            // CLEAN up - delete instrument and portfolio
-            _instrumentsApi.DeleteInstrument("ClientInternal", instrumentID);
-            _portfoliosApi.DeletePortfolio(scope, portfolioCode);
         }
 
         [LusidFeature("F22-11")]
