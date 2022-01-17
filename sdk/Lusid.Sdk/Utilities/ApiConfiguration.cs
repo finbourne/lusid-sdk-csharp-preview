@@ -83,7 +83,7 @@ namespace Lusid.Sdk.Utilities
                 {
                     missingConfig.Add("ApiUrl");
                 }
-                return missingConfig; // in case PAC is to be used we don't care about the other properties
+                return missingConfig; // in case PAT is to be used we don't care about the other properties
             }
 
             if (string.IsNullOrEmpty(TokenUrl))

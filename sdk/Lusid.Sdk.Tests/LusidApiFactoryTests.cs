@@ -337,7 +337,7 @@ namespace Lusid.Sdk.Tests
         
         [TestCase(1, 10)]
         [TestCase(100, 25, Explicit = true)]
-        public void Multi_Threaded_ApiFactory_Tasks_WithPACToken(int quoteCount, int threadCount)
+        public void Multi_Threaded_ApiFactory_Tasks_WithPersonalAccessToken(int quoteCount, int threadCount)
         {
             var config = ApiConfigurationBuilder.Build(null);
             var provider = new PersonalAccessTokenProvider(config.PersonalAccessToken);
