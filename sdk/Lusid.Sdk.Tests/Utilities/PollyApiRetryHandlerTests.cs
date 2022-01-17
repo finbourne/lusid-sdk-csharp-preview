@@ -20,12 +20,12 @@ namespace Lusid.Sdk.Tests.Utilities
         private readonly Policy<IRestResponse> _initialRetryPolicy = RetryConfiguration.RetryPolicy;
         private HttpListener _httpListener;
         private const string ListenerUriPrefix = "http://localhost:4444/";
-        private readonly Counter _apiCallCounter = new Counter();
+        private int _apiCallCount;
 
         [SetUp]
         public void SetUp()
         {
-            _apiCallCounter.ResetCount();
+            _apiCallCount = 0;
             
             _httpListener = new HttpListener();
             _httpListener.Prefixes.Add(ListenerUriPrefix);
@@ -61,7 +61,7 @@ namespace Lusid.Sdk.Tests.Utilities
             Assert.That(exception.ErrorContent, Is.EqualTo("{\"some\": \"JsonResponseHere\"}"));
             Assert.That(exception.ErrorCode, Is.EqualTo(expectedStatusCode));
             // Api was called just once, no retries
-            Assert.That(_apiCallCounter.GetCount(), Is.EqualTo(expectedNumberOfApiCalls));
+            Assert.That(_apiCallCount, Is.EqualTo(expectedNumberOfApiCalls));
         }
 
         [Test]
@@ -83,7 +83,7 @@ namespace Lusid.Sdk.Tests.Utilities
             var sdkResponse = _apiFactory.Api<IPortfoliosApi>().GetPortfolio("any", "any");
             
             // Api call should be just called once
-            Assert.That(_apiCallCounter.GetCount(), Is.EqualTo(expectedNumberOfApiCalls));
+            Assert.That(_apiCallCount, Is.EqualTo(expectedNumberOfApiCalls));
         }
 
         [Test]
@@ -109,7 +109,7 @@ namespace Lusid.Sdk.Tests.Utilities
             );
 
             Assert.That(retryCount, Is.EqualTo(expectedNumberOfRetries));
-            Assert.That(_apiCallCounter.GetCount(), Is.EqualTo(expectedNumberOfApiCalls));
+            Assert.That(_apiCallCount, Is.EqualTo(expectedNumberOfApiCalls));
             // Todo: In the future 0 error codes with throw an error after retries exceeded
             Assert.That(exception.ErrorContent, Is.EqualTo(returnedErrorMessage));
         }
@@ -133,7 +133,7 @@ namespace Lusid.Sdk.Tests.Utilities
             var response = _apiFactory.Api<IPortfoliosApi>().GetPortfolio("any", "any");
 
             Assert.That(retryCount, Is.EqualTo(expectedNumberOfRetries));
-            Assert.That(_apiCallCounter.GetCount(), Is.EqualTo(expectedNumberOfApiCalls));
+            Assert.That(_apiCallCount, Is.EqualTo(expectedNumberOfApiCalls));
             // Todo: In the future 0 error codes with throw an error after retries exceeded
             Assert.That(response, Is.Null);
         }
@@ -163,7 +163,7 @@ namespace Lusid.Sdk.Tests.Utilities
             Assert.That(retryCount, Is.EqualTo(expectedNumberOfRetries));
             // Todo: In the future 0 error codes with throw an error after retries exceeded
             Assert.That(sdkResponse, Is.Null);
-            Assert.That(_apiCallCounter.GetCount(), Is.EqualTo(expectedNumberOfApiCalls));
+            Assert.That(_apiCallCount, Is.EqualTo(expectedNumberOfApiCalls));
         }
 
         // Example of how an exponential backoff can be used with Polly
@@ -192,7 +192,7 @@ namespace Lusid.Sdk.Tests.Utilities
             var sdkResponse = _apiFactory.Api<IPortfoliosApi>().GetPortfolio("any", "any");
 
             Assert.That(retryCount, Is.EqualTo(expectedNumberOfRetries));
-            Assert.That(_apiCallCounter.GetCount(), Is.EqualTo(expectedNumberOfApiCalls));
+            Assert.That(_apiCallCount, Is.EqualTo(expectedNumberOfApiCalls));
             // Todo: In the future 0 error codes with throw an error after retries exceeded
             Assert.That(sdkResponse, Is.Null);
         }
@@ -207,7 +207,7 @@ namespace Lusid.Sdk.Tests.Utilities
             {
                 _httpListener.BeginGetContext(result =>
                 {
-                    _apiCallCounter.Increment();
+                    _apiCallCount++;
                     var listener = (HttpListener) result.AsyncState;
                     // Call EndGetContext to complete the asynchronous operation.
                     var context = listener.EndGetContext(result);
@@ -226,7 +226,7 @@ namespace Lusid.Sdk.Tests.Utilities
             // Calling GetPortfolio or any other API triggers the flow that triggers polly
             var sdkResponse = _apiFactory.Api<IPortfoliosApi>().GetPortfolio("any", "any");
 
-            Assert.That(_apiCallCounter.GetCount(), Is.EqualTo(expectedNumberOfApiCalls));
+            Assert.That(_apiCallCount, Is.EqualTo(expectedNumberOfApiCalls));
             // In the future 0 error codes with throw an error after retries exceeded. This will come in a separate PR.
             Assert.That(sdkResponse, Is.Null);
         }
@@ -262,7 +262,7 @@ namespace Lusid.Sdk.Tests.Utilities
             Assert.That(policy2TriggerCount, Is.EqualTo(1));
             // Response needs to be a valid, deserializable json, otherwise we get null. To be fixed in another PR.
             Assert.That(sdkResponse, Is.Null);
-            Assert.That(_apiCallCounter.GetCount(), Is.EqualTo(expectedNumberOfApiCalls));
+            Assert.That(_apiCallCount, Is.EqualTo(expectedNumberOfApiCalls));
         }
 
         // Show that polly retries are triggered on regular API timeouts as well.
@@ -282,7 +282,7 @@ namespace Lusid.Sdk.Tests.Utilities
             // Calling GetPortfolio or any other API triggers the flow that triggers polly
             var sdkResponse = _apiFactory.Api<IPortfoliosApi>().GetPortfolio("any", "any");
 
-            Assert.That(_apiCallCounter.GetCount(), Is.EqualTo(expectedNumberOfApiCalls));
+            Assert.That(_apiCallCount, Is.EqualTo(expectedNumberOfApiCalls));
             // Todo: In the future 0 error codes with throw an error after retries exceeded
             Assert.That(sdkResponse, Is.Null);
         }
@@ -331,7 +331,7 @@ namespace Lusid.Sdk.Tests.Utilities
             var sdkResponse = await _apiFactory.Api<IPortfoliosApi>().GetPortfolioAsync("any", "any");
             
             // Api call should be just called once
-            Assert.That(_apiCallCounter.GetCount(), Is.EqualTo(expectedNumberOfApiCalls));
+            Assert.That(_apiCallCount, Is.EqualTo(expectedNumberOfApiCalls));
         }
         
         [Test]
@@ -361,7 +361,7 @@ namespace Lusid.Sdk.Tests.Utilities
             Assert.That(retryCount, Is.EqualTo(expectedNumberOfRetries));
             Assert.That(exception.Message, Is.EqualTo($"Error calling GetPortfolio: {expectedErrorResponse}"));
             Assert.That(exception.ErrorCode, Is.EqualTo(returnedStatusCode));
-            Assert.That(_apiCallCounter.GetCount(), Is.EqualTo(expectedNumberOfApiCalls));
+            Assert.That(_apiCallCount, Is.EqualTo(expectedNumberOfApiCalls));
         }
         
         [Test]
@@ -384,7 +384,7 @@ namespace Lusid.Sdk.Tests.Utilities
 
             Assert.That(retryCount, Is.EqualTo(expectedNumberOfRetries));
             Assert.That(response, Is.Null);
-            Assert.That(_apiCallCounter.GetCount(), Is.EqualTo(expectedNumberOfApiCalls));
+            Assert.That(_apiCallCount, Is.EqualTo(expectedNumberOfApiCalls));
         }
         
         [Test]
@@ -397,7 +397,7 @@ namespace Lusid.Sdk.Tests.Utilities
             {
                 _httpListener.BeginGetContext(result =>
                 {
-                    _apiCallCounter.Increment();
+                    _apiCallCount++;
                     var listener = (HttpListener) result.AsyncState;
                     // Call EndGetContext to complete the asynchronous operation.
                     var context = listener.EndGetContext(result);
@@ -416,7 +416,7 @@ namespace Lusid.Sdk.Tests.Utilities
             // Calling GetPortfolio or any other API triggers the flow that triggers polly
             var sdkResponse = await _apiFactory.Api<IPortfoliosApi>().GetPortfolioAsync("any", "any");
 
-            Assert.That(_apiCallCounter.GetCount(), Is.EqualTo(expectedNumberOfApiCalls));
+            Assert.That(_apiCallCount, Is.EqualTo(expectedNumberOfApiCalls));
             // In the future 0 error codes with throw an error after retries exceeded. This will come in a separate PR.
             Assert.That(sdkResponse, Is.Null);
         }
@@ -438,7 +438,7 @@ namespace Lusid.Sdk.Tests.Utilities
             // Calling GetPortfolio or any other API triggers the flow that triggers polly
             var sdkResponse = await _apiFactory.Api<IPortfoliosApi>().GetPortfolioAsync("any", "any");
 
-            Assert.That(_apiCallCounter.GetCount(), Is.EqualTo(expectedNumberOfApiCalls));
+            Assert.That(_apiCallCount, Is.EqualTo(expectedNumberOfApiCalls));
             // Todo: In the future 0 error codes with throw an error after retries exceeded
             Assert.That(sdkResponse, Is.Null);
         }
@@ -474,7 +474,7 @@ namespace Lusid.Sdk.Tests.Utilities
             RetryConfiguration.RetryPolicy = _initialRetryPolicy;
             // Request is processed at this point and can be closed
             _httpListener.Close();
-            _apiCallCounter.ResetCount();
+            _apiCallCount = 0;
         }
 
         private void AddMockHttpResponseToQueue(HttpListener httpListener, int statusCode,
@@ -483,7 +483,7 @@ namespace Lusid.Sdk.Tests.Utilities
             httpListener.BeginGetContext(
                 result =>
                 {
-                    _apiCallCounter.Increment();
+                    _apiCallCount++;
                     GetHttpResponseHandler(result, statusCode, responseContent, timeToRespondMillis);
                 },
                 httpListener);
@@ -514,14 +514,6 @@ namespace Lusid.Sdk.Tests.Utilities
             output.Write(buffer, 0, buffer.Length);
             // You must close the output stream.
             output.Close();
-        }
-
-        private class Counter
-        {
-            private int _currentCount;
-            public void Increment() => ++_currentCount;
-            public int GetCount() => _currentCount;
-            public void ResetCount() => _currentCount = 0;
         }
     }
 }
