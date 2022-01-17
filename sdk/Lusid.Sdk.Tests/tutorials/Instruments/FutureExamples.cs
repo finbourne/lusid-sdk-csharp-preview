@@ -32,9 +32,6 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
                 recipeIdCode: recipeCode).Values;
             
             Assert.That(cashflows.Count, Is.EqualTo(2));
-            
-            _instrumentsApi.DeleteInstrument("ClientInternal", instrumentID);
-            _portfoliosApi.DeletePortfolio(scope, portfolioCode);
         }
 
         [LusidFeature("F22-3")]

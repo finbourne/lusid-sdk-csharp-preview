@@ -26,8 +26,12 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
         }
 
         /// <inheritdoc />
-        protected override void GetAndValidatePortfolioCashFlows(LusidInstrument instrument, string scope, string portfolioCode,
-            string recipeCode, string instrumentID)
+        protected override void GetAndValidatePortfolioCashFlows(
+            LusidInstrument instrument,
+            string scope,
+            string portfolioCode,
+            string recipeCode,
+            string instrumentID)
         {
             var termDeposit = (TermDeposit) instrument;
             var cashflows = _transactionPortfoliosApi.GetPortfolioCashFlows(
@@ -42,8 +46,6 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
                 recipeIdCode: recipeCode).Values;
             
             Assert.That(cashflows.Count, Is.EqualTo(1));
-            _instrumentsApi.DeleteInstrument("ClientInternal", instrumentID);
-            _portfoliosApi.DeletePortfolio(scope, portfolioCode);
         }
 
         [LusidFeature("F5-8")]

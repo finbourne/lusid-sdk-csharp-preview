@@ -44,9 +44,6 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
                 recipeIdCode: recipeCode).Values;
             
             Assert.That(cashflows.Count, Is.EqualTo(fxForward.IsNdf ? 1 : 2)); // deliverable FxForward has 2 cashflows while non-delivered has 1.
-            
-            _instrumentsApi.DeleteInstrument("ClientInternal", instrumentID);
-            _portfoliosApi.DeletePortfolio(scope, portfolioCode);
         }
 
         [LusidFeature("F5-2")]

@@ -82,9 +82,6 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
                 .ToList();
 
             Assert.That(couponCashFlows.Count, Is.EqualTo(expectedNumberOfCouponCashFlows));
-             
-            _instrumentsApi.DeleteInstrument("ClientInternal", instrumentID);
-            _portfoliosApi.DeletePortfolio(scope, portfolioCode); 
         }
         
         [LusidFeature("F22-6")]

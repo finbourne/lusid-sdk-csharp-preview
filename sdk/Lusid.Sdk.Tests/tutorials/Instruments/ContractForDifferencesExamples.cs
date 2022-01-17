@@ -51,9 +51,6 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
 
             Assert.That(cashflows.Count, Is.EqualTo(1));
             Assert.That(cashflows[0].Currency, Is.EqualTo(cfd.PayCcy));
-
-            _instrumentsApi.DeleteInstrument("ClientInternal", instrumentID);
-            _portfoliosApi.DeletePortfolio(scope, portfolioCode);
         }
 
         [LusidFeature("F5-9")]

@@ -454,9 +454,9 @@ namespace Lusid.Sdk.Tests.Utilities
         }
 
         /// <summary>
-        /// For pricing options using models such as Black Scholes, one requires a volatility surface. We create one here.
+        /// For pricing options using models such as Black Scholes, one requires a volatility surface/cube. We create one here.
         /// </summary>
-        public static ComplexMarketData CreateVolatilitySurfaceData(
+        private static ComplexMarketData CreateVolatilitySurfaceData(
             DateTimeOffset effectiveAt,
             List<LusidInstrument> instruments,
             List<MarketQuote> quotes,
@@ -466,8 +466,9 @@ namespace Lusid.Sdk.Tests.Utilities
             if(type == ComplexMarketData.MarketDataTypeEnum.EquityVolSurfaceData)
                 volData = new EquityVolSurfaceData(effectiveAt, instruments, quotes, ComplexMarketData.MarketDataTypeEnum.EquityVolSurfaceData);
             if(type == ComplexMarketData.MarketDataTypeEnum.FxVolSurfaceData)
-                volData =  new FxVolSurfaceData(effectiveAt, instruments, quotes,
-                   ComplexMarketData.MarketDataTypeEnum.FxVolSurfaceData);
+                volData =  new FxVolSurfaceData(effectiveAt, instruments, quotes, ComplexMarketData.MarketDataTypeEnum.FxVolSurfaceData);
+            if(type == ComplexMarketData.MarketDataTypeEnum.IrVolCubeData)
+                volData =  new IrVolCubeData(effectiveAt, instruments, quotes, ComplexMarketData.MarketDataTypeEnum.IrVolCubeData);
 
             return volData;
         }
@@ -496,6 +497,13 @@ namespace Lusid.Sdk.Tests.Utilities
                 FxOption fxoption = (FxOption) option;
                 marketAsset = $"{fxoption.DomCcy}/{fxoption.FgnCcy}/" + (volType == MarketQuote.QuoteTypeEnum.NormalVol ? "N" : "LN");
             }
+            
+            if (option.InstrumentType == LusidInstrument.InstrumentTypeEnum.InterestRateSwaption)
+            {
+                InterestRateSwaption swaption = (InterestRateSwaption) option;
+                var ccy = "USD"; // Note: due to swagger limitation, it is not easy to extract the domestic currency from the swaption currently. 
+                marketAsset = $"{ccy}/" + (volType == MarketQuote.QuoteTypeEnum.NormalVol ? "N" : "LN");
+            }
 
             return marketAsset;
         }
@@ -514,8 +522,10 @@ namespace Lusid.Sdk.Tests.Utilities
             if (option.InstrumentType == LusidInstrument.InstrumentTypeEnum.EquityOption)
                 type = ComplexMarketData.MarketDataTypeEnum.EquityVolSurfaceData;
             if (option.InstrumentType == LusidInstrument.InstrumentTypeEnum.FxOption)
-                type = ComplexMarketData.MarketDataTypeEnum.FxVolSurfaceData; 
-            
+                type = ComplexMarketData.MarketDataTypeEnum.FxVolSurfaceData;
+            if (option.InstrumentType == LusidInstrument.InstrumentTypeEnum.InterestRateSwaption)
+                type = ComplexMarketData.MarketDataTypeEnum.IrVolCubeData;
+
             var instruments = new List<LusidInstrument> {option};
             var volType = model == ModelSelection.ModelEnum.Bachelier ? MarketQuote.QuoteTypeEnum.NormalVol : MarketQuote.QuoteTypeEnum.LogNormalVol;
             var quotes = new List<MarketQuote> {new MarketQuote(volType, vol)};
@@ -582,6 +592,16 @@ namespace Lusid.Sdk.Tests.Utilities
                 MarketDataKeyRule.QuoteTypeEnum.Price,
                 field: "mid",
                 quoteInterval: "10Y");
+            
+            // irVolRule here is used by Lusid to locate the interest rate volatility cubes
+            // for pricing interest rate swaption
+            var irVolRule = new MarketDataKeyRule(
+                key: "IrVol.*.*",
+                supplier: "Lusid",
+                scope,
+                MarketDataKeyRule.QuoteTypeEnum.Price,
+                field: "mid",
+                quoteInterval: "1Y");
 
             var pricingOptions = new PricingOptions(
                 new ModelSelection(ModelSelection.LibraryEnum.Lusid, model),
@@ -591,7 +611,7 @@ namespace Lusid.Sdk.Tests.Utilities
                 scope,
                 recipeCode,
                 market: new MarketContext(
-                    marketRules: new List<MarketDataKeyRule>{simpleStaticRule, resetRule, creditRule, ratesRule},
+                    marketRules: new List<MarketDataKeyRule>{simpleStaticRule, resetRule, creditRule, ratesRule, irVolRule},
                     options: new MarketOptions(defaultSupplier: "Lusid", defaultScope: scope, defaultInstrumentCodeType: "RIC")),
                 pricing: new PricingContext(options: pricingOptions),
                 description: $"Recipe for {model} pricing");

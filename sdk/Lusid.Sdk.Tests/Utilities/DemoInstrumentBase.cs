@@ -34,12 +34,14 @@ namespace Lusid.Sdk.Tests.Utilities
             CreateAndUpsertMarketDataToLusid(scope, model, instrument);
             
             // UPSERT recipe - this is the configuration used in pricing 
-            var recipeCode = Guid.NewGuid().ToString();
-            var recipeReq = TestDataUtilities.BuildRecipeRequest(recipeCode, scope, model);
-            var response = _recipeApi.UpsertConfigurationRecipe(recipeReq);
-            Assert.That(response.Value, Is.Not.Null);
+            var recipeCode = CreateAndUpsertRecipe(scope, model);
 
             GetAndValidatePortfolioCashFlows(instrument, scope, portfolioCode, recipeCode, instrumentID);
+            
+            // CLEAN up
+            _instrumentsApi.DeleteInstrument("ClientInternal", instrumentID);
+            _recipeApi.DeleteConfigurationRecipe(scope, recipeCode);
+            _portfoliosApi.DeletePortfolio(scope, portfolioCode);
         }
 
         /// <summary>
