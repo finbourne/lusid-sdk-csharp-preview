@@ -18,11 +18,11 @@ namespace Lusid.Sdk.Utilities
         private const int MaxRetryAttempts = 2;
 
         /// <summary>
-        /// Get the internal exception condition on which to retry.
+        /// Get the Polly retry condition on which to retry.
         /// </summary>
         /// <param name="restResponse">Response object that comes from the API Client</param>
-        /// <returns>The boolean of whether the internal exception condition is satisfied</returns>
-        public static bool GetInternalExceptionRetryCondition(IRestResponse restResponse)
+        /// <returns>The boolean of whether the Polly retry condition is satisfied</returns>
+        public static bool GetPollyRetryCondition(IRestResponse restResponse)
         {
             // Whenever an internal SDK error occurs in the code for example because of aborted TCP connection or similar,
             // 0 status code gets returned with an error exception object attached
@@ -51,9 +51,9 @@ namespace Lusid.Sdk.Utilities
         /// Retry policy with an action to return the failed response after retries have exceeded.
         /// Use .Wrap() method to combine this policy with your other custom policies
         /// </summary>
-        public static readonly PolicyWrap<IRestResponse> InternalExceptionRetryPolicyWithFallback =
+        public static readonly PolicyWrap<IRestResponse> DefaultRetryPolicyWithFallback =
             // Order of wraps matters. We must wrap the retry policy ON the fallback policy, not the other way around.
-            DefaultFallbackPolicy.Wrap(InternalExceptionRetryPolicy);
+            DefaultFallbackPolicy.Wrap(DefaultRetryPolicy);
 
         /// <summary>
         /// Causes the actual API response to be returned after retries have been exceeded.
@@ -72,11 +72,11 @@ namespace Lusid.Sdk.Utilities
 
 
         /// <summary>
-        /// Define Polly retry policy for synchronous API calls. Handles internal SDK exceptions only.
+        /// Define Polly retry policy for synchronous API calls.
         /// </summary>
-        public static Policy<IRestResponse> InternalExceptionRetryPolicy =>
+        public static Policy<IRestResponse> DefaultRetryPolicy =>
             Policy
-                .HandleResult<IRestResponse>(GetInternalExceptionRetryCondition)
+                .HandleResult<IRestResponse>(GetPollyRetryCondition)
                 .Retry(retryCount: MaxRetryAttempts, onRetry: HandleRetryAction);
 
         #endregion
@@ -87,16 +87,16 @@ namespace Lusid.Sdk.Utilities
         /// Retry policy with an action to return the failed response after retries have exceeded.
         /// Use .WrapAsync() method to combine this policy with your other custom policies
         /// </summary>
-        public static readonly AsyncPolicyWrap<IRestResponse> InternalExceptionRetryPolicyWithFallbackAsync =
+        public static readonly AsyncPolicyWrap<IRestResponse> DefaultRetryPolicyWithFallbackAsync =
             // Order of wraps matters. We must wrap the retry policy ON the fallback policy, not the other way around.
-            DefaultFallbackPolicyAsync.WrapAsync(InternalExceptionRetryPolicyAsync);
+            DefaultFallbackPolicyAsync.WrapAsync(DefaultRetryPolicyAsync);
 
         /// <summary>
-        /// Define Polly retry policy for asynchronous API calls. Handles internal SDK exceptions only.
+        /// Define Polly retry policy for asynchronous API calls.
         /// </summary>
-        public static AsyncPolicy<IRestResponse> InternalExceptionRetryPolicyAsync =>
+        public static AsyncPolicy<IRestResponse> DefaultRetryPolicyAsync =>
             Policy
-                .HandleResult<IRestResponse>(GetInternalExceptionRetryCondition)
+                .HandleResult<IRestResponse>(GetPollyRetryCondition)
                 .RetryAsync(retryCount: MaxRetryAttempts, onRetry: HandleRetryAction);
 
         /// <summary>

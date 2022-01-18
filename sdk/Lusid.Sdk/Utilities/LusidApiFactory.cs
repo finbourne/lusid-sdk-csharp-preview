@@ -71,12 +71,12 @@ namespace Lusid.Sdk.Utilities
             // If some retry policy has already been assigned, use it.
             // Users can combine their own policy with the default policy by using the .Wrap() method.
             RetryConfiguration.RetryPolicy = 
-                RetryConfiguration.RetryPolicy ?? PollyApiRetryHandler.InternalExceptionRetryPolicyWithFallback;
+                RetryConfiguration.RetryPolicy ?? PollyApiRetryHandler.DefaultRetryPolicyWithFallback;
             
             // If some async retry policy has already been assigned, use it.
             // Users can combine their own policy with the default policy by using the .WrapAsync() method.
             RetryConfiguration.AsyncRetryPolicy =
-                RetryConfiguration.AsyncRetryPolicy ?? PollyApiRetryHandler.InternalExceptionRetryPolicyWithFallbackAsync;
+                RetryConfiguration.AsyncRetryPolicy ?? PollyApiRetryHandler.DefaultRetryPolicyWithFallbackAsync;
 
             var dict = new Dictionary<Type, IApiAccessor>();
             foreach (Type api in ApiTypes)
