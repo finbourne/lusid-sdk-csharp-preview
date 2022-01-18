@@ -24,17 +24,10 @@ namespace Lusid.Sdk.Utilities
         /// <returns>The boolean of whether the Polly retry condition is satisfied</returns>
         public static bool GetPollyRetryCondition(IRestResponse restResponse)
         {
-            // Whenever an internal SDK error occurs in the code for example because of aborted TCP connection or similar,
-            // 0 status code gets returned with an error exception object attached
-            bool internalExceptionCondition = restResponse.ErrorException != null || restResponse.StatusCode == 0;
-            // Do not retry on client timeouts, as these requests will still get processed and are non-retryable.
-            bool isNotClientTimeoutCondition = restResponse.ResponseStatus != ResponseStatus.TimedOut;
-            // Only retry on internal exceptions if it is NOT a client timeout
-            bool internalExceptionButNotTimeoutCondition = internalExceptionCondition && isNotClientTimeoutCondition;
             // Retry on concurrency conflict failures
             bool concurrencyConflictCondition = restResponse.StatusCode == (HttpStatusCode) 409;
             
-            return internalExceptionButNotTimeoutCondition || concurrencyConflictCondition;
+            return concurrencyConflictCondition;
         }
 
         private static void HandleRetryAction(DelegateResult<IRestResponse> result, int retryCount, Context context)
