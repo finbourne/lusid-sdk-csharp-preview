@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Net;
 using System.Threading.Tasks;
 using Polly;
 using Polly.Wrap;
@@ -23,20 +24,25 @@ namespace Lusid.Sdk.Utilities
         /// <returns>The boolean of whether the internal exception condition is satisfied</returns>
         public static bool GetInternalExceptionRetryCondition(IRestResponse restResponse)
         {
-            return restResponse.ErrorException != null || restResponse.StatusCode == 0;
+            // Whenever an internal SDK error occurs in the code for example because of aborted TCP connection or similar,
+            // 0 status code gets returned with an error exception object attached
+            bool internalExceptionCondition = restResponse.ErrorException != null || restResponse.StatusCode == 0;
+            // Do not retry on client timeouts, as these requests will still get processed and are non-retryable.
+            bool isNotClientTimeoutCondition = restResponse.ResponseStatus != ResponseStatus.TimedOut;
+            // Only retry on internal exceptions if it is NOT a client timeout
+            bool internalExceptionButNotTimeoutCondition = internalExceptionCondition && isNotClientTimeoutCondition;
+            // Retry on concurrency conflict failures
+            bool concurrencyConflictCondition = restResponse.StatusCode == (HttpStatusCode) 409;
+            
+            return internalExceptionButNotTimeoutCondition || concurrencyConflictCondition;
         }
 
         private static void HandleRetryAction(DelegateResult<IRestResponse> result, int retryCount, Context context)
         {
-            // TODO: Replace this with a logging library in the future
-            if (Environment.GetEnvironmentVariable("FBN_HIDE_INTERNAL_EXCEPTION_RETRY_LOGS") == "true") return;
-                
-            Console.WriteLine("An internal exception has occurred. Retrying. " +
-                              $"Retry attempt: {retryCount}. Max retry attempts: {MaxRetryAttempts}");
-
-            Console.WriteLine(
-                "Temporarily logging the exception stack trace for finding the underlying root cause of this exception:\n" +
-                $"{result.Result.ErrorException}\n");
+            Console.WriteLine("A failure occurred and a retry condition has been satisfied. " +
+                              $"Status code: {result.Result.StatusCode}, " +
+                              $"Retry number: {retryCount}, " +
+                              $"max retries: {MaxRetryAttempts}");
         }
 
         #region Synchronous Retry Policies
@@ -46,7 +52,8 @@ namespace Lusid.Sdk.Utilities
         /// Use .Wrap() method to combine this policy with your other custom policies
         /// </summary>
         public static readonly PolicyWrap<IRestResponse> InternalExceptionRetryPolicyWithFallback =
-            Policy.Wrap(InternalExceptionRetryPolicy, DefaultFallbackPolicy);
+            // Order of wraps matters. We must wrap the retry policy ON the fallback policy, not the other way around.
+            DefaultFallbackPolicy.Wrap(InternalExceptionRetryPolicy);
 
         /// <summary>
         /// Causes the actual API response to be returned after retries have been exceeded.
@@ -81,7 +88,8 @@ namespace Lusid.Sdk.Utilities
         /// Use .WrapAsync() method to combine this policy with your other custom policies
         /// </summary>
         public static readonly AsyncPolicyWrap<IRestResponse> InternalExceptionRetryPolicyWithFallbackAsync =
-            Policy.WrapAsync(InternalExceptionRetryPolicyAsync, DefaultFallbackPolicyAsync);
+            // Order of wraps matters. We must wrap the retry policy ON the fallback policy, not the other way around.
+            DefaultFallbackPolicyAsync.WrapAsync(InternalExceptionRetryPolicyAsync);
 
         /// <summary>
         /// Define Polly retry policy for asynchronous API calls. Handles internal SDK exceptions only.
