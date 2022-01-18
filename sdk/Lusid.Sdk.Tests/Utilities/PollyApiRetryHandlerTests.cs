@@ -43,7 +43,7 @@ namespace Lusid.Sdk.Tests.Utilities
         [Test]
         public void CallGetPortfoliosApi_WhenHttpStatusIs400AndRetryConditionIsNotSatisfied_ThrowsApiExceptionWithoutRetry()
         {
-            // It should not retry on codes >400 by default, unless specified
+            // It should not retry on codes such as 400 by default, unless specified
             const int expectedStatusCode = 400;
             const int expectedNumberOfApiCalls = 1;
             // Add the next response returned by api
