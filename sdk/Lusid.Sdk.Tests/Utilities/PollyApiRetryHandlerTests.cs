@@ -369,7 +369,7 @@ namespace Lusid.Sdk.Tests.Utilities
             const string expectedErrorResponse = "Some error"; 
             for (var i = 0; i < expectedNumberOfApiCalls; i++)
                 AddMockHttpResponseToQueue(_httpListener,  returnedStatusCode, expectedErrorResponse);
-            RetryConfiguration.AsyncRetryPolicy = PollyApiRetryHandler.DefaultRetryPolicyWithFallbackAsync;
+            RetryConfiguration.AsyncRetryPolicy = PollyApiRetryHandler.DefaultRetryPolicyAsync; // No fallback
 
             // Calling GetPortfolio or any other API triggers the flow that triggers polly
             var response = await _apiFactory.Api<IPortfoliosApi>().GetPortfolioAsync("any", "any");
