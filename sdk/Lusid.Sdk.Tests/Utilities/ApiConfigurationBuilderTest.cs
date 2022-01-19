@@ -149,8 +149,7 @@ namespace Lusid.Sdk.Tests.Utilities
             Environment.SetEnvironmentVariable("FBN_USERNAME", "<env.username>");
             Environment.SetEnvironmentVariable("FBN_PASSWORD", "");
             Environment.SetEnvironmentVariable("FBN_APP_NAME", "<env.app_name>");
-            Environment.SetEnvironmentVariable("FBN_ACCESS_TOKEN", "");
-            
+
             var exception = Assert.Throws<MissingConfigException>(() => ApiConfigurationBuilder.Build(null));
             Assert.That(exception.Message,
                 Is.EqualTo(
