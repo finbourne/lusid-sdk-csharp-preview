@@ -13,22 +13,23 @@ namespace Lusid.Sdk.Utilities
     {
         private static readonly Dictionary<string, string> ConfigNamesToEnvVariables = new Dictionary<string, string>()
         {
-            { "TokenUrl", "FBN_TOKEN_URL" },
-            { "ApiUrl", "FBN_LUSID_API_URL" },
-            { "ClientId", "FBN_CLIENT_ID" },
-            { "ClientSecret", "FBN_CLIENT_SECRET" },
-            { "Username", "FBN_USERNAME" },
-            { "Password", "FBN_PASSWORD" },
+            {"TokenUrl", "FBN_TOKEN_URL"},
+            {"ApiUrl", "FBN_LUSID_API_URL"},
+            {"ClientId", "FBN_CLIENT_ID"},
+            {"ClientSecret", "FBN_CLIENT_SECRET"},
+            {"Username", "FBN_USERNAME"},
+            {"Password", "FBN_PASSWORD"},
+            {"PersonalAccessToken", "FBN_ACCESS_TOKEN"}
         };
 
         private static readonly Dictionary<string, string> ConfigNamesToSecrets = new Dictionary<string, string>()
         {
-            { "TokenUrl", "tokenUrl" },
-            { "ApiUrl", "apiUrl" },
-            { "ClientId", "clientId" },
-            { "ClientSecret", "clientSecret" },
-            { "Username", "username" },
-            { "Password", "password" },
+            {"TokenUrl", "tokenUrl"},
+            {"ApiUrl", "apiUrl"},
+            {"ClientId", "clientId"},
+            {"ClientSecret", "clientSecret"},
+            {"Username", "username"},
+            {"Password", "password"}
         };
 
         /// <summary>
@@ -64,12 +65,14 @@ namespace Lusid.Sdk.Utilities
                 Password = Environment.GetEnvironmentVariable("FBN_PASSWORD") ??
                            Environment.GetEnvironmentVariable("fbn_password"),
                 ApplicationName = Environment.GetEnvironmentVariable("FBN_APP_NAME") ??
-                                  Environment.GetEnvironmentVariable("fbn_app_name")
+                                  Environment.GetEnvironmentVariable("fbn_app_name"),
+                PersonalAccessToken = Environment.GetEnvironmentVariable("FBN_ACCESS_TOKEN") ?? 
+                                Environment.GetEnvironmentVariable("fbn_access_token")
             };
 
             if (apiConfig.HasMissingConfig())
             {
-                var missingValues = apiConfig.MissingConfig()
+                var missingValues = apiConfig.GetMissingConfig()
                     .Select(value => $"'{ConfigNamesToEnvVariables[value]}'");
                 var message = $"[{string.Join(", ", missingValues)}]";
                 throw new MissingConfigException(
@@ -96,7 +99,7 @@ namespace Lusid.Sdk.Utilities
 
             if (apiConfig.HasMissingConfig())
             {
-                var missingValues = apiConfig.MissingConfig()
+                var missingValues = apiConfig.GetMissingConfig()
                     .Select(value => $"'{ConfigNamesToSecrets[value]}'");
                 var message = $"[{string.Join(", ", missingValues)}]";
                 throw new MissingConfigException(
@@ -123,7 +126,7 @@ namespace Lusid.Sdk.Utilities
 
             if (apiConfig.HasMissingConfig())
             {
-                var missingValues = apiConfig.MissingConfig()
+                var missingValues = apiConfig.GetMissingConfig()
                     .Select(value => $"'{value}'");
                 var message = $"[{string.Join(", ", missingValues)}]";
                 throw new MissingConfigException(
