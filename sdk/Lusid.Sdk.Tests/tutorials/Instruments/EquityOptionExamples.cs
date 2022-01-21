@@ -81,7 +81,7 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
             Assert.That(cashflows.Count, Is.EqualTo(1));
         }
 
-        [LusidFeature("F22-11")]
+        [LusidFeature("F5-19")]
         [Test]
         public void EquityOptionCreationAndUpsertionExample()
         {
@@ -121,7 +121,7 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
             _instrumentsApi.DeleteInstrument("ClientInternal", uniqueId);
         }
         
-        [LusidFeature("F10-3")]
+        [LusidFeature("F22-8")]
         [TestCase(ModelSelection.ModelEnum.SimpleStatic)]
         [TestCase(ModelSelection.ModelEnum.ConstantTimeValueOfMoney)]
         [TestCase(ModelSelection.ModelEnum.Discounting)]
@@ -133,7 +133,7 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
             CallLusidGetValuationEndpoint(equityOption, model);
         }
 
-        [LusidFeature("F10-3")]
+        [LusidFeature("F22-9")]
         [TestCase(ModelSelection.ModelEnum.ConstantTimeValueOfMoney)]
         [TestCase(ModelSelection.ModelEnum.Discounting)]
         [TestCase(ModelSelection.ModelEnum.Bachelier)]
@@ -144,6 +144,7 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
             CallLusidInlineValuationEndpoint(equityOption, model);
         }
 
+        [LusidFeature("F22-30")]
         [TestCase(ModelSelection.ModelEnum.ConstantTimeValueOfMoney)]
         [TestCase(ModelSelection.ModelEnum.Discounting)]
         [TestCase(ModelSelection.ModelEnum.Bachelier)]
@@ -168,6 +169,7 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
         /// There is additional code to get the underlying in the GetValuation call as well as then
         /// upserting the underlying back into the portfolio. 
         /// </summary>
+        [LusidFeature("F22-10")]
         [TestCase(ModelSelection.ModelEnum.ConstantTimeValueOfMoney)]
         public void LifeCycleManagementForCashSettledEquityOption(ModelSelection.ModelEnum model)
         {
@@ -272,6 +274,7 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
         /// There is additional code to get the underlying in the GetValuation call as well as then
         /// upserting the underlying back into the portfolio. 
         /// </summary>
+        [LusidFeature("F22-11")]
         [TestCase(ModelSelection.ModelEnum.ConstantTimeValueOfMoney)]
         public void LifeCycleManagementForPhysicallySettledEquityOption(ModelSelection.ModelEnum model)
         {
