@@ -28,7 +28,18 @@ namespace Lusid.Sdk.Tests.tutorials.Ibor
         [OneTimeSetUp]
         public void SetUp()
         {
-            ClearCutLabels();
+            // hard coded so that any cut labels with these names used in the tests can be created properly
+            var cutLabelNames = new Dictionary<string, string>()
+            {
+                {"SGPOpen", "SGPOpen_Demo_Only"},
+                {"LDNOpen", "LDNOpen_Demo_Only"},
+                {"SGPClose", "SGPClose_Demo_Only"},
+                {"NYOpen", "NYOpen_Demo_Only"},
+                {"LDNClose", "LDNClose_Demo_Only"},
+                {"NYClose", "NYClose_Demo_Only"}
+            };
+            
+            ClearCutLabels(cutLabelNames);
 
             _instrumentLoader = new InstrumentLoader(_apiFactory);
             _instrumentIds = _instrumentLoader.LoadInstruments();
@@ -52,7 +63,7 @@ namespace Lusid.Sdk.Tests.tutorials.Ibor
             _portfoliosApi.DeletePortfolio(TutorialScope, _portfolioCode);
 
             // Clear up labels created by the demo
-            ClearCutLabels();
+            ClearCutLabels(_cutLabelCodes);
         }
 
         [LusidFeature("F32")]
@@ -308,11 +319,19 @@ namespace Lusid.Sdk.Tests.tutorials.Ibor
             Assert.That(result.TimeZone, Is.EqualTo(timeZone));
         }
 
-        private void ClearCutLabels()
+        private void ClearCutLabels(Dictionary<string, string> dictionary)
         {
-            foreach (var labelCode in _cutLabelCodes.Values)
+            foreach (var labelCode in dictionary.Values)
             {
-                _cutLabelDefinitionsApi.DeleteCutLabelDefinition(labelCode);
+                try
+                {
+                    _cutLabelDefinitionsApi.DeleteCutLabelDefinition(labelCode);
+                }
+                catch (Client.ApiException e)
+                {
+                    // 404 means that the cut label has already been deleted, so no need to throw the exception
+                    if (e.ErrorCode != 404) throw;
+                }
             }
         }
 
