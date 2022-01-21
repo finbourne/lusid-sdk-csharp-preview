@@ -82,7 +82,7 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
             _instrumentsApi.DeleteInstrument("ClientInternal", uniqueId); 
         }
         
-        [LusidFeature("F10-3")]
+        [LusidFeature("F22-15")]
         [TestCase(ModelSelection.ModelEnum.ConstantTimeValueOfMoney)]
         [TestCase(ModelSelection.ModelEnum.Discounting)]
         public void FxForwardValuationExample(ModelSelection.ModelEnum model)
@@ -91,7 +91,7 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
             CallLusidGetValuationEndpoint(fxForward, model);
         }
         
-        [LusidFeature("F10-3")]
+        [LusidFeature("F22-16")]
         [TestCase(ModelSelection.ModelEnum.ConstantTimeValueOfMoney)]
         [TestCase(ModelSelection.ModelEnum.Discounting)]
         public void FxForwardInlineValuationExample(ModelSelection.ModelEnum model)
@@ -100,6 +100,7 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
             CallLusidInlineValuationEndpoint(fxForward, model);
         }
         
+        [LusidFeature("F22-17")]
         [TestCase(ModelSelection.ModelEnum.ConstantTimeValueOfMoney)]
         [TestCase(ModelSelection.ModelEnum.Discounting)]
         public void FxForwardPortfolioCashFlowsExample(ModelSelection.ModelEnum model)
@@ -114,6 +115,7 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
         /// i.e. (1) before maturity pv(FX forward) and (2) after maturity: pv(cash in domestic currency)
         /// to be the same numerically.
         /// </summary>
+        [LusidFeature("F22-18")]
         [TestCase(ModelSelection.ModelEnum.ConstantTimeValueOfMoney)]
         public void LifeCycleManagementForDeliverableFxForward(ModelSelection.ModelEnum model)
         {

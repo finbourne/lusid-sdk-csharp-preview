@@ -34,7 +34,7 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
             Assert.That(cashflows.Count, Is.EqualTo(2));
         }
 
-        [LusidFeature("F22-3")]
+        [LusidFeature("F5-14")]
         [Test]
         public void FuturesCreationAndUpsertionExample()
         {
@@ -73,7 +73,7 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
             _instrumentsApi.DeleteInstrument("ClientInternal", uniqueId); 
         }
         
-        [LusidFeature("F10-1")]
+        [LusidFeature("F22-14")]
         [TestCase(ModelSelection.ModelEnum.SimpleStatic)]
         public void FutureValuationExample(ModelSelection.ModelEnum model)
         {
