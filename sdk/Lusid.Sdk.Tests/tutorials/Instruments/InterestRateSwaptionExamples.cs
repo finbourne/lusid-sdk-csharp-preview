@@ -74,7 +74,7 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
             Assert.That(cashflows.Count, Is.GreaterThanOrEqualTo(1));
         }
 
-        [LusidFeature("F5-16")]
+        [LusidFeature("F22-9")]
         [Test]
         public void InterestRateSwaptionCreationAndUpsertionExample()
         {
@@ -110,7 +110,7 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
             _instrumentsApi.DeleteInstrument("ClientInternal", uniqueId);
         }
         
-        [LusidFeature("F22-25")]
+        [LusidFeature("F10-3")]
         [TestCase(ModelSelection.ModelEnum.SimpleStatic)]
         [TestCase(ModelSelection.ModelEnum.ConstantTimeValueOfMoney)]
         [TestCase(ModelSelection.ModelEnum.Discounting)]
@@ -122,7 +122,7 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
             CallLusidGetValuationEndpoint(swaption, model);
         }
         
-        [LusidFeature("F22-26")]
+        [LusidFeature("F10-3")]
         [TestCase(ModelSelection.ModelEnum.ConstantTimeValueOfMoney)]
         [TestCase(ModelSelection.ModelEnum.Discounting)]
         [TestCase(ModelSelection.ModelEnum.Bachelier)]

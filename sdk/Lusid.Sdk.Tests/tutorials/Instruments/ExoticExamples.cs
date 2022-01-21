@@ -37,7 +37,7 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
             _portfoliosApi.DeletePortfolio(scope, portfolioCode);
         }
 
-        [LusidFeature("F5-13")]
+        [LusidFeature("F22-10")]
         [Test]
         public void ExoticCreationAndUpsertionExample()
         {
@@ -71,7 +71,7 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
             _instrumentsApi.DeleteInstrument("ClientInternal", uniqueId);
         }
         
-        [LusidFeature("F22-13")]
+        [LusidFeature("F10-1")]
         [TestCase(ModelSelection.ModelEnum.SimpleStatic)]
         public void ExoticValuationExample(ModelSelection.ModelEnum model)
         {

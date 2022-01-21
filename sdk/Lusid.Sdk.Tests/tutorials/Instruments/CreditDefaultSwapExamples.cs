@@ -84,7 +84,7 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
             Assert.That(couponCashFlows.Count, Is.EqualTo(expectedNumberOfCouponCashFlows));
         }
         
-        [LusidFeature("F5-4")]
+        [LusidFeature("F22-6")]
         [Test]
         public void CreditDefaultSwapCreationAndUpsertionExample()
         {
@@ -152,7 +152,7 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
             _instrumentsApi.DeleteInstrument("ClientInternal", uniqueId);
         }
         
-        [LusidFeature("F22-5")]
+        [LusidFeature("F10-3")]
         [TestCase(ModelSelection.ModelEnum.SimpleStatic)]
         [TestCase(ModelSelection.ModelEnum.ConstantTimeValueOfMoney)]
         [TestCase(ModelSelection.ModelEnum.Discounting)]
@@ -162,7 +162,7 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
             CallLusidGetValuationEndpoint(cds, model);
         }
         
-        [LusidFeature("F22-6")]
+        [LusidFeature("F10-3")]
         [TestCase(ModelSelection.ModelEnum.ConstantTimeValueOfMoney)]
         [TestCase(ModelSelection.ModelEnum.Discounting)]
         public void CreditDefaultSwapInlineValuationExample(ModelSelection.ModelEnum model)
@@ -171,7 +171,6 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
             CallLusidInlineValuationEndpoint(cds, model);
         }
 
-        [LusidFeature("F22-31")]
         [TestCase(ModelSelection.ModelEnum.ConstantTimeValueOfMoney)]
         [TestCase(ModelSelection.ModelEnum.Discounting)]
         public void CreditDefaultSwapGetPortfolioCashFlowsExample(ModelSelection.ModelEnum model)
@@ -180,7 +179,7 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
             CallLusidGetPortfolioCashFlowsEndpoint(cds, model);
         }
 
-        [LusidFeature("F22-7")]
+        [LusidFeature("F10-3")]
         [TestCase("2020-06-05T00:00:00.0000000+00:00")] // calculate upfront charge for cds contract
         public void CreditDefaultSwapIsdaCdsValuationExample(string sTestNow)
         {

@@ -56,7 +56,7 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
             Assert.That(allCashFlowsPositive, Is.True);
         }
 
-        [LusidFeature("F5-18")]
+        [LusidFeature("F22-4")]
         [Test]
         public void BondCreationAndUpsertionExample()
         {
@@ -158,7 +158,7 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
             Assert.That(roundTripBond.FlowConventions.PaymentCalendars, Is.EquivalentTo(bond.FlowConventions.PaymentCalendars));
         }
         
-        [LusidFeature("F22-1")]
+        [LusidFeature("F10-3")]
         [TestCase(ModelSelection.ModelEnum.SimpleStatic, false)]
         [TestCase(ModelSelection.ModelEnum.ConstantTimeValueOfMoney, false)]
         [TestCase(ModelSelection.ModelEnum.Discounting, false)]
@@ -172,7 +172,7 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
             CallLusidGetValuationEndpoint(bond, modelName);
         }
         
-        [LusidFeature("F22-2")]
+        [LusidFeature("F10-3")]
         [TestCase(ModelSelection.ModelEnum.ConstantTimeValueOfMoney,false)]
         [TestCase(ModelSelection.ModelEnum.ConstantTimeValueOfMoney,true)]
         [TestCase(ModelSelection.ModelEnum.Discounting,false)]

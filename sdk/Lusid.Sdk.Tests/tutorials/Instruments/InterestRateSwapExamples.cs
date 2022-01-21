@@ -90,7 +90,7 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
             _instrumentsApi.DeleteInstrument("ClientInternal", uniqueId);
         }
         
-        [LusidFeature("F22-22")]
+        [LusidFeature("F10-3")]
         [TestCase(ModelSelection.ModelEnum.SimpleStatic)]
         [TestCase(ModelSelection.ModelEnum.ConstantTimeValueOfMoney)]
         [TestCase(ModelSelection.ModelEnum.Discounting)]
@@ -100,7 +100,7 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
             CallLusidGetValuationEndpoint(irs, model);
         }
         
-        [LusidFeature("F22-23")]
+        [LusidFeature("F10-3")]
         [TestCase(ModelSelection.ModelEnum.ConstantTimeValueOfMoney)]
         [TestCase(ModelSelection.ModelEnum.Discounting)]
         public void InterestRateSwapInlineValuationExample(ModelSelection.ModelEnum model)
@@ -109,7 +109,6 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
             CallLusidInlineValuationEndpoint(irs, model);
         }
         
-        [LusidFeature("F22-24")]
         [TestCase(ModelSelection.ModelEnum.ConstantTimeValueOfMoney)]
         [TestCase(ModelSelection.ModelEnum.Discounting)]
         public void InterestRateSwapPortfolioCashFlowsExample(ModelSelection.ModelEnum model)

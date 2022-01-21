@@ -89,7 +89,7 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
             _instrumentsApi.DeleteInstrument("ClientInternal", uniqueId);
         }
         
-        [LusidFeature("F22-32")]
+        [LusidFeature("F10-3")]
         [TestCase(ModelSelection.ModelEnum.SimpleStatic)]
         [TestCase(ModelSelection.ModelEnum.ConstantTimeValueOfMoney)]
         [TestCase(ModelSelection.ModelEnum.Discounting)]
@@ -99,7 +99,7 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
             CallLusidGetValuationEndpoint(termDeposit, model);
         }
         
-        [LusidFeature("F22-33")]
+        [LusidFeature("F10-3")]
         [TestCase(ModelSelection.ModelEnum.ConstantTimeValueOfMoney)]
         [TestCase(ModelSelection.ModelEnum.Discounting)]
         public void TermDepositInlineValuationExample(ModelSelection.ModelEnum model)
@@ -108,7 +108,6 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
             CallLusidInlineValuationEndpoint(termDeposit, model);
         }
 
-        [LusidFeature("F22-34")]
         [TestCase(ModelSelection.ModelEnum.ConstantTimeValueOfMoney)]
         [TestCase(ModelSelection.ModelEnum.Discounting)]
         public void TermDepositPortfolioCashFlowsExample(ModelSelection.ModelEnum model)
