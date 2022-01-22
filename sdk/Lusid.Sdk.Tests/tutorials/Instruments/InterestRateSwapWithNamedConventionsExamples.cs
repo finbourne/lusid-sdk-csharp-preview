@@ -52,7 +52,7 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
             Assert.That(cashflows.Count, Is.GreaterThanOrEqualTo(1));
         }
         
-        [LusidFeature("F5-1")]
+        [LusidFeature("F5-17")]
         [Test]
         public void InterestRateSwapWithNamedConventionsCreationAndUpsertionExample()
         {
@@ -126,7 +126,7 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
             Assert.That(indexConventionsResponse.Value, Is.Not.Null);
         }
         
-        [LusidFeature("F10-3")]
+        [LusidFeature("F22-27")]
         [TestCase(ModelSelection.ModelEnum.SimpleStatic)]
         [TestCase(ModelSelection.ModelEnum.ConstantTimeValueOfMoney)]
         [TestCase(ModelSelection.ModelEnum.Discounting)]
@@ -137,7 +137,7 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
             CallLusidGetValuationEndpoint(irs, model);
         }
         
-        [LusidFeature("F10-3")]
+        [LusidFeature("F22-28")]
         [TestCase(ModelSelection.ModelEnum.ConstantTimeValueOfMoney)]
         [TestCase(ModelSelection.ModelEnum.Discounting)]
         public void InterestRateSwapWithNamedConventionsInlineValuationExample(ModelSelection.ModelEnum model)
@@ -147,6 +147,7 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
             CallLusidInlineValuationEndpoint(irs, model);
         }
         
+        [LusidFeature("F22-29")]
         [TestCase(ModelSelection.ModelEnum.ConstantTimeValueOfMoney)]
         [TestCase(ModelSelection.ModelEnum.Discounting)]
         public void InterestRateSwaptionPortfolioCashFlowsExample(ModelSelection.ModelEnum model)
