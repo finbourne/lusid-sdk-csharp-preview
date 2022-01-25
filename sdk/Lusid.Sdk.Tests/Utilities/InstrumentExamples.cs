@@ -37,7 +37,7 @@ namespace Lusid.Sdk.Tests.Utilities
                 instrumentType: LusidInstrument.InstrumentTypeEnum.FxForward
             );
 
-        internal static LusidInstrument CreateExampleFxOption()
+        internal static LusidInstrument CreateExampleFxOption(bool isDeliveryNotCash = true)
             => new FxOption(
                 strike: 130,
                 domCcy: "USD",
@@ -46,7 +46,7 @@ namespace Lusid.Sdk.Tests.Utilities
                 optionMaturityDate: new DateTimeOffset(2020, 12, 18, 0, 0, 0, TimeSpan.Zero),
                 optionSettlementDate: new DateTimeOffset(2020, 12, 21, 0, 0, 0, TimeSpan.Zero),
                 isCallNotPut: true,
-                isDeliveryNotCash: true,
+                isDeliveryNotCash: isDeliveryNotCash,
                 instrumentType: LusidInstrument.InstrumentTypeEnum.FxOption
             );
 

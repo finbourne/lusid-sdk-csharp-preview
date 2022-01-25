@@ -62,8 +62,9 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
                 filter:null,
                 recipeIdScope: scope,
                 recipeIdCode: recipeCode).Values;
-            
-            Assert.That(cashflows.Count, Is.EqualTo(2));
+
+            var expectedNumberOfCashflows = fxOption.IsDeliveryNotCash ? 1 : 2;
+            Assert.That(cashflows.Count, Is.EqualTo(expectedNumberOfCashflows));
         }
 
         [LusidFeature("F5-15")]
@@ -106,36 +107,47 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
         }
         
         [LusidFeature("F22-19")]
-        [TestCase(ModelSelection.ModelEnum.SimpleStatic)]
-        [TestCase(ModelSelection.ModelEnum.ConstantTimeValueOfMoney)]
-        [TestCase(ModelSelection.ModelEnum.Discounting)]
-        [TestCase(ModelSelection.ModelEnum.Bachelier)]
-        [TestCase(ModelSelection.ModelEnum.BlackScholes)]
-        public void FxOptionValuationExample(ModelSelection.ModelEnum model)
+        [TestCase(ModelSelection.ModelEnum.ConstantTimeValueOfMoney, false)]
+        [TestCase(ModelSelection.ModelEnum.Discounting, false)]
+        [TestCase(ModelSelection.ModelEnum.Bachelier, false)]
+        [TestCase(ModelSelection.ModelEnum.BlackScholes, false)]
+        [TestCase(ModelSelection.ModelEnum.ConstantTimeValueOfMoney, true)]
+        [TestCase(ModelSelection.ModelEnum.Discounting, true)]
+        [TestCase(ModelSelection.ModelEnum.Bachelier, true)]
+        [TestCase(ModelSelection.ModelEnum.BlackScholes, true)]
+        public void FxOptionValuationExample(ModelSelection.ModelEnum model, bool isDeliveryNotCash)
         {
-            var fxOption = InstrumentExamples.CreateExampleFxOption();
+            var fxOption = InstrumentExamples.CreateExampleFxOption(isDeliveryNotCash);
             CallLusidGetValuationEndpoint(fxOption, model);
         }
         
         [LusidFeature("F22-20")]
-        [TestCase(ModelSelection.ModelEnum.ConstantTimeValueOfMoney)]
-        [TestCase(ModelSelection.ModelEnum.Discounting)]
-        [TestCase(ModelSelection.ModelEnum.Bachelier)]
-        [TestCase(ModelSelection.ModelEnum.BlackScholes)]
-        public void FxOptionInlineValuationExample(ModelSelection.ModelEnum model)
+        [TestCase(ModelSelection.ModelEnum.ConstantTimeValueOfMoney, false)]
+        [TestCase(ModelSelection.ModelEnum.Discounting, false)]
+        [TestCase(ModelSelection.ModelEnum.Bachelier, false)]
+        [TestCase(ModelSelection.ModelEnum.BlackScholes, false)]
+        [TestCase(ModelSelection.ModelEnum.ConstantTimeValueOfMoney, true)]
+        [TestCase(ModelSelection.ModelEnum.Discounting, true)]
+        [TestCase(ModelSelection.ModelEnum.Bachelier, true)]
+        [TestCase(ModelSelection.ModelEnum.BlackScholes, true)]
+        public void FxOptionInlineValuationExample(ModelSelection.ModelEnum model, bool isDeliveryNotCash)
         {
-            var fxOption = InstrumentExamples.CreateExampleFxOption();
+            var fxOption = InstrumentExamples.CreateExampleFxOption(isDeliveryNotCash);
             CallLusidInlineValuationEndpoint(fxOption, model);
         }
 
         [LusidFeature("F22-21")]
-        [TestCase(ModelSelection.ModelEnum.ConstantTimeValueOfMoney)]
-        [TestCase(ModelSelection.ModelEnum.Discounting)]
-        [TestCase(ModelSelection.ModelEnum.Bachelier)]
-        [TestCase(ModelSelection.ModelEnum.BlackScholes)]
-        public void FxOptionPortfolioCashFlowsExample(ModelSelection.ModelEnum model)
+        [TestCase(ModelSelection.ModelEnum.ConstantTimeValueOfMoney, false)]
+        [TestCase(ModelSelection.ModelEnum.Discounting, false)]
+        [TestCase(ModelSelection.ModelEnum.Bachelier, false)]
+        [TestCase(ModelSelection.ModelEnum.BlackScholes, false)]
+        [TestCase(ModelSelection.ModelEnum.ConstantTimeValueOfMoney, true)]
+        [TestCase(ModelSelection.ModelEnum.Discounting, true)]
+        [TestCase(ModelSelection.ModelEnum.Bachelier, true)]
+        [TestCase(ModelSelection.ModelEnum.BlackScholes, true)]
+        public void FxOptionPortfolioCashFlowsExample(ModelSelection.ModelEnum model, bool isDeliveryNotCash)
         {
-            var fxOption = InstrumentExamples.CreateExampleFxOption();
+            var fxOption = InstrumentExamples.CreateExampleFxOption(isDeliveryNotCash);
             CallLusidGetPortfolioCashFlowsEndpoint(fxOption, model);
         }
     }
