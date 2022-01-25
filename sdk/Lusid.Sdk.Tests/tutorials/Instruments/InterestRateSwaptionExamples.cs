@@ -111,25 +111,34 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
         }
         
         [LusidFeature("F22-25")]
-        [TestCase(ModelSelection.ModelEnum.SimpleStatic)]
-        [TestCase(ModelSelection.ModelEnum.ConstantTimeValueOfMoney)]
-        [TestCase(ModelSelection.ModelEnum.Discounting)]
-        [TestCase(ModelSelection.ModelEnum.Bachelier)]
-        [TestCase(ModelSelection.ModelEnum.BlackScholes)]
-        public void InterestRateSwaptionValuationExample(ModelSelection.ModelEnum model)
+        [TestCase(ModelSelection.ModelEnum.SimpleStatic, false)]
+        [TestCase(ModelSelection.ModelEnum.SimpleStatic, false)]
+        [TestCase(ModelSelection.ModelEnum.ConstantTimeValueOfMoney, false)]
+        [TestCase(ModelSelection.ModelEnum.Discounting, false)]
+        [TestCase(ModelSelection.ModelEnum.Bachelier, false)]
+        [TestCase(ModelSelection.ModelEnum.BlackScholes, false)]
+        [TestCase(ModelSelection.ModelEnum.ConstantTimeValueOfMoney, true)]
+        [TestCase(ModelSelection.ModelEnum.Discounting, true)]
+        [TestCase(ModelSelection.ModelEnum.Bachelier, true)]
+        [TestCase(ModelSelection.ModelEnum.BlackScholes, true)]
+        public void InterestRateSwaptionValuationExample(ModelSelection.ModelEnum model, bool isCashNotPhysical)
         {
-            var swaption = InstrumentExamples.CreateExampleInterestRateSwaption();
+            var swaption = InstrumentExamples.CreateExampleInterestRateSwaption(isCashNotPhysical);
             CallLusidGetValuationEndpoint(swaption, model);
         }
         
         [LusidFeature("F22-26")]
-        [TestCase(ModelSelection.ModelEnum.ConstantTimeValueOfMoney)]
-        [TestCase(ModelSelection.ModelEnum.Discounting)]
-        [TestCase(ModelSelection.ModelEnum.Bachelier)]
-        [TestCase(ModelSelection.ModelEnum.BlackScholes)]
-        public void InterestRateSwaptionInlineValuationExample(ModelSelection.ModelEnum model)
+        [TestCase(ModelSelection.ModelEnum.ConstantTimeValueOfMoney, false)]
+        [TestCase(ModelSelection.ModelEnum.Discounting, false)]
+        [TestCase(ModelSelection.ModelEnum.Bachelier, false)]
+        [TestCase(ModelSelection.ModelEnum.BlackScholes, false)]
+        [TestCase(ModelSelection.ModelEnum.ConstantTimeValueOfMoney, true)]
+        [TestCase(ModelSelection.ModelEnum.Discounting, true)]
+        [TestCase(ModelSelection.ModelEnum.Bachelier, true)]
+        [TestCase(ModelSelection.ModelEnum.BlackScholes, true)]
+        public void InterestRateSwaptionInlineValuationExample(ModelSelection.ModelEnum model, bool isCashNotPhysical)
         {
-            var swaption = InstrumentExamples.CreateExampleInterestRateSwaption();
+            var swaption = InstrumentExamples.CreateExampleInterestRateSwaption(isCashNotPhysical);
             CallLusidInlineValuationEndpoint(swaption, model);
         }
     }

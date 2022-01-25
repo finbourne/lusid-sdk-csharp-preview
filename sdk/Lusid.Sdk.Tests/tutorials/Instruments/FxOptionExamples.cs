@@ -63,7 +63,7 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
                 recipeIdScope: scope,
                 recipeIdCode: recipeCode).Values;
 
-            var expectedNumberOfCashflows = fxOption.IsDeliveryNotCash ? 1 : 2;
+            var expectedNumberOfCashflows = fxOption.IsDeliveryNotCash ? 2 : 1;
             Assert.That(cashflows.Count, Is.EqualTo(expectedNumberOfCashflows));
         }
 
@@ -107,6 +107,8 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
         }
         
         [LusidFeature("F22-19")]
+        [TestCase(ModelSelection.ModelEnum.SimpleStatic, false)]
+        [TestCase(ModelSelection.ModelEnum.SimpleStatic, false)]
         [TestCase(ModelSelection.ModelEnum.ConstantTimeValueOfMoney, false)]
         [TestCase(ModelSelection.ModelEnum.Discounting, false)]
         [TestCase(ModelSelection.ModelEnum.Bachelier, false)]

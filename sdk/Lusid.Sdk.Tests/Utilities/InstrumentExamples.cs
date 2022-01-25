@@ -264,7 +264,7 @@ namespace Lusid.Sdk.Tests.Utilities
             return irs;
         }
 
-        internal static InterestRateSwaption CreateExampleInterestRateSwaption()
+        internal static InterestRateSwaption CreateExampleInterestRateSwaption(bool isCashSettled = true)
         {
             // CREATE an Interest Rate Swap (IRS)
             var startDate = new DateTimeOffset(2020, 2, 7, 0, 0, 0, TimeSpan.Zero);
@@ -342,7 +342,7 @@ namespace Lusid.Sdk.Tests.Utilities
             var swaption = new InterestRateSwaption(
                 startDate: new DateTimeOffset(2020, 1, 15, 0, 0, 0, TimeSpan.Zero),
                 payOrReceiveFixed: "Pay",
-                deliveryMethod: "Cash",
+                deliveryMethod: isCashSettled ? "Cash" : "Physical",
                 swap: swap,
                 instrumentType: LusidInstrument.InstrumentTypeEnum.InterestRateSwaption);
 
