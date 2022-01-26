@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Lusid.Sdk.Model;
 using Lusid.Sdk.Tests.Utilities;
+using LusidFeatures;
 using NUnit.Framework;
 
 namespace Lusid.Sdk.Tests.Tutorials.Instruments
@@ -10,6 +11,7 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
     [TestFixture]
     public class EquityExamples: DemoInstrumentBase
     {
+        [LusidFeature("F5-20")]
         [Test]
         public void EquityCreationAndUpsertionExample()
         {
@@ -61,6 +63,7 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
             // There are no cashflows associated to an equity.
         }
         
+        [LusidFeature("F22-39")]
         [TestCase(ModelSelection.ModelEnum.SimpleStatic)]
         public void EquityValuationExample(ModelSelection.ModelEnum model)
         {

@@ -4,6 +4,7 @@ using System.Linq;
 using Lusid.Sdk.Api;
 using Lusid.Sdk.Model;
 using Lusid.Sdk.Tests.Utilities;
+using LusidFeatures;
 using NUnit.Framework;
 
 namespace Lusid.Sdk.Tests.Tutorials.Instruments
@@ -11,6 +12,7 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
     [TestFixture]
     public class SimpleInstrumentExample: DemoInstrumentBase
     {
+        [LusidFeature("F5-21")]
         [Test]
         public void SimpleInstrumentCreationAndUpsertionExample()
         {
