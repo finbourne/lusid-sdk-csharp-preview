@@ -4,21 +4,23 @@ using System.Linq;
 using Lusid.Sdk.Api;
 using Lusid.Sdk.Model;
 using Lusid.Sdk.Tests.Utilities;
+using LusidFeatures;
 using NUnit.Framework;
 
 namespace Lusid.Sdk.Tests.Tutorials.Instruments
 {
     [TestFixture]
-    public class EquityExample: DemoInstrumentBase
+    public class SimpleInstrumentExample: DemoInstrumentBase
     {
+        [LusidFeature("F5-21")]
         [Test]
-        public void EquityCreationAndUpsertionExample()
+        public void SimpleInstrumentCreationAndUpsertionExample()
         {
             // DEFINE scope
             string scope = "ibor";
             
             // CREATE a Simple Instrument Equity (that can then be upserted into LUSID)
-            var equity = (SimpleInstrument) InstrumentExamples.CreateExampleEquity();
+            var equity = InstrumentExamples.CreateExampleSimpleInstrument() as SimpleInstrument;
             
             // ASSERT that it was created
             Assert.That(equity, Is.Not.Null);
@@ -53,7 +55,7 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
             
             // DEFINE equity instrument definition with property
             string name = "Microsoft";
-            var uniqueId = equity.InstrumentType+Guid.NewGuid().ToString(); 
+            var uniqueId = equity.InstrumentType + Guid.NewGuid().ToString(); 
             var equityDefinition = new InstrumentDefinition(name: name, identifiers: new Dictionary<string, InstrumentIdValue>{{"ClientInternal", new InstrumentIdValue(uniqueId)}}, definition: equity, properties: new List<Property>{properties});
             
             // UPSERT TO LUSID
@@ -82,11 +84,13 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
             _instrumentsApi.DeleteInstrument("ClientInternal", identifier: uniqueId); 
         }
 
+        /// <inheritdoc />
         protected override void CreateAndUpsertMarketDataToLusid(string scope, ModelSelection.ModelEnum model, LusidInstrument instrument)
         {
             throw new NotImplementedException();
         }
 
+        /// <inheritdoc />
         protected override void GetAndValidatePortfolioCashFlows(LusidInstrument instrument, string scope, string portfolioCode, string recipeCode,
             string instrumentID)
         {

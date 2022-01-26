@@ -83,29 +83,35 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
         }
         
         [LusidFeature("F22-15")]
-        [TestCase(ModelSelection.ModelEnum.ConstantTimeValueOfMoney)]
-        [TestCase(ModelSelection.ModelEnum.Discounting)]
-        public void FxForwardValuationExample(ModelSelection.ModelEnum model)
+        [TestCase(ModelSelection.ModelEnum.ConstantTimeValueOfMoney, true)]
+        [TestCase(ModelSelection.ModelEnum.Discounting, true)]
+        [TestCase(ModelSelection.ModelEnum.ConstantTimeValueOfMoney, false)]
+        [TestCase(ModelSelection.ModelEnum.Discounting, false)]
+        public void FxForwardValuationExample(ModelSelection.ModelEnum model, bool isNdf)
         {
-            var fxForward = InstrumentExamples.CreateExampleFxForward();
+            var fxForward = InstrumentExamples.CreateExampleFxForward(isNdf);
             CallLusidGetValuationEndpoint(fxForward, model);
         }
         
         [LusidFeature("F22-16")]
-        [TestCase(ModelSelection.ModelEnum.ConstantTimeValueOfMoney)]
-        [TestCase(ModelSelection.ModelEnum.Discounting)]
-        public void FxForwardInlineValuationExample(ModelSelection.ModelEnum model)
+        [TestCase(ModelSelection.ModelEnum.ConstantTimeValueOfMoney, true)]
+        [TestCase(ModelSelection.ModelEnum.Discounting, true)]
+        [TestCase(ModelSelection.ModelEnum.ConstantTimeValueOfMoney, false)]
+        [TestCase(ModelSelection.ModelEnum.Discounting, false)]
+        public void FxForwardInlineValuationExample(ModelSelection.ModelEnum model, bool isNdf)
         {
-            var fxForward = InstrumentExamples.CreateExampleFxForward();
+            var fxForward = InstrumentExamples.CreateExampleFxForward(isNdf);
             CallLusidInlineValuationEndpoint(fxForward, model);
         }
         
         [LusidFeature("F22-17")]
-        [TestCase(ModelSelection.ModelEnum.ConstantTimeValueOfMoney)]
-        [TestCase(ModelSelection.ModelEnum.Discounting)]
-        public void FxForwardPortfolioCashFlowsExample(ModelSelection.ModelEnum model)
+        [TestCase(ModelSelection.ModelEnum.ConstantTimeValueOfMoney, true)]
+        [TestCase(ModelSelection.ModelEnum.Discounting, true)]
+        [TestCase(ModelSelection.ModelEnum.ConstantTimeValueOfMoney, false)]
+        [TestCase(ModelSelection.ModelEnum.Discounting, false)]
+        public void FxForwardPortfolioCashFlowsExample(ModelSelection.ModelEnum model, bool isNdf)
         {
-            var fxForward = InstrumentExamples.CreateExampleFxForward();
+            var fxForward = InstrumentExamples.CreateExampleFxForward(isNdf);
             CallLusidGetPortfolioCashFlowsEndpoint(fxForward, model);
         }
         

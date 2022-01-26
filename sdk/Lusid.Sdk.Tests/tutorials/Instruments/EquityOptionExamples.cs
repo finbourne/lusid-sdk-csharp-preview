@@ -92,8 +92,8 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
             Assert.That(equityOption, Is.Not.Null);
 
             // CAN NOW UPSERT TO LUSID
-            var uniqueId = equityOption.InstrumentType+Guid.NewGuid().ToString(); 
-            var instrumentsIds = new List<(LusidInstrument, string)>(){(equityOption, uniqueId)};
+            var uniqueId = equityOption.InstrumentType + Guid.NewGuid().ToString(); 
+            var instrumentsIds = new List<(LusidInstrument, string)>{(equityOption, uniqueId)};
             var definitions = TestDataUtilities.BuildInstrumentUpsertRequest(instrumentsIds);
             
             var upsertResponse = _instrumentsApi.UpsertInstruments(definitions);
@@ -122,36 +122,47 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
         }
         
         [LusidFeature("F22-8")]
-        [TestCase(ModelSelection.ModelEnum.SimpleStatic)]
-        [TestCase(ModelSelection.ModelEnum.ConstantTimeValueOfMoney)]
-        [TestCase(ModelSelection.ModelEnum.Discounting)]
-        [TestCase(ModelSelection.ModelEnum.Bachelier)]
-        [TestCase(ModelSelection.ModelEnum.BlackScholes)]
-        public void EquityOptionValuationExample(ModelSelection.ModelEnum model)
+        [TestCase(ModelSelection.ModelEnum.ConstantTimeValueOfMoney, false)]
+        [TestCase(ModelSelection.ModelEnum.Discounting, false)]
+        [TestCase(ModelSelection.ModelEnum.Bachelier, false)]
+        [TestCase(ModelSelection.ModelEnum.BlackScholes, false)]
+        [TestCase(ModelSelection.ModelEnum.ConstantTimeValueOfMoney, true)]
+        [TestCase(ModelSelection.ModelEnum.Discounting, true)]
+        [TestCase(ModelSelection.ModelEnum.Bachelier, true)]
+        [TestCase(ModelSelection.ModelEnum.BlackScholes, true)]
+        public void EquityOptionValuationExample(ModelSelection.ModelEnum model, bool isCashSettled)
         {
-            var equityOption = InstrumentExamples.CreateExampleEquityOption();
+            var equityOption = InstrumentExamples.CreateExampleEquityOption(isCashSettled);
             CallLusidGetValuationEndpoint(equityOption, model);
         }
 
         [LusidFeature("F22-9")]
-        [TestCase(ModelSelection.ModelEnum.ConstantTimeValueOfMoney)]
-        [TestCase(ModelSelection.ModelEnum.Discounting)]
-        [TestCase(ModelSelection.ModelEnum.Bachelier)]
-        [TestCase(ModelSelection.ModelEnum.BlackScholes)]
-        public void EquityOptionInlineValuationExample(ModelSelection.ModelEnum model)
+        [TestCase(ModelSelection.ModelEnum.ConstantTimeValueOfMoney, false)]
+        [TestCase(ModelSelection.ModelEnum.Discounting, false)]
+        [TestCase(ModelSelection.ModelEnum.Bachelier, false)]
+        [TestCase(ModelSelection.ModelEnum.BlackScholes, false)]
+        [TestCase(ModelSelection.ModelEnum.ConstantTimeValueOfMoney, true)]
+        [TestCase(ModelSelection.ModelEnum.Discounting, true)]
+        [TestCase(ModelSelection.ModelEnum.Bachelier, true)]
+        [TestCase(ModelSelection.ModelEnum.BlackScholes, true)]
+        public void EquityOptionInlineValuationExample(ModelSelection.ModelEnum model, bool isCashSettled)
         {
-            var equityOption = InstrumentExamples.CreateExampleEquityOption();
+            var equityOption = InstrumentExamples.CreateExampleEquityOption(isCashSettled);
             CallLusidInlineValuationEndpoint(equityOption, model);
         }
 
         [LusidFeature("F22-30")]
-        [TestCase(ModelSelection.ModelEnum.ConstantTimeValueOfMoney)]
-        [TestCase(ModelSelection.ModelEnum.Discounting)]
-        [TestCase(ModelSelection.ModelEnum.Bachelier)]
-        [TestCase(ModelSelection.ModelEnum.BlackScholes)]
-        public void EquityOptionPortfolioCashFlowsExample(ModelSelection.ModelEnum model)
+        [TestCase(ModelSelection.ModelEnum.ConstantTimeValueOfMoney, false)]
+        [TestCase(ModelSelection.ModelEnum.Discounting, false)]
+        [TestCase(ModelSelection.ModelEnum.Bachelier, false)]
+        [TestCase(ModelSelection.ModelEnum.BlackScholes, false)]
+        [TestCase(ModelSelection.ModelEnum.ConstantTimeValueOfMoney, true)]
+        [TestCase(ModelSelection.ModelEnum.Discounting, true)]
+        [TestCase(ModelSelection.ModelEnum.Bachelier, true)]
+        [TestCase(ModelSelection.ModelEnum.BlackScholes, true)]
+        public void EquityOptionPortfolioCashFlowsExample(ModelSelection.ModelEnum model, bool isCashSettled)
         {
-            var equityOption = InstrumentExamples.CreateExampleEquityOption();
+            var equityOption = InstrumentExamples.CreateExampleEquityOption(isCashSettled);
             CallLusidGetPortfolioCashFlowsEndpoint(equityOption, model);
         }
         

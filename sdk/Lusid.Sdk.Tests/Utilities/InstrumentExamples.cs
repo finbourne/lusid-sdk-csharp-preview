@@ -18,7 +18,6 @@ namespace Lusid.Sdk.Tests.Utilities
                 nameof(InterestRateSwap) => CreateExampleInterestRateSwap(),
                 nameof(CreditDefaultSwap) => CreateExampleCreditDefaultSwap(),
                 nameof(ContractForDifference) => CreateExampleCfd(),
-                nameof(Equity) => CreateExampleEquity(),
                 _ => throw new ArgumentOutOfRangeException($"Please implement case for instrument {instrumentName}")
             };
         }
@@ -37,7 +36,7 @@ namespace Lusid.Sdk.Tests.Utilities
                 instrumentType: LusidInstrument.InstrumentTypeEnum.FxForward
             );
 
-        internal static LusidInstrument CreateExampleFxOption()
+        internal static LusidInstrument CreateExampleFxOption(bool isDeliveryNotCash = true)
             => new FxOption(
                 strike: 130,
                 domCcy: "USD",
@@ -46,7 +45,7 @@ namespace Lusid.Sdk.Tests.Utilities
                 optionMaturityDate: new DateTimeOffset(2020, 12, 18, 0, 0, 0, TimeSpan.Zero),
                 optionSettlementDate: new DateTimeOffset(2020, 12, 21, 0, 0, 0, TimeSpan.Zero),
                 isCallNotPut: true,
-                isDeliveryNotCash: true,
+                isDeliveryNotCash: isDeliveryNotCash,
                 instrumentType: LusidInstrument.InstrumentTypeEnum.FxOption
             );
 
@@ -66,12 +65,19 @@ namespace Lusid.Sdk.Tests.Utilities
                 instrumentType: LusidInstrument.InstrumentTypeEnum.EquityOption
             );
 
-        internal static LusidInstrument CreateExampleEquity()
+        internal static LusidInstrument CreateExampleSimpleInstrument()
             => new SimpleInstrument(
                 instrumentType: LusidInstrument.InstrumentTypeEnum.SimpleInstrument, 
                 domCcy: "USD", 
                 assetClass: SimpleInstrument.AssetClassEnum.Equities, 
                 simpleInstrumentType: "Equity"
+            );
+        
+        internal static LusidInstrument CreateExampleEquity()
+            => new Equity(
+                instrumentType: LusidInstrument.InstrumentTypeEnum.Equity, 
+                domCcy: "USD", 
+                identifiers: new EquityAllOfIdentifiers(isin: "US-000402625-0") 
             );
 
         private static FlowConventions CreateExampleFlowConventions()
@@ -434,6 +440,19 @@ namespace Lusid.Sdk.Tests.Utilities
             );
 
             return futureDefinition;
+        }
+
+        internal static InterestRateSwaption CreateExampleInterestRateSwaptionWithNamedConventions()
+        {
+            var underlyingSwap = CreateSwapByNamedConventions();
+            var swaption = new InterestRateSwaption(
+                startDate: new DateTimeOffset(2020, 1, 15, 0, 0, 0, TimeSpan.Zero),
+                payOrReceiveFixed: "Pay",
+                deliveryMethod: "Cash",
+                swap: underlyingSwap,
+                instrumentType: LusidInstrument.InstrumentTypeEnum.InterestRateSwaption);
+
+            return swaption;
         }
     }
 }
