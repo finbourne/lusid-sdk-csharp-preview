@@ -63,7 +63,7 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
                 recipeIdScope: scope,
                 recipeIdCode: recipeCode).Values;
 
-            var expectedNumberOfCashflows = fxOption.IsDeliveryNotCash ? 1 : 2;
+            var expectedNumberOfCashflows = fxOption.IsDeliveryNotCash ? 2 : 1;
             Assert.That(cashflows.Count, Is.EqualTo(expectedNumberOfCashflows));
         }
 
