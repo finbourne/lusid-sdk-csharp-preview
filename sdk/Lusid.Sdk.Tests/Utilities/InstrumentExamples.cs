@@ -270,7 +270,11 @@ namespace Lusid.Sdk.Tests.Utilities
             return irs;
         }
 
-        internal static InterestRateSwaption CreateExampleInterestRateSwaption()
+        internal static InterestRateSwaption CreateExampleInterestRateSwaption(
+            string deliveryMethod="Cash",
+            bool payFixed=true,
+            string currency="USD"
+        )
         {
             // CREATE an Interest Rate Swap (IRS)
             var startDate = new DateTimeOffset(2020, 2, 7, 0, 0, 0, TimeSpan.Zero);
@@ -278,7 +282,7 @@ namespace Lusid.Sdk.Tests.Utilities
 
             // CREATE the flow conventions, index convention for swap
             var flowConventions = new FlowConventions(
-                currency: "USD",
+                currency: currency,
                 paymentFrequency: "6M",
                 rollConvention: "MF",
                 dayCountConvention: "Act365",
@@ -289,9 +293,9 @@ namespace Lusid.Sdk.Tests.Utilities
                 );
 
             var idxConvention = new IndexConvention(
-                code: "UsdLibor6m",
+                code: "UsdLibor6m", // FIXME: currency is hardcoded?!
                 publicationDayLag: 0,
-                currency: "USD",
+                currency: currency,
                 paymentTenor: "6M",
                 dayCountConvention: "Act365",
                 fixingReference: "BP00"
@@ -301,7 +305,7 @@ namespace Lusid.Sdk.Tests.Utilities
             var fixedLegDef = new LegDefinition(
                 rateOrSpread: 0.05m, // fixed leg rate (swap rate)
                 stubType: "Front",
-                payReceive: "Pay",
+                payReceive: payFixed ? "Pay" : "Receive",
                 notionalExchangeType: "None",
                 conventions: flowConventions
             );
@@ -309,7 +313,7 @@ namespace Lusid.Sdk.Tests.Utilities
             var floatLegDef = new LegDefinition(
                 rateOrSpread: 0.002m, // float leg spread over curve rate, often zero
                 stubType: "Front",
-                payReceive: "Receive",
+                payReceive: !payFixed ? "Pay" : "Receive",
                 notionalExchangeType: "None",
                 conventions: flowConventions,
                 indexConvention: idxConvention
@@ -347,8 +351,8 @@ namespace Lusid.Sdk.Tests.Utilities
             // CREATE swaption to upsert to LUSID
             var swaption = new InterestRateSwaption(
                 startDate: new DateTimeOffset(2020, 1, 15, 0, 0, 0, TimeSpan.Zero),
-                payOrReceiveFixed: "Pay",
-                deliveryMethod: "Cash",
+                payOrReceiveFixed: payFixed ? "Pay" : "Receive",
+                deliveryMethod: deliveryMethod,
                 swap: swap,
                 instrumentType: LusidInstrument.InstrumentTypeEnum.InterestRateSwaption);
 
