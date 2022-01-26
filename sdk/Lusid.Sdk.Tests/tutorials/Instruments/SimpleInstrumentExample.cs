@@ -20,7 +20,7 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
             string scope = "ibor";
             
             // CREATE a Simple Instrument Equity (that can then be upserted into LUSID)
-            var equity = (SimpleInstrument) InstrumentExamples.CreateExampleSimpleInstrument();
+            var equity = InstrumentExamples.CreateExampleSimpleInstrument() as SimpleInstrument;
             
             // ASSERT that it was created
             Assert.That(equity, Is.Not.Null);

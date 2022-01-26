@@ -77,7 +77,7 @@ namespace Lusid.Sdk.Tests.Utilities
             => new Equity(
                 instrumentType: LusidInstrument.InstrumentTypeEnum.Equity, 
                 domCcy: "USD", 
-                identifiers: new EquityAllOfIdentifiers(lusidInstrumentId: "LUID_12345678") 
+                identifiers: new EquityAllOfIdentifiers(isin: "US-000402625-0") 
             );
 
         private static FlowConventions CreateExampleFlowConventions()
