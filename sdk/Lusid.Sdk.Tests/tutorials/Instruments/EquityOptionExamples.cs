@@ -92,8 +92,8 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
             Assert.That(equityOption, Is.Not.Null);
 
             // CAN NOW UPSERT TO LUSID
-            var uniqueId = equityOption.InstrumentType+Guid.NewGuid().ToString(); 
-            var instrumentsIds = new List<(LusidInstrument, string)>(){(equityOption, uniqueId)};
+            var uniqueId = equityOption.InstrumentType + Guid.NewGuid().ToString(); 
+            var instrumentsIds = new List<(LusidInstrument, string)>{(equityOption, uniqueId)};
             var definitions = TestDataUtilities.BuildInstrumentUpsertRequest(instrumentsIds);
             
             var upsertResponse = _instrumentsApi.UpsertInstruments(definitions);

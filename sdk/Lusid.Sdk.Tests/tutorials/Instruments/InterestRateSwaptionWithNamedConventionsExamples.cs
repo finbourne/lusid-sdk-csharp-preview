@@ -3,12 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using Lusid.Sdk.Model;
 using Lusid.Sdk.Tests.Utilities;
+using LusidFeatures;
 using NUnit.Framework;
 
 namespace Lusid.Sdk.Tests.Tutorials.Instruments
 {
     [TestFixture]
-    public class InterestRateSwaptionExamples: DemoInstrumentBase
+    public class InterestRateSwaptionWithNamedConventionsExamples: DemoInstrumentBase
     {
         /// <inheritdoc />
         protected override void CreateAndUpsertMarketDataToLusid(string scope, ModelSelection.ModelEnum model, LusidInstrument instrument)
@@ -73,8 +74,9 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
             Assert.That(cashflows.Count, Is.GreaterThanOrEqualTo(1));
         }
 
+        [LusidFeature("F5-16")]
         [Test]
-        public void InterestRateSwaptionCreationAndUpsertionExample()
+        public void InterestRateSwaptionWithNamedConventionsExamplesCreationAndUpsertionExample()
         {
             // CREATE an interest rate swaption (that can then be upserted into LUSID)
             var swaption = InstrumentExamples.CreateExampleInterestRateSwaptionWithNamedConventions();
@@ -108,24 +110,26 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
             _instrumentsApi.DeleteInstrument("ClientInternal", uniqueId);
         }
         
+        [LusidFeature("F22-25")]
         [TestCase(ModelSelection.ModelEnum.SimpleStatic)]
         [TestCase(ModelSelection.ModelEnum.ConstantTimeValueOfMoney)]
         [TestCase(ModelSelection.ModelEnum.Discounting)]
         [TestCase(ModelSelection.ModelEnum.Bachelier)]
         [TestCase(ModelSelection.ModelEnum.BlackScholes)]
-        public void InterestRateSwaptionValuationExample(ModelSelection.ModelEnum model)
+        public void InterestRateSwaptionWithNamedConventionsExamplesValuationExample(ModelSelection.ModelEnum model)
         {
-            var swaption = InstrumentExamples.CreateExampleInterestRateSwaptionWithNamedConventions();
+            var swaption = InstrumentExamples.CreateExampleInterestRateSwaption();
             CallLusidGetValuationEndpoint(swaption, model);
         }
         
+        [LusidFeature("F22-26")]
         [TestCase(ModelSelection.ModelEnum.ConstantTimeValueOfMoney)]
         [TestCase(ModelSelection.ModelEnum.Discounting)]
         [TestCase(ModelSelection.ModelEnum.Bachelier)]
         [TestCase(ModelSelection.ModelEnum.BlackScholes)]
-        public void InterestRateSwaptionInlineValuationExample(ModelSelection.ModelEnum model)
+        public void InterestRateSwaptionWithNamedConventionsExamplesInlineValuationExample(ModelSelection.ModelEnum model)
         {
-            var swaption = InstrumentExamples.CreateExampleInterestRateSwaptionWithNamedConventions();
+            var swaption = InstrumentExamples.CreateExampleInterestRateSwaption();
             CallLusidInlineValuationEndpoint(swaption, model);
         }
     }
