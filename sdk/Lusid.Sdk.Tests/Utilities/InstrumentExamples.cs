@@ -18,7 +18,6 @@ namespace Lusid.Sdk.Tests.Utilities
                 nameof(InterestRateSwap) => CreateExampleInterestRateSwap(),
                 nameof(CreditDefaultSwap) => CreateExampleCreditDefaultSwap(),
                 nameof(ContractForDifference) => CreateExampleCfd(),
-                nameof(Equity) => CreateExampleSimpleInstrument(),
                 _ => throw new ArgumentOutOfRangeException($"Please implement case for instrument {instrumentName}")
             };
         }
