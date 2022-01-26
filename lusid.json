@@ -9,7 +9,7 @@
       "url": "https://www.finbourne.com",
       "email": "info@finbourne.com"
     },
-    "version": "0.11.3907",
+    "version": "0.11.3911",
     "x-logo": {
       "url": "https://www.lusid.com/app/assets/logo_white.png",
       "backgroundColor": "#415464"
@@ -17,7 +17,7 @@
   },
   "servers": [
     {
-      "url": "http://local-unit-test-server.lusid.com:38226"
+      "url": "http://local-unit-test-server.lusid.com:44012"
     }
   ],
   "paths": {
@@ -70929,22 +70929,10 @@
             "required": [
               "domCcy",
               "identifiers",
-              "instrumentType",
-              "maturityDate",
-              "startDate"
+              "instrumentType"
             ],
             "type": "object",
             "properties": {
-              "startDate": {
-                "type": "string",
-                "description": "The start date of the instrument. This is normally synonymous with the trade-date.",
-                "format": "date-time"
-              },
-              "maturityDate": {
-                "type": "string",
-                "description": "The final maturity date of the instrument. This means the last date on which the instruments makes a payment of any amount.\r\nFor the avoidance of doubt, that is not necessarily prior to its last sensitivity date for the purposes of risk; e.g. instruments such as\r\nConstant Maturity Swaps (CMS) often have sensitivities to rates beyond their last payment date.",
-                "format": "date-time"
-              },
               "identifiers": {
                 "type": "object",
                 "properties": {
