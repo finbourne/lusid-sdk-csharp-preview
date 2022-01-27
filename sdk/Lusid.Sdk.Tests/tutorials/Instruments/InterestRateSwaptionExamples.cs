@@ -4,6 +4,7 @@ using System.Linq;
 using Lusid.Sdk.Model;
 using Lusid.Sdk.Tests.tutorials.Ibor;
 using Lusid.Sdk.Tests.Utilities;
+using LusidFeatures;
 using NUnit.Framework;
 
 namespace Lusid.Sdk.Tests.Tutorials.Instruments
@@ -142,6 +143,7 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
         /// There is additional code to get the underlying in the GetValuation call as well as then
         /// upserting the underlying back into the portfolio. 
         /// </summary>
+        [LusidFeature("F22-35")]
         [TestCase(ModelSelection.ModelEnum.ConstantTimeValueOfMoney,"Cash")]
         public void LifeCycleManagementForCashSettledInterestRateSwaption(
             ModelSelection.ModelEnum model,
