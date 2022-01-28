@@ -563,6 +563,14 @@ namespace Lusid.Sdk.Tests.Utilities
                 field: "mid",
                 quoteInterval: "1M");
             
+            var figiRule = new MarketDataKeyRule(
+                key: "Equity.Figi.*",
+                supplier: "Lusid",
+                scope,
+                MarketDataKeyRule.QuoteTypeEnum.Price,
+                field: "mid",
+                quoteInterval: "1D");
+            
             // resetRule is used to locate reset rates such as that for interest rate swaps and swaptions
             var resetRule = new MarketDataKeyRule(
                 key: "Equity.RIC.*",
@@ -611,13 +619,19 @@ namespace Lusid.Sdk.Tests.Utilities
                 scope,
                 recipeCode,
                 market: new MarketContext(
-                    marketRules: new List<MarketDataKeyRule>{simpleStaticRule, resetRule, creditRule, ratesRule, irVolRule},
+                    marketRules: new List<MarketDataKeyRule>{simpleStaticRule, figiRule, resetRule, creditRule, ratesRule, irVolRule},
                     options: new MarketOptions(defaultSupplier: "Lusid", defaultScope: scope, defaultInstrumentCodeType: "RIC")),
                 pricing: new PricingContext(options: pricingOptions),
                 description: $"Recipe for {model} pricing");
             
             return new UpsertRecipeRequest(recipe);
         }
+
+        private static readonly List<LusidInstrument.InstrumentTypeEnum> InstrumentThatCanHaveNegativePv = new List<LusidInstrument.InstrumentTypeEnum>
+            {
+                LusidInstrument.InstrumentTypeEnum.InterestRateSwap,
+                LusidInstrument.InstrumentTypeEnum.EquitySwap
+            };
         
         // CHECK we got non-null results and simple pricing checks e.g. positive for relevant instruments
         // We default InstrumentType.Unknown for convenience and default to mean positive pv.
@@ -637,7 +651,9 @@ namespace Lusid.Sdk.Tests.Utilities
                 
                 Assert.That(pv, Is.Not.EqualTo(0).Within(1e-8));
                 
-                if (instrumentType != LusidInstrument.InstrumentTypeEnum.InterestRateSwap) // swaps can have negative pv
+                // Some instruments have pv that is equal or greater than zero (some can be negative).
+                // We check the positivity of pv for relevant instruments.
+                if (!InstrumentThatCanHaveNegativePv.Contains(instrumentType))
                 {
                     Assert.That(pv, Is.GreaterThanOrEqualTo(0));
                 }
@@ -668,7 +684,7 @@ namespace Lusid.Sdk.Tests.Utilities
         {
             if (values.IsNullOrEmpty())
             {
-                throw new ArgumentException("Developer error: We expectd at least one element in the list of numbers");
+                throw new ArgumentException("Developer error: We expected at least one element in the list of numbers");
             }
             
             var firstEntry = values.First();
@@ -720,15 +736,18 @@ namespace Lusid.Sdk.Tests.Utilities
             string recipeCode,
             DateTimeOffset effectiveAt,
             DateTimeOffset? effectiveFrom = null,
-            bool requestForUnderlying = false) 
+            List<string> additionalRequestsKeys = null)
         {
-            var valuationSpec = requestForUnderlying
-                ? ValuationSpec.Append(new AggregateSpec("Analytic/default/OnExercise", AggregateSpec.OpEnum.Value)).ToList()
-                : ValuationSpec;
+            // Get full set of request spec [assumes aggregating additionalRequestKeys by Value.]
+            var allValuationRequests = (additionalRequestsKeys ?? new List<string>())
+                .Select(requestKey => new AggregateSpec(requestKey, AggregateSpec.OpEnum.Value))
+                .ToList();
+            allValuationRequests.AddRange(ValuationSpec);
+            
             var valuationSchedule = new ValuationSchedule(effectiveFrom, effectiveAt);
             return new ValuationRequest(
                 recipeId: new ResourceId(scope, recipeCode),
-                metrics: valuationSpec,
+                metrics: allValuationRequests,
                 valuationSchedule: valuationSchedule,
                 sort: new List<OrderBySpec> {new OrderBySpec(ValuationDateKey, OrderBySpec.SortOrderEnum.Ascending)},
                 portfolioEntityIds: new List<PortfolioEntityId> {new PortfolioEntityId(scope, portfolioCode)},

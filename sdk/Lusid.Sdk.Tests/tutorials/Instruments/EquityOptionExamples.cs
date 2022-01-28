@@ -333,7 +333,7 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
                 recipeCode,
                 effectiveAt: cashFlowDate.AddDays(5),
                 effectiveFrom: cashFlowDate.AddDays(-5),
-                requestForUnderlying: true);
+                additionalRequestsKeys: new List<string>{"Analytic/default/OnExercise"});
             
             // CALL GetValuation before upserting back the cashflows. We check
             // (1) there is no cash holdings in the portfolio prior to expiration
