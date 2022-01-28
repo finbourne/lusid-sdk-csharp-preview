@@ -439,5 +439,12 @@ namespace Lusid.Sdk.Tests
             var date = apiResponse.GetRequestDateTime();
             Assert.IsNull(date);
         }
+
+        [Test]
+        public void ExceptionFactoryIsOverriddenWithCustomImplementation()
+        {
+            var api = _factory.Api<ApplicationMetadataApi>();
+            Assert.That(api.ExceptionFactory.GetInvocationList().Single().Method.Name, Is.EqualTo(nameof(LusidExceptionHandler.CustomExceptionFactory)));
+        }
     }
 }
