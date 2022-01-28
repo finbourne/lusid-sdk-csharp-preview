@@ -116,18 +116,21 @@ namespace Lusid.Sdk.Tests
 
             var factory = new LusidApiFactory(apiConfig);
             var api = factory.Api<PortfoliosApi>();
+
+            // Can't be more specific as we get different exceptions locally vs in the build pipeline
+            var expectedMsg = "Internal SDK error occurred when calling GetPortfolio";
             
             Assert.That(
                 () => api.GetPortfolioWithHttpInfo("someScope", "someCode"),
                 Throws.InstanceOf<ApiException>()
-                    .With.Message.Contains("Error calling GetPortfolio: No connection could be made"));
+                    .With.Message.Contains(expectedMsg));
 
             // Note: these non-"WithHttpInfo" methods just unwrap the `Data` property from the call above.
             // But these were the problematic ones, as they would previously just return a null value in this scenario.
             Assert.That(
                 () => api.GetPortfolio("someScope", "someCode"),
                 Throws.InstanceOf<ApiException>()
-                    .With.Message.Contains("Error calling GetPortfolio")); // can't be more specific: get different exceptions locally vs in the build pipeline
+                    .With.Message.Contains(expectedMsg)); 
         }
 
         [Test]
