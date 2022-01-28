@@ -107,7 +107,32 @@ namespace Lusid.Sdk.Tests
                 () => new LusidApiFactory(apiConfig),
                 Throws.InstanceOf<UriFormatException>().With.Message.EqualTo("Invalid LUSID Uri: xyz"));
         }
-        
+
+        [Test]
+        public void NetworkConnectivityErrors_ThrowsException()
+        {
+            var apiConfig = ApiConfigurationBuilder.Build("secrets.json");
+            apiConfig.ApiUrl = "https://localhost:56789/api"; // nothing should be listening on this, so we should get a "No connection could be made" error...
+
+            var factory = new LusidApiFactory(apiConfig);
+            var api = factory.Api<PortfoliosApi>();
+
+            // Can't be more specific as we get different exceptions locally vs in the build pipeline
+            var expectedMsg = "Internal SDK error occurred when calling GetPortfolio";
+            
+            Assert.That(
+                () => api.GetPortfolioWithHttpInfo("someScope", "someCode"),
+                Throws.InstanceOf<ApiException>()
+                    .With.Message.Contains(expectedMsg));
+
+            // Note: these non-"WithHttpInfo" methods just unwrap the `Data` property from the call above.
+            // But these were the problematic ones, as they would previously just return a null value in this scenario.
+            Assert.That(
+                () => api.GetPortfolio("someScope", "someCode"),
+                Throws.InstanceOf<ApiException>()
+                    .With.Message.Contains(expectedMsg)); 
+        }
+
         [Test]
         public void ApiResponse_CanExtract_RequestId()
         {
@@ -413,6 +438,13 @@ namespace Lusid.Sdk.Tests
             apiResponse.Headers[ApiResponseExtensions.DateHeader] = new[] {"invalid"};
             var date = apiResponse.GetRequestDateTime();
             Assert.IsNull(date);
+        }
+
+        [Test]
+        public void ExceptionFactoryIsOverriddenWithCustomImplementation()
+        {
+            var api = _factory.Api<ApplicationMetadataApi>();
+            Assert.That(api.ExceptionFactory.GetInvocationList().Single().Method.Name, Is.EqualTo(nameof(LusidExceptionHandler.CustomExceptionFactory)));
         }
     }
 }
