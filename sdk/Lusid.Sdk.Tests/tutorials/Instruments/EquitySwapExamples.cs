@@ -121,7 +121,7 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
             CallLusidGetPortfolioCashFlowsEndpoint(equitySwap, model);
         }
         
-        [LusidFeature("F22-40")] //todo-jz
+        [LusidFeature("F22-43")]
         [TestCase(ModelSelection.ModelEnum.ConstantTimeValueOfMoney)]
         [TestCase(ModelSelection.ModelEnum.Discounting)]
         public void EquitySwapValuationExampleWithExposureAndAccruedInterest(ModelSelection.ModelEnum model)
