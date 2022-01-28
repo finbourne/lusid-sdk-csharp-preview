@@ -115,7 +115,7 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
         [TestCase(ModelSelection.ModelEnum.BlackScholes)]
         public void InterestRateSwaptionValuationExample(ModelSelection.ModelEnum model)
         {
-            var swaption = InstrumentExamples.CreateExampleInterestRateSwaptionWithNamedConventions();
+            var swaption = InstrumentExamples.CreateExampleInterestRateSwaption();
             CallLusidGetValuationEndpoint(swaption, model);
         }
         
@@ -125,7 +125,7 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
         [TestCase(ModelSelection.ModelEnum.BlackScholes)]
         public void InterestRateSwaptionInlineValuationExample(ModelSelection.ModelEnum model)
         {
-            var swaption = InstrumentExamples.CreateExampleInterestRateSwaptionWithNamedConventions();
+            var swaption = InstrumentExamples.CreateExampleInterestRateSwaption();
             CallLusidInlineValuationEndpoint(swaption, model);
         }
     }

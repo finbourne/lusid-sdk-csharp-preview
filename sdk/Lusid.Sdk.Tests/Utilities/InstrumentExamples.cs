@@ -72,7 +72,7 @@ namespace Lusid.Sdk.Tests.Utilities
                 assetClass: SimpleInstrument.AssetClassEnum.Equities, 
                 simpleInstrumentType: "Equity"
             );
-        
+
         internal static LusidInstrument CreateExampleEquity()
             => new Equity(
                 instrumentType: LusidInstrument.InstrumentTypeEnum.Equity, 
@@ -116,7 +116,7 @@ namespace Lusid.Sdk.Tests.Utilities
                 underlyingIdentifier: "RIC",
                 instrumentType: LusidInstrument.InstrumentTypeEnum.ContractForDifference
             );
-        
+
         internal static LusidInstrument CreateExampleZeroCouponBond()
             => new Bond(
                 startDate: new DateTimeOffset(2020, 2, 7, 0, 0, 0, TimeSpan.Zero),
@@ -144,51 +144,11 @@ namespace Lusid.Sdk.Tests.Utilities
             var startDate = TestEffectiveAt;
             var maturityDate = startDate.AddYears(3);
 
-            // CREATE the flow conventions, index convention
-            var idxConvention = new IndexConvention(
-                code: "GbpLibor6m",
-                publicationDayLag: 0,
-                currency: "USD",
-                paymentTenor: "6M",
-                dayCountConvention: "Act365",
-                fixingReference: "BP00"
-            );
-
-            // CREATE the leg definitions
-            var fixedLegDef = new LegDefinition(
-                rateOrSpread: 0.02m, // fixed leg rate (swap rate)
-                stubType: "Front",
-                payReceive: "Pay",
-                notionalExchangeType: "None",
-                conventions: CreateExampleFlowConventions()
-            );
-
-            var floatLegDef = new LegDefinition(
-                rateOrSpread: 0.05m, // float leg spread over curve rate, often zero
-                stubType: "Front",
-                payReceive: "Pay",
-                notionalExchangeType: "None",
-                conventions: CreateExampleFlowConventions(),
-                indexConvention: idxConvention
-            );
-
-            // CREATE the fixed leg
-            var fixedLeg = new FixedLeg(
-                notional: 100m,
-                startDate: startDate,
-                maturityDate: maturityDate,
-                legDefinition: fixedLegDef,
-                instrumentType: LusidInstrument.InstrumentTypeEnum.FixedLeg
-            );
-
-            // CREATE the floating leg
-            var floatLeg = new FloatingLeg(
-                notional: 100m,
-                startDate: startDate,
-                maturityDate: maturityDate,
-                legDefinition: floatLegDef,
-                instrumentType: LusidInstrument.InstrumentTypeEnum.FloatingLeg
-            );
+            // CREATE the fixed and floating leg
+            var idxConvention = CreateExampleIndexConventions("GbpLibor6m");
+            var flowConventions = CreateExampleFlowConventions();
+            var fixedLeg = CreateExampleFixedLeg(startDate, maturityDate, flowConventions);
+            var floatLeg = CreateExampleFloatLeg(startDate, maturityDate, flowConventions, idxConvention);
 
             return new InterestRateSwap(
                 startDate: startDate,
@@ -201,7 +161,19 @@ namespace Lusid.Sdk.Tests.Utilities
                 instrumentType: LusidInstrument.InstrumentTypeEnum.InterestRateSwap
             );
         }
-        
+
+        private static IndexConvention CreateExampleIndexConventions(string code)
+        {
+            return new IndexConvention(
+                code: code,
+                publicationDayLag: 0,
+                currency: "USD",
+                paymentTenor: "6M",
+                dayCountConvention: "Act365",
+                fixingReference: "BP00"
+            );
+        }
+
         /// <summary>
         /// One can define an IRS (interest rate swap) by explicitly defining all parameters and in particular the flow and index convention variables.
         /// LUSID allows us to book flow IRS without the need to explicitly write out the flow and index convention by providing a semantic name for commonly understood ones.
@@ -214,10 +186,11 @@ namespace Lusid.Sdk.Tests.Utilities
             decimal fixedRate = 0.02m;
             string fixedLegDirection = "Pay";
             decimal notional = 100m;
-            
+
             // CREATE the flow conventions, index convention
             FlowConventionName flowConventionName = new FlowConventionName(currency: "USD", tenor: "6M");
-            FlowConventionName indexConventionName = new FlowConventionName(currency: "USD", tenor: "6M", indexName:"LIBOR");
+            FlowConventionName indexConventionName =
+                new FlowConventionName(currency: "USD", tenor: "6M", indexName: "LIBOR");
 
             var floatingLegDirection = fixedLegDirection == "Pay" ? "Receive" : "Pay";
 
@@ -277,61 +250,12 @@ namespace Lusid.Sdk.Tests.Utilities
             var maturityDate = new DateTimeOffset(2030, 2, 7, 0, 0, 0, TimeSpan.Zero);
 
             // CREATE the flow conventions, index convention for swap
-            var flowConventions = new FlowConventions(
-                currency: "USD",
-                paymentFrequency: "6M",
-                rollConvention: "MF",
-                dayCountConvention: "Act365",
-                paymentCalendars: new List<string>(),
-                resetCalendars: new List<string>(),
-                settleDays: 2,
-                resetDays: 2
-                );
+            var idxConvention = CreateExampleIndexConventions("UsdLibor6m");
+            var flowConventions = CreateExampleFlowConventions();
 
-            var idxConvention = new IndexConvention(
-                code: "UsdLibor6m",
-                publicationDayLag: 0,
-                currency: "USD",
-                paymentTenor: "6M",
-                dayCountConvention: "Act365",
-                fixingReference: "BP00"
-            );
-
-            // CREATE the leg definitions
-            var fixedLegDef = new LegDefinition(
-                rateOrSpread: 0.05m, // fixed leg rate (swap rate)
-                stubType: "Front",
-                payReceive: "Pay",
-                notionalExchangeType: "None",
-                conventions: flowConventions
-            );
-
-            var floatLegDef = new LegDefinition(
-                rateOrSpread: 0.002m, // float leg spread over curve rate, often zero
-                stubType: "Front",
-                payReceive: "Receive",
-                notionalExchangeType: "None",
-                conventions: flowConventions,
-                indexConvention: idxConvention
-            );
-
-            // CREATE the fixed leg
-            var fixedLeg = new FixedLeg(
-                notional: 100m,
-                startDate: startDate,
-                maturityDate: maturityDate,
-                legDefinition: fixedLegDef,
-                instrumentType: LusidInstrument.InstrumentTypeEnum.FixedLeg
-                );
-
-            // CREATE the floating leg
-            var floatLeg = new FloatingLeg(
-                notional: 100m,
-                startDate: startDate,
-                maturityDate: maturityDate,
-                legDefinition: floatLegDef,
-                instrumentType: LusidInstrument.InstrumentTypeEnum.FloatingLeg
-            );
+            // CREATE the fixed and floating leg
+            var fixedLeg = CreateExampleFixedLeg(startDate, maturityDate, flowConventions);
+            var floatLeg = CreateExampleFloatLeg(startDate, maturityDate, flowConventions, idxConvention);
 
             var swap = new InterestRateSwap(
                 startDate: startDate,
@@ -343,7 +267,7 @@ namespace Lusid.Sdk.Tests.Utilities
                 },
                 instrumentType: LusidInstrument.InstrumentTypeEnum.InterestRateSwap
             );
-            
+
             // CREATE swaption to upsert to LUSID
             var swaption = new InterestRateSwaption(
                 startDate: new DateTimeOffset(2020, 1, 15, 0, 0, 0, TimeSpan.Zero),
@@ -383,24 +307,15 @@ namespace Lusid.Sdk.Tests.Utilities
                 ),
                 instrumentType: LusidInstrument.InstrumentTypeEnum.CreditDefaultSwap
             );
-        
+
         internal static LusidInstrument CreateExampleTermDeposit(DateTimeOffset startDate)
             => new TermDeposit(
                 startDate: startDate,
                 maturityDate: startDate.AddYears(1),
                 contractSize: 1_000_000m,
-                flowConvention: new FlowConventions(
-                    currency: "USD",
-                    paymentFrequency: "6M",
-                    rollConvention: "MF",
-                    dayCountConvention: "Act365",
-                    paymentCalendars: new List<string>(),
-                    resetCalendars: new List<string>(),
-                    settleDays: 1,
-                    resetDays: 0),
-                rate: 0.03m,
+                flowConvention: CreateExampleFlowConventions(),
                 instrumentType: LusidInstrument.InstrumentTypeEnum.TermDeposit
-        );
+            );
 
         internal static ExoticInstrument CreateExampleExotic()
             => new ExoticInstrument(
@@ -424,11 +339,11 @@ namespace Lusid.Sdk.Tests.Utilities
                 tickerStep: 0.01m,
                 unitValue: 4.2m
             );
-            
+
             var futureDefinition = new Future(
                 startDate: new DateTimeOffset(2020, 09, 11, 0, 0, 0, TimeSpan.Zero),
                 maturityDate: new DateTimeOffset(2020, 12, 31, 0, 0, 0, TimeSpan.Zero),
-                identifiers : new Dictionary<string, string>(),
+                identifiers: new Dictionary<string, string>(),
                 contractDetails: contractDetails,
                 contracts: 1,
                 refSpotPrice: 100,
@@ -436,7 +351,7 @@ namespace Lusid.Sdk.Tests.Utilities
                     new InstrumentDefinitionFormat("custom", "custom", "0.0.0"),
                     content: "{}",
                     LusidInstrument.InstrumentTypeEnum.ExoticInstrument),
-                instrumentType: LusidInstrument.InstrumentTypeEnum.Future 
+                instrumentType: LusidInstrument.InstrumentTypeEnum.Future
             );
 
             return futureDefinition;
@@ -453,6 +368,72 @@ namespace Lusid.Sdk.Tests.Utilities
                 instrumentType: LusidInstrument.InstrumentTypeEnum.InterestRateSwaption);
 
             return swaption;
+        }
+
+        private static FloatingLeg CreateExampleFloatLeg(
+            DateTimeOffset startDate,
+            DateTimeOffset maturityDate,
+            FlowConventions flowConventions,
+            IndexConvention indexConvention)
+        {
+            var floatLegDef = new LegDefinition(
+                rateOrSpread: 0.002m, // float leg spread over curve rate, often zero
+                stubType: "Front",
+                payReceive: "Receive",
+                notionalExchangeType: "None",
+                conventions: flowConventions,
+                indexConvention: indexConvention);
+
+            return new FloatingLeg(
+                startDate: startDate,
+                maturityDate: maturityDate,
+                notional: 100m,
+                legDefinition: floatLegDef,
+                instrumentType: LusidInstrument.InstrumentTypeEnum.FloatingLeg
+            );
+        }
+
+        private static FixedLeg CreateExampleFixedLeg(
+            DateTimeOffset startDate,
+            DateTimeOffset maturityDate,
+            FlowConventions flowConventions)
+        {
+            var fixedLegDef = new LegDefinition(
+                rateOrSpread: 0.05m, // fixed leg rate (swap rate)
+                stubType: "Front",
+                payReceive: "Pay",
+                notionalExchangeType: "None",
+                conventions: flowConventions
+            );
+
+            return new FixedLeg(
+                startDate: startDate,
+                maturityDate: maturityDate,
+                notional: 100m,
+                legDefinition: fixedLegDef,
+                instrumentType: LusidInstrument.InstrumentTypeEnum.FixedLeg
+            );
+        }
+
+        internal static EquitySwap CreateExampleEquitySwap()
+        {
+            // CREATE an EquitySwap (that can then be upserted into LUSID)
+            var startDate = TestEffectiveAt;
+            var maturity = startDate.AddMonths(6);
+            var flowConventions = CreateExampleFlowConventions();
+            return new EquitySwap(
+                startDate: startDate,
+                maturityDate: maturity,
+                code: "codeOfUnderlying",
+                equityFlowConventions: flowConventions,
+                fundingLeg: CreateExampleFloatLeg(startDate, maturity, flowConventions, CreateExampleIndexConventions("GbpLibor6m")),
+                initialPrice: 100m,
+                includeDividends: false,
+                notionalReset: false,
+                quantity: 10m,
+                underlyingIdentifier: "Figi",
+                instrumentType: LusidInstrument.InstrumentTypeEnum.EquitySwap
+            );
         }
     }
 }
