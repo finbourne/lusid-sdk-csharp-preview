@@ -6,8 +6,6 @@ using Lusid.Sdk.Api;
 using Lusid.Sdk.Client;
 using Lusid.Sdk.Model;
 using Lusid.Sdk.Utilities;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Serialization;
 using NUnit.Framework;
 using Polly;
 using RestSharp;
@@ -25,19 +23,18 @@ namespace Lusid.Sdk.Tests.Utilities
         private const string ListenerUriPrefix = "http://localhost:4444/";
         private int _apiCallCount;
 
-        private readonly string _testPortfolioResponse = new Portfolio(
+        private readonly Portfolio _testPortfolioResponse = new Portfolio(
             "test",
             id: new ResourceId("test", "test"),
             displayName: "test",
             created: DateTimeOffset.Now,
             description: "test",
-            type: Portfolio.TypeEnum.Transaction).ToJson();
+            type: Portfolio.TypeEnum.Transaction);
             
 
         [SetUp]
         public void SetUp()
         {
-            JsonConvert.DeserializeObject<Portfolio>(_testPortfolioResponse);
             _apiCallCount = 0;
             
             _httpListener = new HttpListener();
@@ -59,11 +56,12 @@ namespace Lusid.Sdk.Tests.Utilities
             // It should not retry on codes such as 400 by default, unless specified
             const int expectedStatusCode = 400;
             const int expectedNumberOfApiCalls = 1;
+            const string someError = "SomeError...";
             // Add the next response returned by api
             AddMockHttpResponseToQueue(
                 _httpListener, statusCode: 
                 expectedStatusCode, 
-                responseContent: _testPortfolioResponse);
+                responseContent: someError);
             
             RetryConfiguration.RetryPolicy = PollyApiRetryHandler.DefaultRetryPolicyWithFallback;
         
@@ -71,7 +69,7 @@ namespace Lusid.Sdk.Tests.Utilities
                 () => _apiFactory.Api<IPortfoliosApi>().GetPortfolio("any", "any")
             );
 
-            Assert.That(exception.ErrorContent, Is.EqualTo(_testPortfolioResponse));
+            Assert.That(exception.ErrorContent, Is.EqualTo(someError));
             Assert.That(exception.ErrorCode, Is.EqualTo(expectedStatusCode));
             // Api was called just once, no retries
             Assert.That(_apiCallCount, Is.EqualTo(expectedNumberOfApiCalls));
@@ -87,7 +85,7 @@ namespace Lusid.Sdk.Tests.Utilities
             AddMockHttpResponseToQueue(
                 _httpListener, 
                 expectedStatusCode, 
-                responseContent: _testPortfolioResponse);
+                responseContent: _testPortfolioResponse.ToJson());
                 
             RetryConfiguration.RetryPolicy = PollyApiRetryHandler.DefaultRetryPolicyWithFallback;
             
@@ -99,9 +97,10 @@ namespace Lusid.Sdk.Tests.Utilities
         }
 
         [Test]
-        public void CallGetPortfoliosApi_WhenApiResponseStatusCodeSatisfiesRetryCriteria_ExceedsPollyRetriesAndThrows()
+        [TestCase(409)] // Concurrency
+        [TestCase(429)] // Too many requests
+        public void CallGetPortfoliosApi_WhenApiResponseStatusCodeSatisfiesRetryCriteria_ExceedsPollyRetriesAndThrows(int returnedStatusCode)
         {
-            const int returnedStatusCode = 409; // Concurrency
             const int expectedNumberOfRetries = 2;
             const int expectedNumberOfApiCalls = expectedNumberOfRetries + 1;
             const string returnedErrorMessage = "Some error response";
@@ -116,14 +115,15 @@ namespace Lusid.Sdk.Tests.Utilities
             );
 
             Assert.That(_apiCallCount, Is.EqualTo(expectedNumberOfApiCalls));
-            // Todo: In the future 0 error codes with throw an error after retries exceeded
             Assert.That(exception.ErrorContent, Is.EqualTo(returnedErrorMessage));
+            Assert.That(exception.ErrorCode, Is.EqualTo(returnedStatusCode));
         }
 
         [Test]
-        public void CallGetPortfoliosApi_WhenExceedsPollyRetries_NoFallbackPolicyDefined_DoesNotThrow_ReturnsEmptyResponse()
+        [TestCase(409)] // Concurrency conflict failure
+        [TestCase(429)] // Too many requests
+        public void CallGetPortfoliosApi_WhenExceedsPollyRetries_NoFallbackPolicyDefined_DoesNotThrow_ReturnsEmptyResponse(int returnedStatusCode)
         {
-            const int returnedStatusCode = 409;
             const int expectedNumberOfRetries = 2;
             const int expectedNumberOfApiCalls = expectedNumberOfRetries + 1;
             for (var i = 0; i < expectedNumberOfApiCalls; i++)
@@ -135,29 +135,28 @@ namespace Lusid.Sdk.Tests.Utilities
             var response = _apiFactory.Api<IPortfoliosApi>().GetPortfolio("any", "any");
 
             Assert.That(_apiCallCount, Is.EqualTo(expectedNumberOfApiCalls));
-            // Todo: In the future 0 error codes with throw an error after retries exceeded
             Assert.That(response, Is.Null);
         }
 
         [Test]
-        public void CallGetPortfoliosApi_PollyRetryConditionIsSatisfied_RetriesUntilSuccess_DoesNotThrow()
+        [TestCase(409)] // Concurrency conflict failure
+        [TestCase(429)] // Too many requests
+        public void CallGetPortfoliosApi_PollyRetryConditionIsSatisfied_RetriesUntilSuccess_DoesNotThrow(int returnedStatusCode)
         {
-            const int returnedStatusCode = 409; // Concurrency conflict failure
             const int expectedNumberOfRetries = 2;
             const int expectedNumberOfApiCalls = 1 + expectedNumberOfRetries;
             // First Response is a failing code
-            AddMockHttpResponseToQueue(_httpListener, statusCode: returnedStatusCode, responseContent: "");
+            AddMockHttpResponseToQueue(_httpListener, statusCode: returnedStatusCode, responseContent: "some err");
             // Second response is the first retry. It fails again
-            AddMockHttpResponseToQueue(_httpListener, statusCode: returnedStatusCode, responseContent: "");
+            AddMockHttpResponseToQueue(_httpListener, statusCode: returnedStatusCode, responseContent: "some err");
             // Third response is the second retry. Returns 200 before retries are exceeded, and does not throw
-            AddMockHttpResponseToQueue(_httpListener, statusCode: 200, responseContent: "");
+            AddMockHttpResponseToQueue(_httpListener, statusCode: 200, responseContent: _testPortfolioResponse.ToJson());
             RetryConfiguration.RetryPolicy = PollyApiRetryHandler.DefaultRetryPolicyWithFallback;
 
             // Calling GetPortfolio or any other API triggers the flow that triggers polly
             var sdkResponse = _apiFactory.Api<IPortfoliosApi>().GetPortfolio("any", "any");
 
-            // Todo: In the future 0 error codes with throw an error after retries exceeded
-            Assert.That(sdkResponse, Is.Null);
+            Assert.That(sdkResponse, Is.EqualTo(_testPortfolioResponse));
             Assert.That(_apiCallCount, Is.EqualTo(expectedNumberOfApiCalls));
         }
 
@@ -169,7 +168,7 @@ namespace Lusid.Sdk.Tests.Utilities
             const int expectedNumberOfRetries = 2;
             const int expectedNumberOfApiCalls = expectedNumberOfRetries + 1;
             for (var i = 0; i < expectedNumberOfApiCalls; i++)
-                AddMockHttpResponseToQueue(_httpListener, returnedStatusCode, responseContent: "");
+                AddMockHttpResponseToQueue(_httpListener, returnedStatusCode, responseContent: _testPortfolioResponse.ToJson());
             var retryCount = 0;
             // Polly retry policy with a backoff example
             RetryConfiguration.RetryPolicy = Policy
@@ -188,14 +187,14 @@ namespace Lusid.Sdk.Tests.Utilities
 
             Assert.That(retryCount, Is.EqualTo(expectedNumberOfRetries));
             Assert.That(_apiCallCount, Is.EqualTo(expectedNumberOfApiCalls));
-            // Todo: In the future 0 error codes with throw an error after retries exceeded
+            // Policies with no fallback will return null
             Assert.That(sdkResponse, Is.Null);
         }
         
         [Test]
         [Explicit("This test only works on Windows as when running on a Linux Docker image. " +
                   "Linux seems to handle aborted connections differently, resulting always in a 200 status rather than 0.")]
-        public void CallGetPortfoliosApi_WhenApiResponseStatusCodeSatisfiesRetryCriteria_PollyIsTriggered_Returns0Code()
+        public void CallGetPortfoliosApi_WhenApiResponseStatusCodeSatisfiesRetryCriteria_ConnectivityIssuesNoRetry_Throws()
         {
             const int expectedNumberOfApiCalls = 3;
             for (var i = 0; i < expectedNumberOfApiCalls; i++)
@@ -222,12 +221,13 @@ namespace Lusid.Sdk.Tests.Utilities
                     .Retry(retryCount: 2, onRetry: (response, count, ctx) => {})
                 );
 
-            // Calling GetPortfolio or any other API triggers the flow that triggers polly
-            var sdkResponse = _apiFactory.Api<IPortfoliosApi>().GetPortfolio("any", "any");
+            var exception = Assert.Throws<ApiException>(
+                () => _apiFactory.Api<IPortfoliosApi>().GetPortfolio("any", "any"));
 
             Assert.That(_apiCallCount, Is.EqualTo(expectedNumberOfApiCalls));
-            // In the future 0 error codes with throw an error after retries exceeded. This will come in a separate PR.
-            Assert.That(sdkResponse, Is.Null);
+            Assert.That(exception.ErrorCode, Is.EqualTo(0));
+            Assert.That(exception.ErrorContent, Contains.Substring("Internal SDK error occurred when calling GetPortfolio: An error occurred while sending the request"));
+
         }
 
         [Test]
@@ -243,7 +243,7 @@ namespace Lusid.Sdk.Tests.Utilities
             // Third response - First policy retries stop, second policy retries kick in
             AddMockHttpResponseToQueue(_httpListener, statusCode: statusCodeResponse2, responseContent: "");
             // Fourth response - No more retries as response is a success
-            AddMockHttpResponseToQueue(_httpListener, statusCode: 200, responseContent: "");
+            AddMockHttpResponseToQueue(_httpListener, statusCode: 200, responseContent: _testPortfolioResponse.ToJson());
             var policy1TriggerCount = 0;
             var policy2TriggerCount = 0;
             var policy1 = Policy
@@ -259,29 +259,35 @@ namespace Lusid.Sdk.Tests.Utilities
 
             Assert.That(policy1TriggerCount, Is.EqualTo(2));
             Assert.That(policy2TriggerCount, Is.EqualTo(1));
-            // Response needs to be a valid, deserializable json, otherwise we get null. To be fixed in another PR.
-            Assert.That(sdkResponse, Is.Null);
+            Assert.That(sdkResponse, Is.EqualTo(_testPortfolioResponse));
             Assert.That(_apiCallCount, Is.EqualTo(expectedNumberOfApiCalls));
         }
 
-        // Show that polly retries are triggered on regular API timeouts as well.
         // Default timeout config is 100000 seconds (1min40s)
         [Test]
-        public void CallGetPortfoliosApi_WhenRequestTimeExceedsTimeoutConfigured_NoRetryIsTriggeredOnClientTimeout()
+        public void CallGetPortfoliosApi_WhenRequestTimeExceedsTimeoutConfigured_NoRetryIsTriggeredOnClientTimeout_Throws()
         {
             var timeoutAfterMillis = GlobalConfiguration.Instance.Timeout;
             const int returnedStatusCode = 200; // Doesn't matter what code is on timeout, will always return 0
             const int expectedNumberOfApiCalls = 1;
             // First call will cause a timeout, no retries
-            AddMockHttpResponseToQueue(_httpListener, returnedStatusCode, responseContent: "", timeoutAfterMillis + 10);
+            AddMockHttpResponseToQueue(
+                _httpListener, 
+                returnedStatusCode, 
+                responseContent: _testPortfolioResponse.ToJson(), 
+                timeoutAfterMillis + 10);
             RetryConfiguration.RetryPolicy = PollyApiRetryHandler.DefaultRetryPolicyWithFallback;
 
             // Calling GetPortfolio or any other API triggers the flow that triggers polly
-            var sdkResponse = _apiFactory.Api<IPortfoliosApi>().GetPortfolio("any", "any");
+            
+            var exception = Assert.Throws<ApiException>(
+                () => _apiFactory.Api<IPortfoliosApi>().GetPortfolio("any", "any"));
 
             Assert.That(_apiCallCount, Is.EqualTo(expectedNumberOfApiCalls));
-            // Todo: In the future 0 error codes with throw an error after retries exceeded
-            Assert.That(sdkResponse, Is.Null);
+            // Notice that Sync throws different error message than async
+            Assert.That(exception.ErrorContent, Contains.Substring("The operation has timed out"));
+            Assert.That(exception.ErrorCode, Is.EqualTo(0));
+
         }
         
         [Test]
@@ -319,44 +325,44 @@ namespace Lusid.Sdk.Tests.Utilities
             AddMockHttpResponseToQueue(
                 _httpListener, 
                 expectedStatusCode, 
-                responseContent: "{\"some\": \"JsonResponseHere\"}");
+                responseContent: _testPortfolioResponse.ToJson());
                 
             RetryConfiguration.AsyncRetryPolicy = PollyApiRetryHandler.DefaultRetryPolicyWithFallbackAsync;
 
-            // TODO: This will still fail at deserialization, which currently is not handled and returns null.
-            // Will be done under a different PR. Response string will also be changed.
             var sdkResponse = await _apiFactory.Api<IPortfoliosApi>().GetPortfolioAsync("any", "any");
             
             // Api call should be just called once
             Assert.That(_apiCallCount, Is.EqualTo(expectedNumberOfApiCalls));
+            Assert.That(sdkResponse, Is.EqualTo(_testPortfolioResponse));
         }
         
         [Test]
-        public async Task CallGetPortfoliosApiAsync_PollyRetryConditionIsSatisfied_RetriesUntilSuccess_DoesNotThrow()
+        [TestCase(409)] // Concurrency conflict failure
+        [TestCase(429)] // Too many requests
+        public async Task CallGetPortfoliosApiAsync_PollyRetryConditionIsSatisfied_RetriesUntilSuccess_DoesNotThrow(int returnedStatusCode)
         {
-            const int returnedStatusCode = 409; // Concurrency conflict failure
             const int expectedNumberOfRetries = 2;
             const int expectedNumberOfApiCalls = 1 + expectedNumberOfRetries;
             // First Response is a failing code
-            AddMockHttpResponseToQueue(_httpListener, statusCode: returnedStatusCode, responseContent: "");
+            AddMockHttpResponseToQueue(_httpListener, statusCode: returnedStatusCode, responseContent: "some err");
             // Second response is the first retry. It fails again
-            AddMockHttpResponseToQueue(_httpListener, statusCode: returnedStatusCode, responseContent: "");
+            AddMockHttpResponseToQueue(_httpListener, statusCode: returnedStatusCode, responseContent: "some err");
             // Third response is the second retry. Returns 200 before retries are exceeded, and does not throw
-            AddMockHttpResponseToQueue(_httpListener, statusCode: 200, responseContent: "");
+            AddMockHttpResponseToQueue(_httpListener, statusCode: 200, responseContent: _testPortfolioResponse.ToJson());
             RetryConfiguration.RetryPolicy = PollyApiRetryHandler.DefaultRetryPolicyWithFallback;
 
             // Calling GetPortfolio or any other API triggers the flow that triggers polly
             var sdkResponse = await _apiFactory.Api<IPortfoliosApi>().GetPortfolioAsync("any", "any");
 
-            // Todo: In the future 0 error codes with throw an error after retries exceeded
-            Assert.That(sdkResponse, Is.Null);
+            Assert.That(sdkResponse, Is.EqualTo(_testPortfolioResponse));
             Assert.That(_apiCallCount, Is.EqualTo(expectedNumberOfApiCalls));
         }
         
         [Test]
-        public void CallGetPortfoliosApiAsync_AsyncPollyIsTriggered_ThrowsWithExceededCallsFallbackPolicy()
+        [TestCase(409)] // Concurrency conflict failure
+        [TestCase(429)] // Too many requests
+        public void CallGetPortfoliosApiAsync_AsyncPollyIsTriggered_ThrowsWithExceededCallsFallbackPolicy(int returnedStatusCode)
         {
-            const int returnedStatusCode = 409;
             const int expectedNumberOfRetries = 2;
             const int expectedNumberOfApiCalls = expectedNumberOfRetries + 1;
             const string expectedErrorResponse = "Some error"; 
@@ -375,9 +381,10 @@ namespace Lusid.Sdk.Tests.Utilities
         }
         
         [Test]
-        public async Task CallGetPortfoliosApiAsync_AsyncPollyIsTriggered_NoFallbackPolicy_ReturnsNullResponseOnRetriesExceeded()
+        [TestCase(409)] // Concurrency conflict failure
+        [TestCase(429)] // Too many requests
+        public async Task CallGetPortfoliosApiAsync_AsyncPollyIsTriggered_NoFallbackPolicy_ReturnsNullResponseOnRetriesExceeded(int returnedStatusCode)
         {
-            const int returnedStatusCode = 409;
             const int expectedNumberOfRetries = 2;
             const int expectedNumberOfApiCalls = expectedNumberOfRetries + 1;
             const string expectedErrorResponse = "Some error"; 
@@ -387,7 +394,8 @@ namespace Lusid.Sdk.Tests.Utilities
 
             // Calling GetPortfolio or any other API triggers the flow that triggers polly
             var response = await _apiFactory.Api<IPortfoliosApi>().GetPortfolioAsync("any", "any");
-
+            
+            // Policies with no fallback return null
             Assert.That(response, Is.Null);
             Assert.That(_apiCallCount, Is.EqualTo(expectedNumberOfApiCalls));
         }
@@ -395,7 +403,7 @@ namespace Lusid.Sdk.Tests.Utilities
         [Test]
         [Explicit("This test only works on Windows as when running on a Linux Docker image. " +
                   "Linux seems to handle aborted connections differently, resulting always in a 200 status rather than 0.")]
-        public async Task CallGetPortfoliosApiAsync_WhenApiResponseStatusCodeSatisfiesRetryCriteria_PollyIsTriggered_Returns0Code()
+        public void CallGetPortfoliosApiAsync_WhenApiResponseStatusCodeSatisfiesRetryCriteria_ConnectivityIssuesNoRetry_Throws()
         {
             const int expectedNumberOfApiCalls = 3;
             for (var i = 0; i < expectedNumberOfApiCalls; i++)
@@ -424,17 +432,20 @@ namespace Lusid.Sdk.Tests.Utilities
 
 
             // Calling GetPortfolio or any other API triggers the flow that triggers polly
-            var sdkResponse = await _apiFactory.Api<IPortfoliosApi>().GetPortfolioAsync("any", "any");
+            var exception = Assert.ThrowsAsync<ApiException>(
+                () =>  _apiFactory.Api<IPortfoliosApi>().GetPortfolioAsync("any", "any"));
 
             Assert.That(_apiCallCount, Is.EqualTo(expectedNumberOfApiCalls));
-            // In the future 0 error codes with throw an error after retries exceeded. This will come in a separate PR.
-            Assert.That(sdkResponse, Is.Null);
+            Assert.That(exception.ErrorCode, Is.EqualTo(0));
+            Assert.That(exception.ErrorContent, Contains.Substring(
+                "An error occurred while sending the request. " +
+                "Unable to read data from the transport connection: " +
+                "An existing connection was forcibly closed by the remote host"));
         }
         
-        // Show that polly retries are triggered on regular API timeouts as well.
         // Default timeout config is 100000 seconds (1min40s)
         [Test]
-        public async Task CallGetPortfoliosApiAsync_WhenRequestTimeExceedsTimeoutConfigured_NoRetryIsTriggeredOnClientTimeout()
+        public void CallGetPortfoliosApiAsync_WhenRequestTimeExceedsTimeoutConfigured_NoRetryIsTriggeredOnClientTimeout_Throws()
         {
             var timeoutAfterMillis = GlobalConfiguration.Instance.Timeout;
             const int returnedStatusCode = 200; // Doesn't matter what code is on timeout, will always return 0
@@ -443,12 +454,13 @@ namespace Lusid.Sdk.Tests.Utilities
             AddMockHttpResponseToQueue(_httpListener, returnedStatusCode, responseContent: "", timeoutAfterMillis + 10);
             RetryConfiguration.AsyncRetryPolicy = PollyApiRetryHandler.DefaultRetryPolicyWithFallbackAsync;
 
-            // Calling GetPortfolio or any other API triggers the flow that triggers polly
-            var sdkResponse = await _apiFactory.Api<IPortfoliosApi>().GetPortfolioAsync("any", "any");
+            var exception = Assert.ThrowsAsync<ApiException>(
+                () => _apiFactory.Api<IPortfoliosApi>().GetPortfolioAsync("any", "any"));
 
             Assert.That(_apiCallCount, Is.EqualTo(expectedNumberOfApiCalls));
-            // Todo: In the future 0 error codes with throw an error after retries exceeded
-            Assert.That(sdkResponse, Is.Null);
+            // Notice that Async throws different error message than Sync
+            Assert.That(exception.ErrorContent, Contains.Substring("The request timed-out"));
+            Assert.That(exception.ErrorCode, Is.EqualTo(0));
         }
         
         [Test]
@@ -513,6 +525,8 @@ namespace Lusid.Sdk.Tests.Utilities
             // Get a response stream and write the response to it.
             response.ContentLength64 = buffer.Length;
             response.StatusCode = statusCode;
+            // We're assuming all responses are JSONS, no XMLs
+            response.ContentType = "application/json; charset=utf-8";
 
             var output = response.OutputStream;
 

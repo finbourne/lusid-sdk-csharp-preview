@@ -26,8 +26,10 @@ namespace Lusid.Sdk.Utilities
         {
             // Retry on concurrency conflict failures
             bool concurrencyConflictCondition = restResponse.StatusCode == (HttpStatusCode) 409;
+            // Retry on too many requests
+            bool tooManyRequests = restResponse.StatusCode == (HttpStatusCode) 429;
             
-            return concurrencyConflictCondition;
+            return concurrencyConflictCondition || tooManyRequests;
         }
 
         private static void HandleRetryAction(DelegateResult<IRestResponse> result, int retryCount, Context context)
