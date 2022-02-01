@@ -4,7 +4,10 @@ using System.Threading;
 using System.Threading.Tasks;
 using Lusid.Sdk.Api;
 using Lusid.Sdk.Client;
+using Lusid.Sdk.Model;
 using Lusid.Sdk.Utilities;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
 using NUnit.Framework;
 using Polly;
 using RestSharp;
@@ -22,9 +25,19 @@ namespace Lusid.Sdk.Tests.Utilities
         private const string ListenerUriPrefix = "http://localhost:4444/";
         private int _apiCallCount;
 
+        private readonly string _testPortfolioResponse = new Portfolio(
+            "test",
+            id: new ResourceId("test", "test"),
+            displayName: "test",
+            created: DateTimeOffset.Now,
+            description: "test",
+            type: Portfolio.TypeEnum.Transaction).ToJson();
+            
+
         [SetUp]
         public void SetUp()
         {
+            JsonConvert.DeserializeObject<Portfolio>(_testPortfolioResponse);
             _apiCallCount = 0;
             
             _httpListener = new HttpListener();
@@ -50,7 +63,7 @@ namespace Lusid.Sdk.Tests.Utilities
             AddMockHttpResponseToQueue(
                 _httpListener, statusCode: 
                 expectedStatusCode, 
-                responseContent: "{\"some\": \"JsonResponseHere\"}");
+                responseContent: _testPortfolioResponse);
             
             RetryConfiguration.RetryPolicy = PollyApiRetryHandler.DefaultRetryPolicyWithFallback;
         
@@ -58,7 +71,7 @@ namespace Lusid.Sdk.Tests.Utilities
                 () => _apiFactory.Api<IPortfoliosApi>().GetPortfolio("any", "any")
             );
 
-            Assert.That(exception.ErrorContent, Is.EqualTo("{\"some\": \"JsonResponseHere\"}"));
+            Assert.That(exception.ErrorContent, Is.EqualTo(_testPortfolioResponse));
             Assert.That(exception.ErrorCode, Is.EqualTo(expectedStatusCode));
             // Api was called just once, no retries
             Assert.That(_apiCallCount, Is.EqualTo(expectedNumberOfApiCalls));
@@ -74,16 +87,15 @@ namespace Lusid.Sdk.Tests.Utilities
             AddMockHttpResponseToQueue(
                 _httpListener, 
                 expectedStatusCode, 
-                responseContent: "{\"some\": \"JsonResponseHere\"}");
+                responseContent: _testPortfolioResponse);
                 
             RetryConfiguration.RetryPolicy = PollyApiRetryHandler.DefaultRetryPolicyWithFallback;
-
-            // TODO: This will still fail at deserialization, which currently is not handled and returns null.
-            // Will be done under a different PR. Response string will also be changed.
+            
             var sdkResponse = _apiFactory.Api<IPortfoliosApi>().GetPortfolio("any", "any");
             
             // Api call should be just called once
             Assert.That(_apiCallCount, Is.EqualTo(expectedNumberOfApiCalls));
+            Assert.That(sdkResponse, Is.EqualTo(_testPortfolioResponse));
         }
 
         [Test]
