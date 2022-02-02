@@ -13,9 +13,9 @@ namespace Lusid.Sdk.Utilities
     public static class PollyApiRetryHandler
     {
         /// <summary>
-        /// Number of max retry attempts
+        /// Number of max default retry attempts
         /// </summary>
-        private const int MaxRetryAttempts = 2;
+        public const int DefaultNumberOfRetries = 2;
 
         /// <summary>
         /// Get the Polly retry condition on which to retry.
@@ -26,18 +26,12 @@ namespace Lusid.Sdk.Utilities
         {
             // Retry on concurrency conflict failures
             bool concurrencyConflictCondition = restResponse.StatusCode == (HttpStatusCode) 409;
-            // Retry on too many requests
-            bool tooManyRequests = restResponse.StatusCode == (HttpStatusCode) 429;
-            
-            return concurrencyConflictCondition || tooManyRequests;
+
+            return concurrencyConflictCondition;
         }
 
         private static void HandleRetryAction(DelegateResult<IRestResponse> result, int retryCount, Context context)
         {
-            Console.WriteLine("A failure occurred and a retry condition has been satisfied. " +
-                              $"Status code: {result.Result.StatusCode}, " +
-                              $"Retry number: {retryCount}, " +
-                              $"max retries: {MaxRetryAttempts}");
         }
 
         #region Synchronous Retry Policies
@@ -72,7 +66,7 @@ namespace Lusid.Sdk.Utilities
         public static Policy<IRestResponse> DefaultRetryPolicy =>
             Policy
                 .HandleResult<IRestResponse>(GetPollyRetryCondition)
-                .Retry(retryCount: MaxRetryAttempts, onRetry: HandleRetryAction);
+                .Retry(retryCount: DefaultNumberOfRetries, onRetry: HandleRetryAction);
 
         #endregion
 
@@ -92,7 +86,7 @@ namespace Lusid.Sdk.Utilities
         public static AsyncPolicy<IRestResponse> DefaultRetryPolicyAsync =>
             Policy
                 .HandleResult<IRestResponse>(GetPollyRetryCondition)
-                .RetryAsync(retryCount: MaxRetryAttempts, onRetry: HandleRetryAction);
+                .RetryAsync(retryCount: DefaultNumberOfRetries, onRetry: HandleRetryAction);
 
         /// <summary>
         /// Causes the actual API response to be returned after retries have been exceeded.

@@ -40,7 +40,7 @@ namespace Lusid.Sdk.Tests.Utilities
             _httpListener = new HttpListener();
             _httpListener.Prefixes.Add(ListenerUriPrefix);
 
-            var testApiConfig = TestLusidApiFactoryBuilder.CreateApiConfiguration(null);
+            var testApiConfig = TestLusidApiFactoryBuilder.CreateApiConfiguration("secrets.json");
             testApiConfig.ApiUrl = ListenerUriPrefix;
 
             _apiFactory = new LusidApiFactory(testApiConfig);
@@ -98,15 +98,17 @@ namespace Lusid.Sdk.Tests.Utilities
 
         [Test]
         [TestCase(409)] // Concurrency
-        [TestCase(429)] // Too many requests
         public void CallGetPortfoliosApi_WhenApiResponseStatusCodeSatisfiesRetryCriteria_ExceedsPollyRetriesAndThrows(int returnedStatusCode)
         {
-            const int expectedNumberOfRetries = 2;
+            const int expectedNumberOfRetries = PollyApiRetryHandler.DefaultNumberOfRetries;
             const int expectedNumberOfApiCalls = expectedNumberOfRetries + 1;
             const string returnedErrorMessage = "Some error response";
             for (var i = 0; i < expectedNumberOfApiCalls; i++)
+            {
                 // Every response fails
                 AddMockHttpResponseToQueue(_httpListener, returnedStatusCode, returnedErrorMessage);
+            }
+ 
             RetryConfiguration.RetryPolicy = PollyApiRetryHandler.DefaultRetryPolicyWithFallback;
 
             // Calling GetPortfolio or any other API triggers the flow that triggers polly
@@ -121,14 +123,15 @@ namespace Lusid.Sdk.Tests.Utilities
 
         [Test]
         [TestCase(409)] // Concurrency conflict failure
-        [TestCase(429)] // Too many requests
         public void CallGetPortfoliosApi_WhenExceedsPollyRetries_NoFallbackPolicyDefined_DoesNotThrow_ReturnsEmptyResponse(int returnedStatusCode)
         {
-            const int expectedNumberOfRetries = 2;
+            const int expectedNumberOfRetries = PollyApiRetryHandler.DefaultNumberOfRetries;
             const int expectedNumberOfApiCalls = expectedNumberOfRetries + 1;
             for (var i = 0; i < expectedNumberOfApiCalls; i++)
+            {
                 // Every response fails
                 AddMockHttpResponseToQueue(_httpListener, statusCode: returnedStatusCode, responseContent: "Error that was thrown");
+            }
             RetryConfiguration.RetryPolicy = PollyApiRetryHandler.DefaultRetryPolicy; // No fallback
             
             // Calling GetPortfolio or any other API triggers the flow that triggers polly
@@ -140,10 +143,9 @@ namespace Lusid.Sdk.Tests.Utilities
 
         [Test]
         [TestCase(409)] // Concurrency conflict failure
-        [TestCase(429)] // Too many requests
         public void CallGetPortfoliosApi_PollyRetryConditionIsSatisfied_RetriesUntilSuccess_DoesNotThrow(int returnedStatusCode)
         {
-            const int expectedNumberOfRetries = 2;
+            const int expectedNumberOfRetries = PollyApiRetryHandler.DefaultNumberOfRetries;
             const int expectedNumberOfApiCalls = 1 + expectedNumberOfRetries;
             // First Response is a failing code
             AddMockHttpResponseToQueue(_httpListener, statusCode: returnedStatusCode, responseContent: "some err");
@@ -165,10 +167,12 @@ namespace Lusid.Sdk.Tests.Utilities
         public void CallGetPortfoliosApi_WhenApiResponseStatusCodeSatisfiesRetryCriteria_PollyRetryWithBackoffIsTriggered()
         {
             const int returnedStatusCode = 409;
-            const int expectedNumberOfRetries = 2;
+            const int expectedNumberOfRetries = PollyApiRetryHandler.DefaultNumberOfRetries;
             const int expectedNumberOfApiCalls = expectedNumberOfRetries + 1;
             for (var i = 0; i < expectedNumberOfApiCalls; i++)
+            {
                 AddMockHttpResponseToQueue(_httpListener, returnedStatusCode, responseContent: _testPortfolioResponse.ToJson());
+            }
             var retryCount = 0;
             // Polly retry policy with a backoff example
             RetryConfiguration.RetryPolicy = Policy
@@ -338,7 +342,6 @@ namespace Lusid.Sdk.Tests.Utilities
         
         [Test]
         [TestCase(409)] // Concurrency conflict failure
-        [TestCase(429)] // Too many requests
         public async Task CallGetPortfoliosApiAsync_PollyRetryConditionIsSatisfied_RetriesUntilSuccess_DoesNotThrow(int returnedStatusCode)
         {
             const int expectedNumberOfRetries = 2;
@@ -360,14 +363,15 @@ namespace Lusid.Sdk.Tests.Utilities
         
         [Test]
         [TestCase(409)] // Concurrency conflict failure
-        [TestCase(429)] // Too many requests
         public void CallGetPortfoliosApiAsync_AsyncPollyIsTriggered_ThrowsWithExceededCallsFallbackPolicy(int returnedStatusCode)
         {
             const int expectedNumberOfRetries = 2;
             const int expectedNumberOfApiCalls = expectedNumberOfRetries + 1;
-            const string expectedErrorResponse = "Some error"; 
+            const string expectedErrorResponse = "Some error";
             for (var i = 0; i < expectedNumberOfApiCalls; i++)
+            {
                 AddMockHttpResponseToQueue(_httpListener,  returnedStatusCode, expectedErrorResponse);
+            }
             RetryConfiguration.AsyncRetryPolicy = PollyApiRetryHandler.DefaultRetryPolicyWithFallbackAsync;
 
             // Calling GetPortfolio or any other API triggers the flow that triggers polly
@@ -382,14 +386,15 @@ namespace Lusid.Sdk.Tests.Utilities
         
         [Test]
         [TestCase(409)] // Concurrency conflict failure
-        [TestCase(429)] // Too many requests
         public async Task CallGetPortfoliosApiAsync_AsyncPollyIsTriggered_NoFallbackPolicy_ReturnsNullResponseOnRetriesExceeded(int returnedStatusCode)
         {
             const int expectedNumberOfRetries = 2;
             const int expectedNumberOfApiCalls = expectedNumberOfRetries + 1;
-            const string expectedErrorResponse = "Some error"; 
+            const string expectedErrorResponse = "Some error";
             for (var i = 0; i < expectedNumberOfApiCalls; i++)
+            {
                 AddMockHttpResponseToQueue(_httpListener,  returnedStatusCode, expectedErrorResponse);
+            }
             RetryConfiguration.AsyncRetryPolicy = PollyApiRetryHandler.DefaultRetryPolicyAsync; // No fallback
 
             // Calling GetPortfolio or any other API triggers the flow that triggers polly
