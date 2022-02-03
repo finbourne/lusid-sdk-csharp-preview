@@ -464,7 +464,8 @@ namespace Lusid.Sdk.Tests.Utilities
 
             Assert.That(_apiCallCount, Is.EqualTo(expectedNumberOfApiCalls));
             // Notice that Async throws different error message than Sync
-            Assert.That(exception.ErrorContent, Contains.Substring("The request timed-out"));
+            // However the error message sometimes changes on different environments for async for unknown reasons
+            Assert.That(exception.ErrorContent, Contains.Substring("The request timed-out").Or.Contains("The operation has timed out"));
             Assert.That(exception.ErrorCode, Is.EqualTo(0));
         }
         
