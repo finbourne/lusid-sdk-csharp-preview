@@ -28,23 +28,8 @@ namespace Lusid.Sdk.Tests.tutorials.Ibor
         [OneTimeSetUp]
         public void SetUp()
         {
-            // hard coded so that any cut labels with these names used in the tests can be created properly
-            var cutLabelNames = new Dictionary<string, string>()
-            {
-                {"SGPOpen", "SGPOpen_Demo_Only"},
-                {"LDNOpen", "LDNOpen_Demo_Only"},
-                {"SGPClose", "SGPClose_Demo_Only"},
-                {"NYOpen", "NYOpen_Demo_Only"},
-                {"LDNClose", "LDNClose_Demo_Only"},
-                {"NYClose", "NYClose_Demo_Only"}
-            };
-            
-            ClearCutLabels(cutLabelNames);
-
             _instrumentLoader = new InstrumentLoader(_apiFactory);
             _instrumentIds = _instrumentLoader.LoadInstruments();
-
-            
 
             // Create portfolio for the demo
             //_portfolioCode = _testDataUtilities.CreateTransactionPortfolio(TutorialScope);
@@ -53,7 +38,6 @@ namespace Lusid.Sdk.Tests.tutorials.Ibor
             _portfolioCode = portfolioRequest.Code;
 
             Assert.That(portfolio?.Id.Code, Is.EqualTo(_portfolioCode));
-
         }
 
         [OneTimeTearDown]
@@ -63,7 +47,7 @@ namespace Lusid.Sdk.Tests.tutorials.Ibor
             _portfoliosApi.DeletePortfolio(TutorialScope, _portfolioCode);
 
             // Clear up labels created by the demo
-            ClearCutLabels(_cutLabelCodes);
+            ClearCutLabels();
         }
 
         [LusidFeature("F32")]
@@ -307,7 +291,16 @@ namespace Lusid.Sdk.Tests.tutorials.Ibor
                 timeZone: timeZone
             );
             // Send the request to LUSID to create the cut label, if it doesn't already
-            var result = _cutLabelDefinitionsApi.CreateCutLabelDefinition(request);
+            var result = new CutLabelDefinition();
+            try
+            {
+                result = _cutLabelDefinitionsApi.CreateCutLabelDefinition(request);
+            }
+            catch (Client.ApiException e)
+            {
+                // 409 means that the cut label already exists, so an exception does not need to be thrown
+                if (e.ErrorCode != 409) throw;
+            }
 
             // Add the codes of our cut labels to our dictionary
             codeDict[request.DisplayName] = request.Code;
@@ -319,9 +312,9 @@ namespace Lusid.Sdk.Tests.tutorials.Ibor
             Assert.That(result.TimeZone, Is.EqualTo(timeZone));
         }
 
-        private void ClearCutLabels(Dictionary<string, string> dictionary)
+        private void ClearCutLabels()
         {
-            foreach (var labelCode in dictionary.Values)
+            foreach (var labelCode in _cutLabelCodes.Values)
             {
                 try
                 {
