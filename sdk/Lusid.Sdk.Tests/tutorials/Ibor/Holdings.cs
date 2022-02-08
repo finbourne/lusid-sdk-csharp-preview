@@ -23,7 +23,7 @@ namespace Lusid.Sdk.Tests.Tutorials.Ibor
             _instrumentIds = instrumentsLoader.LoadInstruments().OrderBy(x => x).ToList();
         }
         
-        [LusidFeature("F2")]
+        [LusidFeature("15-3")]
         [Test]
         public void Get_Holdings()
         {
@@ -96,7 +96,7 @@ namespace Lusid.Sdk.Tests.Tutorials.Ibor
             Assert.That(holdings.Values[4].Cost.Amount, Is.EqualTo(10500.0));
         }
         
-        [LusidFeature("F3")]
+        [LusidFeature("F15-1")]
         [Test]
         public void Set_Target_Holdings()
         {
