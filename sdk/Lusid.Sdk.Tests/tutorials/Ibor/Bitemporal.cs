@@ -24,7 +24,7 @@ namespace Lusid.Sdk.Tests.Tutorials.Ibor
         }
         
         [Test]
-        [LusidFeature("F1")]
+        [LusidFeature("F2-3")]
         public void Apply_Bitemporal_Portfolio_Change()
         {
             //var portfolioId = _testDataUtilities.CreateTransactionPortfolio(TestDataUtilities.TutorialScope);

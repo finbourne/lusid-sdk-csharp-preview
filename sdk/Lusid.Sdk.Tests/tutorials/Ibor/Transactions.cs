@@ -42,7 +42,7 @@ namespace Lusid.Sdk.Tests.Tutorials.Ibor
             //_portfoliosApi.DeletePortfolio(_portfolioScope, _portfolioCode); 
         }
         
-        [LusidFeature("F17")]
+        [LusidFeature("F13-1")]
         [Test]
         public void Load_Listed_Instrument_Transaction()
         {
@@ -59,7 +59,7 @@ namespace Lusid.Sdk.Tests.Tutorials.Ibor
             Assert.That(transactions.Values[0].TransactionId, Is.EqualTo(transaction.TransactionId));
         }
         
-        [LusidFeature("F18")]
+        [LusidFeature("F13-2")]
         [Test]
         public void Load_Cash_Transaction()
         {
@@ -93,7 +93,7 @@ namespace Lusid.Sdk.Tests.Tutorials.Ibor
             Assert.That(transactions.Values, Has.Count.EqualTo(1));
             Assert.That(transactions.Values[0].TransactionId, Is.EqualTo(transaction.TransactionId));
         }
-        [LusidFeature("F19")]
+        [LusidFeature("F13-5")]
         [Test]
         public void Load_Otc_Instrument_Transaction()
         {
@@ -154,7 +154,7 @@ namespace Lusid.Sdk.Tests.Tutorials.Ibor
             Assert.That(transactions.Values[0].InstrumentUid, Is.EqualTo(swapId));
         }
         
-        [LusidFeature("F31")]
+        [LusidFeature("F13-6")]
         [Test]
         public void Cancel_Transactions()
         {
