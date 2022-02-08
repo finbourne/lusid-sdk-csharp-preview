@@ -21,7 +21,6 @@ namespace Lusid.Sdk.Tests.tutorials.Ibor
         private readonly DateTime _currentDate = DateTime.Now.Date;
 
         private const string TutorialScope = "cut_labels_demo";
-        private const string CutLabelTutorialSuffix = "_Demo_Only";
 
         private const string Currency = "GBP";
 
@@ -284,24 +283,14 @@ namespace Lusid.Sdk.Tests.tutorials.Ibor
 
             // Define the parameters of the cut label in a request
             var request = new CreateCutLabelDefinitionRequest(
-                code: displayName + CutLabelTutorialSuffix,
+                code: (displayName + Guid.NewGuid())[..20], // max length of code is 20 characters
                 displayName: displayName,
                 description: description,
                 cutLocalTime: time,
                 timeZone: timeZone
             );
             // Send the request to LUSID to create the cut label, if it doesn't already
-            var result = new CutLabelDefinition();
-            try
-            {
-                result = _cutLabelDefinitionsApi.CreateCutLabelDefinition(request);
-            }
-            catch (Client.ApiException e)
-            {
-                // 409 means that the cut label already exists, so an exception does not need to be thrown
-                if (e.ErrorCode != 409) throw;
-            }
-
+            var result = _cutLabelDefinitionsApi.CreateCutLabelDefinition(request);
             // Add the codes of our cut labels to our dictionary
             codeDict[request.DisplayName] = request.Code;
 
@@ -322,7 +311,7 @@ namespace Lusid.Sdk.Tests.tutorials.Ibor
                 }
                 catch (Client.ApiException e)
                 {
-                    // 404 means that the cut label has already been deleted, so no need to throw the exception
+                    // 404 means that the cut label does not exist, so no need to throw the exception
                     if (e.ErrorCode != 404) throw;
                 }
             }
