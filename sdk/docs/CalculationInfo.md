@@ -4,7 +4,6 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**CalculationDescription** | **string** | Description of what the calculation applies to eg. Fee, MinFee, MaxFee | 
 **CalculationMethod** | **string** | Method of calculating the fees or commission among: BasisPoints, Percentage, Rate, Flat etc. The available values are: Rate, BasisPoints, Percentage, Flat | 
 **Multiplier** | **string** | . The available values are: None, Quantity, Value | 
 **CalculationAmount** | **decimal** | Numerical fee amount | 
