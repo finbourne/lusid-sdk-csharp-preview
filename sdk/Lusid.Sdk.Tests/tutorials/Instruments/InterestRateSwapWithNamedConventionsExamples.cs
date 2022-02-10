@@ -113,9 +113,10 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
                 currency: "USD",
                 paymentTenor: "6M",
                 dayCountConvention: "Actual365",
-                fixingReference: "BP00"
+                fixingReference: "BP00",
+                indexName: "LIBOR"
             );
-            
+
             // UPSERT the conventions to Lusid
             var flowConventionsResponse =  _conventionsApi.UpsertFlowConventions(new UpsertFlowConventionsRequest(flowConventions));
             Assert.That(flowConventionsResponse, Is.Not.Null);

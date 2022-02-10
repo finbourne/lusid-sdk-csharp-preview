@@ -170,7 +170,8 @@ namespace Lusid.Sdk.Tests.Utilities
                 currency: "USD",
                 paymentTenor: "6M",
                 dayCountConvention: "Act365",
-                fixingReference: "BP00"
+                fixingReference: "BP00",
+                indexName: "LIBOR"
             );
         }
 
