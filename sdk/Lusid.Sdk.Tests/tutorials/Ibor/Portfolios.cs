@@ -130,7 +130,7 @@ namespace Lusid.Sdk.Tests.Tutorials.Ibor
         }
             
             
-        [LusidFeature("F13-1")]
+        [LusidFeature("F13-8")]
         [Test]
         public void Add_Transactions_To_Portfolio()
         {
@@ -220,7 +220,7 @@ namespace Lusid.Sdk.Tests.Tutorials.Ibor
                 //    Transaction type, configured during system setup
                 type: "Buy",
                 
-                //    Instrument identifier for the trnasaction
+                //    Instrument identifier for the transaction
                 instrumentIdentifiers: new Dictionary<string, string>
                 {
                     ["Instrument/default/LusidInstrumentId"] = _instrumentIds.First()

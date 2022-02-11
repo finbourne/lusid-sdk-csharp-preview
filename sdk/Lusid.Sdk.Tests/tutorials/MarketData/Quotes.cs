@@ -36,7 +36,7 @@ namespace Lusid.Sdk.Tests.Tutorials.MarketData
             _quotesApi.UpsertQuotes(TestDataUtilities.TutorialScope, new Dictionary<string, UpsertQuoteRequest> { { "correlationId", request} });
         }
         
-        [LusidFeature("F14-1")]
+        [LusidFeature("F14-7")]
         [Test]
         public void Get_Quote_For_Instrument_For_Single_Day()
         {

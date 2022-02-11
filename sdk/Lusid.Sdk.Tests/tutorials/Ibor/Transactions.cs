@@ -42,7 +42,7 @@ namespace Lusid.Sdk.Tests.Tutorials.Ibor
             //_portfoliosApi.DeletePortfolio(_portfolioScope, _portfolioCode); 
         }
         
-        [LusidFeature("F13-1")]
+        [LusidFeature("F13-9")]
         [Test]
         public void Load_Listed_Instrument_Transaction()
         {
@@ -222,7 +222,7 @@ namespace Lusid.Sdk.Tests.Tutorials.Ibor
             Assert.That(noTransactions.Values, Is.Empty);
         }
 
-        [LusidFeature("F13-4")]
+        //[LusidFeature("F13-4")]
         [Test]
         public void Add_Transactions_To_Portfolio_With_Property()
         {
