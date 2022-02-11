@@ -222,9 +222,8 @@ namespace Lusid.Sdk.Tests.Tutorials.Ibor
             Assert.That(noTransactions.Values, Is.Empty);
         }
         
-        /* A test for the same feature is already present in Portfolios.cs, rather than removing the duplicate test i've 
-        removed the duplicate feature label */
-        //[LusidFeature("F13-4")]
+        // Transaction example of F13-4
+        // [LusidFeature("F13-4")]
         [Test]
         public void Add_Transactions_To_Portfolio_With_Property()
         {
