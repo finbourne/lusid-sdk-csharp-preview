@@ -42,7 +42,7 @@ namespace Lusid.Sdk.Tests.Tutorials.Ibor
             _portfoliosApi.DeletePortfolio(_portfolioScope, _portfolioCode); 
         }
         
-        [LusidFeature("F1-4")]
+        [LusidFeature("F8")]
         [Test]
         public void Create_Transaction_Portfolio()
         {
@@ -68,7 +68,7 @@ namespace Lusid.Sdk.Tests.Tutorials.Ibor
             Assert.That(portfolio.Id.Code, Is.EqualTo(request.Code));
         }
         
-        [LusidFeature("F1-1")]
+        [LusidFeature("F9")]
         [Test]
         public void Create_Transaction_Portfolio_With_Properties()
         {
@@ -130,7 +130,7 @@ namespace Lusid.Sdk.Tests.Tutorials.Ibor
         }
             
             
-        [LusidFeature("F13-8")]
+        [LusidFeature("F10")]
         [Test]
         public void Add_Transactions_To_Portfolio()
         {
@@ -172,7 +172,7 @@ namespace Lusid.Sdk.Tests.Tutorials.Ibor
             Assert.That(transactions.Values[0].InstrumentUid, Is.EqualTo(transaction.InstrumentIdentifiers.First().Value));           
         }
         
-        [LusidFeature("F13-4")]
+        [LusidFeature("F11")]
         [Test]
         public void Add_Transactions_To_Portfolio_With_Property()
         {
@@ -220,7 +220,7 @@ namespace Lusid.Sdk.Tests.Tutorials.Ibor
                 //    Transaction type, configured during system setup
                 type: "Buy",
                 
-                //    Instrument identifier for the transaction
+                //    Instrument identifier for the trnasaction
                 instrumentIdentifiers: new Dictionary<string, string>
                 {
                     ["Instrument/default/LusidInstrumentId"] = _instrumentIds.First()
@@ -274,7 +274,7 @@ namespace Lusid.Sdk.Tests.Tutorials.Ibor
 
         }
         
-        [LusidFeature("F19-1")]
+        [LusidFeature("F12")]
         [Test]
         public void List_Scopes()
         {

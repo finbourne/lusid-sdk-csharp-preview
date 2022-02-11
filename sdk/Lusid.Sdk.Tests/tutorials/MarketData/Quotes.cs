@@ -14,7 +14,7 @@ namespace Lusid.Sdk.Tests.Tutorials.MarketData
     public class Quotes: TutorialBase
     {
         
-        [LusidFeature("F14-1")]
+        [LusidFeature("F28")]
         [Test]
         public void Add_Quote()
         {
@@ -36,7 +36,7 @@ namespace Lusid.Sdk.Tests.Tutorials.MarketData
             _quotesApi.UpsertQuotes(TestDataUtilities.TutorialScope, new Dictionary<string, UpsertQuoteRequest> { { "correlationId", request} });
         }
         
-        [LusidFeature("F14-7")]
+        [LusidFeature("F29")]
         [Test]
         public void Get_Quote_For_Instrument_For_Single_Day()
         {
@@ -62,7 +62,7 @@ namespace Lusid.Sdk.Tests.Tutorials.MarketData
             Assert.That(quote.MetricValue.Value, Is.EqualTo(199.23));
         }
         
-        [LusidFeature("F14-4")]
+        [LusidFeature("F30")]
         [Test]
         public void Get_Timeseries_Quotes()
         {

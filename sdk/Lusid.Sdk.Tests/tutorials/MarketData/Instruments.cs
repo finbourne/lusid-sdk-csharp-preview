@@ -119,7 +119,7 @@ namespace Lusid.Sdk.Tests.Tutorials.MarketData
             Assert.That(upsertInstrumentsResponse.Values, Has.Count.EqualTo(5));
         }
         
-        [LusidFeature("F21-1")]
+        [LusidFeature("F22")]
         [Test]
         public void Lookup_Instrument_By_Unique_Id()
         {
@@ -174,7 +174,7 @@ namespace Lusid.Sdk.Tests.Tutorials.MarketData
             }
         }
         
-        [LusidFeature("F20-2")]
+        [LusidFeature("F23")]
         [Test]
         public void List_Available_Identifiers()
         {
@@ -188,7 +188,7 @@ namespace Lusid.Sdk.Tests.Tutorials.MarketData
             }
         }
         
-        [LusidFeature("F20-3")]
+        [LusidFeature("F24")]
         [Test]
         public void List_All_Instruments()
         {
@@ -200,7 +200,7 @@ namespace Lusid.Sdk.Tests.Tutorials.MarketData
             Assert.That(instruments.Values.Count(), Is.LessThanOrEqualTo(pageSize));
         }
         
-        [LusidFeature("F20-4")]
+        [LusidFeature("F25")]
         [Test]
         public void List_Instruments_By_Identifier_Type()
         {
@@ -218,7 +218,7 @@ namespace Lusid.Sdk.Tests.Tutorials.MarketData
             }
         }
         
-        [LusidFeature("F4-4")]
+        [LusidFeature("F26")]
         [Test]
         public void Edit_Instrument_Property()
         {
@@ -254,7 +254,7 @@ namespace Lusid.Sdk.Tests.Tutorials.MarketData
                 Is.Not.Null, $"Cannot find property {propertyKey} with value {propertyValue.LabelValue}");
         }
         
-        [LusidFeature("F5-12")]
+        [LusidFeature("F27")]
         [Test]
         public void Create_Custom_Instrument()
         {

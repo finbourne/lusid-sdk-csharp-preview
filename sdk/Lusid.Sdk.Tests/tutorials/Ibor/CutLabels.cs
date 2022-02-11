@@ -55,7 +55,7 @@ namespace Lusid.Sdk.Tests.tutorials.Ibor
             ClearCutLabels();
         }
 
-        [LusidFeature("F16-1")]
+        [LusidFeature("F32")]
         [Test]
         public void Cut_Labels()
         {

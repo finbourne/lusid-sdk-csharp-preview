@@ -24,7 +24,7 @@ namespace Lusid.Sdk.Tests.Tutorials.Ibor
             _instrumentIds = _instrumentLoader.LoadInstruments();
         }
         
-        [LusidFeature("F20-1")]
+        [LusidFeature("F16")]
         [Test]
         public void Reconcile_Portfolio()
         {

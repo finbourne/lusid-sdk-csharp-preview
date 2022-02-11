@@ -26,7 +26,7 @@ namespace Lusid.Sdk.Tests.Tutorials.Ibor
             _instrumentIds = _instrumentLoader.LoadInstruments();
         }
         
-        [LusidFeature("F10-1")]
+        [LusidFeature("F36")]
         [Test]
         public void Run_Valuation()
         {

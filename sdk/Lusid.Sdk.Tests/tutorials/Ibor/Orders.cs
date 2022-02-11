@@ -84,7 +84,7 @@ namespace Lusid.Sdk.Tests.Tutorials.Ibor
             
         }
         
-        [LusidFeature("F9-1")]
+        [LusidFeature("F4")]
         [Test]
         public void Upsert_Simple_Order()
         {
