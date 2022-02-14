@@ -119,6 +119,7 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
         public void InterestRateSwaptionWithNamedConventionsExamplesValuationExample(ModelSelection.ModelEnum model)
         {
             var swaption = InstrumentExamples.CreateExampleInterestRateSwaptionWithNamedConventions();
+            UpsertNamedConventionsToLusid();
             CallLusidGetValuationEndpoint(swaption, model);
         }
         
@@ -130,7 +131,49 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
         public void InterestRateSwaptionWithNamedConventionsExamplesInlineValuationExample(ModelSelection.ModelEnum model)
         {
             var swaption = InstrumentExamples.CreateExampleInterestRateSwaptionWithNamedConventions();
+            UpsertNamedConventionsToLusid();
             CallLusidInlineValuationEndpoint(swaption, model);
+        }
+
+        private void UpsertNamedConventionsToLusid()
+        {
+            // CREATE the flow conventions and index convention for swap
+            string scope = "Conventions";
+            string flowConventionsCode = "USD-6M";
+            string indexConventionCode = "USD-6M-LIBOR";
+
+            var flowConventions = new FlowConventions(
+                scope: scope,
+                code: flowConventionsCode,
+                currency: "USD",
+                paymentFrequency: "6M",
+                rollConvention: "ModifiedFollowing",
+                dayCountConvention: "Actual365",
+                paymentCalendars: new List<string>(),
+                resetCalendars: new List<string>(),
+                settleDays: 2,
+                resetDays: 2
+            );
+
+            var indexConvention = new IndexConvention(
+                scope: scope,
+                code: indexConventionCode,
+                publicationDayLag: 0,
+                currency: "USD",
+                paymentTenor: "6M",
+                dayCountConvention: "Actual365",
+                fixingReference: "BP00",
+                indexName: "LIBOR"
+            );
+
+            // UPSERT the conventions to Lusid
+            var flowConventionsResponse =  _conventionsApi.UpsertFlowConventions(new UpsertFlowConventionsRequest(flowConventions));
+            Assert.That(flowConventionsResponse, Is.Not.Null);
+            Assert.That(flowConventionsResponse.Value, Is.Not.Null);
+
+            var indexConventionsResponse = _conventionsApi.UpsertIndexConvention(new UpsertIndexConventionRequest(indexConvention));
+            Assert.That(indexConventionsResponse, Is.Not.Null);
+            Assert.That(indexConventionsResponse.Value, Is.Not.Null);
         }
     }
 }

@@ -392,7 +392,7 @@ namespace Lusid.Sdk.Tests.Utilities
             var complexMarketDataId = new ComplexMarketDataId(
                 provider: "Lusid",
                 effectiveAt: effectiveAt.ToString("o"),
-                marketAsset: $"{currency}/6M",
+                marketAsset: $"{currency}/6M/LIBOR",
                 priceSource: "");
 
             var upsertRequest = new UpsertComplexMarketDataRequest(complexMarketDataId, complexMarketData);
@@ -591,8 +591,8 @@ namespace Lusid.Sdk.Tests.Utilities
                 field: "mid",
                 quoteInterval: "10Y");
             
-            // ratesRule here is used by Lusid to locate the rate curves such as discount rate curves
-            // for pricing interest rate swaps and options (when priced with discounting models)
+            // ratesRule here is used by Lusid to locate the rate curves for discount rate curves
+            // used when pricing with discounting models
             var ratesRule = new MarketDataKeyRule(
                 key: "Rates.*.*",
                 supplier: "Lusid",
@@ -600,7 +600,19 @@ namespace Lusid.Sdk.Tests.Utilities
                 MarketDataKeyRule.QuoteTypeEnum.Price,
                 field: "mid",
                 quoteInterval: "10Y");
-            
+
+            // projection rule here is used by Lusid to locate the rate curves for projections of index rates
+            // (e.g. projected LIBOR rates)
+            // Used when pricing instruments that depend on an IndexConvention.
+            // For instance, interest rate swaps and options.
+            var projectionRule = new MarketDataKeyRule(
+                key: "Rates.*.*.*",
+                supplier: "Lusid",
+                scope,
+                MarketDataKeyRule.QuoteTypeEnum.Price,
+                field: "mid",
+                quoteInterval: "10Y");
+
             // irVolRule here is used by Lusid to locate the interest rate volatility cubes
             // for pricing interest rate swaption
             var irVolRule = new MarketDataKeyRule(
@@ -619,7 +631,7 @@ namespace Lusid.Sdk.Tests.Utilities
                 scope,
                 recipeCode,
                 market: new MarketContext(
-                    marketRules: new List<MarketDataKeyRule>{simpleStaticRule, figiRule, resetRule, creditRule, ratesRule, irVolRule},
+                    marketRules: new List<MarketDataKeyRule>{simpleStaticRule, figiRule, resetRule, creditRule, ratesRule, projectionRule, irVolRule},
                     options: new MarketOptions(defaultSupplier: "Lusid", defaultScope: scope, defaultInstrumentCodeType: "RIC")),
                 pricing: new PricingContext(options: pricingOptions),
                 description: $"Recipe for {model} pricing");
