@@ -291,7 +291,7 @@ namespace Lusid.Sdk.Tests.Utilities
         /// <summary>
         /// Helper method to create simple equity or FX quote upsert request
         /// </summary>
-        private static UpsertQuoteRequest BuildSimpleQuoteUpsertRequest(
+        internal static UpsertQuoteRequest BuildSimpleQuoteUpsertRequest(
             string id,
             QuoteSeriesId.InstrumentIdTypeEnum instrumentIdType,
             decimal price,
@@ -569,7 +569,7 @@ namespace Lusid.Sdk.Tests.Utilities
                 scope,
                 MarketDataKeyRule.QuoteTypeEnum.Price,
                 field: "mid",
-                quoteInterval: "1D");
+                quoteInterval: "5D");
             
             // resetRule is used to locate reset rates such as that for interest rate swaps and swaptions
             var resetRule = new MarketDataKeyRule(
@@ -676,7 +676,7 @@ namespace Lusid.Sdk.Tests.Utilities
         /// Given an aggregation result on a portfolio of instruments,
         /// we check that on each valuation date, the pvs are constant within some (relative difference) tolerance)
         /// </summary>
-        internal static void CheckPvIsConstantAcrossDatesWithinTolerance(ListAggregationResponse result, double relativeDifferenceTolerance = 0.01)
+        internal static void CheckPvIsConstantAcrossDatesWithinTolerance(ListAggregationResponse result, double relativeDifferenceTolerance = 0.015)
         {
             var pvsAcrossDates = result
                 .Data // Access a list of result dictionaries
