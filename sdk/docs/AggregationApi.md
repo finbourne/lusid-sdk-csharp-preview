@@ -1,13 +1,13 @@
 # Lusid.Sdk.Api.AggregationApi
 
-All URIs are relative to *https://fbn-prd.lusid.com/api*
+All URIs are relative to *http://local-unit-test-server.lusid.com:48293*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
 [**GenerateConfigurationRecipe**](AggregationApi.md#generateconfigurationrecipe) | **POST** /api/aggregation/{scope}/{code}/$generateconfigurationrecipe | [EXPERIMENTAL] GenerateConfigurationRecipe: Generates a recipe sufficient to perform valuations for the given portfolio.
 [**GetQueryableKeys**](AggregationApi.md#getqueryablekeys) | **GET** /api/results/queryable/keys | [EXPERIMENTAL] GetQueryableKeys: Query the set of supported \&quot;addresses\&quot; that can be queried from the aggregation endpoint.
-[**GetValuation**](AggregationApi.md#getvaluation) | **POST** /api/aggregation/$valuation | [BETA] GetValuation: Perform valuation for a list of portfolios and/or portfolio groups
-[**GetValuationOfWeightedInstruments**](AggregationApi.md#getvaluationofweightedinstruments) | **POST** /api/aggregation/$valuationinlined | [BETA] GetValuationOfWeightedInstruments: Perform valuation for an inlined portfolio
+[**GetValuation**](AggregationApi.md#getvaluation) | **POST** /api/aggregation/$valuation | GetValuation: Perform valuation for a list of portfolios and/or portfolio groups
+[**GetValuationOfWeightedInstruments**](AggregationApi.md#getvaluationofweightedinstruments) | **POST** /api/aggregation/$valuationinlined | GetValuationOfWeightedInstruments: Perform valuation for an inlined portfolio
 
 
 <a name="generateconfigurationrecipe"></a>
@@ -33,7 +33,7 @@ namespace Example
         public static void Main()
         {
             Configuration config = new Configuration();
-            config.BasePath = "https://fbn-prd.lusid.com/api";
+            config.BasePath = "http://local-unit-test-server.lusid.com:48293";
             // Configure OAuth2 access token for authorization: oauth2
             config.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -113,7 +113,7 @@ namespace Example
         public static void Main()
         {
             Configuration config = new Configuration();
-            config.BasePath = "https://fbn-prd.lusid.com/api";
+            config.BasePath = "http://local-unit-test-server.lusid.com:48293";
             // Configure OAuth2 access token for authorization: oauth2
             config.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -174,7 +174,7 @@ Name | Type | Description  | Notes
 # **GetValuation**
 > ListAggregationResponse GetValuation (ValuationRequest valuationRequest = null)
 
-[BETA] GetValuation: Perform valuation for a list of portfolios and/or portfolio groups
+GetValuation: Perform valuation for a list of portfolios and/or portfolio groups
 
 Perform valuation on specified list of portfolio and/or portfolio groups for a set of dates.
 
@@ -193,7 +193,7 @@ namespace Example
         public static void Main()
         {
             Configuration config = new Configuration();
-            config.BasePath = "https://fbn-prd.lusid.com/api";
+            config.BasePath = "http://local-unit-test-server.lusid.com:48293";
             // Configure OAuth2 access token for authorization: oauth2
             config.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -202,7 +202,7 @@ namespace Example
 
             try
             {
-                // [BETA] GetValuation: Perform valuation for a list of portfolios and/or portfolio groups
+                // GetValuation: Perform valuation for a list of portfolios and/or portfolio groups
                 ListAggregationResponse result = apiInstance.GetValuation(valuationRequest);
                 Debug.WriteLine(result);
             }
@@ -250,7 +250,7 @@ Name | Type | Description  | Notes
 # **GetValuationOfWeightedInstruments**
 > ListAggregationResponse GetValuationOfWeightedInstruments (InlineValuationRequest inlineValuationRequest = null)
 
-[BETA] GetValuationOfWeightedInstruments: Perform valuation for an inlined portfolio
+GetValuationOfWeightedInstruments: Perform valuation for an inlined portfolio
 
 Perform valuation on the portfolio that is defined by the weighted set of instruments passed to the request.
 
@@ -269,7 +269,7 @@ namespace Example
         public static void Main()
         {
             Configuration config = new Configuration();
-            config.BasePath = "https://fbn-prd.lusid.com/api";
+            config.BasePath = "http://local-unit-test-server.lusid.com:48293";
             // Configure OAuth2 access token for authorization: oauth2
             config.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -278,7 +278,7 @@ namespace Example
 
             try
             {
-                // [BETA] GetValuationOfWeightedInstruments: Perform valuation for an inlined portfolio
+                // GetValuationOfWeightedInstruments: Perform valuation for an inlined portfolio
                 ListAggregationResponse result = apiInstance.GetValuationOfWeightedInstruments(inlineValuationRequest);
                 Debug.WriteLine(result);
             }
