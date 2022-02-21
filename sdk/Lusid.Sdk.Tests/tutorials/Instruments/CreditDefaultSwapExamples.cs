@@ -104,8 +104,8 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
             );
             
             var cdsProtectionDetailSpecification = new CdsProtectionDetailSpecification(
-                seniority: CdsProtectionDetailSpecification.SeniorityEnum.SNR,
-                restructuringType: CdsProtectionDetailSpecification.RestructuringTypeEnum.CR,
+                seniority: "SNR",
+                restructuringType:"CR",
                 protectStartDay: true,
                 payAccruedInterestOnDefault: false);
 
