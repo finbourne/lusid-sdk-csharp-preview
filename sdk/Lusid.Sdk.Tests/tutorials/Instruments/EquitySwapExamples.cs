@@ -212,7 +212,7 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
             // CREATE an EquitySwap
             var equitySwap = InstrumentExamples.CreateExampleEquitySwap();
             
-            // CREATE wide enough window to pick up all cashflows associated to the EquityOption
+            // CREATE wide enough window to pick up all cashflows associated to the EquitySwap
             var windowStart = equitySwap.StartDate.AddMonths(-1);
             var windowEnd = equitySwap.MaturityDate.AddMonths(1);
             
@@ -220,7 +220,7 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
             var scope = Guid.NewGuid().ToString();
             var (instrumentID, portfolioCode) = CreatePortfolioAndInstrument(scope, equitySwap);
 
-            // UPSERT EquityOption to portfolio and populating stores with required market data.
+            // UPSERT EquitySwap to portfolio and populating stores with required market data.
             CreateAndUpsertMarketDataToLusid(scope, model, equitySwap);
             
             // CREATE recipe to price the portfolio with
@@ -244,8 +244,8 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
             Assert.That(allEquitySwapCashFlows.Count, Is.EqualTo(2));
             var cashFlowDate = allEquitySwapCashFlows.First().TransactionDate;
             
-            // CREATE valuation request for this portfolio consisting of the EquityOption,
-            // with valuation dates a few days before, day of and a few days after the option expiration = cashflow date.
+            // CREATE valuation request for this portfolio consisting of the EquityEquitySwap,
+            // with valuation dates a few days before, day of and a few days after the instrument expiration = cashflow date.
             var valuationRequest = TestDataUtilities.CreateValuationRequest(
                 scope,
                 portfolioCode,
@@ -255,13 +255,13 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
             
             // CALL GetValuation before upserting back the cashflows. We check
             // (1) there is no cash holdings in the portfolio prior to expiration
-            // (2) that when the EquityOption has expired, the PV is zero.
-            var valuationBeforeAndAfterExpirationEquityOption = _aggregationApi.GetValuation(valuationRequest);
+            // (2) that when the EquitySwap has expired, the PV is zero.
+            var valuationBeforeAndAfterExpirationEquitySwap = _aggregationApi.GetValuation(valuationRequest);
             TestDataUtilities.CheckNoCashPositionsInValuationResults(
-                valuationBeforeAndAfterExpirationEquityOption,
+                valuationBeforeAndAfterExpirationEquitySwap,
                 equitySwap.EquityFlowConventions.Currency);
             TestDataUtilities.CheckNonZeroPvBeforeMaturityAndZeroAfter(
-                valuationBeforeAndAfterExpirationEquityOption,
+                valuationBeforeAndAfterExpirationEquitySwap,
                 equitySwap.MaturityDate);
 
             // UPSERT the cashflows back into LUSID. We first populate the cashflow transactions with unique IDs.
@@ -286,7 +286,7 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
 
             // ASSERT portfolio PV is constant for each valuation date.
             // We expect this to be true since we upserted the cashflows back in.
-            // That is instrument pv + cashflow = option payoff = = constant for each valuation date.
+            // That is instrument pv + cashflow = constant for each valuation date.
             TestDataUtilities.CheckPvIsConstantAcrossDatesWithinTolerance(valuationAfterUpsertingCashFlows);
     
             // CLEAN up.
