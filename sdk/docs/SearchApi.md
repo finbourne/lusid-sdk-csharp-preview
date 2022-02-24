@@ -1,13 +1,13 @@
 # Lusid.Sdk.Api.SearchApi
 
-All URIs are relative to *http://local-unit-test-server.lusid.com:59505*
+All URIs are relative to *http://local-unit-test-server.lusid.com:37514*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
 [**InstrumentsSearch**](SearchApi.md#instrumentssearch) | **POST** /api/search/instruments | [EXPERIMENTAL] InstrumentsSearch: Instruments search
-[**SearchPortfolioGroups**](SearchApi.md#searchportfoliogroups) | **GET** /api/search/portfoliogroups | [EARLY ACCESS] SearchPortfolioGroups: Search Portfolio Groups
-[**SearchPortfolios**](SearchApi.md#searchportfolios) | **GET** /api/search/portfolios | [EARLY ACCESS] SearchPortfolios: Search Portfolios
-[**SearchProperties**](SearchApi.md#searchproperties) | **GET** /api/search/propertydefinitions | [EARLY ACCESS] SearchProperties: Search Property Definitions
+[**SearchPortfolioGroups**](SearchApi.md#searchportfoliogroups) | **GET** /api/search/portfoliogroups | SearchPortfolioGroups: Search Portfolio Groups
+[**SearchPortfolios**](SearchApi.md#searchportfolios) | **GET** /api/search/portfolios | SearchPortfolios: Search Portfolios
+[**SearchProperties**](SearchApi.md#searchproperties) | **GET** /api/search/propertydefinitions | SearchProperties: Search Property Definitions
 
 
 <a name="instrumentssearch"></a>
@@ -33,7 +33,7 @@ namespace Example
         public static void Main()
         {
             Configuration config = new Configuration();
-            config.BasePath = "http://local-unit-test-server.lusid.com:59505";
+            config.BasePath = "http://local-unit-test-server.lusid.com:37514";
             // Configure OAuth2 access token for authorization: oauth2
             config.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -96,7 +96,7 @@ Name | Type | Description  | Notes
 # **SearchPortfolioGroups**
 > PagedResourceListOfPortfolioGroupSearchResult SearchPortfolioGroups (string search = null, string filter = null, string sortBy = null, int? limit = null, string page = null)
 
-[EARLY ACCESS] SearchPortfolioGroups: Search Portfolio Groups
+SearchPortfolioGroups: Search Portfolio Groups
 
 Search through all portfolio groups
 
@@ -115,7 +115,7 @@ namespace Example
         public static void Main()
         {
             Configuration config = new Configuration();
-            config.BasePath = "http://local-unit-test-server.lusid.com:59505";
+            config.BasePath = "http://local-unit-test-server.lusid.com:37514";
             // Configure OAuth2 access token for authorization: oauth2
             config.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -128,7 +128,7 @@ namespace Example
 
             try
             {
-                // [EARLY ACCESS] SearchPortfolioGroups: Search Portfolio Groups
+                // SearchPortfolioGroups: Search Portfolio Groups
                 PagedResourceListOfPortfolioGroupSearchResult result = apiInstance.SearchPortfolioGroups(search, filter, sortBy, limit, page);
                 Debug.WriteLine(result);
             }
@@ -180,7 +180,7 @@ Name | Type | Description  | Notes
 # **SearchPortfolios**
 > PagedResourceListOfPortfolioSearchResult SearchPortfolios (string search = null, string filter = null, string sortBy = null, int? limit = null, string page = null)
 
-[EARLY ACCESS] SearchPortfolios: Search Portfolios
+SearchPortfolios: Search Portfolios
 
 Search through all portfolios
 
@@ -199,7 +199,7 @@ namespace Example
         public static void Main()
         {
             Configuration config = new Configuration();
-            config.BasePath = "http://local-unit-test-server.lusid.com:59505";
+            config.BasePath = "http://local-unit-test-server.lusid.com:37514";
             // Configure OAuth2 access token for authorization: oauth2
             config.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -212,7 +212,7 @@ namespace Example
 
             try
             {
-                // [EARLY ACCESS] SearchPortfolios: Search Portfolios
+                // SearchPortfolios: Search Portfolios
                 PagedResourceListOfPortfolioSearchResult result = apiInstance.SearchPortfolios(search, filter, sortBy, limit, page);
                 Debug.WriteLine(result);
             }
@@ -264,7 +264,7 @@ Name | Type | Description  | Notes
 # **SearchProperties**
 > PagedResourceListOfPropertyDefinitionSearchResult SearchProperties (string search = null, string filter = null, string sortBy = null, int? limit = null, string page = null)
 
-[EARLY ACCESS] SearchProperties: Search Property Definitions
+SearchProperties: Search Property Definitions
 
 Search through all Property Definitions
 
@@ -283,7 +283,7 @@ namespace Example
         public static void Main()
         {
             Configuration config = new Configuration();
-            config.BasePath = "http://local-unit-test-server.lusid.com:59505";
+            config.BasePath = "http://local-unit-test-server.lusid.com:37514";
             // Configure OAuth2 access token for authorization: oauth2
             config.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -296,7 +296,7 @@ namespace Example
 
             try
             {
-                // [EARLY ACCESS] SearchProperties: Search Property Definitions
+                // SearchProperties: Search Property Definitions
                 PagedResourceListOfPropertyDefinitionSearchResult result = apiInstance.SearchProperties(search, filter, sortBy, limit, page);
                 Debug.WriteLine(result);
             }
