@@ -1,11 +1,12 @@
-# Lusid.Sdk.Model.CustomEntityField
+# Lusid.Sdk.Model.CustomEntityId
 
 ## Properties
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**Name** | **string** |  | 
-**Value** | **Object** |  | 
+**IdentifierScope** | **string** |  | 
+**IdentifierType** | **string** |  | 
+**IdentifierValue** | **string** |  | 
 **EffectiveFrom** | **DateTimeOffset?** |  | [optional] 
 **EffectiveUntil** | **DateTimeOffset?** |  | [optional] 
 

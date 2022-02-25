@@ -1,6 +1,6 @@
 # Lusid.Sdk.Api.CustomEntityDefinitionsApi
 
-All URIs are relative to *http://local-unit-test-server.lusid.com:40720*
+All URIs are relative to *http://local-unit-test-server.lusid.com:33599*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
@@ -31,7 +31,7 @@ namespace Example
         public static void Main()
         {
             Configuration config = new Configuration();
-            config.BasePath = "http://local-unit-test-server.lusid.com:40720";
+            config.BasePath = "http://local-unit-test-server.lusid.com:33599";
             // Configure OAuth2 access token for authorization: oauth2
             config.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -107,12 +107,12 @@ namespace Example
         public static void Main()
         {
             Configuration config = new Configuration();
-            config.BasePath = "http://local-unit-test-server.lusid.com:40720";
+            config.BasePath = "http://local-unit-test-server.lusid.com:33599";
             // Configure OAuth2 access token for authorization: oauth2
             config.AccessToken = "YOUR_ACCESS_TOKEN";
 
             var apiInstance = new CustomEntityDefinitionsApi(config);
-            var entityType = entityType_example;  // string | The type of entity for which to retrieve the CustomEntityDefinition. This is included in the response from M:Finbourne.WebApi.Controllers.CustomEntityDefinitionController.CreateCustomEntityDefinition(Finbourne.WebApi.Interface.Dto.CustomEntityDefinitions.CustomEntityDefinitionRequest).
+            var entityType = entityType_example;  // string | The type of entity for which to retrieve the CustomEntityDefinition.
             var asAt = 2013-10-20T19:20:30+01:00;  // DateTimeOffset? | The AsAt at which to retrieve the CustomEntityDefinition. (optional) 
 
             try
@@ -136,7 +136,7 @@ namespace Example
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **entityType** | **string**| The type of entity for which to retrieve the CustomEntityDefinition. This is included in the response from M:Finbourne.WebApi.Controllers.CustomEntityDefinitionController.CreateCustomEntityDefinition(Finbourne.WebApi.Interface.Dto.CustomEntityDefinitions.CustomEntityDefinitionRequest). | 
+ **entityType** | **string**| The type of entity for which to retrieve the CustomEntityDefinition. | 
  **asAt** | **DateTimeOffset?**| The AsAt at which to retrieve the CustomEntityDefinition. | [optional] 
 
 ### Return type
