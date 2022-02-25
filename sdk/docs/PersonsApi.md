@@ -1,6 +1,6 @@
 # Lusid.Sdk.Api.PersonsApi
 
-All URIs are relative to *http://local-unit-test-server.lusid.com:34341*
+All URIs are relative to *http://local-unit-test-server.lusid.com:55638*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
@@ -15,6 +15,7 @@ Method | HTTP request | Description
 [**GetPersonRelations**](PersonsApi.md#getpersonrelations) | **GET** /api/persons/{idTypeScope}/{idTypeCode}/{code}/relations | [EXPERIMENTAL] GetPersonRelations: Get Relations for Person
 [**GetPersonRelationships**](PersonsApi.md#getpersonrelationships) | **GET** /api/persons/{idTypeScope}/{idTypeCode}/{code}/relationships | [EXPERIMENTAL] GetPersonRelationships: Get Relationships for Person
 [**ListPersons**](PersonsApi.md#listpersons) | **GET** /api/persons/{idTypeScope}/{idTypeCode} | [EXPERIMENTAL] ListPersons: List Persons
+[**PatchPersonAccessMetadata**](PersonsApi.md#patchpersonaccessmetadata) | **PATCH** /api/persons/{idTypeScope}/{idTypeCode}/{code}/metadata | [EXPERIMENTAL] PatchPersonAccessMetadata: Patch Access Metadata rules for a Person.
 [**SetPersonIdentifiers**](PersonsApi.md#setpersonidentifiers) | **POST** /api/persons/{idTypeScope}/{idTypeCode}/{code}/identifiers | [EXPERIMENTAL] SetPersonIdentifiers: Set Person Identifiers
 [**SetPersonProperties**](PersonsApi.md#setpersonproperties) | **POST** /api/persons/{idTypeScope}/{idTypeCode}/{code}/properties | [EXPERIMENTAL] SetPersonProperties: Set Person Properties
 [**UpsertPerson**](PersonsApi.md#upsertperson) | **POST** /api/persons | [EXPERIMENTAL] UpsertPerson: Upsert Person
@@ -44,7 +45,7 @@ namespace Example
         public static void Main()
         {
             Configuration config = new Configuration();
-            config.BasePath = "http://local-unit-test-server.lusid.com:34341";
+            config.BasePath = "http://local-unit-test-server.lusid.com:55638";
             // Configure OAuth2 access token for authorization: oauth2
             config.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -124,7 +125,7 @@ namespace Example
         public static void Main()
         {
             Configuration config = new Configuration();
-            config.BasePath = "http://local-unit-test-server.lusid.com:34341";
+            config.BasePath = "http://local-unit-test-server.lusid.com:55638";
             // Configure OAuth2 access token for authorization: oauth2
             config.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -208,7 +209,7 @@ namespace Example
         public static void Main()
         {
             Configuration config = new Configuration();
-            config.BasePath = "http://local-unit-test-server.lusid.com:34341";
+            config.BasePath = "http://local-unit-test-server.lusid.com:55638";
             // Configure OAuth2 access token for authorization: oauth2
             config.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -292,7 +293,7 @@ namespace Example
         public static void Main()
         {
             Configuration config = new Configuration();
-            config.BasePath = "http://local-unit-test-server.lusid.com:34341";
+            config.BasePath = "http://local-unit-test-server.lusid.com:55638";
             // Configure OAuth2 access token for authorization: oauth2
             config.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -376,7 +377,7 @@ namespace Example
         public static void Main()
         {
             Configuration config = new Configuration();
-            config.BasePath = "http://local-unit-test-server.lusid.com:34341";
+            config.BasePath = "http://local-unit-test-server.lusid.com:55638";
             // Configure OAuth2 access token for authorization: oauth2
             config.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -460,7 +461,7 @@ namespace Example
         public static void Main()
         {
             Configuration config = new Configuration();
-            config.BasePath = "http://local-unit-test-server.lusid.com:34341";
+            config.BasePath = "http://local-unit-test-server.lusid.com:55638";
             // Configure OAuth2 access token for authorization: oauth2
             config.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -546,7 +547,7 @@ namespace Example
         public static void Main()
         {
             Configuration config = new Configuration();
-            config.BasePath = "http://local-unit-test-server.lusid.com:34341";
+            config.BasePath = "http://local-unit-test-server.lusid.com:55638";
             // Configure OAuth2 access token for authorization: oauth2
             config.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -632,7 +633,7 @@ namespace Example
         public static void Main()
         {
             Configuration config = new Configuration();
-            config.BasePath = "http://local-unit-test-server.lusid.com:34341";
+            config.BasePath = "http://local-unit-test-server.lusid.com:55638";
             // Configure OAuth2 access token for authorization: oauth2
             config.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -722,7 +723,7 @@ namespace Example
         public static void Main()
         {
             Configuration config = new Configuration();
-            config.BasePath = "http://local-unit-test-server.lusid.com:34341";
+            config.BasePath = "http://local-unit-test-server.lusid.com:55638";
             // Configure OAuth2 access token for authorization: oauth2
             config.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -810,7 +811,7 @@ namespace Example
         public static void Main()
         {
             Configuration config = new Configuration();
-            config.BasePath = "http://local-unit-test-server.lusid.com:34341";
+            config.BasePath = "http://local-unit-test-server.lusid.com:55638";
             // Configure OAuth2 access token for authorization: oauth2
             config.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -898,7 +899,7 @@ namespace Example
         public static void Main()
         {
             Configuration config = new Configuration();
-            config.BasePath = "http://local-unit-test-server.lusid.com:34341";
+            config.BasePath = "http://local-unit-test-server.lusid.com:55638";
             // Configure OAuth2 access token for authorization: oauth2
             config.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -967,6 +968,90 @@ Name | Type | Description  | Notes
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
+<a name="patchpersonaccessmetadata"></a>
+# **PatchPersonAccessMetadata**
+> Dictionary&lt;string, List&lt;AccessMetadataValue&gt;&gt; PatchPersonAccessMetadata (string idTypeScope, string idTypeCode, string code, List<Operation> operation, DateTimeOrCutLabel effectiveAt = null)
+
+[EXPERIMENTAL] PatchPersonAccessMetadata: Patch Access Metadata rules for a Person.
+
+Patch Person Access Metadata Rules in a single scope.  The behaviour is defined by the JSON Patch specification.                Currently only 'add' is a supported operation on the patch document  Currently only valid metadata keys are supported paths on the patch document                The response will return any affected Person Access Metadata rules or a failure message if unsuccessful.                It is important to always check to verify success (or failure).                Multiple rules for a metadataKey can exist with different effective at dates, when resources are accessed the rule that is active for the current time will be fetched.
+
+### Example
+```csharp
+using System.Collections.Generic;
+using System.Diagnostics;
+using Lusid.Sdk.Api;
+using Lusid.Sdk.Client;
+using Lusid.Sdk.Model;
+
+namespace Example
+{
+    public class PatchPersonAccessMetadataExample
+    {
+        public static void Main()
+        {
+            Configuration config = new Configuration();
+            config.BasePath = "http://local-unit-test-server.lusid.com:55638";
+            // Configure OAuth2 access token for authorization: oauth2
+            config.AccessToken = "YOUR_ACCESS_TOKEN";
+
+            var apiInstance = new PersonsApi(config);
+            var idTypeScope = idTypeScope_example;  // string | Scope of the person identifier.
+            var idTypeCode = idTypeCode_example;  // string | Code of the person identifier.
+            var code = code_example;  // string | Code of the person under specified identifier type's scope and code.
+            var operation = new List<Operation>(); // List<Operation> | The Json Patch document
+            var effectiveAt = effectiveAt_example;  // DateTimeOrCutLabel | The effectiveAt datetime at which to upsert the Access Metadata (optional) 
+
+            try
+            {
+                // [EXPERIMENTAL] PatchPersonAccessMetadata: Patch Access Metadata rules for a Person.
+                Dictionary<string, List<AccessMetadataValue>> result = apiInstance.PatchPersonAccessMetadata(idTypeScope, idTypeCode, code, operation, effectiveAt);
+                Debug.WriteLine(result);
+            }
+            catch (ApiException  e)
+            {
+                Debug.Print("Exception when calling PersonsApi.PatchPersonAccessMetadata: " + e.Message );
+                Debug.Print("Status Code: "+ e.ErrorCode);
+                Debug.Print(e.StackTrace);
+            }
+        }
+    }
+}
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **idTypeScope** | **string**| Scope of the person identifier. | 
+ **idTypeCode** | **string**| Code of the person identifier. | 
+ **code** | **string**| Code of the person under specified identifier type&#39;s scope and code. | 
+ **operation** | [**List&lt;Operation&gt;**](Operation.md)| The Json Patch document | 
+ **effectiveAt** | **DateTimeOrCutLabel**| The effectiveAt datetime at which to upsert the Access Metadata | [optional] 
+
+### Return type
+
+**Dictionary<string, List<AccessMetadataValue>>**
+
+### Authorization
+
+[oauth2](../README.md#oauth2)
+
+### HTTP request headers
+
+ - **Content-Type**: application/json-patch+json, application/json, text/json, application/_*+json
+ - **Accept**: text/plain, application/json, text/json
+
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+| **200** | The successfully patched items. |  -  |
+| **400** | The details of the input related failure |  -  |
+| **0** | Error response |  -  |
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
 <a name="setpersonidentifiers"></a>
 # **SetPersonIdentifiers**
 > Person SetPersonIdentifiers (string idTypeScope, string idTypeCode, string code, SetPersonIdentifiersRequest setPersonIdentifiersRequest)
@@ -990,7 +1075,7 @@ namespace Example
         public static void Main()
         {
             Configuration config = new Configuration();
-            config.BasePath = "http://local-unit-test-server.lusid.com:34341";
+            config.BasePath = "http://local-unit-test-server.lusid.com:55638";
             // Configure OAuth2 access token for authorization: oauth2
             config.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -1072,7 +1157,7 @@ namespace Example
         public static void Main()
         {
             Configuration config = new Configuration();
-            config.BasePath = "http://local-unit-test-server.lusid.com:34341";
+            config.BasePath = "http://local-unit-test-server.lusid.com:55638";
             // Configure OAuth2 access token for authorization: oauth2
             config.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -1154,7 +1239,7 @@ namespace Example
         public static void Main()
         {
             Configuration config = new Configuration();
-            config.BasePath = "http://local-unit-test-server.lusid.com:34341";
+            config.BasePath = "http://local-unit-test-server.lusid.com:55638";
             // Configure OAuth2 access token for authorization: oauth2
             config.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -1230,7 +1315,7 @@ namespace Example
         public static void Main()
         {
             Configuration config = new Configuration();
-            config.BasePath = "http://local-unit-test-server.lusid.com:34341";
+            config.BasePath = "http://local-unit-test-server.lusid.com:55638";
             // Configure OAuth2 access token for authorization: oauth2
             config.AccessToken = "YOUR_ACCESS_TOKEN";
 

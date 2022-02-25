@@ -1,6 +1,6 @@
 # Lusid.Sdk.Api.PortfolioGroupsApi
 
-All URIs are relative to *http://local-unit-test-server.lusid.com:34341*
+All URIs are relative to *http://local-unit-test-server.lusid.com:55638*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
@@ -26,6 +26,7 @@ Method | HTTP request | Description
 [**GetPortfolioGroupRelationships**](PortfolioGroupsApi.md#getportfoliogrouprelationships) | **GET** /api/portfoliogroups/{scope}/{code}/relationships | [EXPERIMENTAL] GetPortfolioGroupRelationships: Get Relationships for Portfolio Group
 [**GetTransactionsForPortfolioGroup**](PortfolioGroupsApi.md#gettransactionsforportfoliogroup) | **GET** /api/portfoliogroups/{scope}/{code}/transactions | [EARLY ACCESS] GetTransactionsForPortfolioGroup: Get transactions for transaction portfolios in a portfolio group
 [**ListPortfolioGroups**](PortfolioGroupsApi.md#listportfoliogroups) | **GET** /api/portfoliogroups/{scope} | [EARLY ACCESS] ListPortfolioGroups: List portfolio groups
+[**PatchPortfolioGroupAccessMetadata**](PortfolioGroupsApi.md#patchportfoliogroupaccessmetadata) | **PATCH** /api/portfoliogroups/{scope}/{code}/metadata | [EXPERIMENTAL] PatchPortfolioGroupAccessMetadata: Patch Access Metadata rules for a Portfolio Group.
 [**UpdatePortfolioGroup**](PortfolioGroupsApi.md#updateportfoliogroup) | **PUT** /api/portfoliogroups/{scope}/{code} | [EARLY ACCESS] UpdatePortfolioGroup: Update portfolio group
 [**UpsertGroupProperties**](PortfolioGroupsApi.md#upsertgroupproperties) | **POST** /api/portfoliogroups/{scope}/{code}/properties/$upsert | [EARLY ACCESS] UpsertGroupProperties: Upsert group properties
 [**UpsertPortfolioGroupAccessMetadata**](PortfolioGroupsApi.md#upsertportfoliogroupaccessmetadata) | **PUT** /api/portfoliogroups/{scope}/{code}/metadata/{metadataKey} | [EARLY ACCESS] UpsertPortfolioGroupAccessMetadata: Upsert a Portfolio Group Access Metadata entry associated with a specific metadataKey. This creates or updates the data in LUSID.
@@ -54,7 +55,7 @@ namespace Example
         public static void Main()
         {
             Configuration config = new Configuration();
-            config.BasePath = "http://local-unit-test-server.lusid.com:34341";
+            config.BasePath = "http://local-unit-test-server.lusid.com:55638";
             // Configure OAuth2 access token for authorization: oauth2
             config.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -136,7 +137,7 @@ namespace Example
         public static void Main()
         {
             Configuration config = new Configuration();
-            config.BasePath = "http://local-unit-test-server.lusid.com:34341";
+            config.BasePath = "http://local-unit-test-server.lusid.com:55638";
             // Configure OAuth2 access token for authorization: oauth2
             config.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -218,7 +219,7 @@ namespace Example
         public static void Main()
         {
             Configuration config = new Configuration();
-            config.BasePath = "http://local-unit-test-server.lusid.com:34341";
+            config.BasePath = "http://local-unit-test-server.lusid.com:55638";
             // Configure OAuth2 access token for authorization: oauth2
             config.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -308,7 +309,7 @@ namespace Example
         public static void Main()
         {
             Configuration config = new Configuration();
-            config.BasePath = "http://local-unit-test-server.lusid.com:34341";
+            config.BasePath = "http://local-unit-test-server.lusid.com:55638";
             // Configure OAuth2 access token for authorization: oauth2
             config.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -386,7 +387,7 @@ namespace Example
         public static void Main()
         {
             Configuration config = new Configuration();
-            config.BasePath = "http://local-unit-test-server.lusid.com:34341";
+            config.BasePath = "http://local-unit-test-server.lusid.com:55638";
             // Configure OAuth2 access token for authorization: oauth2
             config.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -468,7 +469,7 @@ namespace Example
         public static void Main()
         {
             Configuration config = new Configuration();
-            config.BasePath = "http://local-unit-test-server.lusid.com:34341";
+            config.BasePath = "http://local-unit-test-server.lusid.com:55638";
             // Configure OAuth2 access token for authorization: oauth2
             config.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -550,7 +551,7 @@ namespace Example
         public static void Main()
         {
             Configuration config = new Configuration();
-            config.BasePath = "http://local-unit-test-server.lusid.com:34341";
+            config.BasePath = "http://local-unit-test-server.lusid.com:55638";
             // Configure OAuth2 access token for authorization: oauth2
             config.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -634,7 +635,7 @@ namespace Example
         public static void Main()
         {
             Configuration config = new Configuration();
-            config.BasePath = "http://local-unit-test-server.lusid.com:34341";
+            config.BasePath = "http://local-unit-test-server.lusid.com:55638";
             // Configure OAuth2 access token for authorization: oauth2
             config.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -712,7 +713,7 @@ namespace Example
         public static void Main()
         {
             Configuration config = new Configuration();
-            config.BasePath = "http://local-unit-test-server.lusid.com:34341";
+            config.BasePath = "http://local-unit-test-server.lusid.com:55638";
             // Configure OAuth2 access token for authorization: oauth2
             config.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -796,7 +797,7 @@ namespace Example
         public static void Main()
         {
             Configuration config = new Configuration();
-            config.BasePath = "http://local-unit-test-server.lusid.com:34341";
+            config.BasePath = "http://local-unit-test-server.lusid.com:55638";
             // Configure OAuth2 access token for authorization: oauth2
             config.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -888,7 +889,7 @@ namespace Example
         public static void Main()
         {
             Configuration config = new Configuration();
-            config.BasePath = "http://local-unit-test-server.lusid.com:34341";
+            config.BasePath = "http://local-unit-test-server.lusid.com:55638";
             // Configure OAuth2 access token for authorization: oauth2
             config.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -970,7 +971,7 @@ namespace Example
         public static void Main()
         {
             Configuration config = new Configuration();
-            config.BasePath = "http://local-unit-test-server.lusid.com:34341";
+            config.BasePath = "http://local-unit-test-server.lusid.com:55638";
             // Configure OAuth2 access token for authorization: oauth2
             config.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -1058,7 +1059,7 @@ namespace Example
         public static void Main()
         {
             Configuration config = new Configuration();
-            config.BasePath = "http://local-unit-test-server.lusid.com:34341";
+            config.BasePath = "http://local-unit-test-server.lusid.com:55638";
             // Configure OAuth2 access token for authorization: oauth2
             config.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -1140,7 +1141,7 @@ namespace Example
         public static void Main()
         {
             Configuration config = new Configuration();
-            config.BasePath = "http://local-unit-test-server.lusid.com:34341";
+            config.BasePath = "http://local-unit-test-server.lusid.com:55638";
             // Configure OAuth2 access token for authorization: oauth2
             config.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -1224,7 +1225,7 @@ namespace Example
         public static void Main()
         {
             Configuration config = new Configuration();
-            config.BasePath = "http://local-unit-test-server.lusid.com:34341";
+            config.BasePath = "http://local-unit-test-server.lusid.com:55638";
             // Configure OAuth2 access token for authorization: oauth2
             config.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -1308,7 +1309,7 @@ namespace Example
         public static void Main()
         {
             Configuration config = new Configuration();
-            config.BasePath = "http://local-unit-test-server.lusid.com:34341";
+            config.BasePath = "http://local-unit-test-server.lusid.com:55638";
             // Configure OAuth2 access token for authorization: oauth2
             config.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -1392,7 +1393,7 @@ namespace Example
         public static void Main()
         {
             Configuration config = new Configuration();
-            config.BasePath = "http://local-unit-test-server.lusid.com:34341";
+            config.BasePath = "http://local-unit-test-server.lusid.com:55638";
             // Configure OAuth2 access token for authorization: oauth2
             config.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -1474,7 +1475,7 @@ namespace Example
         public static void Main()
         {
             Configuration config = new Configuration();
-            config.BasePath = "http://local-unit-test-server.lusid.com:34341";
+            config.BasePath = "http://local-unit-test-server.lusid.com:55638";
             // Configure OAuth2 access token for authorization: oauth2
             config.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -1564,7 +1565,7 @@ namespace Example
         public static void Main()
         {
             Configuration config = new Configuration();
-            config.BasePath = "http://local-unit-test-server.lusid.com:34341";
+            config.BasePath = "http://local-unit-test-server.lusid.com:55638";
             // Configure OAuth2 access token for authorization: oauth2
             config.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -1650,7 +1651,7 @@ namespace Example
         public static void Main()
         {
             Configuration config = new Configuration();
-            config.BasePath = "http://local-unit-test-server.lusid.com:34341";
+            config.BasePath = "http://local-unit-test-server.lusid.com:55638";
             // Configure OAuth2 access token for authorization: oauth2
             config.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -1736,7 +1737,7 @@ namespace Example
         public static void Main()
         {
             Configuration config = new Configuration();
-            config.BasePath = "http://local-unit-test-server.lusid.com:34341";
+            config.BasePath = "http://local-unit-test-server.lusid.com:55638";
             // Configure OAuth2 access token for authorization: oauth2
             config.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -1828,7 +1829,7 @@ namespace Example
         public static void Main()
         {
             Configuration config = new Configuration();
-            config.BasePath = "http://local-unit-test-server.lusid.com:34341";
+            config.BasePath = "http://local-unit-test-server.lusid.com:55638";
             // Configure OAuth2 access token for authorization: oauth2
             config.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -1887,6 +1888,88 @@ Name | Type | Description  | Notes
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
+<a name="patchportfoliogroupaccessmetadata"></a>
+# **PatchPortfolioGroupAccessMetadata**
+> Dictionary&lt;string, List&lt;AccessMetadataValue&gt;&gt; PatchPortfolioGroupAccessMetadata (string scope, string code, List<Operation> operation, DateTimeOrCutLabel effectiveAt = null)
+
+[EXPERIMENTAL] PatchPortfolioGroupAccessMetadata: Patch Access Metadata rules for a Portfolio Group.
+
+Patch Portfolio Group Access Metadata Rules in a single scope.  The behaviour is defined by the JSON Patch specification.                Currently only 'add' is a supported operation on the patch document  Currently only valid metadata keys are supported paths on the patch document                The response will return any affected Portfolio Group Access Metadata rules or a failure message if unsuccessful.                It is important to always check to verify success (or failure).                Multiple rules for a metadataKey can exist with different effective at dates, when resources are accessed the rule that is active for the current time will be fetched.
+
+### Example
+```csharp
+using System.Collections.Generic;
+using System.Diagnostics;
+using Lusid.Sdk.Api;
+using Lusid.Sdk.Client;
+using Lusid.Sdk.Model;
+
+namespace Example
+{
+    public class PatchPortfolioGroupAccessMetadataExample
+    {
+        public static void Main()
+        {
+            Configuration config = new Configuration();
+            config.BasePath = "http://local-unit-test-server.lusid.com:55638";
+            // Configure OAuth2 access token for authorization: oauth2
+            config.AccessToken = "YOUR_ACCESS_TOKEN";
+
+            var apiInstance = new PortfolioGroupsApi(config);
+            var scope = scope_example;  // string | The scope of the Portfolio Group
+            var code = code_example;  // string | The Portfolio Group code
+            var operation = new List<Operation>(); // List<Operation> | The Json patch document
+            var effectiveAt = effectiveAt_example;  // DateTimeOrCutLabel | The date this rule will be effective from (optional) 
+
+            try
+            {
+                // [EXPERIMENTAL] PatchPortfolioGroupAccessMetadata: Patch Access Metadata rules for a Portfolio Group.
+                Dictionary<string, List<AccessMetadataValue>> result = apiInstance.PatchPortfolioGroupAccessMetadata(scope, code, operation, effectiveAt);
+                Debug.WriteLine(result);
+            }
+            catch (ApiException  e)
+            {
+                Debug.Print("Exception when calling PortfolioGroupsApi.PatchPortfolioGroupAccessMetadata: " + e.Message );
+                Debug.Print("Status Code: "+ e.ErrorCode);
+                Debug.Print(e.StackTrace);
+            }
+        }
+    }
+}
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **scope** | **string**| The scope of the Portfolio Group | 
+ **code** | **string**| The Portfolio Group code | 
+ **operation** | [**List&lt;Operation&gt;**](Operation.md)| The Json patch document | 
+ **effectiveAt** | **DateTimeOrCutLabel**| The date this rule will be effective from | [optional] 
+
+### Return type
+
+**Dictionary<string, List<AccessMetadataValue>>**
+
+### Authorization
+
+[oauth2](../README.md#oauth2)
+
+### HTTP request headers
+
+ - **Content-Type**: application/json-patch+json, application/json, text/json, application/_*+json
+ - **Accept**: text/plain, application/json, text/json
+
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+| **200** | The successfully patched items. |  -  |
+| **400** | The details of the input related failure |  -  |
+| **0** | Error response |  -  |
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
 <a name="updateportfoliogroup"></a>
 # **UpdatePortfolioGroup**
 > PortfolioGroup UpdatePortfolioGroup (string scope, string code, DateTimeOffset? effectiveAt = null, UpdatePortfolioGroupRequest updatePortfolioGroupRequest = null)
@@ -1910,7 +1993,7 @@ namespace Example
         public static void Main()
         {
             Configuration config = new Configuration();
-            config.BasePath = "http://local-unit-test-server.lusid.com:34341";
+            config.BasePath = "http://local-unit-test-server.lusid.com:55638";
             // Configure OAuth2 access token for authorization: oauth2
             config.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -1992,7 +2075,7 @@ namespace Example
         public static void Main()
         {
             Configuration config = new Configuration();
-            config.BasePath = "http://local-unit-test-server.lusid.com:34341";
+            config.BasePath = "http://local-unit-test-server.lusid.com:55638";
             // Configure OAuth2 access token for authorization: oauth2
             config.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -2072,7 +2155,7 @@ namespace Example
         public static void Main()
         {
             Configuration config = new Configuration();
-            config.BasePath = "http://local-unit-test-server.lusid.com:34341";
+            config.BasePath = "http://local-unit-test-server.lusid.com:55638";
             // Configure OAuth2 access token for authorization: oauth2
             config.AccessToken = "YOUR_ACCESS_TOKEN";
 
