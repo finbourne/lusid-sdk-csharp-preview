@@ -4,7 +4,7 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**Code** | **string** |  | [optional] 
+**Code** | **string** |  | 
 **TransactionPropertyKey** | **string** |  | 
 **TransactionType** | **string** |  | 
 **Country** | **string** |  | 
