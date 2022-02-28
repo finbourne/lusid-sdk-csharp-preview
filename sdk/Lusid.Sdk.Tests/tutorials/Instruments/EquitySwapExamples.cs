@@ -81,7 +81,7 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
                 recipeIdScope: scope,
                 recipeIdCode: recipeCode).Values;
             
-            Assert.That(cashflows.Count, Is.EqualTo(2));
+            Assert.That(cashflows.Count, Is.GreaterThanOrEqualTo(2));
         }
 
         [LusidFeature("F5-10")]
@@ -126,30 +126,37 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
         }
         
         [LusidFeature("F22-40")]
-        [TestCase(ModelSelection.ModelEnum.SimpleStatic)]
-        [TestCase(ModelSelection.ModelEnum.ConstantTimeValueOfMoney)]
-        [TestCase(ModelSelection.ModelEnum.Discounting)]
-        public void EquitySwapValuationExample(ModelSelection.ModelEnum model)
+        [TestCase(ModelSelection.ModelEnum.SimpleStatic, false)]
+        [TestCase(ModelSelection.ModelEnum.ConstantTimeValueOfMoney, false)]
+        [TestCase(ModelSelection.ModelEnum.Discounting, false)]
+        [TestCase(ModelSelection.ModelEnum.SimpleStatic, true)]
+        [TestCase(ModelSelection.ModelEnum.ConstantTimeValueOfMoney, true)]
+        [TestCase(ModelSelection.ModelEnum.Discounting, true)]
+        public void EquitySwapValuationExample(ModelSelection.ModelEnum model, bool multiCoupon)
         {
-            var equitySwap = InstrumentExamples.CreateExampleEquitySwap();
+            var equitySwap = InstrumentExamples.CreateExampleEquitySwap(multiCoupon);
             CallLusidGetValuationEndpoint(equitySwap, model);
         }
         
         [LusidFeature("F22-41")]
-        [TestCase(ModelSelection.ModelEnum.ConstantTimeValueOfMoney)]
-        [TestCase(ModelSelection.ModelEnum.Discounting)]
-        public void EquitySwapInlineValuationExample(ModelSelection.ModelEnum model)
+        [TestCase(ModelSelection.ModelEnum.ConstantTimeValueOfMoney, false)]
+        [TestCase(ModelSelection.ModelEnum.Discounting, false)]
+        [TestCase(ModelSelection.ModelEnum.ConstantTimeValueOfMoney, true)]
+        [TestCase(ModelSelection.ModelEnum.Discounting, true)]
+        public void EquitySwapInlineValuationExample(ModelSelection.ModelEnum model, bool multiCoupon)
         {
-            var equitySwap = InstrumentExamples.CreateExampleEquitySwap();
+            var equitySwap = InstrumentExamples.CreateExampleEquitySwap(multiCoupon);
             CallLusidInlineValuationEndpoint(equitySwap, model);
         }
         
         [LusidFeature("F22-42")]
-        [TestCase(ModelSelection.ModelEnum.ConstantTimeValueOfMoney)]
-        [TestCase(ModelSelection.ModelEnum.Discounting)]
-        public void EquitySwapPortfolioCashFlowsExample(ModelSelection.ModelEnum model)
+        [TestCase(ModelSelection.ModelEnum.ConstantTimeValueOfMoney, false)]
+        [TestCase(ModelSelection.ModelEnum.Discounting, false)]
+        [TestCase(ModelSelection.ModelEnum.ConstantTimeValueOfMoney, true)]
+        [TestCase(ModelSelection.ModelEnum.Discounting, true)]
+        public void EquitySwapPortfolioCashFlowsExample(ModelSelection.ModelEnum model, bool multiCoupon)
         {
-            var equitySwap = InstrumentExamples.CreateExampleEquitySwap();
+            var equitySwap = InstrumentExamples.CreateExampleEquitySwap(multiCoupon);
             CallLusidGetPortfolioCashFlowsEndpoint(equitySwap, model);
         }
         
