@@ -420,11 +420,11 @@ namespace Lusid.Sdk.Tests.Utilities
             );
         }
 
-        internal static EquitySwap CreateExampleEquitySwap()
+        internal static EquitySwap CreateExampleEquitySwap(bool multiCoupon = false)
         {
             // CREATE an EquitySwap (that can then be upserted into LUSID)
             var startDate = TestEffectiveAt;
-            var maturity = startDate.AddMonths(6);
+            var maturity =  multiCoupon ? startDate.AddYears(5) : startDate.AddMonths(6); // coupons every 6M
             var flowConventions = CreateExampleFlowConventions();
             return new EquitySwap(
                 startDate: startDate,
