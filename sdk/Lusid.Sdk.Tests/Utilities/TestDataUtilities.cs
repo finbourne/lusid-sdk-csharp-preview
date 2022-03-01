@@ -424,8 +424,8 @@ namespace Lusid.Sdk.Tests.Utilities
             DateTimeOffset effectiveAt,
             string ticker,
             string ccy,
-            CdsProtectionDetailSpecification.SeniorityEnum seniority,
-            CdsProtectionDetailSpecification.RestructuringTypeEnum restructType)
+            string seniority,
+            string restructType)
         {
             var marketDataId = new ComplexMarketDataId
             (

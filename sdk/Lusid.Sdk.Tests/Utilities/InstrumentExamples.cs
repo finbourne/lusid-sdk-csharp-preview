@@ -55,12 +55,12 @@ namespace Lusid.Sdk.Tests.Utilities
                 optionMaturityDate: new DateTimeOffset(2020, 12, 19, 0, 0, 0, TimeSpan.Zero),
                 optionSettlementDate: new DateTimeOffset(2020, 12, 21, 0, 0, 0, TimeSpan.Zero),
                 deliveryType: isCashSettled
-                    ? EquityOption.DeliveryTypeEnum.Cash
-                    : EquityOption.DeliveryTypeEnum.Physical,
-                optionType: EquityOption.OptionTypeEnum.Call,
+                    ? "Cash"
+                    : "Physical",
+                optionType: "Call",
                 strike: 130,
                 domCcy: "USD",
-                underlyingIdentifier: EquityOption.UnderlyingIdentifierEnum.RIC,
+                underlyingIdentifier: "RIC",
                 code: "ACME",
                 instrumentType: LusidInstrument.InstrumentTypeEnum.EquityOption
             );
@@ -305,8 +305,8 @@ namespace Lusid.Sdk.Tests.Utilities
                 couponRate: 0.05m,
                 null,
                 protectionDetailSpecification: new CdsProtectionDetailSpecification(
-                    CdsProtectionDetailSpecification.SeniorityEnum.SNR,
-                    CdsProtectionDetailSpecification.RestructuringTypeEnum.MM,
+                    "SNR",
+                    "MM",
                     true,
                     true
                 ),
