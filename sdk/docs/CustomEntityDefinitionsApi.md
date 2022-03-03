@@ -1,6 +1,6 @@
 # Lusid.Sdk.Api.CustomEntityDefinitionsApi
 
-All URIs are relative to *http://local-unit-test-server.lusid.com:55985*
+All URIs are relative to *http://local-unit-test-server.lusid.com:31896*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
@@ -10,7 +10,7 @@ Method | HTTP request | Description
 
 <a name="createcustomentitydefinition"></a>
 # **CreateCustomEntityDefinition**
-> CustomEntityDefinition CreateCustomEntityDefinition (CustomEntityDefinitionRequest customEntityDefinitionRequest = null)
+> CustomEntityDefinition CreateCustomEntityDefinition (CustomEntityDefinitionRequest customEntityDefinitionRequest)
 
 [EXPERIMENTAL] CreateCustomEntityDefinition: Create a new CustomEntityDefinition
 
@@ -31,12 +31,12 @@ namespace Example
         public static void Main()
         {
             Configuration config = new Configuration();
-            config.BasePath = "http://local-unit-test-server.lusid.com:55985";
+            config.BasePath = "http://local-unit-test-server.lusid.com:31896";
             // Configure OAuth2 access token for authorization: oauth2
             config.AccessToken = "YOUR_ACCESS_TOKEN";
 
             var apiInstance = new CustomEntityDefinitionsApi(config);
-            var customEntityDefinitionRequest = new CustomEntityDefinitionRequest(); // CustomEntityDefinitionRequest | The CustomEntityDefinitionRequest (optional) 
+            var customEntityDefinitionRequest = new CustomEntityDefinitionRequest(); // CustomEntityDefinitionRequest | The CustomEntityDefinitionRequest
 
             try
             {
@@ -59,7 +59,7 @@ namespace Example
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **customEntityDefinitionRequest** | [**CustomEntityDefinitionRequest**](CustomEntityDefinitionRequest.md)| The CustomEntityDefinitionRequest | [optional] 
+ **customEntityDefinitionRequest** | [**CustomEntityDefinitionRequest**](CustomEntityDefinitionRequest.md)| The CustomEntityDefinitionRequest | 
 
 ### Return type
 
@@ -107,7 +107,7 @@ namespace Example
         public static void Main()
         {
             Configuration config = new Configuration();
-            config.BasePath = "http://local-unit-test-server.lusid.com:55985";
+            config.BasePath = "http://local-unit-test-server.lusid.com:31896";
             // Configure OAuth2 access token for authorization: oauth2
             config.AccessToken = "YOUR_ACCESS_TOKEN";
 
