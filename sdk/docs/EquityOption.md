@@ -15,6 +15,7 @@ Name | Type | Description | Notes
 **DomCcy** | **string** | The domestic currency of the instrument. | 
 **UnderlyingIdentifier** | **string** | The market identifier type of the underlying code, e.g RIC.  Supported string (enumeration) values are: [LusidInstrumentId, Isin, Sedol, Cusip, ClientInternal, Figi, RIC, QuotePermId, REDCode, BBGId, ICECode]. | 
 **Code** | **string** | The identifying code for the equity underlying, e.g. &#39;IBM.N&#39;. | 
+**EquityOptionType** | **string** | Equity option types. E.g. Vanilla (default), RightsIssue, Warrant.  Supported string (enumeration) values are: [Vanilla, RightsIssue, Warrant]. | [optional] 
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 
