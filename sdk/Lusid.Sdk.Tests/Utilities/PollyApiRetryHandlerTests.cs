@@ -23,6 +23,8 @@ namespace Lusid.Sdk.Tests.Utilities
         private readonly Policy<IRestResponse> _initialRetryPolicy = RetryConfiguration.RetryPolicy;
         private HttpListener _httpListener;
         private const string ListenerUriPrefix = "http://localhost:4444/";
+        private const int RetryAfterResponseCode = (int)HttpStatusCode.TooManyRequests;
+        private const int StatusCodeResponseDefaultRetry = (int)HttpStatusCode.Conflict;
         private int _apiCallCount;
 
         private readonly Portfolio _testPortfolioResponse = new Portfolio(
@@ -321,23 +323,21 @@ namespace Lusid.Sdk.Tests.Utilities
         [Test]
         public void UsePolicyWrap_WhenCallingApiMethodHitsRateLimit_BothDefaultAndRateLimitPoliciesAreUsed()
         {
-            const int retryAfterResponseCode = 429;
-            const int statusCodeResponseDefaultRetry = 409;
             const int expectedNumberOfApiCalls = 6; // 3 failures for rate limit and 2 for the default one followed by success.
             
             // First Response
-            AddMockHttpResponseToQueue(_httpListener, statusCode: retryAfterResponseCode, responseContent: "", 
+            AddMockHttpResponseToQueue(_httpListener, statusCode: RetryAfterResponseCode, responseContent: "", 
                 0, new Dictionary<HttpResponseHeader, string>() {[HttpResponseHeader.RetryAfter] = "1"});
             // Second Response - same, triggers another retry
-            AddMockHttpResponseToQueue(_httpListener, statusCode: retryAfterResponseCode, responseContent: "", 
+            AddMockHttpResponseToQueue(_httpListener, statusCode: RetryAfterResponseCode, responseContent: "", 
                 0, new Dictionary<HttpResponseHeader, string>() {[HttpResponseHeader.RetryAfter] = "1"});
             
-            AddMockHttpResponseToQueue(_httpListener, statusCode: retryAfterResponseCode, responseContent: "", 
+            AddMockHttpResponseToQueue(_httpListener, statusCode: RetryAfterResponseCode, responseContent: "", 
                 0, new Dictionary<HttpResponseHeader, string>() {[HttpResponseHeader.RetryAfter] = "1"});
 
-            AddMockHttpResponseToQueue(_httpListener, statusCode: statusCodeResponseDefaultRetry, responseContent: "");
+            AddMockHttpResponseToQueue(_httpListener, statusCode: StatusCodeResponseDefaultRetry, responseContent: "");
             
-            AddMockHttpResponseToQueue(_httpListener, statusCode: statusCodeResponseDefaultRetry, responseContent: "");
+            AddMockHttpResponseToQueue(_httpListener, statusCode: StatusCodeResponseDefaultRetry, responseContent: "");
 
             AddMockHttpResponseToQueue(_httpListener, statusCode: 200, responseContent: _testPortfolioResponse.ToJson());
           
@@ -353,9 +353,9 @@ namespace Lusid.Sdk.Tests.Utilities
         [Test]
         public void UseRateLimitPolicyWithRetryAfter_WhenCallingApiMethodHitsRateLimit_RetryAfterIsHonored()
         {
-            const int retryAfterResponseCode = 429;
+            const int retryAfterResponseCode = (int)HttpStatusCode.TooManyRequests;
             const int expectedNumberOfApiCalls = 4; // 1 initial call, 2 failed retries and one success
-            
+
             // First Response
             AddMockHttpResponseToQueue(_httpListener, statusCode: retryAfterResponseCode, responseContent: "", 
                 0, new Dictionary<HttpResponseHeader, string>() { [HttpResponseHeader.RetryAfter] = "5" });
@@ -373,7 +373,7 @@ namespace Lusid.Sdk.Tests.Utilities
             // Calling the API triggers the flow that triggers polly
             var sdkResponse = _apiFactory.Api<IPortfoliosApi>().GetPortfolio("any","any");
             sw.Stop();
-            Assert.That(sw.ElapsedMilliseconds, Is.GreaterThanOrEqualTo(1000*21)); // retry after was respected
+            Assert.That(sw.ElapsedMilliseconds, Is.GreaterThanOrEqualTo(1000*(5+7+9))); // retry after was respected
             Assert.That(sdkResponse, Is.EqualTo(_testPortfolioResponse));
             Assert.That(_apiCallCount, Is.EqualTo(expectedNumberOfApiCalls));
         }
@@ -582,23 +582,21 @@ namespace Lusid.Sdk.Tests.Utilities
           [Test]
         public async Task UsePolicyWrapAsync_WhenCallingApiMethodHitsRateLimit_BothDefaultAndRateLimitPoliciesAreUsed()
         {
-            const int retryAfterResponseCode = 429;
-            const int statusCodeResponseDefaultRetry = 409;
             const int expectedNumberOfApiCalls = 6; // 3 failures for rate limit and 2 for the default one followed by success.
             
             // First Response
-            AddMockHttpResponseToQueue(_httpListener, statusCode: retryAfterResponseCode, responseContent: "", 
+            AddMockHttpResponseToQueue(_httpListener, statusCode: RetryAfterResponseCode, responseContent: "", 
                 0, new Dictionary<HttpResponseHeader, string>() { [HttpResponseHeader.RetryAfter] = "1" });
             // Second Response - same, triggers another retry
-            AddMockHttpResponseToQueue(_httpListener, statusCode: retryAfterResponseCode, responseContent: "", 
+            AddMockHttpResponseToQueue(_httpListener, statusCode: RetryAfterResponseCode, responseContent: "", 
                 0, new Dictionary<HttpResponseHeader, string>() { [HttpResponseHeader.RetryAfter] = "1" });
             
-            AddMockHttpResponseToQueue(_httpListener, statusCode: retryAfterResponseCode, responseContent: "", 
+            AddMockHttpResponseToQueue(_httpListener, statusCode: RetryAfterResponseCode, responseContent: "", 
                 0, new Dictionary<HttpResponseHeader, string>() { [HttpResponseHeader.RetryAfter] = "1" });
 
-            AddMockHttpResponseToQueue(_httpListener, statusCode: statusCodeResponseDefaultRetry, responseContent: "");
+            AddMockHttpResponseToQueue(_httpListener, statusCode: StatusCodeResponseDefaultRetry, responseContent: "");
             
-            AddMockHttpResponseToQueue(_httpListener, statusCodeResponseDefaultRetry, responseContent: "");
+            AddMockHttpResponseToQueue(_httpListener, StatusCodeResponseDefaultRetry, responseContent: "");
 
             AddMockHttpResponseToQueue(_httpListener, statusCode: 200, responseContent: _testPortfolioResponse.ToJson());
           
@@ -614,17 +612,16 @@ namespace Lusid.Sdk.Tests.Utilities
         [Test]
         public async Task UseRateLimitPolicyWithRetryAfterAsync_WhenCallingApiMethodHitsRateLimit_RetryAfterIsHonored()
         {
-            const int retryAfterResponseCode = 429;
             const int expectedNumberOfApiCalls = 4; // 1 initial call, 2 failed retries and one success
             
             // First Response
-            AddMockHttpResponseToQueue(_httpListener, statusCode: retryAfterResponseCode, responseContent: "", 
+            AddMockHttpResponseToQueue(_httpListener, statusCode: RetryAfterResponseCode, responseContent: "", 
                 0, new Dictionary<HttpResponseHeader, string>() { [HttpResponseHeader.RetryAfter] = "5" });
             // Second Response - same, triggers another retry
-            AddMockHttpResponseToQueue(_httpListener, statusCode: retryAfterResponseCode, responseContent: "", 
+            AddMockHttpResponseToQueue(_httpListener, statusCode: RetryAfterResponseCode, responseContent: "", 
                 0, new Dictionary<HttpResponseHeader, string>() { [HttpResponseHeader.RetryAfter] = "7" });
             
-            AddMockHttpResponseToQueue(_httpListener, statusCode: retryAfterResponseCode, responseContent: "", 
+            AddMockHttpResponseToQueue(_httpListener, statusCode: RetryAfterResponseCode, responseContent: "", 
                 0, new Dictionary<HttpResponseHeader, string>() { [HttpResponseHeader.RetryAfter] = "9" });
             // 4 time lucky:
             AddMockHttpResponseToQueue(_httpListener, statusCode: 200, responseContent: _testPortfolioResponse.ToJson());
@@ -634,7 +631,7 @@ namespace Lusid.Sdk.Tests.Utilities
             // Calling API triggers the flow that triggers polly
             var sdkResponse = await _apiFactory.Api<IPortfoliosApi>().GetPortfolioAsync("any","any");
             sw.Stop();
-            Assert.That(sw.ElapsedMilliseconds, Is.GreaterThanOrEqualTo(1000*21)); // retry after was respected
+            Assert.That(sw.ElapsedMilliseconds, Is.GreaterThanOrEqualTo(1000*(5+7+9))); // retry after was respected
             Assert.That(sdkResponse, Is.EqualTo(_testPortfolioResponse));
             Assert.That(_apiCallCount, Is.EqualTo(expectedNumberOfApiCalls));
         }
@@ -642,17 +639,16 @@ namespace Lusid.Sdk.Tests.Utilities
         [Test]
         public async Task UseRateLimitPolicyNoRetryAfterAsync_WhenCallingApiMethodHitsRateLimit_RetryUsesExponentialBackoff()
         {
-            const int retryAfterResponseCode = 429;
             const int expectedNumberOfApiCalls = 4; // 1 initial call + 3 retries 
             
             // First Response
-            AddMockHttpResponseToQueue(_httpListener, statusCode: retryAfterResponseCode, responseContent: "");
+            AddMockHttpResponseToQueue(_httpListener, statusCode: RetryAfterResponseCode, responseContent: "");
             // Second Response - same, triggers another retry
-            AddMockHttpResponseToQueue(_httpListener, statusCode: retryAfterResponseCode, responseContent: "");
+            AddMockHttpResponseToQueue(_httpListener, statusCode: RetryAfterResponseCode, responseContent: "");
             // Third Response - same, triggers another retry
-            AddMockHttpResponseToQueue(_httpListener, statusCode: retryAfterResponseCode, responseContent: "");
+            AddMockHttpResponseToQueue(_httpListener, statusCode: RetryAfterResponseCode, responseContent: "");
 
-            AddMockHttpResponseToQueue(_httpListener, statusCode: retryAfterResponseCode, responseContent: "");
+            AddMockHttpResponseToQueue(_httpListener, statusCode: RetryAfterResponseCode, responseContent: "");
 
             
             RetryConfiguration.AsyncRetryPolicy = PollyApiRetryHandler.AsyncRateLimitRetryPolicy;
