@@ -1,10 +1,11 @@
 # Lusid.Sdk.Api.FeesAndCommissionsApi
 
-All URIs are relative to *http://local-unit-test-server.lusid.com:60956*
+All URIs are relative to *http://local-unit-test-server.lusid.com:37659*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
 [**GetApplicableFees**](FeesAndCommissionsApi.md#getapplicablefees) | **GET** /api/feesandcommissions | [EXPERIMENTAL] GetApplicableFees: Get the Fees and Commissions that may be applicable to a transaction.
+[**GetApplicableFeesNew**](FeesAndCommissionsApi.md#getapplicablefeesnew) | **POST** /api/feesandcommissions/$GetApplicableFees | [EXPERIMENTAL] GetApplicableFeesNew: Get the Fees and Commissions that may be applicable to a transaction.
 [**GetFeeRule**](FeesAndCommissionsApi.md#getfeerule) | **GET** /api/feesandcommissions/rules-dev/{code} | [EXPERIMENTAL] GetFeeRule: Retrieve the definition of single fee rule.
 [**ListAllFees**](FeesAndCommissionsApi.md#listallfees) | **GET** /api/feesandcommissions/rules | [EXPERIMENTAL] ListAllFees: List the rules available for fees and commissions.
 [**ListFeeRules**](FeesAndCommissionsApi.md#listfeerules) | **GET** /api/feesandcommissions/rules-dev | [EXPERIMENTAL] ListFeeRules: List fee rules, with optional filtering.
@@ -34,7 +35,7 @@ namespace Example
         public static void Main()
         {
             Configuration config = new Configuration();
-            config.BasePath = "http://local-unit-test-server.lusid.com:60956";
+            config.BasePath = "http://local-unit-test-server.lusid.com:37659";
             // Configure OAuth2 access token for authorization: oauth2
             config.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -97,6 +98,94 @@ Name | Type | Description  | Notes
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
+<a name="getapplicablefeesnew"></a>
+# **GetApplicableFeesNew**
+> ResourceListOfFeeRule GetApplicableFeesNew (DateTimeOrCutLabel effectiveAt = null, DateTimeOffset? asAt = null, string instrumentIdentifierType = null, string instrumentIdentifier = null, string portfolioScope = null, string portfolioCode = null, Dictionary<string, string> requestBody = null)
+
+[EXPERIMENTAL] GetApplicableFeesNew: Get the Fees and Commissions that may be applicable to a transaction.
+
+Additionally, matching can be based on the instrument's properties, its portfolio properties, and any additional property keys present in the data file.
+
+### Example
+```csharp
+using System.Collections.Generic;
+using System.Diagnostics;
+using Lusid.Sdk.Api;
+using Lusid.Sdk.Client;
+using Lusid.Sdk.Model;
+
+namespace Example
+{
+    public class GetApplicableFeesNewExample
+    {
+        public static void Main()
+        {
+            Configuration config = new Configuration();
+            config.BasePath = "http://local-unit-test-server.lusid.com:37659";
+            // Configure OAuth2 access token for authorization: oauth2
+            config.AccessToken = "YOUR_ACCESS_TOKEN";
+
+            var apiInstance = new FeesAndCommissionsApi(config);
+            var effectiveAt = effectiveAt_example;  // DateTimeOrCutLabel | The effective datetime or cut label at which to match rule definitions. Defaults to the current LUSID  system datetime if not specified. (optional) 
+            var asAt = 2013-10-20T19:20:30+01:00;  // DateTimeOffset? | The asAt datetime at which to match rule definitions. Defaults to returning the latest version if not  specified. (optional) 
+            var instrumentIdentifierType = instrumentIdentifierType_example;  // string | Optional. The unique identifier type to use, eg 'Figi' or 'LusidInstrumentId'. (optional) 
+            var instrumentIdentifier = instrumentIdentifier_example;  // string | Optional. The Instrument Identifier to get properties for. (optional) 
+            var portfolioScope = portfolioScope_example;  // string | Optional. The scope of the portfolio to fetch properties from. (optional) 
+            var portfolioCode = portfolioCode_example;  // string | Optional. The code of the portfolio to fetch properties from. (optional) 
+            var requestBody = new Dictionary<string, string>(); // Dictionary<string, string> | Any other property keys or fields, including the top-level fields of the              fee rule (e.g. \"ExecutionBroker\" and \"SettlementCurrency\" ) and those defined in AdditionalKeys, along with              their corresponding values that should be matched for fees. Eg. \"Instrument/default/Name=exampleValue\" or              \"AdditionalKey2=Value2\". (optional) 
+
+            try
+            {
+                // [EXPERIMENTAL] GetApplicableFeesNew: Get the Fees and Commissions that may be applicable to a transaction.
+                ResourceListOfFeeRule result = apiInstance.GetApplicableFeesNew(effectiveAt, asAt, instrumentIdentifierType, instrumentIdentifier, portfolioScope, portfolioCode, requestBody);
+                Debug.WriteLine(result);
+            }
+            catch (ApiException  e)
+            {
+                Debug.Print("Exception when calling FeesAndCommissionsApi.GetApplicableFeesNew: " + e.Message );
+                Debug.Print("Status Code: "+ e.ErrorCode);
+                Debug.Print(e.StackTrace);
+            }
+        }
+    }
+}
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **effectiveAt** | **DateTimeOrCutLabel**| The effective datetime or cut label at which to match rule definitions. Defaults to the current LUSID  system datetime if not specified. | [optional] 
+ **asAt** | **DateTimeOffset?**| The asAt datetime at which to match rule definitions. Defaults to returning the latest version if not  specified. | [optional] 
+ **instrumentIdentifierType** | **string**| Optional. The unique identifier type to use, eg &#39;Figi&#39; or &#39;LusidInstrumentId&#39;. | [optional] 
+ **instrumentIdentifier** | **string**| Optional. The Instrument Identifier to get properties for. | [optional] 
+ **portfolioScope** | **string**| Optional. The scope of the portfolio to fetch properties from. | [optional] 
+ **portfolioCode** | **string**| Optional. The code of the portfolio to fetch properties from. | [optional] 
+ **requestBody** | [**Dictionary&lt;string, string&gt;**](string.md)| Any other property keys or fields, including the top-level fields of the              fee rule (e.g. \&quot;ExecutionBroker\&quot; and \&quot;SettlementCurrency\&quot; ) and those defined in AdditionalKeys, along with              their corresponding values that should be matched for fees. Eg. \&quot;Instrument/default/Name&#x3D;exampleValue\&quot; or              \&quot;AdditionalKey2&#x3D;Value2\&quot;. | [optional] 
+
+### Return type
+
+[**ResourceListOfFeeRule**](ResourceListOfFeeRule.md)
+
+### Authorization
+
+[oauth2](../README.md#oauth2)
+
+### HTTP request headers
+
+ - **Content-Type**: application/json-patch+json, application/json, text/json, application/_*+json
+ - **Accept**: text/plain, application/json, text/json
+
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+| **200** | The list of applicable fee rules. |  -  |
+| **400** | The details of the input related failure |  -  |
+| **0** | Error response |  -  |
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
 <a name="getfeerule"></a>
 # **GetFeeRule**
 > FeeRule GetFeeRule (string code, DateTimeOrCutLabel effectiveAt = null, DateTimeOffset? asAt = null)
@@ -120,7 +209,7 @@ namespace Example
         public static void Main()
         {
             Configuration config = new Configuration();
-            config.BasePath = "http://local-unit-test-server.lusid.com:60956";
+            config.BasePath = "http://local-unit-test-server.lusid.com:37659";
             // Configure OAuth2 access token for authorization: oauth2
             config.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -200,7 +289,7 @@ namespace Example
         public static void Main()
         {
             Configuration config = new Configuration();
-            config.BasePath = "http://local-unit-test-server.lusid.com:60956";
+            config.BasePath = "http://local-unit-test-server.lusid.com:37659";
             // Configure OAuth2 access token for authorization: oauth2
             config.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -278,7 +367,7 @@ namespace Example
         public static void Main()
         {
             Configuration config = new Configuration();
-            config.BasePath = "http://local-unit-test-server.lusid.com:60956";
+            config.BasePath = "http://local-unit-test-server.lusid.com:37659";
             // Configure OAuth2 access token for authorization: oauth2
             config.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -362,13 +451,13 @@ namespace Example
         public static void Main()
         {
             Configuration config = new Configuration();
-            config.BasePath = "http://local-unit-test-server.lusid.com:60956";
+            config.BasePath = "http://local-unit-test-server.lusid.com:37659";
             // Configure OAuth2 access token for authorization: oauth2
             config.AccessToken = "YOUR_ACCESS_TOKEN";
 
             var apiInstance = new FeesAndCommissionsApi(config);
             var requestBody = new Dictionary<string, FeeRuleUpsertRequest>(); // Dictionary<string, FeeRuleUpsertRequest> | A dictionary of upsert request identifiers to rule upsert requests. The request               identifiers are valid for the request only and can be used to link the upserted fee rule to the code of a               created fee rule.
-            var effectiveAt = effectiveAt_example;  // DateTimeOrCutLabel | The effective datetime or cut label for rule to begin to be effective from. Defaults to the current LUSID  system datetime if not specified. In the case of updates, the update rule will be valid from this time until  the next upserted effective from time. For example, if a rule is due to change from the first of the next  month, values upserted effective from the current time will only be valid until the end of the month, after  which the scheduled changes will take over, as they were due to before this latest upsert. (optional) 
+            var effectiveAt = effectiveAt_example;  // DateTimeOrCutLabel | The effective datetime or cut label at which the rule will take effect. Defaults to the current LUSID  system datetime if not specified. In the case of an update, the changes will take place from this effective  time until the next effective time that the rule as been upserted at. For example, consider a rule that  already exists, and has previously had an update applied so that the definition will change on the first day  of the coming month. An upsert effective from the current day will only change the definition until the  first day of the coming month. An additional upsert at the same time (first day of the month) is required  if the newly-updated definition is to supersede the future definition. (optional) 
 
             try
             {
@@ -392,7 +481,7 @@ namespace Example
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **requestBody** | [**Dictionary&lt;string, FeeRuleUpsertRequest&gt;**](FeeRuleUpsertRequest.md)| A dictionary of upsert request identifiers to rule upsert requests. The request               identifiers are valid for the request only and can be used to link the upserted fee rule to the code of a               created fee rule. | 
- **effectiveAt** | **DateTimeOrCutLabel**| The effective datetime or cut label for rule to begin to be effective from. Defaults to the current LUSID  system datetime if not specified. In the case of updates, the update rule will be valid from this time until  the next upserted effective from time. For example, if a rule is due to change from the first of the next  month, values upserted effective from the current time will only be valid until the end of the month, after  which the scheduled changes will take over, as they were due to before this latest upsert. | [optional] 
+ **effectiveAt** | **DateTimeOrCutLabel**| The effective datetime or cut label at which the rule will take effect. Defaults to the current LUSID  system datetime if not specified. In the case of an update, the changes will take place from this effective  time until the next effective time that the rule as been upserted at. For example, consider a rule that  already exists, and has previously had an update applied so that the definition will change on the first day  of the coming month. An upsert effective from the current day will only change the definition until the  first day of the coming month. An additional upsert at the same time (first day of the month) is required  if the newly-updated definition is to supersede the future definition. | [optional] 
 
 ### Return type
 
