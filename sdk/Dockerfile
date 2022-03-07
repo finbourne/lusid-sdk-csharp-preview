@@ -12,5 +12,5 @@ COPY Lusid.Sdk.Tests/ /usr/src/Lusid.Sdk.Tests/
 
 ENV FBN_LUSID_API_URL ${FBN_LUSID_API_URL}
 
-# ENTRYPOINT [ "/bin/bash" ]
+RUN ["chmod", "+x", "/run.sh"]
 ENTRYPOINT ["./run.sh"]
