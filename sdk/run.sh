@@ -1,4 +1,4 @@
-﻿#!/bin/sh -e
+#!/bin/sh -e
 
 dotnet restore
 dotnet build --configuration Release --no-restore
