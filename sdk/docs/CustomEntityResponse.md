@@ -5,12 +5,12 @@
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **Href** | **string** | The specific Uniform Resource Identifier (URI) for this resource at the requested effective and asAt datetime. | [optional] 
-**EntityType** | **string** | The EntityType to be used when relations are created to the CustomEntity | 
+**EntityType** | **string** | The type of custom entity this is. | 
 **Version** | [**Version**](Version.md) |  | 
-**DisplayName** | **string** | The display name of the CustomEntity | 
-**Description** | **string** | The description of the CustomEntity | [optional] 
-**Identifiers** | [**List&lt;CustomEntityId&gt;**](CustomEntityId.md) | A collection of CustomEntityIdentifiers that can identify the CustomEntity | 
-**Fields** | [**List&lt;CustomEntityField&gt;**](CustomEntityField.md) | A collection of CustomEntityFields that decorate the CustomEntity | 
+**DisplayName** | **string** | A display label for the custom entity. | 
+**Description** | **string** | A description of the custom entity. | [optional] 
+**Identifiers** | [**List&lt;CustomEntityId&gt;**](CustomEntityId.md) | The identifiers the custom entity will be upserted with. | 
+**Fields** | [**List&lt;CustomEntityField&gt;**](CustomEntityField.md) | The fields that decorate the custom entity. | 
 **Links** | [**List&lt;Link&gt;**](Link.md) | Collection of links. | [optional] 
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
