@@ -1,10 +1,11 @@
 # Lusid.Sdk.Api.TransactionConfigurationApi
 
-All URIs are relative to *http://local-unit-test-server.lusid.com:63618*
+All URIs are relative to *http://local-unit-test-server.lusid.com:63112*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
 [**GetTransactionType**](TransactionConfigurationApi.md#gettransactiontype) | **GET** /api/transactionconfiguration/types/{source}/{type} | [EXPERIMENTAL] GetTransactionType: Get a single transaction configuration type
+[**SetTransactionType**](TransactionConfigurationApi.md#settransactiontype) | **PUT** /api/transactionconfiguration/types/{source}/{type} | [EXPERIMENTAL] SetTransactionType: Set a specific transaction type
 
 
 <a name="gettransactiontype"></a>
@@ -30,7 +31,7 @@ namespace Example
         public static void Main()
         {
             Configuration config = new Configuration();
-            config.BasePath = "http://local-unit-test-server.lusid.com:63618";
+            config.BasePath = "http://local-unit-test-server.lusid.com:63112";
             // Configure OAuth2 access token for authorization: oauth2
             config.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -75,6 +76,86 @@ Name | Type | Description  | Notes
 ### HTTP request headers
 
  - **Content-Type**: Not defined
+ - **Accept**: text/plain, application/json, text/json
+
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+| **200** | Success |  -  |
+| **400** | The details of the input related failure |  -  |
+| **0** | Error response |  -  |
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+<a name="settransactiontype"></a>
+# **SetTransactionType**
+> TransactionType SetTransactionType (string source, string type, TransactionTypeRequest transactionTypeRequest)
+
+[EXPERIMENTAL] SetTransactionType: Set a specific transaction type
+
+Set a transaction type for the given source and type. If the requested transaction type does not exist, it will be created    WARNING! Changing existing transaction types has a material impact on how data, new and old, is processed and aggregated by LUSID, and will affect your whole organisation. Only call this API if you are fully aware of the implications of the change.
+
+### Example
+```csharp
+using System.Collections.Generic;
+using System.Diagnostics;
+using Lusid.Sdk.Api;
+using Lusid.Sdk.Client;
+using Lusid.Sdk.Model;
+
+namespace Example
+{
+    public class SetTransactionTypeExample
+    {
+        public static void Main()
+        {
+            Configuration config = new Configuration();
+            config.BasePath = "http://local-unit-test-server.lusid.com:63112";
+            // Configure OAuth2 access token for authorization: oauth2
+            config.AccessToken = "YOUR_ACCESS_TOKEN";
+
+            var apiInstance = new TransactionConfigurationApi(config);
+            var source = source_example;  // string | The source to set the transaction configuration for
+            var type = type_example;  // string | One of the transaction configuration alias types to uniquely identify the configuration
+            var transactionTypeRequest = new TransactionTypeRequest(); // TransactionTypeRequest | The transaction configuration to set
+
+            try
+            {
+                // [EXPERIMENTAL] SetTransactionType: Set a specific transaction type
+                TransactionType result = apiInstance.SetTransactionType(source, type, transactionTypeRequest);
+                Debug.WriteLine(result);
+            }
+            catch (ApiException  e)
+            {
+                Debug.Print("Exception when calling TransactionConfigurationApi.SetTransactionType: " + e.Message );
+                Debug.Print("Status Code: "+ e.ErrorCode);
+                Debug.Print(e.StackTrace);
+            }
+        }
+    }
+}
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **source** | **string**| The source to set the transaction configuration for | 
+ **type** | **string**| One of the transaction configuration alias types to uniquely identify the configuration | 
+ **transactionTypeRequest** | [**TransactionTypeRequest**](TransactionTypeRequest.md)| The transaction configuration to set | 
+
+### Return type
+
+[**TransactionType**](TransactionType.md)
+
+### Authorization
+
+[oauth2](../README.md#oauth2)
+
+### HTTP request headers
+
+ - **Content-Type**: application/json-patch+json, application/json, text/json, application/_*+json
  - **Accept**: text/plain, application/json, text/json
 
 
