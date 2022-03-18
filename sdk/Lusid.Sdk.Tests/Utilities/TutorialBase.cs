@@ -73,7 +73,7 @@ namespace Lusid.Sdk.Utilities
             pricingOptions.WindowValuationOnInstrumentStartEnd = windowValuationOnInstrumentStartEnd;
             
             // DEFINE rules to pick up reset quotes
-            var resetRule = new MarketDataKeyRule("Equity.RIC.*", "Lusid", scope , MarketDataKeyRule.QuoteTypeEnum.Price, "mid", quoteInterval: "1Y");
+            var resetRule = new MarketDataKeyRule("Quote.RIC.*", "Lusid", scope , MarketDataKeyRule.QuoteTypeEnum.Price, "mid", quoteInterval: "1Y");
             
             // CREATE recipe
             var recipe = new ConfigurationRecipe(
