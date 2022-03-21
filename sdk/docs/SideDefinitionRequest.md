@@ -9,7 +9,6 @@ Name | Type | Description | Notes
 **Rate** | **string** | The field or property key defining the side&#39;s rate. | 
 **Units** | **string** | The value, field or property key defining the side&#39;s units. | 
 **Amount** | **string** | The value, field or property key defining the side&#39;s amount | 
-**NotionalAmount** | **string** | The value, field or property key defining the side&#39;s notional amount | [optional] 
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 
