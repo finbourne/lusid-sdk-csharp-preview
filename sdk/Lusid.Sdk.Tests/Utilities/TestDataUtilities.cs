@@ -556,7 +556,7 @@ namespace Lusid.Sdk.Tests.Utilities
             // For simpleStaticRule, note that inside CreatePortfolioAndInstrument, the method TestDataUtilities.BuildInstrumentUpsertRequest books the instrument using "ClientInternal".
             // As such the quote upserted using "ClientInternal". The market rule key needs to be "ClientInternal" also to find the quote.  
             var simpleStaticRule = new MarketDataKeyRule(
-                key: "Equity.ClientInternal.*",
+                key: "Quote.ClientInternal.*",
                 supplier: "Lusid",
                 scope,
                 MarketDataKeyRule.QuoteTypeEnum.Price,
@@ -564,7 +564,7 @@ namespace Lusid.Sdk.Tests.Utilities
                 quoteInterval: "1M");
             
             var figiRule = new MarketDataKeyRule(
-                key: "Equity.Figi.*",
+                key: "Quote.Figi.*",
                 supplier: "Lusid",
                 scope,
                 MarketDataKeyRule.QuoteTypeEnum.Price,
@@ -573,7 +573,7 @@ namespace Lusid.Sdk.Tests.Utilities
             
             // resetRule is used to locate reset rates such as that for interest rate swaps and swaptions
             var resetRule = new MarketDataKeyRule(
-                key: "Equity.RIC.*",
+                key: "Quote.RIC.*",
                 supplier: "Lusid",
                 scope,
                 MarketDataKeyRule.QuoteTypeEnum.Price,
