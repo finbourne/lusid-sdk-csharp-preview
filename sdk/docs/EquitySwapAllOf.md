@@ -5,7 +5,7 @@
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **StartDate** | **DateTimeOffset** | The start date of the EquitySwap. | 
-**MaturityDate** | **DateTimeOffset** | The maturity date of the EquitySwap. | 
+**MaturityDate** | **DateTimeOffset** | The final maturity date of the instrument. This means the last date on which the instruments makes a payment of any amount.  For the avoidance of doubt, that is not necessarily prior to its last sensitivity date for the purposes of risk; e.g. instruments such as  Constant Maturity Swaps (CMS) often have sensitivities to rates that may well be observed or set prior to the maturity date, but refer to a termination date beyond it. | 
 **Code** | **string** | The code of the underlying. | 
 **EquityFlowConventions** | [**FlowConventions**](FlowConventions.md) |  | 
 **FundingLeg** | [**InstrumentLeg**](InstrumentLeg.md) |  | 
