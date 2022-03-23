@@ -1,22 +1,22 @@
 # Lusid.Sdk.Api.CustomEntitiesApi
 
-All URIs are relative to *http://local-unit-test-server.lusid.com:53406*
+All URIs are relative to *http://local-unit-test-server.lusid.com:59049*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
-[**GetCustomEntity**](CustomEntitiesApi.md#getcustomentity) | **GET** /api/customentities/{entityType}/{identifierType}/{identifierValue} | [EXPERIMENTAL] GetCustomEntity: Get a custom entity instance.
+[**GetCustomEntity**](CustomEntitiesApi.md#getcustomentity) | **GET** /api/customentities/{entityType}/{identifierType}/{identifierValue} | [EXPERIMENTAL] GetCustomEntity: Get a Custom Entity instance.
 [**GetCustomEntityRelationships**](CustomEntitiesApi.md#getcustomentityrelationships) | **GET** /api/customentities/{entityType}/{identifierType}/{identifierValue}/relationships | [EXPERIMENTAL] GetCustomEntityRelationships: Get Relationships for Custom Entity
-[**ListCustomEntities**](CustomEntitiesApi.md#listcustomentities) | **GET** /api/customentities/{entityType} | [EXPERIMENTAL] ListCustomEntities: List custom entities of the specified entityType.
-[**UpsertCustomEntity**](CustomEntitiesApi.md#upsertcustomentity) | **POST** /api/customentities/{entityType} | [EXPERIMENTAL] UpsertCustomEntity: Upsert a custom entity instance
+[**ListCustomEntities**](CustomEntitiesApi.md#listcustomentities) | **GET** /api/customentities/{entityType} | [EXPERIMENTAL] ListCustomEntities: List Custom Entities of the specified entityType.
+[**UpsertCustomEntity**](CustomEntitiesApi.md#upsertcustomentity) | **POST** /api/customentities/{entityType} | [EXPERIMENTAL] UpsertCustomEntity: Upsert a Custom Entity instance
 
 
 <a name="getcustomentity"></a>
 # **GetCustomEntity**
 > CustomEntityResponse GetCustomEntity (string entityType, string identifierType, string identifierValue, string identifierScope, DateTimeOffset? asAt = null, DateTimeOrCutLabel effectiveAt = null)
 
-[EXPERIMENTAL] GetCustomEntity: Get a custom entity instance.
+[EXPERIMENTAL] GetCustomEntity: Get a Custom Entity instance.
 
-Retrieve a custom entity instance by a specific entity type at a point in AsAt time.
+Retrieve a Custom Entity instance by a specific entity type at a point in AsAt time.
 
 ### Example
 ```csharp
@@ -33,21 +33,21 @@ namespace Example
         public static void Main()
         {
             Configuration config = new Configuration();
-            config.BasePath = "http://local-unit-test-server.lusid.com:53406";
+            config.BasePath = "http://local-unit-test-server.lusid.com:59049";
             // Configure OAuth2 access token for authorization: oauth2
             config.AccessToken = "YOUR_ACCESS_TOKEN";
 
             var apiInstance = new CustomEntitiesApi(config);
-            var entityType = entityType_example;  // string | The type of custom entity to retrieve. An entityType can be created using the \"CreateCustomEntityDefinition\" endpoint for CustomEntityDefinitions.
-            var identifierType = identifierType_example;  // string | An identifier type attached to the custom entity instance.
+            var entityType = entityType_example;  // string | The type of Custom Entity to retrieve. An entityType can be created using the \"CreateCustomEntityDefinition\" endpoint for CustomEntityDefinitions.
+            var identifierType = identifierType_example;  // string | An identifier type attached to the Custom Entity instance.
             var identifierValue = identifierValue_example;  // string | The identifier value.
             var identifierScope = identifierScope_example;  // string | The identifier scope.
-            var asAt = 2013-10-20T19:20:30+01:00;  // DateTimeOffset? | The AsAt datetime at which to retrieve the custom entity instance. (optional) 
-            var effectiveAt = effectiveAt_example;  // DateTimeOrCutLabel | The effective datetime or cut label at which to get the custom entity instance. Defaults to the current LUSID system datetime if not specified. (optional) 
+            var asAt = 2013-10-20T19:20:30+01:00;  // DateTimeOffset? | The AsAt datetime at which to retrieve the Custom Entity instance. (optional) 
+            var effectiveAt = effectiveAt_example;  // DateTimeOrCutLabel | The effective datetime or cut label at which to get the Custom Entity instance. Defaults to the current LUSID system datetime if not specified. (optional) 
 
             try
             {
-                // [EXPERIMENTAL] GetCustomEntity: Get a custom entity instance.
+                // [EXPERIMENTAL] GetCustomEntity: Get a Custom Entity instance.
                 CustomEntityResponse result = apiInstance.GetCustomEntity(entityType, identifierType, identifierValue, identifierScope, asAt, effectiveAt);
                 Debug.WriteLine(result);
             }
@@ -66,12 +66,12 @@ namespace Example
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **entityType** | **string**| The type of custom entity to retrieve. An entityType can be created using the \&quot;CreateCustomEntityDefinition\&quot; endpoint for CustomEntityDefinitions. | 
- **identifierType** | **string**| An identifier type attached to the custom entity instance. | 
+ **entityType** | **string**| The type of Custom Entity to retrieve. An entityType can be created using the \&quot;CreateCustomEntityDefinition\&quot; endpoint for CustomEntityDefinitions. | 
+ **identifierType** | **string**| An identifier type attached to the Custom Entity instance. | 
  **identifierValue** | **string**| The identifier value. | 
  **identifierScope** | **string**| The identifier scope. | 
- **asAt** | **DateTimeOffset?**| The AsAt datetime at which to retrieve the custom entity instance. | [optional] 
- **effectiveAt** | **DateTimeOrCutLabel**| The effective datetime or cut label at which to get the custom entity instance. Defaults to the current LUSID system datetime if not specified. | [optional] 
+ **asAt** | **DateTimeOffset?**| The AsAt datetime at which to retrieve the Custom Entity instance. | [optional] 
+ **effectiveAt** | **DateTimeOrCutLabel**| The effective datetime or cut label at which to get the Custom Entity instance. Defaults to the current LUSID system datetime if not specified. | [optional] 
 
 ### Return type
 
@@ -119,14 +119,14 @@ namespace Example
         public static void Main()
         {
             Configuration config = new Configuration();
-            config.BasePath = "http://local-unit-test-server.lusid.com:53406";
+            config.BasePath = "http://local-unit-test-server.lusid.com:59049";
             // Configure OAuth2 access token for authorization: oauth2
             config.AccessToken = "YOUR_ACCESS_TOKEN";
 
             var apiInstance = new CustomEntitiesApi(config);
             var entityType = entityType_example;  // string | The type of entity get relationships for.
             var identifierScope = identifierScope_example;  // string | The identifier scope.
-            var identifierType = identifierType_example;  // string | An identifier type attached to the CustomEntity.
+            var identifierType = identifierType_example;  // string | An identifier type attached to the Custom Entity.
             var identifierValue = identifierValue_example;  // string | The identifier value.
             var effectiveAt = effectiveAt_example;  // DateTimeOrCutLabel | The effective datetime or cut label at which to get relationships. Defaults to the current LUSID system datetime if not specified. (optional) 
             var asAt = 2013-10-20T19:20:30+01:00;  // DateTimeOffset? | The asAt datetime at which to retrieve relationships. Defaults to return the latest LUSID AsAt time if not specified. (optional) 
@@ -156,7 +156,7 @@ Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **entityType** | **string**| The type of entity get relationships for. | 
  **identifierScope** | **string**| The identifier scope. | 
- **identifierType** | **string**| An identifier type attached to the CustomEntity. | 
+ **identifierType** | **string**| An identifier type attached to the Custom Entity. | 
  **identifierValue** | **string**| The identifier value. | 
  **effectiveAt** | **DateTimeOrCutLabel**| The effective datetime or cut label at which to get relationships. Defaults to the current LUSID system datetime if not specified. | [optional] 
  **asAt** | **DateTimeOffset?**| The asAt datetime at which to retrieve relationships. Defaults to return the latest LUSID AsAt time if not specified. | [optional] 
@@ -190,7 +190,7 @@ Name | Type | Description  | Notes
 # **ListCustomEntities**
 > PagedResourceListOfCustomEntityResponse ListCustomEntities (string entityType, DateTimeOrCutLabel effectiveAt = null, DateTimeOffset? asAt = null, int? limit = null, string filter = null, string page = null)
 
-[EXPERIMENTAL] ListCustomEntities: List custom entities of the specified entityType.
+[EXPERIMENTAL] ListCustomEntities: List Custom Entities of the specified entityType.
 
 List all the Custom Entities matching particular criteria.
 
@@ -209,12 +209,12 @@ namespace Example
         public static void Main()
         {
             Configuration config = new Configuration();
-            config.BasePath = "http://local-unit-test-server.lusid.com:53406";
+            config.BasePath = "http://local-unit-test-server.lusid.com:59049";
             // Configure OAuth2 access token for authorization: oauth2
             config.AccessToken = "YOUR_ACCESS_TOKEN";
 
             var apiInstance = new CustomEntitiesApi(config);
-            var entityType = entityType_example;  // string | The type of custom entity to list.
+            var entityType = entityType_example;  // string | The type of Custom Entity to list.
             var effectiveAt = effectiveAt_example;  // DateTimeOrCutLabel | The effective datetime or cut label at which to list the entities. Defaults to the current LUSID              system datetime if not specified. (optional) 
             var asAt = 2013-10-20T19:20:30+01:00;  // DateTimeOffset? | The asAt datetime at which to list the entities. Defaults to returning the latest version              of each portfolio if not specified. (optional) 
             var limit = 56;  // int? | When paginating, limit the results to this number. Defaults to 100 if not specified. (optional) 
@@ -223,7 +223,7 @@ namespace Example
 
             try
             {
-                // [EXPERIMENTAL] ListCustomEntities: List custom entities of the specified entityType.
+                // [EXPERIMENTAL] ListCustomEntities: List Custom Entities of the specified entityType.
                 PagedResourceListOfCustomEntityResponse result = apiInstance.ListCustomEntities(entityType, effectiveAt, asAt, limit, filter, page);
                 Debug.WriteLine(result);
             }
@@ -242,7 +242,7 @@ namespace Example
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **entityType** | **string**| The type of custom entity to list. | 
+ **entityType** | **string**| The type of Custom Entity to list. | 
  **effectiveAt** | **DateTimeOrCutLabel**| The effective datetime or cut label at which to list the entities. Defaults to the current LUSID              system datetime if not specified. | [optional] 
  **asAt** | **DateTimeOffset?**| The asAt datetime at which to list the entities. Defaults to returning the latest version              of each portfolio if not specified. | [optional] 
  **limit** | **int?**| When paginating, limit the results to this number. Defaults to 100 if not specified. | [optional] 
@@ -276,9 +276,9 @@ Name | Type | Description  | Notes
 # **UpsertCustomEntity**
 > CustomEntityResponse UpsertCustomEntity (string entityType, CustomEntityRequest customEntityRequest)
 
-[EXPERIMENTAL] UpsertCustomEntity: Upsert a custom entity instance
+[EXPERIMENTAL] UpsertCustomEntity: Upsert a Custom Entity instance
 
-Insert the custom entity if it does not exist or update the custom entity with the supplied state if it does exist.
+Insert the Custom Entity if it does not exist or update the Custom Entity with the supplied state if it does exist.
 
 ### Example
 ```csharp
@@ -295,17 +295,17 @@ namespace Example
         public static void Main()
         {
             Configuration config = new Configuration();
-            config.BasePath = "http://local-unit-test-server.lusid.com:53406";
+            config.BasePath = "http://local-unit-test-server.lusid.com:59049";
             // Configure OAuth2 access token for authorization: oauth2
             config.AccessToken = "YOUR_ACCESS_TOKEN";
 
             var apiInstance = new CustomEntitiesApi(config);
-            var entityType = entityType_example;  // string | The type of the CustomEntity to be created. An entityType can be created using the \"CreateCustomEntityDefinition\" endpoint for CustomEntityDefinitions.
-            var customEntityRequest = new CustomEntityRequest(); // CustomEntityRequest | The payload describing the custom entity instance.
+            var entityType = entityType_example;  // string | The type of the Custom Entity to be created. An entityType can be created using the \"CreateCustomEntityDefinition\" endpoint for CustomEntityDefinitions.
+            var customEntityRequest = new CustomEntityRequest(); // CustomEntityRequest | The payload describing the Custom Entity instance.
 
             try
             {
-                // [EXPERIMENTAL] UpsertCustomEntity: Upsert a custom entity instance
+                // [EXPERIMENTAL] UpsertCustomEntity: Upsert a Custom Entity instance
                 CustomEntityResponse result = apiInstance.UpsertCustomEntity(entityType, customEntityRequest);
                 Debug.WriteLine(result);
             }
@@ -324,8 +324,8 @@ namespace Example
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **entityType** | **string**| The type of the CustomEntity to be created. An entityType can be created using the \&quot;CreateCustomEntityDefinition\&quot; endpoint for CustomEntityDefinitions. | 
- **customEntityRequest** | [**CustomEntityRequest**](CustomEntityRequest.md)| The payload describing the custom entity instance. | 
+ **entityType** | **string**| The type of the Custom Entity to be created. An entityType can be created using the \&quot;CreateCustomEntityDefinition\&quot; endpoint for CustomEntityDefinitions. | 
+ **customEntityRequest** | [**CustomEntityRequest**](CustomEntityRequest.md)| The payload describing the Custom Entity instance. | 
 
 ### Return type
 

@@ -1,20 +1,21 @@
 # Lusid.Sdk.Api.CustomEntityDefinitionsApi
 
-All URIs are relative to *http://local-unit-test-server.lusid.com:53406*
+All URIs are relative to *http://local-unit-test-server.lusid.com:59049*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
-[**CreateCustomEntityDefinition**](CustomEntityDefinitionsApi.md#createcustomentitydefinition) | **POST** /api/customentities/entitytypes | [EXPERIMENTAL] CreateCustomEntityDefinition: Define a new custom entityType.
-[**GetDefinition**](CustomEntityDefinitionsApi.md#getdefinition) | **GET** /api/customentities/entitytypes/{entityType} | [EXPERIMENTAL] GetDefinition: Get a custom entityType definition.
+[**CreateCustomEntityDefinition**](CustomEntityDefinitionsApi.md#createcustomentitydefinition) | **POST** /api/customentities/entitytypes | [EXPERIMENTAL] CreateCustomEntityDefinition: Define a new Custom Entity type.
+[**GetDefinition**](CustomEntityDefinitionsApi.md#getdefinition) | **GET** /api/customentities/entitytypes/{entityType} | [EXPERIMENTAL] GetDefinition: Get a Custom Entity type definition.
+[**ListCustomEntityDefinitions**](CustomEntityDefinitionsApi.md#listcustomentitydefinitions) | **GET** /api/customentities/entitytypes | [EXPERIMENTAL] ListCustomEntityDefinitions: List the Custom Entity type definitions
 
 
 <a name="createcustomentitydefinition"></a>
 # **CreateCustomEntityDefinition**
 > CustomEntityDefinition CreateCustomEntityDefinition (CustomEntityDefinitionRequest customEntityDefinitionRequest)
 
-[EXPERIMENTAL] CreateCustomEntityDefinition: Define a new custom entityType.
+[EXPERIMENTAL] CreateCustomEntityDefinition: Define a new Custom Entity type.
 
-The API will return a Bad Request if the custom entityType already exists.
+The API will return a Bad Request if the Custom Entity type already exists.
 
 ### Example
 ```csharp
@@ -31,16 +32,16 @@ namespace Example
         public static void Main()
         {
             Configuration config = new Configuration();
-            config.BasePath = "http://local-unit-test-server.lusid.com:53406";
+            config.BasePath = "http://local-unit-test-server.lusid.com:59049";
             // Configure OAuth2 access token for authorization: oauth2
             config.AccessToken = "YOUR_ACCESS_TOKEN";
 
             var apiInstance = new CustomEntityDefinitionsApi(config);
-            var customEntityDefinitionRequest = new CustomEntityDefinitionRequest(); // CustomEntityDefinitionRequest | The payload containing the description of the custom entityType.
+            var customEntityDefinitionRequest = new CustomEntityDefinitionRequest(); // CustomEntityDefinitionRequest | The payload containing the description of the Custom Entity type.
 
             try
             {
-                // [EXPERIMENTAL] CreateCustomEntityDefinition: Define a new custom entityType.
+                // [EXPERIMENTAL] CreateCustomEntityDefinition: Define a new Custom Entity type.
                 CustomEntityDefinition result = apiInstance.CreateCustomEntityDefinition(customEntityDefinitionRequest);
                 Debug.WriteLine(result);
             }
@@ -59,7 +60,7 @@ namespace Example
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **customEntityDefinitionRequest** | [**CustomEntityDefinitionRequest**](CustomEntityDefinitionRequest.md)| The payload containing the description of the custom entityType. | 
+ **customEntityDefinitionRequest** | [**CustomEntityDefinitionRequest**](CustomEntityDefinitionRequest.md)| The payload containing the description of the Custom Entity type. | 
 
 ### Return type
 
@@ -78,7 +79,7 @@ Name | Type | Description  | Notes
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
-| **200** | The created custom entityType. |  -  |
+| **200** | The created Custom Entity type. |  -  |
 | **400** | The details of the input related failure |  -  |
 | **0** | Error response |  -  |
 
@@ -88,9 +89,9 @@ Name | Type | Description  | Notes
 # **GetDefinition**
 > CustomEntityDefinition GetDefinition (string entityType, DateTimeOffset? asAt = null)
 
-[EXPERIMENTAL] GetDefinition: Get a custom entityType definition.
+[EXPERIMENTAL] GetDefinition: Get a Custom Entity type definition.
 
-Retrieve a CustomEntityDefinition by a specific EntityType at a point in AsAt time
+Retrieve a CustomEntityDefinition by a specific entityType at a point in AsAt time
 
 ### Example
 ```csharp
@@ -107,17 +108,17 @@ namespace Example
         public static void Main()
         {
             Configuration config = new Configuration();
-            config.BasePath = "http://local-unit-test-server.lusid.com:53406";
+            config.BasePath = "http://local-unit-test-server.lusid.com:59049";
             // Configure OAuth2 access token for authorization: oauth2
             config.AccessToken = "YOUR_ACCESS_TOKEN";
 
             var apiInstance = new CustomEntityDefinitionsApi(config);
-            var entityType = entityType_example;  // string | The identifier for the custom entity type, derived from the \"entityTypeName\" provided on creation.
+            var entityType = entityType_example;  // string | The identifier for the Custom Entity type, derived from the \"entityTypeName\" provided on creation.
             var asAt = 2013-10-20T19:20:30+01:00;  // DateTimeOffset? | The AsAt datetime at which to retrieve the definition. (optional) 
 
             try
             {
-                // [EXPERIMENTAL] GetDefinition: Get a custom entityType definition.
+                // [EXPERIMENTAL] GetDefinition: Get a Custom Entity type definition.
                 CustomEntityDefinition result = apiInstance.GetDefinition(entityType, asAt);
                 Debug.WriteLine(result);
             }
@@ -136,7 +137,7 @@ namespace Example
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **entityType** | **string**| The identifier for the custom entity type, derived from the \&quot;entityTypeName\&quot; provided on creation. | 
+ **entityType** | **string**| The identifier for the Custom Entity type, derived from the \&quot;entityTypeName\&quot; provided on creation. | 
  **asAt** | **DateTimeOffset?**| The AsAt datetime at which to retrieve the definition. | [optional] 
 
 ### Return type
@@ -156,7 +157,89 @@ Name | Type | Description  | Notes
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
-| **200** | The requested custom entity definition. |  -  |
+| **200** | The requested Custom Entity definition. |  -  |
+| **400** | The details of the input related failure |  -  |
+| **0** | Error response |  -  |
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+<a name="listcustomentitydefinitions"></a>
+# **ListCustomEntityDefinitions**
+> PagedResourceListOfCustomEntityDefinition ListCustomEntityDefinitions (DateTimeOffset? asAt = null, int? limit = null, string filter = null, string page = null)
+
+[EXPERIMENTAL] ListCustomEntityDefinitions: List the Custom Entity type definitions
+
+List all Custom Entity type definitions matching particular criteria.
+
+### Example
+```csharp
+using System.Collections.Generic;
+using System.Diagnostics;
+using Lusid.Sdk.Api;
+using Lusid.Sdk.Client;
+using Lusid.Sdk.Model;
+
+namespace Example
+{
+    public class ListCustomEntityDefinitionsExample
+    {
+        public static void Main()
+        {
+            Configuration config = new Configuration();
+            config.BasePath = "http://local-unit-test-server.lusid.com:59049";
+            // Configure OAuth2 access token for authorization: oauth2
+            config.AccessToken = "YOUR_ACCESS_TOKEN";
+
+            var apiInstance = new CustomEntityDefinitionsApi(config);
+            var asAt = 2013-10-20T19:20:30+01:00;  // DateTimeOffset? | The asAt datetime at which to list the entities. Defaults to returning the latest version              of each portfolio if not specified. (optional) 
+            var limit = 56;  // int? | When paginating, limit the results to this number. Defaults to 100 if not specified. (optional) 
+            var filter = filter_example;  // string | Expression to filter the results. For more information about filtering              results, see https://support.lusid.com/knowledgebase/article/KA-01914. (optional) 
+            var page = page_example;  // string | The pagination token to use to continue listing entities; this              value is returned from the previous call. If a pagination token is provided, the filter, limit              and asAt fields must not have changed since the original request. (optional) 
+
+            try
+            {
+                // [EXPERIMENTAL] ListCustomEntityDefinitions: List the Custom Entity type definitions
+                PagedResourceListOfCustomEntityDefinition result = apiInstance.ListCustomEntityDefinitions(asAt, limit, filter, page);
+                Debug.WriteLine(result);
+            }
+            catch (ApiException  e)
+            {
+                Debug.Print("Exception when calling CustomEntityDefinitionsApi.ListCustomEntityDefinitions: " + e.Message );
+                Debug.Print("Status Code: "+ e.ErrorCode);
+                Debug.Print(e.StackTrace);
+            }
+        }
+    }
+}
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **asAt** | **DateTimeOffset?**| The asAt datetime at which to list the entities. Defaults to returning the latest version              of each portfolio if not specified. | [optional] 
+ **limit** | **int?**| When paginating, limit the results to this number. Defaults to 100 if not specified. | [optional] 
+ **filter** | **string**| Expression to filter the results. For more information about filtering              results, see https://support.lusid.com/knowledgebase/article/KA-01914. | [optional] 
+ **page** | **string**| The pagination token to use to continue listing entities; this              value is returned from the previous call. If a pagination token is provided, the filter, limit              and asAt fields must not have changed since the original request. | [optional] 
+
+### Return type
+
+[**PagedResourceListOfCustomEntityDefinition**](PagedResourceListOfCustomEntityDefinition.md)
+
+### Authorization
+
+[oauth2](../README.md#oauth2)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: text/plain, application/json, text/json
+
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+| **200** | List Custom Entity type definitions. |  -  |
 | **400** | The details of the input related failure |  -  |
 | **0** | Error response |  -  |
 
