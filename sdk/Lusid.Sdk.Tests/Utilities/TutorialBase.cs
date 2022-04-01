@@ -23,6 +23,8 @@ namespace Lusid.Sdk.Utilities
         internal readonly IOrdersApi _ordersApi;
         internal readonly ICorporateActionSourcesApi _corporateActionSourcesApi;
         internal readonly IConventionsApi _conventionsApi;
+        internal readonly IStructuredResultDataApi _structuredResultDataApi;
+        internal readonly IPropertyDefinitionsApi _propertyDefinitionsApi;
         
         public TutorialBase()
         {
@@ -39,6 +41,8 @@ namespace Lusid.Sdk.Utilities
             _ordersApi = _apiFactory.Api<IOrdersApi>();
             _corporateActionSourcesApi = _apiFactory.Api<ICorporateActionSourcesApi>();
             _conventionsApi = _apiFactory.Api<IConventionsApi>();
+            _structuredResultDataApi = _apiFactory.Api<IStructuredResultDataApi>();
+            _propertyDefinitionsApi = _apiFactory.Api<IPropertyDefinitionsApi>();
         }
         
         internal void ValidateUpsertInstrumentResponse(UpsertInstrumentsResponse response)
