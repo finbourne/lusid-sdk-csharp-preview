@@ -696,8 +696,8 @@ namespace Lusid.Sdk.Tests.tutorials.Ibor
             Assert.That(results.Data[1]["Valuation/PV"], Is.EqualTo(101m));
             Assert.That(results.Data[1]["UnitResult/UserDefinedData"], Is.EqualTo("exampleData2"));
         }
-
-        [Test]
+        
+        [Test, Explicit]
         public void VirtualDocument_Compose_OverSeveralUpserts()
         {
             // Setting up basic parameters
