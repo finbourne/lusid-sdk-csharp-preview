@@ -18,29 +18,45 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
         {
             // UPSERT quote for pricing of the equity option. This quote is understood to be the reset price. 
             // In other words, this is the price of the underlying at the expiration of the equity option.
-            var quoteRequest = TestDataUtilities.BuildQuoteRequest("ACME", QuoteSeriesId.InstrumentIdTypeEnum.RIC, 135m, "USD", TestDataUtilities.EffectiveAt);
-            var upsertResponse = _quotesApi.UpsertQuotes(scope, quoteRequest);
+            
+            EquityOption equityOption = option as EquityOption;
+            Dictionary<string, UpsertQuoteRequest> upsertUnderlyingQuoteRequest = new Dictionary<string, UpsertQuoteRequest>();
+            TestDataUtilities.BuildQuoteRequest(
+                upsertUnderlyingQuoteRequest,
+                "UniqueKeyForDictionary",
+                "ACME",
+                QuoteSeriesId.InstrumentIdTypeEnum.RIC, 
+                135m, 
+                "USD",
+                TestDataUtilities.EffectiveAt,//equityOption.OptionMaturityDate,
+                QuoteSeriesId.QuoteTypeEnum.Price);
+            var upsertResponse = _quotesApi.UpsertQuotes(scope, upsertUnderlyingQuoteRequest);
             Assert.That(upsertResponse.Failed.Count, Is.EqualTo(0));
-            Assert.That(upsertResponse.Values.Count, Is.EqualTo(quoteRequest.Count));
+            Assert.That(upsertResponse.Values.Count, Is.EqualTo(upsertUnderlyingQuoteRequest.Count));
+            
             
             // TODO: For physically settled options, we manually upsert the equity underlying back into LUSID.
             // TODO: To price the underlying (on the days specified in the valuation schedule), we require
             // TODO: to upsert a quote for this date.
-            var quoteRequestForUnderlying = TestDataUtilities.BuildQuoteRequest(
+            Dictionary<string, UpsertQuoteRequest> upsertUnderlyingQuoteRequest2 = new Dictionary<string, UpsertQuoteRequest>();
+            TestDataUtilities.BuildQuoteRequest(
+                upsertUnderlyingQuoteRequest2,
+                "UniqueKeyForDictionary",
                 "ACME",
                 QuoteSeriesId.InstrumentIdTypeEnum.ClientInternal,
                 135m,
                 "USD",
-                new DateTimeOffset(2020, 12, 16, 0, 0, 0, 0, TimeSpan.Zero));
+                new DateTimeOffset(2020, 12, 16, 0, 0, 0, 0, TimeSpan.Zero),
+                QuoteSeriesId.QuoteTypeEnum.Price);
 
-            var upsertResponseForUnderlying = _quotesApi.UpsertQuotes(scope, quoteRequestForUnderlying);
+            var upsertResponseForUnderlying = _quotesApi.UpsertQuotes(scope, upsertUnderlyingQuoteRequest2);
             Assert.That(upsertResponseForUnderlying.Failed.Count, Is.EqualTo(0));
-            Assert.That(upsertResponseForUnderlying.Values.Count, Is.EqualTo(quoteRequestForUnderlying.Count));
+            Assert.That(upsertResponseForUnderlying.Values.Count, Is.EqualTo(upsertUnderlyingQuoteRequest2.Count));
 
             var upsertComplexMarketDataRequest = new Dictionary<string, UpsertComplexMarketDataRequest>();
             if (model != ModelSelection.ModelEnum.ConstantTimeValueOfMoney)
             {
-                upsertComplexMarketDataRequest.Add("discountCurve", TestDataUtilities.BuildOisCurveRequest(TestDataUtilities.EffectiveAt, "USD"));
+                upsertComplexMarketDataRequest.Add("discount_curve_USD", TestDataUtilities.BuildRateCurveRequest(TestDataUtilities.EffectiveAt, "USD", "OIS", TestDataUtilities.ExampleDiscountFactors1));
             }
             if (model == ModelSelection.ModelEnum.BlackScholes)
             {

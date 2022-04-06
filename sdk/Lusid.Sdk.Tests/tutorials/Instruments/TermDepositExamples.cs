@@ -16,10 +16,10 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
         {
             if (model == ModelSelection.ModelEnum.Discounting)
             {
-                var upsertComplexMarketDataRequest = new Dictionary<string, UpsertComplexMarketDataRequest>
-                {
-                    {"discountCurve", TestDataUtilities.BuildOisCurveRequest(TestDataUtilities.EffectiveAt, "USD")}
-                };
+                Dictionary<string, UpsertComplexMarketDataRequest> upsertComplexMarketDataRequest =
+                    new Dictionary<string, UpsertComplexMarketDataRequest>(); 
+                upsertComplexMarketDataRequest.Add("discount_curve_USD", TestDataUtilities.BuildRateCurveRequest(TestDataUtilities.EffectiveAt, "USD", "OIS", TestDataUtilities.ExampleDiscountFactors1));
+
                 var upsertComplexMarketDataResponse = _complexMarketDataApi.UpsertComplexMarketData(scope, upsertComplexMarketDataRequest);
                 ValidateComplexMarketDataUpsert(upsertComplexMarketDataResponse, upsertComplexMarketDataRequest.Count);
             }

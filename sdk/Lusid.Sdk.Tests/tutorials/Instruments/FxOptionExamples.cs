@@ -17,7 +17,7 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
         protected override void CreateAndUpsertMarketDataToLusid(string scope, ModelSelection.ModelEnum model, LusidInstrument fxOption)
         {
             // POPULATE with required market data for valuation of the instruments
-            var upsertFxRateRequestreq = TestDataUtilities.BuildFxRateRequest(TestDataUtilities.EffectiveAt);
+            var upsertFxRateRequestreq = TestDataUtilities.BuildFxRateRequest("USD", "JPY", 150, TestDataUtilities.EffectiveAt, TestDataUtilities.EffectiveAt);
             var upsertQuoteResponse = _quotesApi.UpsertQuotes(scope, upsertFxRateRequestreq);
             
             ValidateQuoteUpsert(upsertQuoteResponse, upsertFxRateRequestreq.Count);
@@ -25,10 +25,9 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
             var upsertComplexMarketDataRequest = new Dictionary<string, UpsertComplexMarketDataRequest>();
             if (model != ModelSelection.ModelEnum.ConstantTimeValueOfMoney)
             {
-                foreach (var kv in TestDataUtilities.BuildRateCurvesRequests(TestDataUtilities.EffectiveAt))
-                {
-                    upsertComplexMarketDataRequest.Add(kv.Key, kv.Value);
-                }
+                upsertComplexMarketDataRequest.Add("discount_curve_USD", TestDataUtilities.BuildRateCurveRequest(TestDataUtilities.EffectiveAt, "USD", "OIS", TestDataUtilities.ExampleDiscountFactors1));
+                upsertComplexMarketDataRequest.Add("discount_curve_JPY", TestDataUtilities.BuildRateCurveRequest(TestDataUtilities.EffectiveAt, "JPY", "OIS", TestDataUtilities.ExampleDiscountFactors1));
+
             }
             if (model == ModelSelection.ModelEnum.BlackScholes)
             {
@@ -188,7 +187,9 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
             // GET all upsertable cashflows (transactions) for the option
             // For this test, we will be performing valuations around the option settlement date, so we upsert some spot rates for the underlying FX rates.
             var effectiveAt = option.OptionSettlementDate;
-            var upsertFxRatesNearSettlement = TestDataUtilities.BuildFxRateRequest(effectiveAt.AddDays(-5), effectiveAt.AddDays(5), useConstantFxRate: true);
+            var upsertFxRatesNearSettlement = TestDataUtilities.BuildFxRateRequest(
+                    "USD", "JPY", 150, 
+                effectiveAt.AddDays(-5), effectiveAt.AddDays(5), useConstantFxRate: true);
             var upsertFxRatesResponse = _quotesApi.UpsertQuotes(scope, upsertFxRatesNearSettlement);
             ValidateQuoteUpsert(upsertFxRatesResponse, upsertFxRatesNearSettlement.Count);
 
