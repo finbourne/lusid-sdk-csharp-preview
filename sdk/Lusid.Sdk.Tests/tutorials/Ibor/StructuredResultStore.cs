@@ -74,8 +74,11 @@ namespace Lusid.Sdk.Tests.tutorials.Ibor
             _transactionPortfoliosApi.UpsertTransactions(scope, portfolioCode, transactionRequest);
             
             // Create and upsert data mapping, indicating what data will be passed in via the document.
-            // CompositeLeaf is created, it does not represent a column in the document, it links Accrual/Amount and Accrual/Ccy. 
-            // When creating CompositeLeaf no name should be used (should be null).
+            // CompositeLeaf is an abstraction that allows the user to specify which keys should be connected.
+            // In the case below it is used to link the amount of accrual and its currency, this is essential for valuation to be done as the amount and currency are necessary.
+            // CompositeLeaf should be used when wanting to create a connected decimal-string pair (i.e. an amount and its currency).
+            // It is important to note the name must be null. The CompositeLeaf does not actually appear in the output (the table).
+            // Result0D is a decimal-string pair data type.
             DataMapping dataMapping = new DataMapping(new List<DataDefinition>
             {
                 new DataDefinition("UnitResult/LusidInstrumentId", "LusidInstrumentId", "string", "Unique"),
@@ -89,7 +92,7 @@ namespace Lusid.Sdk.Tests.tutorials.Ibor
                 new Dictionary<string, CreateDataMapRequest> {{"dataMapKey", request}});
             
             // Upsert Document containing client data. This data contains normalised accrual but not PV.
-            // The document one upserts here is of CSV format, XML and Json formats are also accepted.
+            // The document one upserts here is of CSV format. Json format can also be used.
             string document = $"LusidInstrumentId, Accrual, AccrualCcy, ClientVal\n" + 
                               $"{luids.First()}, 0.0123456, GBP, 1.7320508"; // Note the LusidInstrumentId the previously defined instrument.
             StructuredResultData structuredResultData = new StructuredResultData("csv", "1.0.0", documentCode, document, dataMapKey);
