@@ -63,6 +63,36 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
                     }
 
                     break;
+                case "CDOR":
+                    TestDataUtilities.BuildQuoteRequest(
+                        quoteRequest,
+                        "req",
+                        TestDataUtilities.CDORFixingReference,
+                        QuoteSeriesId.InstrumentIdTypeEnum.RIC,
+                        0.05m,
+                        "InterestRate",
+                        TestDataUtilities.ResetDate,
+                        QuoteSeriesId.QuoteTypeEnum.Price);
+                    upsertResponse = _quotesApi.UpsertQuotes(scope, quoteRequest);
+                    Assert.That(upsertResponse.Failed.Count, Is.EqualTo(0));
+                    Assert.That(upsertResponse.Values.Count, Is.EqualTo(quoteRequest.Count));
+
+                    // For models requiring discount curves, we upsert them below. ConstantTimeValueOfMoney does not require any discount curves.
+                    if (model != ModelSelection.ModelEnum.ConstantTimeValueOfMoney)
+                    {
+                        upsertComplexMarketDataRequest.Add("discount_curve_CAD",
+                            TestDataUtilities.BuildRateCurveRequest(TestDataUtilities.EffectiveAt, "CAD", "OIS",
+                                TestDataUtilities.ExampleDiscountFactors1));
+                        upsertComplexMarketDataRequest.Add("projection_curve",
+                            TestDataUtilities.BuildRateCurveRequest(TestDataUtilities.EffectiveAt, "CAD", "CDOR",
+                                TestDataUtilities.ExampleDiscountFactors2, "3M"));
+
+                        var upsertComplexMarketDataResponse =
+                            _complexMarketDataApi.UpsertComplexMarketData(scope, upsertComplexMarketDataRequest);
+                        ValidateComplexMarketDataUpsert(upsertComplexMarketDataResponse,
+                            upsertComplexMarketDataRequest.Count);
+                    }
+                    break;
             }
         }
 
@@ -107,7 +137,7 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
             ValidateUpsertInstrumentResponse(upsertResponse);
 
             // CAN NOW QUERY FROM LUSID
-            var getResponse = _instrumentsApi.GetInstruments("ClientInternal", new List<string> { uniqueId });
+            var getResponse = _instrumentsApi.GetInstruments("ClientInternal", new List<string> { uniqueId }, upsertResponse.Values.First().Value.Version.AsAtDate);
             ValidateInstrumentResponse(getResponse, uniqueId);
 
             var retrieved = getResponse.Values.First().Value.InstrumentDefinition;
@@ -138,6 +168,15 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
         public void InterestRateSwapInlineValuationExample(ModelSelection.ModelEnum model)
         {
             var irs = InstrumentExamples.CreateExampleInterestRateSwap(InstrumentExamples.IRSTypes.Vanilla);
+            CallLusidInlineValuationEndpoint(irs, model);
+        }
+
+        [LusidFeature("F22-49")]
+        [TestCase(ModelSelection.ModelEnum.ConstantTimeValueOfMoney)]
+        [TestCase(ModelSelection.ModelEnum.Discounting)]
+        public void InterestRateSwapCDORInlineValuationExample(ModelSelection.ModelEnum model)
+        {
+            var irs = InstrumentExamples.CreateExampleInterestRateSwap(InstrumentExamples.IRSTypes.CDOR);
             CallLusidInlineValuationEndpoint(irs, model);
         }
 

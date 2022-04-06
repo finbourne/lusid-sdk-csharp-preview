@@ -11,7 +11,7 @@ namespace Lusid.Sdk.Tests.Utilities
     {
         /// <summary>
         /// Creates and upsert market data to LUSID required to price the instrument.
-        /// Each inheritor is for a different instrument type and hence requires different set of market data. 
+        /// Each inheritor is for a different instrument type and hence requires different set of market data.
         /// </summary>
         protected abstract void CreateAndUpsertMarketDataToLusid(string scope, ModelSelection.ModelEnum model, LusidInstrument instrument);
 
@@ -19,7 +19,7 @@ namespace Lusid.Sdk.Tests.Utilities
         /// Get portfolio cashflows specific to that instrument.
         /// </summary>
         protected abstract void GetAndValidatePortfolioCashFlows(LusidInstrument instrument, string scope, string portfolioCode, string recipeCode, string instrumentID);
-        
+
         /// <summary>
         /// This method "wraps" around GetAndValidatePortfolioCashFlows method to provide scope and recipe etc.
         /// </summary>
@@ -27,17 +27,17 @@ namespace Lusid.Sdk.Tests.Utilities
         {
             var scope = Guid.NewGuid().ToString();
 
-            // CREATE portfolio and book instrument to the portfolio            
+            // CREATE portfolio and book instrument to the portfolio
             var (instrumentID, portfolioCode) = CreatePortfolioAndInstrument(scope, instrument);
 
             // UPSERT sufficient market data to get cashflow for the instrument
             CreateAndUpsertMarketDataToLusid(scope, model, instrument);
-            
-            // UPSERT recipe - this is the configuration used in pricing 
+
+            // UPSERT recipe - this is the configuration used in pricing
             var recipeCode = CreateAndUpsertRecipe(scope, model);
 
             GetAndValidatePortfolioCashFlows(instrument, scope, portfolioCode, recipeCode, instrumentID);
-            
+
             // CLEAN up
             _instrumentsApi.DeleteInstrument("ClientInternal", instrumentID);
             _recipeApi.DeleteConfigurationRecipe(scope, recipeCode);
@@ -60,9 +60,9 @@ namespace Lusid.Sdk.Tests.Utilities
             Assert.That(response.Value, Is.Not.Null);
             return recipeCode;
         }
-        
+
         /// <summary>
-        /// Utility method to create a new portfolio that contains one transaction against the instrument. 
+        /// Utility method to create a new portfolio that contains one transaction against the instrument.
         /// </summary>
         /// <returns>Returns a tuple of instrumentId and portfolio code</returns>
         protected (string, string) CreatePortfolioAndInstrument(string scope, LusidInstrument instrument)
@@ -91,11 +91,11 @@ namespace Lusid.Sdk.Tests.Utilities
             var instrumentID = instrument.InstrumentType + Guid.NewGuid().ToString();
             var instrumentsIds = new List<(LusidInstrument, string)>{(instrument, instrumentID)};
             var definitions = TestDataUtilities.BuildInstrumentUpsertRequest(instrumentsIds);
-            
+
             // UPSERT the instrument and validate it was successful
             var upsertResponse = _instrumentsApi.UpsertInstruments(definitions);
             ValidateUpsertInstrumentResponse(upsertResponse);
-            
+
             var luids = upsertResponse.Values
                 .Select(inst => inst.Value.LusidInstrumentId)
                 .ToList();
@@ -103,7 +103,7 @@ namespace Lusid.Sdk.Tests.Utilities
             // CREATE transaction to book the instrument onto the portfolio via their LusidInstrumentId
             var transactionRequest = TestDataUtilities.BuildTransactionRequest(luids, TestDataUtilities.EffectiveAt);
             _transactionPortfoliosApi.UpsertTransactions(portfolioScope, portfolioCode, transactionRequest);
-            
+
             return instrumentID;
         }
 
@@ -138,7 +138,7 @@ namespace Lusid.Sdk.Tests.Utilities
                 CreateAndUpsertMarketDataToLusid(scope, model, instrument);
             }
         }
-        
+
         /// <summary>
         /// Perform a valuation of a portfolio consisting of the instrument.
         /// In the below code, we create a portfolio and book the instrument onto the portfolio via a transaction.
@@ -146,7 +146,7 @@ namespace Lusid.Sdk.Tests.Utilities
         internal void CallLusidGetValuationEndpoint(LusidInstrument instrument, ModelSelection.ModelEnum model)
         {
             var scope = Guid.NewGuid().ToString();
-            
+
             // CREATE portfolio and add instrument to the portfolio
             var (instrumentID, portfolioCode) = CreatePortfolioAndInstrument(scope, instrument);
 
@@ -155,21 +155,21 @@ namespace Lusid.Sdk.Tests.Utilities
 
             // CREATE recipe to price the portfolio with
             var recipeCode = CreateAndUpsertRecipe(scope, model);
-            
+
             // CREATE valuation request
             var valuationRequest = TestDataUtilities.CreateValuationRequest(scope, portfolioCode, recipeCode, TestDataUtilities.EffectiveAt);
-            
+
             // CALL valuation and assert that the PVs makes sense.
             var result = _aggregationApi.GetValuation(valuationRequest);
             Assert.That(result, Is.Not.Null);
             Assert.That(result.Data.Count, Is.GreaterThanOrEqualTo(1));
             TestDataUtilities.CheckPvResultsMakeSense(result, instrument.InstrumentType);
-            
+
             // CLEAN up
             _recipeApi.DeleteConfigurationRecipe(scope, recipeCode);
             _portfoliosApi.DeletePortfolio(scope, portfolioCode);
         }
-        
+
         /// <summary>
         /// Perform an inline valuation of a given instrument.
         /// Inline valuation means that we do not need to create a portfolio and book an instrument onto it.
@@ -179,7 +179,7 @@ namespace Lusid.Sdk.Tests.Utilities
         internal void CallLusidInlineValuationEndpoint(LusidInstrument instrument, ModelSelection.ModelEnum model)
         {
             var scope = Guid.NewGuid().ToString();
-            
+
             // CREATE recipe to price the portfolio with
             var recipeCode = CreateAndUpsertRecipe(scope, model);
 
@@ -188,8 +188,8 @@ namespace Lusid.Sdk.Tests.Utilities
 
             // CREATE valuation request
             var valuationSchedule = new ValuationSchedule(effectiveAt: TestDataUtilities.EffectiveAt);
-            var instruments = new List<WeightedInstrument> {new WeightedInstrument(1, "some-holding-identifier", instrument)}; 
-            
+            var instruments = new List<WeightedInstrument> {new WeightedInstrument(1, "some-holding-identifier", instrument)};
+
             // CONSTRUCT valuation request
             var inlineValuationRequest = new InlineValuationRequest(
                 recipeId: new ResourceId(scope, recipeCode),

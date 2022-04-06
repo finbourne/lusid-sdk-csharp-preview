@@ -14,7 +14,44 @@ namespace Lusid.Sdk.Tests.Utilities
             /// Vanilla Swap
             /// </summary>
             [EnumMember]
-            Vanilla
+            Vanilla,
+            
+            /// <summary>
+            /// Vanilla Swap
+            /// </summary>
+            [EnumMember]
+            SOFR,
+            
+            /// <summary>
+            /// Vanilla Swap
+            /// </summary>
+            [EnumMember]
+            ESTR,
+            
+            /// <summary>
+            /// Vanilla Swap
+            /// </summary>
+            [EnumMember]
+            SONIA,
+            
+            /// <summary>
+            /// Vanilla Swap
+            /// </summary>
+            [EnumMember]
+            CDOR,
+            
+            /// <summary>
+            /// Vanilla Swap
+            /// </summary>
+            [EnumMember]
+            TONA,
+            
+            /// <summary>
+            /// Vanilla Swap
+            /// </summary>
+            [EnumMember]
+            SARON
+            
         }
 
 
@@ -248,6 +285,134 @@ namespace Lusid.Sdk.Tests.Utilities
                         settleDays: 2,
                         resetDays: 2,
                         paymentFreq: "6M"
+                    );
+                    break;
+                case IRSTypes.SOFR:
+                    swap = CreateInterestRateSwap(
+                        currency: "USD",
+                        indexName: "SOFR",
+                        dayCount: "Act360",
+                        fixingRef: TestDataUtilities.RFRFixingReference,
+                        rollConvention: "MF",
+                        settleDays: 2,
+                        resetDays: 0,
+                        paymentFreq: "1Y",
+                        indexTenor: "1D",
+                        rate: 0.02m,
+                        notional: 100000000m,
+                        spread: 0.002m,
+                        resetConvention: "InArrears",
+                        compoundingMethod: "Compounded",
+                        spreadCompounding: "SpreadExclusive",
+                        calcShift: "Lookback",
+                        shift: 5
+                    );
+                    break;
+                case IRSTypes.ESTR:
+                    swap = CreateInterestRateSwap(
+                        currency: "EUR",
+                        indexName: "ESTR",
+                        dayCount: "Act360",
+                        fixingRef: TestDataUtilities.RFRFixingReference,
+                        rollConvention: "MF",
+                        settleDays: 1,
+                        resetDays: 0,
+                        paymentFreq: "1Y",
+                        indexTenor: "1D",
+                        rate: 0.01m,
+                        notional: 100000000m,
+                        spread: 0.002m,
+                        resetConvention: "InArrears",
+                        compoundingMethod: "Compounded",
+                        spreadCompounding: "Straight",
+                        calcShift: "Lockout",
+                        shift: 1
+                    );
+                    break;
+                case IRSTypes.SONIA:
+                    swap = CreateInterestRateSwap(
+                        currency: "GBP",
+                        indexName: "SONIA",
+                        dayCount: "Act365",
+                        fixingRef: TestDataUtilities.RFRFixingReference,
+                        rollConvention: "MF",
+                        settleDays: 0,
+                        resetDays: 0,
+                        paymentFreq: "1Y",
+                        indexTenor: "1D",
+                        rate: 0.01m,
+                        notional: 100000000m,
+                        spread: 0.002m,
+                        resetConvention: "InArrears",
+                        compoundingMethod: "Compounded",
+                        spreadCompounding: "Flat",
+                        calcShift: "NoShift",
+                        shift: 0
+                    );
+                    break;
+                case IRSTypes.TONA:
+                    swap = CreateInterestRateSwap(
+                        currency: "JPY",
+                        indexName: "TONA",
+                        dayCount: "Act365",
+                        fixingRef: TestDataUtilities.RFRFixingReference,
+                        rollConvention: "MF",
+                        settleDays: 2,
+                        resetDays: 0,
+                        paymentFreq: "1Y",
+                        indexTenor: "1D",
+                        rate: 0.01m,
+                        notional: 100000000m,
+                        spread: 0.002m,
+                        resetConvention: "InArrears",
+                        compoundingMethod: "Compounded",
+                        spreadCompounding: "Flat",
+                        calcShift: "NoShift",
+                        shift: 0
+                    );
+                    break;
+                case IRSTypes.SARON:
+                    swap = CreateInterestRateSwap(
+                        currency: "CHF",
+                        indexName: "SARON",
+                        dayCount: "Act360",
+                        fixingRef: TestDataUtilities.RFRFixingReference,
+                        rollConvention: "MF",
+                        settleDays: 2,
+                        resetDays: 0,
+                        paymentFreq: "1Y",
+                        indexTenor: "1D",
+                        rate: 0.01m,
+                        notional: 100000000m,
+                        spread: 0.002m,
+                        resetConvention: "InArrears",
+                        compoundingMethod: "Compounded",
+                        spreadCompounding: "None",
+                        calcShift: "NoShift",
+                        shift: 0
+                    );
+                    break;
+
+                case IRSTypes.CDOR:
+                    swap = CreateInterestRateSwap(
+                        currency: "CAD",
+                        indexName: "CDOR",
+                        dayCount: "Act365F",
+                        fixingRef: TestDataUtilities.CDORFixingReference,
+                        rollConvention: "MF",
+                        settleDays: 0,
+                        resetDays: 0,
+                        paymentFreq: "6M",
+                        indexTenor: "3M",
+                        rate: 0.01m,
+                        notional: 100000000m,
+                        spread: 0.002m,
+                        resetConvention: "InAdvance",
+                        compoundingMethod: "Compounded",
+                        spreadCompounding: "None",
+                        calcShift: "NoShift",
+                        shift: 0,
+                        resetFrequency: "3M"
                     );
                     break;
             }
@@ -523,7 +688,7 @@ namespace Lusid.Sdk.Tests.Utilities
                         indexName:"LIBOR",
                         tenor:"6M",
                         dayCount: "Act365",
-                        fixingRef: "BP00"),
+                        fixingRef: TestDataUtilities.EquitySwapFixingRef),
                     notional: 100m,
                     stubType: "Front",
                     payReceive: "Receive",

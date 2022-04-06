@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using Lusid.Sdk.Model;
+using Lusid.Sdk.Tests.Utilities;
 using Lusid.Sdk.Utilities;
 using NUnit.Framework;
 
@@ -35,7 +36,7 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
                 currency: "GBP",
                 paymentTenor: "6M",
                 dayCountConvention: "Actual365",
-                fixingReference: "BP00",
+                fixingReference: TestDataUtilities.VanillaSwapFixingReference,
                 indexName: "LIBOR"
             );
 
