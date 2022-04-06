@@ -4,11 +4,94 @@ All URIs are relative to *https://fbn-prd.lusid.com/api*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
+[**DeleteCustomEntity**](CustomEntitiesApi.md#deletecustomentity) | **DELETE** /api/customentities/{entityType}/{identifierType}/{identifierValue} | [EXPERIMENTAL] DeleteCustomEntity: Delete a Custom Entity instance.
 [**GetCustomEntity**](CustomEntitiesApi.md#getcustomentity) | **GET** /api/customentities/{entityType}/{identifierType}/{identifierValue} | [EXPERIMENTAL] GetCustomEntity: Get a Custom Entity instance.
 [**GetCustomEntityRelationships**](CustomEntitiesApi.md#getcustomentityrelationships) | **GET** /api/customentities/{entityType}/{identifierType}/{identifierValue}/relationships | [EXPERIMENTAL] GetCustomEntityRelationships: Get Relationships for Custom Entity
 [**ListCustomEntities**](CustomEntitiesApi.md#listcustomentities) | **GET** /api/customentities/{entityType} | [EXPERIMENTAL] ListCustomEntities: List Custom Entities of the specified entityType.
 [**UpsertCustomEntity**](CustomEntitiesApi.md#upsertcustomentity) | **POST** /api/customentities/{entityType} | [EXPERIMENTAL] UpsertCustomEntity: Upsert a Custom Entity instance
 
+
+<a name="deletecustomentity"></a>
+# **DeleteCustomEntity**
+> DeletedEntityResponse DeleteCustomEntity (string entityType, string identifierType, string identifierValue, string identifierScope)
+
+[EXPERIMENTAL] DeleteCustomEntity: Delete a Custom Entity instance.
+
+Delete a Custom Entity instance by a specific entity type.
+
+### Example
+```csharp
+using System.Collections.Generic;
+using System.Diagnostics;
+using Lusid.Sdk.Api;
+using Lusid.Sdk.Client;
+using Lusid.Sdk.Model;
+
+namespace Example
+{
+    public class DeleteCustomEntityExample
+    {
+        public static void Main()
+        {
+            Configuration config = new Configuration();
+            config.BasePath = "https://fbn-prd.lusid.com/api";
+            // Configure OAuth2 access token for authorization: oauth2
+            config.AccessToken = "YOUR_ACCESS_TOKEN";
+
+            var apiInstance = new CustomEntitiesApi(config);
+            var entityType = entityType_example;  // string | The type of Custom Entity to remove.
+            var identifierType = identifierType_example;  // string | An identifier type attached to the Custom Entity instance.
+            var identifierValue = identifierValue_example;  // string | The identifier value.
+            var identifierScope = identifierScope_example;  // string | The identifier scope.
+
+            try
+            {
+                // [EXPERIMENTAL] DeleteCustomEntity: Delete a Custom Entity instance.
+                DeletedEntityResponse result = apiInstance.DeleteCustomEntity(entityType, identifierType, identifierValue, identifierScope);
+                Debug.WriteLine(result);
+            }
+            catch (ApiException  e)
+            {
+                Debug.Print("Exception when calling CustomEntitiesApi.DeleteCustomEntity: " + e.Message );
+                Debug.Print("Status Code: "+ e.ErrorCode);
+                Debug.Print(e.StackTrace);
+            }
+        }
+    }
+}
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **entityType** | **string**| The type of Custom Entity to remove. | 
+ **identifierType** | **string**| An identifier type attached to the Custom Entity instance. | 
+ **identifierValue** | **string**| The identifier value. | 
+ **identifierScope** | **string**| The identifier scope. | 
+
+### Return type
+
+[**DeletedEntityResponse**](DeletedEntityResponse.md)
+
+### Authorization
+
+[oauth2](../README.md#oauth2)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: text/plain, application/json, text/json
+
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+| **200** | Delete a Custom Entity instance. |  -  |
+| **400** | The details of the input related failure |  -  |
+| **0** | Error response |  -  |
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 <a name="getcustomentity"></a>
 # **GetCustomEntity**
