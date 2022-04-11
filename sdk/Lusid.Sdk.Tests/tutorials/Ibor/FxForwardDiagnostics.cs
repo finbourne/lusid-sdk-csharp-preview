@@ -42,8 +42,10 @@ namespace Lusid.Sdk.Tests.tutorials.Ibor
             var scope = "DemoInterpolationOfFxForwardRatesDuringValuation";
             var testEffectiveAt = new DateTimeOffset(2021, 09, 01, 0, 0, 0, TimeSpan.Zero);
 
-            // UPSERT two recipes for valuation: One will use the discount curves of the two currencies to interpolate the fair fx fwd rate at the valuation date.
-            // The other uses the domestic discount curve, plus an fx forward rate that we will specify.
+            // UPSERT three recipes for valuation, each instructing fx forward curves to be valued using a particular model.
+            // The first the discount curves of the two currencies to interpolate the fair fx forward rate at the valuation date.
+            // The second uses the domestic discount curve, plus an fx forward rate that we will specify.
+            // The last uses the domestic discount curve, plus a set of fx forward rates that can be interpolated against.
             var discountingRecipeCode = "DiscountingRecipe";
             CreateAndUpsertRecipe(discountingRecipeCode, ModelSelection.ModelEnum.Discounting);
             var specifiedRateRecipeCode = "SpecifiedRateRecipe";
