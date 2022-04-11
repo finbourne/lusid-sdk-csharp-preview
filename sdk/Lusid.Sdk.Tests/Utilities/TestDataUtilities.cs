@@ -372,7 +372,7 @@ namespace Lusid.Sdk.Tests.Utilities
             var discountDates = new List<DateTimeOffset>
                 { effectiveAt, effectiveAt.AddMonths(3), effectiveAt.AddMonths(6), effectiveAt.AddMonths(9), effectiveAt.AddMonths(12), effectiveAt.AddYears(5) };
             var rates = new List<decimal> { 1.0m, 0.995026109593975m, 0.990076958773721m, 0.985098445011387m, 0.980144965261876m, 0.9m };
-            return new DiscountFactorCurveData(effectiveAt, discountDates, rates, ComplexMarketData.MarketDataTypeEnum.DiscountFactorCurveData);
+            return new DiscountFactorCurveData(effectiveAt, discountDates, rates, marketDataType: ComplexMarketData.MarketDataTypeEnum.DiscountFactorCurveData);
         }
 
         private static DiscountFactorCurveData CreateDiscountCurveHighRates(DateTimeOffset effectiveAt)
@@ -380,7 +380,7 @@ namespace Lusid.Sdk.Tests.Utilities
             var discountDates = new List<DateTimeOffset>
                 { effectiveAt, effectiveAt.AddMonths(3), effectiveAt.AddMonths(6), effectiveAt.AddMonths(9), effectiveAt.AddMonths(12), effectiveAt.AddYears(5) };
             var rates = new List<decimal> { 1.0m, 0.992548449440757m, 0.985152424487251m, 0.977731146620901m, 0.970365774179742m, 0.85m };
-            return new DiscountFactorCurveData(effectiveAt, discountDates, rates, ComplexMarketData.MarketDataTypeEnum.DiscountFactorCurveData);
+            return new DiscountFactorCurveData(effectiveAt, discountDates, rates, marketDataType: ComplexMarketData.MarketDataTypeEnum.DiscountFactorCurveData);
         }
 
         /// <summary>
@@ -415,7 +415,7 @@ namespace Lusid.Sdk.Tests.Utilities
                 jsonString,
                 "Json",
                 "CDS curve",
-                ComplexMarketData.MarketDataTypeEnum.OpaqueMarketData
+                marketDataType: ComplexMarketData.MarketDataTypeEnum.OpaqueMarketData
             );
             return cdsCurve;
         }
@@ -464,11 +464,11 @@ namespace Lusid.Sdk.Tests.Utilities
         {
             ComplexMarketData volData = new ComplexMarketData();
             if(type == ComplexMarketData.MarketDataTypeEnum.EquityVolSurfaceData)
-                volData = new EquityVolSurfaceData(effectiveAt, instruments, quotes, ComplexMarketData.MarketDataTypeEnum.EquityVolSurfaceData);
+                volData = new EquityVolSurfaceData(effectiveAt, instruments, quotes, marketDataType: ComplexMarketData.MarketDataTypeEnum.EquityVolSurfaceData);
             if(type == ComplexMarketData.MarketDataTypeEnum.FxVolSurfaceData)
-                volData =  new FxVolSurfaceData(effectiveAt, instruments, quotes, ComplexMarketData.MarketDataTypeEnum.FxVolSurfaceData);
+                volData =  new FxVolSurfaceData(effectiveAt, instruments, quotes, marketDataType: ComplexMarketData.MarketDataTypeEnum.FxVolSurfaceData);
             if(type == ComplexMarketData.MarketDataTypeEnum.IrVolCubeData)
-                volData =  new IrVolCubeData(effectiveAt, instruments, quotes, ComplexMarketData.MarketDataTypeEnum.IrVolCubeData);
+                volData =  new IrVolCubeData(effectiveAt, instruments, quotes, marketDataType: ComplexMarketData.MarketDataTypeEnum.IrVolCubeData);
 
             return volData;
         }
