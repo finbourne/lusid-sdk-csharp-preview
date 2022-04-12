@@ -136,7 +136,8 @@ namespace Lusid.Sdk.Model
         /// <param name="referenceDate">If tenors are provided, this is the date against which the tenors will be resolved.  This is of importance to CDX spread quotes, which are usually quoted in tenors relative to the CDX start date.  In this case, the ReferenceDate would be equal to the CDX start date, and the BaseDate would be the date for which the spreads are valid.  If not provided, this defaults to the BaseDate of the curve..</param>
         /// <param name="maturities">The maturity dates for which the rates apply.  Either tenors or maturities should be provided, not both..</param>
         /// <param name="marketDataType">The available values are: DiscountFactorCurveData, EquityVolSurfaceData, FxVolSurfaceData, IrVolCubeData, OpaqueMarketData, YieldCurveData, FxForwardCurveData, FxForwardPipsCurveData, FxForwardTenorCurveData, FxForwardTenorPipsCurveData, FxForwardCurveByQuoteReference, CreditSpreadCurveData (required).</param>
-        public CreditSpreadCurveDataAllOf(DateTimeOffset baseDate = default(DateTimeOffset), string domCcy = default(string), List<string> tenors = default(List<string>), List<decimal> spreads = default(List<decimal>), decimal recoveryRate = default(decimal), DateTimeOffset? referenceDate = default(DateTimeOffset?), List<DateTimeOffset> maturities = default(List<DateTimeOffset>), MarketDataTypeEnum marketDataType = default(MarketDataTypeEnum))
+        /// <param name="lineage">Description of the complex market data&#39;s lineage e.g. &#39;FundAccountant_GreenQuality&#39;..</param>
+        public CreditSpreadCurveDataAllOf(DateTimeOffset baseDate = default(DateTimeOffset), string domCcy = default(string), List<string> tenors = default(List<string>), List<decimal> spreads = default(List<decimal>), decimal recoveryRate = default(decimal), DateTimeOffset? referenceDate = default(DateTimeOffset?), List<DateTimeOffset> maturities = default(List<DateTimeOffset>), MarketDataTypeEnum marketDataType = default(MarketDataTypeEnum), string lineage = default(string))
         {
             this.BaseDate = baseDate;
             // to ensure "domCcy" is required (not null)
@@ -149,6 +150,7 @@ namespace Lusid.Sdk.Model
             this.MarketDataType = marketDataType;
             this.ReferenceDate = referenceDate;
             this.Maturities = maturities;
+            this.Lineage = lineage;
         }
 
         /// <summary>
@@ -201,6 +203,13 @@ namespace Lusid.Sdk.Model
         public List<DateTimeOffset> Maturities { get; set; }
 
         /// <summary>
+        /// Description of the complex market data&#39;s lineage e.g. &#39;FundAccountant_GreenQuality&#39;.
+        /// </summary>
+        /// <value>Description of the complex market data&#39;s lineage e.g. &#39;FundAccountant_GreenQuality&#39;.</value>
+        [DataMember(Name = "lineage", EmitDefaultValue = true)]
+        public string Lineage { get; set; }
+
+        /// <summary>
         /// Returns the string presentation of the object
         /// </summary>
         /// <returns>String presentation of the object</returns>
@@ -216,6 +225,7 @@ namespace Lusid.Sdk.Model
             sb.Append("  ReferenceDate: ").Append(ReferenceDate).Append("\n");
             sb.Append("  Maturities: ").Append(Maturities).Append("\n");
             sb.Append("  MarketDataType: ").Append(MarketDataType).Append("\n");
+            sb.Append("  Lineage: ").Append(Lineage).Append("\n");
             sb.Append("}\n");
             return sb.ToString();
         }
@@ -290,6 +300,11 @@ namespace Lusid.Sdk.Model
                 (
                     this.MarketDataType == input.MarketDataType ||
                     this.MarketDataType.Equals(input.MarketDataType)
+                ) && 
+                (
+                    this.Lineage == input.Lineage ||
+                    (this.Lineage != null &&
+                    this.Lineage.Equals(input.Lineage))
                 );
         }
 
@@ -316,6 +331,8 @@ namespace Lusid.Sdk.Model
                 if (this.Maturities != null)
                     hashCode = hashCode * 59 + this.Maturities.GetHashCode();
                 hashCode = hashCode * 59 + this.MarketDataType.GetHashCode();
+                if (this.Lineage != null)
+                    hashCode = hashCode * 59 + this.Lineage.GetHashCode();
                 return hashCode;
             }
         }

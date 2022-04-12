@@ -134,7 +134,8 @@ namespace Lusid.Sdk.Model
         /// <param name="tenors">Tenors for which the forward rates apply (required).</param>
         /// <param name="rates">Rates provided for the fx forward (price in FgnCcy per unit of DomCcy) (required).</param>
         /// <param name="marketDataType">The available values are: DiscountFactorCurveData, EquityVolSurfaceData, FxVolSurfaceData, IrVolCubeData, OpaqueMarketData, YieldCurveData, FxForwardCurveData, FxForwardPipsCurveData, FxForwardTenorCurveData, FxForwardTenorPipsCurveData, FxForwardCurveByQuoteReference, CreditSpreadCurveData (required).</param>
-        public FxForwardTenorCurveDataAllOf(DateTimeOffset baseDate = default(DateTimeOffset), string domCcy = default(string), string fgnCcy = default(string), List<string> tenors = default(List<string>), List<decimal> rates = default(List<decimal>), MarketDataTypeEnum marketDataType = default(MarketDataTypeEnum))
+        /// <param name="lineage">Description of the complex market data&#39;s lineage e.g. &#39;FundAccountant_GreenQuality&#39;..</param>
+        public FxForwardTenorCurveDataAllOf(DateTimeOffset baseDate = default(DateTimeOffset), string domCcy = default(string), string fgnCcy = default(string), List<string> tenors = default(List<string>), List<decimal> rates = default(List<decimal>), MarketDataTypeEnum marketDataType = default(MarketDataTypeEnum), string lineage = default(string))
         {
             this.BaseDate = baseDate;
             // to ensure "domCcy" is required (not null)
@@ -146,6 +147,7 @@ namespace Lusid.Sdk.Model
             // to ensure "rates" is required (not null)
             this.Rates = rates ?? throw new ArgumentNullException("rates is a required property for FxForwardTenorCurveDataAllOf and cannot be null");
             this.MarketDataType = marketDataType;
+            this.Lineage = lineage;
         }
 
         /// <summary>
@@ -184,6 +186,13 @@ namespace Lusid.Sdk.Model
         public List<decimal> Rates { get; set; }
 
         /// <summary>
+        /// Description of the complex market data&#39;s lineage e.g. &#39;FundAccountant_GreenQuality&#39;.
+        /// </summary>
+        /// <value>Description of the complex market data&#39;s lineage e.g. &#39;FundAccountant_GreenQuality&#39;.</value>
+        [DataMember(Name = "lineage", EmitDefaultValue = true)]
+        public string Lineage { get; set; }
+
+        /// <summary>
         /// Returns the string presentation of the object
         /// </summary>
         /// <returns>String presentation of the object</returns>
@@ -197,6 +206,7 @@ namespace Lusid.Sdk.Model
             sb.Append("  Tenors: ").Append(Tenors).Append("\n");
             sb.Append("  Rates: ").Append(Rates).Append("\n");
             sb.Append("  MarketDataType: ").Append(MarketDataType).Append("\n");
+            sb.Append("  Lineage: ").Append(Lineage).Append("\n");
             sb.Append("}\n");
             return sb.ToString();
         }
@@ -261,6 +271,11 @@ namespace Lusid.Sdk.Model
                 (
                     this.MarketDataType == input.MarketDataType ||
                     this.MarketDataType.Equals(input.MarketDataType)
+                ) && 
+                (
+                    this.Lineage == input.Lineage ||
+                    (this.Lineage != null &&
+                    this.Lineage.Equals(input.Lineage))
                 );
         }
 
@@ -284,6 +299,8 @@ namespace Lusid.Sdk.Model
                 if (this.Rates != null)
                     hashCode = hashCode * 59 + this.Rates.GetHashCode();
                 hashCode = hashCode * 59 + this.MarketDataType.GetHashCode();
+                if (this.Lineage != null)
+                    hashCode = hashCode * 59 + this.Lineage.GetHashCode();
                 return hashCode;
             }
         }

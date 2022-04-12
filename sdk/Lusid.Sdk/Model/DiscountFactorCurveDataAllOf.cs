@@ -132,7 +132,8 @@ namespace Lusid.Sdk.Model
         /// <param name="dates">Dates for which the discount factors apply (required).</param>
         /// <param name="discountFactors">Discount factors to be applied to cashflow on the specified dates (required).</param>
         /// <param name="marketDataType">The available values are: DiscountFactorCurveData, EquityVolSurfaceData, FxVolSurfaceData, IrVolCubeData, OpaqueMarketData, YieldCurveData, FxForwardCurveData, FxForwardPipsCurveData, FxForwardTenorCurveData, FxForwardTenorPipsCurveData, FxForwardCurveByQuoteReference, CreditSpreadCurveData (required).</param>
-        public DiscountFactorCurveDataAllOf(DateTimeOffset baseDate = default(DateTimeOffset), List<DateTimeOffset> dates = default(List<DateTimeOffset>), List<decimal> discountFactors = default(List<decimal>), MarketDataTypeEnum marketDataType = default(MarketDataTypeEnum))
+        /// <param name="lineage">Description of the complex market data&#39;s lineage e.g. &#39;FundAccountant_GreenQuality&#39;..</param>
+        public DiscountFactorCurveDataAllOf(DateTimeOffset baseDate = default(DateTimeOffset), List<DateTimeOffset> dates = default(List<DateTimeOffset>), List<decimal> discountFactors = default(List<decimal>), MarketDataTypeEnum marketDataType = default(MarketDataTypeEnum), string lineage = default(string))
         {
             this.BaseDate = baseDate;
             // to ensure "dates" is required (not null)
@@ -140,6 +141,7 @@ namespace Lusid.Sdk.Model
             // to ensure "discountFactors" is required (not null)
             this.DiscountFactors = discountFactors ?? throw new ArgumentNullException("discountFactors is a required property for DiscountFactorCurveDataAllOf and cannot be null");
             this.MarketDataType = marketDataType;
+            this.Lineage = lineage;
         }
 
         /// <summary>
@@ -164,6 +166,13 @@ namespace Lusid.Sdk.Model
         public List<decimal> DiscountFactors { get; set; }
 
         /// <summary>
+        /// Description of the complex market data&#39;s lineage e.g. &#39;FundAccountant_GreenQuality&#39;.
+        /// </summary>
+        /// <value>Description of the complex market data&#39;s lineage e.g. &#39;FundAccountant_GreenQuality&#39;.</value>
+        [DataMember(Name = "lineage", EmitDefaultValue = true)]
+        public string Lineage { get; set; }
+
+        /// <summary>
         /// Returns the string presentation of the object
         /// </summary>
         /// <returns>String presentation of the object</returns>
@@ -175,6 +184,7 @@ namespace Lusid.Sdk.Model
             sb.Append("  Dates: ").Append(Dates).Append("\n");
             sb.Append("  DiscountFactors: ").Append(DiscountFactors).Append("\n");
             sb.Append("  MarketDataType: ").Append(MarketDataType).Append("\n");
+            sb.Append("  Lineage: ").Append(Lineage).Append("\n");
             sb.Append("}\n");
             return sb.ToString();
         }
@@ -229,6 +239,11 @@ namespace Lusid.Sdk.Model
                 (
                     this.MarketDataType == input.MarketDataType ||
                     this.MarketDataType.Equals(input.MarketDataType)
+                ) && 
+                (
+                    this.Lineage == input.Lineage ||
+                    (this.Lineage != null &&
+                    this.Lineage.Equals(input.Lineage))
                 );
         }
 
@@ -248,6 +263,8 @@ namespace Lusid.Sdk.Model
                 if (this.DiscountFactors != null)
                     hashCode = hashCode * 59 + this.DiscountFactors.GetHashCode();
                 hashCode = hashCode * 59 + this.MarketDataType.GetHashCode();
+                if (this.Lineage != null)
+                    hashCode = hashCode * 59 + this.Lineage.GetHashCode();
                 return hashCode;
             }
         }

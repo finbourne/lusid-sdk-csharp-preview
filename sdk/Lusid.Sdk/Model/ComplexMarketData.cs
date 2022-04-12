@@ -143,10 +143,19 @@ namespace Lusid.Sdk.Model
         /// Initializes a new instance of the <see cref="ComplexMarketData" /> class.
         /// </summary>
         /// <param name="marketDataType">The available values are: DiscountFactorCurveData, EquityVolSurfaceData, FxVolSurfaceData, IrVolCubeData, OpaqueMarketData, YieldCurveData, FxForwardCurveData, FxForwardPipsCurveData, FxForwardTenorCurveData, FxForwardTenorPipsCurveData, FxForwardCurveByQuoteReference, CreditSpreadCurveData (required).</param>
-        public ComplexMarketData(MarketDataTypeEnum marketDataType = default(MarketDataTypeEnum))
+        /// <param name="lineage">Description of the complex market data&#39;s lineage e.g. &#39;FundAccountant_GreenQuality&#39;..</param>
+        public ComplexMarketData(MarketDataTypeEnum marketDataType = default(MarketDataTypeEnum), string lineage = default(string))
         {
             this.MarketDataType = marketDataType;
+            this.Lineage = lineage;
         }
+
+        /// <summary>
+        /// Description of the complex market data&#39;s lineage e.g. &#39;FundAccountant_GreenQuality&#39;.
+        /// </summary>
+        /// <value>Description of the complex market data&#39;s lineage e.g. &#39;FundAccountant_GreenQuality&#39;.</value>
+        [DataMember(Name = "lineage", EmitDefaultValue = true)]
+        public string Lineage { get; set; }
 
         /// <summary>
         /// Returns the string presentation of the object
@@ -157,6 +166,7 @@ namespace Lusid.Sdk.Model
             var sb = new StringBuilder();
             sb.Append("class ComplexMarketData {\n");
             sb.Append("  MarketDataType: ").Append(MarketDataType).Append("\n");
+            sb.Append("  Lineage: ").Append(Lineage).Append("\n");
             sb.Append("}\n");
             return sb.ToString();
         }
@@ -194,6 +204,11 @@ namespace Lusid.Sdk.Model
                 (
                     this.MarketDataType == input.MarketDataType ||
                     this.MarketDataType.Equals(input.MarketDataType)
+                ) && 
+                (
+                    this.Lineage == input.Lineage ||
+                    (this.Lineage != null &&
+                    this.Lineage.Equals(input.Lineage))
                 );
         }
 
@@ -207,6 +222,8 @@ namespace Lusid.Sdk.Model
             {
                 int hashCode = 41;
                 hashCode = hashCode * 59 + this.MarketDataType.GetHashCode();
+                if (this.Lineage != null)
+                    hashCode = hashCode * 59 + this.Lineage.GetHashCode();
                 return hashCode;
             }
         }

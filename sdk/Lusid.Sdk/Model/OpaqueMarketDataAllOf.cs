@@ -132,7 +132,8 @@ namespace Lusid.Sdk.Model
         /// <param name="format">What format is the document stored in, e.g. Xml.  Supported string (enumeration) values are: [Unknown, Xml, Json, Csv]. (required).</param>
         /// <param name="name">Internal name of document. This is not used for search, it is simply a designator that helps identify the document  and could be anything (filename, ftp address or similar) (required).</param>
         /// <param name="marketDataType">The available values are: DiscountFactorCurveData, EquityVolSurfaceData, FxVolSurfaceData, IrVolCubeData, OpaqueMarketData, YieldCurveData, FxForwardCurveData, FxForwardPipsCurveData, FxForwardTenorCurveData, FxForwardTenorPipsCurveData, FxForwardCurveByQuoteReference, CreditSpreadCurveData (required).</param>
-        public OpaqueMarketDataAllOf(string document = default(string), string format = default(string), string name = default(string), MarketDataTypeEnum marketDataType = default(MarketDataTypeEnum))
+        /// <param name="lineage">Description of the complex market data&#39;s lineage e.g. &#39;FundAccountant_GreenQuality&#39;..</param>
+        public OpaqueMarketDataAllOf(string document = default(string), string format = default(string), string name = default(string), MarketDataTypeEnum marketDataType = default(MarketDataTypeEnum), string lineage = default(string))
         {
             // to ensure "document" is required (not null)
             this.Document = document ?? throw new ArgumentNullException("document is a required property for OpaqueMarketDataAllOf and cannot be null");
@@ -141,6 +142,7 @@ namespace Lusid.Sdk.Model
             // to ensure "name" is required (not null)
             this.Name = name ?? throw new ArgumentNullException("name is a required property for OpaqueMarketDataAllOf and cannot be null");
             this.MarketDataType = marketDataType;
+            this.Lineage = lineage;
         }
 
         /// <summary>
@@ -165,6 +167,13 @@ namespace Lusid.Sdk.Model
         public string Name { get; set; }
 
         /// <summary>
+        /// Description of the complex market data&#39;s lineage e.g. &#39;FundAccountant_GreenQuality&#39;.
+        /// </summary>
+        /// <value>Description of the complex market data&#39;s lineage e.g. &#39;FundAccountant_GreenQuality&#39;.</value>
+        [DataMember(Name = "lineage", EmitDefaultValue = true)]
+        public string Lineage { get; set; }
+
+        /// <summary>
         /// Returns the string presentation of the object
         /// </summary>
         /// <returns>String presentation of the object</returns>
@@ -176,6 +185,7 @@ namespace Lusid.Sdk.Model
             sb.Append("  Format: ").Append(Format).Append("\n");
             sb.Append("  Name: ").Append(Name).Append("\n");
             sb.Append("  MarketDataType: ").Append(MarketDataType).Append("\n");
+            sb.Append("  Lineage: ").Append(Lineage).Append("\n");
             sb.Append("}\n");
             return sb.ToString();
         }
@@ -228,6 +238,11 @@ namespace Lusid.Sdk.Model
                 (
                     this.MarketDataType == input.MarketDataType ||
                     this.MarketDataType.Equals(input.MarketDataType)
+                ) && 
+                (
+                    this.Lineage == input.Lineage ||
+                    (this.Lineage != null &&
+                    this.Lineage.Equals(input.Lineage))
                 );
         }
 
@@ -247,6 +262,8 @@ namespace Lusid.Sdk.Model
                 if (this.Name != null)
                     hashCode = hashCode * 59 + this.Name.GetHashCode();
                 hashCode = hashCode * 59 + this.MarketDataType.GetHashCode();
+                if (this.Lineage != null)
+                    hashCode = hashCode * 59 + this.Lineage.GetHashCode();
                 return hashCode;
             }
         }
