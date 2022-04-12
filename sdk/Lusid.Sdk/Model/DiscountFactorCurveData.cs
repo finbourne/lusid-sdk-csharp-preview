@@ -45,14 +45,16 @@ namespace Lusid.Sdk.Model
         /// <param name="baseDate">BaseDate for the Curve (required).</param>
         /// <param name="dates">Dates for which the discount factors apply (required).</param>
         /// <param name="discountFactors">Discount factors to be applied to cashflow on the specified dates (required).</param>
+        /// <param name="lineage">Description of the complex market data&#39;s lineage e.g. &#39;FundAccountant_GreenQuality&#39;..</param>
         /// <param name="marketDataType">The available values are: DiscountFactorCurveData, EquityVolSurfaceData, FxVolSurfaceData, IrVolCubeData, OpaqueMarketData, YieldCurveData, FxForwardCurveData, FxForwardPipsCurveData, FxForwardTenorCurveData, FxForwardTenorPipsCurveData, FxForwardCurveByQuoteReference, CreditSpreadCurveData (required) (default to &quot;DiscountFactorCurveData&quot;).</param>
-        public DiscountFactorCurveData(DateTimeOffset baseDate = default(DateTimeOffset), List<DateTimeOffset> dates = default(List<DateTimeOffset>), List<decimal> discountFactors = default(List<decimal>), MarketDataTypeEnum marketDataType = default(MarketDataTypeEnum)) : base(marketDataType)
+        public DiscountFactorCurveData(DateTimeOffset baseDate = default(DateTimeOffset), List<DateTimeOffset> dates = default(List<DateTimeOffset>), List<decimal> discountFactors = default(List<decimal>), string lineage = default(string), MarketDataTypeEnum marketDataType = default(MarketDataTypeEnum)) : base(marketDataType)
         {
             this.BaseDate = baseDate;
             // to ensure "dates" is required (not null)
             this.Dates = dates ?? throw new ArgumentNullException("dates is a required property for DiscountFactorCurveData and cannot be null");
             // to ensure "discountFactors" is required (not null)
             this.DiscountFactors = discountFactors ?? throw new ArgumentNullException("discountFactors is a required property for DiscountFactorCurveData and cannot be null");
+            this.Lineage = lineage;
         }
 
         /// <summary>
@@ -77,6 +79,13 @@ namespace Lusid.Sdk.Model
         public List<decimal> DiscountFactors { get; set; }
 
         /// <summary>
+        /// Description of the complex market data&#39;s lineage e.g. &#39;FundAccountant_GreenQuality&#39;.
+        /// </summary>
+        /// <value>Description of the complex market data&#39;s lineage e.g. &#39;FundAccountant_GreenQuality&#39;.</value>
+        [DataMember(Name = "lineage", EmitDefaultValue = true)]
+        public string Lineage { get; set; }
+
+        /// <summary>
         /// Returns the string presentation of the object
         /// </summary>
         /// <returns>String presentation of the object</returns>
@@ -88,6 +97,7 @@ namespace Lusid.Sdk.Model
             sb.Append("  BaseDate: ").Append(BaseDate).Append("\n");
             sb.Append("  Dates: ").Append(Dates).Append("\n");
             sb.Append("  DiscountFactors: ").Append(DiscountFactors).Append("\n");
+            sb.Append("  Lineage: ").Append(Lineage).Append("\n");
             sb.Append("}\n");
             return sb.ToString();
         }
@@ -138,6 +148,11 @@ namespace Lusid.Sdk.Model
                     this.DiscountFactors != null &&
                     input.DiscountFactors != null &&
                     this.DiscountFactors.SequenceEqual(input.DiscountFactors)
+                ) && base.Equals(input) && 
+                (
+                    this.Lineage == input.Lineage ||
+                    (this.Lineage != null &&
+                    this.Lineage.Equals(input.Lineage))
                 );
         }
 
@@ -156,6 +171,8 @@ namespace Lusid.Sdk.Model
                     hashCode = hashCode * 59 + this.Dates.GetHashCode();
                 if (this.DiscountFactors != null)
                     hashCode = hashCode * 59 + this.DiscountFactors.GetHashCode();
+                if (this.Lineage != null)
+                    hashCode = hashCode * 59 + this.Lineage.GetHashCode();
                 return hashCode;
             }
         }

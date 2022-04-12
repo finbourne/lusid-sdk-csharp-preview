@@ -133,8 +133,9 @@ namespace Lusid.Sdk.Model
         /// <param name="fgnCcy">Foreign currency of the fx forward (required).</param>
         /// <param name="dates">Dates for which the forward rates apply (required).</param>
         /// <param name="rates">Rates provided for the fx forward (price in FgnCcy per unit of DomCcy) (required).</param>
+        /// <param name="lineage">Description of the complex market data&#39;s lineage e.g. &#39;FundAccountant_GreenQuality&#39;..</param>
         /// <param name="marketDataType">The available values are: DiscountFactorCurveData, EquityVolSurfaceData, FxVolSurfaceData, IrVolCubeData, OpaqueMarketData, YieldCurveData, FxForwardCurveData, FxForwardPipsCurveData, FxForwardTenorCurveData, FxForwardTenorPipsCurveData, FxForwardCurveByQuoteReference, CreditSpreadCurveData (required).</param>
-        public FxForwardCurveDataAllOf(DateTimeOffset baseDate = default(DateTimeOffset), string domCcy = default(string), string fgnCcy = default(string), List<DateTimeOffset> dates = default(List<DateTimeOffset>), List<decimal> rates = default(List<decimal>), MarketDataTypeEnum marketDataType = default(MarketDataTypeEnum))
+        public FxForwardCurveDataAllOf(DateTimeOffset baseDate = default(DateTimeOffset), string domCcy = default(string), string fgnCcy = default(string), List<DateTimeOffset> dates = default(List<DateTimeOffset>), List<decimal> rates = default(List<decimal>), string lineage = default(string), MarketDataTypeEnum marketDataType = default(MarketDataTypeEnum))
         {
             this.BaseDate = baseDate;
             // to ensure "domCcy" is required (not null)
@@ -146,6 +147,7 @@ namespace Lusid.Sdk.Model
             // to ensure "rates" is required (not null)
             this.Rates = rates ?? throw new ArgumentNullException("rates is a required property for FxForwardCurveDataAllOf and cannot be null");
             this.MarketDataType = marketDataType;
+            this.Lineage = lineage;
         }
 
         /// <summary>
@@ -184,6 +186,13 @@ namespace Lusid.Sdk.Model
         public List<decimal> Rates { get; set; }
 
         /// <summary>
+        /// Description of the complex market data&#39;s lineage e.g. &#39;FundAccountant_GreenQuality&#39;.
+        /// </summary>
+        /// <value>Description of the complex market data&#39;s lineage e.g. &#39;FundAccountant_GreenQuality&#39;.</value>
+        [DataMember(Name = "lineage", EmitDefaultValue = true)]
+        public string Lineage { get; set; }
+
+        /// <summary>
         /// Returns the string presentation of the object
         /// </summary>
         /// <returns>String presentation of the object</returns>
@@ -196,6 +205,7 @@ namespace Lusid.Sdk.Model
             sb.Append("  FgnCcy: ").Append(FgnCcy).Append("\n");
             sb.Append("  Dates: ").Append(Dates).Append("\n");
             sb.Append("  Rates: ").Append(Rates).Append("\n");
+            sb.Append("  Lineage: ").Append(Lineage).Append("\n");
             sb.Append("  MarketDataType: ").Append(MarketDataType).Append("\n");
             sb.Append("}\n");
             return sb.ToString();
@@ -259,6 +269,11 @@ namespace Lusid.Sdk.Model
                     this.Rates.SequenceEqual(input.Rates)
                 ) && 
                 (
+                    this.Lineage == input.Lineage ||
+                    (this.Lineage != null &&
+                    this.Lineage.Equals(input.Lineage))
+                ) && 
+                (
                     this.MarketDataType == input.MarketDataType ||
                     this.MarketDataType.Equals(input.MarketDataType)
                 );
@@ -283,6 +298,8 @@ namespace Lusid.Sdk.Model
                     hashCode = hashCode * 59 + this.Dates.GetHashCode();
                 if (this.Rates != null)
                     hashCode = hashCode * 59 + this.Rates.GetHashCode();
+                if (this.Lineage != null)
+                    hashCode = hashCode * 59 + this.Lineage.GetHashCode();
                 hashCode = hashCode * 59 + this.MarketDataType.GetHashCode();
                 return hashCode;
             }

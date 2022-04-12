@@ -133,8 +133,9 @@ namespace Lusid.Sdk.Model
         /// <param name="fgnCcy">Foreign currency of the fx forward (required).</param>
         /// <param name="tenors">Tenors for which the forward rates apply (required).</param>
         /// <param name="pipRates">Rates provided for the fx forward (price in FgnCcy per unit of DomCcy), expressed in pips (required).</param>
+        /// <param name="lineage">Description of the complex market data&#39;s lineage e.g. &#39;FundAccountant_GreenQuality&#39;..</param>
         /// <param name="marketDataType">The available values are: DiscountFactorCurveData, EquityVolSurfaceData, FxVolSurfaceData, IrVolCubeData, OpaqueMarketData, YieldCurveData, FxForwardCurveData, FxForwardPipsCurveData, FxForwardTenorCurveData, FxForwardTenorPipsCurveData, FxForwardCurveByQuoteReference, CreditSpreadCurveData (required).</param>
-        public FxForwardTenorPipsCurveDataAllOf(DateTimeOffset baseDate = default(DateTimeOffset), string domCcy = default(string), string fgnCcy = default(string), List<string> tenors = default(List<string>), List<decimal> pipRates = default(List<decimal>), MarketDataTypeEnum marketDataType = default(MarketDataTypeEnum))
+        public FxForwardTenorPipsCurveDataAllOf(DateTimeOffset baseDate = default(DateTimeOffset), string domCcy = default(string), string fgnCcy = default(string), List<string> tenors = default(List<string>), List<decimal> pipRates = default(List<decimal>), string lineage = default(string), MarketDataTypeEnum marketDataType = default(MarketDataTypeEnum))
         {
             this.BaseDate = baseDate;
             // to ensure "domCcy" is required (not null)
@@ -146,6 +147,7 @@ namespace Lusid.Sdk.Model
             // to ensure "pipRates" is required (not null)
             this.PipRates = pipRates ?? throw new ArgumentNullException("pipRates is a required property for FxForwardTenorPipsCurveDataAllOf and cannot be null");
             this.MarketDataType = marketDataType;
+            this.Lineage = lineage;
         }
 
         /// <summary>
@@ -184,6 +186,13 @@ namespace Lusid.Sdk.Model
         public List<decimal> PipRates { get; set; }
 
         /// <summary>
+        /// Description of the complex market data&#39;s lineage e.g. &#39;FundAccountant_GreenQuality&#39;.
+        /// </summary>
+        /// <value>Description of the complex market data&#39;s lineage e.g. &#39;FundAccountant_GreenQuality&#39;.</value>
+        [DataMember(Name = "lineage", EmitDefaultValue = true)]
+        public string Lineage { get; set; }
+
+        /// <summary>
         /// Returns the string presentation of the object
         /// </summary>
         /// <returns>String presentation of the object</returns>
@@ -196,6 +205,7 @@ namespace Lusid.Sdk.Model
             sb.Append("  FgnCcy: ").Append(FgnCcy).Append("\n");
             sb.Append("  Tenors: ").Append(Tenors).Append("\n");
             sb.Append("  PipRates: ").Append(PipRates).Append("\n");
+            sb.Append("  Lineage: ").Append(Lineage).Append("\n");
             sb.Append("  MarketDataType: ").Append(MarketDataType).Append("\n");
             sb.Append("}\n");
             return sb.ToString();
@@ -259,6 +269,11 @@ namespace Lusid.Sdk.Model
                     this.PipRates.SequenceEqual(input.PipRates)
                 ) && 
                 (
+                    this.Lineage == input.Lineage ||
+                    (this.Lineage != null &&
+                    this.Lineage.Equals(input.Lineage))
+                ) && 
+                (
                     this.MarketDataType == input.MarketDataType ||
                     this.MarketDataType.Equals(input.MarketDataType)
                 );
@@ -283,6 +298,8 @@ namespace Lusid.Sdk.Model
                     hashCode = hashCode * 59 + this.Tenors.GetHashCode();
                 if (this.PipRates != null)
                     hashCode = hashCode * 59 + this.PipRates.GetHashCode();
+                if (this.Lineage != null)
+                    hashCode = hashCode * 59 + this.Lineage.GetHashCode();
                 hashCode = hashCode * 59 + this.MarketDataType.GetHashCode();
                 return hashCode;
             }

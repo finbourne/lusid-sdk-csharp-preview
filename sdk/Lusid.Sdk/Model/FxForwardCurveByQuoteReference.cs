@@ -46,8 +46,9 @@ namespace Lusid.Sdk.Model
         /// <param name="fgnCcy">Foreign currency of the fx forward (required).</param>
         /// <param name="tenors">Tenors for which the forward rates apply (required).</param>
         /// <param name="quoteReferences">For each tenor, a list of identifiers. These will be looked up in the quotes store to resolve the actual rates. (required).</param>
+        /// <param name="lineage">Description of the complex market data&#39;s lineage e.g. &#39;FundAccountant_GreenQuality&#39;..</param>
         /// <param name="marketDataType">The available values are: DiscountFactorCurveData, EquityVolSurfaceData, FxVolSurfaceData, IrVolCubeData, OpaqueMarketData, YieldCurveData, FxForwardCurveData, FxForwardPipsCurveData, FxForwardTenorCurveData, FxForwardTenorPipsCurveData, FxForwardCurveByQuoteReference, CreditSpreadCurveData (required) (default to &quot;FxForwardCurveByQuoteReference&quot;).</param>
-        public FxForwardCurveByQuoteReference(string domCcy = default(string), string fgnCcy = default(string), List<string> tenors = default(List<string>), List<Dictionary<string, string>> quoteReferences = default(List<Dictionary<string, string>>), MarketDataTypeEnum marketDataType = default(MarketDataTypeEnum)) : base(marketDataType)
+        public FxForwardCurveByQuoteReference(string domCcy = default(string), string fgnCcy = default(string), List<string> tenors = default(List<string>), List<Dictionary<string, string>> quoteReferences = default(List<Dictionary<string, string>>), string lineage = default(string), MarketDataTypeEnum marketDataType = default(MarketDataTypeEnum)) : base(marketDataType)
         {
             // to ensure "domCcy" is required (not null)
             this.DomCcy = domCcy ?? throw new ArgumentNullException("domCcy is a required property for FxForwardCurveByQuoteReference and cannot be null");
@@ -57,6 +58,7 @@ namespace Lusid.Sdk.Model
             this.Tenors = tenors ?? throw new ArgumentNullException("tenors is a required property for FxForwardCurveByQuoteReference and cannot be null");
             // to ensure "quoteReferences" is required (not null)
             this.QuoteReferences = quoteReferences ?? throw new ArgumentNullException("quoteReferences is a required property for FxForwardCurveByQuoteReference and cannot be null");
+            this.Lineage = lineage;
         }
 
         /// <summary>
@@ -88,6 +90,13 @@ namespace Lusid.Sdk.Model
         public List<Dictionary<string, string>> QuoteReferences { get; set; }
 
         /// <summary>
+        /// Description of the complex market data&#39;s lineage e.g. &#39;FundAccountant_GreenQuality&#39;.
+        /// </summary>
+        /// <value>Description of the complex market data&#39;s lineage e.g. &#39;FundAccountant_GreenQuality&#39;.</value>
+        [DataMember(Name = "lineage", EmitDefaultValue = true)]
+        public string Lineage { get; set; }
+
+        /// <summary>
         /// Returns the string presentation of the object
         /// </summary>
         /// <returns>String presentation of the object</returns>
@@ -100,6 +109,7 @@ namespace Lusid.Sdk.Model
             sb.Append("  FgnCcy: ").Append(FgnCcy).Append("\n");
             sb.Append("  Tenors: ").Append(Tenors).Append("\n");
             sb.Append("  QuoteReferences: ").Append(QuoteReferences).Append("\n");
+            sb.Append("  Lineage: ").Append(Lineage).Append("\n");
             sb.Append("}\n");
             return sb.ToString();
         }
@@ -155,6 +165,11 @@ namespace Lusid.Sdk.Model
                     this.QuoteReferences != null &&
                     input.QuoteReferences != null &&
                     this.QuoteReferences.SequenceEqual(input.QuoteReferences)
+                ) && base.Equals(input) && 
+                (
+                    this.Lineage == input.Lineage ||
+                    (this.Lineage != null &&
+                    this.Lineage.Equals(input.Lineage))
                 );
         }
 
@@ -175,6 +190,8 @@ namespace Lusid.Sdk.Model
                     hashCode = hashCode * 59 + this.Tenors.GetHashCode();
                 if (this.QuoteReferences != null)
                     hashCode = hashCode * 59 + this.QuoteReferences.GetHashCode();
+                if (this.Lineage != null)
+                    hashCode = hashCode * 59 + this.Lineage.GetHashCode();
                 return hashCode;
             }
         }
