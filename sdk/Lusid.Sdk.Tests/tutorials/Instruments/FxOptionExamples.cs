@@ -154,13 +154,14 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
         }
 
         /// <summary>
-        /// Lifecycle management (i.e. conservation of PV on cashflow events) for fx option
-        /// Cash-settled case:
+        /// Lifecycle management (i.e. conservation of PV on cashflow events) for FX option
+        /// Cash-settled case (CTVoM model):
         ///      pv(option) = max(spot - strike, 0) before maturity and
         ///      pv(cashflow) = max(spot_at_maturity - strike, 0) after maturity
-        /// Physically-settled case: If option is exercised, pay the strike to obtain the underlying.
+        /// Physically-settled case (CTVoM model):
+        ///      If option is exercised, pay the strike to obtain the underlying.
         ///      pv(option) = max(spot - strike, 0) before maturity and
-        ///      pv(option exercise payment) + pv(received underlying) = max(spot_at_maturity - strike, 0) after maturity (assuming fx rates haven't changed)
+        ///      pv(cash balance) = max(spot_at_maturity - strike, 0) after maturity (assuming FX rates haven't changed)
         /// </summary>
         [LusidFeature("F22-45")]
         [TestCase(ModelSelection.ModelEnum.ConstantTimeValueOfMoney, true)]
@@ -185,7 +186,7 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
             var recipeCode = CreateAndUpsertRecipe(scope, model, windowValuationOnInstrumentStartEnd: true);
 
             // GET all upsertable cashflows (transactions) for the option
-            // For this test, we will be performing valuations around the option settlement date, so we upsert some spot rates for the underlying fx rates.
+            // For this test, we will be performing valuations around the option settlement date, so we upsert some spot rates for the underlying FX rates.
             var effectiveAt = option.OptionSettlementDate;
             var upsertFxRatesNearSettlement = TestDataUtilities.BuildFxRateRequest(effectiveAt.AddDays(-5), effectiveAt.AddDays(5), useConstantFxRate: true);
             var upsertFxRatesResponse = _quotesApi.UpsertQuotes(scope, upsertFxRatesNearSettlement);
@@ -247,7 +248,7 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
                 .Distinct();
             Assert.That(currenciesInPortfolioAfterUpsertion.Count, Is.EqualTo(isDeliveryNotCash ? 2 : 1));
 
-            // ASSERT portfolio PV is constant for each valuation date.
+            // ASSERT portfolio PV is constant for each valuation date (assuming that FX rates have not changed since maturity)
             // We expect this to be true since we upserted the cashflows back in.
             // That is instrument pv + cashflow = option payoff = constant for each valuation date.
             TestDataUtilities.CheckPvIsConstantAcrossDatesWithinTolerance(valuationAfterUpsertingCashFlows, relativeDifferenceTolerance: 1e-10);
