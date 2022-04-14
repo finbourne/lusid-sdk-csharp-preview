@@ -118,6 +118,7 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
             CallLusidGetPortfolioCashFlowsEndpoint(irs, model);
         }
 
+        [LusidFeature("F22-46")]
         [TestCase(ModelSelection.ModelEnum.ConstantTimeValueOfMoney)]
         [TestCase(ModelSelection.ModelEnum.Discounting)]
         public void LifeCycleManagementForInterestRateSwap(ModelSelection.ModelEnum model)
