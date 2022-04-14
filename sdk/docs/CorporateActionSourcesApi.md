@@ -1,22 +1,22 @@
 # Lusid.Sdk.Api.CorporateActionSourcesApi
 
-All URIs are relative to *https://fbn-prd.lusid.com/api*
+All URIs are relative to *http://local-unit-test-server.lusid.com:52735*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
-[**BatchUpsertCorporateActions**](CorporateActionSourcesApi.md#batchupsertcorporateactions) | **POST** /api/corporateactionsources/{scope}/{code}/corporateactions | [BETA] BatchUpsertCorporateActions: Upsert corporate actions
-[**CreateCorporateActionSource**](CorporateActionSourcesApi.md#createcorporateactionsource) | **POST** /api/corporateactionsources | [BETA] CreateCorporateActionSource: Create corporate action source
+[**BatchUpsertCorporateActions**](CorporateActionSourcesApi.md#batchupsertcorporateactions) | **POST** /api/corporateactionsources/{scope}/{code}/corporateactions | [EARLY ACCESS] BatchUpsertCorporateActions: Upsert corporate actions
+[**CreateCorporateActionSource**](CorporateActionSourcesApi.md#createcorporateactionsource) | **POST** /api/corporateactionsources | [EARLY ACCESS] CreateCorporateActionSource: Create corporate action source
 [**DeleteCorporateActionSource**](CorporateActionSourcesApi.md#deletecorporateactionsource) | **DELETE** /api/corporateactionsources/{scope}/{code} | [BETA] DeleteCorporateActionSource: Delete a corporate action source
 [**DeleteCorporateActions**](CorporateActionSourcesApi.md#deletecorporateactions) | **DELETE** /api/corporateactionsources/{scope}/{code}/corporateactions | [EXPERIMENTAL] DeleteCorporateActions: Delete corporate actions
-[**GetCorporateActions**](CorporateActionSourcesApi.md#getcorporateactions) | **GET** /api/corporateactionsources/{scope}/{code}/corporateactions | [BETA] GetCorporateActions: Get corporate actions
-[**ListCorporateActionSources**](CorporateActionSourcesApi.md#listcorporateactionsources) | **GET** /api/corporateactionsources | [BETA] ListCorporateActionSources: List corporate action sources
+[**GetCorporateActions**](CorporateActionSourcesApi.md#getcorporateactions) | **GET** /api/corporateactionsources/{scope}/{code}/corporateactions | [EARLY ACCESS] GetCorporateActions: Get corporate actions
+[**ListCorporateActionSources**](CorporateActionSourcesApi.md#listcorporateactionsources) | **GET** /api/corporateactionsources | [EARLY ACCESS] ListCorporateActionSources: List corporate action sources
 
 
 <a name="batchupsertcorporateactions"></a>
 # **BatchUpsertCorporateActions**
 > UpsertCorporateActionsResponse BatchUpsertCorporateActions (string scope, string code, List<UpsertCorporateActionRequest> upsertCorporateActionRequest = null)
 
-[BETA] BatchUpsertCorporateActions: Upsert corporate actions
+[EARLY ACCESS] BatchUpsertCorporateActions: Upsert corporate actions
 
 Create or update one or more corporate actions in a particular corporate action source. Failures are identified in the body of the response.                If a corporate action is upserted at exactly the same effective datetime as a transaction for the same instrument, the corporate action takes precedence. Depending on the nature of the corporate action, this may mean it affects the transaction.
 
@@ -35,7 +35,7 @@ namespace Example
         public static void Main()
         {
             Configuration config = new Configuration();
-            config.BasePath = "https://fbn-prd.lusid.com/api";
+            config.BasePath = "http://local-unit-test-server.lusid.com:52735";
             // Configure OAuth2 access token for authorization: oauth2
             config.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -46,7 +46,7 @@ namespace Example
 
             try
             {
-                // [BETA] BatchUpsertCorporateActions: Upsert corporate actions
+                // [EARLY ACCESS] BatchUpsertCorporateActions: Upsert corporate actions
                 UpsertCorporateActionsResponse result = apiInstance.BatchUpsertCorporateActions(scope, code, upsertCorporateActionRequest);
                 Debug.WriteLine(result);
             }
@@ -96,7 +96,7 @@ Name | Type | Description  | Notes
 # **CreateCorporateActionSource**
 > CorporateActionSource CreateCorporateActionSource (CreateCorporateActionSourceRequest createCorporateActionSourceRequest)
 
-[BETA] CreateCorporateActionSource: Create corporate action source
+[EARLY ACCESS] CreateCorporateActionSource: Create corporate action source
 
 Create a corporate action source.
 
@@ -115,7 +115,7 @@ namespace Example
         public static void Main()
         {
             Configuration config = new Configuration();
-            config.BasePath = "https://fbn-prd.lusid.com/api";
+            config.BasePath = "http://local-unit-test-server.lusid.com:52735";
             // Configure OAuth2 access token for authorization: oauth2
             config.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -124,7 +124,7 @@ namespace Example
 
             try
             {
-                // [BETA] CreateCorporateActionSource: Create corporate action source
+                // [EARLY ACCESS] CreateCorporateActionSource: Create corporate action source
                 CorporateActionSource result = apiInstance.CreateCorporateActionSource(createCorporateActionSourceRequest);
                 Debug.WriteLine(result);
             }
@@ -191,7 +191,7 @@ namespace Example
         public static void Main()
         {
             Configuration config = new Configuration();
-            config.BasePath = "https://fbn-prd.lusid.com/api";
+            config.BasePath = "http://local-unit-test-server.lusid.com:52735";
             // Configure OAuth2 access token for authorization: oauth2
             config.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -269,7 +269,7 @@ namespace Example
         public static void Main()
         {
             Configuration config = new Configuration();
-            config.BasePath = "https://fbn-prd.lusid.com/api";
+            config.BasePath = "http://local-unit-test-server.lusid.com:52735";
             // Configure OAuth2 access token for authorization: oauth2
             config.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -330,7 +330,7 @@ Name | Type | Description  | Notes
 # **GetCorporateActions**
 > ResourceListOfCorporateAction GetCorporateActions (string scope, string code, DateTimeOrCutLabel fromEffectiveAt = null, DateTimeOrCutLabel toEffectiveAt = null, DateTimeOffset? asAt = null, List<string> sortBy = null, int? limit = null, string filter = null)
 
-[BETA] GetCorporateActions: Get corporate actions
+[EARLY ACCESS] GetCorporateActions: Get corporate actions
 
 Get corporate actions from a particular corporate action source.
 
@@ -349,7 +349,7 @@ namespace Example
         public static void Main()
         {
             Configuration config = new Configuration();
-            config.BasePath = "https://fbn-prd.lusid.com/api";
+            config.BasePath = "http://local-unit-test-server.lusid.com:52735";
             // Configure OAuth2 access token for authorization: oauth2
             config.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -365,7 +365,7 @@ namespace Example
 
             try
             {
-                // [BETA] GetCorporateActions: Get corporate actions
+                // [EARLY ACCESS] GetCorporateActions: Get corporate actions
                 ResourceListOfCorporateAction result = apiInstance.GetCorporateActions(scope, code, fromEffectiveAt, toEffectiveAt, asAt, sortBy, limit, filter);
                 Debug.WriteLine(result);
             }
@@ -420,7 +420,7 @@ Name | Type | Description  | Notes
 # **ListCorporateActionSources**
 > PagedResourceListOfCorporateActionSource ListCorporateActionSources (DateTimeOffset? asAt = null, List<string> sortBy = null, int? limit = null, string filter = null, string page = null)
 
-[BETA] ListCorporateActionSources: List corporate action sources
+[EARLY ACCESS] ListCorporateActionSources: List corporate action sources
 
 Gets a list of all corporate action sources
 
@@ -439,7 +439,7 @@ namespace Example
         public static void Main()
         {
             Configuration config = new Configuration();
-            config.BasePath = "https://fbn-prd.lusid.com/api";
+            config.BasePath = "http://local-unit-test-server.lusid.com:52735";
             // Configure OAuth2 access token for authorization: oauth2
             config.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -452,7 +452,7 @@ namespace Example
 
             try
             {
-                // [BETA] ListCorporateActionSources: List corporate action sources
+                // [EARLY ACCESS] ListCorporateActionSources: List corporate action sources
                 PagedResourceListOfCorporateActionSource result = apiInstance.ListCorporateActionSources(asAt, sortBy, limit, filter, page);
                 Debug.WriteLine(result);
             }
