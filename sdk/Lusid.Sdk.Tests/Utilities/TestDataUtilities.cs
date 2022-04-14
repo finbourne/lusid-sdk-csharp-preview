@@ -726,7 +726,7 @@ namespace Lusid.Sdk.Tests.Utilities
                     Assert.That(pv, Is.EqualTo(0).Within(1e-12));
                 }
                 if (date == maturityDate)
-                { // ANA-1292: Currently, we do not perform an assertion if the date is exactly the maturity date, as it's not clear what the PV should be.
+                { // Currently, we do not perform an assertion if the date is exactly the maturity date, as it's not clear what the PV should be.
                     continue;
                 }
             }

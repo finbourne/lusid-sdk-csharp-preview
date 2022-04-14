@@ -162,7 +162,7 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
         ///      pv(option) = max(spot - strike, 0) before maturity and
         ///      pv(option exercise payment) + pv(received underlying) = max(spot_at_maturity - strike, 0) after maturity (assuming fx rates haven't changed)
         /// </summary>
-        [LusidFeature("F22-10")]
+        [LusidFeature("F22-45")]
         [TestCase(ModelSelection.ModelEnum.ConstantTimeValueOfMoney, true)]
         [TestCase(ModelSelection.ModelEnum.ConstantTimeValueOfMoney, false)]
         public void LifeCycleManagementForFxOption(ModelSelection.ModelEnum model, bool isDeliveryNotCash)
