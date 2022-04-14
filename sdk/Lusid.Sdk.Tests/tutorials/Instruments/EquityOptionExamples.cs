@@ -238,12 +238,11 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
                 equityOption.DomCcy);
             TestDataUtilities.CheckNonZeroPvBeforeMaturityAndZeroAfter(
                 valuationBeforeAndAfterExpirationEquityOption,
-                equityOption.OptionMaturityDate);
+                equityOption.OptionSettlementDate);
 
             // UPSERT the cashflows back into LUSID. We first populate the cashflow transactions with unique IDs.
             var upsertCashFlowTransactions = PortfolioCashFlows.PopulateCashFlowTransactionWithUniqueIds(
-                allEquityOptionCashFlows,
-                equityOption.DomCcy);
+                allEquityOptionCashFlows);
             
             _transactionPortfoliosApi.UpsertTransactions(
                 scope,
@@ -257,7 +256,7 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
             var containsCashAfterUpsertion = valuationAfterUpsertingCashFlows
                 .Data
                 .Select(d => (string) d[TestDataUtilities.Luid])
-                .Any(luid => luid != $"CCY_{equityOption.DomCcy}");
+                .Any(luid => luid == $"CCY_{equityOption.DomCcy}");
             Assert.That(containsCashAfterUpsertion, Is.True);
 
             // ASSERT portfolio PV is constant for each valuation date.
@@ -344,12 +343,11 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
                 equityOption.DomCcy);
             TestDataUtilities.CheckNonZeroPvBeforeMaturityAndZeroAfter(
                 valuationBeforeAndAfterExpirationEquityOption,
-                equityOption.OptionMaturityDate);
+                equityOption.OptionSettlementDate);
 
             // UPSERT the cashflows back into LUSID. We first populate the cashflow transactions with unique IDs.
             var upsertCashFlowTransactions = PortfolioCashFlows.PopulateCashFlowTransactionWithUniqueIds(
-                allEquityOptionCashFlows,
-                equityOption.DomCcy);
+                allEquityOptionCashFlows);
             
             _transactionPortfoliosApi.UpsertTransactions(
                 scope,
@@ -392,7 +390,7 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
             var containsCashAfterUpsertion = valuationAfterUpsertingCashFlows
                 .Data
                 .Select(d => (string) d[TestDataUtilities.Luid])
-                .Any(luid => luid != $"CCY_{equityOption.DomCcy}");
+                .Any(luid => luid == $"CCY_{equityOption.DomCcy}");
             Assert.That(containsCashAfterUpsertion, Is.True);
 
             // ASSERT portfolio PV is constant for each valuation date.

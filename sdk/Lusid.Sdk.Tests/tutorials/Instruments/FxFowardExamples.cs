@@ -188,7 +188,7 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
                 fxForward.MaturityDate);
 
             // UPSERT the cashflows back into LUSID. We first populate the cashflow transactions with unique IDs.
-            var upsertCashFlowTransactions = PortfolioCashFlows.PopulateCashFlowTransactionWithUniqueIds(allFxFwdCashFlows, fxForward.DomCcy);
+            var upsertCashFlowTransactions = PortfolioCashFlows.PopulateCashFlowTransactionWithUniqueIds(allFxFwdCashFlows);
             _transactionPortfoliosApi.UpsertTransactions(scope, portfolioCode, PortfolioCashFlows.MapToCashFlowTransactionRequest(upsertCashFlowTransactions));
             
             // HAVING upserted cashflow into lusid, we call GetValuation again.
