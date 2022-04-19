@@ -20,7 +20,7 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
             // For LUSID to pick up these quotes, we have added a RIC rule to the recipe (see BuildRecipeRequest in TestDataUtilities.cs) 
             // The RIC rule has a large quote interval, this means that we can use one reset quote for all the resets.
             // For accurate pricing, one would want to upsert a quote per reset. 
-            var quoteRequest = TestDataUtilities.BuildQuoteRequest("USD6M", QuoteSeriesId.InstrumentIdTypeEnum.ClientInternal, 0.05m, "USD", TestDataUtilities.EffectiveAt);
+            var quoteRequest = TestDataUtilities.BuildQuoteRequest("BP00", QuoteSeriesId.InstrumentIdTypeEnum.RIC, 0.05m, "USD", TestDataUtilities.EffectiveAt);
             var upsertResponse = _quotesApi.UpsertQuotes(scope, quoteRequest);
             Assert.That(upsertResponse.Failed.Count, Is.EqualTo(0));
             Assert.That(upsertResponse.Values.Count, Is.EqualTo(quoteRequest.Count));
@@ -116,6 +116,129 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
         {
             var irs = InstrumentExamples.CreateExampleInterestRateSwap();
             CallLusidGetPortfolioCashFlowsEndpoint(irs, model);
+        }
+
+        [LusidFeature("F22-46")]
+        [TestCase(ModelSelection.ModelEnum.ConstantTimeValueOfMoney)]
+        [TestCase(ModelSelection.ModelEnum.Discounting)]
+        public void LifeCycleManagementForInterestRateSwap(ModelSelection.ModelEnum model)
+        {
+            // CREATE an InterestRateSwap
+            var interestRateSwap = (InterestRateSwap) InstrumentExamples.CreateExampleInterestRateSwap();
+            // Pick out the currency for future reference.
+            var fixedLeg = (FixedLeg) interestRateSwap.Legs
+                .First(leg => leg.InstrumentType == LusidInstrument.InstrumentTypeEnum.FixedLeg);
+            var currency = fixedLeg.LegDefinition.Conventions.Currency;
+
+            // CREATE wide enough window to pick up all cashflows associated to the InterestRateSwap
+            var windowStart = interestRateSwap.StartDate.AddMonths(-1);
+            var windowEnd = interestRateSwap.MaturityDate.AddMonths(1);
+
+            // CREATE portfolio and add instrument to the portfolio
+            var scope = Guid.NewGuid().ToString();
+            var (instrumentID, portfolioCode) = CreatePortfolioAndInstrument(scope, interestRateSwap);
+
+            // Populate stores with required market data.
+            CreateAndUpsertMarketDataToLusid(scope, model, interestRateSwap);
+
+            // CREATE recipe to price the portfolio with
+            var recipeCode = CreateAndUpsertRecipe(scope, model, windowValuationOnInstrumentStartEnd: true);
+
+            // We expect that the PV of the InterestRateSwap should be zero after the maturity.
+            // CREATE valuation request for this portfolio consisting of the InterestRateSwap,
+            // with valuation dates a few days before, day of and a few days after the instrument expiration.
+            var valuationRequest = TestDataUtilities.CreateValuationRequest(
+                scope,
+                portfolioCode,
+                recipeCode,
+                effectiveAt: interestRateSwap.MaturityDate.AddDays(2).AddMilliseconds(1),
+                effectiveFrom: interestRateSwap.MaturityDate.AddDays(-2).AddMilliseconds(1)); //TODO: ANA-1292
+
+            // CALL GetValuation before upserting back the cash flows. We check
+            // (1) there is no cash holdings in the portfolio prior to upserting the cash flows.
+            // (2) that when the InterestRateSwap has expired, the PV is zero.
+            var valuationBeforeAndAfterExpirationInterestRateSwap = _aggregationApi.GetValuation(valuationRequest);
+            TestDataUtilities.CheckNoCashPositionsInValuationResults(
+                valuationBeforeAndAfterExpirationInterestRateSwap,
+                currency);
+            TestDataUtilities.CheckNonZeroPvBeforeMaturityAndZeroAfter(
+                valuationBeforeAndAfterExpirationInterestRateSwap,
+                interestRateSwap.MaturityDate);
+
+            // GET all upsertable cash flows (transactions) for the InterestRateSwap.
+            // EffectiveAt after maturity so we have all cash flows
+            var effectiveAt = interestRateSwap.MaturityDate.AddDays(1);
+            var allInterestRateSwapCashFlows = _transactionPortfoliosApi.GetUpsertablePortfolioCashFlows(
+                    scope,
+                    portfolioCode,
+                    effectiveAt,
+                    windowStart,
+                    windowEnd,
+                    null,
+                    null,
+                    scope,
+                    recipeCode)
+                .Values;
+
+            // Check that some cash flows were returned
+            Assert.That(allInterestRateSwapCashFlows, Is.Not.Empty);
+
+            // For the portfolio to contain the cash flows coming from the InterestRateSwap
+            // we have to upsert the transactions we obtained from the GetUpsertablePortfolioCashFlows endpoint above.
+            // First populate the cashflow transactions with unique IDs.
+            var upsertCashFlowTransactions = tutorials.Ibor.PortfolioCashFlows.PopulateCashFlowTransactionWithUniqueIds(
+                allInterestRateSwapCashFlows,
+                currency);
+
+            // Then UPSERT the cash flows back into LUSID.
+            _transactionPortfoliosApi.UpsertTransactions(
+                scope,
+                portfolioCode,
+                tutorials.Ibor.PortfolioCashFlows.MapToCashFlowTransactionRequest(upsertCashFlowTransactions));
+
+            // HAVING upserted both cash flow and underlying into LUSID, we call GetValuation again.
+            var valuationAfterUpsertingCashFlows = _aggregationApi.GetValuation(valuationRequest);
+
+            // ASSERT that we have some cash in the portfolio
+            var luidsContainedInValuationResponse = valuationAfterUpsertingCashFlows
+                .Data
+                .Select(dictionaryOfMetrics => (string)dictionaryOfMetrics[TestDataUtilities.Luid]);
+            Assert.That(luidsContainedInValuationResponse, Does.Contain($"CCY_{currency}"));
+
+
+            // Every time a cash flow transaction occurs,
+            // the PV of the InterestRateSwap changes accordingly in an equal and opposite amount.
+            // Thus we expect the PV of the portfolio to be constant throughout.
+
+            // Note all the dates on which cash flows occur.
+            var cashFlowDates = allInterestRateSwapCashFlows
+                .Select(cashFlowTransaction => cashFlowTransaction.TransactionDate)
+                .Distinct()
+                .ToList();
+
+            // CHECK that the PV of the portfolio is constant across dates
+            // that are in a small neighbourhood of every cash flow transaction date.
+            foreach (var cashFlowDate in cashFlowDates)
+            {
+                // CREATE a valuation request for the given cash flow transaction date
+                var valuationRequestNearCashFlow = TestDataUtilities.CreateValuationRequest(
+                    scope,
+                    portfolioCode,
+                    recipeCode,
+                    effectiveAt: cashFlowDate.AddDays(2).AddMilliseconds(1),
+                    effectiveFrom: cashFlowDate.AddDays(-2).AddMilliseconds(1));
+
+                // GET valuation on dates close to and on either side of the given cash flow transaction date
+                var valuationResponseNearCashFlow = _aggregationApi.GetValuation(valuationRequestNearCashFlow);
+
+                // ASSERT that the PV is constant across the cash flow
+                TestDataUtilities.CheckPvIsConstantAcrossDatesWithinTolerance(valuationResponseNearCashFlow);
+            }
+
+            // CLEAN up.
+            _recipeApi.DeleteConfigurationRecipe(scope, recipeCode);
+            _instrumentsApi.DeleteInstrument("ClientInternal", instrumentID);
+            _portfoliosApi.DeletePortfolio(scope, portfolioCode);
         }
     }
 }
