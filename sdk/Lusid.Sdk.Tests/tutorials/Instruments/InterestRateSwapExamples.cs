@@ -187,8 +187,7 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
             // we have to upsert the transactions we obtained from the GetUpsertablePortfolioCashFlows endpoint above.
             // First populate the cashflow transactions with unique IDs.
             var upsertCashFlowTransactions = tutorials.Ibor.PortfolioCashFlows.PopulateCashFlowTransactionWithUniqueIds(
-                allInterestRateSwapCashFlows,
-                currency);
+                allInterestRateSwapCashFlows);
 
             // Then UPSERT the cash flows back into LUSID.
             _transactionPortfoliosApi.UpsertTransactions(
