@@ -52,7 +52,7 @@ namespace Lusid.Sdk.Tests.Utilities
         internal static LusidInstrument CreateExampleEquityOption(bool isCashSettled = false)
             => new EquityOption(
                 startDate: new DateTimeOffset(2020, 2, 7, 0, 0, 0, TimeSpan.Zero),
-                optionMaturityDate: new DateTimeOffset(2020, 12, 19, 0, 0, 0, TimeSpan.Zero),
+                optionMaturityDate: new DateTimeOffset(2020, 12, 19, 0, 0, 0, TimeSpan.Zero), // note that this is a weekend; by default, LUSID skips over this date when generating valuation schedules
                 optionSettlementDate: new DateTimeOffset(2020, 12, 21, 0, 0, 0, TimeSpan.Zero),
                 deliveryType: isCashSettled
                     ? "Cash"

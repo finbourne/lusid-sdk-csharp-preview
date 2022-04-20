@@ -273,8 +273,7 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
 
             // UPSERT the cashflows back into LUSID. We first populate the cashflow transactions with unique IDs.
             var upsertCashFlowTransactions = PortfolioCashFlows.PopulateCashFlowTransactionWithUniqueIds(
-                allEquitySwapCashFlows,
-                equitySwap.EquityFlowConventions.Currency);
+                allEquitySwapCashFlows);
             
             _transactionPortfoliosApi.UpsertTransactions(
                 scope,

@@ -19,6 +19,7 @@ namespace Lusid.Sdk.Tests.Utilities
         public static string ValuationPvKey = "Valuation/PV/Amount";
         public static string InstrumentName = "Instrument/default/Name";
         public static readonly string ValuationPv = "Valuation/PV/Amount";
+        public static readonly string ValuationPvInReportCcy = "Valuation/PvInReportCcy";
         public static readonly string Luid = "Instrument/default/LusidInstrumentId";
         public static readonly string Currency = "Valuation/PV/Ccy";
         
@@ -28,6 +29,7 @@ namespace Lusid.Sdk.Tests.Utilities
             new AggregateSpec(ValuationDateKey, AggregateSpec.OpEnum.Value),
             new AggregateSpec(InstrumentName, AggregateSpec.OpEnum.Value),
             new AggregateSpec(ValuationPvKey, AggregateSpec.OpEnum.Value),
+            new AggregateSpec(ValuationPvInReportCcy, AggregateSpec.OpEnum.Value),
             new AggregateSpec(InstrumentTag, AggregateSpec.OpEnum.Value),
             new AggregateSpec(Luid, AggregateSpec.OpEnum.Value),
             new AggregateSpec(Currency, AggregateSpec.OpEnum.Value)
@@ -220,7 +222,7 @@ namespace Lusid.Sdk.Tests.Utilities
         /// <summary>
         /// This method upserts JPY/USD and USD/JPY FX quotes for every day in the date range.
         /// </summary>
-        public static Dictionary<string, UpsertQuoteRequest> BuildFxRateRequest(DateTimeOffset effectiveFrom,  DateTimeOffset effectiveAt, bool useConstantFxRate = false)
+        public static Dictionary<string, UpsertQuoteRequest> BuildFxRateRequest(DateTimeOffset effectiveFrom, DateTimeOffset effectiveAt, bool useConstantFxRate = false)
         {
             // CREATE FX quotes and inverse fx rate in the desired date range
             var upsertQuoteRequests = new Dictionary<string, UpsertQuoteRequest>();
@@ -681,7 +683,7 @@ namespace Lusid.Sdk.Tests.Utilities
             var pvsAcrossDates = result
                 .Data // Access a list of result dictionaries
                 .GroupBy(d => (DateTime) d[ValuationDateKey]) // We group by date
-                .Select(pvGroup => pvGroup.Sum(record => (double) record[ValuationPv])); // we pick up the PV
+                .Select(pvGroup => pvGroup.Sum(record => (double) record[ValuationPvInReportCcy])); // we pick up the PV
 
             var isWithinTolerance = ValuesWithinARelativeDiffTolerance(pvsAcrossDates, relativeDifferenceTolerance);
             
@@ -719,9 +721,13 @@ namespace Lusid.Sdk.Tests.Utilities
                 {
                     Assert.That(pv, Is.Not.EqualTo(0).Within(1e-12));
                 }
-                else
+                if (date > maturityDate)
                 {
                     Assert.That(pv, Is.EqualTo(0).Within(1e-12));
+                }
+                if (date == maturityDate)
+                { // Currently, we do not perform an assertion if the date is exactly the maturity date, as how LUSID treats PVs on these dates has not been fully decided.
+                    continue;
                 }
             }
         }

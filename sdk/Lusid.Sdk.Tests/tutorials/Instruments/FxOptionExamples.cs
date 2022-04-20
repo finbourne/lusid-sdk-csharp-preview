@@ -2,8 +2,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Lusid.Sdk.Model;
+using Lusid.Sdk.Tests.tutorials.Ibor;
 using Lusid.Sdk.Tests.Utilities;
 using LusidFeatures;
+using Newtonsoft.Json.Linq;
 using NUnit.Framework;
 
 namespace Lusid.Sdk.Tests.Tutorials.Instruments
@@ -149,6 +151,112 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
         {
             var fxOption = InstrumentExamples.CreateExampleFxOption(isDeliveryNotCash);
             CallLusidGetPortfolioCashFlowsEndpoint(fxOption, model);
+        }
+
+        /// <summary>
+        /// Lifecycle management (i.e. conservation of PV on cashflow events) for FX option
+        /// Cash-settled case (CTVoM model):
+        ///      pv(option) = max(spot - strike, 0) before maturity and
+        ///      pv(cashflow) = max(spot_at_maturity - strike, 0) after maturity
+        /// Physically-settled case (CTVoM model):
+        ///      If option is exercised, pay the strike to obtain the underlying.
+        ///      pv(option) = max(spot - strike, 0) before maturity and
+        ///      pv(cash balance) = max(spot_at_maturity - strike, 0) after maturity (assuming FX rates haven't changed)
+        /// </summary>
+        [LusidFeature("F22-45")]
+        [TestCase(ModelSelection.ModelEnum.ConstantTimeValueOfMoney, true)]
+        [TestCase(ModelSelection.ModelEnum.ConstantTimeValueOfMoney, false)]
+        public void LifeCycleManagementForFxOption(ModelSelection.ModelEnum model, bool isDeliveryNotCash)
+        {
+            // CREATE option
+            var option = (FxOption) InstrumentExamples.CreateExampleFxOption(isDeliveryNotCash: isDeliveryNotCash);
+
+            // CREATE wide enough window to pick up all cashflows associated to the option
+            var windowStart = option.StartDate.AddMonths(-1);
+            var windowEnd = option.OptionSettlementDate.AddMonths(1);
+
+            // CREATE portfolio and add instrument to the portfolio
+            var scope = Guid.NewGuid().ToString();
+            var (instrumentID, portfolioCode) = CreatePortfolioAndInstrument(scope, option);
+
+            // UPSERT option to portfolio and populating stores with required market data.
+            CreateAndUpsertMarketDataToLusid(scope, model, option);
+
+            // CREATE recipe to price the portfolio with
+            var recipeCode = CreateAndUpsertRecipe(scope, model, windowValuationOnInstrumentStartEnd: true);
+
+            // GET all upsertable cashflows (transactions) for the option
+            // For this test, we will be performing valuations around the option settlement date, so we upsert some spot rates for the underlying FX rates.
+            var effectiveAt = option.OptionSettlementDate;
+            var upsertFxRatesNearSettlement = TestDataUtilities.BuildFxRateRequest(effectiveAt.AddDays(-5), effectiveAt.AddDays(5), useConstantFxRate: true);
+            var upsertFxRatesResponse = _quotesApi.UpsertQuotes(scope, upsertFxRatesNearSettlement);
+            ValidateQuoteUpsert(upsertFxRatesResponse, upsertFxRatesNearSettlement.Count);
+
+            var allCashFlows = _transactionPortfoliosApi.GetUpsertablePortfolioCashFlows(
+                    scope,
+                    portfolioCode,
+                    effectiveAt,
+                    windowStart,
+                    windowEnd,
+                    null,
+                    null,
+                    scope,
+                    recipeCode)
+                .Values;
+
+            // We expect exactly one cashflow associated to a cash settled option, and two cashflows for a physically settled option. Both occur at expiry.
+            Assert.That(allCashFlows.Count, Is.EqualTo(isDeliveryNotCash ? 2 : 1));
+            var cashFlowDate = allCashFlows.First().TransactionDate;
+
+            // CREATE valuation request for this portfolio consisting of the option,
+            // with valuation dates a few days before, day of and a few days after the option expiration = cashflow date.
+            var valuationRequest = TestDataUtilities.CreateValuationRequest(
+                scope,
+                portfolioCode,
+                recipeCode,
+                effectiveAt: cashFlowDate.AddDays(4),
+                effectiveFrom: cashFlowDate.AddDays(-4));
+
+            // CALL GetValuation before upserting back the cashflows. We check
+            // (1) there is no cash holdings in the portfolio prior to expiration
+            // (2) that when the option has expired, the PV is zero.
+            var valuationBeforeAndAfterExpirationOption = _aggregationApi.GetValuation(valuationRequest);
+            TestDataUtilities.CheckNoCashPositionsInValuationResults(
+                valuationBeforeAndAfterExpirationOption,
+                option.DomCcy);
+            TestDataUtilities.CheckNonZeroPvBeforeMaturityAndZeroAfter(
+                valuationBeforeAndAfterExpirationOption,
+                option.OptionSettlementDate);
+
+            // UPSERT the cashflows back into LUSID. We first populate the cashflow transactions with unique IDs.
+            var upsertCashFlowTransactions = PortfolioCashFlows.PopulateCashFlowTransactionWithUniqueIds(
+                allCashFlows);
+
+            _transactionPortfoliosApi.UpsertTransactions(
+                scope,
+                portfolioCode,
+                PortfolioCashFlows.MapToCashFlowTransactionRequest(upsertCashFlowTransactions));
+
+            // HAVING upserted cashflow into LUSID, we call GetValuation again.
+            var valuationAfterUpsertingCashFlows = _aggregationApi.GetValuation(valuationRequest);
+
+            // ASSERT that we have the expected currencies of cash in the portfolio
+            var currenciesInPortfolioAfterUpsertion = valuationAfterUpsertingCashFlows
+                .Data
+                .Select(d => (string)d[TestDataUtilities.Luid])
+                .Where(luid => luid.StartsWith("CCY_"))
+                .Distinct();
+            Assert.That(currenciesInPortfolioAfterUpsertion.Count, Is.EqualTo(isDeliveryNotCash ? 2 : 1));
+
+            // ASSERT portfolio PV is constant for each valuation date (assuming that FX rates have not changed since maturity)
+            // We expect this to be true since we upserted the cashflows back in.
+            // That is instrument pv + cashflow = option payoff = constant for each valuation date.
+            TestDataUtilities.CheckPvIsConstantAcrossDatesWithinTolerance(valuationAfterUpsertingCashFlows, relativeDifferenceTolerance: 1e-10);
+
+            // CLEAN up.
+            _recipeApi.DeleteConfigurationRecipe(scope, recipeCode);
+            _instrumentsApi.DeleteInstrument("ClientInternal", instrumentID);
+            _portfoliosApi.DeletePortfolio(scope, portfolioCode);
         }
     }
 }
