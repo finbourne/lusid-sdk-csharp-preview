@@ -12,7 +12,7 @@ Name | Type | Description | Notes
 **ContractDetails** | [**FuturesContractDetails**](FuturesContractDetails.md) |  | 
 **Contracts** | **decimal** | The number of contracts held. | [optional] 
 **RefSpotPrice** | **decimal** | The reference spot price for the future at which the contract was entered into. | [optional] 
-**Underlying** | [**LusidInstrument**](LusidInstrument.md) |  | 
+**Underlying** | [**LusidInstrument**](LusidInstrument.md) |  | [optional] 
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 
