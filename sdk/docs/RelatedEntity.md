@@ -10,6 +10,7 @@ Name | Type | Description | Notes
 **DisplayName** | **string** | The display name of the entity. | 
 **Properties** | [**Dictionary&lt;string, Property&gt;**](Property.md) | The properties of the entity. This field is empty until further notice. | [optional] 
 **Scope** | **string** | The scope of the identifier | [optional] 
+**LusidUniqueId** | [**LusidUniqueId**](LusidUniqueId.md) |  | [optional] 
 **Identifiers** | [**List&lt;EntityIdentifier&gt;**](EntityIdentifier.md) | The identifiers of the related entity in the relationship. | 
 **Href** | **string** | The link to the entity. | [optional] 
 
