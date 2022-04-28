@@ -14,7 +14,7 @@ Name | Type | Description | Notes
 **Side** | **string** | The side (Buy, Sell, ...) of this execution. | 
 **Type** | **string** | The type of this execution (Market, Limit, etc). | 
 **CreatedDate** | **DateTimeOffset** | The active date of this execution. | 
-**SettlementDate** | **DateTimeOffset** | The (optional) settlement date for this execution | [optional] 
+**SettlementDate** | **DateTimeOffset?** | The (optional) settlement date for this execution | [optional] 
 **Price** | [**CurrencyAndAmount**](CurrencyAndAmount.md) |  | 
 **SettlementCurrency** | **string** | The execution&#39;s settlement currency. | 
 **SettlementCurrencyFxRate** | **decimal** | The exectuion&#39;s settlement currency rate. | 
