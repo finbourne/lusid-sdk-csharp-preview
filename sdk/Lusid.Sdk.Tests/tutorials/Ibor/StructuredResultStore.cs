@@ -17,25 +17,25 @@ namespace Lusid.Sdk.Tests.tutorials.Ibor
     public class StructuredResultStore : TutorialBase
     {
         // In this example Structured Result Store is used to demonstrate how one can upsert document which contains accruals
-        // but is missing PVs as such a valuation is done to calculate PVs based on the accruals provided. 
+        // but is missing PVs as such a valuation is done to calculate PVs based on the accruals provided.
         [LusidFeature("F10-10")]
-        [Test]   
+        [Test]
         public void CalculatePvForBondOfAccruedOverriden()
         {
             // Setting up basic parameters
             string scope = "scope-" + Guid.NewGuid();
             // Using Analytic type, as we will be overriding accruals and doing valuation.
-            string resultType = "UnitResult/Analytic"; 
+            string resultType = "UnitResult/Analytic";
             string documentCode = "document-1";
             // If the scope is fixed, the data map key should be of different version when loading new data map.
-            DataMapKey dataMapKey = new DataMapKey("1.0.0", "test-code"); 
+            DataMapKey dataMapKey = new DataMapKey("1.0.0", "test-code");
             DateTimeOffset effectiveAt = new DateTimeOffset(2022, 01, 19, 0, 0, 0, 0, TimeSpan.Zero);
-            
+
             // Create and upsert the portfolio
             var portfolioRequest = TestDataUtilities.BuildTransactionPortfolioRequest(effectiveAt);
             var portfolio = _transactionPortfoliosApi.CreatePortfolio(scope, portfolioRequest);
             string portfolioCode = portfolio.Id.Code;
-            
+
             // Create a bond with a given principal, coupon rate and flow convention.
             DateTimeOffset startDate = new DateTimeOffset(2019, 01, 15, 0, 0, 0, 0, TimeSpan.Zero);
             DateTimeOffset maturityDate = new DateTimeOffset(2023, 01, 15, 0, 0, 0, 0, TimeSpan.Zero);
@@ -57,7 +57,7 @@ namespace Lusid.Sdk.Tests.tutorials.Ibor
                 identifiers: new Dictionary<string, string>(),
                 instrumentType: LusidInstrument.InstrumentTypeEnum.Bond
             );
-            
+
             // Upsert the created bond.
             var instrumentsIds = new List<(LusidInstrument, string)>
             {
@@ -65,14 +65,14 @@ namespace Lusid.Sdk.Tests.tutorials.Ibor
             };
             var definitions = TestDataUtilities.BuildInstrumentUpsertRequest(instrumentsIds);
             var upsertResponse = _instrumentsApi.UpsertInstruments(definitions);
-            
+
             // Create transaction and upsert transcation onto the portfolio.
             List<string> luids = upsertResponse.Values
                 .Select(inst => inst.Value.LusidInstrumentId)
                 .ToList();
             var transactionRequest = TestDataUtilities.BuildTransactionRequest(luids, effectiveAt);
             _transactionPortfoliosApi.UpsertTransactions(scope, portfolioCode, transactionRequest);
-            
+
             // Create and upsert data mapping, indicating what data will be passed in via the document.
             // CompositeLeaf is an abstraction that allows the user to specify which keys should be connected.
             // In the case below it is used to link the amount of accrual and its currency, this is essential for valuation to be done as the amount and currency are necessary.
@@ -90,29 +90,29 @@ namespace Lusid.Sdk.Tests.tutorials.Ibor
             var request = new CreateDataMapRequest(dataMapKey, dataMapping);
             _structuredResultDataApi.CreateDataMap(scope,
                 new Dictionary<string, CreateDataMapRequest> {{"dataMapKey", request}});
-            
+
             // Upsert Document containing client data. This data contains normalised accrual but not PV.
             // The document one upserts here is of CSV format. Json format can also be used.
-            string document = $"LusidInstrumentId, Accrual, AccrualCcy, ClientVal\n" + 
+            string document = $"LusidInstrumentId, Accrual, AccrualCcy, ClientVal\n" +
                               $"{luids.First()}, 0.0123456, GBP, 1.7320508"; // Note the LusidInstrumentId the previously defined instrument.
             StructuredResultData structuredResultData = new StructuredResultData("csv", "1.0.0", documentCode, document, dataMapKey);
             StructuredResultDataId structResultDataId = new StructuredResultDataId("Client", documentCode, effectiveAt, resultType);
             var upsertDataRequest = new UpsertStructuredResultDataRequest(structResultDataId, structuredResultData);
             _structuredResultDataApi.UpsertStructuredResultData(scope, new Dictionary<string, UpsertStructuredResultDataRequest>{{documentCode, upsertDataRequest}});
-            
+
             // Create result data key rule specifying which resource, model and bond to apply it to.
             string resourceKey = "UnitResult/*";
             var resultDataKeyRule = new ResultDataKeyRule(structResultDataId.Source, scope, structResultDataId.Code, resourceKey: resourceKey, documentResultType: resultType, resultKeyRuleType: ResultKeyRule.ResultKeyRuleTypeEnum.ResultDataKeyRule);
             var pricingContext = new PricingContext(modelRules: new List<VendorModelRule>
                 {new VendorModelRule(VendorModelRule.SupplierEnum.Lusid, "ConstantTimeValueOfMoney","Bond")}, resultDataRules: new List<ResultKeyRule>{resultDataKeyRule} );
-            
+
             // Create and upsert the recipe
             var configurationRecipe = new ConfigurationRecipe(scope, portfolioCode, new MarketContext(), pricingContext);
             var upsertRecipeRequest = new UpsertRecipeRequest(configurationRecipe, null);
             _recipeApi.UpsertConfigurationRecipe(upsertRecipeRequest);
-            
-            
-            
+
+
+
             // Create a valuation request requesting for:
             // - Lusid instrument id
             // - Accrual as is held in UnitResults (one from the document)
@@ -131,10 +131,10 @@ namespace Lusid.Sdk.Tests.tutorials.Ibor
                 },
                 portfolioEntityIds: new List<PortfolioEntityId> { new PortfolioEntityId(scope, portfolioCode) },
                 valuationSchedule: new ValuationSchedule(effectiveAt: effectiveAt));
-    
+
             // Perform valuation and obtain results
             var results = _apiFactory.Api<IAggregationApi>().GetValuation(valuationRequest);
-            
+
             // We expect the following output
             // | LusidInstrumentId | Accrual (UnitResult - Unscaled) | Pv Ammount | Accrual (Holding - scaled) | ClientCustomValue |
             // | ----------------- | ------------------------------- | ---------- | -------------------------- | ----------------- |
@@ -151,7 +151,7 @@ namespace Lusid.Sdk.Tests.tutorials.Ibor
         [Test]
         public void GetValuationGroupedUnitResultKeys()
         {
-            // Setting up basic parameters  
+            // Setting up basic parameters
             string documentId = "document-1";
             string documentScope = "document-scope" + Guid.NewGuid();
             // Will be considering documents with multiple portfolios and querying the data on grouped level
@@ -163,8 +163,8 @@ namespace Lusid.Sdk.Tests.tutorials.Ibor
             string portfolioCode1 = "pf-1";
             string scope2 = "scope-" + Guid.NewGuid();
             string portfolioCode2 = "pf-2";
-            
-            
+
+
             // Create portfolios
             var portfolioRequest1 = new CreateTransactionPortfolioRequest(
                 code: portfolioCode1,
@@ -206,25 +206,25 @@ namespace Lusid.Sdk.Tests.tutorials.Ibor
                 },
             };
             var upsertResponse = _instrumentsApi.UpsertInstruments(instruments);
-            
+
             // Retrive LusidInstrumentId's of the upserted instruments
             List<string> luids = upsertResponse.Values
                 .Select(inst => inst.Value.LusidInstrumentId)
                 .ToList();
-            
+
             // Create and upsert two transactions, one per portfolio.
             var transactionRequest1 = new List<TransactionRequest>
             {
                 TestDataUtilities.BuildTransactionRequest(luids[0], 1000, 1m, "USD", effectiveAt, "Buy"),
             };
             _transactionPortfoliosApi.UpsertTransactions(scope1, portfolioCode1, transactionRequest1);
-            
+
             var transactionRequest2 = new List<TransactionRequest>
             {
                 TestDataUtilities.BuildTransactionRequest(luids[1], 1000, 10m, "USD", effectiveAt, "Buy")
             };
             _transactionPortfoliosApi.UpsertTransactions(scope2, portfolioCode2, transactionRequest2);
-            
+
             // Create and upsert a datamap for the upcoming document.
             DataMapping dataMapping = new DataMapping(new List<DataDefinition>
                     {
@@ -245,15 +245,15 @@ namespace Lusid.Sdk.Tests.tutorials.Ibor
             StructuredResultDataId structResultDataId = new StructuredResultDataId("Client", documentId, effectiveAt, resultType);
             var upsertDataRequest = new UpsertStructuredResultDataRequest(structResultDataId, structuredResultData);
             _structuredResultDataApi.UpsertStructuredResultData(documentScope, new Dictionary<string, UpsertStructuredResultDataRequest>{{documentId, upsertDataRequest}});
-            
+
             // Create result data key rule specifying what resource we want it to affect.
             string resourceKey = "UnitResult/Portfolio/*";
             var resultDataKeyRule = new ResultDataKeyRule(
-                "Client", 
-                documentScope, 
-                documentId, 
-                resourceKey: resourceKey, 
-                documentResultType: resultType, 
+                "Client",
+                documentScope,
+                documentId,
+                resourceKey: resourceKey,
+                documentResultType: resultType,
                 resultKeyRuleType: ResultKeyRule.ResultKeyRuleTypeEnum.ResultDataKeyRule);
 
             // Create and upsert a recipe with the result data key rule
@@ -262,7 +262,7 @@ namespace Lusid.Sdk.Tests.tutorials.Ibor
             var configurationRecipe = new ConfigurationRecipe(documentScope, "recipe", new MarketContext(), pricingContext);
             var upsertRecipeRequest = new UpsertRecipeRequest(configurationRecipe, null);
             _recipeApi.UpsertConfigurationRecipe(upsertRecipeRequest);
-            
+
             // Creating a valuation request, in which we request portfolio id, YtD, and some user key.
             // Sorting by UserDefinedKey for reproducible order of the output.
             // This Valuation request is applied over both portfolios.
@@ -284,30 +284,30 @@ namespace Lusid.Sdk.Tests.tutorials.Ibor
             {
                 new OrderBySpec("UnitResult/Portfolio/UserDefinedKey", OrderBySpec.SortOrderEnum.Ascending)
             });
-    
+
             // Perform valuation and obtain results
             var results = _apiFactory.Api<IAggregationApi>().GetValuation(valuationRequest);
-            
+
             // We expect the following results
             // | PortfolioId | YtD      | UserDefinedKey |
             // | ----------- | -------- | -------------- |
             // | pf-1        | 0.123456 | test1          |
             // | pf-1        | 0.123456 | test1          |
             // | pf-2        | 1        | test2          |
-            // | pf-2        | 1        | test2          | 
+            // | pf-2        | 1        | test2          |
             // We observer double results because transactions are of type "Buy"
             Assert.That(results.Data[0]["Portfolio/default/Id"], Is.EqualTo(portfolioCode1));
             Assert.That(results.Data[0]["UnitResult/Portfolio/Returns/YtD"], Is.EqualTo(0.123456));
             Assert.That(results.Data[0]["UnitResult/Portfolio/UserDefinedKey"], Is.EqualTo("test1"));
             Assert.That(results.Data[0], Is.EqualTo(results.Data[1]));
-            
+
             Assert.That(results.Data[2]["Portfolio/default/Id"], Is.EqualTo(portfolioCode2));
             Assert.That(results.Data[2]["UnitResult/Portfolio/Returns/YtD"], Is.EqualTo(1));
             Assert.That(results.Data[2]["UnitResult/Portfolio/UserDefinedKey"], Is.EqualTo("test2"));
             Assert.That(results.Data[2], Is.EqualTo(results.Data[3]));
         }
-        
-        // Showing how one can use Structured Result Store on holding level with custom properties, allowing for extra information being available on per holding basis. 
+
+        // Showing how one can use Structured Result Store on holding level with custom properties, allowing for extra information being available on per holding basis.
         // In this example two properties are created, Strategy and Country. In principle it's up to the client which properties they would like.
         [LusidFeature("F10-12")]
         [Test]
@@ -334,7 +334,7 @@ namespace Lusid.Sdk.Tests.tutorials.Ibor
                 dataTypeId: dataTypeId,
                 lifeTime: CreatePropertyDefinitionRequest.LifeTimeEnum.Perpetual);
             _propertyDefinitionsApi.CreatePropertyDefinition(propertyDefinition1);
-            
+
             var propertyDefinition2 = new CreatePropertyDefinitionRequest(
                 domain: CreatePropertyDefinitionRequest.DomainEnum.Transaction,
                 scope: scope2,
@@ -344,7 +344,7 @@ namespace Lusid.Sdk.Tests.tutorials.Ibor
                 dataTypeId: dataTypeId,
                 lifeTime: CreatePropertyDefinitionRequest.LifeTimeEnum.Perpetual);
             _propertyDefinitionsApi.CreatePropertyDefinition(propertyDefinition2);
-            
+
             // Create and upsert the portfolios.
             // The portfolios have two sub-holding keys which represent the properties defined above.
             string portfolioCode1 = "pf1-" + Guid.NewGuid();
@@ -360,7 +360,7 @@ namespace Lusid.Sdk.Tests.tutorials.Ibor
                 created: effectiveAt
             );
             _transactionPortfoliosApi.CreatePortfolio(scope1, portfolioRequest1);
-            
+
             string portfolioCode2 = "pf2-" + Guid.NewGuid().ToString();
             var portfolioRequest2 = new CreateTransactionPortfolioRequest(
                 code: portfolioCode2,
@@ -374,7 +374,7 @@ namespace Lusid.Sdk.Tests.tutorials.Ibor
                 created: effectiveAt
             );
             _transactionPortfoliosApi.CreatePortfolio(scope1, portfolioRequest2);
-            
+
             // Create and upsert a simple instrument instrument
             var instrumentName1 = "AClientName1";
             var clientInstId1 = "clientInstId1";
@@ -390,10 +390,10 @@ namespace Lusid.Sdk.Tests.tutorials.Ibor
                 }
             };
             var upsertResponse = _instrumentsApi.UpsertInstruments(instruments);
-            
+
             // Obtain LusidInstrumentId
             string luid = upsertResponse.Values.First().Value.LusidInstrumentId;
-            
+
             // CREATE and UPSERT transactions on the instrument
             // 2 tranasction in pf1 (Strategy1 and Strategy2) => 4 holdings
             // 1 transaction in pf2 (Strategy1) => 2 holdings
@@ -439,7 +439,7 @@ namespace Lusid.Sdk.Tests.tutorials.Ibor
             };
             _transactionPortfoliosApi.UpsertTransactions(scope1, portfolioCode1, transactionRequest1);
 
-            
+
             var transactionRequest2 = new List<TransactionRequest>
             {
                 new TransactionRequest(
@@ -461,7 +461,7 @@ namespace Lusid.Sdk.Tests.tutorials.Ibor
                     source: "Broker")
             };
             _transactionPortfoliosApi.UpsertTransactions(scope1, portfolioCode2, transactionRequest2);
-            
+
             // Create and upsert a data mapping
             // Note the data mapping contains the two custom made fields, Strategy and Country.
             DataMapping dataMapping = new DataMapping(new List<DataDefinition>
@@ -491,7 +491,7 @@ namespace Lusid.Sdk.Tests.tutorials.Ibor
             StructuredResultDataId structResultDataId = new StructuredResultDataId("Client", documentId, effectiveAt, resultType);
             var upsertDataRequest = new UpsertStructuredResultDataRequest(structResultDataId, structuredResultData);
             _structuredResultDataApi.UpsertStructuredResultData(documentScope, new Dictionary<string, UpsertStructuredResultDataRequest>{{documentId, upsertDataRequest}});
-            
+
             // Create result data key rule specifying result type, quote interval and the resources we want to affect.
             string resourceKey = "UnitResult/*";
             var resultDataKeyRule = new ResultDataKeyRule("Client", documentScope, documentId, resourceKey: resourceKey, documentResultType: resultType, resultKeyRuleType: ResultKeyRule.ResultKeyRuleTypeEnum.ResultDataKeyRule, quoteInterval: "1D");
@@ -502,7 +502,7 @@ namespace Lusid.Sdk.Tests.tutorials.Ibor
             var configurationRecipe = new ConfigurationRecipe(documentScope, "recipe", new MarketContext(), pricingContext);
             var upsertRecipeRequest = new UpsertRecipeRequest(configurationRecipe, null);
             _recipeApi.UpsertConfigurationRecipe(upsertRecipeRequest);
-            
+
             // Create a valuation request, requesting multiple results including Strategy and Country.
             // Applying this request to two portfolios.
             // Sorting by portfolio id for reliable reproducibility.
@@ -532,11 +532,11 @@ namespace Lusid.Sdk.Tests.tutorials.Ibor
                     new OrderBySpec("Portfolio/Id", OrderBySpec.SortOrderEnum.Ascending)
                 }
             );
-    
+
             // Perform valuation and obtain results
             var results = _apiFactory.Api<IAggregationApi>().GetValuation(valuationRequest);
 
-            
+
             // We expect the following results
             // | LusidInstrumentId | PortfolioId | PortfolioScope | Strategy  | Country | YtD      | UserDefinedKey | PV Amount | Units  |
             // | ----------------- | ----------- | -------------- | --------- | ------- | -------- | -------------- | --------- | ------ |
@@ -545,7 +545,7 @@ namespace Lusid.Sdk.Tests.tutorials.Ibor
             // | CCY_USD           | pf1-xxxx    | scope1-xxxx    | Strategy1 | England | 10       | test_ccy1      | -1000     | -1000  |
             // | CCY_USD           | pf1-xxxx    | scope1-xxxx    | Strategy2 |         | 100      | test_ccy2      | -10000    | -10000 |
             // | generated luid    | pf2-xxxx    | scope1-xxxx    | Strategy1 |         |          |                |           | 1000   |
-            // | CCY_USD           | pf2-xxxx    | scope1-xxxx    | Strategy1 |         |          |                | -10000    | -10000 | 
+            // | CCY_USD           | pf2-xxxx    | scope1-xxxx    | Strategy1 |         |          |                | -10000    | -10000 |
             Assert.That(results.Data[0]["UnitResult/Returns/YtD"], Is.EqualTo(0.123456m));
             Assert.That(results.Data[1]["UnitResult/Returns/YtD"], Is.EqualTo(1m));
             Assert.That(results.Data[2]["UnitResult/Returns/YtD"], Is.EqualTo(10m));
@@ -582,7 +582,7 @@ namespace Lusid.Sdk.Tests.tutorials.Ibor
                 created: effectiveAt
             );
             _transactionPortfoliosApi.CreatePortfolio(scope, portfolioRequest);
-            
+
             // Create and upsert two simple instruments
             string instrumentName1 = "AClientName1";
             string instrumentName2 = "AClientName2";
@@ -608,13 +608,13 @@ namespace Lusid.Sdk.Tests.tutorials.Ibor
                 },
             };
             var upsertResponse = _instrumentsApi.UpsertInstruments(instruments);
-            
+
             // Obtain LusidInstrumentIds of the two intsruments above
             List<string> luids = upsertResponse.Values
                 .Select(inst => inst.Value.LusidInstrumentId)
                 .ToList();
-            
-            // Create and upsert transactions, one for each instrument defined above 
+
+            // Create and upsert transactions, one for each instrument defined above
             var transactionRequest1 = new List<TransactionRequest>
             {
                 TestDataUtilities.BuildTransactionRequest(luids[0], 1000, 1m, "USD", effectiveAt, "Buy"),
@@ -626,7 +626,7 @@ namespace Lusid.Sdk.Tests.tutorials.Ibor
                 TestDataUtilities.BuildTransactionRequest(luids[1], 1000, 10m, "USD", effectiveAt, "Buy")
             };
             _transactionPortfoliosApi.UpsertTransactions(scope, portfolioCode, transactionRequest2);
-            
+
             // Create and upsert quotes, one for each instrument defined above
             var quoteRequest = new Dictionary<string, UpsertQuoteRequest>();
             TestDataUtilities.BuildQuoteRequest(
@@ -676,8 +676,8 @@ namespace Lusid.Sdk.Tests.tutorials.Ibor
             StructuredResultDataId structResultDataId = new StructuredResultDataId("Client", documentId, effectiveAt, resultType);
             var upsertDataRequest = new UpsertStructuredResultDataRequest(structResultDataId, structuredResultData);
             _structuredResultDataApi.UpsertStructuredResultData(documentScope, new Dictionary<string, UpsertStructuredResultDataRequest>{{documentId, upsertDataRequest}});
-            
-            // Create result data key rule specifying 
+
+            // Create result data key rule specifying
             var resultDataKeyRule = new PortfolioResultDataKeyRule("Client", documentScope, documentId,  portfolioCode : portfolioCode, portfolioScope : scope, resultKeyRuleType: ResultKeyRule.ResultKeyRuleTypeEnum.PortfolioResultDataKeyRule);
 
             // Create and upsert a recipe with the result data key rule
@@ -686,7 +686,7 @@ namespace Lusid.Sdk.Tests.tutorials.Ibor
             var configurationRecipe = new ConfigurationRecipe(documentScope, "recipe", new MarketContext(), pricingContext);
             var upsertRecipeRequest = new UpsertRecipeRequest(configurationRecipe, null);
             _recipeApi.UpsertConfigurationRecipe(upsertRecipeRequest);
-            
+
             // Create a valuation request, requesting LusidInstrument Id, Pv amount and UserDefinedData
             var valuationRequest = new ValuationRequest(
                 recipeId: new ResourceId(documentScope, "recipe"),
@@ -701,14 +701,14 @@ namespace Lusid.Sdk.Tests.tutorials.Ibor
                     new PortfolioEntityId(scope, portfolioCode),
                 },
                 valuationSchedule: new ValuationSchedule(effectiveAt: effectiveAt));
-    
+
             // Perform valuation and obtain results
             var results = _apiFactory.Api<IAggregationApi>().GetValuation(valuationRequest);
-            
-            // | LusidInstrumentId | PV Amount | UserDefinedData | 
+
+            // | LusidInstrumentId | PV Amount | UserDefinedData |
             // | ----------------- | --------- | --------------- |
             // | LUD_TEST0000      | 100       | exampleData1    |
-            // | LUID_TEST0001     | 101       | exampleData2    | 
+            // | LUID_TEST0001     | 101       | exampleData2    |
             Assert.That(results.Data[0]["Instrument/default/LusidInstrumentId"], Is.EqualTo("LUID_TEST0000"));
             Assert.That(results.Data[0]["Valuation/PV"], Is.EqualTo(100m));
             Assert.That(results.Data[0]["UnitResult/UserDefinedData"], Is.EqualTo("exampleData1"));
@@ -716,7 +716,7 @@ namespace Lusid.Sdk.Tests.tutorials.Ibor
             Assert.That(results.Data[1]["Valuation/PV"], Is.EqualTo(101m));
             Assert.That(results.Data[1]["UnitResult/UserDefinedData"], Is.EqualTo("exampleData2"));
         }
-        
+
         [LusidFeature("F10-14")]
         [Test, Explicit]
         public void VirtualDocument_Compose_OverSeveralUpserts()
@@ -728,8 +728,8 @@ namespace Lusid.Sdk.Tests.tutorials.Ibor
             DataMapKey dataMapKey1 = new DataMapKey("1.0.0", "datamap-1");
             DataMapKey dataMapKey2 = new DataMapKey("1.0.0", "datamap-2");
             DateTimeOffset effectiveAt = new DateTimeOffset(2022, 01, 19, 0, 0, 0, 0, TimeSpan.Zero);
-            
-            // Creating two data mappings, both containing the same identifiers but different data. 
+
+            // Creating two data mappings, both containing the same identifiers but different data.
             DataMapping dataMapping1 = new DataMapping(new List<DataDefinition>
             {
                 new DataDefinition("UnitResult/Id1", "id1", "string", "PartOfUnique"),
@@ -738,7 +738,7 @@ namespace Lusid.Sdk.Tests.tutorials.Ibor
             });
             var request1 = new CreateDataMapRequest(dataMapKey1, dataMapping1);
             _structuredResultDataApi.CreateDataMap(scope, new Dictionary<string, CreateDataMapRequest> {{"dataMapKey1", request1}});
-            
+
             DataMapping dataMapping2 = new DataMapping(new List<DataDefinition>
             {
                 new DataDefinition("UnitResult/Id1", "id1", "string", "PartOfUnique"),
@@ -747,14 +747,14 @@ namespace Lusid.Sdk.Tests.tutorials.Ibor
             });
             var request2 = new CreateDataMapRequest(dataMapKey2, dataMapping2);
             _structuredResultDataApi.CreateDataMap(scope, new Dictionary<string, CreateDataMapRequest> {{"dataMapKey2", request2}});
-            
-            
-            // Upserting multiple documents with the same document key: 
+
+
+            // Upserting multiple documents with the same document key:
             // Document 1:
             // | Id1 | Id2 | Data1   |
             // | --- | --- | ------- |
             // | a   | b   | Data_ab |
-            // | a   | c   | Data_ac | 
+            // | a   | c   | Data_ac |
             // Document 2:
             // | Id1 | Id2 | Data1   |
             // | --- | --- | ------- |
@@ -762,10 +762,10 @@ namespace Lusid.Sdk.Tests.tutorials.Ibor
             // Document 3:
             // | Id1 | Id2 | Data2    |
             // | --- | --- | -------- |
-            // | a   | d   | Data2_ad | 
+            // | a   | d   | Data2_ad |
             // The purpose of this is to observe how the composition works
             StructuredResultDataId structResultDataId = new StructuredResultDataId("Client", documentId, effectiveAt, resultType);
-            
+
             string document1 = "id1,id2,Data1\na,b,Data_ab\na,c,Data_ac";
             StructuredResultData structuredResultData1 = new StructuredResultData("csv", "1.0.0", documentId, document1, dataMapKey1);
             var upsertDataRequest1 = new UpsertStructuredResultDataRequest(structResultDataId, structuredResultData1);
@@ -775,25 +775,25 @@ namespace Lusid.Sdk.Tests.tutorials.Ibor
             StructuredResultData structuredResultData2 = new StructuredResultData("csv", "1.0.0", documentId, document2, dataMapKey1);
             var upsertDataRequest2 = new UpsertStructuredResultDataRequest(structResultDataId, structuredResultData2);
             _structuredResultDataApi.UpsertStructuredResultData(scope, new Dictionary<string, UpsertStructuredResultDataRequest>{{documentId, upsertDataRequest2}});
-            
+
             string document3 = "id1,id2,Data2\na,d,Data2_ad";
             StructuredResultData structuredResultData3 = new StructuredResultData("csv", "1.0.0", documentId, document3, dataMapKey2);
             var upsertDataRequest3 = new UpsertStructuredResultDataRequest(structResultDataId, structuredResultData3);
             _structuredResultDataApi.UpsertStructuredResultData(scope, new Dictionary<string, UpsertStructuredResultDataRequest>{{documentId, upsertDataRequest3}});
-            
+
             // We expect the following document
             // | Id1 | Id2 | Data1   | Data2    |
             // | --- | --- | ------- | -------- |
             // | a   | b   | Data_ab |          |
             // | a   | c   | Data_ac |          |
-            // | a   | d   | Data_ad | Data2_ad | 
+            // | a   | d   | Data_ad | Data2_ad |
             var doc = _structuredResultDataApi.GetStructuredResultData(scope,
                 new Dictionary<string, StructuredResultDataId>() {{"test", structResultDataId}});
             Thread.Sleep(5000);
             var result = _structuredResultDataApi.GetVirtualDocument(scope, new Dictionary<string, StructuredResultDataId>{{"Client", structResultDataId}});
         }
 
-        // Demonstrating querying using structured result store with overriden cashflows. 
+        // Demonstrating querying using structured result store with overriden cashflows.
         [LusidFeature("F10-15")]
         [Test]
         public void TestPortfolioUpsertableQueryWithOverridenCashFlows()
@@ -834,10 +834,10 @@ namespace Lusid.Sdk.Tests.tutorials.Ibor
                 }
             };
             var upsertResponse = _instrumentsApi.UpsertInstruments(instruments);
-            
+
             // Obtain LusidInstrumentId for the instrument upserted above
             string luid = upsertResponse.Values.First().Value.LusidInstrumentId;
-            
+
             // Create cashflow value set, 4 of which will be within the requested date range while one will not be.
             var cashFlowValueSet = new CashFlowValueSet(new List<CashFlowValue>()
                 {
@@ -873,7 +873,7 @@ namespace Lusid.Sdk.Tests.tutorials.Ibor
                         resultValueType: ResultValue.ResultValueTypeEnum.CashFlowValue),
                 },
                 ResultValue.ResultValueTypeEnum.CashFlowValueSet);
-            
+
             // Upsert the cashflow value set
             StructuredResultDataId structResultDataId = new StructuredResultDataId("Client", portfolioCode, effectiveFrom, resultType);
             UpsertResultValuesDataRequest upsertResultValuesDataRequest = new UpsertResultValuesDataRequest(
@@ -889,13 +889,13 @@ namespace Lusid.Sdk.Tests.tutorials.Ibor
                 new Dictionary<string, UpsertResultValuesDataRequest>{{"dataCashflows", upsertResultValuesDataRequest}}
             );
 
-            // Create and upsert a transaction 
+            // Create and upsert a transaction
             var transactionRequest = new List<TransactionRequest>
             {
                 TestDataUtilities.BuildTransactionRequest(luid, 1000, 1m, "USD", effectiveAt, "Buy"),
             };
             _transactionPortfoliosApi.UpsertTransactions(scope, portfolioCode, transactionRequest);
-            
+
             // Create and upsert a quote for the instrument defined above
             var quoteRequest1 = new Dictionary<string, UpsertQuoteRequest>();
             TestDataUtilities.BuildQuoteRequest(
@@ -908,61 +908,61 @@ namespace Lusid.Sdk.Tests.tutorials.Ibor
                 valueAt,
                 QuoteSeriesId.QuoteTypeEnum.Price);
             _quotesApi.UpsertQuotes(scope, quoteRequest1);
-            
+
             // Create result data key rule specifying, the quote interval is 10Y.
             string resourceKey = "UnitResult/*";
             var resultDataKeyRule = new ResultDataKeyRule(
-                "Client", 
-                scope, 
-                portfolioCode, 
-                resourceKey: resourceKey, 
-                documentResultType: resultType, 
-                resultKeyRuleType: ResultKeyRule.ResultKeyRuleTypeEnum.ResultDataKeyRule, 
+                "Client",
+                scope,
+                portfolioCode,
+                resourceKey: resourceKey,
+                documentResultType: resultType,
+                resultKeyRuleType: ResultKeyRule.ResultKeyRuleTypeEnum.ResultDataKeyRule,
                 quoteInterval: "10Y"
                 );
-            
+
             // Create and upsert a recipe with the result data key rule
             var pricingOptions = new PricingOptions();
             var pricingContext = new PricingContext(
-                null, 
+                null,
                 new Dictionary<string, ModelSelection>
                 {
                     {
-                        "SimpleInstrument", 
+                        "SimpleInstrument",
                         new ModelSelection(ModelSelection.LibraryEnum.Lusid, ModelSelection.ModelEnum.SimpleStatic)
                     }
-                }, 
-                pricingOptions, 
+                },
+                pricingOptions,
                 new List<ResultKeyRule>{resultDataKeyRule} );
             // Note it is necessary to specify default scope one is working in, the quotes must also be present.
             var configurationRecipe = new ConfigurationRecipe(
-                recipeScope, 
-                "recipe-code", 
-                new MarketContext(options: new MarketOptions(defaultScope: scope)), 
+                recipeScope,
+                "recipe-code",
+                new MarketContext(options: new MarketOptions(defaultScope: scope)),
                 pricingContext);
             var upsertRecipeRequest = new UpsertRecipeRequest(configurationRecipe);
             _recipeApi.UpsertConfigurationRecipe(upsertRecipeRequest);
-            
+
             // Make a request for portfolio cashflows
             var response = _transactionPortfoliosApi.GetPortfolioCashFlows(
-                scope, 
-                portfolioCode, 
-                valueAt, 
+                scope,
+                portfolioCode,
+                valueAt,
                 effectiveFrom,
-                effectiveTo, 
+                effectiveTo,
                 null,
-                string.Empty, 
-                recipeScope, 
+                string.Empty,
+                recipeScope,
                 "recipe-code"
                 );
-            
+
            // Expecing a response.Values to contain a list of InstrumentCashflows, of which we expect the following property values.
            // | Amount | Currency | PaymentDate          |
            // | ------ | -------- | -------------------- |
            // | 100000 | USD      | 28/6/2019 1:00:00 AM |
            // | 101000 | USD      | 05/7/2019 1:00:00 AM |
            // | 102000 | USD      | 12/7/2019 1:00:00 AM |
-           // | 103000 | USD      | 19/7/2019 1:00:00 AM | 
+           // | 103000 | USD      | 19/7/2019 1:00:00 AM |
            var responseAmounts = response.Values.Select(x => x.Amount).ToList();
            var responseCurrencies = response.Values.Select(x => x.Currency).ToList();
            Assert.That(responseAmounts, Is.EquivalentTo(new List<decimal> {100000, 101000, 102000, 103000}));

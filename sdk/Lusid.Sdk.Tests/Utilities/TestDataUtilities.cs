@@ -46,6 +46,9 @@ namespace Lusid.Sdk.Tests.Utilities
         public static List<decimal> ExampleDiscountFactors2 = new List<decimal> { 1.0m, 0.995026109593975m, 0.990076958773721m, 0.985098445011387m, 0.980144965261876m, 0.9m };
 
         public static string VanillaSwapFixingReference = "SwapFixingRef";
+        public static string RFRFixingReference = "RFRFixingRef";
+        public static string CDORFixingReference = "CDORFixingRef";
+        public static string EquitySwapFixingRef = "EquityFixingRef";
 
         /// <summary>
         /// Helper method to construct CreateTransactionPortfolioRequest to be used in ITransactionPortfoliosApi
@@ -527,6 +530,7 @@ namespace Lusid.Sdk.Tests.Utilities
                 quoteInterval: "10Y");
 
 
+
             // projection rule here is used by Lusid to locate the rate curves for projections of index rates
             // (e.g. projected LIBOR rates)
             // Used when pricing instruments that depend on an IndexConvention.
@@ -539,6 +543,7 @@ namespace Lusid.Sdk.Tests.Utilities
                 MarketDataKeyRule.QuoteTypeEnum.Price,
                 field: "mid",
                 quoteInterval: "10Y");
+
 
 
             // irVolRule here is used by Lusid to locate the interest rate volatility cubes
