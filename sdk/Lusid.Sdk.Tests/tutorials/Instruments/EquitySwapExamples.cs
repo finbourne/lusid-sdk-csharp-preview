@@ -22,37 +22,44 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
             var quotesToUpsert = new Dictionary<string, UpsertQuoteRequest>();
             
             // FOR valuation example, we price on TestDataUtilities.EffectiveAt 
-            var equityUnderlyingQuoteRequestAtEffectiveAt = TestDataUtilities.BuildSimpleQuoteUpsertRequest(
+            Dictionary<string, UpsertQuoteRequest> equityUnderlyingQuoteRequestAtEffectiveAt = new Dictionary<string, UpsertQuoteRequest>();
+            TestDataUtilities.BuildQuoteRequest(
+                quotesToUpsert,
+                equitySwap.Code,
                 equitySwap.Code,
                 QuoteSeriesId.InstrumentIdTypeEnum.Figi,
                 135m,
                 "USD",
-                TestDataUtilities.EffectiveAt);
-            quotesToUpsert.Add(equityUnderlyingQuoteRequestAtEffectiveAt.QuoteId.ToString(), equityUnderlyingQuoteRequestAtEffectiveAt);
+                TestDataUtilities.EffectiveAt,
+                QuoteSeriesId.QuoteTypeEnum.Price);
             
             // FOR lifecycle example, we value around maturity of the equity swap on the following days
-            var days = new []{19, 20, 21, 22, 23};
+            var days = new []{0, 1, 2, 3, 4};
             foreach (var n in days)
             {
-                var date = new DateTimeOffset(2020, 08, n, 0, 0, 0, 0, TimeSpan.Zero);
-                var equityUnderlyingQuoteRequest = TestDataUtilities.BuildSimpleQuoteUpsertRequest(
+                var date = equitySwap.MaturityDate.AddDays(-n);
+                TestDataUtilities.BuildQuoteRequest(
+                    quotesToUpsert,
+                    $"{equitySwap.Code}_{n.ToString()}",
                     equitySwap.Code,
                     QuoteSeriesId.InstrumentIdTypeEnum.Figi,
                     135m,
                     "USD",
-                    date);
-                quotesToUpsert.Add(equityUnderlyingQuoteRequest.QuoteId.ToString(), equityUnderlyingQuoteRequest);
+                    date,
+                    QuoteSeriesId.QuoteTypeEnum.Price);
             }
 
             // UPSERT quote for the floating leg on reset date.
-            var floatingLegResetDate = new DateTimeOffset(2020, 02, 20, 0, 0, 0, 0, TimeSpan.Zero);
-            var floatingLegResetQuoteRequest = TestDataUtilities.BuildSimpleQuoteUpsertRequest(
+            TestDataUtilities.BuildQuoteRequest(
+                quotesToUpsert,
+                "UniqueKeyForDictionary",
                 "BP00",
                 QuoteSeriesId.InstrumentIdTypeEnum.RIC,
                 0.05m,
                 "USD",
-                floatingLegResetDate);
-            quotesToUpsert.Add(floatingLegResetQuoteRequest.QuoteId.ToString(), floatingLegResetQuoteRequest);
+                TestDataUtilities.ResetDate,
+                QuoteSeriesId.QuoteTypeEnum.Price
+                );
 
             var upsertResponse = _quotesApi.UpsertQuotes(scope, quotesToUpsert);
             Assert.That(upsertResponse.Failed.Count, Is.EqualTo(0));
@@ -61,7 +68,11 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
             // Upsert discounting curves
             if (model != ModelSelection.ModelEnum.ConstantTimeValueOfMoney)
             {
-                var upsertComplexMarketDataRequest = TestDataUtilities.BuildRateCurvesRequests(TestDataUtilities.EffectiveAt);
+                Dictionary<string, UpsertComplexMarketDataRequest> upsertComplexMarketDataRequest =
+                    new Dictionary<string, UpsertComplexMarketDataRequest>(); 
+                upsertComplexMarketDataRequest.Add("discount_curve_USD", TestDataUtilities.BuildRateCurveRequest(TestDataUtilities.EffectiveAt, "USD", "OIS", TestDataUtilities.ExampleDiscountFactors1));
+                upsertComplexMarketDataRequest.Add("projection_curve_USD", TestDataUtilities.BuildRateCurveRequest(TestDataUtilities.EffectiveAt, "USD", "LIBOR", TestDataUtilities.ExampleDiscountFactors2, "6M"));
+
                 var upsertComplexMarketDataResponse = _complexMarketDataApi.UpsertComplexMarketData(scope, upsertComplexMarketDataRequest);
                 ValidateComplexMarketDataUpsert(upsertComplexMarketDataResponse, upsertComplexMarketDataRequest.Count);
             }

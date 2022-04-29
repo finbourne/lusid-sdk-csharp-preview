@@ -16,13 +16,17 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
         protected override void CreateAndUpsertMarketDataToLusid(string scope, ModelSelection.ModelEnum model, LusidInstrument instrument)
         {
             // POPULATE with required market data for valuation of the instruments
-            var upsertFxRateRequestReq = TestDataUtilities.BuildFxRateRequest(TestDataUtilities.EffectiveAt);
+            var upsertFxRateRequestReq = TestDataUtilities.BuildFxRateRequest("USD", "JPY", 150, TestDataUtilities.EffectiveAt, TestDataUtilities.EffectiveAt);
             var upsertQuoteResponse = _quotesApi.UpsertQuotes(scope, upsertFxRateRequestReq);
             ValidateQuoteUpsert(upsertQuoteResponse, upsertFxRateRequestReq.Count);
 
             if (model == ModelSelection.ModelEnum.Discounting)
             {
-                var upsertComplexMarketDataRequest =  TestDataUtilities.BuildRateCurvesRequests(TestDataUtilities.EffectiveAt);
+                Dictionary<string, UpsertComplexMarketDataRequest> upsertComplexMarketDataRequest =
+                    new Dictionary<string, UpsertComplexMarketDataRequest>(); 
+                upsertComplexMarketDataRequest.Add("discount_curve_USD", TestDataUtilities.BuildRateCurveRequest(TestDataUtilities.EffectiveAt, "USD", "OIS", TestDataUtilities.ExampleDiscountFactors1));
+                upsertComplexMarketDataRequest.Add("discount_curve_JPY", TestDataUtilities.BuildRateCurveRequest(TestDataUtilities.EffectiveAt, "JPY", "OIS", TestDataUtilities.ExampleDiscountFactors1));
+
                 var upsertComplexMarketDataResponse = _complexMarketDataApi.UpsertComplexMarketData(scope, upsertComplexMarketDataRequest);
                 ValidateComplexMarketDataUpsert(upsertComplexMarketDataResponse, upsertComplexMarketDataRequest.Count);
             }
@@ -138,10 +142,7 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
             
             // UPSERT FX Forward to portfolio and populating stores with required market data - use a constant FX rate USD/JPY = 150.
             var effectiveAt = windowStart;
-            var upsertFxRateRequestReq = TestDataUtilities.BuildFxRateRequest(
-                effectiveFrom: windowStart,
-                effectiveAt: windowEnd,
-                useConstantFxRate: true);
+            var upsertFxRateRequestReq = TestDataUtilities.BuildFxRateRequest("USD", "JPY", 150, windowStart, windowEnd, true);
             
             var upsertQuoteResponse = _quotesApi.UpsertQuotes(scope, upsertFxRateRequestReq);
             ValidateQuoteUpsert(upsertQuoteResponse, upsertFxRateRequestReq.Count);

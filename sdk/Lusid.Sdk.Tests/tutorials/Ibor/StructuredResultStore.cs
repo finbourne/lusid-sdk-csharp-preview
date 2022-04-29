@@ -628,21 +628,27 @@ namespace Lusid.Sdk.Tests.tutorials.Ibor
             _transactionPortfoliosApi.UpsertTransactions(scope, portfolioCode, transactionRequest2);
             
             // Create and upsert quotes, one for each instrument defined above
-            var quoteRequest1 = TestDataUtilities.BuildQuoteRequest(
+            var quoteRequest = new Dictionary<string, UpsertQuoteRequest>();
+            TestDataUtilities.BuildQuoteRequest(
+                quoteRequest,
+                "UniqueKeyForDictionary1",
                 luids[0],
                 QuoteSeriesId.InstrumentIdTypeEnum.LusidInstrumentId,
                 123m,
                 "USD",
-                TestDataUtilities.EffectiveAt);
-            _quotesApi.UpsertQuotes(scope, quoteRequest1);
+                TestDataUtilities.EffectiveAt,
+                QuoteSeriesId.QuoteTypeEnum.Price);
 
-            var quoteRequest2 = TestDataUtilities.BuildQuoteRequest(
+            TestDataUtilities.BuildQuoteRequest(
+                quoteRequest,
+                "UniqueKeyForDictionary2",
                 luids[1],
                 QuoteSeriesId.InstrumentIdTypeEnum.LusidInstrumentId,
                 123m,
                 "USD",
-                TestDataUtilities.EffectiveAt);
-            _quotesApi.UpsertQuotes(scope, quoteRequest2);
+                TestDataUtilities.EffectiveAt,
+                QuoteSeriesId.QuoteTypeEnum.Price);
+            _quotesApi.UpsertQuotes(scope, quoteRequest);
 
             // Create a data mapping for the upcoming document.
             // Composite leaf is used to link PV/Amount and PV/Ccy,
@@ -891,12 +897,16 @@ namespace Lusid.Sdk.Tests.tutorials.Ibor
             _transactionPortfoliosApi.UpsertTransactions(scope, portfolioCode, transactionRequest);
             
             // Create and upsert a quote for the instrument defined above
-            var quoteRequest1 = TestDataUtilities.BuildQuoteRequest(
+            var quoteRequest1 = new Dictionary<string, UpsertQuoteRequest>();
+            TestDataUtilities.BuildQuoteRequest(
+                quoteRequest1,
+                "UniqueKeyForDictionary",
                 luid,
                 QuoteSeriesId.InstrumentIdTypeEnum.LusidInstrumentId,
                 123m,
                 "USD",
-                valueAt);
+                valueAt,
+                QuoteSeriesId.QuoteTypeEnum.Price);
             _quotesApi.UpsertQuotes(scope, quoteRequest1);
             
             // Create result data key rule specifying, the quote interval is 10Y.

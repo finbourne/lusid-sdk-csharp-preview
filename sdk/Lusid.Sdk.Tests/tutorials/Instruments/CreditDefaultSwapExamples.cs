@@ -17,15 +17,7 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
         {
             // POPULATE with required market data for valuation of the instruments
             CreditDefaultSwap cds = (CreditDefaultSwap) instrument;
-            var upsertFxRateRequestReq = TestDataUtilities.BuildFxRateRequest(TestDataUtilities.EffectiveAt);
-            var upsertFxQuoteResponse = _quotesApi.UpsertQuotes(scope, upsertFxRateRequestReq);
-            ValidateQuoteUpsert(upsertFxQuoteResponse, upsertFxRateRequestReq.Count);
-
-            var upsertQuoteRequests = TestDataUtilities.BuildResetQuotesRequest(TestDataUtilities.EffectiveAt.AddDays(-4));
-            var upsertQuoteResponse = _quotesApi.UpsertQuotes(scope, upsertQuoteRequests);
-            Assert.That(upsertQuoteResponse.Failed.Count, Is.EqualTo(0));
-            Assert.That(upsertQuoteResponse.Values.Count, Is.EqualTo(upsertQuoteRequests.Count));
-            
+          
             // CREATE a dictionary of complex market data to be upserted for the CDS. We always need a CDS spread curve.
             var cdsSpreadCurveUpsertRequest = TestDataUtilities.BuildCdsSpreadCurvesUpsertRequest(
                 TestDataUtilities.EffectiveAt,
@@ -42,10 +34,8 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
             // For models that is not ConstantTimeValueOfMoney, we require discount curves. We add them to the market data upsert.
             if (model != ModelSelection.ModelEnum.ConstantTimeValueOfMoney)
             {
-                foreach (var kv in TestDataUtilities.BuildRateCurvesRequests(TestDataUtilities.EffectiveAt))
-                {
-                    upsertComplexMarketDataRequest.Add(kv.Key, kv.Value);
-                }
+                upsertComplexMarketDataRequest.Add("discount_curve_USD", TestDataUtilities.BuildRateCurveRequest(TestDataUtilities.EffectiveAt, "USD", "OIS", TestDataUtilities.ExampleDiscountFactors1));
+                upsertComplexMarketDataRequest.Add("projection_curve_USD", TestDataUtilities.BuildRateCurveRequest(TestDataUtilities.EffectiveAt, "USD", "LIBOR", TestDataUtilities.ExampleDiscountFactors2, "6M"));
             }
 
             var upsertComplexMarketDataResponse = _complexMarketDataApi.UpsertComplexMarketData(scope, upsertComplexMarketDataRequest);
@@ -57,27 +47,27 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
         {
             CreditDefaultSwap cds = (CreditDefaultSwap) instrument;
             var maturity = cds.MaturityDate;
-            ResourceListOfInstrumentCashFlow cashFlowsAtMaturity = _transactionPortfoliosApi.GetPortfolioCashFlows(
+            var start = cds.StartDate;
+            ResourceListOfInstrumentCashFlow cashFlowsDuringCDS = _transactionPortfoliosApi.GetPortfolioCashFlows(
                 scope,
                 portfolioCode,
-                maturity.AddMilliseconds(-1),
-                maturity.AddMilliseconds(-1),
-                maturity.AddMilliseconds(1),
+                maturity,
+                start.AddYears(-5),
+                maturity.AddYears(10),
                 null,
                 null,
                 scope,
                 recipeCode);
             
-            var cashFlows = cashFlowsAtMaturity.Values.Select(cf => cf)
+            var cashFlows = cashFlowsDuringCDS.Values.Select(cf => cf)
                 .Select(cf => (cf.PaymentDate, cf.Amount, cf.Currency))
                 .ToList();
             var allCashFlowsPositive = cashFlows.All(cf => cf.Amount > 0);
             Assert.That(allCashFlowsPositive, Is.True);
 
-            // CHECK correct number of CDS premium leg cash flows at maturity: If CDS reaches maturity (that would be if no default event is triggered) there is 1 expected cash flow,
-            // which is the last coupon payment of the premium leg.
-            var expectedNumberOfCouponCashFlows = 1;
-            var couponCashFlows = cashFlowsAtMaturity.Values
+            // CHECK correct number of CDS premium leg cash flows: If CDS reaches maturity (that would be if no default event is triggered) there are 22 expected cash flows,
+            var expectedNumberOfCouponCashFlows = 22;
+            var couponCashFlows = cashFlowsDuringCDS.Values
                 .Where(cf => cf.Diagnostics["CashFlowType"] == "Premium")
                 .ToList();
 

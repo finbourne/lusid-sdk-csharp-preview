@@ -20,7 +20,18 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
             // For LUSID to pick up these quotes, we have added a RIC rule to the recipe (see BuildRecipeRequest in TestDataUtilities.cs) 
             // The RIC rule has a large quote interval, this means that we can use one reset quote for all the resets.
             // For accurate pricing, one would want to upsert a quote per reset. 
-            var quoteRequest = TestDataUtilities.BuildQuoteRequest("USD6M", QuoteSeriesId.InstrumentIdTypeEnum.ClientInternal, 0.05m, "USD", TestDataUtilities.EffectiveAt);
+            
+            var quoteRequest = new Dictionary<string, UpsertQuoteRequest>();
+            TestDataUtilities.BuildQuoteRequest(
+                quoteRequest,
+                "UniqueKeyForDictionary",
+                TestDataUtilities.VanillaSwapFixingReference,
+                QuoteSeriesId.InstrumentIdTypeEnum.RIC,
+                0.05m,
+                "InterestRate",
+                TestDataUtilities.ResetDate,
+            QuoteSeriesId.QuoteTypeEnum.Price);
+            
             var upsertResponse = _quotesApi.UpsertQuotes(scope, quoteRequest);
             Assert.That(upsertResponse.Failed.Count, Is.EqualTo(0));
             Assert.That(upsertResponse.Values.Count, Is.EqualTo(quoteRequest.Count));
@@ -28,7 +39,11 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
             // For models requiring discount curves, we upsert them below. ConstantTimeValueOfMoney does not require any discount curves. 
             if (model != ModelSelection.ModelEnum.ConstantTimeValueOfMoney)
             {
-                var upsertComplexMarketDataRequest = TestDataUtilities.BuildRateCurvesRequests(TestDataUtilities.EffectiveAt);
+                Dictionary<string, UpsertComplexMarketDataRequest> upsertComplexMarketDataRequest =
+                    new Dictionary<string, UpsertComplexMarketDataRequest>(); 
+                upsertComplexMarketDataRequest.Add("discount_curve_USD", TestDataUtilities.BuildRateCurveRequest(TestDataUtilities.EffectiveAt, "USD", "OIS", TestDataUtilities.ExampleDiscountFactors1));
+                upsertComplexMarketDataRequest.Add("projection_curve_USD", TestDataUtilities.BuildRateCurveRequest(TestDataUtilities.EffectiveAt, "USD", "LIBOR", TestDataUtilities.ExampleDiscountFactors2, "6M"));
+
                 var upsertComplexMarketDataResponse = _complexMarketDataApi.UpsertComplexMarketData(scope, upsertComplexMarketDataRequest);
                 ValidateComplexMarketDataUpsert(upsertComplexMarketDataResponse, upsertComplexMarketDataRequest.Count);
             }
@@ -113,7 +128,7 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
                 currency: "USD",
                 paymentTenor: "6M",
                 dayCountConvention: "Actual365",
-                fixingReference: "BP00",
+                fixingReference: TestDataUtilities.VanillaSwapFixingReference,
                 indexName: "LIBOR"
             );
 
@@ -153,7 +168,7 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
         [TestCase(ModelSelection.ModelEnum.Discounting)]
         public void InterestRateSwaptionPortfolioCashFlowsExample(ModelSelection.ModelEnum model)
         {
-            var irs = InstrumentExamples.CreateExampleInterestRateSwap();
+            var irs = InstrumentExamples.CreateSwapByNamedConventions(TestDataUtilities.StartDate.AddYears(1));
             CallLusidGetPortfolioCashFlowsEndpoint(irs, model);
         }
     }

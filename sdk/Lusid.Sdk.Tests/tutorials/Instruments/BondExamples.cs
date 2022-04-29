@@ -20,7 +20,7 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
             {
                 var upsertComplexMarketDataRequest = new Dictionary<string, UpsertComplexMarketDataRequest>
                 {
-                    {"discountCurve", TestDataUtilities.BuildOisCurveRequest(TestDataUtilities.EffectiveAt, "USD")}
+                    {"discountCurve", TestDataUtilities.BuildRateCurveRequest(TestDataUtilities.EffectiveAt, "USD", "OIS", TestDataUtilities.ExampleDiscountFactors1)}
                 };
                 var upsertComplexMarketDataResponse = _complexMarketDataApi.UpsertComplexMarketData(scope, upsertComplexMarketDataRequest);
                 ValidateComplexMarketDataUpsert(upsertComplexMarketDataResponse, upsertComplexMarketDataRequest.Count);
@@ -50,7 +50,7 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
             // In case of a zero coupon bond, we expect only a single payment at the bond maturity.
             // Otherwise, we expect regular payments (=cashflows) depending on the bond face value and
             // coupon rate.
-            Assert.That(cashflows.Count, Is.EqualTo(IsZeroCouponBond(bond) ? 1 : 3));
+            Assert.That(cashflows.Count, Is.EqualTo(IsZeroCouponBond(bond) ? 1 : 13));
             // We perform here a very simple check that a bond cashflow must be positive.
             var allCashFlowsPositive = cashflows.All(cf => cf.Amount > 0);
             Assert.That(allCashFlowsPositive, Is.True);

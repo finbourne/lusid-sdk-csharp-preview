@@ -154,17 +154,32 @@ namespace Lusid.Sdk.Utilities
             _transactionPortfoliosApi.UpsertTransactions(scope, portfolioCode, transactionRequest);
 
             // UPSERT FX quotes and rate curves required pricing instruments
-            var upsertFxRateRequestReq = TestDataUtilities.BuildFxRateRequest(effectiveFrom, effectiveAt, useConstantFxRate);
+            var upsertFxRateRequestReq = TestDataUtilities.BuildFxRateRequest("USD", "JPY", 150, effectiveFrom, effectiveAt, useConstantFxRate);
             var upsertQuoteResponse = _quotesApi.UpsertQuotes(scope, upsertFxRateRequestReq);
             
             ValidateQuoteUpsert(upsertQuoteResponse, upsertFxRateRequestReq.Count);
 
-            var upsertQuoteRequests = TestDataUtilities.BuildResetQuotesRequest(effectiveAt.AddDays(-4));
+            var upsertQuoteRequests = new Dictionary<string, UpsertQuoteRequest>();
+            TestDataUtilities.BuildQuoteRequest(
+                upsertQuoteRequests,
+                "resetQuote",
+                TestDataUtilities.VanillaSwapFixingReference,
+                QuoteSeriesId.InstrumentIdTypeEnum.RIC,
+                150,
+                "InterestRate",
+                effectiveAt.AddDays(-4),
+                QuoteSeriesId.QuoteTypeEnum.Price);
+            
             var upsertResponse = _quotesApi.UpsertQuotes(scope, upsertQuoteRequests);
             Assert.That(upsertResponse.Failed.Count, Is.EqualTo(0));
             Assert.That(upsertResponse.Values.Count, Is.EqualTo(upsertQuoteRequests.Count));
 
-            var complexMarketUpsertRequests = TestDataUtilities.BuildRateCurvesRequests(effectiveAt);
+            Dictionary<string, UpsertComplexMarketDataRequest> complexMarketUpsertRequests =
+                new Dictionary<string, UpsertComplexMarketDataRequest>(); 
+            complexMarketUpsertRequests.Add("discount_curve_USD", TestDataUtilities.BuildRateCurveRequest(TestDataUtilities.EffectiveAt, "USD", "OIS", TestDataUtilities.ExampleDiscountFactors1));
+            complexMarketUpsertRequests.Add("discount_curve_JPY", TestDataUtilities.BuildRateCurveRequest(TestDataUtilities.EffectiveAt, "JPY", "OIS", TestDataUtilities.ExampleDiscountFactors1));
+            complexMarketUpsertRequests.Add("projection_curve_USD", TestDataUtilities.BuildRateCurveRequest(TestDataUtilities.EffectiveAt, "USD", "LIBOR", TestDataUtilities.ExampleDiscountFactors2, "6M"));
+
             var upsertMarketResponse = _complexMarketDataApi.UpsertComplexMarketData(scope, complexMarketUpsertRequests);
             ValidateComplexMarketDataUpsert(upsertMarketResponse, complexMarketUpsertRequests.Count);
 

@@ -16,8 +16,6 @@ namespace Lusid.Sdk.Tests.Tutorials.Ibor
         private InstrumentLoader _instrumentLoader;
         private IList<string> _instrumentIds;
         
-        private static readonly DateTimeOffset TestEffectiveFrom = new DateTimeOffset(2020, 2, 16, 0, 0, 0, TimeSpan.Zero);
-        private static readonly DateTimeOffset TestEffectiveAt = new DateTimeOffset(2020, 2, 23, 0, 0, 0, TimeSpan.Zero);
 
         [OneTimeSetUp]
         public void SetUp()
@@ -136,7 +134,7 @@ namespace Lusid.Sdk.Tests.Tutorials.Ibor
 
             // CREATE inline valuation request asking for instruments PV using a "default" recipe
             var scope = Guid.NewGuid().ToString();
-            var valuationSchedule = new ValuationSchedule(effectiveFrom: TestEffectiveFrom, effectiveAt: TestEffectiveAt);
+            var valuationSchedule = new ValuationSchedule(effectiveFrom: TestDataUtilities.StartDate.AddDays(13), effectiveAt: TestDataUtilities.StartDate.AddDays(20));
             var inlineValuationRequest = new InlineValuationRequest(
                 recipeId: new ResourceId(scope, "default"),
                 metrics: TestDataUtilities.ValuationSpec,
@@ -178,7 +176,7 @@ namespace Lusid.Sdk.Tests.Tutorials.Ibor
 
             // POPULATE with required market data for valuation of the instruments
             var scope = Guid.NewGuid().ToString();
-            var upsertFxRateRequestreq = TestDataUtilities.BuildFxRateRequest(TestEffectiveAt);
+            var upsertFxRateRequestreq = TestDataUtilities.BuildFxRateRequest("USD", "JPY", 150, TestDataUtilities.EffectiveAt, TestDataUtilities.EffectiveAt);
             _quotesApi.UpsertQuotes(scope, upsertFxRateRequestreq);
             
             // CREATE and upsert recipe for pricing the portfolio of instruments 
@@ -186,7 +184,7 @@ namespace Lusid.Sdk.Tests.Tutorials.Ibor
             CreateAndUpsertRecipe(constantTimeValueOfMoneyRecipeCode, scope, ModelSelection.ModelEnum.ConstantTimeValueOfMoney);
 
             // CREATE inline valuation request asking for the inline instruments' PV
-            var valuationSchedule = new ValuationSchedule(effectiveAt: TestEffectiveAt);
+            var valuationSchedule = new ValuationSchedule(effectiveAt: TestDataUtilities.EffectiveAt);
             var inlineValuationRequest = new InlineValuationRequest(
                 recipeId: new ResourceId(scope, constantTimeValueOfMoneyRecipeCode),
                 metrics: TestDataUtilities.ValuationSpec,
@@ -226,10 +224,15 @@ namespace Lusid.Sdk.Tests.Tutorials.Ibor
             // POPULATE stores with required market data to value Fx-Forward using discounting model
             // Fx rates are upserted for both models
             // Rate curves are upserted for the discounting pricing model
-            var upsertFxRateRequestReq = TestDataUtilities.BuildFxRateRequest(TestEffectiveAt);
-            var upsertQuoteResponse = _quotesApi.UpsertQuotes(scope, upsertFxRateRequestReq);
-            
-            Dictionary<string, UpsertComplexMarketDataRequest> complexMarketUpsertRequests = TestDataUtilities.BuildRateCurvesRequests(TestEffectiveAt);
+            var upsertFxRateRequestReq = TestDataUtilities.BuildFxRateRequest("USD", "JPY", 150, TestDataUtilities.EffectiveAt, TestDataUtilities.EffectiveAt);
+            _quotesApi.UpsertQuotes(scope, upsertFxRateRequestReq);
+
+            Dictionary<string, UpsertComplexMarketDataRequest> complexMarketUpsertRequests =
+                new Dictionary<string, UpsertComplexMarketDataRequest>(); 
+            complexMarketUpsertRequests.Add("discount_curve_USD", TestDataUtilities.BuildRateCurveRequest(TestDataUtilities.EffectiveAt, "USD", "OIS", TestDataUtilities.ExampleDiscountFactors1));
+            complexMarketUpsertRequests.Add("discount_curve_JPY", TestDataUtilities.BuildRateCurveRequest(TestDataUtilities.EffectiveAt, "JPY", "OIS", TestDataUtilities.ExampleDiscountFactors1));
+            complexMarketUpsertRequests.Add("projection_curve_USD", TestDataUtilities.BuildRateCurveRequest(TestDataUtilities.EffectiveAt, "USD", "LIBOR", TestDataUtilities.ExampleDiscountFactors2, "6M"));
+        
             var upsertmarketResponse = _complexMarketDataApi.UpsertComplexMarketData(scope, complexMarketUpsertRequests);
             ValidateComplexMarketDataUpsert(upsertmarketResponse, complexMarketUpsertRequests.Count);
 
@@ -240,7 +243,7 @@ namespace Lusid.Sdk.Tests.Tutorials.Ibor
             };
 
             // CREATE valuation schedule
-            var valuationSchedule = new ValuationSchedule(effectiveAt: TestEffectiveAt);
+            var valuationSchedule = new ValuationSchedule(effectiveAt: TestDataUtilities.EffectiveAt);
 
             // CREATE inline valuation request for Simple Static and Discounting pricing model 
             var discountingInlineValuationRequest = new InlineValuationRequest(
@@ -288,8 +291,8 @@ namespace Lusid.Sdk.Tests.Tutorials.Ibor
             AddInstrumentsTransactionPortfolioAndPopulateRequiredMarketData(
                 scope, 
                 portfolioRequest.Code,
-                TestEffectiveAt,
-                TestEffectiveAt,
+                TestDataUtilities.EffectiveAt,
+                TestDataUtilities.EffectiveAt,
                 new List<LusidInstrument> {instrument});
 
             // CREATE and upsert recipe specifying discount pricing model
@@ -301,7 +304,7 @@ namespace Lusid.Sdk.Tests.Tutorials.Ibor
                 scope,
                 portfolioRequest.Code,
                 discountingRecipeCode,
-                TestEffectiveAt);
+                TestDataUtilities.EffectiveAt);
 
             // CALL valuation
             var valuation = _apiFactory.Api<IAggregationApi>().GetValuation(valuationRequest);
@@ -352,8 +355,8 @@ namespace Lusid.Sdk.Tests.Tutorials.Ibor
             var instruments = new List<WeightedInstrument>
             {
                 new WeightedInstrument(1, "bond", new Bond(
-                    startDate: TestEffectiveAt,
-                    maturityDate: TestEffectiveAt.AddYears(1),
+                    startDate: TestDataUtilities.EffectiveAt,
+                    maturityDate: TestDataUtilities.EffectiveAt.AddYears(1),
                     domCcy: "GBP",
                     principal: principal,
                     couponRate: 0.05m,
@@ -378,7 +381,7 @@ namespace Lusid.Sdk.Tests.Tutorials.Ibor
                 recipeId: new ResourceId(scope, "default"),
                 metrics: valuationSpec,
                 sort: new List<OrderBySpec> {new OrderBySpec(valuationDateKey, OrderBySpec.SortOrderEnum.Ascending)},
-                valuationSchedule: new ValuationSchedule(effectiveAt: TestEffectiveAt),
+                valuationSchedule: new ValuationSchedule(effectiveAt: TestDataUtilities.EffectiveAt),
                 instruments: instruments);
 
             // CALL valuation
@@ -402,15 +405,15 @@ namespace Lusid.Sdk.Tests.Tutorials.Ibor
                 InstrumentExamples.CreateExampleFxForward(),
                 InstrumentExamples.CreateExampleBond(),
                 InstrumentExamples.CreateExampleFxOption(),
-                InstrumentExamples.CreateExampleInterestRateSwap()
+                InstrumentExamples.CreateExampleInterestRateSwap(InstrumentExamples.IRSTypes.Vanilla)
             };
             
             // UPSERT the above instrument set to portfolio as well as populating stores with required market data
             AddInstrumentsTransactionPortfolioAndPopulateRequiredMarketData(
                 TestDataUtilities.TutorialScope,
                 portfolioRequest.Code,
-                TestEffectiveAt,
-                TestEffectiveAt,
+                TestDataUtilities.EffectiveAt,
+                TestDataUtilities.EffectiveAt,
                 instruments);
 
             // CREATE and upsert recipe specifying discount pricing model
@@ -421,7 +424,7 @@ namespace Lusid.Sdk.Tests.Tutorials.Ibor
                 TestDataUtilities.TutorialScope,
                 portfolioRequest.Code,
                 discountingRecipeCode,
-                TestEffectiveAt);
+                TestDataUtilities.EffectiveAt);
 
             // CALL valuation
             var valuation = _apiFactory.Api<IAggregationApi>().GetValuation(valuationRequest);
@@ -461,8 +464,8 @@ namespace Lusid.Sdk.Tests.Tutorials.Ibor
             AddInstrumentsTransactionPortfolioAndPopulateRequiredMarketData(
                 TestDataUtilities.TutorialScope,
                 portfolioRequest.Code,
-                TestEffectiveFrom,
-                TestEffectiveAt,
+                TestDataUtilities.StartDate.AddDays(13),
+                TestDataUtilities.StartDate.AddDays(20),
                 instruments,
                 equityIdentifier: "ABC Corporation");
             
@@ -475,8 +478,8 @@ namespace Lusid.Sdk.Tests.Tutorials.Ibor
                 TestDataUtilities.TutorialScope,
                 portfolioRequest.Code,
                 constantTimeValueOfMoneyRecipeCode,
-                TestEffectiveAt,
-                TestEffectiveFrom);
+                TestDataUtilities.StartDate.AddDays(20),
+                TestDataUtilities.StartDate.AddDays(13));
             
             // CALL valuation
             var valuation = _apiFactory.Api<IAggregationApi>().GetValuation(valuationRequest);
