@@ -14,6 +14,7 @@ Name | Type | Description | Notes
 **Executed** | [**OrderGraphSynopsis**](OrderGraphSynopsis.md) |  | 
 **Allocated** | [**OrderGraphSynopsis**](OrderGraphSynopsis.md) |  | 
 **DerivedState** | **string** | A simple description of the overall state of a block. | 
+**DerivedComplianceState** | **string** | A simple description of the compliance state of a block. Possible values are [Unchecked, Non-compliant, Compliant] | 
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 
