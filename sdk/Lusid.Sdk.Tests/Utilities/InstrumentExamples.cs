@@ -83,6 +83,18 @@ namespace Lusid.Sdk.Tests.Utilities
                 instrumentType: LusidInstrument.InstrumentTypeEnum.FxForward
             );
 
+        internal static LusidInstrument CreateExampleForwardRateAgreement()
+        {
+            return new ForwardRateAgreement(
+                startDate: TestDataUtilities.StartDate,
+                maturityDate: TestDataUtilities.StartDate.AddYears(1),
+                fixingDate: TestDataUtilities.StartDate.AddMonths(11),
+                fraRate: 0.05m,
+                notional: 1_000_000m,
+                domCcy: "GBP",
+                instrumentType: LusidInstrument.InstrumentTypeEnum.ForwardRateAgreement);
+        }
+
         internal static LusidInstrument CreateExampleFxOption(bool isDeliveryNotCash = true)
             => new FxOption(
                 strike: 130,
