@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Runtime.Serialization;
 using Lusid.Sdk.Model;
 
@@ -15,43 +16,33 @@ namespace Lusid.Sdk.Tests.Utilities
             /// </summary>
             [EnumMember]
             Vanilla,
-            
-            /// <summary>
-            /// Vanilla Swap
-            /// </summary>
+
             [EnumMember]
             SOFR,
-            
-            /// <summary>
-            /// Vanilla Swap
-            /// </summary>
+
             [EnumMember]
             ESTR,
-            
-            /// <summary>
-            /// Vanilla Swap
-            /// </summary>
+
             [EnumMember]
             SONIA,
-            
-            /// <summary>
-            /// Vanilla Swap
-            /// </summary>
+
             [EnumMember]
             CDOR,
-            
-            /// <summary>
-            /// Vanilla Swap
-            /// </summary>
+
             [EnumMember]
             TONA,
-            
-            /// <summary>
-            /// Vanilla Swap
-            /// </summary>
+
             [EnumMember]
-            SARON
-            
+            SARON,
+
+            [EnumMember]
+            CrossCurrency,
+
+            [EnumMember]
+            Basis,
+
+            [EnumMember]
+            Amortising
         }
 
 
@@ -281,14 +272,13 @@ namespace Lusid.Sdk.Tests.Utilities
             return irs;
         }
 
-        // Valid types are "Vanilla"
         internal static InterestRateSwap CreateExampleInterestRateSwap(IRSTypes type)
         {
             InterestRateSwap swap = null;
             switch (type)
             {
                 case IRSTypes.Vanilla:
-                    swap = CreateInterestRateSwap(
+                    swap = CreateInterestRateSwapForIndex(
                         currency: "USD",
                         indexName: "LIBOR",
                         dayCount: "Act365",
@@ -300,7 +290,7 @@ namespace Lusid.Sdk.Tests.Utilities
                     );
                     break;
                 case IRSTypes.SOFR:
-                    swap = CreateInterestRateSwap(
+                    swap = CreateInterestRateSwapForIndex(
                         currency: "USD",
                         indexName: "SOFR",
                         dayCount: "Act360",
@@ -321,7 +311,7 @@ namespace Lusid.Sdk.Tests.Utilities
                     );
                     break;
                 case IRSTypes.ESTR:
-                    swap = CreateInterestRateSwap(
+                    swap = CreateInterestRateSwapForIndex(
                         currency: "EUR",
                         indexName: "ESTR",
                         dayCount: "Act360",
@@ -342,7 +332,7 @@ namespace Lusid.Sdk.Tests.Utilities
                     );
                     break;
                 case IRSTypes.SONIA:
-                    swap = CreateInterestRateSwap(
+                    swap = CreateInterestRateSwapForIndex(
                         currency: "GBP",
                         indexName: "SONIA",
                         dayCount: "Act365",
@@ -363,7 +353,7 @@ namespace Lusid.Sdk.Tests.Utilities
                     );
                     break;
                 case IRSTypes.TONA:
-                    swap = CreateInterestRateSwap(
+                    swap = CreateInterestRateSwapForIndex(
                         currency: "JPY",
                         indexName: "TONA",
                         dayCount: "Act365",
@@ -384,7 +374,7 @@ namespace Lusid.Sdk.Tests.Utilities
                     );
                     break;
                 case IRSTypes.SARON:
-                    swap = CreateInterestRateSwap(
+                    swap = CreateInterestRateSwapForIndex(
                         currency: "CHF",
                         indexName: "SARON",
                         dayCount: "Act360",
@@ -406,7 +396,7 @@ namespace Lusid.Sdk.Tests.Utilities
                     break;
 
                 case IRSTypes.CDOR:
-                    swap = CreateInterestRateSwap(
+                    swap = CreateInterestRateSwapForIndex(
                         currency: "CAD",
                         indexName: "CDOR",
                         dayCount: "Act365F",
@@ -427,12 +417,27 @@ namespace Lusid.Sdk.Tests.Utilities
                         resetFrequency: "3M"
                     );
                     break;
+
+                case IRSTypes.CrossCurrency:
+                    swap = CreateExampleCrossCurrencyBasisSwap();
+                    break;
+
+                case IRSTypes.Basis:
+                    swap = CreateExampleBasisSwap();
+                    break;
+
+                case IRSTypes.Amortising:
+                    swap = CreateExampleAmortisingSwap();
+                    break;
+
+                default:
+                    throw new InvalidOperationException("No example IRS defined for type {type}");
             }
 
             return swap;
         }
 
-        internal static InterestRateSwap CreateInterestRateSwap(
+        private static InterestRateSwap CreateInterestRateSwapForIndex(
             string currency,
             string indexName,
             string dayCount,
@@ -714,6 +719,111 @@ namespace Lusid.Sdk.Tests.Utilities
                 underlyingIdentifier: "Figi",
                 instrumentType: LusidInstrument.InstrumentTypeEnum.EquitySwap
             );
+        }
+
+        private static InterestRateSwap CreateExampleBasisSwap()
+        {
+            // construct a 1M LIBOR leg (with a spread)
+            var flow1M = CreateExampleFlowConventions(currency: "USD", paymentFrequency: "1M", rollConvention: "MF", dayCount: "ACT365", settleDays: 2, resetDays: 2);
+            var index1M = CreateExampleIndexConventions(currency: "USD", indexName: "LIBOR", tenor: "1M", dayCount: "ACT365", fixingRef: TestDataUtilities.VanillaSwapFixingReference);
+            var leg1M = CreateExampleFloatLeg(startDate: TestDataUtilities.StartDate,
+                maturityDate: TestDataUtilities.StartDate.AddYears(5),
+                flowConventions: flow1M,
+                indexConvention: index1M,
+                notional: 100m,
+                stubType: "Both",
+                payReceive: "Pay",
+                spread: 0.002m,
+                resetConvention: "InAdvance",
+                compounding: null);
+
+            // construct a 6M LIBOR leg
+            var flow6M = CreateExampleFlowConventions(currency: "USD", paymentFrequency: "6M", rollConvention: "MF", dayCount: "ACT365", settleDays: 2, resetDays: 2);
+            var index6M = CreateExampleIndexConventions(currency: "USD", indexName: "LIBOR", tenor: "6M", dayCount: "ACT365", fixingRef: TestDataUtilities.AlternateSwapFixingReference);
+            var leg6M = CreateExampleFloatLeg(startDate: TestDataUtilities.StartDate,
+                maturityDate: TestDataUtilities.StartDate.AddYears(5),
+                flowConventions: flow6M,
+                indexConvention: index6M,
+                notional: 100m,
+                stubType: "Both",
+                payReceive: "Pay",
+                spread: 0m,
+                resetConvention: "InAdvance",
+                compounding: null);
+
+            return new InterestRateSwap(
+                startDate: TestDataUtilities.StartDate,
+                maturityDate: TestDataUtilities.StartDate.AddYears(5),
+                legs: new List<InstrumentLeg>
+                {
+                    leg1M,
+                    leg6M
+                },
+                instrumentType: LusidInstrument.InstrumentTypeEnum.InterestRateSwap
+            );
+        }
+
+        /// <summary>
+        /// An example cross-currency basis swap.
+        /// Note that it is common for such swaps to have resetting notionals to emphasise basis risk over fx risk, see https://www.clarusft.com/mechanics-of-cross-currency-swaps/
+        /// However, we do not currently support this.
+        /// </summary>
+        private static InterestRateSwap CreateExampleCrossCurrencyBasisSwap()
+        {
+            // construct a leg that pays USD 3M LIBOR interest -- thus in this swap we are borrowing USD
+            var flowUSD = CreateExampleFlowConventions(currency: "USD", paymentFrequency: "3M", rollConvention: "MF", dayCount: "ACT365", settleDays: 2, resetDays: 2);
+            var indexUSD = CreateExampleIndexConventions(currency: "USD", indexName: "LIBOR", tenor: "3M", dayCount: "ACT360", fixingRef: TestDataUtilities.VanillaSwapFixingReference);
+            var legDefnUSD = new LegDefinition(conventions: flowUSD, indexConvention: indexUSD, notionalExchangeType: "Both", payReceive: "Pay");
+
+            var legUSD = new FloatingLeg(startDate: TestDataUtilities.StartDate,
+                maturityDate: TestDataUtilities.StartDate.AddYears(5),
+                legDefinition: legDefnUSD,
+                notional: 130m);
+
+            // construct a leg that pays GBP 3M LIBOR interest -- thus in this swap we are lending GBP
+            // this leg pays a spread known as the cross currency basis (typically negative due to higher demand for the dollar)
+            var flowGBP = CreateExampleFlowConventions(currency: "GBP", paymentFrequency: "3M", rollConvention: "MF", dayCount: "ACT360", settleDays: 2, resetDays: 2);
+            var indexGBP = CreateExampleIndexConventions(currency: "GBP", indexName: "LIBOR", tenor: "3M", dayCount: "ACT365", fixingRef: TestDataUtilities.AlternateSwapFixingReference);
+            var legDefnGBP = new LegDefinition(conventions: flowGBP, indexConvention: indexGBP, notionalExchangeType: "Both", payReceive: "Receive", rateOrSpread: -0.001m);
+
+            var legGBP = new FloatingLeg(startDate: TestDataUtilities.StartDate,
+                maturityDate: TestDataUtilities.StartDate.AddYears(5),
+                legDefinition: legDefnGBP,
+                notional: 100m);
+
+            return new InterestRateSwap(
+                startDate: TestDataUtilities.StartDate,
+                maturityDate: TestDataUtilities.StartDate.AddYears(5),
+                legs: new List<InstrumentLeg>
+                {
+                    legUSD,
+                    legGBP
+                },
+                instrumentType: LusidInstrument.InstrumentTypeEnum.InterestRateSwap
+            );
+        }
+
+        private static InterestRateSwap CreateExampleAmortisingSwap()
+        {
+            // define an amortisation schedule
+            var steps = new List<LevelStep>
+            {
+                new LevelStep(TestDataUtilities.StartDate, 100m),
+                new LevelStep(TestDataUtilities.StartDate.AddYears(2), 50m),
+                new LevelStep(TestDataUtilities.StartDate.AddYears(4), 30m),
+            };
+            var stepSchedule = new StepSchedule(stepScheduleType: "Notional", levelType: "Absolute", steps: steps, scheduleType: "Step");
+
+            // create a vanilla swap
+            var swap = CreateExampleInterestRateSwap(IRSTypes.Vanilla);
+            var fixedLeg = swap.Legs.OfType<FixedLeg>().First();
+            var floatLeg = swap.Legs.OfType<FloatingLeg>().First();
+
+            // populate each leg with the amortisation schedule
+            fixedLeg.LegDefinition.Amortisation = stepSchedule;
+            floatLeg.LegDefinition.Amortisation = stepSchedule;
+
+            return swap;
         }
     }
 }
