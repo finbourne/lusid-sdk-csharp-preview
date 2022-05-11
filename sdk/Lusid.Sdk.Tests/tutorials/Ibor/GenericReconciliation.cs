@@ -6,6 +6,7 @@ using Lusid.Sdk.Client;
 using Lusid.Sdk.Model;
 using Lusid.Sdk.Tests.Utilities;
 using Lusid.Sdk.Utilities;
+using LusidFeatures;
 using NUnit.Framework;
 
 namespace Lusid.Sdk.Tests.Tutorials.Ibor
@@ -33,6 +34,7 @@ namespace Lusid.Sdk.Tests.Tutorials.Ibor
         /// Unless a mapping rule is provided between these two address keys in the reconciliation then both keys will appear
         /// as failures in the aggregation.
         /// </summary>
+        [LusidFeature("F20-2")]
         [Test]
         public void RemappingProperties()
         {
@@ -89,6 +91,7 @@ namespace Lusid.Sdk.Tests.Tutorials.Ibor
         /// The default behaviour for comparing numeric values is for exact tolerance. This means only exactly matching
         /// values will match. 
         /// </summary>
+        [LusidFeature("F20-3")]
         [Test]
         public void Numeric_Exact()
         {
@@ -128,6 +131,7 @@ namespace Lusid.Sdk.Tests.Tutorials.Ibor
         /// for an equity. The holding of 10 units results in "Valuation/PV" values of £1050 and £1000 respectively. These can be
         /// matched within a tolerance of £50.
         /// </summary>
+        [LusidFeature("F20-4")]
         [Test]
         public void Numeric_AbsoluteDifference()
         {
@@ -172,6 +176,7 @@ namespace Lusid.Sdk.Tests.Tutorials.Ibor
         /// The formula used to compute the relative difference is 1.0 - minimum(lhs,rhs)/maximum(lhs, rhs).
         /// For this example 1 - 1000/1050 is approx 0.047 (4.7%). This allows us to match within a 5% tolerance.
         /// </summary>
+        [LusidFeature("F20-5")]
         [Test]
         public void Numeric_RelativeDifference()
         {
@@ -217,6 +222,7 @@ namespace Lusid.Sdk.Tests.Tutorials.Ibor
         /// In the strictest sense these are incompatible types, however they can be successfully reconciled within tolerance 
         /// with a numeric difference rule.
         /// </summary>
+        [LusidFeature("F20-6")]
         [Test]
         public void Numeric_ResultsVersusDecimals()
         {
@@ -280,6 +286,7 @@ namespace Lusid.Sdk.Tests.Tutorials.Ibor
         /// For sub-day tolerances fractional values may be input. In this example two valuation datetimes an hour apart
         /// are successfully reconciled within a tolerance of 2 hours.
         /// </summary>
+        [LusidFeature("F20-7")]
         [Test]
         public void DateTime_AbsoluteDifference()
         {
@@ -328,6 +335,7 @@ namespace Lusid.Sdk.Tests.Tutorials.Ibor
         /// on the right-hand portfolio. The string contains rule allows for these to be considered a match if the right portfolio result is a sub string of the left.
         /// </summary>
         [Test]
+        [LusidFeature("F20-8")]
         public void String_Contains()
         {
             var quotePrice = 100m;
@@ -409,6 +417,7 @@ namespace Lusid.Sdk.Tests.Tutorials.Ibor
         /// {last name} but a number of alternatives are possible. e.g. John Doe could be allowed to match any of Mr. John Doe, J. Doe, Mr. Doe.
         /// </summary>
         [Test]
+        [LusidFeature("F20-9")]
         public void String_IsOneOf()
         {
             var quotePrice = 100m;
@@ -456,6 +465,7 @@ namespace Lusid.Sdk.Tests.Tutorials.Ibor
         /// successful matching of Mr. John Doe on the lhs and JOHN DOE on the rhs. 
         /// </summary>
         [Test]
+        [LusidFeature("F20-10")]
         public void String_ContainsAllCase()
         {
             var quotePrice = 100m;
@@ -498,6 +508,7 @@ namespace Lusid.Sdk.Tests.Tutorials.Ibor
         /// The case insensitive rule allows strings to reconcile when they only disagree on case. The example here demonstrates this
         /// for "John Doe" and "john doe".
         /// </summary>
+        [LusidFeature("F20-11")]
         [Test]
         public void String_CaseInsensitive()
         {
