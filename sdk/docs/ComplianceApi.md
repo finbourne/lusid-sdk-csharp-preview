@@ -1,15 +1,16 @@
 # Lusid.Sdk.Api.ComplianceApi
 
-All URIs are relative to *http://local-unit-test-server.lusid.com:49056*
+All URIs are relative to *http://local-unit-test-server.lusid.com:54205*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
 [**DeleteComplianceRule**](ComplianceApi.md#deletecompliancerule) | **DELETE** /api/compliance/rules/{scope}/{code} | [EXPERIMENTAL] DeleteComplianceRule: Deletes a compliance rule.
 [**GetComplianceRule**](ComplianceApi.md#getcompliancerule) | **GET** /api/compliance/rules/{scope}/{code} | [EXPERIMENTAL] GetComplianceRule: Retrieve the definition of single compliance rule.
-[**GetComplianceRun**](ComplianceApi.md#getcompliancerun) | **GET** /api/compliance/{runId} | [EXPERIMENTAL] GetComplianceRun: Get the details of a single compliance run.
+[**GetComplianceRun**](ComplianceApi.md#getcompliancerun) | **GET** /api/compliance/{runId} | [EXPERIMENTAL] GetComplianceRun: Get the details of a single compliance run. - - DEPRECATING - POST TRADE ONLY
+[**GetComplianceRunResults**](ComplianceApi.md#getcompliancerunresults) | **GET** /api/compliance/results/{runId} | [EXPERIMENTAL] GetComplianceRunResults: Get the details of a single compliance run.
 [**ListComplianceRules**](ComplianceApi.md#listcompliancerules) | **GET** /api/compliance/rules | [EXPERIMENTAL] ListComplianceRules: List compliance rules, with optional filtering.
-[**ListComplianceRuns**](ComplianceApi.md#listcomplianceruns) | **GET** /api/compliance | [EXPERIMENTAL] ListComplianceRuns: List historical compliance runs.
-[**RunComplianceCheck**](ComplianceApi.md#runcompliancecheck) | **POST** /api/compliance/run | [EXPERIMENTAL] RunComplianceCheck: Kick off the compliance check process
+[**ListComplianceRuns**](ComplianceApi.md#listcomplianceruns) | **GET** /api/compliance | [EXPERIMENTAL] ListComplianceRuns: List historical compliance runs. - - DEPRECATING - POST TRADE ONLY
+[**RunComplianceCheck**](ComplianceApi.md#runcompliancecheck) | **POST** /api/compliance/run | [EXPERIMENTAL] RunComplianceCheck: Kick off the compliance check process - - DEPRECATING - POST TRADE ONLY
 [**UpsertComplianceRules**](ComplianceApi.md#upsertcompliancerules) | **POST** /api/compliance/rules | [EXPERIMENTAL] UpsertComplianceRules: Upsert compliance rules.
 
 
@@ -36,7 +37,7 @@ namespace Example
         public static void Main()
         {
             Configuration config = new Configuration();
-            config.BasePath = "http://local-unit-test-server.lusid.com:49056";
+            config.BasePath = "http://local-unit-test-server.lusid.com:54205";
             // Configure OAuth2 access token for authorization: oauth2
             config.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -114,7 +115,7 @@ namespace Example
         public static void Main()
         {
             Configuration config = new Configuration();
-            config.BasePath = "http://local-unit-test-server.lusid.com:49056";
+            config.BasePath = "http://local-unit-test-server.lusid.com:54205";
             // Configure OAuth2 access token for authorization: oauth2
             config.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -175,9 +176,9 @@ Name | Type | Description  | Notes
 
 <a name="getcompliancerun"></a>
 # **GetComplianceRun**
-> PagedResourceListOfComplianceRuleResult GetComplianceRun (string runId, string page = null, int? limit = null, string filter = null)
+> ResourceListOfComplianceRuleResult GetComplianceRun (string runId, string page = null, int? limit = null, string filter = null)
 
-[EXPERIMENTAL] GetComplianceRun: Get the details of a single compliance run.
+[EXPERIMENTAL] GetComplianceRun: Get the details of a single compliance run. - - DEPRECATING - POST TRADE ONLY
 
 Use this endpoint to fetch the detail associated with a specific compliance run, including a breakdown  of the passing state of each rule, portfolio combination.
 
@@ -196,7 +197,7 @@ namespace Example
         public static void Main()
         {
             Configuration config = new Configuration();
-            config.BasePath = "http://local-unit-test-server.lusid.com:49056";
+            config.BasePath = "http://local-unit-test-server.lusid.com:54205";
             // Configure OAuth2 access token for authorization: oauth2
             config.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -208,8 +209,8 @@ namespace Example
 
             try
             {
-                // [EXPERIMENTAL] GetComplianceRun: Get the details of a single compliance run.
-                PagedResourceListOfComplianceRuleResult result = apiInstance.GetComplianceRun(runId, page, limit, filter);
+                // [EXPERIMENTAL] GetComplianceRun: Get the details of a single compliance run. - - DEPRECATING - POST TRADE ONLY
+                ResourceListOfComplianceRuleResult result = apiInstance.GetComplianceRun(runId, page, limit, filter);
                 Debug.WriteLine(result);
             }
             catch (ApiException  e)
@@ -234,7 +235,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**PagedResourceListOfComplianceRuleResult**](PagedResourceListOfComplianceRuleResult.md)
+[**ResourceListOfComplianceRuleResult**](ResourceListOfComplianceRuleResult.md)
 
 ### Authorization
 
@@ -250,6 +251,86 @@ Name | Type | Description  | Notes
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
 | **200** | The details of a specific compliance run |  -  |
+| **400** | The details of the input related failure |  -  |
+| **0** | Error response |  -  |
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+<a name="getcompliancerunresults"></a>
+# **GetComplianceRunResults**
+> ResourceListOfComplianceRuleResult GetComplianceRunResults (string runId, string page = null, int? limit = null)
+
+[EXPERIMENTAL] GetComplianceRunResults: Get the details of a single compliance run.
+
+Use this endpoint to fetch the detail associated with a specific compliance run, including a breakdown  of the passing state of each rule, portfolio combination.
+
+### Example
+```csharp
+using System.Collections.Generic;
+using System.Diagnostics;
+using Lusid.Sdk.Api;
+using Lusid.Sdk.Client;
+using Lusid.Sdk.Model;
+
+namespace Example
+{
+    public class GetComplianceRunResultsExample
+    {
+        public static void Main()
+        {
+            Configuration config = new Configuration();
+            config.BasePath = "http://local-unit-test-server.lusid.com:54205";
+            // Configure OAuth2 access token for authorization: oauth2
+            config.AccessToken = "YOUR_ACCESS_TOKEN";
+
+            var apiInstance = new ComplianceApi(config);
+            var runId = runId_example;  // string | The unique identifier of the compliance run requested.
+            var page = page_example;  // string | The pagination token to use to continue listing compliance rule results from a previous call to list compliance rule result.              This value is returned from the previous call. If a pagination token is provided the sortBy, filter, and asAt fields              must not have changed since the original request. Also, if set, a start value cannot be provided. (optional) 
+            var limit = 56;  // int? | When paginating, limit the number of returned results to this many. (optional) 
+
+            try
+            {
+                // [EXPERIMENTAL] GetComplianceRunResults: Get the details of a single compliance run.
+                ResourceListOfComplianceRuleResult result = apiInstance.GetComplianceRunResults(runId, page, limit);
+                Debug.WriteLine(result);
+            }
+            catch (ApiException  e)
+            {
+                Debug.Print("Exception when calling ComplianceApi.GetComplianceRunResults: " + e.Message );
+                Debug.Print("Status Code: "+ e.ErrorCode);
+                Debug.Print(e.StackTrace);
+            }
+        }
+    }
+}
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **runId** | **string**| The unique identifier of the compliance run requested. | 
+ **page** | **string**| The pagination token to use to continue listing compliance rule results from a previous call to list compliance rule result.              This value is returned from the previous call. If a pagination token is provided the sortBy, filter, and asAt fields              must not have changed since the original request. Also, if set, a start value cannot be provided. | [optional] 
+ **limit** | **int?**| When paginating, limit the number of returned results to this many. | [optional] 
+
+### Return type
+
+[**ResourceListOfComplianceRuleResult**](ResourceListOfComplianceRuleResult.md)
+
+### Authorization
+
+[oauth2](../README.md#oauth2)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: text/plain, application/json, text/json
+
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+| **200** | The rule results of a specific compliance run |  -  |
 | **400** | The details of the input related failure |  -  |
 | **0** | Error response |  -  |
 
@@ -278,7 +359,7 @@ namespace Example
         public static void Main()
         {
             Configuration config = new Configuration();
-            config.BasePath = "http://local-unit-test-server.lusid.com:49056";
+            config.BasePath = "http://local-unit-test-server.lusid.com:54205";
             // Configure OAuth2 access token for authorization: oauth2
             config.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -341,9 +422,9 @@ Name | Type | Description  | Notes
 
 <a name="listcomplianceruns"></a>
 # **ListComplianceRuns**
-> PagedResourceListOfComplianceRun ListComplianceRuns (string page = null, int? limit = null, string filter = null)
+> ResourceListOfComplianceRun ListComplianceRuns (string page = null, int? limit = null, string filter = null)
 
-[EXPERIMENTAL] ListComplianceRuns: List historical compliance runs.
+[EXPERIMENTAL] ListComplianceRuns: List historical compliance runs. - - DEPRECATING - POST TRADE ONLY
 
 Use this endpoint to fetch a list of all historical compliance runs.
 
@@ -362,7 +443,7 @@ namespace Example
         public static void Main()
         {
             Configuration config = new Configuration();
-            config.BasePath = "http://local-unit-test-server.lusid.com:49056";
+            config.BasePath = "http://local-unit-test-server.lusid.com:54205";
             // Configure OAuth2 access token for authorization: oauth2
             config.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -373,8 +454,8 @@ namespace Example
 
             try
             {
-                // [EXPERIMENTAL] ListComplianceRuns: List historical compliance runs.
-                PagedResourceListOfComplianceRun result = apiInstance.ListComplianceRuns(page, limit, filter);
+                // [EXPERIMENTAL] ListComplianceRuns: List historical compliance runs. - - DEPRECATING - POST TRADE ONLY
+                ResourceListOfComplianceRun result = apiInstance.ListComplianceRuns(page, limit, filter);
                 Debug.WriteLine(result);
             }
             catch (ApiException  e)
@@ -398,7 +479,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**PagedResourceListOfComplianceRun**](PagedResourceListOfComplianceRun.md)
+[**ResourceListOfComplianceRun**](ResourceListOfComplianceRun.md)
 
 ### Authorization
 
@@ -423,7 +504,7 @@ Name | Type | Description  | Notes
 # **RunComplianceCheck**
 > ComplianceRun RunComplianceCheck (string fileName)
 
-[EXPERIMENTAL] RunComplianceCheck: Kick off the compliance check process
+[EXPERIMENTAL] RunComplianceCheck: Kick off the compliance check process - - DEPRECATING - POST TRADE ONLY
 
 Use this endpoint to fetch the start a compliance run, based on a pre-set mapping file.
 
@@ -442,7 +523,7 @@ namespace Example
         public static void Main()
         {
             Configuration config = new Configuration();
-            config.BasePath = "http://local-unit-test-server.lusid.com:49056";
+            config.BasePath = "http://local-unit-test-server.lusid.com:54205";
             // Configure OAuth2 access token for authorization: oauth2
             config.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -451,7 +532,7 @@ namespace Example
 
             try
             {
-                // [EXPERIMENTAL] RunComplianceCheck: Kick off the compliance check process
+                // [EXPERIMENTAL] RunComplianceCheck: Kick off the compliance check process - - DEPRECATING - POST TRADE ONLY
                 ComplianceRun result = apiInstance.RunComplianceCheck(fileName);
                 Debug.WriteLine(result);
             }
@@ -518,7 +599,7 @@ namespace Example
         public static void Main()
         {
             Configuration config = new Configuration();
-            config.BasePath = "http://local-unit-test-server.lusid.com:49056";
+            config.BasePath = "http://local-unit-test-server.lusid.com:54205";
             // Configure OAuth2 access token for authorization: oauth2
             config.AccessToken = "YOUR_ACCESS_TOKEN";
 
