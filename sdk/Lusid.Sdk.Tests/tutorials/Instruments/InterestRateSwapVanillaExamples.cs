@@ -9,7 +9,7 @@ using NUnit.Framework;
 namespace Lusid.Sdk.Tests.Tutorials.Instruments
 {
     [TestFixture]
-    public class InterestRateSwapExamples: DemoInstrumentBase
+    public class InterestRateSwapVanillaExamples: DemoInstrumentBase
     {
         /// <inheritdoc />
         protected override void CreateAndUpsertMarketDataToLusid(string scope, ModelSelection.ModelEnum model, LusidInstrument instrument)
@@ -22,8 +22,7 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
             // For accurate pricing, one would want to upsert a quote per reset: TODO: Add reset extraction from instruments when available ANA-749
             InterestRateSwap irs = instrument as InterestRateSwap;
 
-            FloatingLeg floatLeg =
-                (FloatingLeg) irs.Legs.Where(x => x.InstrumentType == LusidInstrument.InstrumentTypeEnum.FloatingLeg).First();
+            FloatingLeg floatLeg = (FloatingLeg) irs.Legs.First(x => x.InstrumentType == LusidInstrument.InstrumentTypeEnum.FloatingLeg);
 
             var indexName = floatLeg.LegDefinition.IndexConvention.IndexName;
             var quoteRequest = new Dictionary<string, UpsertQuoteRequest>();
