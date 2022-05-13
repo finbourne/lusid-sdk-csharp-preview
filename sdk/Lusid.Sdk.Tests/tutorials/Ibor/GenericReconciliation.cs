@@ -39,33 +39,34 @@ namespace Lusid.Sdk.Tests.Tutorials.Ibor
         public void RemappingProperties()
         {
             var quotePrice = 105m;
+            var units = "GBP";
             var transactionDate = new DateTimeOffset(2022, 2, 1, 0, 0, 0, TimeSpan.Zero); // date of transaction
             var traderName = "John Doe";
 
             // Generate two identical portfolios
             var valuationRequestOne = GeneratePortfolioTransactions(_portfolioOneScope, _portfolioCode, transactionDate,
-                quotePrice, traderName);
+                quotePrice, units, traderName);
             var valuationRequestTwo = GeneratePortfolioTransactions(_portfolioTwoScope, _portfolioCode, transactionDate,
-                quotePrice, traderName);
+                quotePrice, units, traderName);
 
             // create the reconciliation request
             var reconciliation = new ReconciliationRequest(valuationRequestOne, valuationRequestTwo);
             var reconciliationResponse = _apiFactory.Api<ReconciliationsApi>().ReconcileGeneric(reconciliation);
 
-            // Get the reconciliation of our equity. 
+            // Get the reconciliation of the equity. 
             var equityComparison = reconciliationResponse.Comparisons.Single();
 
-            // The trader name properties on the two portfolios have different names and both have been compared upon. 
+            // The trader name properties on the two portfolios have different addresses and both addresses have been generated in the reconciliation 
             Assert.That(equityComparison.ResultComparison.ContainsKey($"Transaction/{_portfolioOneScope}/TraderName"));
             Assert.That(equityComparison.ResultComparison.ContainsKey($"Transaction/{_portfolioTwoScope}/TraderName"));
 
-            // Assert that the reconciliation failed on comparing the properties.
+            // Assert that the reconciliation resulted in a Failed match for both properties.
             Assert.That(equityComparison.ResultComparison[$"Transaction/{_portfolioOneScope}/TraderName"].ToString()
                 .Contains("Failed"));
             Assert.That(equityComparison.ResultComparison[$"Transaction/{_portfolioTwoScope}/TraderName"].ToString()
                 .Contains("Failed"));
 
-            // As we have a property which has a portfolio dependant name, need to tell the portfolio that this is the case in order to map them together.
+            // As we have a property which has a portfolio dependant Addresskey, we need to tell the reconciliation about this and how to map them together.
             var mapping = new ReconciliationLeftRightAddressKeyPair($"Transaction/{_portfolioOneScope}/TraderName",
                 $"Transaction/{_portfolioTwoScope}/TraderName");
 
@@ -79,17 +80,18 @@ namespace Lusid.Sdk.Tests.Tutorials.Ibor
             // Check that all the comparisons return an exact match
             Assert.That(equityComparison.ResultComparison.All(x => x.Value.ToString().Equals("ExactMatch")));
 
-            // Check that the property strings where correctly matched.
-            // The difference and comparison dictionaries retain the name of the Right valuation result.
+            // Check that the property strings where successfully matched.
             Assert.That(equityComparison.Left.ContainsKey($"Transaction/{_portfolioOneScope}/TraderName"));
             Assert.That(equityComparison.Right.ContainsKey($"Transaction/{_portfolioTwoScope}/TraderName"));
             Assert.That(equityComparison.Difference.ContainsKey($"Transaction/{_portfolioTwoScope}/TraderName"));
+            // Only the address key from the RIGHT hand result set is contained in the reconciliation
             Assert.That(!equityComparison.Difference.ContainsKey($"Transaction/{_portfolioOneScope}/TraderName"));
         }
 
         /// <summary>
-        /// The default behaviour for comparing numeric values is for exact tolerance. This means only exactly matching
-        /// values will match. 
+        /// Exact match is defined as being numerically equal to machine precision. In the case of decimals that is sufficient.
+        /// In the case of result with attached units, e.g. currency and amount, the currency would also have to match in
+        /// addition to exact numeric equality of the amount. 
         /// </summary>
         [LusidFeature("F20-3")]
         [Test]
@@ -98,14 +100,15 @@ namespace Lusid.Sdk.Tests.Tutorials.Ibor
             // The two portfolios disagree about the quote price.
             var quotePriceLeft = 105m;
             var quotePriceRight = 100m;
+            var units = "GBP";
             var transactionDate = new DateTimeOffset(2022, 2, 1, 0, 0, 0, TimeSpan.Zero); // date of transaction
             var traderName = "John Doe";
 
             // Generate two portfolios and their valuation requests.
             var valuationRequestLeft = GeneratePortfolioTransactions(_portfolioOneScope, _portfolioCode,
-                transactionDate, quotePriceLeft, traderName);
+                transactionDate, quotePriceLeft, units, traderName);
             var valuationRequestRight = GeneratePortfolioTransactions(_portfolioTwoScope, _portfolioCode,
-                transactionDate, quotePriceRight, traderName);
+                transactionDate, quotePriceRight, units, traderName);
 
             // Set the mapping between properties in the two portfolios. 
             var mapping = new ReconciliationLeftRightAddressKeyPair($"Transaction/{_portfolioOneScope}/TraderName",
@@ -121,7 +124,8 @@ namespace Lusid.Sdk.Tests.Tutorials.Ibor
             var reconciliationResponse = _apiFactory.Api<ReconciliationsApi>().ReconcileGeneric(reconciliation);
             var equityComparison = reconciliationResponse.Comparisons.Single();
 
-            // Assert that the reconciliation failed for PV, and that the difference is the absolute difference in the PV calculations 
+            // Assert that the reconciliation resulted in a failure to match for PV, and that the
+            // difference is the absolute difference in the PV calculations (quote price * units).
             Assert.That(equityComparison.Difference["Valuation/PV"], Is.EqualTo(50));
             Assert.That(equityComparison.ResultComparison["Valuation/PV"].ToString(), Is.EqualTo("Failed"));
         }
@@ -138,14 +142,15 @@ namespace Lusid.Sdk.Tests.Tutorials.Ibor
             // The two portfolios disagree about the quote price.
             var quotePriceLeft = 105m;
             var quotePriceRight = 100m;
+            var units = "GBP";
             var transactionDate = new DateTimeOffset(2022, 2, 1, 0, 0, 0, TimeSpan.Zero); // date of transaction
             var traderName = "John Doe";
 
             // Generate two portfolios and their valuation requests.
             var valuationRequestLeft = GeneratePortfolioTransactions(_portfolioOneScope, _portfolioCode,
-                transactionDate, quotePriceLeft, traderName);
+                transactionDate, quotePriceLeft, units, traderName);
             var valuationRequestRight = GeneratePortfolioTransactions(_portfolioTwoScope, _portfolioCode,
-                transactionDate, quotePriceRight, traderName);
+                transactionDate, quotePriceRight, units, traderName);
 
             // Set the mapping between properties in the two portfolios. 
             var mapping = new ReconciliationLeftRightAddressKeyPair($"Transaction/{_portfolioOneScope}/TraderName",
@@ -164,7 +169,8 @@ namespace Lusid.Sdk.Tests.Tutorials.Ibor
             var reconciliationResponse = _apiFactory.Api<ReconciliationsApi>().ReconcileGeneric(reconciliation);
             var equityComparison = reconciliationResponse.Comparisons.Single();
 
-            // Assert that the reconciliation matched within tolerance for PV, and that the difference is the PV of the right hand portfolio minus the left hand portfolio 
+            // Assert that the reconciliation resulted in a match within tolerance for PV, and that the difference
+            // is the PV of the right hand portfolio minus the left hand portfolio 
             Assert.That(equityComparison.Difference["Valuation/PV"], Is.EqualTo(50));
             Assert.That(equityComparison.ResultComparison["Valuation/PV"].ToString(),
                 Is.EqualTo("MatchWithinTolerance"));
@@ -183,14 +189,15 @@ namespace Lusid.Sdk.Tests.Tutorials.Ibor
             // The two portfolios disagree about the quote price.
             var quotePriceLeft = 105m;
             var quotePriceRight = 100m;
+            var units = "GBP";
             var transactionDate = new DateTimeOffset(2022, 2, 1, 0, 0, 0, TimeSpan.Zero); // date of transaction
             var traderName = "John Doe";
 
             // Generate two portfolios and their valuation requests.
             var valuationRequestLeft = GeneratePortfolioTransactions(_portfolioOneScope, _portfolioCode,
-                transactionDate, quotePriceLeft, traderName);
+                transactionDate, quotePriceLeft, units, traderName);
             var valuationRequestRight = GeneratePortfolioTransactions(_portfolioTwoScope, _portfolioCode,
-                transactionDate, quotePriceRight, traderName);
+                transactionDate, quotePriceRight, units, traderName);
 
             // Set the mapping between properties in the two portfolios. 
             var mapping = new ReconciliationLeftRightAddressKeyPair($"Transaction/{_portfolioOneScope}/TraderName",
@@ -209,7 +216,8 @@ namespace Lusid.Sdk.Tests.Tutorials.Ibor
             var reconciliationResponse = _apiFactory.Api<ReconciliationsApi>().ReconcileGeneric(reconciliation);
             var equityComparison = reconciliationResponse.Comparisons.Single();
 
-            // Assert that the reconciliation matches within tolerance for PV, and that the difference is the PV of the right hand portfolio minus the left hand portfolio 
+            // Assert that the reconciliation matches within tolerance for PV, and that the difference
+            // is the PV of the right hand portfolio minus the left hand portfolio 
             Assert.That(equityComparison.Difference["Valuation/PV"], Is.LessThan(0.05));
             Assert.That(equityComparison.ResultComparison["Valuation/PV"].ToString(),
                 Is.EqualTo("MatchWithinTolerance"));
@@ -227,14 +235,15 @@ namespace Lusid.Sdk.Tests.Tutorials.Ibor
         public void Numeric_ResultsVersusDecimals()
         {
             var quotePrice = 101;
+            var units = "GBP";
             var transactionDate = new DateTimeOffset(2022, 2, 1, 0, 0, 0, TimeSpan.Zero);
             var traderName = "John Doe";
 
             // Generate two portfolios and their valuation requests.
             var valuationRequestLeft = GeneratePortfolioTransactions(_portfolioOneScope, _portfolioCode,
-                transactionDate, quotePrice, traderName);
+                transactionDate, quotePrice, units, traderName);
             var valuationRequestRight = GeneratePortfolioTransactions(_portfolioTwoScope, _portfolioCode,
-                transactionDate, quotePrice, traderName, true);
+                transactionDate, quotePrice, units, traderName, true);
 
             // Set the mapping between properties in the two portfolios. 
             var mapping = new ReconciliationLeftRightAddressKeyPair($"Transaction/{_portfolioOneScope}/TraderName",
@@ -250,8 +259,8 @@ namespace Lusid.Sdk.Tests.Tutorials.Ibor
             var reconciliationResponse = _apiFactory.Api<ReconciliationsApi>().ReconcileGeneric(reconciliation);
             var equityComparison = reconciliationResponse.Comparisons.Single();
 
-            // Even though the values are identical we get a failed result by default. This is due to the Result0D and decimal 
-            // not actually being equivalent.
+            // Even though the values are identical we get a fail to match result by default.
+            // This is due to the Result0D and decimal having different units (GBP vs no units).
             Assert.That(equityComparison.Left["Valuation/PV"],
                 Is.EqualTo(equityComparison.Right["UnitResult/ClientCustomPV"]));
             Assert.That(equityComparison.Difference["UnitResult/ClientCustomPV"], Is.EqualTo(0.0));
@@ -271,13 +280,58 @@ namespace Lusid.Sdk.Tests.Tutorials.Ibor
             reconciliationResponse = _apiFactory.Api<ReconciliationsApi>().ReconcileGeneric(reconciliation);
             equityComparison = reconciliationResponse.Comparisons.Single();
 
-            // Even though the values are identical we get a failed result by default. This is due to the Result0D and decimal 
-            // not actually being equivilent.
+            // With a numeric tolerance rule we no longer get a failed to match result and instead get a 
+            // match within tolerance.
             Assert.That(equityComparison.Left["Valuation/PV"],
                 Is.EqualTo(equityComparison.Right["UnitResult/ClientCustomPV"]));
             Assert.That(equityComparison.Difference["UnitResult/ClientCustomPV"], Is.EqualTo(0.0));
             Assert.That(equityComparison.ResultComparison["UnitResult/ClientCustomPV"],
                 Is.EqualTo("MatchWithinTolerance"));
+        }
+
+        /// <summary>
+        /// In addition to comparing Results with and without units the numeric difference rules allow
+        /// for matching across result types with different units. For example two PVs which are £100 and $101 will
+        /// return a MatchWithinTolerance when employing an absolute difference rule with a tolerance of 2.
+        /// This arises due to the reconciliation engine internally casting to decimals. This may change in future to
+        /// allow for tolerant matching to retain units. 
+        /// </summary>
+        [Test]
+        public void Numeric_DifferenceUnits()
+        {
+            var quotePrice = 101;
+            var unitsOne = "GBP";
+            var unitsTwo = "USD";
+            var transactionDate = new DateTimeOffset(2022, 2, 1, 0, 0, 0, TimeSpan.Zero);
+            var traderName = "John Doe";
+
+            // Generate two portfolios and their valuation requests.
+            var valuationRequestLeft = GeneratePortfolioTransactions(_portfolioOneScope, _portfolioCode,
+                transactionDate, quotePrice, unitsOne, traderName);
+            var valuationRequestRight = GeneratePortfolioTransactions(_portfolioTwoScope, _portfolioCode,
+                transactionDate, quotePrice, unitsTwo, traderName);
+
+            // Set the mapping between properties in the two portfolios. 
+            var mapping = new ReconciliationLeftRightAddressKeyPair($"Transaction/{_portfolioOneScope}/TraderName",
+                $"Transaction/{_portfolioTwoScope}/TraderName");
+
+            // This can be handled by the introduction of a numeric tolerance comparison rule.
+            var numericRule = new ReconcileNumericRule(ReconcileNumericRule.ComparisonTypeEnum.AbsoluteDifference, 2m,
+                new AggregateSpec("Valuation/PV", AggregateSpec.OpEnum.Value));
+            
+            // create the reconciliation request
+            var reconciliation = new ReconciliationRequest(valuationRequestLeft, valuationRequestRight,
+                new List<ReconciliationLeftRightAddressKeyPair>() {mapping}, new List<ReconciliationRule>(){numericRule},
+                new List<string>() {TestDataUtilities.InstrumentName});
+            var reconciliationResponse = _apiFactory.Api<ReconciliationsApi>().ReconcileGeneric(reconciliation);
+            var equityComparison = reconciliationResponse.Comparisons.Single();
+
+            // The valuations were in GBP and USD respectively but can return a MatchWithinTolerance if a numeric difference rule is used
+            // as this ignores units.
+            Assert.That(equityComparison.Left["Valuation/PV"],
+                Is.EqualTo(equityComparison.Right["Valuation/PV"]));
+            Assert.That(equityComparison.Difference["Valuation/PV"], Is.EqualTo(0.0));
+            Assert.That(equityComparison.ResultComparison["Valuation/PV"], Is.EqualTo("MatchWithinTolerance")); 
         }
 
         /// <summary>
@@ -291,6 +345,7 @@ namespace Lusid.Sdk.Tests.Tutorials.Ibor
         public void DateTime_AbsoluteDifference()
         {
             var quotePrice = 100m;
+            var units = "GBP";
             // Two valuations an hour apart
             var valuationDateLeft =
                 new DateTimeOffset(2022, 2, 1, 0, 0, 0, TimeSpan.Zero); // datetime of transaction in portfolio one
@@ -300,9 +355,9 @@ namespace Lusid.Sdk.Tests.Tutorials.Ibor
 
             // Generate two portfolios and their valuation requests.
             var valuationRequestLeft = GeneratePortfolioTransactions(_portfolioOneScope, _portfolioCode,
-                valuationDateLeft, quotePrice, traderName, true);
+                valuationDateLeft, quotePrice, units, traderName, true);
             var valuationRequestRight = GeneratePortfolioTransactions(_portfolioTwoScope, _portfolioCode,
-                valuationDateRight, quotePrice, traderName, true);
+                valuationDateRight, quotePrice, units, traderName, true);
 
             // Set the mapping between properties in the two portfolios. 
             var mapping = new ReconciliationLeftRightAddressKeyPair($"Transaction/{_portfolioOneScope}/TraderName",
@@ -339,6 +394,7 @@ namespace Lusid.Sdk.Tests.Tutorials.Ibor
         public void String_Contains()
         {
             var quotePrice = 100m;
+            var units = "GBP";
             var transactionDate = new DateTimeOffset(2022, 2, 1, 0, 0, 0, TimeSpan.Zero); // date of transaction
             // disagree about trader name
             var traderNameLeft = "Mr. John Doe";
@@ -346,9 +402,9 @@ namespace Lusid.Sdk.Tests.Tutorials.Ibor
 
             // Generate two portfolios and their valuation requests.
             var valuationRequestLeft = GeneratePortfolioTransactions(_portfolioOneScope, _portfolioCode,
-                transactionDate, quotePrice, traderNameLeft, true);
+                transactionDate, quotePrice, units, traderNameLeft, true);
             var valuationRequestRight = GeneratePortfolioTransactions(_portfolioTwoScope, _portfolioCode,
-                transactionDate, quotePrice, traderNameRight, true);
+                transactionDate, quotePrice, units, traderNameRight, true);
 
             // Set the matching rules to use for each of the requested aggregates. Initially let this be the default values.
             var rules = new List<ReconciliationRule>();
@@ -364,7 +420,8 @@ namespace Lusid.Sdk.Tests.Tutorials.Ibor
             var reconciliationResponse = _apiFactory.Api<ReconciliationsApi>().ReconcileGeneric(reconciliation);
             var equityComparison = reconciliationResponse.Comparisons.Single();
 
-            // Assert that the reconciliation failed for the trader name property, and that the difference is formatted correctly 
+            // Assert that the reconciliation resulted in a failed match between the trader name property
+            // and that the difference is formatted correctly.
             Assert.That(equityComparison.Difference[$"Transaction/{_portfolioTwoScope}/TraderName"],
                 Is.EqualTo($"-({traderNameLeft}, {traderNameRight})"));
             Assert.That(equityComparison.ResultComparison[$"Transaction/{_portfolioTwoScope}/TraderName"].ToString(),
@@ -385,15 +442,16 @@ namespace Lusid.Sdk.Tests.Tutorials.Ibor
             reconciliationResponse = _apiFactory.Api<ReconciliationsApi>().ReconcileGeneric(reconciliation);
             equityComparison = reconciliationResponse.Comparisons.Single();
 
-            // Assert that the reconciliation failed for the trader name property, and that the difference is formatted correctly 
+            // Assert that the reconciliation resulted in a match within tolerance for the trader name property
+            // and that the difference is formatted correctly.
             Assert.That(equityComparison.Difference[$"Transaction/{_portfolioTwoScope}/TraderName"],
                 Is.EqualTo($"{traderNameLeft} contains {traderNameRight}"));
             Assert.That(equityComparison.ResultComparison[$"Transaction/{_portfolioTwoScope}/TraderName"].ToString(),
                 Is.EqualTo("MatchWithinTolerance"));
 
-            // The contain rule only works for the case where the left-hand portfolio value contains the right-hand side value
-            // create the new reconciliation request with a "Contains" criteria
-
+            // The contain rule only works for the case where the left-hand portfolio result contains the right-hand side result. 
+            // If instead we create a new reconciliation request with a "Contains" criteria reversed. I.e, ask 
+            // if "John Doe" contains "Mr John Doe".
             var swappedMapping = new ReconciliationLeftRightAddressKeyPair(
                 $"Transaction/{_portfolioTwoScope}/TraderName",
                 $"Transaction/{_portfolioOneScope}/TraderName");
@@ -404,7 +462,7 @@ namespace Lusid.Sdk.Tests.Tutorials.Ibor
             reconciliationResponse = _apiFactory.Api<ReconciliationsApi>().ReconcileGeneric(reconciliation);
             equityComparison = reconciliationResponse.Comparisons.Single();
 
-            // When swapping the portfolios for valuation, the Contain fails as John Doe does not contain Mr. John Doe
+            // The reconciliation results in a failed match because John Doe does not contain Mr. John Doe
             Assert.That(equityComparison.Difference[$"Transaction/{_portfolioOneScope}/TraderName"],
                 Is.EqualTo($"-({traderNameRight}, {traderNameLeft})"));
             Assert.That(equityComparison.ResultComparison[$"Transaction/{_portfolioOneScope}/TraderName"].ToString(),
@@ -421,6 +479,7 @@ namespace Lusid.Sdk.Tests.Tutorials.Ibor
         public void String_IsOneOf()
         {
             var quotePrice = 100m;
+            var units = "GBP";
             var transactionDate = new DateTimeOffset(2022, 2, 1, 0, 0, 0, TimeSpan.Zero); // date of transaction
             // disagree about trader name
             var traderNameLeft = "John Doe";
@@ -428,9 +487,9 @@ namespace Lusid.Sdk.Tests.Tutorials.Ibor
 
             // Generate two portfolios and their valuation requests.
             var valuationRequestLeft = GeneratePortfolioTransactions(_portfolioOneScope, _portfolioCode,
-                transactionDate, quotePrice, traderNameLeft, true);
+                transactionDate, quotePrice, units, traderNameLeft, true);
             var valuationRequestRight = GeneratePortfolioTransactions(_portfolioTwoScope, _portfolioCode,
-                transactionDate, quotePrice, traderNameRight, true);
+                transactionDate, quotePrice, units, traderNameRight, true);
 
             // Set the matching rules to use for each of the requested aggregates. 
             // Allow "John Doe" in the lhs to successfully match "Mr. John Doe", "J. Doe" or "Mr. Doe" in the rhs.
@@ -469,6 +528,7 @@ namespace Lusid.Sdk.Tests.Tutorials.Ibor
         public void String_ContainsAllCase()
         {
             var quotePrice = 100m;
+            var units = "GBP";
             var transactionDate = new DateTimeOffset(2022, 2, 1, 0, 0, 0, TimeSpan.Zero); // date of transaction
             // portfolios disagree but rhs is a substring of lhs if case is ignored.
             var traderNameLeft = "Mr. John Doe";
@@ -476,9 +536,9 @@ namespace Lusid.Sdk.Tests.Tutorials.Ibor
 
             // Generate two portfolios and their valuation requests.
             var valuationRequestLeft = GeneratePortfolioTransactions(_portfolioOneScope, _portfolioCode,
-                transactionDate, quotePrice, traderNameLeft, true);
+                transactionDate, quotePrice, units, traderNameLeft, true);
             var valuationRequestRight = GeneratePortfolioTransactions(_portfolioTwoScope, _portfolioCode,
-                transactionDate, quotePrice, traderNameRight, true);
+                transactionDate, quotePrice, units, traderNameRight, true);
 
             // Set the matching rules to use for each of the requested aggregates. Initially let this be the default values.
             var containsRule = new ReconcileStringRule(ReconcileStringRule.ComparisonTypeEnum.ContainsAnyCase, null,
@@ -497,7 +557,8 @@ namespace Lusid.Sdk.Tests.Tutorials.Ibor
             var reconciliationResponse = _apiFactory.Api<ReconciliationsApi>().ReconcileGeneric(reconciliation);
             var equityComparison = reconciliationResponse.Comparisons.Single();
 
-            // Assert that the reconciliation succeeds within tolerance for the trader name property, and that the difference is formatted correctly 
+            // Assert that the reconciliation succeeds within tolerance for the trader name property
+            // and that the difference is formatted correctly 
             Assert.That(equityComparison.Difference[$"Transaction/{_portfolioTwoScope}/TraderName"],
                 Is.EqualTo($"{traderNameLeft} contains {traderNameRight}"));
             Assert.That(equityComparison.ResultComparison[$"Transaction/{_portfolioTwoScope}/TraderName"].ToString(),
@@ -513,6 +574,7 @@ namespace Lusid.Sdk.Tests.Tutorials.Ibor
         public void String_CaseInsensitive()
         {
             var quotePrice = 100m;
+            var units = "GBP";
             var transactionDate = new DateTimeOffset(2022, 2, 1, 0, 0, 0, TimeSpan.Zero); // date of transaction
             // The two portfolios disagree because of the case.
             var traderNameLeft = "John Doe";
@@ -520,9 +582,9 @@ namespace Lusid.Sdk.Tests.Tutorials.Ibor
 
             // Generate two portfolios and their valuation requests.
             var valuationRequestLeft = GeneratePortfolioTransactions(_portfolioOneScope, _portfolioCode,
-                transactionDate, quotePrice, traderNameLeft, true);
+                transactionDate, quotePrice, units, traderNameLeft, true);
             var valuationRequestRight = GeneratePortfolioTransactions(_portfolioTwoScope, _portfolioCode,
-                transactionDate, quotePrice, traderNameRight, true);
+                transactionDate, quotePrice, units, traderNameRight, true);
 
             // Set the matching rules to use for each of the requested aggregates. Initially let this be the default values.
             var containsRule = new ReconcileStringRule(ReconcileStringRule.ComparisonTypeEnum.CaseInsensitive, null,
@@ -541,7 +603,8 @@ namespace Lusid.Sdk.Tests.Tutorials.Ibor
             var reconciliationResponse = _apiFactory.Api<ReconciliationsApi>().ReconcileGeneric(reconciliation);
             var equityComparison = reconciliationResponse.Comparisons.Single();
 
-            // Assert that the reconciliation succeeds within tolerance for the trader name property, and that the difference is formatted correctly 
+            // Assert that the reconciliation succeeds within tolerance for the trader name property
+            // and that the difference is formatted correctly 
             Assert.That(equityComparison.Difference[$"Transaction/{_portfolioTwoScope}/TraderName"],
                 Is.EqualTo($"{traderNameLeft}=={traderNameRight}"));
             Assert.That(equityComparison.ResultComparison[$"Transaction/{_portfolioTwoScope}/TraderName"].ToString(),
@@ -552,7 +615,8 @@ namespace Lusid.Sdk.Tests.Tutorials.Ibor
         /// We are going to construct a simple portfolio with a single equity for demonstrating the capabilities of the reconciliation engine.
         /// This consists of a single equity whose value on a given valuation date is upserted.
         /// The quote price is a provided price for the value of the equity on the valuation date.
-        /// The trader name is a subholding key for the portfolio and has a portfolio specific address key.
+        /// Units are also provided for the currency of the quote.
+        /// The trader name is a sub-holding key for the portfolio and has a portfolio specific address key.
         /// The upsertedUnitlessPv bool controls whether the valuation request will
         /// ask for the PV to be returned as "Valuation/PV" as Result0D (x, GBP) or as a Decimal x without units.
         /// </summary>
@@ -560,10 +624,11 @@ namespace Lusid.Sdk.Tests.Tutorials.Ibor
         /// <param name="code"> the code of the portfolio </param>
         /// <param name="valuationDate"> Date on which the valuation is performed </param>
         /// <param name="quotePrice"> The price quote for the equity</param>
+        /// <param name="units"> Units used for purchase and quoting of the instrument </param>
         /// <param name="traderName"> The name of the trader who booked the transactions.</param>
         /// <param name="upsertedUnitlessPv"> If this is true the provided PV value is upserted to the SRS as a decimal</param>
         private ValuationRequest GeneratePortfolioTransactions(string scope, string code,
-            DateTimeOffset valuationDate, decimal quotePrice, string traderName,
+            DateTimeOffset valuationDate, decimal quotePrice, string units, string traderName,
             bool upsertedUnitlessPv = false)
         {
             // Create a new property on the transactions for who booked them. 
@@ -602,7 +667,7 @@ namespace Lusid.Sdk.Tests.Tutorials.Ibor
             var portfolioRequest = new CreateTransactionPortfolioRequest(
                 code: _portfolioCode,
                 displayName: $"Portfolio-{_portfolioCode}",
-                baseCurrency: "GBP",
+                baseCurrency: units,
                 created: _effectiveAt,
                 subHoldingKeys: new List<string>() {$"Transaction/{scope}/{propertyCode}"}
             );
@@ -624,10 +689,10 @@ namespace Lusid.Sdk.Tests.Tutorials.Ibor
                 {traderNameKey, new PerpetualProperty(traderNameKey, new PropertyValue(traderName))}
             };
             var newTransactions = transactionSpecs.Select(id =>
-                BuildTransactionRequest(id.Id, id.Units, id.Price, "GBP", id.TradeDate, "Buy", properties));
+                BuildTransactionRequest(id.Id, id.Units, id.Price, units, id.TradeDate, "Buy", properties));
             _apiFactory.Api<ITransactionPortfoliosApi>().UpsertTransactions(scope, code, newTransactions.ToList());
 
-            // create and upsert quotes for the price of these instruments 
+            // create and upsert quotes for the price of the instrument 
             var quoteScope = Guid.NewGuid().ToString();
             var quote = new UpsertQuoteRequest(
                 new QuoteId(
@@ -641,7 +706,7 @@ namespace Lusid.Sdk.Tests.Tutorials.Ibor
                 ),
                 metricValue: new MetricValue(
                     value: quotePrice,
-                    unit: "GBP"
+                    unit: units 
                 )
             );
             //    Upload the quote
@@ -737,7 +802,10 @@ namespace Lusid.Sdk.Tests.Tutorials.Ibor
             return valuationRequest;
         }
 
-        public static TransactionRequest BuildTransactionRequest(
+        /// <summary>
+        /// Create a request to book transaction on an instrument.
+        /// </summary>
+        private static TransactionRequest BuildTransactionRequest(
             string instrumentId,
             decimal units,
             decimal price,
