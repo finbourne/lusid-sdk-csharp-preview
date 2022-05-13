@@ -724,7 +724,7 @@ namespace Lusid.Sdk.Tests.Utilities
         private static InterestRateSwap CreateExampleBasisSwap()
         {
             // construct a 3M LIBOR leg (with a spread)
-            var flow3M = CreateExampleFlowConventions(currency: "USD", paymentFrequency: "3M", rollConvention: "MF", dayCount: "Act365", settleDays: 2, resetDays: 2);
+            var flow3M = CreateExampleFlowConventions(currency: "USD", paymentFrequency: "3M", rollConvention: "MF", dayCount: "Act360", settleDays: 2, resetDays: 2);
             var index3M = CreateExampleIndexConventions(currency: "USD", indexName: "LIBOR", tenor: "3M", dayCount: "Act365", fixingRef: TestDataUtilities.VanillaSwapFixingReference);
             var leg3M = CreateExampleFloatLeg(startDate: TestDataUtilities.StartDate,
                 maturityDate: TestDataUtilities.StartDate.AddYears(5),
@@ -738,7 +738,7 @@ namespace Lusid.Sdk.Tests.Utilities
                 compounding: null);
 
             // construct a 6M LIBOR leg
-            var flow6M = CreateExampleFlowConventions(currency: "USD", paymentFrequency: "6M", rollConvention: "MF", dayCount: "Act365", settleDays: 2, resetDays: 2);
+            var flow6M = CreateExampleFlowConventions(currency: "USD", paymentFrequency: "6M", rollConvention: "MF", dayCount: "Act360", settleDays: 2, resetDays: 2);
             var index6M = CreateExampleIndexConventions(currency: "USD", indexName: "LIBOR", tenor: "6M", dayCount: "Act365", fixingRef: TestDataUtilities.AlternateSwapFixingReference);
             var leg6M = CreateExampleFloatLeg(startDate: TestDataUtilities.StartDate,
                 maturityDate: TestDataUtilities.StartDate.AddYears(5),
@@ -771,8 +771,8 @@ namespace Lusid.Sdk.Tests.Utilities
         private static InterestRateSwap CreateExampleCrossCurrencyBasisSwap()
         {
             // construct a leg that pays USD 3M LIBOR interest -- thus in this swap we are borrowing USD
-            var flowUSD = CreateExampleFlowConventions(currency: "USD", paymentFrequency: "3M", rollConvention: "MF", dayCount: "Act365", settleDays: 2, resetDays: 2);
-            var indexUSD = CreateExampleIndexConventions(currency: "USD", indexName: "LIBOR", tenor: "3M", dayCount: "Act365", fixingRef: TestDataUtilities.VanillaSwapFixingReference);
+            var flowUSD = CreateExampleFlowConventions(currency: "USD", paymentFrequency: "3M", rollConvention: "MF", dayCount: "Act360", settleDays: 2, resetDays: 2);
+            var indexUSD = CreateExampleIndexConventions(currency: "USD", indexName: "LIBOR", tenor: "3M", dayCount: "Act360", fixingRef: TestDataUtilities.VanillaSwapFixingReference);
             var legDefnUSD = new LegDefinition(conventions: flowUSD, indexConvention: indexUSD, notionalExchangeType: "Both", payReceive: "Pay", stubType: "Both");
 
             var legUSD = new FloatingLeg(startDate: TestDataUtilities.StartDate,
@@ -783,8 +783,8 @@ namespace Lusid.Sdk.Tests.Utilities
 
             // construct a leg that pays GBP 3M LIBOR interest -- thus in this swap we are lending GBP
             // this leg pays a spread known as the cross currency basis (typically negative due to higher demand for the dollar)
-            var flowGBP = CreateExampleFlowConventions(currency: "GBP", paymentFrequency: "3M", rollConvention: "MF", dayCount: "Act360", settleDays: 2, resetDays: 2);
-            var indexGBP = CreateExampleIndexConventions(currency: "GBP", indexName: "LIBOR", tenor: "3M", dayCount: "Act360", fixingRef: TestDataUtilities.AlternateSwapFixingReference);
+            var flowGBP = CreateExampleFlowConventions(currency: "GBP", paymentFrequency: "3M", rollConvention: "MF", dayCount: "Act365", settleDays: 2, resetDays: 2);
+            var indexGBP = CreateExampleIndexConventions(currency: "GBP", indexName: "LIBOR", tenor: "3M", dayCount: "Act365", fixingRef: TestDataUtilities.AlternateSwapFixingReference);
             var legDefnGBP = new LegDefinition(conventions: flowGBP, indexConvention: indexGBP, notionalExchangeType: "Both", payReceive: "Receive", rateOrSpread: -0.001m, stubType: "Both");
 
             var legGBP = new FloatingLeg(startDate: TestDataUtilities.StartDate,

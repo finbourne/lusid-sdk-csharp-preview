@@ -14,7 +14,6 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
         /// <inheritdoc />
         protected override void CreateAndUpsertMarketDataToLusid(string scope, ModelSelection.ModelEnum model, LusidInstrument instrument)
         {
-            // The price of a swap is determined by the price of the fixed leg and floating leg.
             // The price of a floating leg is determined by historic resets rates and projected rates.
             // In this method, we upsert reset rates.
             // For LUSID to pick up these quotes, we have added a RIC rule to the recipe (see BuildRecipeRequest in TestDataUtilities.cs) 
@@ -28,7 +27,7 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
             Dictionary<string, UpsertQuoteRequest> resetRequests = new Dictionary<string, UpsertQuoteRequest>();
 
             // provide resets for each floating leg, with id equal to the fixing reference that the leg will request
-            for (int i = 0; i < fixingRefs.Count(); i++)
+            for (int i = 0; i < fixingRefs.Count; i++)
             {
                 var fixingRef = fixingRefs[i];
                 TestDataUtilities.BuildQuoteRequest(
@@ -88,7 +87,7 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
             var cashflows = _transactionPortfoliosApi.GetPortfolioCashFlows(
                 scope: scope,
                 code: portfolioCode,
-                effectiveAt: TestDataUtilities.EffectiveAt.AddYears(3),
+                effectiveAt: TestDataUtilities.EffectiveAt,
                 windowStart: swap.StartDate.AddDays(-3),
                 windowEnd: swap.MaturityDate.AddDays(3),
                 asAt:null,
