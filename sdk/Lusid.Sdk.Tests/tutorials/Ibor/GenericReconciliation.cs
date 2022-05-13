@@ -311,6 +311,7 @@ namespace Lusid.Sdk.Tests.Tutorials.Ibor
         /// This arises due to the reconciliation engine internally casting to decimals. This may change in future to
         /// allow for tolerant matching to retain units. 
         /// </summary>
+        [LusidFeature("F20-7")]
         [Test]
         public void Reconcile_Numeric_Values_With_Different_Units()
         {
@@ -359,7 +360,7 @@ namespace Lusid.Sdk.Tests.Tutorials.Ibor
         /// For sub-day tolerances fractional values may be input. In this example two valuation datetimes an hour apart
         /// are successfully reconciled within a tolerance of 2 hours.
         /// </summary>
-        [LusidFeature("F20-7")]
+        [LusidFeature("F20-8")]
         [Test]
         public void Reconcile_Using_DateTime_AbsoluteDifference_Rule()
         {
@@ -412,7 +413,7 @@ namespace Lusid.Sdk.Tests.Tutorials.Ibor
         /// on the right-hand portfolio. The string contains rule allows for these to be considered a match if the right portfolio result is a sub string of the left.
         /// </summary>
         [Test]
-        [LusidFeature("F20-8")]
+        [LusidFeature("F20-9")]
         public void Reconcile_Using_String_Contains_Rule()
         {
             var quotePrice = 100m;
@@ -500,7 +501,7 @@ namespace Lusid.Sdk.Tests.Tutorials.Ibor
         /// {last name} but a number of alternatives are possible. e.g. John Doe could be allowed to match any of Mr. John Doe, J. Doe, Mr. Doe.
         /// </summary>
         [Test]
-        [LusidFeature("F20-9")]
+        [LusidFeature("F20-10")]
         public void Reconcile_Using_String_IsOneOf_Rule()
         {
             var quotePrice = 100m;
@@ -552,7 +553,7 @@ namespace Lusid.Sdk.Tests.Tutorials.Ibor
         /// successful matching of Mr. John Doe on the lhs and JOHN DOE on the rhs. 
         /// </summary>
         [Test]
-        [LusidFeature("F20-10")]
+        [LusidFeature("F20-11")]
         public void Reconcile_Using_String_ContainsAllCase_Rule()
         {
             var quotePrice = 100m;
@@ -600,7 +601,7 @@ namespace Lusid.Sdk.Tests.Tutorials.Ibor
         /// The case insensitive rule allows strings to reconcile when they only disagree on case. The example here demonstrates this
         /// for "John Doe" and "john doe".
         /// </summary>
-        [LusidFeature("F20-11")]
+        [LusidFeature("F20-12")]
         [Test]
         public void Reconcile_Using_String_CaseInsensitive_Rule()
         {
