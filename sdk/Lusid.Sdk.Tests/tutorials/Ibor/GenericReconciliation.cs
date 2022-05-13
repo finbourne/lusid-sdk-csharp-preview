@@ -36,14 +36,17 @@ namespace Lusid.Sdk.Tests.Tutorials.Ibor
         /// </summary>
         [LusidFeature("F20-2")]
         [Test]
-        public void RemappingProperties()
+        public void Reconcile_By_Remapping_Properties()
         {
             var quotePrice = 105m;
             var units = "GBP";
             var transactionDate = new DateTimeOffset(2022, 2, 1, 0, 0, 0, TimeSpan.Zero); // date of transaction
             var traderName = "John Doe";
 
-            // Generate two identical portfolios
+            // Generate two identical portfolios.
+            // Calling a helper function which generates a valuation request on a
+            // portfolio containing a single equity valued at the quote price with the provided units on the 
+            // transaction date. 
             var valuationRequestOne = GeneratePortfolioTransactions(_portfolioOneScope, _portfolioCode, transactionDate,
                 quotePrice, units, traderName);
             var valuationRequestTwo = GeneratePortfolioTransactions(_portfolioTwoScope, _portfolioCode, transactionDate,
@@ -95,7 +98,7 @@ namespace Lusid.Sdk.Tests.Tutorials.Ibor
         /// </summary>
         [LusidFeature("F20-3")]
         [Test]
-        public void Numeric_Exact()
+        public void Reconcile_using_Numeric_Exact_Rule()
         {
             // The two portfolios disagree about the quote price.
             var quotePriceLeft = 105m;
@@ -104,7 +107,10 @@ namespace Lusid.Sdk.Tests.Tutorials.Ibor
             var transactionDate = new DateTimeOffset(2022, 2, 1, 0, 0, 0, TimeSpan.Zero); // date of transaction
             var traderName = "John Doe";
 
-            // Generate two portfolios and their valuation requests.
+            // Create two portfolios and their valuation requests with different quote prices.
+            // Calling a helper function which generates a valuation request on a
+            // portfolio containing a single equity valued at the quote price with the provided units on the 
+            // transaction date. 
             var valuationRequestLeft = GeneratePortfolioTransactions(_portfolioOneScope, _portfolioCode,
                 transactionDate, quotePriceLeft, units, traderName);
             var valuationRequestRight = GeneratePortfolioTransactions(_portfolioTwoScope, _portfolioCode,
@@ -137,7 +143,7 @@ namespace Lusid.Sdk.Tests.Tutorials.Ibor
         /// </summary>
         [LusidFeature("F20-4")]
         [Test]
-        public void Numeric_AbsoluteDifference()
+        public void Reconcile_Using_Numeric_AbsoluteDifference_Rule()
         {
             // The two portfolios disagree about the quote price.
             var quotePriceLeft = 105m;
@@ -146,7 +152,10 @@ namespace Lusid.Sdk.Tests.Tutorials.Ibor
             var transactionDate = new DateTimeOffset(2022, 2, 1, 0, 0, 0, TimeSpan.Zero); // date of transaction
             var traderName = "John Doe";
 
-            // Generate two portfolios and their valuation requests.
+            // Generate two portfolios and their valuation requests with different quote prices.
+            // Calling a helper function which generates a valuation request on a
+            // portfolio containing a single equity valued at the quote price with the provided units on the 
+            // transaction date. 
             var valuationRequestLeft = GeneratePortfolioTransactions(_portfolioOneScope, _portfolioCode,
                 transactionDate, quotePriceLeft, units, traderName);
             var valuationRequestRight = GeneratePortfolioTransactions(_portfolioTwoScope, _portfolioCode,
@@ -184,7 +193,7 @@ namespace Lusid.Sdk.Tests.Tutorials.Ibor
         /// </summary>
         [LusidFeature("F20-5")]
         [Test]
-        public void Numeric_RelativeDifference()
+        public void Reconcile_using_Numeric_RelativeDifference_Rule()
         {
             // The two portfolios disagree about the quote price.
             var quotePriceLeft = 105m;
@@ -193,7 +202,10 @@ namespace Lusid.Sdk.Tests.Tutorials.Ibor
             var transactionDate = new DateTimeOffset(2022, 2, 1, 0, 0, 0, TimeSpan.Zero); // date of transaction
             var traderName = "John Doe";
 
-            // Generate two portfolios and their valuation requests.
+            // Generate two portfolios and their valuation requests with different quote prices.
+            // Calling a helper function which generates a valuation request on a
+            // portfolio containing a single equity valued at the quote price with the provided units on the 
+            // transaction date. 
             var valuationRequestLeft = GeneratePortfolioTransactions(_portfolioOneScope, _portfolioCode,
                 transactionDate, quotePriceLeft, units, traderName);
             var valuationRequestRight = GeneratePortfolioTransactions(_portfolioTwoScope, _portfolioCode,
@@ -232,14 +244,17 @@ namespace Lusid.Sdk.Tests.Tutorials.Ibor
         /// </summary>
         [LusidFeature("F20-6")]
         [Test]
-        public void Numeric_ResultsVersusDecimals()
+        public void Reconcile_Numeric_Result_With_Units_Versus_Without()
         {
             var quotePrice = 101;
             var units = "GBP";
             var transactionDate = new DateTimeOffset(2022, 2, 1, 0, 0, 0, TimeSpan.Zero);
             var traderName = "John Doe";
 
-            // Generate two portfolios and their valuation requests.
+            // Generate two portfolios and their valuation requests, one has a unitless PV upserted to the structured result store.
+            // Calling a helper function which generates a valuation request on a
+            // portfolio containing a single equity valued at the quote price with the provided units on the 
+            // transaction date. 
             var valuationRequestLeft = GeneratePortfolioTransactions(_portfolioOneScope, _portfolioCode,
                 transactionDate, quotePrice, units, traderName);
             var valuationRequestRight = GeneratePortfolioTransactions(_portfolioTwoScope, _portfolioCode,
@@ -296,16 +311,21 @@ namespace Lusid.Sdk.Tests.Tutorials.Ibor
         /// This arises due to the reconciliation engine internally casting to decimals. This may change in future to
         /// allow for tolerant matching to retain units. 
         /// </summary>
+        [LusidFeature("F20-6")]
         [Test]
-        public void Numeric_DifferenceUnits()
+        public void Reconcile_Numeric_Values_With_Different_Units()
         {
             var quotePrice = 101;
+            // Different units on the quote
             var unitsOne = "GBP";
             var unitsTwo = "USD";
             var transactionDate = new DateTimeOffset(2022, 2, 1, 0, 0, 0, TimeSpan.Zero);
             var traderName = "John Doe";
 
-            // Generate two portfolios and their valuation requests.
+            // Generate two portfolios and their valuation requests each has a quote in different units.
+            // Calling a helper function which generates a valuation request on a
+            // portfolio containing a single equity valued at the quote price with the provided units on the 
+            // transaction date. 
             var valuationRequestLeft = GeneratePortfolioTransactions(_portfolioOneScope, _portfolioCode,
                 transactionDate, quotePrice, unitsOne, traderName);
             var valuationRequestRight = GeneratePortfolioTransactions(_portfolioTwoScope, _portfolioCode,
@@ -342,7 +362,7 @@ namespace Lusid.Sdk.Tests.Tutorials.Ibor
         /// </summary>
         [LusidFeature("F20-7")]
         [Test]
-        public void DateTime_AbsoluteDifference()
+        public void Reconcile_Using_DateTime_AbsoluteDifference_Rule()
         {
             var quotePrice = 100m;
             var units = "GBP";
@@ -353,7 +373,10 @@ namespace Lusid.Sdk.Tests.Tutorials.Ibor
                 new DateTimeOffset(2022, 2, 1, 1, 0, 0, TimeSpan.Zero); // datetime of transaction in portfolio two
             var traderName = "John Doe";
 
-            // Generate two portfolios and their valuation requests.
+            // Generate two portfolios and their valuation requests each has a different valuation date.
+            // Calling a helper function which generates a valuation request on a
+            // portfolio containing a single equity valued at the quote price with the provided units on the 
+            // transaction date. 
             var valuationRequestLeft = GeneratePortfolioTransactions(_portfolioOneScope, _portfolioCode,
                 valuationDateLeft, quotePrice, units, traderName, true);
             var valuationRequestRight = GeneratePortfolioTransactions(_portfolioTwoScope, _portfolioCode,
@@ -391,7 +414,7 @@ namespace Lusid.Sdk.Tests.Tutorials.Ibor
         /// </summary>
         [Test]
         [LusidFeature("F20-8")]
-        public void String_Contains()
+        public void Reconcile_Using_String_Contains_Rule()
         {
             var quotePrice = 100m;
             var units = "GBP";
@@ -400,7 +423,10 @@ namespace Lusid.Sdk.Tests.Tutorials.Ibor
             var traderNameLeft = "Mr. John Doe";
             var traderNameRight = "John Doe";
 
-            // Generate two portfolios and their valuation requests.
+            // Generate two portfolios which contain a different trader name.
+            // Calling a helper function which generates a valuation request on a
+            // portfolio containing a single equity valued at the quote price with the provided units on the 
+            // transaction date. 
             var valuationRequestLeft = GeneratePortfolioTransactions(_portfolioOneScope, _portfolioCode,
                 transactionDate, quotePrice, units, traderNameLeft, true);
             var valuationRequestRight = GeneratePortfolioTransactions(_portfolioTwoScope, _portfolioCode,
@@ -476,7 +502,7 @@ namespace Lusid.Sdk.Tests.Tutorials.Ibor
         /// </summary>
         [Test]
         [LusidFeature("F20-9")]
-        public void String_IsOneOf()
+        public void Reconcile_Using_String_IsOneOf_Rule()
         {
             var quotePrice = 100m;
             var units = "GBP";
@@ -485,7 +511,10 @@ namespace Lusid.Sdk.Tests.Tutorials.Ibor
             var traderNameLeft = "John Doe";
             var traderNameRight = "J. Doe";
 
-            // Generate two portfolios and their valuation requests.
+            // Generate two portfolios which contain a different trader name.
+            // Calling a helper function which generates a valuation request on a
+            // portfolio containing a single equity valued at the quote price with the provided units on the 
+            // transaction date. 
             var valuationRequestLeft = GeneratePortfolioTransactions(_portfolioOneScope, _portfolioCode,
                 transactionDate, quotePrice, units, traderNameLeft, true);
             var valuationRequestRight = GeneratePortfolioTransactions(_portfolioTwoScope, _portfolioCode,
@@ -525,7 +554,7 @@ namespace Lusid.Sdk.Tests.Tutorials.Ibor
         /// </summary>
         [Test]
         [LusidFeature("F20-10")]
-        public void String_ContainsAllCase()
+        public void Reconcile_Using_String_ContainsAllCase_Rule()
         {
             var quotePrice = 100m;
             var units = "GBP";
@@ -534,7 +563,10 @@ namespace Lusid.Sdk.Tests.Tutorials.Ibor
             var traderNameLeft = "Mr. John Doe";
             var traderNameRight = "JOHN DOE";
 
-            // Generate two portfolios and their valuation requests.
+            // Generate two portfolios which contain a different trader name.
+            // Calling a helper function which generates a valuation request on a
+            // portfolio containing a single equity valued at the quote price with the provided units on the 
+            // transaction date. 
             var valuationRequestLeft = GeneratePortfolioTransactions(_portfolioOneScope, _portfolioCode,
                 transactionDate, quotePrice, units, traderNameLeft, true);
             var valuationRequestRight = GeneratePortfolioTransactions(_portfolioTwoScope, _portfolioCode,
@@ -571,7 +603,7 @@ namespace Lusid.Sdk.Tests.Tutorials.Ibor
         /// </summary>
         [LusidFeature("F20-11")]
         [Test]
-        public void String_CaseInsensitive()
+        public void Reconcile_Using_String_CaseInsensitive_Rule()
         {
             var quotePrice = 100m;
             var units = "GBP";
@@ -580,7 +612,10 @@ namespace Lusid.Sdk.Tests.Tutorials.Ibor
             var traderNameLeft = "John Doe";
             var traderNameRight = "john doe";
 
-            // Generate two portfolios and their valuation requests.
+            // Generate two portfolios which contain a different trader name.
+            // Calling a helper function which generates a valuation request on a
+            // portfolio containing a single equity valued at the quote price with the provided units on the 
+            // transaction date. 
             var valuationRequestLeft = GeneratePortfolioTransactions(_portfolioOneScope, _portfolioCode,
                 transactionDate, quotePrice, units, traderNameLeft, true);
             var valuationRequestRight = GeneratePortfolioTransactions(_portfolioTwoScope, _portfolioCode,
