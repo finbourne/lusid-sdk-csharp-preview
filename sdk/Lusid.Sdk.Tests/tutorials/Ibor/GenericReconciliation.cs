@@ -32,7 +32,7 @@ namespace Lusid.Sdk.Tests.Tutorials.Ibor
         /// Perform a reconciliation on two identical portfolios except for the Address Key for trader name being scope dependent.
         /// I.e., "Transaction/testPortfolio1/TraderName" = "John Doe" and "Transaction/testPortfolio2/TraderName" = "John Doe"
         /// Unless a mapping rule is provided between these two address keys in the reconciliation then both keys will appear
-        /// as failures in the aggregation.
+        /// as fail to match in the aggregation.
         /// </summary>
         [LusidFeature("F20-2")]
         [Test]
