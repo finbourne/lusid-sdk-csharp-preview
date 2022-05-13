@@ -311,7 +311,6 @@ namespace Lusid.Sdk.Tests.Tutorials.Ibor
         /// This arises due to the reconciliation engine internally casting to decimals. This may change in future to
         /// allow for tolerant matching to retain units. 
         /// </summary>
-        [LusidFeature("F20-6")]
         [Test]
         public void Reconcile_Numeric_Values_With_Different_Units()
         {
