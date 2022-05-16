@@ -1,20 +1,20 @@
 # Lusid.Sdk.Api.SequencesApi
 
-All URIs are relative to *https://fbn-prd.lusid.com/api*
+All URIs are relative to *http://local-unit-test-server.lusid.com:57999*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
-[**CreateSequence**](SequencesApi.md#createsequence) | **POST** /api/sequences/{scope} | [EXPERIMENTAL] CreateSequence: Create a new sequence
-[**GetSequence**](SequencesApi.md#getsequence) | **GET** /api/sequences/{scope}/{code} | [EXPERIMENTAL] GetSequence: Get a specified sequence
-[**ListSequences**](SequencesApi.md#listsequences) | **GET** /api/sequences | [EXPERIMENTAL] ListSequences: List Sequences
-[**Next**](SequencesApi.md#next) | **GET** /api/sequences/{scope}/{code}/next | [EXPERIMENTAL] Next: Get next values from sequence
+[**CreateSequence**](SequencesApi.md#createsequence) | **POST** /api/sequences/{scope} | [EARLY ACCESS] CreateSequence: Create a new sequence
+[**GetSequence**](SequencesApi.md#getsequence) | **GET** /api/sequences/{scope}/{code} | [EARLY ACCESS] GetSequence: Get a specified sequence
+[**ListSequences**](SequencesApi.md#listsequences) | **GET** /api/sequences | [EARLY ACCESS] ListSequences: List Sequences
+[**Next**](SequencesApi.md#next) | **GET** /api/sequences/{scope}/{code}/next | [EARLY ACCESS] Next: Get next values from sequence
 
 
 <a name="createsequence"></a>
 # **CreateSequence**
 > SequenceDefinition CreateSequence (string scope, CreateSequenceRequest createSequenceRequest)
 
-[EXPERIMENTAL] CreateSequence: Create a new sequence
+[EARLY ACCESS] CreateSequence: Create a new sequence
 
 Create a new sequence
 
@@ -33,7 +33,7 @@ namespace Example
         public static void Main()
         {
             Configuration config = new Configuration();
-            config.BasePath = "https://fbn-prd.lusid.com/api";
+            config.BasePath = "http://local-unit-test-server.lusid.com:57999";
             // Configure OAuth2 access token for authorization: oauth2
             config.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -43,7 +43,7 @@ namespace Example
 
             try
             {
-                // [EXPERIMENTAL] CreateSequence: Create a new sequence
+                // [EARLY ACCESS] CreateSequence: Create a new sequence
                 SequenceDefinition result = apiInstance.CreateSequence(scope, createSequenceRequest);
                 Debug.WriteLine(result);
             }
@@ -92,7 +92,7 @@ Name | Type | Description  | Notes
 # **GetSequence**
 > SequenceDefinition GetSequence (string scope, string code)
 
-[EXPERIMENTAL] GetSequence: Get a specified sequence
+[EARLY ACCESS] GetSequence: Get a specified sequence
 
 Return the details of a specified sequence
 
@@ -111,7 +111,7 @@ namespace Example
         public static void Main()
         {
             Configuration config = new Configuration();
-            config.BasePath = "https://fbn-prd.lusid.com/api";
+            config.BasePath = "http://local-unit-test-server.lusid.com:57999";
             // Configure OAuth2 access token for authorization: oauth2
             config.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -121,7 +121,7 @@ namespace Example
 
             try
             {
-                // [EXPERIMENTAL] GetSequence: Get a specified sequence
+                // [EARLY ACCESS] GetSequence: Get a specified sequence
                 SequenceDefinition result = apiInstance.GetSequence(scope, code);
                 Debug.WriteLine(result);
             }
@@ -170,7 +170,7 @@ Name | Type | Description  | Notes
 # **ListSequences**
 > PagedResourceListOfSequenceDefinition ListSequences (string page = null, int? limit = null, string filter = null)
 
-[EXPERIMENTAL] ListSequences: List Sequences
+[EARLY ACCESS] ListSequences: List Sequences
 
 List sequences which satisfies filtering criteria.
 
@@ -189,7 +189,7 @@ namespace Example
         public static void Main()
         {
             Configuration config = new Configuration();
-            config.BasePath = "https://fbn-prd.lusid.com/api";
+            config.BasePath = "http://local-unit-test-server.lusid.com:57999";
             // Configure OAuth2 access token for authorization: oauth2
             config.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -200,7 +200,7 @@ namespace Example
 
             try
             {
-                // [EXPERIMENTAL] ListSequences: List Sequences
+                // [EARLY ACCESS] ListSequences: List Sequences
                 PagedResourceListOfSequenceDefinition result = apiInstance.ListSequences(page, limit, filter);
                 Debug.WriteLine(result);
             }
@@ -250,7 +250,7 @@ Name | Type | Description  | Notes
 # **Next**
 > NextValueInSequenceResponse Next (string scope, string code, int? batch = null)
 
-[EXPERIMENTAL] Next: Get next values from sequence
+[EARLY ACCESS] Next: Get next values from sequence
 
 Get the next set of values from a specified sequence
 
@@ -269,7 +269,7 @@ namespace Example
         public static void Main()
         {
             Configuration config = new Configuration();
-            config.BasePath = "https://fbn-prd.lusid.com/api";
+            config.BasePath = "http://local-unit-test-server.lusid.com:57999";
             // Configure OAuth2 access token for authorization: oauth2
             config.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -280,7 +280,7 @@ namespace Example
 
             try
             {
-                // [EXPERIMENTAL] Next: Get next values from sequence
+                // [EARLY ACCESS] Next: Get next values from sequence
                 NextValueInSequenceResponse result = apiInstance.Next(scope, code, batch);
                 Debug.WriteLine(result);
             }
