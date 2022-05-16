@@ -419,5 +419,64 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
             _instrumentsApi.DeleteInstrument("ClientInternal", instrumentID);
             _portfoliosApi.DeletePortfolio(scope, portfolioCode);
         }
+
+        [Test]
+        public void BlackScholesSensitiviesForEquityOption()
+        {
+            var instrument = InstrumentExamples.CreateExampleEquityOption(isCashSettled: true);
+            var scope = Guid.NewGuid().ToString();
+            var model = ModelSelection.ModelEnum.BlackScholes;
+
+            // CREATE recipe to price the portfolio with
+            var recipeCode = CreateAndUpsertRecipe(scope, model);
+
+            // UPSERT market data sufficient to price the instrument
+            CreateAndUpsertMarketDataToLusid(scope, model, instrument);
+
+            // CREATE valuation request
+            var valuationSchedule = new ValuationSchedule(effectiveAt: TestDataUtilities.EffectiveAt);
+            var instruments = new List<WeightedInstrument> {new WeightedInstrument(1, "some-holding-identifier", instrument)};
+
+            // CONSTRUCT valuation request
+            var baseKeys = TestDataUtilities.ValuationSpec;
+            var deltaKey = "Valuation/Risk/SpotDelta";
+            var vegaKey = "Valuation/Risk/Vega";
+            var thetaKey = "Valuation/Risk/Theta";
+            var gammaKey = "Valuation/Risk/Gamma";
+            var vannaKey = "Valuation/Risk/Vanna";
+            var vommaKey = "Valuation/Risk/Vomma";
+            var sensitivityKeys = new List<AggregateSpec>
+            {
+                new AggregateSpec(deltaKey, AggregateSpec.OpEnum.Value),
+                new AggregateSpec(vegaKey, AggregateSpec.OpEnum.Value),
+                new AggregateSpec(thetaKey, AggregateSpec.OpEnum.Value),
+                new AggregateSpec(gammaKey, AggregateSpec.OpEnum.Value),
+                new AggregateSpec(vannaKey, AggregateSpec.OpEnum.Value),
+                new AggregateSpec(vommaKey, AggregateSpec.OpEnum.Value)
+            };
+            var requestedKeys = baseKeys.Concat(sensitivityKeys).ToList();
+            var inlineValuationRequest = new InlineValuationRequest(
+                recipeId: new ResourceId(scope, recipeCode),
+                metrics: requestedKeys,
+                sort: new List<OrderBySpec> {new OrderBySpec(TestDataUtilities.ValuationDateKey, OrderBySpec.SortOrderEnum.Ascending)},
+                valuationSchedule: valuationSchedule,
+                instruments: instruments);
+
+            // CALL LUSID's inline GetValuationOfWeightedInstruments endpoint
+            var result = _aggregationApi.GetValuationOfWeightedInstruments(inlineValuationRequest);
+            Assert.That(result, Is.Not.Null);
+            Assert.That(result.Data.Count, Is.GreaterThanOrEqualTo(1));
+
+            // CHECK values are populated for the supported greeks
+            var resultDict = result.Data[0];
+            Assert.That(resultDict[deltaKey], Is.GreaterThan(0));
+            Assert.That(resultDict[vegaKey], Is.GreaterThan(0));
+            Assert.That(resultDict[thetaKey], Is.LessThan(0));
+            Assert.That(resultDict[gammaKey], Is.Not.EqualTo(0));
+            Assert.That(resultDict[vannaKey], Is.Not.EqualTo(0));
+            Assert.That(resultDict[vommaKey], Is.Not.EqualTo(0));
+
+            _recipeApi.DeleteConfigurationRecipe(scope, recipeCode);
+        }
     }
 }
