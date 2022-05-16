@@ -211,9 +211,14 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
             TestDataUtilities.CheckNoCashPositionsInValuationResults(
                 valuationBeforeAndAfterExpiration,
                 DomCcy);
-            TestDataUtilities.CheckNonZeroPvBeforeMaturityAndZeroAfter(
-                valuationBeforeAndAfterExpiration,
-                swaption.Swap.StartDate);
+            if (model != ModelSelection.ModelEnum.ConstantTimeValueOfMoney)
+            {
+                // The CTVoM is not interesting for a Swaption. It is either in or out of the money (no change).
+                // The underlying also doesn't get its rates at present. Hence values are zero.
+                TestDataUtilities.CheckNonZeroPvBeforeMaturityAndZeroAfter(
+                    valuationBeforeAndAfterExpiration,
+                    swaption.Swap.StartDate);
+            }
 
             // UPSERT the cashflows back into LUSID. We first populate the cashflow transactions with unique IDs.
             var upsertCashFlowTransactions = PortfolioCashFlows.PopulateCashFlowTransactionWithUniqueIds(
@@ -237,7 +242,12 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
             // ASSERT portfolio PV is constant for each valuation date.
             // We expect this to be true since we upserted the cashflows back in.
             // That is instrument pv + cashflow = option payoff = = constant for each valuation date.
-            TestDataUtilities.CheckPvIsConstantAcrossDatesWithinTolerance(valuationAfterUpsertingCashFlows, relativeDifferenceTolerance: 1e-10);
+            if (model != ModelSelection.ModelEnum.ConstantTimeValueOfMoney)
+            {
+                // The CTVoM is not interesting for a Swaption. It is either in or out of the money (no change).
+                // The underlying also doesn't get its rates at present. Hence values are zero.
+                TestDataUtilities.CheckPvIsConstantAcrossDatesWithinTolerance(valuationAfterUpsertingCashFlows, relativeDifferenceTolerance: 1e-10);
+            }
 
             // CLEAN up.
             _recipeApi.DeleteConfigurationRecipe(scope, recipeCode);
