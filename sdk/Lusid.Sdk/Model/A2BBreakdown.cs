@@ -53,9 +53,9 @@ namespace Lusid.Sdk.Model
         public decimal Total { get; set; }
 
         /// <summary>
-        /// The currency. Applies to the Total, as well as all the componenents.
+        /// The currency. Applies to the Total, as well as all the components.
         /// </summary>
-        /// <value>The currency. Applies to the Total, as well as all the componenents.</value>
+        /// <value>The currency. Applies to the Total, as well as all the components.</value>
         [DataMember(Name = "currency", EmitDefaultValue = true)]
         public string Currency { get; set; }
 
@@ -110,16 +110,16 @@ namespace Lusid.Sdk.Model
             if (input == null)
                 return false;
 
-            return 
+            return
                 (
                     this.Total == input.Total ||
                     this.Total.Equals(input.Total)
-                ) && 
+                ) &&
                 (
                     this.Currency == input.Currency ||
                     (this.Currency != null &&
                     this.Currency.Equals(input.Currency))
-                ) && 
+                ) &&
                 (
                     this.Components == input.Components ||
                     this.Components != null &&

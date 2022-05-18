@@ -42,7 +42,7 @@ namespace Lusid.Sdk.Model
         /// </summary>
         /// <param name="rollFrequency">The frequency at which the reference bonds are updated, this defaults to 6M, but can be 3M, exp for historically issued products.</param>
         /// <param name="currency">Currency of the flow convention. (required).</param>
-        /// <param name="paymentFrequency">When generating a multiperiod flow, or when the maturity of the flow is not given but the start date is,  the tenor is the time-step from the anchor-date to the nominal maturity of the flow prior to any adjustment. (required).</param>
+        /// <param name="paymentFrequency">When generating a multi-period flow, or when the maturity of the flow is not given but the start date is,  the tenor is the time-step from the anchor-date to the nominal maturity of the flow prior to any adjustment. (required).</param>
         /// <param name="dayCountConvention">when calculating the fraction of a year between two dates, what convention is used to represent the number of days in a year  and difference between them.  Supported string (enumeration) values are: [Actual360, Act360, MoneyMarket, Actual365, Act365, Thirty360, ThirtyU360, Bond, ThirtyE360, EuroBond, ActualActual, ActAct, ActActIsda, ActActIsma, ActActIcma, OneOne, Act364, Act365F, Act365L, Act365_25, Act252, Bus252, NL360, NL365, ActActAFB, Act365Cad, ThirtyActIsda, Thirty365Isda, ThirtyEActIsda, ThirtyE360Isda, ThirtyE365Isda, ThirtyU360EOM]. (required).</param>
         /// <param name="rollConvention">When generating a set of dates, what convention should be used for adjusting dates that coincide with a non-business day.  Supported string (enumeration) values are: [NoAdjustment, None, Previous, P, Following, F, ModifiedPrevious, MP, ModifiedFollowing, MF, EndOfMonth, EOM, EndOfMonthPrevious, EOMP, EndOfMonthFollowing, EOMF, HalfMonthModifiedFollowing]. (required).</param>
         /// <param name="paymentCalendars">An array of strings denoting holiday calendars that apply to generation of payment schedules. (required).</param>
@@ -201,57 +201,57 @@ namespace Lusid.Sdk.Model
             if (input == null)
                 return false;
 
-            return 
+            return
                 (
                     this.RollFrequency == input.RollFrequency ||
                     (this.RollFrequency != null &&
                     this.RollFrequency.Equals(input.RollFrequency))
-                ) && 
+                ) &&
                 (
                     this.Currency == input.Currency ||
                     (this.Currency != null &&
                     this.Currency.Equals(input.Currency))
-                ) && 
+                ) &&
                 (
                     this.PaymentFrequency == input.PaymentFrequency ||
                     (this.PaymentFrequency != null &&
                     this.PaymentFrequency.Equals(input.PaymentFrequency))
-                ) && 
+                ) &&
                 (
                     this.DayCountConvention == input.DayCountConvention ||
                     (this.DayCountConvention != null &&
                     this.DayCountConvention.Equals(input.DayCountConvention))
-                ) && 
+                ) &&
                 (
                     this.RollConvention == input.RollConvention ||
                     (this.RollConvention != null &&
                     this.RollConvention.Equals(input.RollConvention))
-                ) && 
+                ) &&
                 (
                     this.PaymentCalendars == input.PaymentCalendars ||
                     this.PaymentCalendars != null &&
                     input.PaymentCalendars != null &&
                     this.PaymentCalendars.SequenceEqual(input.PaymentCalendars)
-                ) && 
+                ) &&
                 (
                     this.ResetCalendars == input.ResetCalendars ||
                     this.ResetCalendars != null &&
                     input.ResetCalendars != null &&
                     this.ResetCalendars.SequenceEqual(input.ResetCalendars)
-                ) && 
+                ) &&
                 (
                     this.SettleDays == input.SettleDays ||
                     this.SettleDays.Equals(input.SettleDays)
-                ) && 
+                ) &&
                 (
                     this.ResetDays == input.ResetDays ||
                     this.ResetDays.Equals(input.ResetDays)
-                ) && 
+                ) &&
                 (
                     this.Scope == input.Scope ||
                     (this.Scope != null &&
                     this.Scope.Equals(input.Scope))
-                ) && 
+                ) &&
                 (
                     this.Code == input.Code ||
                     (this.Code != null &&

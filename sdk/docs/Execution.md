@@ -18,7 +18,7 @@ Name | Type | Description | Notes
 **SettlementDate** | **DateTimeOffset?** | The (optional) settlement date for this execution | [optional] 
 **Price** | [**CurrencyAndAmount**](CurrencyAndAmount.md) |  | 
 **SettlementCurrency** | **string** | The execution&#39;s settlement currency. | 
-**SettlementCurrencyFxRate** | **decimal** | The exectuion&#39;s settlement currency rate. | 
+**SettlementCurrencyFxRate** | **decimal** | The execution&#39;s settlement currency rate. | 
 **Counterparty** | **string** | The market entity this placement is placed with. | 
 **Version** | [**Version**](Version.md) |  | [optional] 
 **Links** | [**List&lt;Link&gt;**](Link.md) | Collection of links. | [optional] 

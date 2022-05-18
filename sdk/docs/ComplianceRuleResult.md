@@ -4,7 +4,7 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**RuleId** | **string** | The unique identifierof a compliance rule | 
+**RuleId** | **string** | The unique identifier of a compliance rule | 
 **RuleName** | **string** | The User-given name of the rule | 
 **RuleDescription** | **string** | The User-given description of the rule | 
 **Portfolio** | [**ResourceId**](ResourceId.md) |  | 

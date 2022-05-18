@@ -729,7 +729,7 @@ Name | Type | Description  | Notes
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
-| **200** | Upsert compliance rules. New compliance rules must have an empty code field. Where a codeis given, this rule must already exist and will be updated. |  -  |
+| **200** | Upsert compliance rules. New compliance rules must have an empty code field. Where a code is given, this rule must already exist and will be updated. |  -  |
 | **400** | The details of the input related failure |  -  |
 | **0** | Error response |  -  |
 

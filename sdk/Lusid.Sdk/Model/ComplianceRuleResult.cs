@@ -40,7 +40,7 @@ namespace Lusid.Sdk.Model
         /// <summary>
         /// Initializes a new instance of the <see cref="ComplianceRuleResult" /> class.
         /// </summary>
-        /// <param name="ruleId">The unique identifierof a compliance rule (required).</param>
+        /// <param name="ruleId">The unique identifier of a compliance rule (required).</param>
         /// <param name="ruleName">The User-given name of the rule (required).</param>
         /// <param name="ruleDescription">The User-given description of the rule (required).</param>
         /// <param name="portfolio">portfolio (required).</param>
@@ -190,49 +190,49 @@ namespace Lusid.Sdk.Model
             if (input == null)
                 return false;
 
-            return 
+            return
                 (
                     this.RuleId == input.RuleId ||
                     (this.RuleId != null &&
                     this.RuleId.Equals(input.RuleId))
-                ) && 
+                ) &&
                 (
                     this.RuleName == input.RuleName ||
                     (this.RuleName != null &&
                     this.RuleName.Equals(input.RuleName))
-                ) && 
+                ) &&
                 (
                     this.RuleDescription == input.RuleDescription ||
                     (this.RuleDescription != null &&
                     this.RuleDescription.Equals(input.RuleDescription))
-                ) && 
+                ) &&
                 (
                     this.Portfolio == input.Portfolio ||
                     (this.Portfolio != null &&
                     this.Portfolio.Equals(input.Portfolio))
-                ) && 
+                ) &&
                 (
                     this.Passed == input.Passed ||
                     this.Passed.Equals(input.Passed)
-                ) && 
+                ) &&
                 (
                     this.ResultValue == input.ResultValue ||
                     this.ResultValue.Equals(input.ResultValue)
-                ) && 
+                ) &&
                 (
                     this.RuleInformationMatch == input.RuleInformationMatch ||
                     (this.RuleInformationMatch != null &&
                     this.RuleInformationMatch.Equals(input.RuleInformationMatch))
-                ) && 
+                ) &&
                 (
                     this.RuleInformationKey == input.RuleInformationKey ||
                     (this.RuleInformationKey != null &&
                     this.RuleInformationKey.Equals(input.RuleInformationKey))
-                ) && 
+                ) &&
                 (
                     this.RuleLowerLimit == input.RuleLowerLimit ||
                     this.RuleLowerLimit.Equals(input.RuleLowerLimit)
-                ) && 
+                ) &&
                 (
                     this.RuleUpperLimit == input.RuleUpperLimit ||
                     this.RuleUpperLimit.Equals(input.RuleUpperLimit)
