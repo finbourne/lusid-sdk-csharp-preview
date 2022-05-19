@@ -16,9 +16,19 @@ namespace Lusid.Sdk.Tests.Tutorials.Ibor
     [TestFixture]
     public class GenericReconciliation : TutorialBase
     {
-        private readonly string _portfolioOneScope = "testPortfolio1" + new Guid();
-        private readonly string _portfolioTwoScope = "testPortfolio2" + new Guid();
-        private readonly string _portfolioCode = Guid.NewGuid().ToString();
+        private string _portfolioOneScope;
+        private string _portfolioTwoScope;
+        private string _portfolioCode;
+        
+        [SetUp]
+        public void Setup()
+        {
+            _portfolioOneScope = "testPortfolio1" + new Guid();
+            _portfolioTwoScope = "testPortfolio2" + new Guid();
+            _portfolioCode = Guid.NewGuid().ToString();
+        }
+
+        #region Remapping Properties 
 
         /// <summary>
         /// Perform a reconciliation on two identical portfolios except for the Address Key for trader name being scope dependent.
@@ -83,6 +93,10 @@ namespace Lusid.Sdk.Tests.Tutorials.Ibor
             // Only the address key from the RIGHT hand result set is contained in the reconciliation
             Assert.That(!equityComparison.Difference.ContainsKey($"Transaction/{_portfolioOneScope}/TraderName"));
         }
+
+        #endregion
+
+        #region Numeric rules 
 
         /// <summary>
         /// Exact match is defined as being numerically equal to machine precision. In the case of decimals that is sufficient.
@@ -352,6 +366,10 @@ namespace Lusid.Sdk.Tests.Tutorials.Ibor
             Assert.That(equityComparison.ResultComparison["Valuation/PV"], Is.EqualTo("MatchWithinTolerance")); 
         }
 
+        #endregion
+
+        #region DateTime rules
+        
         /// <summary>
         /// DateTimes can be tested either for exact matching or for matching within an absolute tolerance.
         /// In the case of absolute tolerance the tolerance is specified in number of days.
@@ -408,6 +426,10 @@ namespace Lusid.Sdk.Tests.Tutorials.Ibor
                 Is.EqualTo("MatchWithinTolerance"));
         }
 
+        #endregion
+
+        #region String rules 
+        
         /// <summary>
         /// Strings naturally have a distinct set of matching criteria to numeric types. This example demonstrates the possible matching patterns.
         /// The example here considers the case where the trader name is {first name} {last name} on the left-hand portfolio and {title} {first name} {last name}
@@ -649,6 +671,10 @@ namespace Lusid.Sdk.Tests.Tutorials.Ibor
                 Is.EqualTo("MatchWithinTolerance"));
         }
 
+        #endregion
+        
+        #region TestSetup
+        
         /// <summary>
         /// We are going to construct a simple portfolio with a single equity for demonstrating the capabilities of the reconciliation engine.
         /// This consists of a single equity whose value on a given valuation date is upserted.
@@ -737,15 +763,48 @@ namespace Lusid.Sdk.Tests.Tutorials.Ibor
         }
         
         /// <summary>
+        /// Create a property at "Transaction/{scope}/{propertyCode}"
+        /// </summary>
+        private void CreateTraderProperty(string scope, string propertyCode, string propertyName)
+        {
+            try
+            {
+                _apiFactory.Api<PropertyDefinitionsApi>()
+                    .GetPropertyDefinition("Transaction", scope, propertyCode);
+            }
+            catch (ApiException apiEx)
+            {
+                if (apiEx.ErrorCode == 404)
+                {
+                    // Property definition doesn't exist (returns 404), so create one
+                    // Details of the property to be created
+                    var propertyDefinition = new CreatePropertyDefinitionRequest(
+                        domain: CreatePropertyDefinitionRequest.DomainEnum.Transaction,
+                        scope: scope,
+                        lifeTime: CreatePropertyDefinitionRequest.LifeTimeEnum.Perpetual,
+                        code: propertyCode,
+                        valueRequired: false,
+                        displayName: propertyName,
+                        dataTypeId: new ResourceId("system", "string"));
+                    _apiFactory.Api<PropertyDefinitionsApi>().CreatePropertyDefinition(propertyDefinition);
+                }
+                else
+                {
+                    throw apiEx;
+                }
+            } 
+        }
+
+        /// <summary>
         /// Upsert a transaction on the equity with the provided units and with the provided trader name.
         /// </summary>
         private void UpsertTransactionOnEquity(
-            string instrumentId, 
-            DateTimeOffset transactionDate, 
-            string units, 
-            string traderNameKey, 
-            string traderName, 
-            string portfolioScope, 
+            string instrumentId,
+            DateTimeOffset transactionDate,
+            string units,
+            string traderNameKey,
+            string traderName,
+            string portfolioScope,
             string portfolioCode)
         {
             var transactionSpecs = new[]
@@ -753,95 +812,79 @@ namespace Lusid.Sdk.Tests.Tutorials.Ibor
                 (Id: instrumentId, Price: 100, Units: 10,
                     TradeDate: transactionDate),
             };
-            
+
             var properties = new Dictionary<string, PerpetualProperty>
             {
                 {traderNameKey, new PerpetualProperty(traderNameKey, new PropertyValue(traderName))}
             };
             var newTransactions = transactionSpecs.Select(id =>
                 BuildTransactionRequest(id.Id, id.Units, id.Price, units, id.TradeDate, "Buy", properties));
-            _apiFactory.Api<ITransactionPortfoliosApi>().UpsertTransactions(portfolioScope, portfolioCode, newTransactions.ToList()); 
+            _apiFactory.Api<ITransactionPortfoliosApi>()
+                .UpsertTransactions(portfolioScope, portfolioCode, newTransactions.ToList());
         }
-       
-        /// <summary>
-        /// Create and return a valuation request to retrieve the equity Pv (Result0D/decimal), valuation date (DateTimeOffset) and trader name (string). 
-        /// </summary>
-        private ValuationRequest CreateValuationRequest(
-            string instrumentId, 
-            string portfolioScope,
-            string portfolioCode, 
-            string propertyCode, 
-            string recipeScope, 
-            string recipeCode, 
-            bool upsertedUnitlessPv,
-            DateTimeOffset valuationDate)
-        {
-            // Create the Valuation request
-            var metrics = new List<AggregateSpec>
-            {
-                new AggregateSpec(TestDataUtilities.InstrumentName, AggregateSpec.OpEnum.Value),
-                new AggregateSpec("Analytic/default/ValuationDate", AggregateSpec.OpEnum.Value),
-                new AggregateSpec($"Transaction/{portfolioScope}/{propertyCode}", AggregateSpec.OpEnum.Value),
-            };
-            
-            // Whether want to retrieve the quote or value from the SRS
-            if (upsertedUnitlessPv)
-            {
-                metrics.Add(new AggregateSpec("UnitResult/ClientCustomPV", AggregateSpec.OpEnum.Value));
-            }
-            else
-            {
-                metrics.Add(new AggregateSpec("Valuation/PV", AggregateSpec.OpEnum.Value));
-            }
 
-            var valuationRequest = new ValuationRequest(
-                recipeId: new ResourceId(recipeScope, recipeCode),
-                metrics: metrics,
-                valuationSchedule: new ValuationSchedule(effectiveAt: valuationDate),
-                groupBy: new List<string> {"Instrument/default/Name"},
-                filters: new List<PropertyFilter>
+        /// <summary>
+        /// Create a request to book a transaction on an instrument.
+        /// </summary>
+        private static TransactionRequest BuildTransactionRequest(
+            string instrumentId,
+            decimal units,
+            decimal price,
+            string currency,
+            DateTimeOrCutLabel tradeDate,
+            string transactionType,
+            Dictionary<string, PerpetualProperty> properties)
+        {
+            string LusidInstrumentIdentifier = "Instrument/default/LusidInstrumentId";
+            return new TransactionRequest(
+                transactionId: Guid.NewGuid().ToString(),
+                type: transactionType,
+                instrumentIdentifiers: new Dictionary<string, string>
                 {
-                    new PropertyFilter(TestDataUtilities.LusidInstrumentIdentifier, PropertyFilter.OperatorEnum.Equals,
-                        instrumentId, PropertyFilter.RightOperandTypeEnum.Absolute)
+                    [LusidInstrumentIdentifier] = instrumentId
                 },
-                portfolioEntityIds: new List<PortfolioEntityId> {new PortfolioEntityId(portfolioScope, portfolioCode)}
-            );
-
-            return valuationRequest; 
+                transactionDate: tradeDate,
+                settlementDate: tradeDate,
+                units: units,
+                transactionPrice: new TransactionPrice(price, TransactionPrice.TypeEnum.Price),
+                totalConsideration: new CurrencyAndAmount(price * units, currency),
+                source: "Broker",
+                properties: properties);
         }
 
         /// <summary>
-        /// Create and upsert a valuation recipe.
+        /// Upsert a quote on the equity with the given price and units.
         /// </summary>
-        private (string, string) CreateValuationRecipe(string quoteScope, bool upsertedUnitlessPv, PricingContext pricingContext = null)
+        private string UpsertQuoteOnEquity(DateTimeOffset valuationDate, string instrumentId, decimal quotePrice,
+            string units)
         {
-            // CREATE and UPSERT recipe for valuation
-            string recipeScope =  "ReconRecipe_" + Guid.NewGuid();
-            var codeExtension = upsertedUnitlessPv ? "_SRS" : "_Quote";
-            var recipeCode = "Recipe" + codeExtension;
-            var recipe = new ConfigurationRecipe
-            (
-                scope: recipeScope,
-                code: recipeCode,
-                market: new MarketContext
-                {
-                    Options = new MarketOptions(
-                        defaultScope: quoteScope,
-                        defaultSupplier: "Lusid",
-                        defaultInstrumentCodeType: "LusidInstrumentId"
+            // create and upsert quote for the price of the instrument 
+            var quoteScope = "Reconcile-Scope" + Guid.NewGuid();
+            var quote = new UpsertQuoteRequest(
+                new QuoteId(
+                    new QuoteSeriesId(
+                        provider: "Lusid",
+                        priceSource: "",
+                        instrumentId: instrumentId,
+                        instrumentIdType: QuoteSeriesId.InstrumentIdTypeEnum.LusidInstrumentId,
+                        quoteType: QuoteSeriesId.QuoteTypeEnum.Price, field: "mid"
                     ),
-                },
-                pricing: pricingContext
+                    effectiveAt: valuationDate
+                ),
+                metricValue: new MetricValue(
+                    value: quotePrice,
+                    unit: units
+                )
             );
-            
-            //    Upload recipe to Lusid 
-            var upsertRecipeRequest = new UpsertRecipeRequest(recipe);
-            var response = _recipeApi.UpsertConfigurationRecipe(upsertRecipeRequest);
-            
-            return (recipeScope, recipeCode);
+
+            // Upload the quote
+            var result = _apiFactory.Api<IQuotesApi>().UpsertQuotes(quoteScope,
+                new Dictionary<string, UpsertQuoteRequest>() {{"cor_id_one", quote}});
+            Assert.That(result.Failed.Count, Is.EqualTo(0));
+            return quoteScope;
         }
-        
-        /// <summar>
+
+        /// <summary>
         ///  Upsert a decimal quote for the equity against the AddressKey "UnitResult/ClientCustomPV".
         /// </summary>
         private PricingContext UpsertSrsDecimal(string instrumentId, DateTimeOffset valuationDate, decimal quotePrice)
@@ -874,103 +917,91 @@ namespace Lusid.Sdk.Tests.Tutorials.Ibor
                 resourceKey: resourceKey, documentResultType: resultType,
                 resultKeyRuleType: ResultKeyRule.ResultKeyRuleTypeEnum.ResultDataKeyRule);
             var pricingContext = new PricingContext(resultDataRules: new List<ResultKeyRule>() {resultDataKeyRule});
-            
+
             return pricingContext;
         }
 
         /// <summary>
-        /// Upsert a quote on the equity with the given price and units.
+        /// Create and upsert a valuation recipe.
         /// </summary>
-        private string UpsertQuoteOnEquity(DateTimeOffset valuationDate, string instrumentId, decimal quotePrice, string units)
+        private (string, string) CreateValuationRecipe(string quoteScope, bool upsertedUnitlessPv,
+            PricingContext pricingContext = null)
         {
-            // create and upsert quote for the price of the instrument 
-            var quoteScope = "Reconcile-Scope" + Guid.NewGuid();
-            var quote = new UpsertQuoteRequest(
-                new QuoteId(
-                    new QuoteSeriesId(
-                        provider: "Lusid",
-                        priceSource: "",
-                        instrumentId: instrumentId,
-                        instrumentIdType: QuoteSeriesId.InstrumentIdTypeEnum.LusidInstrumentId,
-                        quoteType: QuoteSeriesId.QuoteTypeEnum.Price, field: "mid"
+            // CREATE and UPSERT recipe for valuation
+            string recipeScope = "ReconRecipe_" + Guid.NewGuid();
+            var codeExtension = upsertedUnitlessPv ? "_SRS" : "_Quote";
+            var recipeCode = "Recipe" + codeExtension;
+            var recipe = new ConfigurationRecipe
+            (
+                scope: recipeScope,
+                code: recipeCode,
+                market: new MarketContext
+                {
+                    Options = new MarketOptions(
+                        defaultScope: quoteScope,
+                        defaultSupplier: "Lusid",
+                        defaultInstrumentCodeType: "LusidInstrumentId"
                     ),
-                    effectiveAt: valuationDate
-                ),
-                metricValue: new MetricValue(
-                    value: quotePrice,
-                    unit: units 
-                )
+                },
+                pricing: pricingContext
             );
-            
-            // Upload the quote
-            var result = _apiFactory.Api<IQuotesApi>().UpsertQuotes(quoteScope,
-                new Dictionary<string, UpsertQuoteRequest>() {{"cor_id_one", quote}});
-            Assert.That(result.Failed.Count, Is.EqualTo(0));
-            return quoteScope;
+
+            //    Upload recipe to Lusid 
+            var upsertRecipeRequest = new UpsertRecipeRequest(recipe);
+            var response = _recipeApi.UpsertConfigurationRecipe(upsertRecipeRequest);
+
+            return (recipeScope, recipeCode);
         }
 
         /// <summary>
-        /// Create a property at "Transaction/{scope}/{propertyCode}"
+        /// Create and return a valuation request to retrieve the equity Pv (Result0D/decimal), valuation date (DateTimeOffset) and trader name (string). 
         /// </summary>
-        private void CreateTraderProperty(string scope, string propertyCode, string propertyName)
+        private ValuationRequest CreateValuationRequest(
+            string instrumentId,
+            string portfolioScope,
+            string portfolioCode,
+            string propertyCode,
+            string recipeScope,
+            string recipeCode,
+            bool upsertedUnitlessPv,
+            DateTimeOffset valuationDate)
         {
-            try
+            // Create the Valuation request
+            var metrics = new List<AggregateSpec>
             {
-                _apiFactory.Api<PropertyDefinitionsApi>()
-                    .GetPropertyDefinition("Transaction", scope, propertyCode);
+                new AggregateSpec(TestDataUtilities.InstrumentName, AggregateSpec.OpEnum.Value),
+                new AggregateSpec("Analytic/default/ValuationDate", AggregateSpec.OpEnum.Value),
+                new AggregateSpec($"Transaction/{portfolioScope}/{propertyCode}", AggregateSpec.OpEnum.Value),
+            };
+
+            // Whether want to retrieve the quote or value from the SRS
+            if (upsertedUnitlessPv)
+            {
+                metrics.Add(new AggregateSpec("UnitResult/ClientCustomPV", AggregateSpec.OpEnum.Value));
             }
-            catch (ApiException apiEx)
+            else
             {
-                if (apiEx.ErrorCode == 404)
+                metrics.Add(new AggregateSpec("Valuation/PV", AggregateSpec.OpEnum.Value));
+            }
+
+            var valuationRequest = new ValuationRequest(
+                recipeId: new ResourceId(recipeScope, recipeCode),
+                metrics: metrics,
+                valuationSchedule: new ValuationSchedule(effectiveAt: valuationDate),
+                groupBy: new List<string> {"Instrument/default/Name"},
+                filters: new List<PropertyFilter>
                 {
-                    // Property definition doesn't exist (returns 404), so create one
-                    // Details of the property to be created
-                    var propertyDefinition = new CreatePropertyDefinitionRequest(
-                        domain: CreatePropertyDefinitionRequest.DomainEnum.Transaction,
-                        scope: scope,
-                        lifeTime: CreatePropertyDefinitionRequest.LifeTimeEnum.Perpetual,
-                        code: propertyCode,
-                        valueRequired: false,
-                        displayName: propertyName,
-                        dataTypeId: new ResourceId("system", "string"));
-                    _apiFactory.Api<PropertyDefinitionsApi>().CreatePropertyDefinition(propertyDefinition);
-                }
-                else
-                {
-                    throw apiEx;
-                }
-            } 
+                    new PropertyFilter(TestDataUtilities.LusidInstrumentIdentifier, PropertyFilter.OperatorEnum.Equals,
+                        instrumentId, PropertyFilter.RightOperandTypeEnum.Absolute)
+                },
+                portfolioEntityIds: new List<PortfolioEntityId> {new PortfolioEntityId(portfolioScope, portfolioCode)}
+            );
+
+            return valuationRequest;
         }
         
-        /// <summary>
-        /// Create a request to book a transaction on an instrument.
-        /// </summary>
-        private static TransactionRequest BuildTransactionRequest(
-            string instrumentId,
-            decimal units,
-            decimal price,
-            string currency,
-            DateTimeOrCutLabel tradeDate,
-            string transactionType,
-            Dictionary<string, PerpetualProperty> properties)
-        {
-            string LusidInstrumentIdentifier = "Instrument/default/LusidInstrumentId";
-            return new TransactionRequest(
-                transactionId: Guid.NewGuid().ToString(),
-                type: transactionType,
-                instrumentIdentifiers: new Dictionary<string, string>
-                {
-                    [LusidInstrumentIdentifier] = instrumentId
-                },
-                transactionDate: tradeDate,
-                settlementDate: tradeDate,
-                units: units,
-                transactionPrice: new TransactionPrice(price, TransactionPrice.TypeEnum.Price),
-                totalConsideration: new CurrencyAndAmount(price * units, currency),
-                source: "Broker",
-                properties: properties);
-        }
-
+        #endregion 
+        
         [TearDown]
         public void TearDown()
         {
