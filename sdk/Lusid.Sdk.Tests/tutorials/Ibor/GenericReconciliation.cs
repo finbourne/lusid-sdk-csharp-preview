@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using Lusid.Sdk.Api;
 using Lusid.Sdk.Client;
@@ -8,25 +9,16 @@ using Lusid.Sdk.Tests.Utilities;
 using Lusid.Sdk.Utilities;
 using LusidFeatures;
 using NUnit.Framework;
+using NUnit.Framework.Internal;
 
 namespace Lusid.Sdk.Tests.Tutorials.Ibor
 {
     [TestFixture]
     public class GenericReconciliation : TutorialBase
     {
-        private InstrumentLoader _instrumentLoader;
-        private IList<string> _instrumentIds;
         private readonly string _portfolioOneScope = "testPortfolio1" + new Guid();
         private readonly string _portfolioTwoScope = "testPortfolio2" + new Guid();
         private readonly string _portfolioCode = Guid.NewGuid().ToString();
-        private DateTimeOffset _effectiveAt;
-
-        [OneTimeSetUp]
-        public void SetUp()
-        {
-            _instrumentLoader = new InstrumentLoader(_apiFactory);
-            _instrumentIds = _instrumentLoader.LoadInstruments();
-        }
 
         /// <summary>
         /// Perform a reconciliation on two identical portfolios except for the Address Key for trader name being scope dependent.
@@ -39,17 +31,18 @@ namespace Lusid.Sdk.Tests.Tutorials.Ibor
         public void Reconcile_By_Remapping_Properties()
         {
             var quotePrice = 105m;
-            var units = "GBP";
+            var units = "EUR";      
             var transactionDate = new DateTimeOffset(2022, 2, 1, 0, 0, 0, TimeSpan.Zero); // date of transaction
+            var valuationDate = new DateTimeOffset(2022, 3, 1, 0, 0, 0, TimeSpan.Zero); // date of transaction
             var traderName = "John Doe";
 
             // Generate two identical portfolios.
             // Calling a helper function which generates a valuation request on a
             // portfolio containing a single equity valued at the quote price with the provided units on the 
             // transaction date. 
-            var valuationRequestOne = GeneratePortfolioTransactions(_portfolioOneScope, _portfolioCode, transactionDate,
+            var valuationRequestOne = ValuationRequestSetUp(_portfolioOneScope, _portfolioCode, transactionDate,valuationDate,
                 quotePrice, units, traderName);
-            var valuationRequestTwo = GeneratePortfolioTransactions(_portfolioTwoScope, _portfolioCode, transactionDate,
+            var valuationRequestTwo = ValuationRequestSetUp(_portfolioTwoScope, _portfolioCode, transactionDate,valuationDate,
                 quotePrice, units, traderName);
 
             // create the reconciliation request
@@ -103,18 +96,19 @@ namespace Lusid.Sdk.Tests.Tutorials.Ibor
             // The two portfolios disagree about the quote price.
             var quotePriceLeft = 105m;
             var quotePriceRight = 100m;
-            var units = "GBP";
-            var transactionDate = new DateTimeOffset(2022, 2, 1, 0, 0, 0, TimeSpan.Zero); // date of transaction
+            var units = "EUR";
             var traderName = "John Doe";
+            var transactionDate = new DateTimeOffset(2022, 2, 1, 0, 0, 0, TimeSpan.Zero); // date of transaction
+            var valuationDate = new DateTimeOffset(2022, 3, 1, 0, 0, 0, TimeSpan.Zero); // date of transaction
 
             // Create two portfolios and their valuation requests with different quote prices.
             // Calling a helper function which generates a valuation request on a
             // portfolio containing a single equity valued at the quote price with the provided units on the 
             // transaction date. 
-            var valuationRequestLeft = GeneratePortfolioTransactions(_portfolioOneScope, _portfolioCode,
-                transactionDate, quotePriceLeft, units, traderName);
-            var valuationRequestRight = GeneratePortfolioTransactions(_portfolioTwoScope, _portfolioCode,
-                transactionDate, quotePriceRight, units, traderName);
+            var valuationRequestLeft = ValuationRequestSetUp(_portfolioOneScope, _portfolioCode,
+                transactionDate, valuationDate, quotePriceLeft, units, traderName);
+            var valuationRequestRight = ValuationRequestSetUp(_portfolioTwoScope, _portfolioCode,
+                transactionDate, valuationDate,quotePriceRight, units, traderName);
 
             // Set the mapping between properties in the two portfolios. 
             var mapping = new ReconciliationLeftRightAddressKeyPair($"Transaction/{_portfolioOneScope}/TraderName",
@@ -148,18 +142,19 @@ namespace Lusid.Sdk.Tests.Tutorials.Ibor
             // The two portfolios disagree about the quote price.
             var quotePriceLeft = 105m;
             var quotePriceRight = 100m;
-            var units = "GBP";
+            var units = "EUR";
             var transactionDate = new DateTimeOffset(2022, 2, 1, 0, 0, 0, TimeSpan.Zero); // date of transaction
+            var valuationDate = new DateTimeOffset(2022, 3, 1, 0, 0, 0, TimeSpan.Zero); // date of transaction
             var traderName = "John Doe";
 
             // Generate two portfolios and their valuation requests with different quote prices.
             // Calling a helper function which generates a valuation request on a
             // portfolio containing a single equity valued at the quote price with the provided units on the 
             // transaction date. 
-            var valuationRequestLeft = GeneratePortfolioTransactions(_portfolioOneScope, _portfolioCode,
-                transactionDate, quotePriceLeft, units, traderName);
-            var valuationRequestRight = GeneratePortfolioTransactions(_portfolioTwoScope, _portfolioCode,
-                transactionDate, quotePriceRight, units, traderName);
+            var valuationRequestLeft = ValuationRequestSetUp(_portfolioOneScope, _portfolioCode,
+                transactionDate, valuationDate,quotePriceLeft, units, traderName);
+            var valuationRequestRight = ValuationRequestSetUp(_portfolioTwoScope, _portfolioCode,
+                transactionDate, valuationDate,quotePriceRight, units, traderName);
 
             // Set the mapping between properties in the two portfolios. 
             var mapping = new ReconciliationLeftRightAddressKeyPair($"Transaction/{_portfolioOneScope}/TraderName",
@@ -198,18 +193,19 @@ namespace Lusid.Sdk.Tests.Tutorials.Ibor
             // The two portfolios disagree about the quote price.
             var quotePriceLeft = 105m;
             var quotePriceRight = 100m;
-            var units = "GBP";
+            var units = "EUR";
             var transactionDate = new DateTimeOffset(2022, 2, 1, 0, 0, 0, TimeSpan.Zero); // date of transaction
+            var valuationDate = new DateTimeOffset(2022, 3, 1, 0, 0, 0, TimeSpan.Zero); // date of transaction
             var traderName = "John Doe";
 
             // Generate two portfolios and their valuation requests with different quote prices.
             // Calling a helper function which generates a valuation request on a
             // portfolio containing a single equity valued at the quote price with the provided units on the 
             // transaction date. 
-            var valuationRequestLeft = GeneratePortfolioTransactions(_portfolioOneScope, _portfolioCode,
-                transactionDate, quotePriceLeft, units, traderName);
-            var valuationRequestRight = GeneratePortfolioTransactions(_portfolioTwoScope, _portfolioCode,
-                transactionDate, quotePriceRight, units, traderName);
+            var valuationRequestLeft = ValuationRequestSetUp(_portfolioOneScope, _portfolioCode,
+                transactionDate, valuationDate,quotePriceLeft, units, traderName);
+            var valuationRequestRight = ValuationRequestSetUp(_portfolioTwoScope, _portfolioCode,
+                transactionDate, valuationDate,quotePriceRight, units, traderName);
 
             // Set the mapping between properties in the two portfolios. 
             var mapping = new ReconciliationLeftRightAddressKeyPair($"Transaction/{_portfolioOneScope}/TraderName",
@@ -247,18 +243,19 @@ namespace Lusid.Sdk.Tests.Tutorials.Ibor
         public void Reconcile_Numeric_Result_With_Units_Versus_Without()
         {
             var quotePrice = 101;
-            var units = "GBP";
+            var units = "EUR";
             var transactionDate = new DateTimeOffset(2022, 2, 1, 0, 0, 0, TimeSpan.Zero);
+            var valuationDate = new DateTimeOffset(2022, 3, 1, 0, 0, 0, TimeSpan.Zero); // date of transaction
             var traderName = "John Doe";
 
             // Generate two portfolios and their valuation requests, one has a unitless PV upserted to the structured result store.
             // Calling a helper function which generates a valuation request on a
             // portfolio containing a single equity valued at the quote price with the provided units on the 
             // transaction date. 
-            var valuationRequestLeft = GeneratePortfolioTransactions(_portfolioOneScope, _portfolioCode,
-                transactionDate, quotePrice, units, traderName);
-            var valuationRequestRight = GeneratePortfolioTransactions(_portfolioTwoScope, _portfolioCode,
-                transactionDate, quotePrice, units, traderName, true);
+            var valuationRequestLeft = ValuationRequestSetUp(_portfolioOneScope, _portfolioCode,
+                transactionDate, valuationDate,quotePrice, units, traderName);
+            var valuationRequestRight = ValuationRequestSetUp(_portfolioTwoScope, _portfolioCode,
+                transactionDate, valuationDate,quotePrice, units, traderName, true);
 
             // Set the mapping between properties in the two portfolios. 
             var mapping = new ReconciliationLeftRightAddressKeyPair($"Transaction/{_portfolioOneScope}/TraderName",
@@ -317,19 +314,20 @@ namespace Lusid.Sdk.Tests.Tutorials.Ibor
         {
             var quotePrice = 101;
             // Different units on the quote
-            var unitsOne = "GBP";
+            var unitsOne = "EUR";
             var unitsTwo = "USD";
             var transactionDate = new DateTimeOffset(2022, 2, 1, 0, 0, 0, TimeSpan.Zero);
+            var valuationDate = new DateTimeOffset(2022, 3, 1, 0, 0, 0, TimeSpan.Zero);
             var traderName = "John Doe";
 
             // Generate two portfolios and their valuation requests each has a quote in different units.
             // Calling a helper function which generates a valuation request on a
             // portfolio containing a single equity valued at the quote price with the provided units on the 
             // transaction date. 
-            var valuationRequestLeft = GeneratePortfolioTransactions(_portfolioOneScope, _portfolioCode,
-                transactionDate, quotePrice, unitsOne, traderName);
-            var valuationRequestRight = GeneratePortfolioTransactions(_portfolioTwoScope, _portfolioCode,
-                transactionDate, quotePrice, unitsTwo, traderName);
+            var valuationRequestLeft = ValuationRequestSetUp(_portfolioOneScope, _portfolioCode,
+                transactionDate, valuationDate,quotePrice, unitsOne, traderName);
+            var valuationRequestRight = ValuationRequestSetUp(_portfolioTwoScope, _portfolioCode,
+                transactionDate, valuationDate,quotePrice, unitsTwo, traderName);
 
             // Set the mapping between properties in the two portfolios. 
             var mapping = new ReconciliationLeftRightAddressKeyPair($"Transaction/{_portfolioOneScope}/TraderName",
@@ -365,22 +363,25 @@ namespace Lusid.Sdk.Tests.Tutorials.Ibor
         public void Reconcile_Using_DateTime_AbsoluteDifference_Rule()
         {
             var quotePrice = 100m;
-            var units = "GBP";
+            var units = "EUR";
+            var transactionDate=
+                new DateTimeOffset(2022, 2, 1, 0, 0, 0, TimeSpan.Zero); // datetime of transaction in portfolio one
             // Two valuations an hour apart
             var valuationDateLeft =
-                new DateTimeOffset(2022, 2, 1, 0, 0, 0, TimeSpan.Zero); // datetime of transaction in portfolio one
+                new DateTimeOffset(2022, 3, 1, 0, 0, 0, TimeSpan.Zero); 
             var valuationDateRight =
-                new DateTimeOffset(2022, 2, 1, 1, 0, 0, TimeSpan.Zero); // datetime of transaction in portfolio two
+                new DateTimeOffset(2022, 3, 1, 1, 0, 0, TimeSpan.Zero); 
             var traderName = "John Doe";
 
+            
             // Generate two portfolios and their valuation requests each has a different valuation date.
             // Calling a helper function which generates a valuation request on a
             // portfolio containing a single equity valued at the quote price with the provided units on the 
             // transaction date. 
-            var valuationRequestLeft = GeneratePortfolioTransactions(_portfolioOneScope, _portfolioCode,
-                valuationDateLeft, quotePrice, units, traderName, true);
-            var valuationRequestRight = GeneratePortfolioTransactions(_portfolioTwoScope, _portfolioCode,
-                valuationDateRight, quotePrice, units, traderName, true);
+            var valuationRequestLeft = ValuationRequestSetUp(_portfolioOneScope, _portfolioCode,
+                transactionDate, valuationDateLeft, quotePrice, units, traderName, true);
+            var valuationRequestRight = ValuationRequestSetUp(_portfolioTwoScope, _portfolioCode,
+                transactionDate, valuationDateRight, quotePrice, units, traderName, true);
 
             // Set the mapping between properties in the two portfolios. 
             var mapping = new ReconciliationLeftRightAddressKeyPair($"Transaction/{_portfolioOneScope}/TraderName",
@@ -417,20 +418,21 @@ namespace Lusid.Sdk.Tests.Tutorials.Ibor
         public void Reconcile_Using_String_Contains_Rule()
         {
             var quotePrice = 100m;
-            var units = "GBP";
+            var units = "EUR";
             var transactionDate = new DateTimeOffset(2022, 2, 1, 0, 0, 0, TimeSpan.Zero); // date of transaction
             // disagree about trader name
             var traderNameLeft = "Mr. John Doe";
             var traderNameRight = "John Doe";
+            var valuationDate = new DateTimeOffset(2022, 3, 1, 0, 0, 0, TimeSpan.Zero); // date of transaction
 
             // Generate two portfolios which contain a different trader name.
             // Calling a helper function which generates a valuation request on a
             // portfolio containing a single equity valued at the quote price with the provided units on the 
             // transaction date. 
-            var valuationRequestLeft = GeneratePortfolioTransactions(_portfolioOneScope, _portfolioCode,
-                transactionDate, quotePrice, units, traderNameLeft, true);
-            var valuationRequestRight = GeneratePortfolioTransactions(_portfolioTwoScope, _portfolioCode,
-                transactionDate, quotePrice, units, traderNameRight, true);
+            var valuationRequestLeft = ValuationRequestSetUp(_portfolioOneScope, _portfolioCode,
+                transactionDate, valuationDate, quotePrice, units, traderNameLeft, true);
+            var valuationRequestRight = ValuationRequestSetUp(_portfolioTwoScope, _portfolioCode,
+                transactionDate, valuationDate, quotePrice, units, traderNameRight, true);
 
             // Set the matching rules to use for each of the requested aggregates. Initially let this be the default values.
             var rules = new List<ReconciliationRule>();
@@ -453,9 +455,7 @@ namespace Lusid.Sdk.Tests.Tutorials.Ibor
             Assert.That(equityComparison.ResultComparison[$"Transaction/{_portfolioTwoScope}/TraderName"].ToString(),
                 Is.EqualTo("Failed"));
 
-
             // Reattempt the valuation expect this time apply a criteria rule for matching the strings.
-
             var stringComparisonRule = new ReconcileStringRule(ReconcileStringRule.ComparisonTypeEnum.Contains, null,
                 new AggregateSpec($"Transaction/{_portfolioTwoScope}/TraderName", AggregateSpec.OpEnum.Value),
                 ReconciliationRule.RuleTypeEnum.ReconcileStringRule);
@@ -505,8 +505,9 @@ namespace Lusid.Sdk.Tests.Tutorials.Ibor
         public void Reconcile_Using_String_IsOneOf_Rule()
         {
             var quotePrice = 100m;
-            var units = "GBP";
+            var units = "EUR";
             var transactionDate = new DateTimeOffset(2022, 2, 1, 0, 0, 0, TimeSpan.Zero); // date of transaction
+            var valuationDate = new DateTimeOffset(2022, 3, 1, 0, 0, 0, TimeSpan.Zero); // date of transaction
             // disagree about trader name
             var traderNameLeft = "John Doe";
             var traderNameRight = "J. Doe";
@@ -515,10 +516,10 @@ namespace Lusid.Sdk.Tests.Tutorials.Ibor
             // Calling a helper function which generates a valuation request on a
             // portfolio containing a single equity valued at the quote price with the provided units on the 
             // transaction date. 
-            var valuationRequestLeft = GeneratePortfolioTransactions(_portfolioOneScope, _portfolioCode,
-                transactionDate, quotePrice, units, traderNameLeft, true);
-            var valuationRequestRight = GeneratePortfolioTransactions(_portfolioTwoScope, _portfolioCode,
-                transactionDate, quotePrice, units, traderNameRight, true);
+            var valuationRequestLeft = ValuationRequestSetUp(_portfolioOneScope, _portfolioCode,
+                transactionDate, valuationDate, quotePrice, units, traderNameLeft, true);
+            var valuationRequestRight = ValuationRequestSetUp(_portfolioTwoScope, _portfolioCode,
+                transactionDate, valuationDate, quotePrice, units, traderNameRight, true);
 
             // Set the matching rules to use for each of the requested aggregates. 
             // Allow "John Doe" in the lhs to successfully match "Mr. John Doe", "J. Doe" or "Mr. Doe" in the rhs.
@@ -557,7 +558,8 @@ namespace Lusid.Sdk.Tests.Tutorials.Ibor
         public void Reconcile_Using_String_ContainsAllCase_Rule()
         {
             var quotePrice = 100m;
-            var units = "GBP";
+            var units = "EUR";
+            var valuationDate = new DateTimeOffset(2022, 3, 1, 0, 0, 0, TimeSpan.Zero); // date of transaction
             var transactionDate = new DateTimeOffset(2022, 2, 1, 0, 0, 0, TimeSpan.Zero); // date of transaction
             // portfolios disagree but rhs is a substring of lhs if case is ignored.
             var traderNameLeft = "Mr. John Doe";
@@ -567,10 +569,10 @@ namespace Lusid.Sdk.Tests.Tutorials.Ibor
             // Calling a helper function which generates a valuation request on a
             // portfolio containing a single equity valued at the quote price with the provided units on the 
             // transaction date. 
-            var valuationRequestLeft = GeneratePortfolioTransactions(_portfolioOneScope, _portfolioCode,
-                transactionDate, quotePrice, units, traderNameLeft, true);
-            var valuationRequestRight = GeneratePortfolioTransactions(_portfolioTwoScope, _portfolioCode,
-                transactionDate, quotePrice, units, traderNameRight, true);
+            var valuationRequestLeft = ValuationRequestSetUp(_portfolioOneScope, _portfolioCode,
+                transactionDate, valuationDate,quotePrice, units, traderNameLeft, true);
+            var valuationRequestRight = ValuationRequestSetUp(_portfolioTwoScope, _portfolioCode,
+                transactionDate, valuationDate, quotePrice, units, traderNameRight, true);
 
             // Set the matching rules to use for each of the requested aggregates. Initially let this be the default values.
             var containsRule = new ReconcileStringRule(ReconcileStringRule.ComparisonTypeEnum.ContainsAnyCase, null,
@@ -606,7 +608,8 @@ namespace Lusid.Sdk.Tests.Tutorials.Ibor
         public void Reconcile_Using_String_CaseInsensitive_Rule()
         {
             var quotePrice = 100m;
-            var units = "GBP";
+            var units = "EUR";
+            var valuationDate = new DateTimeOffset(2022, 3, 1, 0, 0, 0, TimeSpan.Zero); // date of transaction
             var transactionDate = new DateTimeOffset(2022, 2, 1, 0, 0, 0, TimeSpan.Zero); // date of transaction
             // The two portfolios disagree because of the case.
             var traderNameLeft = "John Doe";
@@ -616,10 +619,10 @@ namespace Lusid.Sdk.Tests.Tutorials.Ibor
             // Calling a helper function which generates a valuation request on a
             // portfolio containing a single equity valued at the quote price with the provided units on the 
             // transaction date. 
-            var valuationRequestLeft = GeneratePortfolioTransactions(_portfolioOneScope, _portfolioCode,
-                transactionDate, quotePrice, units, traderNameLeft, true);
-            var valuationRequestRight = GeneratePortfolioTransactions(_portfolioTwoScope, _portfolioCode,
-                transactionDate, quotePrice, units, traderNameRight, true);
+            var valuationRequestLeft = ValuationRequestSetUp(_portfolioOneScope, _portfolioCode,
+                transactionDate, valuationDate, quotePrice, units, traderNameLeft, true);
+            var valuationRequestRight = ValuationRequestSetUp(_portfolioTwoScope, _portfolioCode,
+                transactionDate, valuationDate, quotePrice, units, traderNameRight, true);
 
             // Set the matching rules to use for each of the requested aggregates. Initially let this be the default values.
             var containsRule = new ReconcileStringRule(ReconcileStringRule.ComparisonTypeEnum.CaseInsensitive, null,
@@ -657,100 +660,192 @@ namespace Lusid.Sdk.Tests.Tutorials.Ibor
         /// </summary>
         /// <param name="scope"> The scope of the portfolio </param>
         /// <param name="code"> the code of the portfolio </param>
+        /// <param name="transactionDate"> Date on which the portfolio was created.</param>
         /// <param name="valuationDate"> Date on which the valuation is performed </param>
         /// <param name="quotePrice"> The price quote for the equity</param>
         /// <param name="units"> Units used for purchase and quoting of the instrument </param>
         /// <param name="traderName"> The name of the trader who booked the transactions.</param>
         /// <param name="upsertedUnitlessPv"> If this is true the provided PV value is upserted to the SRS as a decimal</param>
-        private ValuationRequest GeneratePortfolioTransactions(string scope, string code,
-            DateTimeOffset valuationDate, decimal quotePrice, string units, string traderName,
+        private ValuationRequest ValuationRequestSetUp(
+            string scope,
+            string code,
+            DateTimeOffset transactionDate,
+            DateTimeOffset valuationDate,
+            decimal quotePrice,
+            string units,
+            string traderName,
             bool upsertedUnitlessPv = false)
         {
+            Assert.That(transactionDate, Is.LessThan(valuationDate));
+
+            // Create an equity on which to compare
+            var instrumentId = CreateInstrumentReturnLuid();
+
             // Create a new property on the transactions for who booked them. 
             var propertyCode = "TraderName";
-            try
-            {
-                _apiFactory.Api<PropertyDefinitionsApi>()
-                    .GetPropertyDefinition("Transaction", scope, propertyCode);
-            }
-            catch (ApiException apiEx)
-            {
-                if (apiEx.ErrorCode == 404)
-                {
-                    //    Property definition doesn't exist (returns 404), so create one
-                    //    Details of the property to be created
-                    var propertyDefinition = new CreatePropertyDefinitionRequest(
-                        domain: CreatePropertyDefinitionRequest.DomainEnum.Transaction,
-                        scope: scope,
-                        lifeTime: CreatePropertyDefinitionRequest.LifeTimeEnum.Perpetual,
-                        code: propertyCode,
-                        valueRequired: false,
-                        displayName: code,
-                        dataTypeId: new ResourceId("system", "string"));
-                    _apiFactory.Api<PropertyDefinitionsApi>().CreatePropertyDefinition(propertyDefinition);
-                }
-                else
-                {
-                    throw apiEx;
-                }
-            }
+            CreateTraderProperty(scope, propertyCode, propertyCode);
 
-            //    CREATE our portfolio
-
-            //    Effective date of the portfolio, this is the date the portfolio was created and became live.  
-            _effectiveAt = new DateTimeOffset(2020, 2, 23, 0, 0, 0, TimeSpan.Zero);
+            // Create a transaction portfolio
             var portfolioRequest = new CreateTransactionPortfolioRequest(
                 code: _portfolioCode,
                 displayName: $"Portfolio-{_portfolioCode}",
                 baseCurrency: units,
-                created: _effectiveAt,
+                created: transactionDate,
                 subHoldingKeys: new List<string>() {$"Transaction/{scope}/{propertyCode}"}
             );
-
             var portfolio = _transactionPortfoliosApi.CreatePortfolio(scope, portfolioRequest);
             Assert.That(portfolio?.Id.Code, Is.EqualTo(_portfolioCode));
 
-            // create transactions on an instrument
+            // Upsert transaction with trader name property 
+            string traderNameKey = $"Transaction/{scope}/{propertyCode}";
+            UpsertTransactionOnEquity(instrumentId, transactionDate, units, traderNameKey, traderName, scope, code);
+
+            // Upsert a quote on the equity.
+            var quoteScope = UpsertQuoteOnEquity(valuationDate, instrumentId, quotePrice, units);
+
+            // Upsert unitless PV value to the SRS 
+            var pricingContext = upsertedUnitlessPv ? UpsertSrsDecimal(instrumentId, valuationDate, quotePrice) : null;
+
+            // Create the valuation recipe
+            var (recipeScope, recipeCode) = CreateValuationRecipe(quoteScope, upsertedUnitlessPv, pricingContext);
+
+            // Create and return the Valuation request
+            return CreateValuationRequest(instrumentId, scope, code, propertyCode, recipeScope, recipeCode,
+                upsertedUnitlessPv, valuationDate);
+        }
+
+        /// <summary>
+        /// Create a simple equity instrument. Upsert it to Lusid and return the LusidInstrumentId.
+        /// </summary>
+        /// <returns></returns>
+        private string CreateInstrumentReturnLuid()
+        {
+            var instruments = new List<(string Id, string Name)>
+            {
+                (Id: "SSE", Name: "Scottish Power PLC."),
+            };            
+            var upsertResponse = _apiFactory.Api<IInstrumentsApi>().UpsertInstruments(instruments.ToDictionary(
+                k => k.Id,
+                v => new InstrumentDefinition(
+                    name: v.Name,
+                    identifiers: new Dictionary<string, InstrumentIdValue> {["ClientInternal"] = new InstrumentIdValue(v.Id) }
+                )
+            ));
+            Assert.That(upsertResponse.Failed.Count, Is.EqualTo(0));
+            var ids = _apiFactory.Api<IInstrumentsApi>().GetInstruments("ClientInternal", instruments.Select(i => i.Id).ToList());
+            return ids.Values.First().Value.LusidInstrumentId;
+        }
+        
+        /// <summary>
+        /// Upsert a transaction on the equity with the provided units and with the provided trader name.
+        /// </summary>
+        private void UpsertTransactionOnEquity(
+            string instrumentId, 
+            DateTimeOffset transactionDate, 
+            string units, 
+            string traderNameKey, 
+            string traderName, 
+            string portfolioScope, 
+            string portfolioCode)
+        {
             var transactionSpecs = new[]
             {
-                (Id: _instrumentIds[0], Price: 100, Units: 10,
-                    TradeDate: _effectiveAt),
+                (Id: instrumentId, Price: 100, Units: 10,
+                    TradeDate: transactionDate),
             };
-
-            // add the transaction property 
-            string traderNameKey = $"Transaction/{scope}/{propertyCode}";
+            
             var properties = new Dictionary<string, PerpetualProperty>
             {
                 {traderNameKey, new PerpetualProperty(traderNameKey, new PropertyValue(traderName))}
             };
             var newTransactions = transactionSpecs.Select(id =>
                 BuildTransactionRequest(id.Id, id.Units, id.Price, units, id.TradeDate, "Buy", properties));
-            _apiFactory.Api<ITransactionPortfoliosApi>().UpsertTransactions(scope, code, newTransactions.ToList());
+            _apiFactory.Api<ITransactionPortfoliosApi>().UpsertTransactions(portfolioScope, portfolioCode, newTransactions.ToList()); 
+        }
+       
+        /// <summary>
+        /// Create and return a valuation request to retrieve the equity Pv (Result0D/decimal), valuation date (DateTimeOffset) and trader name (string). 
+        /// </summary>
+        private ValuationRequest CreateValuationRequest(
+            string instrumentId, 
+            string portfolioScope,
+            string portfolioCode, 
+            string propertyCode, 
+            string recipeScope, 
+            string recipeCode, 
+            bool upsertedUnitlessPv,
+            DateTimeOffset valuationDate)
+        {
+            // Create the Valuation request
+            var metrics = new List<AggregateSpec>
+            {
+                new AggregateSpec(TestDataUtilities.InstrumentName, AggregateSpec.OpEnum.Value),
+                new AggregateSpec("Analytic/default/ValuationDate", AggregateSpec.OpEnum.Value),
+                new AggregateSpec($"Transaction/{portfolioScope}/{propertyCode}", AggregateSpec.OpEnum.Value),
+            };
+            
+            // Whether want to retrieve the quote or value from the SRS
+            if (upsertedUnitlessPv)
+            {
+                metrics.Add(new AggregateSpec("UnitResult/ClientCustomPV", AggregateSpec.OpEnum.Value));
+            }
+            else
+            {
+                metrics.Add(new AggregateSpec("Valuation/PV", AggregateSpec.OpEnum.Value));
+            }
 
-            // create and upsert quotes for the price of the instrument 
-            var quoteScope = Guid.NewGuid().ToString();
-            var quote = new UpsertQuoteRequest(
-                new QuoteId(
-                    new QuoteSeriesId(
-                        provider: "DataScope",
-                        instrumentId: _instrumentIds[0],
-                        instrumentIdType: QuoteSeriesId.InstrumentIdTypeEnum.LusidInstrumentId,
-                        quoteType: QuoteSeriesId.QuoteTypeEnum.Price, field: "mid"
-                    ),
-                    effectiveAt: valuationDate
-                ),
-                metricValue: new MetricValue(
-                    value: quotePrice,
-                    unit: units 
-                )
+            var valuationRequest = new ValuationRequest(
+                recipeId: new ResourceId(recipeScope, recipeCode),
+                metrics: metrics,
+                valuationSchedule: new ValuationSchedule(effectiveAt: valuationDate),
+                groupBy: new List<string> {"Instrument/default/Name"},
+                filters: new List<PropertyFilter>
+                {
+                    new PropertyFilter(TestDataUtilities.LusidInstrumentIdentifier, PropertyFilter.OperatorEnum.Equals,
+                        instrumentId, PropertyFilter.RightOperandTypeEnum.Absolute)
+                },
+                portfolioEntityIds: new List<PortfolioEntityId> {new PortfolioEntityId(portfolioScope, portfolioCode)}
             );
-            //    Upload the quote
-            _apiFactory.Api<IQuotesApi>().UpsertQuotes(quoteScope,
-                new Dictionary<string, UpsertQuoteRequest>() {{Guid.NewGuid().ToString(), quote}});
 
+            return valuationRequest; 
+        }
 
-            // CREATE and UPSERT a unitless PV to the result store 
-
+        /// <summary>
+        /// Create and upsert a valuation recipe.
+        /// </summary>
+        private (string, string) CreateValuationRecipe(string quoteScope, bool upsertedUnitlessPv, PricingContext pricingContext = null)
+        {
+            // CREATE and UPSERT recipe for valuation
+            string recipeScope =  "ReconRecipe_" + Guid.NewGuid();
+            var codeExtension = upsertedUnitlessPv ? "_SRS" : "_Quote";
+            var recipeCode = "Recipe" + codeExtension;
+            var recipe = new ConfigurationRecipe
+            (
+                scope: recipeScope,
+                code: recipeCode,
+                market: new MarketContext
+                {
+                    Options = new MarketOptions(
+                        defaultScope: quoteScope,
+                        defaultSupplier: "Lusid",
+                        defaultInstrumentCodeType: "LusidInstrumentId"
+                    ),
+                },
+                pricing: pricingContext
+            );
+            
+            //    Upload recipe to Lusid 
+            var upsertRecipeRequest = new UpsertRecipeRequest(recipe);
+            var response = _recipeApi.UpsertConfigurationRecipe(upsertRecipeRequest);
+            
+            return (recipeScope, recipeCode);
+        }
+        
+        /// <summar>
+        ///  Upsert a decimal quote for the equity against the AddressKey "UnitResult/ClientCustomPV".
+        /// </summary>
+        private PricingContext UpsertSrsDecimal(string instrumentId, DateTimeOffset valuationDate, decimal quotePrice)
+        {
             string dataScope = "scope-" + Guid.NewGuid();
             string resultType = "UnitResult/Analytic";
             string documentCode = "document-1";
@@ -766,7 +861,7 @@ namespace Lusid.Sdk.Tests.Tutorials.Ibor
             _structuredResultDataApi.CreateDataMap(dataScope,
                 new Dictionary<string, CreateDataMapRequest> {{"dataMapKey", request}});
             string document = $"LusidInstrumentId, ClientVal\n" +
-                              $"{_instrumentIds[0]}, {upsertedPvValue}"; // Note the LusidInstrumentId the previously defined instrument.
+                              $"{instrumentId}, {upsertedPvValue}"; // Note the LusidInstrumentId the previously defined instrument.
             StructuredResultData structuredResultData =
                 new StructuredResultData("csv", "1.0.0", documentCode, document, dataMapKey);
             StructuredResultDataId structResultDataId =
@@ -779,66 +874,76 @@ namespace Lusid.Sdk.Tests.Tutorials.Ibor
                 resourceKey: resourceKey, documentResultType: resultType,
                 resultKeyRuleType: ResultKeyRule.ResultKeyRuleTypeEnum.ResultDataKeyRule);
             var pricingContext = new PricingContext(resultDataRules: new List<ResultKeyRule>() {resultDataKeyRule});
-
-            //    CREATE and UPSERT recipe for valuation
-            string recipeScope = scope + "-recipe";
-            var recipe = new ConfigurationRecipe
-            (
-                scope: recipeScope,
-                code: "DataScope_Recipe",
-                market: new MarketContext
-                {
-                    Suppliers = new MarketContextSuppliers
-                    {
-                        Equity = "DataScope"
-                    },
-                    Options = new MarketOptions(
-                        defaultScope: quoteScope,
-                        defaultSupplier: "DataScope",
-                        defaultInstrumentCodeType: "LusidInstrumentId"
-                    )
-                },
-                pricing: upsertedUnitlessPv ? pricingContext : null
-            );
-
-            //    Upload recipe to Lusid 
-            var upsertRecipeRequest = new UpsertRecipeRequest(recipe);
-            var response = _recipeApi.UpsertConfigurationRecipe(upsertRecipeRequest);
-
-            var metrics = new List<AggregateSpec>
-            {
-                new AggregateSpec(TestDataUtilities.InstrumentName, AggregateSpec.OpEnum.Value),
-                new AggregateSpec("Analytic/default/ValuationDate", AggregateSpec.OpEnum.Value),
-                new AggregateSpec($"Transaction/{scope}/TraderName", AggregateSpec.OpEnum.Value),
-            };
-            // Determine if want to retrieve a Result0D or Decimal PV
-            if (upsertedUnitlessPv)
-            {
-                metrics.Add(new AggregateSpec("UnitResult/ClientCustomPV", AggregateSpec.OpEnum.Value));
-            }
-            else
-            {
-                metrics.Add(new AggregateSpec("Valuation/PV", AggregateSpec.OpEnum.Value));
-            }
-
-            var valuationRequest = new ValuationRequest(
-                recipeId: new ResourceId(recipeScope, "DataScope_Recipe"),
-                metrics: metrics,
-                valuationSchedule: new ValuationSchedule(effectiveAt: valuationDate),
-                groupBy: new List<string> {"Instrument/default/Name"},
-                filters: new List<PropertyFilter>
-                {
-                    new PropertyFilter(TestDataUtilities.LusidInstrumentIdentifier, PropertyFilter.OperatorEnum.Equals,
-                        _instrumentIds[0], PropertyFilter.RightOperandTypeEnum.Absolute)
-                },
-                portfolioEntityIds: new List<PortfolioEntityId> {new PortfolioEntityId(scope, code)}
-            );
-
-            return valuationRequest;
+            
+            return pricingContext;
         }
 
         /// <summary>
-        /// Create a request to book transaction on an instrument.
+        /// Upsert a quote on the equity with the given price and units.
+        /// </summary>
+        private string UpsertQuoteOnEquity(DateTimeOffset valuationDate, string instrumentId, decimal quotePrice, string units)
+        {
+            // create and upsert quote for the price of the instrument 
+            var quoteScope = "Reconcile-Scope" + Guid.NewGuid();
+            var quote = new UpsertQuoteRequest(
+                new QuoteId(
+                    new QuoteSeriesId(
+                        provider: "Lusid",
+                        priceSource: "",
+                        instrumentId: instrumentId,
+                        instrumentIdType: QuoteSeriesId.InstrumentIdTypeEnum.LusidInstrumentId,
+                        quoteType: QuoteSeriesId.QuoteTypeEnum.Price, field: "mid"
+                    ),
+                    effectiveAt: valuationDate
+                ),
+                metricValue: new MetricValue(
+                    value: quotePrice,
+                    unit: units 
+                )
+            );
+            
+            // Upload the quote
+            var result = _apiFactory.Api<IQuotesApi>().UpsertQuotes(quoteScope,
+                new Dictionary<string, UpsertQuoteRequest>() {{"cor_id_one", quote}});
+            Assert.That(result.Failed.Count, Is.EqualTo(0));
+            return quoteScope;
+        }
+
+        /// <summary>
+        /// Create a property at "Transaction/{scope}/{propertyCode}"
+        /// </summary>
+        private void CreateTraderProperty(string scope, string propertyCode, string propertyName)
+        {
+            try
+            {
+                _apiFactory.Api<PropertyDefinitionsApi>()
+                    .GetPropertyDefinition("Transaction", scope, propertyCode);
+            }
+            catch (ApiException apiEx)
+            {
+                if (apiEx.ErrorCode == 404)
+                {
+                    // Property definition doesn't exist (returns 404), so create one
+                    // Details of the property to be created
+                    var propertyDefinition = new CreatePropertyDefinitionRequest(
+                        domain: CreatePropertyDefinitionRequest.DomainEnum.Transaction,
+                        scope: scope,
+                        lifeTime: CreatePropertyDefinitionRequest.LifeTimeEnum.Perpetual,
+                        code: propertyCode,
+                        valueRequired: false,
+                        displayName: propertyName,
+                        dataTypeId: new ResourceId("system", "string"));
+                    _apiFactory.Api<PropertyDefinitionsApi>().CreatePropertyDefinition(propertyDefinition);
+                }
+                else
+                {
+                    throw apiEx;
+                }
+            } 
+        }
+        
+        /// <summary>
+        /// Create a request to book a transaction on an instrument.
         /// </summary>
         private static TransactionRequest BuildTransactionRequest(
             string instrumentId,
