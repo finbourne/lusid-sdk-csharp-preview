@@ -23,8 +23,8 @@ namespace Lusid.Sdk.Tests.Tutorials.Ibor
         [SetUp]
         public void Setup()
         {
-            _portfolioOneScope = "testPortfolio1" + new Guid();
-            _portfolioTwoScope = "testPortfolio2" + new Guid();
+            _portfolioOneScope = "testPortfolio1" + Guid.NewGuid();
+            _portfolioTwoScope = "testPortfolio2" + Guid.NewGuid();
             _portfolioCode = Guid.NewGuid().ToString();
         }
 
