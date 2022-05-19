@@ -1,21 +1,21 @@
 # Lusid.Sdk.Api.TransactionFeesApi
 
-All URIs are relative to *https://fbn-prd.lusid.com/api*
+All URIs are relative to *http://local-unit-test-server.lusid.com:59998*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
-[**DeleteFeeRule**](TransactionFeesApi.md#deletefeerule) | **DELETE** /api/transactions/fees/rules/{code} | [EXPERIMENTAL] DeleteFeeRule: Deletes a fee rule.
+[**DeleteTransactionFeeRule**](TransactionFeesApi.md#deletetransactionfeerule) | **DELETE** /api/transactions/fees/rules/{code} | [EXPERIMENTAL] DeleteTransactionFeeRule: Deletes a fee rule.
 [**GetApplicableTransactionFees**](TransactionFeesApi.md#getapplicabletransactionfees) | **POST** /api/transactions/fees/$GetApplicableFees | [EXPERIMENTAL] GetApplicableTransactionFees: Get the Fees and Commissions that may be applicable to a transaction.
 [**GetTransactionFeeRule**](TransactionFeesApi.md#gettransactionfeerule) | **GET** /api/transactions/fees/rules/{code} | [EXPERIMENTAL] GetTransactionFeeRule: Retrieve the definition of single fee rule.
 [**ListTransactionFeeRules**](TransactionFeesApi.md#listtransactionfeerules) | **GET** /api/transactions/fees/rules | [EXPERIMENTAL] ListTransactionFeeRules: List fee rules, with optional filtering.
 [**UpsertTransactionFeeRules**](TransactionFeesApi.md#upserttransactionfeerules) | **POST** /api/transactions/fees/rules | [EXPERIMENTAL] UpsertTransactionFeeRules: Upsert fee rules.
 
 
-<a name="deletefeerule"></a>
-# **DeleteFeeRule**
-> DeletedEntityResponse DeleteFeeRule (string code)
+<a name="deletetransactionfeerule"></a>
+# **DeleteTransactionFeeRule**
+> DeletedEntityResponse DeleteTransactionFeeRule (string code)
 
-[EXPERIMENTAL] DeleteFeeRule: Deletes a fee rule.
+[EXPERIMENTAL] DeleteTransactionFeeRule: Deletes a fee rule.
 
 <br>              Deletes the rule for all effective time.                <br>              The rule will remain viewable at previous as at times, but it will no longer be considered by              GetApplicableFees.                <br>              This cannot be undone.              
 
@@ -29,12 +29,12 @@ using Lusid.Sdk.Model;
 
 namespace Example
 {
-    public class DeleteFeeRuleExample
+    public class DeleteTransactionFeeRuleExample
     {
         public static void Main()
         {
             Configuration config = new Configuration();
-            config.BasePath = "https://fbn-prd.lusid.com/api";
+            config.BasePath = "http://local-unit-test-server.lusid.com:59998";
             // Configure OAuth2 access token for authorization: oauth2
             config.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -43,13 +43,13 @@ namespace Example
 
             try
             {
-                // [EXPERIMENTAL] DeleteFeeRule: Deletes a fee rule.
-                DeletedEntityResponse result = apiInstance.DeleteFeeRule(code);
+                // [EXPERIMENTAL] DeleteTransactionFeeRule: Deletes a fee rule.
+                DeletedEntityResponse result = apiInstance.DeleteTransactionFeeRule(code);
                 Debug.WriteLine(result);
             }
             catch (ApiException  e)
             {
-                Debug.Print("Exception when calling TransactionFeesApi.DeleteFeeRule: " + e.Message );
+                Debug.Print("Exception when calling TransactionFeesApi.DeleteTransactionFeeRule: " + e.Message );
                 Debug.Print("Status Code: "+ e.ErrorCode);
                 Debug.Print(e.StackTrace);
             }
@@ -110,7 +110,7 @@ namespace Example
         public static void Main()
         {
             Configuration config = new Configuration();
-            config.BasePath = "https://fbn-prd.lusid.com/api";
+            config.BasePath = "http://local-unit-test-server.lusid.com:59998";
             // Configure OAuth2 access token for authorization: oauth2
             config.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -198,7 +198,7 @@ namespace Example
         public static void Main()
         {
             Configuration config = new Configuration();
-            config.BasePath = "https://fbn-prd.lusid.com/api";
+            config.BasePath = "http://local-unit-test-server.lusid.com:59998";
             // Configure OAuth2 access token for authorization: oauth2
             config.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -278,7 +278,7 @@ namespace Example
         public static void Main()
         {
             Configuration config = new Configuration();
-            config.BasePath = "https://fbn-prd.lusid.com/api";
+            config.BasePath = "http://local-unit-test-server.lusid.com:59998";
             // Configure OAuth2 access token for authorization: oauth2
             config.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -362,7 +362,7 @@ namespace Example
         public static void Main()
         {
             Configuration config = new Configuration();
-            config.BasePath = "https://fbn-prd.lusid.com/api";
+            config.BasePath = "http://local-unit-test-server.lusid.com:59998";
             // Configure OAuth2 access token for authorization: oauth2
             config.AccessToken = "YOUR_ACCESS_TOKEN";
 
