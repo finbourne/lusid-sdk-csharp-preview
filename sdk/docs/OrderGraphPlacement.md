@@ -13,6 +13,7 @@ Name | Type | Description | Notes
 **Executed** | [**OrderGraphSynopsis**](OrderGraphSynopsis.md) |  | 
 **Allocated** | [**OrderGraphSynopsis**](OrderGraphSynopsis.md) |  | 
 **DerivedState** | **string** | A simple description of the overall state of a placement. | 
+**CalculatedAveragePrice** | **decimal?** | Average price realised on executions for a given placement | [optional] 
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 
