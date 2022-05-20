@@ -420,7 +420,7 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
             _portfoliosApi.DeletePortfolio(scope, portfolioCode);
         }
 
-        [LusidFeature("F22-11")]
+        [LusidFeature("F22-51")]
         [Test]
         public void BlackScholesSensitivitiesForEquityOption()
         {
