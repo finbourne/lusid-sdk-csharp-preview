@@ -8,8 +8,11 @@ using NUnit.Framework;
 
 namespace Lusid.Sdk.Tests.Tutorials.Instruments
 {
+    /// <summary>
+    /// Code examples for common interest rate swap variants (cross-currency, basis, amortising, etc.)
+    /// </summary>
     [TestFixture]
-    public class InterestRateSwapFurtherExamples: DemoInstrumentBase
+    public class InterestRateSwapVariantExamples: DemoInstrumentBase
     {
         /// <inheritdoc />
         protected override void CreateAndUpsertMarketDataToLusid(string scope, ModelSelection.ModelEnum model, LusidInstrument instrument)
@@ -98,7 +101,7 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
             Assert.That(cashflows.Count, Is.GreaterThanOrEqualTo(1));
         }
 
-        [LusidFeature("F5-23")]
+        [LusidFeature("F5-25")]
         [TestCase(InstrumentExamples.IRSTypes.Basis)]
         [TestCase(InstrumentExamples.IRSTypes.CrossCurrency)]
         [TestCase(InstrumentExamples.IRSTypes.Amortising)]
@@ -134,7 +137,7 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
             _instrumentsApi.DeleteInstrument("ClientInternal", uniqueId);
         }
        
-        [LusidFeature("F22-47")]
+        [LusidFeature("F22-52")]
         [TestCase(InstrumentExamples.IRSTypes.Basis)]
         [TestCase(InstrumentExamples.IRSTypes.CrossCurrency)]
         [TestCase(InstrumentExamples.IRSTypes.Amortising)]
@@ -144,7 +147,7 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
             CallLusidInlineValuationEndpoint(irs, ModelSelection.ModelEnum.Discounting);
         }
         
-        [LusidFeature("F22-48")]
+        [LusidFeature("F22-53")]
         [TestCase(InstrumentExamples.IRSTypes.Basis)]
         [TestCase(InstrumentExamples.IRSTypes.CrossCurrency)]
         [TestCase(InstrumentExamples.IRSTypes.Amortising)]

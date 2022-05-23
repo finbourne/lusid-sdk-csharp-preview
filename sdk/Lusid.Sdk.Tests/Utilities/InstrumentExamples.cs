@@ -807,7 +807,7 @@ namespace Lusid.Sdk.Tests.Utilities
 
         private static InterestRateSwap CreateExampleAmortisingSwap()
         {
-            // define an amortisation schedule
+            // define an amortisation schedule; the notional starts at 100, then steps down to 50 and 30 over time.
             var steps = new List<LevelStep>
             {
                 new LevelStep(TestDataUtilities.StartDate, 100m),

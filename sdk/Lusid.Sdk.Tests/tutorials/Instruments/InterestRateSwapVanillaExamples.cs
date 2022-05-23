@@ -8,6 +8,9 @@ using NUnit.Framework;
 
 namespace Lusid.Sdk.Tests.Tutorials.Instruments
 {
+    /// <summary>
+    /// Code examples for a vanilla (single-currency, fixed-to-floating) interest rate swap.
+    /// </summary>
     [TestFixture]
     public class InterestRateSwapVanillaExamples: DemoInstrumentBase
     {
