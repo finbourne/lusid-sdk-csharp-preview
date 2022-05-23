@@ -721,6 +721,9 @@ namespace Lusid.Sdk.Tests.Utilities
             );
         }
 
+        /// <summary>
+        /// Single currency basis (floating-floating) swap
+        /// </summary>
         private static InterestRateSwap CreateExampleBasisSwap()
         {
             // construct a 3M LIBOR leg (with a spread)
@@ -764,7 +767,7 @@ namespace Lusid.Sdk.Tests.Utilities
         }
 
         /// <summary>
-        /// An example cross-currency basis swap.
+        /// An example cross-currency basis (floating-floating) swap.
         /// Note that it is common for such swaps to have resetting notionals to emphasise basis risk over fx risk, see https://www.clarusft.com/mechanics-of-cross-currency-swaps/
         /// However, we do not currently support this.
         /// </summary>
@@ -805,6 +808,9 @@ namespace Lusid.Sdk.Tests.Utilities
             );
         }
 
+        /// <summary>
+        /// An amortising swap i.e. a swap whose notional changes over time.
+        /// </summary>
         private static InterestRateSwap CreateExampleAmortisingSwap()
         {
             // define an amortisation schedule; the notional starts at 100, then steps down to 50 and 30 over time.
