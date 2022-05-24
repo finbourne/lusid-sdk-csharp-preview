@@ -19,6 +19,7 @@ Name | Type | Description | Notes
 **SettlementCurrency** | **string** | The execution&#39;s settlement currency. | 
 **SettlementCurrencyFxRate** | **decimal** | The exectuion&#39;s settlement currency rate. | 
 **Counterparty** | **string** | The market entity this placement is placed with. | 
+**AveragePrice** | **decimal?** | The latest average price of all executions for a given placement | [optional] 
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 
