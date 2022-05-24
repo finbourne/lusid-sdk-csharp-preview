@@ -166,7 +166,6 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
             CallLusidInlineValuationEndpoint(irs, ModelSelection.ModelEnum.Discounting);
         }
 
-        
         [LusidFeature("F22-54")]
         [TestCase(InstrumentExamples.InterestRateSwapType.Basis)]
         [TestCase(InstrumentExamples.InterestRateSwapType.CrossCurrency)]
@@ -176,6 +175,5 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
             var irs = InstrumentExamples.CreateExampleInterestRateSwap(interestRateSwapType);
             CallLusidGetPortfolioCashFlowsEndpoint(irs, ModelSelection.ModelEnum.Discounting);
         }
-       
     }
 }
