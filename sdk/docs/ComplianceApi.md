@@ -1,17 +1,16 @@
 # Lusid.Sdk.Api.ComplianceApi
 
-All URIs are relative to *http://local-unit-test-server.lusid.com:36130*
+All URIs are relative to *http://local-unit-test-server.lusid.com:42062*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
 [**DeleteComplianceRule**](ComplianceApi.md#deletecompliancerule) | **DELETE** /api/compliance/rules/{scope}/{code} | [EXPERIMENTAL] DeleteComplianceRule: Deletes a compliance rule.
 [**GetComplianceRule**](ComplianceApi.md#getcompliancerule) | **GET** /api/compliance/rules/{scope}/{code} | [EXPERIMENTAL] GetComplianceRule: Retrieve the definition of single compliance rule.
-[**GetComplianceRun**](ComplianceApi.md#getcompliancerun) | **GET** /api/compliance/{runId} | [EXPERIMENTAL] GetComplianceRun: Get the details of a single compliance run. - - DEPRECATING - POST TRADE ONLY
-[**GetComplianceRunResults**](ComplianceApi.md#getcompliancerunresults) | **GET** /api/compliance/results/{runId} | [EXPERIMENTAL] GetComplianceRunResults: Get the details of a single compliance run.
+[**GetComplianceRunResults**](ComplianceApi.md#getcompliancerunresults) | **GET** /api/compliance/runs/{runId} | [EXPERIMENTAL] GetComplianceRunResults: Get the details of a single compliance run.
 [**ListComplianceRules**](ComplianceApi.md#listcompliancerules) | **GET** /api/compliance/rules | [EXPERIMENTAL] ListComplianceRules: List compliance rules, with optional filtering.
-[**ListComplianceRuns**](ComplianceApi.md#listcomplianceruns) | **GET** /api/compliance | [EXPERIMENTAL] ListComplianceRuns: List historical compliance runs. - - DEPRECATING - POST TRADE ONLY
+[**ListComplianceRuns**](ComplianceApi.md#listcomplianceruns) | **GET** /api/compliance | [EXPERIMENTAL] ListComplianceRuns: List historical compliance runs.
+[**RunCompliance**](ComplianceApi.md#runcompliance) | **POST** /api/compliance/runs | [EXPERIMENTAL] RunCompliance: Kick off the compliance check process
 [**RunComplianceCheck**](ComplianceApi.md#runcompliancecheck) | **POST** /api/compliance/run | [EXPERIMENTAL] RunComplianceCheck: Kick off the compliance check process - - DEPRECATING - POST TRADE ONLY
-[**RunPreTradeComplianceCheck**](ComplianceApi.md#runpretradecompliancecheck) | **POST** /api/compliance/pretraderun | [EXPERIMENTAL] RunPreTradeComplianceCheck: Kick off the pre-trade compliance check process
 [**UpsertComplianceRules**](ComplianceApi.md#upsertcompliancerules) | **POST** /api/compliance/rules | [EXPERIMENTAL] UpsertComplianceRules: Upsert compliance rules.
 
 
@@ -38,7 +37,7 @@ namespace Example
         public static void Main()
         {
             Configuration config = new Configuration();
-            config.BasePath = "http://local-unit-test-server.lusid.com:36130";
+            config.BasePath = "http://local-unit-test-server.lusid.com:42062";
             // Configure OAuth2 access token for authorization: oauth2
             config.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -116,7 +115,7 @@ namespace Example
         public static void Main()
         {
             Configuration config = new Configuration();
-            config.BasePath = "http://local-unit-test-server.lusid.com:36130";
+            config.BasePath = "http://local-unit-test-server.lusid.com:42062";
             // Configure OAuth2 access token for authorization: oauth2
             config.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -175,88 +174,6 @@ Name | Type | Description  | Notes
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
-<a name="getcompliancerun"></a>
-# **GetComplianceRun**
-> ResourceListOfComplianceRuleResult GetComplianceRun (string runId, string page = null, int? limit = null, string filter = null)
-
-[EXPERIMENTAL] GetComplianceRun: Get the details of a single compliance run. - - DEPRECATING - POST TRADE ONLY
-
-Use this endpoint to fetch the detail associated with a specific compliance run, including a breakdown  of the passing state of each rule, portfolio combination.
-
-### Example
-```csharp
-using System.Collections.Generic;
-using System.Diagnostics;
-using Lusid.Sdk.Api;
-using Lusid.Sdk.Client;
-using Lusid.Sdk.Model;
-
-namespace Example
-{
-    public class GetComplianceRunExample
-    {
-        public static void Main()
-        {
-            Configuration config = new Configuration();
-            config.BasePath = "http://local-unit-test-server.lusid.com:36130";
-            // Configure OAuth2 access token for authorization: oauth2
-            config.AccessToken = "YOUR_ACCESS_TOKEN";
-
-            var apiInstance = new ComplianceApi(config);
-            var runId = runId_example;  // string | The unique identifier of the compliance run requested.
-            var page = page_example;  // string | The pagination token to use to continue listing compliance rule results from a previous call to list compliance rule result.              This value is returned from the previous call. If a pagination token is provided the sortBy, filter, and asAt fields              must not have changed since the original request. Also, if set, a start value cannot be provided. (optional) 
-            var limit = 56;  // int? | When paginating, limit the number of returned results to this many. (optional) 
-            var filter = filter_example;  // string | Expression to filter the result set. Read more about filtering results from LUSID here https://support.lusid.com/filtering-results-from-lusid. (optional) 
-
-            try
-            {
-                // [EXPERIMENTAL] GetComplianceRun: Get the details of a single compliance run. - - DEPRECATING - POST TRADE ONLY
-                ResourceListOfComplianceRuleResult result = apiInstance.GetComplianceRun(runId, page, limit, filter);
-                Debug.WriteLine(result);
-            }
-            catch (ApiException  e)
-            {
-                Debug.Print("Exception when calling ComplianceApi.GetComplianceRun: " + e.Message );
-                Debug.Print("Status Code: "+ e.ErrorCode);
-                Debug.Print(e.StackTrace);
-            }
-        }
-    }
-}
-```
-
-### Parameters
-
-Name | Type | Description  | Notes
-------------- | ------------- | ------------- | -------------
- **runId** | **string**| The unique identifier of the compliance run requested. | 
- **page** | **string**| The pagination token to use to continue listing compliance rule results from a previous call to list compliance rule result.              This value is returned from the previous call. If a pagination token is provided the sortBy, filter, and asAt fields              must not have changed since the original request. Also, if set, a start value cannot be provided. | [optional] 
- **limit** | **int?**| When paginating, limit the number of returned results to this many. | [optional] 
- **filter** | **string**| Expression to filter the result set. Read more about filtering results from LUSID here https://support.lusid.com/filtering-results-from-lusid. | [optional] 
-
-### Return type
-
-[**ResourceListOfComplianceRuleResult**](ResourceListOfComplianceRuleResult.md)
-
-### Authorization
-
-[oauth2](../README.md#oauth2)
-
-### HTTP request headers
-
- - **Content-Type**: Not defined
- - **Accept**: text/plain, application/json, text/json
-
-
-### HTTP response details
-| Status code | Description | Response headers |
-|-------------|-------------|------------------|
-| **200** | The details of a specific compliance run |  -  |
-| **400** | The details of the input related failure |  -  |
-| **0** | Error response |  -  |
-
-[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
-
 <a name="getcompliancerunresults"></a>
 # **GetComplianceRunResults**
 > ResourceListOfComplianceRuleResult GetComplianceRunResults (string runId, string page = null, int? limit = null)
@@ -280,7 +197,7 @@ namespace Example
         public static void Main()
         {
             Configuration config = new Configuration();
-            config.BasePath = "http://local-unit-test-server.lusid.com:36130";
+            config.BasePath = "http://local-unit-test-server.lusid.com:42062";
             // Configure OAuth2 access token for authorization: oauth2
             config.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -360,7 +277,7 @@ namespace Example
         public static void Main()
         {
             Configuration config = new Configuration();
-            config.BasePath = "http://local-unit-test-server.lusid.com:36130";
+            config.BasePath = "http://local-unit-test-server.lusid.com:42062";
             // Configure OAuth2 access token for authorization: oauth2
             config.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -425,9 +342,9 @@ Name | Type | Description  | Notes
 # **ListComplianceRuns**
 > ResourceListOfComplianceRun ListComplianceRuns (string page = null, int? limit = null, string filter = null)
 
-[EXPERIMENTAL] ListComplianceRuns: List historical compliance runs. - - DEPRECATING - POST TRADE ONLY
+[EXPERIMENTAL] ListComplianceRuns: List historical compliance runs.
 
-Use this endpoint to fetch a list of all historical compliance runs.
+!! CURRENTLY RETURNS DUMMY DATA !! Use this endpoint to fetch a list of all historical compliance runs.
 
 ### Example
 ```csharp
@@ -444,7 +361,7 @@ namespace Example
         public static void Main()
         {
             Configuration config = new Configuration();
-            config.BasePath = "http://local-unit-test-server.lusid.com:36130";
+            config.BasePath = "http://local-unit-test-server.lusid.com:42062";
             // Configure OAuth2 access token for authorization: oauth2
             config.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -455,7 +372,7 @@ namespace Example
 
             try
             {
-                // [EXPERIMENTAL] ListComplianceRuns: List historical compliance runs. - - DEPRECATING - POST TRADE ONLY
+                // [EXPERIMENTAL] ListComplianceRuns: List historical compliance runs.
                 ResourceListOfComplianceRun result = apiInstance.ListComplianceRuns(page, limit, filter);
                 Debug.WriteLine(result);
             }
@@ -501,6 +418,88 @@ Name | Type | Description  | Notes
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
+<a name="runcompliance"></a>
+# **RunCompliance**
+> ComplianceRun RunCompliance (bool isPreTrade, string recipeIdScope, string recipeIdCode = null, bool? byTaxlots = null)
+
+[EXPERIMENTAL] RunCompliance: Kick off the compliance check process
+
+Use this endpoint to fetch the start a compliance run, based on a pre-set mapping file.
+
+### Example
+```csharp
+using System.Collections.Generic;
+using System.Diagnostics;
+using Lusid.Sdk.Api;
+using Lusid.Sdk.Client;
+using Lusid.Sdk.Model;
+
+namespace Example
+{
+    public class RunComplianceExample
+    {
+        public static void Main()
+        {
+            Configuration config = new Configuration();
+            config.BasePath = "http://local-unit-test-server.lusid.com:42062";
+            // Configure OAuth2 access token for authorization: oauth2
+            config.AccessToken = "YOUR_ACCESS_TOKEN";
+
+            var apiInstance = new ComplianceApi(config);
+            var isPreTrade = true;  // bool | Required: Boolean flag indicating if a run should be PreTrade (Including orders). For post-trade only, set to false
+            var recipeIdScope = recipeIdScope_example;  // string | Required: the scope of the recipe to be used
+            var recipeIdCode = recipeIdCode_example;  // string | Optional: The code of the recipe to be used. If left blank, the default recipe will be used. (optional) 
+            var byTaxlots = true;  // bool? | Optional. (optional) 
+
+            try
+            {
+                // [EXPERIMENTAL] RunCompliance: Kick off the compliance check process
+                ComplianceRun result = apiInstance.RunCompliance(isPreTrade, recipeIdScope, recipeIdCode, byTaxlots);
+                Debug.WriteLine(result);
+            }
+            catch (ApiException  e)
+            {
+                Debug.Print("Exception when calling ComplianceApi.RunCompliance: " + e.Message );
+                Debug.Print("Status Code: "+ e.ErrorCode);
+                Debug.Print(e.StackTrace);
+            }
+        }
+    }
+}
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **isPreTrade** | **bool**| Required: Boolean flag indicating if a run should be PreTrade (Including orders). For post-trade only, set to false | 
+ **recipeIdScope** | **string**| Required: the scope of the recipe to be used | 
+ **recipeIdCode** | **string**| Optional: The code of the recipe to be used. If left blank, the default recipe will be used. | [optional] 
+ **byTaxlots** | **bool?**| Optional. | [optional] 
+
+### Return type
+
+[**ComplianceRun**](ComplianceRun.md)
+
+### Authorization
+
+[oauth2](../README.md#oauth2)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: text/plain, application/json, text/json
+
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+| **200** | The identifying information of a compliance run |  -  |
+| **400** | The details of the input related failure |  -  |
+| **0** | Error response |  -  |
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
 <a name="runcompliancecheck"></a>
 # **RunComplianceCheck**
 > ComplianceRun RunComplianceCheck (string fileName)
@@ -524,7 +523,7 @@ namespace Example
         public static void Main()
         {
             Configuration config = new Configuration();
-            config.BasePath = "http://local-unit-test-server.lusid.com:36130";
+            config.BasePath = "http://local-unit-test-server.lusid.com:42062";
             // Configure OAuth2 access token for authorization: oauth2
             config.AccessToken = "YOUR_ACCESS_TOKEN";
 
@@ -577,86 +576,6 @@ Name | Type | Description  | Notes
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
-<a name="runpretradecompliancecheck"></a>
-# **RunPreTradeComplianceCheck**
-> ComplianceRun RunPreTradeComplianceCheck (string recipeScope, string recipeCode = null, bool? byTaxlots = null)
-
-[EXPERIMENTAL] RunPreTradeComplianceCheck: Kick off the pre-trade compliance check process
-
-Use this endpoint to run a pre-trade compliance check, using all existing pre-trade applicable compliance rules
-
-### Example
-```csharp
-using System.Collections.Generic;
-using System.Diagnostics;
-using Lusid.Sdk.Api;
-using Lusid.Sdk.Client;
-using Lusid.Sdk.Model;
-
-namespace Example
-{
-    public class RunPreTradeComplianceCheckExample
-    {
-        public static void Main()
-        {
-            Configuration config = new Configuration();
-            config.BasePath = "http://local-unit-test-server.lusid.com:36130";
-            // Configure OAuth2 access token for authorization: oauth2
-            config.AccessToken = "YOUR_ACCESS_TOKEN";
-
-            var apiInstance = new ComplianceApi(config);
-            var recipeScope = recipeScope_example;  // string | Scope of recipe to be used - required
-            var recipeCode = recipeCode_example;  // string | Code of recipe to be used - if not provided, default recipe code will be used (optional) 
-            var byTaxlots = true;  // bool? | calculate by taxlots or not - Default: False (optional) 
-
-            try
-            {
-                // [EXPERIMENTAL] RunPreTradeComplianceCheck: Kick off the pre-trade compliance check process
-                ComplianceRun result = apiInstance.RunPreTradeComplianceCheck(recipeScope, recipeCode, byTaxlots);
-                Debug.WriteLine(result);
-            }
-            catch (ApiException  e)
-            {
-                Debug.Print("Exception when calling ComplianceApi.RunPreTradeComplianceCheck: " + e.Message );
-                Debug.Print("Status Code: "+ e.ErrorCode);
-                Debug.Print(e.StackTrace);
-            }
-        }
-    }
-}
-```
-
-### Parameters
-
-Name | Type | Description  | Notes
-------------- | ------------- | ------------- | -------------
- **recipeScope** | **string**| Scope of recipe to be used - required | 
- **recipeCode** | **string**| Code of recipe to be used - if not provided, default recipe code will be used | [optional] 
- **byTaxlots** | **bool?**| calculate by taxlots or not - Default: False | [optional] 
-
-### Return type
-
-[**ComplianceRun**](ComplianceRun.md)
-
-### Authorization
-
-[oauth2](../README.md#oauth2)
-
-### HTTP request headers
-
- - **Content-Type**: Not defined
- - **Accept**: text/plain, application/json, text/json
-
-
-### HTTP response details
-| Status code | Description | Response headers |
-|-------------|-------------|------------------|
-| **200** | The identifying information of a compliance run |  -  |
-| **400** | The details of the input related failure |  -  |
-| **0** | Error response |  -  |
-
-[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
-
 <a name="upsertcompliancerules"></a>
 # **UpsertComplianceRules**
 > ComplianceRuleUpsertResponse UpsertComplianceRules (Dictionary<string, ComplianceRuleUpsertRequest> requestBody, DateTimeOrCutLabel effectiveAt = null)
@@ -680,7 +599,7 @@ namespace Example
         public static void Main()
         {
             Configuration config = new Configuration();
-            config.BasePath = "http://local-unit-test-server.lusid.com:36130";
+            config.BasePath = "http://local-unit-test-server.lusid.com:42062";
             // Configure OAuth2 access token for authorization: oauth2
             config.AccessToken = "YOUR_ACCESS_TOKEN";
 
