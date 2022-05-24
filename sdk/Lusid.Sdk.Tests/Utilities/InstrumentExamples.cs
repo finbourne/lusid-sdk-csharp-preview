@@ -9,7 +9,7 @@ namespace Lusid.Sdk.Tests.Utilities
     public static class InstrumentExamples
     {
 
-        public enum IRSTypes
+        public enum InterestRateSwapType
         {
             /// <summary>
             /// Vanilla Swap
@@ -53,7 +53,7 @@ namespace Lusid.Sdk.Tests.Utilities
                 nameof(Bond) => CreateExampleBond(),
                 nameof(FxForward) => CreateExampleFxForward(),
                 nameof(FxOption) => CreateExampleFxOption(),
-                nameof(InterestRateSwap) => CreateExampleInterestRateSwap(IRSTypes.Vanilla),
+                nameof(InterestRateSwap) => CreateExampleInterestRateSwap(InterestRateSwapType.Vanilla),
                 nameof(CreditDefaultSwap) => CreateExampleCreditDefaultSwap(),
                 nameof(ContractForDifference) => CreateExampleCfd(),
                 _ => throw new ArgumentOutOfRangeException($"Please implement case for instrument {instrumentName}")
@@ -272,12 +272,12 @@ namespace Lusid.Sdk.Tests.Utilities
             return irs;
         }
 
-        internal static InterestRateSwap CreateExampleInterestRateSwap(IRSTypes type)
+        internal static InterestRateSwap CreateExampleInterestRateSwap(InterestRateSwapType type)
         {
             InterestRateSwap swap = null;
             switch (type)
             {
-                case IRSTypes.Vanilla:
+                case InterestRateSwapType.Vanilla:
                     swap = CreateInterestRateSwapForIndex(
                         currency: "USD",
                         indexName: "LIBOR",
@@ -289,7 +289,7 @@ namespace Lusid.Sdk.Tests.Utilities
                         paymentFreq: "6M"
                     );
                     break;
-                case IRSTypes.SOFR:
+                case InterestRateSwapType.SOFR:
                     swap = CreateInterestRateSwapForIndex(
                         currency: "USD",
                         indexName: "SOFR",
@@ -310,7 +310,7 @@ namespace Lusid.Sdk.Tests.Utilities
                         shift: 5
                     );
                     break;
-                case IRSTypes.ESTR:
+                case InterestRateSwapType.ESTR:
                     swap = CreateInterestRateSwapForIndex(
                         currency: "EUR",
                         indexName: "ESTR",
@@ -331,7 +331,7 @@ namespace Lusid.Sdk.Tests.Utilities
                         shift: 1
                     );
                     break;
-                case IRSTypes.SONIA:
+                case InterestRateSwapType.SONIA:
                     swap = CreateInterestRateSwapForIndex(
                         currency: "GBP",
                         indexName: "SONIA",
@@ -352,7 +352,7 @@ namespace Lusid.Sdk.Tests.Utilities
                         shift: 0
                     );
                     break;
-                case IRSTypes.TONA:
+                case InterestRateSwapType.TONA:
                     swap = CreateInterestRateSwapForIndex(
                         currency: "JPY",
                         indexName: "TONA",
@@ -373,7 +373,7 @@ namespace Lusid.Sdk.Tests.Utilities
                         shift: 0
                     );
                     break;
-                case IRSTypes.SARON:
+                case InterestRateSwapType.SARON:
                     swap = CreateInterestRateSwapForIndex(
                         currency: "CHF",
                         indexName: "SARON",
@@ -395,7 +395,7 @@ namespace Lusid.Sdk.Tests.Utilities
                     );
                     break;
 
-                case IRSTypes.CDOR:
+                case InterestRateSwapType.CDOR:
                     swap = CreateInterestRateSwapForIndex(
                         currency: "CAD",
                         indexName: "CDOR",
@@ -418,15 +418,15 @@ namespace Lusid.Sdk.Tests.Utilities
                     );
                     break;
 
-                case IRSTypes.CrossCurrency:
+                case InterestRateSwapType.CrossCurrency:
                     swap = CreateExampleCrossCurrencyBasisSwap();
                     break;
 
-                case IRSTypes.Basis:
+                case InterestRateSwapType.Basis:
                     swap = CreateExampleBasisSwap();
                     break;
 
-                case IRSTypes.Amortising:
+                case InterestRateSwapType.Amortising:
                     swap = CreateExampleAmortisingSwap();
                     break;
 
@@ -823,7 +823,7 @@ namespace Lusid.Sdk.Tests.Utilities
             var stepSchedule = new StepSchedule(stepScheduleType: "Notional", levelType: "Absolute", steps: steps, scheduleType: "Step");
 
             // create a vanilla swap
-            var swap = CreateExampleInterestRateSwap(IRSTypes.Vanilla);
+            var swap = CreateExampleInterestRateSwap(InterestRateSwapType.Vanilla);
             var fixedLeg = swap.Legs.OfType<FixedLeg>().First();
             var floatLeg = swap.Legs.OfType<FloatingLeg>().First();
 

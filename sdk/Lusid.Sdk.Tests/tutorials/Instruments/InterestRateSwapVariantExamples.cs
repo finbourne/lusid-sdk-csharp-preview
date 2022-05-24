@@ -24,17 +24,15 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
             // For accurate pricing, one would want to upsert a quote per reset.
             InterestRateSwap irs = instrument as InterestRateSwap;
 
-            var floatLegs = irs.Legs.OfType<FloatingLeg>();
-            var fixingRefs = floatLegs.Select(floatLeg => floatLeg.LegDefinition.IndexConvention.FixingReference).Distinct().ToList();
-
-            Dictionary<string, UpsertQuoteRequest> resetRequests = new Dictionary<string, UpsertQuoteRequest>();
-
             // provide resets for each floating leg, with id equal to the fixing reference that the leg will request
+            var floatLegs = irs.Legs.OfType<FloatingLeg>().ToList();
+            var fixingRefs = floatLegs.Select(floatLeg => floatLeg.LegDefinition.IndexConvention.FixingReference).Distinct().ToList();
+            Dictionary<string, UpsertQuoteRequest> quoteRequests = new Dictionary<string, UpsertQuoteRequest>();
             for (int i = 0; i < fixingRefs.Count; i++)
             {
                 var fixingRef = fixingRefs[i];
                 TestDataUtilities.BuildQuoteRequest(
-                    resetRequests,
+                    quoteRequests,
                     "dummyReset" + i,
                     fixingRef,
                     QuoteSeriesId.InstrumentIdTypeEnum.RIC,
@@ -45,16 +43,23 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
             }
 
             // provide fx rates for cross-currency swaps
-            var fxRequest = TestDataUtilities.BuildFxRateRequest("USD", "GBP", 0.8m, TestDataUtilities.EffectiveAt, TestDataUtilities.EffectiveAt, useConstantFxRate: true);
-            var quoteRequests = resetRequests.Concat(fxRequest).ToDictionary(d => d.Key, d => d.Value);
+            var ccys = floatLegs.Select(leg => leg.LegDefinition.Conventions.Currency)
+                .Concat(irs.Legs.OfType<FixedLeg>().Select(fixedLeg => fixedLeg.LegDefinition.Conventions.Currency)).ToList();
+            if (ccys.Count > 1)
+            {
+                foreach (var fxRequest in TestDataUtilities.BuildFxRateRequest("USD", "GBP", 0.8m, TestDataUtilities.EffectiveAt, TestDataUtilities.EffectiveAt, useConstantFxRate: true))
+                {
+                    quoteRequests.Add(fxRequest.Key, fxRequest.Value);
+                }
+            }
 
             UpsertQuotesResponse upsertResponse = _quotesApi.UpsertQuotes(scope, quoteRequests);
             Assert.That(upsertResponse.Failed.Count, Is.EqualTo(0));
             Assert.That(upsertResponse.Values.Count, Is.EqualTo(quoteRequests.Count));
 
+            // For models requiring discounting and projection curves, we upsert them below. ConstantTimeValueOfMoney does not require any curves.
             Dictionary<string, UpsertComplexMarketDataRequest> upsertComplexMarketDataRequest = new Dictionary<string, UpsertComplexMarketDataRequest>();;
             UpsertStructuredDataResponse upsertComplexMarketDataResponse;
-            // For models requiring discount curves, we upsert them below. ConstantTimeValueOfMoney does not require any discount curves. 
             if (model != ModelSelection.ModelEnum.ConstantTimeValueOfMoney)
             {
                 // provide discount/projection curves in USD, for swaps with a 3M floating leg
@@ -64,19 +69,23 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
                     TestDataUtilities.BuildRateCurveRequest(TestDataUtilities.EffectiveAt, "USD", "LIBOR", TestDataUtilities.ExampleDiscountFactors1, "3M"));
 
                 // provide an additional 6M projection curves in USD, for single-currency basis swaps
-                upsertComplexMarketDataRequest.Add("projection_curve_USD_6M",
-                    TestDataUtilities.BuildRateCurveRequest(TestDataUtilities.EffectiveAt, "USD", "LIBOR", TestDataUtilities.ExampleDiscountFactors2, "6M"));
+                if (floatLegs.Select(leg => leg.LegDefinition.IndexConvention.PaymentTenor).Contains("6M"))
+                {
+                    upsertComplexMarketDataRequest.Add("projection_curve_USD_6M",
+                        TestDataUtilities.BuildRateCurveRequest(TestDataUtilities.EffectiveAt, "USD", "LIBOR", TestDataUtilities.ExampleDiscountFactors2, "6M"));
+                }
 
                 // provide discount/projection curves in GBP, for cross-currency swaps
-                upsertComplexMarketDataRequest.Add("discount_curve_GBP",
-                    TestDataUtilities.BuildRateCurveRequest(TestDataUtilities.EffectiveAt, "GBP", "OIS", TestDataUtilities.ExampleDiscountFactors1));
-                upsertComplexMarketDataRequest.Add("projection_curve_GBP_3M",
-                    TestDataUtilities.BuildRateCurveRequest(TestDataUtilities.EffectiveAt, "GBP", "LIBOR", TestDataUtilities.ExampleDiscountFactors2, "3M"));
+                if (ccys.Count > 1)
+                {
+                    upsertComplexMarketDataRequest.Add("discount_curve_GBP",
+                        TestDataUtilities.BuildRateCurveRequest(TestDataUtilities.EffectiveAt, "GBP", "OIS", TestDataUtilities.ExampleDiscountFactors1));
+                    upsertComplexMarketDataRequest.Add("projection_curve_GBP_3M",
+                        TestDataUtilities.BuildRateCurveRequest(TestDataUtilities.EffectiveAt, "GBP", "LIBOR", TestDataUtilities.ExampleDiscountFactors2, "3M"));
+                }
             }
-            upsertComplexMarketDataResponse =
-                _complexMarketDataApi.UpsertComplexMarketData(scope, upsertComplexMarketDataRequest);
-            ValidateComplexMarketDataUpsert(upsertComplexMarketDataResponse,
-                upsertComplexMarketDataRequest.Count);
+            upsertComplexMarketDataResponse = _complexMarketDataApi.UpsertComplexMarketData(scope, upsertComplexMarketDataRequest);
+            ValidateComplexMarketDataUpsert(upsertComplexMarketDataResponse, upsertComplexMarketDataRequest.Count);
         }
 
         /// <inheritdoc />
@@ -102,10 +111,10 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
         }
 
         [LusidFeature("F5-25")]
-        [TestCase(InstrumentExamples.IRSTypes.Basis)]
-        [TestCase(InstrumentExamples.IRSTypes.CrossCurrency)]
-        [TestCase(InstrumentExamples.IRSTypes.Amortising)]
-        public void InterestRateSwapCreationAndUpsertionExample(InstrumentExamples.IRSTypes type)
+        [TestCase(InstrumentExamples.InterestRateSwapType.Basis)]
+        [TestCase(InstrumentExamples.InterestRateSwapType.CrossCurrency)]
+        [TestCase(InstrumentExamples.InterestRateSwapType.Amortising)]
+        public void InterestRateSwapCreationAndUpsertionExample(InstrumentExamples.InterestRateSwapType type)
         {
             // CREATE an interest rate swap (that can then be upserted into LUSID)
             var swap = InstrumentExamples.CreateExampleInterestRateSwap(type);
@@ -138,22 +147,33 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
         }
        
         [LusidFeature("F22-52")]
-        [TestCase(InstrumentExamples.IRSTypes.Basis)]
-        [TestCase(InstrumentExamples.IRSTypes.CrossCurrency)]
-        [TestCase(InstrumentExamples.IRSTypes.Amortising)]
-        public void InterestRateSwapInlineValuationExample(InstrumentExamples.IRSTypes irsType)
+        [TestCase(InstrumentExamples.InterestRateSwapType.Basis)]
+        [TestCase(InstrumentExamples.InterestRateSwapType.CrossCurrency)]
+        [TestCase(InstrumentExamples.InterestRateSwapType.Amortising)]
+        public void InterestRateSwapValuationExample(InstrumentExamples.InterestRateSwapType interestRateSwapType)
         {
-            var irs = InstrumentExamples.CreateExampleInterestRateSwap(irsType);
+            var irs = InstrumentExamples.CreateExampleInterestRateSwap(interestRateSwapType);
+            CallLusidGetValuationEndpoint(irs, ModelSelection.ModelEnum.Discounting);
+        }
+
+        [LusidFeature("F22-53")]
+        [TestCase(InstrumentExamples.InterestRateSwapType.Basis)]
+        [TestCase(InstrumentExamples.InterestRateSwapType.CrossCurrency)]
+        [TestCase(InstrumentExamples.InterestRateSwapType.Amortising)]
+        public void InterestRateSwapInlineValuationExample(InstrumentExamples.InterestRateSwapType interestRateSwapType)
+        {
+            var irs = InstrumentExamples.CreateExampleInterestRateSwap(interestRateSwapType);
             CallLusidInlineValuationEndpoint(irs, ModelSelection.ModelEnum.Discounting);
         }
+
         
-        [LusidFeature("F22-53")]
-        [TestCase(InstrumentExamples.IRSTypes.Basis)]
-        [TestCase(InstrumentExamples.IRSTypes.CrossCurrency)]
-        [TestCase(InstrumentExamples.IRSTypes.Amortising)]
-        public void InterestRateSwapPortfolioCashFlowsExample(InstrumentExamples.IRSTypes irsType)
+        [LusidFeature("F22-54")]
+        [TestCase(InstrumentExamples.InterestRateSwapType.Basis)]
+        [TestCase(InstrumentExamples.InterestRateSwapType.CrossCurrency)]
+        [TestCase(InstrumentExamples.InterestRateSwapType.Amortising)]
+        public void InterestRateSwapPortfolioCashFlowsExample(InstrumentExamples.InterestRateSwapType interestRateSwapType)
         {
-            var irs = InstrumentExamples.CreateExampleInterestRateSwap(irsType);
+            var irs = InstrumentExamples.CreateExampleInterestRateSwap(interestRateSwapType);
             CallLusidGetPortfolioCashFlowsEndpoint(irs, ModelSelection.ModelEnum.Discounting);
         }
        
