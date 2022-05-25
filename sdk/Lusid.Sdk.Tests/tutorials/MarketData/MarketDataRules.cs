@@ -4,6 +4,7 @@ using System.Linq;
 using Lusid.Sdk.Model;
 using Lusid.Sdk.Tests.Utilities;
 using Lusid.Sdk.Utilities;
+using LusidFeatures;
 using NUnit.Framework;
 
 namespace Lusid.Sdk.Tests.Tutorials.MarketData
@@ -18,6 +19,7 @@ namespace Lusid.Sdk.Tests.Tutorials.MarketData
         /// In particular, we show how the inclusion of a market data specific rule can cause LUSID to prefer
         /// data in a special scope whenever it needs an underlying asset price for USD-denominated equity options.
         /// </summary>
+        [LusidFeature("F11-8")]
         [Test]
         public void DemoMarketDataSpecificRules()
         {
@@ -29,16 +31,18 @@ namespace Lusid.Sdk.Tests.Tutorials.MarketData
 
             // create an equity call option for TSLA to value
             var testNow = new DateTimeOffset(2019, 01, 01, 0, 0, 0, TimeSpan.Zero);
-            var instrument = new EquityOption(testNow.AddMonths(-1), testNow.AddMonths(+1), testNow.AddMonths(+1), EquityOption.DeliveryTypeEnum.Cash,
-                EquityOption.OptionTypeEnum.Call, 90m, "USD", EquityOption.UnderlyingIdentifierEnum.RIC, "TSLA", LusidInstrument.InstrumentTypeEnum.EquityOption);
+            var instrument = new EquityOption(startDate: testNow.AddMonths(-1), optionMaturityDate: testNow.AddMonths(+1), optionSettlementDate: testNow.AddMonths(+1), deliveryType: "Cash",
+                optionType: "Call", strike: 90m, domCcy: "USD", underlyingIdentifier: "RIC", code: "TSLA", instrumentType: LusidInstrument.InstrumentTypeEnum.EquityOption);
 
             // upsert two quotes with different values: one is upserted to the generic scope, one is upserted to the specific scope
-            var genericQuote = TestDataUtilities.BuildQuoteRequest("TSLA", QuoteSeriesId.InstrumentIdTypeEnum.RIC, 100m, "USD", testNow);
-            var genericQuoteResponse = _quotesApi.UpsertQuotes(genericScope, genericQuote);
-            ValidateQuoteUpsert(genericQuoteResponse, genericQuote.Count);
-            var specificQuote = TestDataUtilities.BuildQuoteRequest("TSLA", QuoteSeriesId.InstrumentIdTypeEnum.RIC, 120m, "USD", testNow);
-            var specificQuoteResponse = _quotesApi.UpsertQuotes(specificScope, specificQuote);
-            ValidateQuoteUpsert(specificQuoteResponse, specificQuote.Count);
+            var quotesToPutInGenericScope = new Dictionary<string, UpsertQuoteRequest>();
+            TestDataUtilities.BuildQuoteRequest(quotesToPutInGenericScope, "TSLA-fallback", "TSLA", QuoteSeriesId.InstrumentIdTypeEnum.RIC, 100m, "USD", testNow, QuoteSeriesId.QuoteTypeEnum.Price);
+            var genericQuoteResponse = _quotesApi.UpsertQuotes(genericScope, quotesToPutInGenericScope);
+            ValidateQuoteUpsert(genericQuoteResponse, quotesToPutInGenericScope.Count);
+            var quotesToPutInSpecificScope = new Dictionary<string, UpsertQuoteRequest>();
+            TestDataUtilities.BuildQuoteRequest(quotesToPutInSpecificScope, "TSLA-override", "TSLA", QuoteSeriesId.InstrumentIdTypeEnum.RIC, 120m, "USD", testNow, QuoteSeriesId.QuoteTypeEnum.Price);
+            var specificQuoteResponse = _quotesApi.UpsertQuotes(specificScope, quotesToPutInSpecificScope);
+            ValidateQuoteUpsert(specificQuoteResponse, quotesToPutInSpecificScope.Count);
 
             // instruct lusid to value equity options with ConstantTimeValueOfMoney (i.e. intrinsic value)
             var modelRules = new VendorModelRule(VendorModelRule.SupplierEnum.Lusid, "ConstantTimeValueOfMoney", "EquityOption", "{}");
