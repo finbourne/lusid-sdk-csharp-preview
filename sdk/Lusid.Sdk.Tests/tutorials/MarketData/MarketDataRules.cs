@@ -10,13 +10,22 @@ namespace Lusid.Sdk.Tests.Tutorials.MarketData
 {
     public class MarketDataRules : TutorialBase
     {
+        /// <summary>
+        /// See <see cref="MarketDataSpecificRule"/>.
+        ///
+        /// In this test we demonstrate the use of market data specific rules in order to instruct LUSID to use
+        /// different market data sources in instrument valuation, depending on the properties of the instrument.
+        /// In particular, we show how the inclusion of a market data specific rule can cause LUSID to prefer
+        /// data in a special scope whenever it needs an underlying asset price for USD-denominated equity options.
+        /// </summary>
         [Test]
         public void DemoMarketDataSpecificRules()
         {
+            var recipeScope = nameof(DemoMarketDataSpecificRules);
+            
             // set up scopes: one for recipes, one for holding quotes from a generic source, and one for holding specific quotes that will override ones from the generic scope
-            var testScope = "testScope";
-            var genericScope = "genericScope";
-            var specificScope = "specificScope";
+            var genericScope = nameof(DemoMarketDataSpecificRules) + "genericScope"; // this might be a general scope for storing equity prices
+            var specificScope = nameof(DemoMarketDataSpecificRules) + "specificScope";
 
             // create an equity call option for TSLA to value
             var testNow = new DateTimeOffset(2019, 01, 01, 0, 0, 0, TimeSpan.Zero);
@@ -38,48 +47,48 @@ namespace Lusid.Sdk.Tests.Tutorials.MarketData
             // make two market data rules:
             // the first is a generic rule that all RIC prices should be looked for in the generic scope
             // the second is a specific rule that all RIC prices requested by USD-denominated EquityOption instruments should be looked for in the specific scope
-            var genericRule = new MarketDataKeyRule("Equity.RIC.*", "Lusid", genericScope, MarketDataKeyRule.QuoteTypeEnum.Price, "mid");
-            var specificRule = new MarketDataSpecificRule("Equity.RIC.*", "Lusid", specificScope, MarketDataSpecificRule.QuoteTypeEnum.Price, "mid",
-                dependencySourceFilter: new DependencySourceFilter(instrumentType: "EquityOption", null, "USD"));
+            var genericRule = new MarketDataKeyRule("Quote.RIC.*", "Lusid", genericScope, MarketDataKeyRule.QuoteTypeEnum.Price, "mid");
+            var specificRuleForUsdEquityOptions = new MarketDataSpecificRule("Quote.RIC.*", "Lusid", specificScope, MarketDataSpecificRule.QuoteTypeEnum.Price, "mid",
+                dependencySourceFilter: new DependencySourceFilter(instrumentType: "EquityOption", assetClass: null, domCcy: "USD"));
 
             // Upsert a generic recipe containing out generic rule that will find the equity spot from the generic scope
-            var mktContextGeneric = new MarketContext(options: new MarketOptions(defaultScope: genericScope), marketRules: new List<MarketDataKeyRule> {genericRule});
-            var genericRecipe = new ConfigurationRecipe(
-                testScope,
+            var mktContextWithNoSpecificRule = new MarketContext(options: new MarketOptions(defaultScope: genericScope), marketRules: new List<MarketDataKeyRule> {genericRule});
+            var recipeWithNoSpecificRule = new ConfigurationRecipe(
+                recipeScope,
                 "WithNoSpecificRules",
-                mktContextGeneric,
+                mktContextWithNoSpecificRule,
                 pricingContext,
                 description: $"Should use market data contained in {genericScope}"
             ); ;
-            var genericRecipeResponse = _recipeApi.UpsertConfigurationRecipe(new UpsertRecipeRequest(genericRecipe));
+            var genericRecipeResponse = _recipeApi.UpsertConfigurationRecipe(new UpsertRecipeRequest(recipeWithNoSpecificRule));
             Assert.That(genericRecipeResponse.Value, Is.Not.Null);
 
             // Upsert a recipe additionally containing our specific rule that will find the equity spot from the specific scope instead
             // The MarketDataSpecificRule takes priority over all MarketDataKeyRules;
             // if the requested quote is not found via specific rules, then quote will be resolved by the generic rules as a fallback
-            var mktContextSpecific = new MarketContext(options: new MarketOptions(defaultScope: genericScope), marketRules: new List<MarketDataKeyRule> {genericRule},
-                specificRules: new List<MarketDataSpecificRule> {specificRule});
-            var specificRecipe = new ConfigurationRecipe(
-                testScope,
+            var mktContextWithSpecificRule = new MarketContext(options: new MarketOptions(defaultScope: genericScope), marketRules: new List<MarketDataKeyRule> {genericRule},
+                specificRules: new List<MarketDataSpecificRule> {specificRuleForUsdEquityOptions});
+            var recipeWithSpecificRule = new ConfigurationRecipe(
+                recipeScope,
                 "ContainsSpecificRules",
-                mktContextSpecific,
+                mktContextWithSpecificRule,
                 pricingContext,
                 description: $"Should override the market data contained in {genericScope} with a quote contained in {specificScope}"
             );
-            var specificRecipeResponse = _recipeApi.UpsertConfigurationRecipe(new UpsertRecipeRequest(specificRecipe));
+            var specificRecipeResponse = _recipeApi.UpsertConfigurationRecipe(new UpsertRecipeRequest(recipeWithSpecificRule));
             Assert.That(specificRecipeResponse.Value, Is.Not.Null);
 
             // Get PVs according to our two recipes, and check that the appropriate values were computed for each recipe
-            var genericPv = PerformValuation("WithNoSpecificRules");
-            var specificPv = PerformValuation("ContainsSpecificRules");
-            Assert.That(genericPv, Is.EqualTo(10)); // strike is 90, spot quote is 100 in the generic scope
-            Assert.That(specificPv, Is.EqualTo(30)); // strike is 90, spot quote is 120 in the specific scope
+            var pvWithNoSpecificRule = PerformValuation(recipeWithNoSpecificRule.Code);
+            var pvWithSpecificRule = PerformValuation(recipeWithSpecificRule.Code);
+            Assert.That(pvWithNoSpecificRule, Is.EqualTo(10)); // strike is 90, spot quote is 100 in the generic scope
+            Assert.That(pvWithSpecificRule, Is.EqualTo(30)); // strike is 90, spot quote is 120 in the specific scope
 
             double? PerformValuation(string recipeName)
             {
                 // CREATE the aggregation request
                 var aggReq = new InlineValuationRequest(
-                    new ResourceId(testScope, recipeName),
+                    new ResourceId(recipeScope, recipeName),
                     valuationSchedule: new ValuationSchedule(effectiveAt: testNow.ToString("o")),
                     metrics: TestDataUtilities.ValuationSpec,
                     instruments: new List<WeightedInstrument> {new WeightedInstrument(1m, "myOption", instrument)}
