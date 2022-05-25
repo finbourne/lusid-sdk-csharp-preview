@@ -4,14 +4,16 @@ using System.Linq;
 using Lusid.Sdk.Api;
 using Lusid.Sdk.Model;
 using Lusid.Sdk.Utilities;
+using LusidFeatures;
 using NUnit.Framework;
 
 namespace Lusid.Sdk.Tests.tutorials.Ibor
 {
     public class FxForwardDiagnostics
     {
+        [LusidFeature("F22-55")]
         [Test]
-        public void DemoInterpolationOfFxForwardRatesDuringValuation()
+        public void DemoInterpolationApproachesForFxForwardValuation()
         {
             // Goal: Value an fx forward using three models and show that they are consistent in their implied fx forward rates
             // The first model values the fx forward using discount curves in the two currencies
