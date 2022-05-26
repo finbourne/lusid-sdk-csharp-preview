@@ -140,15 +140,15 @@ namespace Lusid.Sdk.Tests.tutorials.Ibor
             void CreateAndUpsertRecipe(string code, ModelSelection.ModelEnum model)
             {
                 // CREATE a rule for finding fx forward curves
-                var fxFwdCurveRule = new MarketDataKeyRule("FxForwards.*.*.*", "Lusid", scope, MarketDataKeyRule.QuoteTypeEnum.Rate,
-                    "mid", quoteInterval: "1Y", mask: "AUD/JPY/FxFwdCurve");
+                var fxFwdCurveRule = new MarketDataKeyRule(key: "FxForwards.*.*.*", supplier: "Lusid", dataScope: scope,
+                    quoteType: MarketDataKeyRule.QuoteTypeEnum.Rate, field: "mid", quoteInterval: "1Y", mask: "AUD/JPY/FxFwdCurve");
 
                 // CREATE recipe for pricing
                 var pricingOptions = new PricingOptions(new ModelSelection(ModelSelection.LibraryEnum.Lusid, model));
                 var recipe = new ConfigurationRecipe(
-                    scope,
-                    code,
-                    market: new MarketContext(new List<MarketDataKeyRule> {fxFwdCurveRule},
+                    scope: scope,
+                    code: code,
+                    market: new MarketContext(marketRules: new List<MarketDataKeyRule> {fxFwdCurveRule},
                         options: new MarketOptions(defaultScope: scope)),
                     pricing: new PricingContext(options: pricingOptions),
                     description: $"Recipe for {model} pricing");
@@ -186,8 +186,8 @@ namespace Lusid.Sdk.Tests.tutorials.Ibor
                 var audOisRates = new List<decimal>
                 { 1.0m, 0.995026109593975m, 0.990076958773721m, 0.985098445011387m, 0.980144965261876m };
 
-                var jpyCurve = new DiscountFactorCurveData(effectiveAt, discountDates, jpyOisRates, ComplexMarketData.MarketDataTypeEnum.DiscountFactorCurveData);
-                var audCurve = new DiscountFactorCurveData(effectiveAt, discountDates, audOisRates, ComplexMarketData.MarketDataTypeEnum.DiscountFactorCurveData);
+                var jpyCurve = new DiscountFactorCurveData(baseDate: effectiveAt, dates: discountDates, discountFactors: jpyOisRates, marketDataType: ComplexMarketData.MarketDataTypeEnum.DiscountFactorCurveData);
+                var audCurve = new DiscountFactorCurveData(baseDate: effectiveAt, dates: discountDates, discountFactors: audOisRates, marketDataType: ComplexMarketData.MarketDataTypeEnum.DiscountFactorCurveData);
 
                 var upsertRequests = new Dictionary<string, UpsertComplexMarketDataRequest>
                 {
@@ -255,7 +255,7 @@ namespace Lusid.Sdk.Tests.tutorials.Ibor
                     81.271959646081811m
                 };
 
-                var curveData = new FxForwardTenorCurveData(effectiveAt, "AUD", "JPY", tenors, rates, ComplexMarketData.MarketDataTypeEnum.FxForwardTenorCurveData);
+                var curveData = new FxForwardTenorCurveData(baseDate: effectiveAt, domCcy: "AUD", fgnCcy: "JPY", tenors: tenors, rates: rates, marketDataType: ComplexMarketData.MarketDataTypeEnum.FxForwardTenorCurveData);
                 var upsertRequest = new UpsertComplexMarketDataRequest
                 (
                     marketDataId: new ComplexMarketDataId
