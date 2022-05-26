@@ -45,7 +45,9 @@ namespace Lusid.Sdk.Tests.Utilities
         public static List<decimal> ExampleDiscountFactors1 = new List<decimal> { 1.0m, 0.992548449440757m, 0.985152424487251m, 0.977731146620901m, 0.970365774179742m, 0.85m };
         public static List<decimal> ExampleDiscountFactors2 = new List<decimal> { 1.0m, 0.995026109593975m, 0.990076958773721m, 0.985098445011387m, 0.980144965261876m, 0.9m };
 
+        // dummy fixing references to be used in instrument definitions; this simplifies market data construction
         public static string VanillaSwapFixingReference = "SwapFixingRef";
+        public static string AlternateSwapFixingReference = "AlternateSwapFixingRef"; // could be for some unspecified alternative index e.g. another tenor or another currency
         public static string RFRFixingReference = "RFRFixingRef";
         public static string CDORFixingReference = "CDORFixingRef";
         public static string EquitySwapFixingRef = "EquityFixingRef";

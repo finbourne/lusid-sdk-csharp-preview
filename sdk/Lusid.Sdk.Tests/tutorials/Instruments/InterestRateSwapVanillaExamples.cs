@@ -8,8 +8,11 @@ using NUnit.Framework;
 
 namespace Lusid.Sdk.Tests.Tutorials.Instruments
 {
+    /// <summary>
+    /// Code examples for a vanilla (single-currency, fixed-to-floating) interest rate swap.
+    /// </summary>
     [TestFixture]
-    public class InterestRateSwapExamples: DemoInstrumentBase
+    public class InterestRateSwapVanillaExamples: DemoInstrumentBase
     {
         /// <inheritdoc />
         protected override void CreateAndUpsertMarketDataToLusid(string scope, ModelSelection.ModelEnum model, LusidInstrument instrument)
@@ -22,8 +25,7 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
             // For accurate pricing, one would want to upsert a quote per reset: TODO: Add reset extraction from instruments when available ANA-749
             InterestRateSwap irs = instrument as InterestRateSwap;
 
-            FloatingLeg floatLeg =
-                (FloatingLeg) irs.Legs.Where(x => x.InstrumentType == LusidInstrument.InstrumentTypeEnum.FloatingLeg).First();
+            FloatingLeg floatLeg = (FloatingLeg) irs.Legs.First(x => x.InstrumentType == LusidInstrument.InstrumentTypeEnum.FloatingLeg);
 
             var indexName = floatLeg.LegDefinition.IndexConvention.IndexName;
             var quoteRequest = new Dictionary<string, UpsertQuoteRequest>();
@@ -123,7 +125,7 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
         public void InterestRateSwapCreationAndUpsertionExample()
         {
             // CREATE an interest rate swap (that can then be upserted into LUSID)
-            var swap = InstrumentExamples.CreateExampleInterestRateSwap(InstrumentExamples.IRSTypes.Vanilla);
+            var swap = InstrumentExamples.CreateExampleInterestRateSwap(InstrumentExamples.InterestRateSwapType.Vanilla);
 
             // ASSERT that it was created
             Assert.That(swap, Is.Not.Null);
@@ -158,7 +160,7 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
         [TestCase(ModelSelection.ModelEnum.Discounting)]
         public void InterestRateSwapValuationExample(ModelSelection.ModelEnum model)
         {
-            var irs = InstrumentExamples.CreateExampleInterestRateSwap(InstrumentExamples.IRSTypes.Vanilla);
+            var irs = InstrumentExamples.CreateExampleInterestRateSwap(InstrumentExamples.InterestRateSwapType.Vanilla);
             CallLusidGetValuationEndpoint(irs, model);
         }
 
@@ -167,7 +169,7 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
         [TestCase(ModelSelection.ModelEnum.Discounting)]
         public void InterestRateSwapInlineValuationExample(ModelSelection.ModelEnum model)
         {
-            var irs = InstrumentExamples.CreateExampleInterestRateSwap(InstrumentExamples.IRSTypes.Vanilla);
+            var irs = InstrumentExamples.CreateExampleInterestRateSwap(InstrumentExamples.InterestRateSwapType.Vanilla);
             CallLusidInlineValuationEndpoint(irs, model);
         }
 
@@ -176,7 +178,7 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
         [TestCase(ModelSelection.ModelEnum.Discounting)]
         public void InterestRateSwapCDORInlineValuationExample(ModelSelection.ModelEnum model)
         {
-            var irs = InstrumentExamples.CreateExampleInterestRateSwap(InstrumentExamples.IRSTypes.CDOR);
+            var irs = InstrumentExamples.CreateExampleInterestRateSwap(InstrumentExamples.InterestRateSwapType.CDOR);
             CallLusidInlineValuationEndpoint(irs, model);
         }
 
@@ -185,7 +187,7 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
         [TestCase(ModelSelection.ModelEnum.Discounting)]
         public void InterestRateSwapPortfolioCashFlowsExample(ModelSelection.ModelEnum model)
         {
-            var irs = InstrumentExamples.CreateExampleInterestRateSwap(InstrumentExamples.IRSTypes.Vanilla);
+            var irs = InstrumentExamples.CreateExampleInterestRateSwap(InstrumentExamples.InterestRateSwapType.Vanilla);
             CallLusidGetPortfolioCashFlowsEndpoint(irs, model);
         }
 
@@ -195,7 +197,7 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
         public void LifeCycleManagementForInterestRateSwap(ModelSelection.ModelEnum model)
         {
             // CREATE an InterestRateSwap
-            var interestRateSwap = (InterestRateSwap) InstrumentExamples.CreateExampleInterestRateSwap(InstrumentExamples.IRSTypes.Vanilla);
+            var interestRateSwap = (InterestRateSwap) InstrumentExamples.CreateExampleInterestRateSwap(InstrumentExamples.InterestRateSwapType.Vanilla);
             // Pick out the currency for future reference.
             var fixedLeg = (FixedLeg) interestRateSwap.Legs
                 .First(leg => leg.InstrumentType == LusidInstrument.InstrumentTypeEnum.FixedLeg);

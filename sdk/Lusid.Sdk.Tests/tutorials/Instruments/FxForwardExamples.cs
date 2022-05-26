@@ -10,7 +10,7 @@ using NUnit.Framework;
 namespace Lusid.Sdk.Tests.Tutorials.Instruments
 {
     [TestFixture]
-    public class FxFowardExamples: DemoInstrumentBase
+    public class FxForwardExamples: DemoInstrumentBase
     {
         /// <inheritdoc />
         protected override void CreateAndUpsertMarketDataToLusid(string scope, ModelSelection.ModelEnum model, LusidInstrument instrument)
