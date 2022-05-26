@@ -10,16 +10,16 @@ Method | HTTP request | Description
 [**CancelTransactions**](TransactionPortfoliosApi.md#canceltransactions) | **DELETE** /api/transactionportfolios/{scope}/{code}/transactions | CancelTransactions: Cancel transactions
 [**CreatePortfolio**](TransactionPortfoliosApi.md#createportfolio) | **POST** /api/transactionportfolios/{scope} | CreatePortfolio: Create portfolio
 [**DeletePropertiesFromTransaction**](TransactionPortfoliosApi.md#deletepropertiesfromtransaction) | **DELETE** /api/transactionportfolios/{scope}/{code}/transactions/{transactionId}/properties | DeletePropertiesFromTransaction: Delete properties from transaction
-[**GetA2BData**](TransactionPortfoliosApi.md#geta2bdata) | **GET** /api/transactionportfolios/{scope}/{code}/a2b | GetA2BData: Get A2B data
-[**GetA2BMovements**](TransactionPortfoliosApi.md#geta2bmovements) | **GET** /api/transactionportfolios/{scope}/{code}/a2bmovements | GetA2BMovements: Get an A2B report at the movement level for the given portfolio.
+[**GetA2BData**](TransactionPortfoliosApi.md#geta2bdata) | **GET** /api/transactionportfolios/{scope}/{code}/a2b | [EXPERIMENTAL] GetA2BData: Get A2B data
+[**GetA2BMovements**](TransactionPortfoliosApi.md#geta2bmovements) | **GET** /api/transactionportfolios/{scope}/{code}/a2bmovements | [EXPERIMENTAL] GetA2BMovements: Get an A2B report at the movement level for the given portfolio.
 [**GetBucketedCashFlows**](TransactionPortfoliosApi.md#getbucketedcashflows) | **POST** /api/transactionportfolios/{scope}/{code}/bucketedCashFlows | [EXPERIMENTAL] GetBucketedCashFlows: Get bucketed cash flows from a list of portfolios
 [**GetDetails**](TransactionPortfoliosApi.md#getdetails) | **GET** /api/transactionportfolios/{scope}/{code}/details | GetDetails: Get details
 [**GetHoldings**](TransactionPortfoliosApi.md#getholdings) | **GET** /api/transactionportfolios/{scope}/{code}/holdings | GetHoldings: Get holdings
 [**GetHoldingsAdjustment**](TransactionPortfoliosApi.md#getholdingsadjustment) | **GET** /api/transactionportfolios/{scope}/{code}/holdingsadjustments/{effectiveAt} | GetHoldingsAdjustment: Get holdings adjustment
 [**GetHoldingsWithOrders**](TransactionPortfoliosApi.md#getholdingswithorders) | **GET** /api/transactionportfolios/{scope}/{code}/holdingsWithOrders | [EXPERIMENTAL] GetHoldingsWithOrders: Get holdings with orders
 [**GetPortfolioCashFlows**](TransactionPortfoliosApi.md#getportfoliocashflows) | **GET** /api/transactionportfolios/{scope}/{code}/cashflows | [BETA] GetPortfolioCashFlows: Get portfolio cash flows
-[**GetPortfolioCashLadder**](TransactionPortfoliosApi.md#getportfoliocashladder) | **GET** /api/transactionportfolios/{scope}/{code}/cashladder | GetPortfolioCashLadder: Get portfolio cash ladder
-[**GetPortfolioCashStatement**](TransactionPortfoliosApi.md#getportfoliocashstatement) | **GET** /api/transactionportfolios/{scope}/{code}/cashstatement | GetPortfolioCashStatement: Get portfolio cash statement
+[**GetPortfolioCashLadder**](TransactionPortfoliosApi.md#getportfoliocashladder) | **GET** /api/transactionportfolios/{scope}/{code}/cashladder | [EXPERIMENTAL] GetPortfolioCashLadder: Get portfolio cash ladder
+[**GetPortfolioCashStatement**](TransactionPortfoliosApi.md#getportfoliocashstatement) | **GET** /api/transactionportfolios/{scope}/{code}/cashstatement | [EARLY ACCESS] GetPortfolioCashStatement: Get portfolio cash statement
 [**GetTransactions**](TransactionPortfoliosApi.md#gettransactions) | **GET** /api/transactionportfolios/{scope}/{code}/transactions | GetTransactions: Get transactions
 [**GetUpsertablePortfolioCashFlows**](TransactionPortfoliosApi.md#getupsertableportfoliocashflows) | **GET** /api/transactionportfolios/{scope}/{code}/upsertablecashflows | [BETA] GetUpsertablePortfolioCashFlows: Get upsertable portfolio cash flows.
 [**ListHoldingsAdjustments**](TransactionPortfoliosApi.md#listholdingsadjustments) | **GET** /api/transactionportfolios/{scope}/{code}/holdingsadjustments | ListHoldingsAdjustments: List holdings adjustments
@@ -530,7 +530,7 @@ Name | Type | Description  | Notes
 # **GetA2BData**
 > VersionedResourceListOfA2BDataRecord GetA2BData (string scope, string code, DateTimeOrCutLabel fromEffectiveAt, DateTimeOrCutLabel toEffectiveAt, DateTimeOffset? asAt = null, string recipeIdScope = null, string recipeIdCode = null, List<string> propertyKeys = null, string filter = null)
 
-GetA2BData: Get A2B data
+[EXPERIMENTAL] GetA2BData: Get A2B data
 
 Get an A2B report for the given portfolio.
 
@@ -566,7 +566,7 @@ namespace Example
 
             try
             {
-                // GetA2BData: Get A2B data
+                // [EXPERIMENTAL] GetA2BData: Get A2B data
                 VersionedResourceListOfA2BDataRecord result = apiInstance.GetA2BData(scope, code, fromEffectiveAt, toEffectiveAt, asAt, recipeIdScope, recipeIdCode, propertyKeys, filter);
                 Debug.WriteLine(result);
             }
@@ -622,7 +622,7 @@ Name | Type | Description  | Notes
 # **GetA2BMovements**
 > VersionedResourceListOfA2BMovementRecord GetA2BMovements (string scope, string code, DateTimeOrCutLabel fromEffectiveAt, DateTimeOrCutLabel toEffectiveAt, DateTimeOffset? asAt = null, string recipeIdScope = null, string recipeIdCode = null, List<string> propertyKeys = null, string filter = null)
 
-GetA2BMovements: Get an A2B report at the movement level for the given portfolio.
+[EXPERIMENTAL] GetA2BMovements: Get an A2B report at the movement level for the given portfolio.
 
 Get an A2B report at the movement level for the given portfolio.
 
@@ -658,7 +658,7 @@ namespace Example
 
             try
             {
-                // GetA2BMovements: Get an A2B report at the movement level for the given portfolio.
+                // [EXPERIMENTAL] GetA2BMovements: Get an A2B report at the movement level for the given portfolio.
                 VersionedResourceListOfA2BMovementRecord result = apiInstance.GetA2BMovements(scope, code, fromEffectiveAt, toEffectiveAt, asAt, recipeIdScope, recipeIdCode, propertyKeys, filter);
                 Debug.WriteLine(result);
             }
@@ -1232,7 +1232,7 @@ Name | Type | Description  | Notes
 # **GetPortfolioCashLadder**
 > ResourceListOfPortfolioCashLadder GetPortfolioCashLadder (string scope, string code, DateTimeOrCutLabel fromEffectiveAt, DateTimeOrCutLabel toEffectiveAt, DateTimeOrCutLabel effectiveAt, DateTimeOffset? asAt = null, string filter = null, string recipeIdScope = null, string recipeIdCode = null)
 
-GetPortfolioCashLadder: Get portfolio cash ladder
+[EXPERIMENTAL] GetPortfolioCashLadder: Get portfolio cash ladder
 
 Get a cash ladder for a transaction portfolio.
 
@@ -1268,7 +1268,7 @@ namespace Example
 
             try
             {
-                // GetPortfolioCashLadder: Get portfolio cash ladder
+                // [EXPERIMENTAL] GetPortfolioCashLadder: Get portfolio cash ladder
                 ResourceListOfPortfolioCashLadder result = apiInstance.GetPortfolioCashLadder(scope, code, fromEffectiveAt, toEffectiveAt, effectiveAt, asAt, filter, recipeIdScope, recipeIdCode);
                 Debug.WriteLine(result);
             }
@@ -1324,7 +1324,7 @@ Name | Type | Description  | Notes
 # **GetPortfolioCashStatement**
 > ResourceListOfPortfolioCashFlow GetPortfolioCashStatement (string scope, string code, DateTimeOrCutLabel fromEffectiveAt, DateTimeOrCutLabel toEffectiveAt, DateTimeOffset? asAt = null, string filter = null, string recipeIdScope = null, string recipeIdCode = null)
 
-GetPortfolioCashStatement: Get portfolio cash statement
+[EARLY ACCESS] GetPortfolioCashStatement: Get portfolio cash statement
 
 Get a cash statement for a transaction portfolio.
 
@@ -1359,7 +1359,7 @@ namespace Example
 
             try
             {
-                // GetPortfolioCashStatement: Get portfolio cash statement
+                // [EARLY ACCESS] GetPortfolioCashStatement: Get portfolio cash statement
                 ResourceListOfPortfolioCashFlow result = apiInstance.GetPortfolioCashStatement(scope, code, fromEffectiveAt, toEffectiveAt, asAt, filter, recipeIdScope, recipeIdCode);
                 Debug.WriteLine(result);
             }
