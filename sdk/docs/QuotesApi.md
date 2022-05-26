@@ -5,14 +5,14 @@ All URIs are relative to *https://www.lusid.com/api*
 Method | HTTP request | Description
 ------------- | ------------- | -------------
 [**DeleteQuoteAccessMetadataRule**](QuotesApi.md#deletequoteaccessmetadatarule) | **DELETE** /api/metadata/quotes/rules/{scope} | [EXPERIMENTAL] DeleteQuoteAccessMetadataRule: Delete a Quote Access Metadata Rule
-[**DeleteQuotes**](QuotesApi.md#deletequotes) | **POST** /api/quotes/{scope}/$delete | [EARLY ACCESS] DeleteQuotes: Delete quotes
+[**DeleteQuotes**](QuotesApi.md#deletequotes) | **POST** /api/quotes/{scope}/$delete | DeleteQuotes: Delete quotes
 [**GetQuotes**](QuotesApi.md#getquotes) | **POST** /api/quotes/{scope}/$get | [EARLY ACCESS] GetQuotes: Get quotes
 [**GetQuotesAccessMetadataRule**](QuotesApi.md#getquotesaccessmetadatarule) | **GET** /api/metadata/quotes/rules | [EXPERIMENTAL] GetQuotesAccessMetadataRule: Get a quote access metadata rule
 [**ListQuotes**](QuotesApi.md#listquotes) | **GET** /api/quotes/{scope}/$deprecated | [DEPRECATED] ListQuotes: List quotes
 [**ListQuotesAccessMetadataRules**](QuotesApi.md#listquotesaccessmetadatarules) | **GET** /api/metadata/quotes/rules/{scope} | [EXPERIMENTAL] ListQuotesAccessMetadataRules: List all quote access metadata rules in a scope
-[**ListQuotesForScope**](QuotesApi.md#listquotesforscope) | **GET** /api/quotes/{scope} | [EARLY ACCESS] ListQuotesForScope: List quotes for scope
+[**ListQuotesForScope**](QuotesApi.md#listquotesforscope) | **GET** /api/quotes/{scope} | ListQuotesForScope: List quotes for scope
 [**UpsertQuoteAccessMetadataRule**](QuotesApi.md#upsertquoteaccessmetadatarule) | **POST** /api/metadata/quotes/rules/{scope} | [EXPERIMENTAL] UpsertQuoteAccessMetadataRule: Upsert a Quote Access Metadata Rule. This creates or updates the data in LUSID.
-[**UpsertQuotes**](QuotesApi.md#upsertquotes) | **POST** /api/quotes/{scope} | [EARLY ACCESS] UpsertQuotes: Upsert quotes
+[**UpsertQuotes**](QuotesApi.md#upsertquotes) | **POST** /api/quotes/{scope} | UpsertQuotes: Upsert quotes
 
 
 <a name="deletequoteaccessmetadatarule"></a>
@@ -109,7 +109,7 @@ Name | Type | Description  | Notes
 # **DeleteQuotes**
 > AnnulQuotesResponse DeleteQuotes (string scope, Dictionary<string, QuoteId> requestBody = null)
 
-[EARLY ACCESS] DeleteQuotes: Delete quotes
+DeleteQuotes: Delete quotes
 
 Delete one or more specified quotes from a single scope. A quote is identified by its unique id which includes information about  the type of quote as well as the exact effective datetime (to the microsecond) from which it became valid.                In the request each quote must be keyed by a unique correlation id. This id is ephemeral and is not stored by LUSID.  It serves only as a way to easily identify each quote in the response.                The response will return both the collection of successfully deleted quotes, as well as those that failed.  For the failures a reason will be provided explaining why the quote could not be deleted.                It is important to always check the failed set for any unsuccessful results.
 
@@ -138,7 +138,7 @@ namespace Example
 
             try
             {
-                // [EARLY ACCESS] DeleteQuotes: Delete quotes
+                // DeleteQuotes: Delete quotes
                 AnnulQuotesResponse result = apiInstance.DeleteQuotes(scope, requestBody);
                 Debug.WriteLine(result);
             }
@@ -527,7 +527,7 @@ Name | Type | Description  | Notes
 # **ListQuotesForScope**
 > ResourceListOfQuote ListQuotesForScope (string scope, DateTimeOffset? asAt = null, string page = null, int? start = null, int? limit = null, string filter = null)
 
-[EARLY ACCESS] ListQuotesForScope: List quotes for scope
+ListQuotesForScope: List quotes for scope
 
 List all the quotes from a single scope at the specified date/time
 
@@ -560,7 +560,7 @@ namespace Example
 
             try
             {
-                // [EARLY ACCESS] ListQuotesForScope: List quotes for scope
+                // ListQuotesForScope: List quotes for scope
                 ResourceListOfQuote result = apiInstance.ListQuotesForScope(scope, asAt, page, start, limit, filter);
                 Debug.WriteLine(result);
             }
@@ -695,7 +695,7 @@ Name | Type | Description  | Notes
 # **UpsertQuotes**
 > UpsertQuotesResponse UpsertQuotes (string scope, Dictionary<string, UpsertQuoteRequest> requestBody = null)
 
-[EARLY ACCESS] UpsertQuotes: Upsert quotes
+UpsertQuotes: Upsert quotes
 
 Update or insert one or more quotes in a single scope. A quote will be updated if it already exists  and inserted if it does not.                In the request each quote must be keyed by a unique correlation id. This id is ephemeral and is not stored by LUSID.  It serves only as a way to easily identify each quote in the response.                The response will return both the collection of successfully updated or inserted quotes, as well as those that failed.  For the failures a reason will be provided explaining why the quote could not be updated or inserted.                It is important to always check the failed set for any unsuccessful results.  The maximum number of quotes that this method can upsert per request is 2,000.
 
@@ -724,7 +724,7 @@ namespace Example
 
             try
             {
-                // [EARLY ACCESS] UpsertQuotes: Upsert quotes
+                // UpsertQuotes: Upsert quotes
                 UpsertQuotesResponse result = apiInstance.UpsertQuotes(scope, requestBody);
                 Debug.WriteLine(result);
             }
