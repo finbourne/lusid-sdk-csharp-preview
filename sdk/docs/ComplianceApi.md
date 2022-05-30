@@ -8,7 +8,8 @@ Method | HTTP request | Description
 [**GetComplianceRule**](ComplianceApi.md#getcompliancerule) | **GET** /api/compliance/rules/{scope}/{code} | [EXPERIMENTAL] GetComplianceRule: Retrieve the definition of single compliance rule.
 [**GetComplianceRunResults**](ComplianceApi.md#getcompliancerunresults) | **GET** /api/compliance/runs/{runId} | [EXPERIMENTAL] GetComplianceRunResults: Get the details of a single compliance run.
 [**ListComplianceRules**](ComplianceApi.md#listcompliancerules) | **GET** /api/compliance/rules | [EXPERIMENTAL] ListComplianceRules: List compliance rules, with optional filtering.
-[**ListComplianceRuns**](ComplianceApi.md#listcomplianceruns) | **GET** /api/compliance | [EXPERIMENTAL] ListComplianceRuns: List historical compliance runs.
+[**ListComplianceRunInfo**](ComplianceApi.md#listcomplianceruninfo) | **GET** /api/compliance/runs | [EXPERIMENTAL] ListComplianceRunInfo: List historical compliance run ids.
+[**ListComplianceRuns**](ComplianceApi.md#listcomplianceruns) | **GET** /api/compliance | [EXPERIMENTAL] ListComplianceRuns: List historical compliance runs. - - DEPRECATING IN FAVOUR OF NEW ENDPOINT
 [**RunCompliance**](ComplianceApi.md#runcompliance) | **POST** /api/compliance/runs | [EXPERIMENTAL] RunCompliance: Kick off the compliance check process
 [**RunComplianceCheck**](ComplianceApi.md#runcompliancecheck) | **POST** /api/compliance/run | [EXPERIMENTAL] RunComplianceCheck: Kick off the compliance check process - - DEPRECATING - POST TRADE ONLY
 [**UpsertComplianceRules**](ComplianceApi.md#upsertcompliancerules) | **POST** /api/compliance/rules | [EXPERIMENTAL] UpsertComplianceRules: Upsert compliance rules.
@@ -338,13 +339,95 @@ Name | Type | Description  | Notes
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
+<a name="listcomplianceruninfo"></a>
+# **ListComplianceRunInfo**
+> ResourceListOfComplianceRun ListComplianceRunInfo (DateTimeOffset? asAt = null, string page = null, int? limit = null, string filter = null)
+
+[EXPERIMENTAL] ListComplianceRunInfo: List historical compliance run ids.
+
+Use this endpoint to fetch a list of all historical compliance runs.
+
+### Example
+```csharp
+using System.Collections.Generic;
+using System.Diagnostics;
+using Lusid.Sdk.Api;
+using Lusid.Sdk.Client;
+using Lusid.Sdk.Model;
+
+namespace Example
+{
+    public class ListComplianceRunInfoExample
+    {
+        public static void Main()
+        {
+            Configuration config = new Configuration();
+            config.BasePath = "https://www.lusid.com/api";
+            // Configure OAuth2 access token for authorization: oauth2
+            config.AccessToken = "YOUR_ACCESS_TOKEN";
+
+            var apiInstance = new ComplianceApi(config);
+            var asAt = 2013-10-20T19:20:30+01:00;  // DateTimeOffset? | Optional. The time at which to get results from. Default : latest (optional) 
+            var page = page_example;  // string | The pagination token to use to continue listing compliance runs from a previous call to list compliance runs.              This value is returned from the previous call. If a pagination token is provided the sortBy, filter, and asAt fields              must not have changed since the original request. Also, if set, a start value cannot be provided. (optional) 
+            var limit = 56;  // int? | When paginating, limit the number of returned results to this many. (optional) 
+            var filter = filter_example;  // string | Expression to filter the result set. Read more about filtering results from LUSID here https://support.lusid.com/filtering-results-from-lusid. (optional) 
+
+            try
+            {
+                // [EXPERIMENTAL] ListComplianceRunInfo: List historical compliance run ids.
+                ResourceListOfComplianceRun result = apiInstance.ListComplianceRunInfo(asAt, page, limit, filter);
+                Debug.WriteLine(result);
+            }
+            catch (ApiException  e)
+            {
+                Debug.Print("Exception when calling ComplianceApi.ListComplianceRunInfo: " + e.Message );
+                Debug.Print("Status Code: "+ e.ErrorCode);
+                Debug.Print(e.StackTrace);
+            }
+        }
+    }
+}
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **asAt** | **DateTimeOffset?**| Optional. The time at which to get results from. Default : latest | [optional] 
+ **page** | **string**| The pagination token to use to continue listing compliance runs from a previous call to list compliance runs.              This value is returned from the previous call. If a pagination token is provided the sortBy, filter, and asAt fields              must not have changed since the original request. Also, if set, a start value cannot be provided. | [optional] 
+ **limit** | **int?**| When paginating, limit the number of returned results to this many. | [optional] 
+ **filter** | **string**| Expression to filter the result set. Read more about filtering results from LUSID here https://support.lusid.com/filtering-results-from-lusid. | [optional] 
+
+### Return type
+
+[**ResourceListOfComplianceRun**](ResourceListOfComplianceRun.md)
+
+### Authorization
+
+[oauth2](../README.md#oauth2)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: text/plain, application/json, text/json
+
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+| **200** | The List of IDs for all compliance runs completed |  -  |
+| **400** | The details of the input related failure |  -  |
+| **0** | Error response |  -  |
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
 <a name="listcomplianceruns"></a>
 # **ListComplianceRuns**
 > ResourceListOfComplianceRun ListComplianceRuns (string page = null, int? limit = null, string filter = null)
 
-[EXPERIMENTAL] ListComplianceRuns: List historical compliance runs.
+[EXPERIMENTAL] ListComplianceRuns: List historical compliance runs. - - DEPRECATING IN FAVOUR OF NEW ENDPOINT
 
-!! CURRENTLY RETURNS DUMMY DATA !! Use this endpoint to fetch a list of all historical compliance runs.
+Use this endpoint to fetch a list of all historical compliance runs.
 
 ### Example
 ```csharp
@@ -372,7 +455,7 @@ namespace Example
 
             try
             {
-                // [EXPERIMENTAL] ListComplianceRuns: List historical compliance runs.
+                // [EXPERIMENTAL] ListComplianceRuns: List historical compliance runs. - - DEPRECATING IN FAVOUR OF NEW ENDPOINT
                 ResourceListOfComplianceRun result = apiInstance.ListComplianceRuns(page, limit, filter);
                 Debug.WriteLine(result);
             }
