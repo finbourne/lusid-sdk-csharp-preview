@@ -8,7 +8,6 @@ Method | HTTP request | Description
 [**DeleteInstrumentProperties**](InstrumentsApi.md#deleteinstrumentproperties) | **POST** /api/instruments/{identifierType}/{identifier}/properties/$delete | [EXPERIMENTAL] DeleteInstrumentProperties: Delete instrument properties
 [**GetInstrument**](InstrumentsApi.md#getinstrument) | **GET** /api/instruments/{identifierType}/{identifier} | GetInstrument: Get instrument
 [**GetInstrumentIdentifierTypes**](InstrumentsApi.md#getinstrumentidentifiertypes) | **GET** /api/instruments/identifierTypes | GetInstrumentIdentifierTypes: Get instrument identifier types
-[**GetInstrumentPaymentDiary**](InstrumentsApi.md#getinstrumentpaymentdiary) | **GET** /api/instruments/{identifierType}/{identifier}/paymentdiary | [EXPERIMENTAL] GetInstrumentPaymentDiary: Get instrument payment diary
 [**GetInstrumentProperties**](InstrumentsApi.md#getinstrumentproperties) | **GET** /api/instruments/{identifierType}/{identifier}/properties | [EXPERIMENTAL] GetInstrumentProperties: Get instrument properties
 [**GetInstrumentPropertyTimeSeries**](InstrumentsApi.md#getinstrumentpropertytimeseries) | **GET** /api/instruments/{identifierType}/{identifier}/properties/time-series | [EARLY ACCESS] GetInstrumentPropertyTimeSeries: Get instrument property time series
 [**GetInstrumentRelationships**](InstrumentsApi.md#getinstrumentrelationships) | **GET** /api/instruments/{identifierType}/{identifier}/relationships | [EXPERIMENTAL] GetInstrumentRelationships: Get Instrument relationships
@@ -337,94 +336,6 @@ This endpoint does not need any parameter.
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
 | **200** | A list of valid instrument identifier types. |  -  |
-| **0** | Error response |  -  |
-
-[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
-
-<a name="getinstrumentpaymentdiary"></a>
-# **GetInstrumentPaymentDiary**
-> InstrumentPaymentDiary GetInstrumentPaymentDiary (string identifierType, string identifier, string recipeScope = null, string recipeCode = null, DateTimeOrCutLabel effectiveAt = null, DateTimeOffset? asAt = null, string scope = null)
-
-[EXPERIMENTAL] GetInstrumentPaymentDiary: Get instrument payment diary
-
-Get the payment diary of a single instrument.
-
-### Example
-```csharp
-using System.Collections.Generic;
-using System.Diagnostics;
-using Lusid.Sdk.Api;
-using Lusid.Sdk.Client;
-using Lusid.Sdk.Model;
-
-namespace Example
-{
-    public class GetInstrumentPaymentDiaryExample
-    {
-        public static void Main()
-        {
-            Configuration config = new Configuration();
-            config.BasePath = "https://www.lusid.com/api";
-            // Configure OAuth2 access token for authorization: oauth2
-            config.AccessToken = "YOUR_ACCESS_TOKEN";
-
-            var apiInstance = new InstrumentsApi(config);
-            var identifierType = identifierType_example;  // string | The identifier being supplied e.g. \"Figi\".
-            var identifier = identifier_example;  // string | The value of the identifier for the requested instrument.
-            var recipeScope = recipeScope_example;  // string | The scope of the valuation recipe being used to generate the payment diary (optional) 
-            var recipeCode = recipeCode_example;  // string | The code of the valuation recipe being used to generate the payment diary (optional) 
-            var effectiveAt = effectiveAt_example;  // DateTimeOrCutLabel | The effective datetime or cut label at which to list the instrument's properties. Defaults to the current LUSID system datetime if not specified. (optional) 
-            var asAt = 2013-10-20T19:20:30+01:00;  // DateTimeOffset? | The asAt datetime at which to list the instrument's properties. Defaults to return the latest version of each property if not specified. (optional) 
-            var scope = scope_example;  // string | The scope in which the instrument lies. When not supplied the scope is 'default'. (optional)  (default to "default")
-
-            try
-            {
-                // [EXPERIMENTAL] GetInstrumentPaymentDiary: Get instrument payment diary
-                InstrumentPaymentDiary result = apiInstance.GetInstrumentPaymentDiary(identifierType, identifier, recipeScope, recipeCode, effectiveAt, asAt, scope);
-                Debug.WriteLine(result);
-            }
-            catch (ApiException  e)
-            {
-                Debug.Print("Exception when calling InstrumentsApi.GetInstrumentPaymentDiary: " + e.Message );
-                Debug.Print("Status Code: "+ e.ErrorCode);
-                Debug.Print(e.StackTrace);
-            }
-        }
-    }
-}
-```
-
-### Parameters
-
-Name | Type | Description  | Notes
-------------- | ------------- | ------------- | -------------
- **identifierType** | **string**| The identifier being supplied e.g. \&quot;Figi\&quot;. | 
- **identifier** | **string**| The value of the identifier for the requested instrument. | 
- **recipeScope** | **string**| The scope of the valuation recipe being used to generate the payment diary | [optional] 
- **recipeCode** | **string**| The code of the valuation recipe being used to generate the payment diary | [optional] 
- **effectiveAt** | **DateTimeOrCutLabel**| The effective datetime or cut label at which to list the instrument&#39;s properties. Defaults to the current LUSID system datetime if not specified. | [optional] 
- **asAt** | **DateTimeOffset?**| The asAt datetime at which to list the instrument&#39;s properties. Defaults to return the latest version of each property if not specified. | [optional] 
- **scope** | **string**| The scope in which the instrument lies. When not supplied the scope is &#39;default&#39;. | [optional] [default to &quot;default&quot;]
-
-### Return type
-
-[**InstrumentPaymentDiary**](InstrumentPaymentDiary.md)
-
-### Authorization
-
-[oauth2](../README.md#oauth2)
-
-### HTTP request headers
-
- - **Content-Type**: Not defined
- - **Accept**: text/plain, application/json, text/json
-
-
-### HTTP response details
-| Status code | Description | Response headers |
-|-------------|-------------|------------------|
-| **200** | The payment diary of the specified instrument |  -  |
-| **400** | The details of the input related failure |  -  |
 | **0** | Error response |  -  |
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
