@@ -12,7 +12,13 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
     public class BondExamples: DemoInstrumentBase
     {
         private static bool IsZeroCouponBond(Bond bond) => bond.FlowConventions.PaymentFrequency == "0Invalid";
-        
+
+        /// <inheritdoc />
+        protected override void CreateAndUpsertInstrumentResetsToLusid(string scope, ModelSelection.ModelEnum model, LusidInstrument instrument)
+        {
+            // nothing required.
+        }
+
         /// <inheritdoc />
         protected override void CreateAndUpsertMarketDataToLusid(string scope, ModelSelection.ModelEnum model, LusidInstrument bond)
         {

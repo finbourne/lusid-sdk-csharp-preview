@@ -16,6 +16,13 @@ namespace Lusid.Sdk.Tests.Utilities
         protected abstract void CreateAndUpsertMarketDataToLusid(string scope, ModelSelection.ModelEnum model, LusidInstrument instrument);
 
         /// <summary>
+        /// In order to price some instruments need resets. This is typically those with interest rate payments such as equity or interest rate swaps
+        /// and floating rate bonds.
+        /// Put the required information into LUSID for use in pricing.
+        /// </summary>
+        protected abstract void CreateAndUpsertInstrumentResetsToLusid(string scope, ModelSelection.ModelEnum model, LusidInstrument instrument);
+
+        /// <summary>
         /// Get portfolio cashflows specific to that instrument.
         /// </summary>
         protected abstract void GetAndValidatePortfolioCashFlows(LusidInstrument instrument, string scope, string portfolioCode, string recipeCode, string instrumentID);
@@ -132,6 +139,9 @@ namespace Lusid.Sdk.Tests.Utilities
                 var upsertResponse = _quotesApi.UpsertQuotes(scope, quoteRequest);
                 Assert.That(upsertResponse.Failed.Count, Is.EqualTo(0));
                 Assert.That(upsertResponse.Values.Count, Is.EqualTo(quoteRequest.Count));
+
+                // Whilst the price comes from lookup, accrued interest requires resets if calculated.
+                CreateAndUpsertInstrumentResetsToLusid(scope, model, instrument);
             }
             else // upsert complex market data
             {

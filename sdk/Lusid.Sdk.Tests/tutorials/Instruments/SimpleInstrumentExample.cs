@@ -12,6 +12,12 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
     [TestFixture]
     public class SimpleInstrumentExample: DemoInstrumentBase
     {
+        /// <inheritdoc />
+        protected override void CreateAndUpsertInstrumentResetsToLusid(string scope, ModelSelection.ModelEnum model, LusidInstrument instrument)
+        {
+            // nothing required.
+        }
+
         [LusidFeature("F5-21")]
         [Test]
         public void SimpleInstrumentCreationAndUpsertionExample()

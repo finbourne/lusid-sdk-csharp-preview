@@ -12,15 +12,8 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
     public class InterestRateSwapWithNamedConventions: DemoInstrumentBase
     {
         /// <inheritdoc />
-        protected override void CreateAndUpsertMarketDataToLusid(string scope, ModelSelection.ModelEnum model, LusidInstrument instrument)
+        protected override void CreateAndUpsertInstrumentResetsToLusid(string scope, ModelSelection.ModelEnum model, LusidInstrument instrument)
         {
-            // The price of a swap is determined by the price of the fixed leg and floating leg.
-            // The price of a floating leg is determined by historic resets rates and projected rates.
-            // In this method, we upsert reset rates.
-            // For LUSID to pick up these quotes, we have added a RIC rule to the recipe (see BuildRecipeRequest in TestDataUtilities.cs)
-            // The RIC rule has a large quote interval, this means that we can use one reset quote for all the resets.
-            // For accurate pricing, one would want to upsert a quote per reset.
-
             var quoteRequest = new Dictionary<string, UpsertQuoteRequest>();
             TestDataUtilities.BuildQuoteRequest(
                 quoteRequest,
@@ -30,11 +23,24 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
                 0.05m,
                 "InterestRate",
                 TestDataUtilities.ResetDate,
-            QuoteSeriesId.QuoteTypeEnum.Price);
+                QuoteSeriesId.QuoteTypeEnum.Price);
 
             var upsertResponse = _quotesApi.UpsertQuotes(scope, quoteRequest);
             Assert.That(upsertResponse.Failed.Count, Is.EqualTo(0));
             Assert.That(upsertResponse.Values.Count, Is.EqualTo(quoteRequest.Count));
+        }
+
+        /// <inheritdoc />
+        protected override void CreateAndUpsertMarketDataToLusid(string scope, ModelSelection.ModelEnum model, LusidInstrument instrument)
+        {
+            // The price of a swap is determined by the price of the fixed leg and floating leg.
+            // The price of a floating leg is determined by historic resets rates and projected rates.
+            // In this method, we upsert reset rates.
+            // For LUSID to pick up these quotes, we have added a RIC rule to the recipe (see BuildRecipeRequest in TestDataUtilities.cs)
+            // The RIC rule has a large quote interval, this means that we can use one reset quote for all the resets.
+            // For accurate pricing, one would want to upsert a quote per reset.
+
+            CreateAndUpsertInstrumentResetsToLusid(scope, model, instrument);
 
             // For models requiring discount curves, we upsert them below. ConstantTimeValueOfMoney does not require any discount curves.
             if (model != ModelSelection.ModelEnum.ConstantTimeValueOfMoney)
