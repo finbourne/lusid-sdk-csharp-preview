@@ -114,35 +114,6 @@ namespace Lusid.Sdk.Tests.Utilities
             return instrumentID;
         }
 
-        /// <summary>
-        /// Add reset for an instrument
-        /// </summary>
-        /// <param name="fixingRef">reference that the instrument will use, typically a RIC</param>
-        /// <param name="resetFixingDate">date at which fixing is observed/fixes</param>
-        /// <param name="scope">scope in which to upsert quote</param>
-        /// <param name="resetValue">value for reset</param>
-        private void AddResetForInstrument(
-            string fixingRef,
-            DateTimeOffset resetFixingDate,
-            string scope,
-            decimal resetValue = 0.01m
-        )
-        {
-            var quoteRequest = new Dictionary<string, UpsertQuoteRequest>();
-            TestDataUtilities.BuildQuoteRequest(
-                quoteRequest,
-                "correlation-id-1",
-                fixingRef,
-                QuoteSeriesId.InstrumentIdTypeEnum.RIC,
-                resetValue,
-                string.Empty,
-                resetFixingDate,
-                QuoteSeriesId.QuoteTypeEnum.Rate);
-            var upsertResponse = _quotesApi.UpsertQuotes(scope, quoteRequest);
-            Assert.That(upsertResponse.Failed.Count, Is.EqualTo(0));
-            Assert.That(upsertResponse.Values.Count, Is.EqualTo(quoteRequest.Count));
-        }
-
         // UPSERT market data sufficient to price the instrument depending on the model.
         private void UpsertMarketDataForInstrument(
             LusidInstrument instrument,
