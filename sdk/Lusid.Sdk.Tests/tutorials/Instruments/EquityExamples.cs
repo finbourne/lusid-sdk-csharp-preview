@@ -11,6 +11,12 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
     [TestFixture]
     public class EquityExamples: DemoInstrumentBase
     {
+        /// <inheritdoc />
+        protected override void CreateAndUpsertInstrumentResetsToLusid(string scope, ModelSelection.ModelEnum model, LusidInstrument instrument)
+        {
+            // nothing required.
+        }
+
         [LusidFeature("F5-20")]
         [Test]
         public void EquityCreationAndUpsertionExample()

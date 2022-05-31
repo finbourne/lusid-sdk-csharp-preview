@@ -16,6 +16,13 @@ namespace Lusid.Sdk.Tests.Utilities
         protected abstract void CreateAndUpsertMarketDataToLusid(string scope, ModelSelection.ModelEnum model, LusidInstrument instrument);
 
         /// <summary>
+        /// In order to price some instruments need resets. This is typically those with interest rate payments such as equity or interest rate swaps
+        /// and floating rate bonds.
+        /// Put the required information into LUSID for use in pricing.
+        /// </summary>
+        protected abstract void CreateAndUpsertInstrumentResetsToLusid(string scope, ModelSelection.ModelEnum model, LusidInstrument instrument);
+
+        /// <summary>
         /// Get portfolio cashflows specific to that instrument.
         /// </summary>
         protected abstract void GetAndValidatePortfolioCashFlows(LusidInstrument instrument, string scope, string portfolioCode, string recipeCode, string instrumentID);
@@ -107,6 +114,35 @@ namespace Lusid.Sdk.Tests.Utilities
             return instrumentID;
         }
 
+        /// <summary>
+        /// Add reset for an instrument
+        /// </summary>
+        /// <param name="fixingRef">reference that the instrument will use, typically a RIC</param>
+        /// <param name="resetFixingDate">date at which fixing is observed/fixes</param>
+        /// <param name="scope">scope in which to upsert quote</param>
+        /// <param name="resetValue">value for reset</param>
+        private void AddResetForInstrument(
+            string fixingRef,
+            DateTimeOffset resetFixingDate,
+            string scope,
+            decimal resetValue = 0.01m
+        )
+        {
+            var quoteRequest = new Dictionary<string, UpsertQuoteRequest>();
+            TestDataUtilities.BuildQuoteRequest(
+                quoteRequest,
+                "correlation-id-1",
+                fixingRef,
+                QuoteSeriesId.InstrumentIdTypeEnum.RIC,
+                resetValue,
+                string.Empty,
+                resetFixingDate,
+                QuoteSeriesId.QuoteTypeEnum.Rate);
+            var upsertResponse = _quotesApi.UpsertQuotes(scope, quoteRequest);
+            Assert.That(upsertResponse.Failed.Count, Is.EqualTo(0));
+            Assert.That(upsertResponse.Values.Count, Is.EqualTo(quoteRequest.Count));
+        }
+
         // UPSERT market data sufficient to price the instrument depending on the model.
         private void UpsertMarketDataForInstrument(
             LusidInstrument instrument,
@@ -132,6 +168,9 @@ namespace Lusid.Sdk.Tests.Utilities
                 var upsertResponse = _quotesApi.UpsertQuotes(scope, quoteRequest);
                 Assert.That(upsertResponse.Failed.Count, Is.EqualTo(0));
                 Assert.That(upsertResponse.Values.Count, Is.EqualTo(quoteRequest.Count));
+
+                // Whilst the price comes from lookup, accrued interest requires resets if calculated.
+                CreateAndUpsertInstrumentResetsToLusid(scope, model, instrument);
             }
             else // upsert complex market data
             {

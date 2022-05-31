@@ -12,6 +12,25 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
     public class InterestRateSwapRfRExamples: DemoInstrumentBase
     {
         /// <inheritdoc />
+        protected override void CreateAndUpsertInstrumentResetsToLusid(string scope, ModelSelection.ModelEnum model, LusidInstrument instrument)
+        {
+            Dictionary<string, UpsertQuoteRequest> quoteRequest = new Dictionary<string, UpsertQuoteRequest>();
+            TestDataUtilities.BuildQuoteRequest(
+                quoteRequest,
+                "req",
+                TestDataUtilities.RFRFixingReference,
+                QuoteSeriesId.InstrumentIdTypeEnum.RIC,
+                0.05m,
+                "InterestRate",
+                TestDataUtilities.ResetDate,
+                QuoteSeriesId.QuoteTypeEnum.Price);
+
+            UpsertQuotesResponse upsertResponse = _quotesApi.UpsertQuotes(scope, quoteRequest);
+            Assert.That(upsertResponse.Failed.Count, Is.EqualTo(0));
+            Assert.That(upsertResponse.Values.Count, Is.EqualTo(quoteRequest.Count));
+        }
+
+        /// <inheritdoc />
         protected override void CreateAndUpsertMarketDataToLusid(string scope, ModelSelection.ModelEnum model, LusidInstrument instrument)
         {
             // The price of a swap is determined by the price of the fixed leg and floating leg.
@@ -27,20 +46,9 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
 
             var indexName = floatLeg.LegDefinition.IndexConvention.IndexName;
 
-            Dictionary<string, UpsertQuoteRequest> quoteRequest = new Dictionary<string, UpsertQuoteRequest>();
-            TestDataUtilities.BuildQuoteRequest(
-                quoteRequest,
-                "req",
-                TestDataUtilities.RFRFixingReference,
-                QuoteSeriesId.InstrumentIdTypeEnum.RIC, 
-                0.05m,
-                "InterestRate",
-                TestDataUtilities.ResetDate, 
-                QuoteSeriesId.QuoteTypeEnum.Price);
-            
-            UpsertQuotesResponse upsertResponse = _quotesApi.UpsertQuotes(scope, quoteRequest);
-            Assert.That(upsertResponse.Failed.Count, Is.EqualTo(0));
-            Assert.That(upsertResponse.Values.Count, Is.EqualTo(quoteRequest.Count));
+            // resets
+            CreateAndUpsertInstrumentResetsToLusid(scope, model, instrument);
+
             Dictionary<string, UpsertComplexMarketDataRequest> upsertComplexMarketDataRequest = new Dictionary<string, UpsertComplexMarketDataRequest>();;
             UpsertStructuredDataResponse upsertComplexMarketDataResponse;
             // For models requiring discount curves, we upsert them below. ConstantTimeValueOfMoney does not require any discount curves. 

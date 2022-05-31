@@ -12,6 +12,12 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
     public class ForwardRateAgreementExamples: DemoInstrumentBase
     {
         /// <inheritdoc />
+        protected override void CreateAndUpsertInstrumentResetsToLusid(string scope, ModelSelection.ModelEnum model, LusidInstrument instrument)
+        {
+            // nothing required.
+        }
+
+        /// <inheritdoc />
         protected override void CreateAndUpsertMarketDataToLusid(string scope, ModelSelection.ModelEnum model, LusidInstrument instrument)
         {
             // Nothing to upsert specifically for Forward Rate Agreements (for now - ANA-1301).

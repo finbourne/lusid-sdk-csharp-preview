@@ -14,6 +14,12 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
     public class FxOptionExamples: DemoInstrumentBase
     {
         /// <inheritdoc />
+        protected override void CreateAndUpsertInstrumentResetsToLusid(string scope, ModelSelection.ModelEnum model, LusidInstrument instrument)
+        {
+            // nothing required.
+        }
+
+        /// <inheritdoc />
         protected override void CreateAndUpsertMarketDataToLusid(string scope, ModelSelection.ModelEnum model, LusidInstrument fxOption)
         {
             // POPULATE with required market data for valuation of the instruments

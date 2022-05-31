@@ -15,11 +15,11 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
     public class InterestRateSwapVariantExamples: DemoInstrumentBase
     {
         /// <inheritdoc />
-        protected override void CreateAndUpsertMarketDataToLusid(string scope, ModelSelection.ModelEnum model, LusidInstrument instrument)
+        protected override void CreateAndUpsertInstrumentResetsToLusid(string scope, ModelSelection.ModelEnum model, LusidInstrument instrument)
         {
             // The price of a floating leg is determined by historic resets rates and projected rates.
             // In this method, we upsert reset rates.
-            // For LUSID to pick up these quotes, we have added a RIC rule to the recipe (see BuildRecipeRequest in TestDataUtilities.cs) 
+            // For LUSID to pick up these quotes, we have added a RIC rule to the recipe (see BuildRecipeRequest in TestDataUtilities.cs)
             // The RIC rule has a large quote interval, this means that we can use one reset quote for all the resets.
             // For accurate pricing, one would want to upsert a quote per reset.
             InterestRateSwap irs = instrument as InterestRateSwap;
@@ -56,6 +56,21 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
             UpsertQuotesResponse upsertResponse = _quotesApi.UpsertQuotes(scope, quoteRequests);
             Assert.That(upsertResponse.Failed.Count, Is.EqualTo(0));
             Assert.That(upsertResponse.Values.Count, Is.EqualTo(quoteRequests.Count));
+        }
+
+        /// <inheritdoc />
+        protected override void CreateAndUpsertMarketDataToLusid(string scope, ModelSelection.ModelEnum model, LusidInstrument instrument)
+        {
+            // The price of a floating leg is determined by historic resets rates and projected rates.
+            // In this method, we upsert reset rates.
+            // For LUSID to pick up these quotes, we have added a RIC rule to the recipe (see BuildRecipeRequest in TestDataUtilities.cs)
+            // The RIC rule has a large quote interval, this means that we can use one reset quote for all the resets.
+            // For accurate pricing, one would want to upsert a quote per reset.
+            InterestRateSwap irs = instrument as InterestRateSwap;
+
+            // provide resets for each floating leg, with id equal to the fixing reference that the leg will request
+            var floatLegs = irs.Legs.OfType<FloatingLeg>().ToList();
+            CreateAndUpsertInstrumentResetsToLusid(scope, model, instrument);
 
             // For models requiring discounting and projection curves, we upsert them below. ConstantTimeValueOfMoney does not require any curves.
             Dictionary<string, UpsertComplexMarketDataRequest> upsertComplexMarketDataRequest = new Dictionary<string, UpsertComplexMarketDataRequest>();;
@@ -75,6 +90,8 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
                         TestDataUtilities.BuildRateCurveRequest(TestDataUtilities.EffectiveAt, "USD", "LIBOR", TestDataUtilities.ExampleDiscountFactors2, "6M"));
                 }
 
+                var ccys = floatLegs.Select(leg => leg.LegDefinition.Conventions.Currency)
+                    .Concat(irs.Legs.OfType<FixedLeg>().Select(fixedLeg => fixedLeg.LegDefinition.Conventions.Currency)).ToList();
                 // provide discount/projection curves in GBP, for cross-currency swaps
                 if (ccys.Count > 1)
                 {
