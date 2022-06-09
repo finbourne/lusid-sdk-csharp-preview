@@ -67,7 +67,7 @@ namespace Lusid.Sdk.Tests.Tutorials.Ibor
         [Test]
         public void SetConstituents()
         {
-            var F40PortfolioCode = "F40C_ReferencePortfolio";
+            var F40PortfolioCode = "F40C_ReferencePortfolio" + Guid.NewGuid();
             var F40PortfolioName = "F40C_Test reference portfolio";
 
             //  First, create a new reference portfolio
