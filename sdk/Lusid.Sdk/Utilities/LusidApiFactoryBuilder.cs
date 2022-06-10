@@ -19,16 +19,27 @@ namespace Lusid.Sdk.Utilities
         /// <summary>
         /// Create an ILusidApiFactory using the specified Url and Token Provider
         /// </summary>
-        public static ILusidApiFactory Build(string url, ITokenProvider tokenProvider, Dictionary<string, string> defaultHeaders = null)
+        public static ILusidApiFactory Build(string url, ITokenProvider tokenProvider, IDictionary<string, string> defaultHeaders = null)
         {
             // TokenProviderConfiguration.ApiClient is the client used by LusidApiFactory and is 
             // NOT thread-safe, so there needs to be a separate instance for each instance of LusidApiFactory.
             // Do NOT cache the LusidApiFactory instances (DEV-6922)
-            var config = new TokenProviderConfiguration(tokenProvider)
+            TokenProviderConfiguration config;
+            if (defaultHeaders is null)
             {
-                BasePath = url,
-                DefaultHeaders = defaultHeaders
-            };
+                config = new TokenProviderConfiguration(tokenProvider)
+                {
+                    BasePath = url
+                };
+            }
+            else
+            {
+                config = new TokenProviderConfiguration(tokenProvider)
+                {
+                    BasePath = url,
+                    DefaultHeaders = defaultHeaders
+                };
+            }
 
             return new LusidApiFactory(config);
         }
