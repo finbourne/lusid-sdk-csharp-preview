@@ -8,6 +8,7 @@ Name | Type | Description | Notes
 **PaymentDate** | **DateTimeOffset** | The date at which the given cash flow is due to be paid (SettlementDate is used somewhat interchangeably with PaymentDate.) | 
 **Amount** | **decimal?** | The quantity (amount) that will be paid. Note that this can be empty if the payment is in the future and a model is used that cannot estimate it. | [optional] 
 **Currency** | **string** | The payment currency of the cash flow. | 
+**SourcePortfolioId** | [**ResourceId**](ResourceId.md) |  | 
 **SourceTransactionId** | **string** | The identifier for the parent transaction on the instrument that will pay/receive this cash flow. | 
 **SourceInstrumentScope** | **string** | The unqiue Lusid Instrument Id (LUID) of the instrument that the holding is in. | 
 **SourceInstrumentId** | **string** | The unqiue Lusid Instrument Id (LUID) of the instrument that the holding is in. | 
