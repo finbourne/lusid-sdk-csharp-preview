@@ -478,7 +478,7 @@ namespace Lusid.Sdk.Tests
             var api = factory.Api<IPortfolioGroupsApi>();
             
             // assert
-            Assert.IsNull(api.Configuration.DefaultHeaders);
+            Assert.IsEmpty(api.Configuration.DefaultHeaders);
         }
     }
 }
