@@ -446,5 +446,39 @@ namespace Lusid.Sdk.Tests
             var api = _factory.Api<ApplicationMetadataApi>();
             Assert.That(api.ExceptionFactory.GetInvocationList().Single().Method.Name, Is.EqualTo(nameof(LusidExceptionHandler.CustomExceptionFactory)));
         }
+
+        [Test]
+        public void ApiFactoryCanBuildApisWithDefaultHeaders()
+        {
+            // arrange
+            var config = TestLusidApiFactoryBuilder.CreateApiConfiguration("secrets.json");
+            var provider = new ClientCredentialsFlowTokenProvider(config);
+            var defaultHeaders = new Dictionary<string, string>()
+            {
+                {"X-LUSID-Application", "TestApp"}
+            };
+            
+            // act
+            var factory = LusidApiFactoryBuilder.Build(config.ApiUrl, provider, defaultHeaders);
+            var api = factory.Api<IPortfolioGroupsApi>();
+            
+            // assert
+            Assert.AreEqual(defaultHeaders["X-LUSID-Application"], api.Configuration.DefaultHeaders["X-LUSID-Application"]);
+        }
+
+        [Test]
+        public void ApiFactoryHasNoDefaultHeadersWhenNoneAreSpecified()
+        {
+            // arrange
+            var config = TestLusidApiFactoryBuilder.CreateApiConfiguration("secrets.json");
+            var provider = new ClientCredentialsFlowTokenProvider(config);
+
+            // act
+            var factory = LusidApiFactoryBuilder.Build(config.ApiUrl, provider);
+            var api = factory.Api<IPortfolioGroupsApi>();
+            
+            // assert
+            Assert.IsNull(api.Configuration.DefaultHeaders);
+        }
     }
 }
