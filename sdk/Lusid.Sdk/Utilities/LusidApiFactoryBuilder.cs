@@ -24,21 +24,12 @@ namespace Lusid.Sdk.Utilities
             // TokenProviderConfiguration.ApiClient is the client used by LusidApiFactory and is 
             // NOT thread-safe, so there needs to be a separate instance for each instance of LusidApiFactory.
             // Do NOT cache the LusidApiFactory instances (DEV-6922)
-            TokenProviderConfiguration config;
-            if (defaultHeaders is null)
+            var config = new TokenProviderConfiguration(tokenProvider)
             {
-                config = new TokenProviderConfiguration(tokenProvider)
-                {
-                    BasePath = url
-                };
-            }
-            else
-            {
-                config = new TokenProviderConfiguration(tokenProvider)
-                {
-                    BasePath = url,
-                    DefaultHeaders = defaultHeaders
-                };
+                BasePath = url
+            };
+            if (defaultHeaders != null) {
+                config.DefaultHeaders = defaultHeaders;
             }
 
             return new LusidApiFactory(config);
