@@ -4,7 +4,7 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**CapFloorType** | **string** | Determine if it&#39;s CAP, FLOOR, or COLLAR.  Supported string (enumeration) values are: [Cap, Floor, Collar]. | 
+**CapFloorType** | **string** | Determine if it&#39;s CAP, FLOOR, or COLLAR.    Supported string (enumeration) values are: [Cap, Floor, Collar]. | 
 **CapStrike** | **decimal** | Strike rate of the Cap. | 
 **FloorStrike** | **decimal** | Strike rate of the Floor. | 
 **IncludeFirstCaplet** | **bool** | Include first caplet flag. | 
