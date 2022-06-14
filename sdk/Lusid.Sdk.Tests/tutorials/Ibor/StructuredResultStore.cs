@@ -806,7 +806,6 @@ namespace Lusid.Sdk.Tests.tutorials.Ibor
             string portfolioCode = "pf";
 
             //  Choosing wide date window to pick up 4 out of 5 cashflows on the instrument. The said cashflows and instrument are defined below.
-            var valueAt = new DateTimeOffset(2016, 1, 1, 0, 0, 0, 0, TimeSpan.Zero);
             var effectiveFrom = new DateTimeOffset(2016, 1, 1, 0, 0, 0, 0, TimeSpan.Zero);
             var effectiveTo = new DateTimeOffset(2025, 1, 1, 0, 0, 0, 0, TimeSpan.Zero);
 
@@ -905,7 +904,7 @@ namespace Lusid.Sdk.Tests.tutorials.Ibor
                 QuoteSeriesId.InstrumentIdTypeEnum.LusidInstrumentId,
                 123m,
                 "USD",
-                valueAt,
+                effectiveAt,
                 QuoteSeriesId.QuoteTypeEnum.Price);
             _quotesApi.UpsertQuotes(scope, quoteRequest1);
 
@@ -947,7 +946,7 @@ namespace Lusid.Sdk.Tests.tutorials.Ibor
             var response = _transactionPortfoliosApi.GetPortfolioCashFlows(
                 scope,
                 portfolioCode,
-                valueAt,
+                effectiveAt,
                 effectiveFrom,
                 effectiveTo,
                 null,
