@@ -34,7 +34,7 @@ namespace Lusid.Sdk.Tests.Tutorials.Ibor
         [Test]
         public void CreateReferencePortfolio()
         {
-            var F39PortfolioCode = "F39C_ReferencePortfolioCode";
+            var F39PortfolioCode = "F39C_ReferencePortfolioCode" + Guid.NewGuid();
             var F39PortfolioName = "F39C_Reference Portfolio name";
 
 
