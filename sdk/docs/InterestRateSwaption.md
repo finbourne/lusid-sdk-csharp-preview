@@ -1,5 +1,5 @@
 # Lusid.Sdk.Model.InterestRateSwaption
-LUSID representation of an Interest Rate Swaption.
+A swaption, an option to enter into an interest rate swap.
 
 ## Properties
 

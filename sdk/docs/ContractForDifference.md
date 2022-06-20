@@ -1,5 +1,5 @@
 # Lusid.Sdk.Model.ContractForDifference
-LUSID representation of a Contract for Difference.
+IL CFD Instrument; Lusid-ibor internal representation of a Contract For Difference instrument.
 
 ## Properties
 

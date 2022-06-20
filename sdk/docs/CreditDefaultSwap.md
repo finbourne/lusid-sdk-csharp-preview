@@ -1,5 +1,5 @@
 # Lusid.Sdk.Model.CreditDefaultSwap
-LUSID representation of a Credit Default Swap (CDS).
+IL CDS Instrument; Lusid-ibor internal representation of a Credit Default Swap instrument
 
 ## Properties
 

@@ -1,5 +1,5 @@
 # Lusid.Sdk.Model.CashPerpetual
-LUSID representation of a Perpetual Cash Flow.
+Cash Instrument; LUSID representation of a perpetual cash instrument.
 
 ## Properties
 

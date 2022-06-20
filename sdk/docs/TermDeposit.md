@@ -1,5 +1,5 @@
 # Lusid.Sdk.Model.TermDeposit
-LUSID representation of a Term Deposit.
+Lusid internal representation of a term deposit.
 
 ## Properties
 

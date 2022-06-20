@@ -1,5 +1,5 @@
 # Lusid.Sdk.Model.Equity
-LUSID representation of an Equity.
+An equity instrument.
 
 ## Properties
 

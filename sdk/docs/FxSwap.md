@@ -1,5 +1,5 @@
 # Lusid.Sdk.Model.FxSwap
-LUSID representation of an FX Swap. Composed of two FX Forwards.
+IL FX Swap Instrument; Lusid-ibor internal representation of an FX Swap instrument.
 
 ## Properties
 
