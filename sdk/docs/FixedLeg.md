@@ -1,5 +1,5 @@
 # Lusid.Sdk.Model.FixedLeg
-Lusid-ibor internal representation of a fixed rates leg.
+LUSID representation of a Fixed Rate Leg.
 
 ## Properties
 

@@ -1,5 +1,5 @@
 # Lusid.Sdk.Model.FloatingLeg
-Lusid-ibor internal representation of a floating rates leg.
+LUSID representation of a Floating Rate Leg.
 
 ## Properties
 
