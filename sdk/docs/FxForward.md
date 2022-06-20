@@ -1,5 +1,5 @@
 # Lusid.Sdk.Model.FxForward
-IL Fx-Forward Instrument; Lusid-ibor internal representation of a Fx Forward instrument.
+LUSID representation of an FX Forward.  Including FX Spot and Non-Deliverable Forwards.
 
 ## Properties
 

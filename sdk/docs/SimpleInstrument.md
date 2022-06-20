@@ -1,5 +1,5 @@
 # Lusid.Sdk.Model.SimpleInstrument
-IL SimpleInstrument Instrument; Lusid-ibor internal representation of a SimpleInstrument instrument.
+LUSID representation of a Simple Instrument, used as a basic definition of a generic instrument.  No analytics can be obtained for this.
 
 ## Properties
 
