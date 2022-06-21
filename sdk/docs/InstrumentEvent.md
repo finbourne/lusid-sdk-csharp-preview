@@ -1,5 +1,5 @@
 # Lusid.Sdk.Model.InstrumentEvent
-The event specific details. A different schema exists for each possible value of InstrumentEventType.
+The event specific details. A different schema exists for each possible value of InstrumentEventType. Not all InstrumentEventTypes can be upserted
 
 ## Properties
 

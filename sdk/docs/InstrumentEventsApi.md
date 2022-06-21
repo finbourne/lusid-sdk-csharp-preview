@@ -4,18 +4,18 @@ All URIs are relative to *https://www.lusid.com/api*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
-[**QueryBucketedCashFlows**](InstrumentEventsApi.md#querybucketedcashflows) | **POST** /api/instrumentevents/$queryBucketedCashFlows | [EXPERIMENTAL] QueryBucketedCashFlows: Returns a list of instrument events that match the specified query, presented as bucketed cashflows.
-[**QueryCashFlows**](InstrumentEventsApi.md#querycashflows) | **POST** /api/instrumentevents/$queryCashFlows | [EXPERIMENTAL] QueryCashFlows: Returns a list of instrument events that match the specified query, presented as Instrument cashflows.
-[**QueryInstrumentEvents**](InstrumentEventsApi.md#queryinstrumentevents) | **POST** /api/instrumentevents/$query | [EXPERIMENTAL] QueryInstrumentEvents: Returns a list of intrinsic and user-upserted instrument events that match the specified query.
+[**QueryBucketedCashFlows**](InstrumentEventsApi.md#querybucketedcashflows) | **POST** /api/instrumentevents/$queryBucketedCashFlows | [EXPERIMENTAL] QueryBucketedCashFlows: Returns bucketed cashflows based on the holdings of the portfolios and date range specified in the query.
+[**QueryCashFlows**](InstrumentEventsApi.md#querycashflows) | **POST** /api/instrumentevents/$queryCashFlows | [EXPERIMENTAL] QueryCashFlows: Returns a list of cashflows based on the holdings of the portfolios and date range specified in the query.
+[**QueryInstrumentEvents**](InstrumentEventsApi.md#queryinstrumentevents) | **POST** /api/instrumentevents/$query | [EXPERIMENTAL] QueryInstrumentEvents: Returns a list of instrument events based on the holdings of the portfolios and date range specified in the query.
 
 
 <a name="querybucketedcashflows"></a>
 # **QueryBucketedCashFlows**
 > BucketedCashFlowResponse QueryBucketedCashFlows (QueryBucketedCashFlowsRequest queryBucketedCashFlowsRequest = null)
 
-[EXPERIMENTAL] QueryBucketedCashFlows: Returns a list of instrument events that match the specified query, presented as bucketed cashflows.
+[EXPERIMENTAL] QueryBucketedCashFlows: Returns bucketed cashflows based on the holdings of the portfolios and date range specified in the query.
 
-Returns a list of instrument events that match the specified query, presented as bucketed cashflows.
+Returns bucketed cashflows based on the holdings of the portfolios and date range specified in the query.
 
 ### Example
 ```csharp
@@ -41,7 +41,7 @@ namespace Example
 
             try
             {
-                // [EXPERIMENTAL] QueryBucketedCashFlows: Returns a list of instrument events that match the specified query, presented as bucketed cashflows.
+                // [EXPERIMENTAL] QueryBucketedCashFlows: Returns bucketed cashflows based on the holdings of the portfolios and date range specified in the query.
                 BucketedCashFlowResponse result = apiInstance.QueryBucketedCashFlows(queryBucketedCashFlowsRequest);
                 Debug.WriteLine(result);
             }
@@ -89,9 +89,9 @@ Name | Type | Description  | Notes
 # **QueryCashFlows**
 > ResourceListOfInstrumentCashFlow QueryCashFlows (int? limit = null, string page = null, QueryCashFlowsRequest queryCashFlowsRequest = null)
 
-[EXPERIMENTAL] QueryCashFlows: Returns a list of instrument events that match the specified query, presented as Instrument cashflows.
+[EXPERIMENTAL] QueryCashFlows: Returns a list of cashflows based on the holdings of the portfolios and date range specified in the query.
 
-Returns a list of instrument events that match the specified query, presented as Instrument cashflows
+Returns a list of cashflows based on the holdings of the portfolios and date range specified in the query.
 
 ### Example
 ```csharp
@@ -119,7 +119,7 @@ namespace Example
 
             try
             {
-                // [EXPERIMENTAL] QueryCashFlows: Returns a list of instrument events that match the specified query, presented as Instrument cashflows.
+                // [EXPERIMENTAL] QueryCashFlows: Returns a list of cashflows based on the holdings of the portfolios and date range specified in the query.
                 ResourceListOfInstrumentCashFlow result = apiInstance.QueryCashFlows(limit, page, queryCashFlowsRequest);
                 Debug.WriteLine(result);
             }
@@ -169,9 +169,9 @@ Name | Type | Description  | Notes
 # **QueryInstrumentEvents**
 > ResourceListOfInstrumentEventHolder QueryInstrumentEvents (int? limit = null, string page = null, QueryInstrumentEventsRequest queryInstrumentEventsRequest = null)
 
-[EXPERIMENTAL] QueryInstrumentEvents: Returns a list of intrinsic and user-upserted instrument events that match the specified query.
+[EXPERIMENTAL] QueryInstrumentEvents: Returns a list of instrument events based on the holdings of the portfolios and date range specified in the query.
 
-Returns a list of intrinsic and user-upserted instrument events that match the specified query.
+Returns a list of instrument events based on the holdings of the portfolios and date range specified in the query.
 
 ### Example
 ```csharp
@@ -199,7 +199,7 @@ namespace Example
 
             try
             {
-                // [EXPERIMENTAL] QueryInstrumentEvents: Returns a list of intrinsic and user-upserted instrument events that match the specified query.
+                // [EXPERIMENTAL] QueryInstrumentEvents: Returns a list of instrument events based on the holdings of the portfolios and date range specified in the query.
                 ResourceListOfInstrumentEventHolder result = apiInstance.QueryInstrumentEvents(limit, page, queryInstrumentEventsRequest);
                 Debug.WriteLine(result);
             }
