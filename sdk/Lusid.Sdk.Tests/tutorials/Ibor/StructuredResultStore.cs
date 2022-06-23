@@ -70,7 +70,11 @@ namespace Lusid.Sdk.Tests.tutorials.Ibor
             List<string> luids = upsertResponse.Values
                 .Select(inst => inst.Value.LusidInstrumentId)
                 .ToList();
-            var transactionRequest = TestDataUtilities.BuildTransactionRequest(luids, effectiveAt);
+
+            var transactionRequest = luids
+                .Select(luid => TestDataUtilities.BuildTransactionRequest(luid, 1000, 0.0m, "USD", effectiveAt, "Buy"))
+                .ToList();
+
             _transactionPortfoliosApi.UpsertTransactions(scope, portfolioCode, transactionRequest);
 
             // Create and upsert data mapping, indicating what data will be passed in via the document.
@@ -82,9 +86,9 @@ namespace Lusid.Sdk.Tests.tutorials.Ibor
             DataMapping dataMapping = new DataMapping(new List<DataDefinition>
             {
                 new DataDefinition("UnitResult/LusidInstrumentId", "LusidInstrumentId", "string", "Unique"),
-                new DataDefinition("UnitResult/Accrual", dataType: "Result0D", keyType: "CompositeLeaf"),
-                new DataDefinition("UnitResult/Accrual/Amount", "Accrual", "decimal", "Leaf"),
-                new DataDefinition("UnitResult/Accrual/Ccy", "AccrualCcy", "string", "Leaf"),
+                new DataDefinition("UnitResult/Valuation/InstrumentAccrued", dataType: "Result0D", keyType: "CompositeLeaf"),
+                new DataDefinition("UnitResult/Valuation/InstrumentAccrued/Amount", "Accrual", "decimal", "Leaf"),
+                new DataDefinition("UnitResult/Valuation/InstrumentAccrued/Ccy", "AccrualCcy", "string", "Leaf"),
                 new DataDefinition("UnitResult/ClientCustomValue", "ClientVal", "decimal", "Leaf"),
             });
             var request = new CreateDataMapRequest(dataMapKey, dataMapping);
@@ -124,10 +128,11 @@ namespace Lusid.Sdk.Tests.tutorials.Ibor
                 metrics: new List<AggregateSpec>
                 {
                     new AggregateSpec(TestDataUtilities.Luid, AggregateSpec.OpEnum.Value),
-                    new AggregateSpec("UnitResult/Accrual", AggregateSpec.OpEnum.Value),
+                    new AggregateSpec("UnitResult/Valuation/InstrumentAccrued", AggregateSpec.OpEnum.Value),
                     new AggregateSpec(TestDataUtilities.ValuationPv, AggregateSpec.OpEnum.Value),
-                    new AggregateSpec("Holding/default/Accrual", AggregateSpec.OpEnum.Value),
+                    new AggregateSpec("Holding/default/PV", AggregateSpec.OpEnum.Value),
                     new AggregateSpec("UnitResult/ClientCustomValue", AggregateSpec.OpEnum.Value),
+                    new AggregateSpec("Valuation/InstrumentAccrued", AggregateSpec.OpEnum.Value),
                 },
                 portfolioEntityIds: new List<PortfolioEntityId> { new PortfolioEntityId(scope, portfolioCode) },
                 valuationSchedule: new ValuationSchedule(effectiveAt: effectiveAt));
@@ -136,13 +141,13 @@ namespace Lusid.Sdk.Tests.tutorials.Ibor
             var results = _apiFactory.Api<IAggregationApi>().GetValuation(valuationRequest);
 
             // We expect the following output
-            // | LusidInstrumentId | Accrual (UnitResult - Unscaled) | Pv Ammount | Accrual (Holding - scaled) | ClientCustomValue |
-            // | ----------------- | ------------------------------- | ---------- | -------------------------- | ----------------- |
-            // | <generated-luid>  | 0.123456                        | 107.23456  | 1.23456                    | 1.7320508         |
+            // | LusidInstrumentId  | Accrual - Not Scaled (from Valuation/InstrumentAccrued) | Accrual - Scaled (from UnitResult/Valuation/InstrumentAccrued) | PV Amount | Client Custom Value |
+            // | ------------------ | ------------------------------------------------------- | -------------------------------------------------------------- | --------- | ------------------- |
+            // |  <Generated-Luid>  | 0.0123456                                               | 12.3456                                                        | 107234.56 | 1.7320508           |
             Assert.That(results.Data[0]["Instrument/default/LusidInstrumentId"], Is.EqualTo(luids.First()));
-            Assert.That(results.Data[0]["UnitResult/Accrual"], Is.EqualTo(0.0123456));
-            Assert.That(results.Data[0]["Valuation/PV/Amount"], Is.EqualTo(107.23456));
-            Assert.That(results.Data[0]["Holding/default/Accrual"], Is.EqualTo(1.23456));
+            Assert.That(results.Data[0]["UnitResult/Valuation/InstrumentAccrued"], Is.EqualTo(12.3456));
+            Assert.That(results.Data[0]["Valuation/InstrumentAccrued"], Is.EqualTo(0.0123456));
+            Assert.That(results.Data[0]["Valuation/PV/Amount"], Is.EqualTo(107234.56));
             Assert.That(results.Data[0]["UnitResult/ClientCustomValue"], Is.EqualTo(1.7320508));
         }
 
