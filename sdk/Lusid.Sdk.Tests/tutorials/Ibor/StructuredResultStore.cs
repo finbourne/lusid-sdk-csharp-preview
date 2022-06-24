@@ -128,7 +128,7 @@ namespace Lusid.Sdk.Tests.tutorials.Ibor
                 metrics: new List<AggregateSpec>
                 {
                     new AggregateSpec(TestDataUtilities.Luid, AggregateSpec.OpEnum.Value),
-                    // Obtain InstrumentAccrued from the store. Since we are overriding it this is the same as calling Valuation/Accrued.
+                    // Obtain InstrumentAccrued from the store. Since we are overriding the InstrumentAccrued this is the same as calling Valuation/Accrued.
                     new AggregateSpec("UnitResult/Valuation/InstrumentAccrued", AggregateSpec.OpEnum.Value),
                     new AggregateSpec(TestDataUtilities.ValuationPv, AggregateSpec.OpEnum.Value),
                     new AggregateSpec("UnitResult/ClientCustomValue", AggregateSpec.OpEnum.Value),
