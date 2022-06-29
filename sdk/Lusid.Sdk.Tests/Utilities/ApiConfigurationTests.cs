@@ -7,7 +7,7 @@ namespace Lusid.Sdk.Tests.Utilities
     public class ApiConfigurationTest
     {
         [Test]
-        public void TestHasMissingPatConfig()
+        public void TestHasMissingPersonalAccessTokenConfig()
         {
             var config = new ApiConfiguration() {PersonalAccessToken = "token"};
             Assert.IsTrue(config.HasMissingConfig());
@@ -15,7 +15,7 @@ namespace Lusid.Sdk.Tests.Utilities
         }
 
         [Test]
-        public void TestHasCompletePatConfig()
+        public void TestHasCompletePersonalAccessTokenConfig()
         {
             var config = new ApiConfiguration() {PersonalAccessToken = "token", ApiUrl = "http://bla.com"};
             Assert.IsFalse(config.HasMissingConfig());
