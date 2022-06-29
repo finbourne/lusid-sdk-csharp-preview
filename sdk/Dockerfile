@@ -9,7 +9,4 @@ COPY Lusid.Sdk/ /usr/src/Lusid.Sdk/
 COPY LusidFeatureReporter/ /usr/src/LusidFeatureReporter/
 COPY Lusid.Sdk.Tests/ /usr/src/Lusid.Sdk.Tests/
 
-
-ENV FBN_LUSID_API_URL ${FBN_LUSID_API_URL}
-
 ENTRYPOINT ["./run.sh"]
