@@ -86,7 +86,8 @@ namespace Lusid.Sdk.Tests
         {
             ApiConfiguration apiConfig = new ApiConfiguration
             {
-                TokenUrl = "xyz"
+                TokenUrl = "xyz",
+                ApiUrl = "http://abc" // api uri is checked first and must pass
             };
 
             Assert.That(
@@ -328,6 +329,11 @@ namespace Lusid.Sdk.Tests
         public void Multi_Threaded_ApiFactory_Tasks(int quoteCount, int threadCount)
         {
             var config = TestLusidApiFactoryBuilder.CreateApiConfiguration("secrets.json");
+            if (config.MissingSecretVariables)
+            {
+                Assert.Inconclusive();
+            }
+
             var provider = new ClientCredentialsFlowTokenProvider(config);
             
             var date = new DateTimeOffset(2018, 1, 1, 0, 0, 0, TimeSpan.Zero);
@@ -353,6 +359,47 @@ namespace Lusid.Sdk.Tests
                 var result = factory.Api<IQuotesApi>().UpsertQuotes("mt-scope", request);
                 Assert.That(result.Failed, Is.Empty);
                 
+                Console.WriteLine($"{DateTimeOffset.UtcNow} {Thread.CurrentThread.ManagedThreadId} {result.Values.Count}");
+            }));
+
+            Task.WaitAll(tasks.ToArray());
+        }
+
+        [TestCase(1, 10)]
+        [TestCase(100, 25, Explicit = true)]
+        public void Multi_Threaded_ApiFactory_Tasks_WithPACToken(int quoteCount, int threadCount)
+        {
+            var config = ApiConfigurationBuilder.Build(null);
+            if (config.MissingPersonalAccessTokenVariables)
+            {
+                Assert.Inconclusive();
+            }
+            
+            var provider = new PersonalAccessTokenProvider(config.PersonalAccessToken);
+
+            var date = new DateTimeOffset(2018, 1, 1, 0, 0, 0, TimeSpan.Zero);
+
+            var request = Enumerable.Range(0, quoteCount).Select(i => new UpsertQuoteRequest(
+                new QuoteId(
+                    new QuoteSeriesId(
+                        provider: "DataScope",
+                        priceSource: "BankA",
+                        instrumentId: "BBG000B9XRY4",
+                        instrumentIdType: QuoteSeriesId.InstrumentIdTypeEnum.Figi,
+                        quoteType: QuoteSeriesId.QuoteTypeEnum.Price,
+                        field: "mid"),
+                    effectiveAt: date.AddDays(i)),
+                metricValue: new MetricValue(
+                    value: 199.23m,
+                    unit: "USD"),
+                lineage: "InternalSystem")).ToDictionary(k => k.QuoteId.EffectiveAt.ToString(), v => v);
+
+            var tasks = Enumerable.Range(0, threadCount).Select(x => Task.Run(() =>
+            {
+                var factory = LusidApiFactoryBuilder.Build(config.ApiUrl, provider);
+                var result = factory.Api<IQuotesApi>().UpsertQuotes("mt-scope", request);
+                Assert.That(result.Failed, Is.Empty);
+
                 Console.WriteLine($"{DateTimeOffset.UtcNow} {Thread.CurrentThread.ManagedThreadId} {result.Values.Count}");
             }));
 
