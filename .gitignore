@@ -539,3 +539,6 @@ Temporary Items
 
 # Environments
 **/.env
+
+# features file
+features.txt
