@@ -69,7 +69,7 @@ namespace Lusid.Sdk.Tests.Tutorials.Ibor
 
             transactions = _apiFactory.Api<ITransactionPortfoliosApi>().GetTransactions(TestDataUtilities.TutorialScope, portfolioRequest.Code, asAt: asAtBatch2);
             
-            Assert.That(transactions.Values.Count, Is.EqualTo(4), $"AsAt: {asAtBatch2:o}");            PrintTransactions(transactions.Values);
+            Assert.That(transactions.Values.Count, Is.EqualTo(4), $"AsAt: {asAtBatch2:o}");
 
             transactions = _apiFactory.Api<ITransactionPortfoliosApi>().GetTransactions(TestDataUtilities.TutorialScope, portfolioRequest.Code, asAt: asAtBatch3);
             
