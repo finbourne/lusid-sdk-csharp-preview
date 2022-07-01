@@ -77,11 +77,7 @@ namespace Lusid.Sdk.Tests.Tutorials.MarketData
         public void List_Corporate_Action_Sources()
         {
             var sources = _corporateActionSourcesApi.ListCorporateActionSources();
-
-            foreach (var source in sources.Values)
-            {
-                Console.WriteLine($"{source.Id.Scope}\t:\t{source.Id.Code}");
-            }
+            Assert.Greater(sources.Values.Count, 0);
         }
 
         [Test, Ignore("Not implemented")]

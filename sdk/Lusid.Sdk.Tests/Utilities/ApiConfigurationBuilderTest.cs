@@ -135,7 +135,6 @@ namespace Lusid.Sdk.Tests.Utilities
             Assert.That(apiConfiguration.ClientId, Is.EqualTo("<env.clientId>"));
             Assert.That(apiConfiguration.ClientSecret, Is.EqualTo("<env.clientSecret>"));
             Assert.That(apiConfiguration.ApiUrl, Is.EqualTo("<env.apiUrl>"));
-            Console.WriteLine(console.GetOutput());
             StringAssert.Contains("Loaded values from environment", console.GetOutput());
         }
 

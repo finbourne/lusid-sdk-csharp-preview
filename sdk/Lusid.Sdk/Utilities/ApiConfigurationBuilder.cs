@@ -49,7 +49,6 @@ namespace Lusid.Sdk.Utilities
 
         private static ApiConfiguration BuildFromEnvironmentVariables()
         {
-            Console.WriteLine($"Loaded values from environment");
             var apiConfig = new ApiConfiguration
             {
                 TokenUrl = Environment.GetEnvironmentVariable("FBN_TOKEN_URL") ??
@@ -84,8 +83,6 @@ namespace Lusid.Sdk.Utilities
 
         private static ApiConfiguration BuildFromSecretsFile(string apiSecretsFilename)
         {
-            Console.WriteLine($"Loaded values from {apiSecretsFilename}");
-            
             var apiConfig = new ApiConfiguration();
             if (apiSecretsFilename == null || !File.Exists(Path.Combine(Directory.GetCurrentDirectory(),apiSecretsFilename)))
             {
@@ -119,7 +116,6 @@ namespace Lusid.Sdk.Utilities
         public static ApiConfiguration BuildFromConfiguration(IConfigurationSection config)
         {
             if (config == null) throw new ArgumentNullException(nameof(config));
-            Console.WriteLine($"Loaded values from configuration");
 
             var apiConfig = new ApiConfiguration();
             config.Bind(apiConfig);

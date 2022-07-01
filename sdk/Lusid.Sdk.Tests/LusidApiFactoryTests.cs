@@ -358,8 +358,6 @@ namespace Lusid.Sdk.Tests
                 var factory = LusidApiFactoryBuilder.Build(config.ApiUrl, provider);
                 var result = factory.Api<IQuotesApi>().UpsertQuotes("mt-scope", request);
                 Assert.That(result.Failed, Is.Empty);
-                
-                Console.WriteLine($"{DateTimeOffset.UtcNow} {Thread.CurrentThread.ManagedThreadId} {result.Values.Count}");
             }));
 
             Task.WaitAll(tasks.ToArray());
@@ -399,8 +397,6 @@ namespace Lusid.Sdk.Tests
                 var factory = LusidApiFactoryBuilder.Build(config.ApiUrl, provider);
                 var result = factory.Api<IQuotesApi>().UpsertQuotes("mt-scope", request);
                 Assert.That(result.Failed, Is.Empty);
-
-                Console.WriteLine($"{DateTimeOffset.UtcNow} {Thread.CurrentThread.ManagedThreadId} {result.Values.Count}");
             }));
 
             Task.WaitAll(tasks.ToArray());

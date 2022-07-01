@@ -76,8 +76,6 @@ namespace Lusid.Sdk.Tests.Tutorials.MarketData
                 quoteType: QuoteSeriesId.QuoteTypeEnum.Price,
                 field: "mid");
             
-            Console.WriteLine(quoteSeriesId);
-
             //    Get the quotes for each day in the date range
             var quoteResponses = dateRange
                 .Select(d =>
@@ -88,8 +86,6 @@ namespace Lusid.Sdk.Tests.Tutorials.MarketData
                         new Dictionary<string, QuoteSeriesId> {{"correlationId", quoteSeriesId}}))
                 .SelectMany(q => q.Values)
                 .ToList();
-            
-            Console.WriteLine(quoteResponses);
             
             Assert.That(quoteResponses, Has.Count.EqualTo(30));
         }

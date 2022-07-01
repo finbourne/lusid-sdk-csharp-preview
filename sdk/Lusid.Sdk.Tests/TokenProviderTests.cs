@@ -67,8 +67,6 @@ namespace Lusid.Sdk.Tests
             
             Assert.That(firstTokenDetails.RefreshToken, Is.Not.Null.And.Not.Empty, "refresh_token not returned so unable to verify refresh behaviour.  This requires the userid defined in secrets.json to be set to 'allow offline access' in Okta");
 
-            Console.WriteLine($"Token expiring at {firstTokenDetails.ExpiresOn:o}");
-
             // WHEN we pretend to delay until the original token has expired (for expediency update the expires_on on the token)
             provider.ExpireToken();
 
@@ -182,8 +180,6 @@ namespace Lusid.Sdk.Tests
             var firstTokenDetails = provider.GetLastToken();
 
             Assert.That(firstTokenDetails.RefreshToken, Is.Not.Null.And.Not.Empty, "refresh_token not returned so unable to verify refresh behaviour.");
-
-            Console.WriteLine($"Token expiring at {firstTokenDetails.ExpiresOn:o}");
 
             // WHEN we pretend to delay until both...
             // (1) the original token has expired (for expediency update the expires_on on the token)

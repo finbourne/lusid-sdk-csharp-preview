@@ -82,9 +82,6 @@ namespace Lusid.Sdk.Tests.Tutorials.Ibor
 
             var listOfBreaks = _apiFactory.Api<IReconciliationsApi>().ReconcileHoldings(portfoliosReconciliationRequest: reconcileRequest);
 
-            Console.WriteLine($"Breaks at {yesterday.AddHours(20)}");
-            PrintBreaks(listOfBreaks.Values);
-
             /*
                 Expecting 
                     _instrumentIds[0]    	-1500	-8094.73
@@ -93,25 +90,13 @@ namespace Lusid.Sdk.Tests.Tutorials.Ibor
                     _instrumentIds[1]    	1000	-10200
             */
 
-           Assert.AreEqual(listOfBreaks.Values.Count, 4);
+            Assert.AreEqual(listOfBreaks.Values.Count, 4);
 
             var map = listOfBreaks.Values.ToDictionary(abreak => abreak.InstrumentUid);
             Assert.AreEqual(map[_instrumentIds[0]].DifferenceUnits, -1500);
             Assert.AreEqual(map[_instrumentIds[3]].DifferenceUnits, 1000);
             Assert.AreEqual(map[_instrumentIds[2]].DifferenceUnits, 1200);
             Assert.AreEqual(map[_instrumentIds[1]].DifferenceUnits, 1000);
-            
-            void PrintBreaks(IEnumerable<ReconciliationBreak> breaks)
-            {
-                foreach (var abreak in breaks)
-                {
-                    Console.WriteLine($"{abreak.InstrumentUid}\t{abreak.DifferenceUnits}\t{abreak.DifferenceCost.Amount}");
-                }
-
-                Console.WriteLine();
-            }
         }
-
-        
     }
 }

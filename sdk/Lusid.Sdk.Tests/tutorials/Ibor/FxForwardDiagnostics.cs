@@ -105,20 +105,12 @@ namespace Lusid.Sdk.Tests.tutorials.Ibor
             var interpolatedDiscountingValuation = apiFactory.Api<IAggregationApi>()
                 .GetValuationOfWeightedInstruments(discountingInlineValuationRequest);
             Assert.That(interpolatedDiscountingValuation, Is.Not.Null);
-            Console.WriteLine("\nUsing the provided discounting curves:");
-            Console.WriteLine($"Lusid implied an AUD-JPY fx fwd rate of {interpolatedDiscountingValuation.Data[0][ImpliedFwdRateKey]} during valuation of a 5M forward");
-            Console.WriteLine($"Lusid implied an  AUD-JPY fx fwd rate of {interpolatedDiscountingValuation.Data[1][ImpliedFwdRateKey]} during valuation of a 7M forward");
-            Console.WriteLine($"Lusid implied an AUD-JPY fx fwd rate of {interpolatedDiscountingValuation.Data[2][ImpliedFwdRateKey]} during valuation of a 6M forward");
 
             // The fx forward curve can also be interpolated, giving slightly different results due to differences in the interpolation methodology, day count, and the interpretation of tenors
             // However, the result is quite close to the average of the 5M and 7M rates
             var interpolateFromCurveValuation = apiFactory.Api<IAggregationApi>()
                 .GetValuationOfWeightedInstruments(fromCurveInlineValuationRequest);
             Assert.That(fromCurveValuation, Is.Not.Null);
-            Console.WriteLine("\nUsing the provided fx forward curve:");
-            Console.WriteLine($"Lusid interpolated an AUD-JPY fx fwd rate of {interpolateFromCurveValuation.Data[0][ImpliedFwdRateKey]} to value a 5M forward");
-            Console.WriteLine($"Lusid interpolated an AUD-JPY fx fwd rate of {interpolateFromCurveValuation.Data[1][ImpliedFwdRateKey]} to value a 7M forward");
-            Console.WriteLine($"Lusid interpolated an AUD-JPY fx fwd rate of {interpolateFromCurveValuation.Data[2][ImpliedFwdRateKey]} to value a 6M forward");
 
             #region testhelpers
             FxForward CreateFxForward(DateTimeOffset startDate, DateTimeOffset maturityDate, decimal agreedRate)
