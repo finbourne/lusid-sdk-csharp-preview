@@ -180,12 +180,7 @@ namespace Lusid.Sdk.Tests.Tutorials.MarketData
         {
             //    Get the list of identifier schemes
             ResourceListOfInstrumentIdTypeDescriptor identifiers = _instrumentsApi.GetInstrumentIdentifierTypes();
-
-            //    Schemes are returned as descriptors containing the name, property key and uniqueness constraint
-            foreach (InstrumentIdTypeDescriptor scheme in identifiers.Values)
-            {
-                Console.WriteLine($"name: {scheme.IdentifierType}\nproperty key: {scheme.PropertyKey}\nis unique: {scheme.IsUniqueIdentifierType}\n");
-            }
+            Assert.Greater(identifiers.Values.Count, 0);
         }
         
         [LusidFeature("F24")]

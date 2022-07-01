@@ -264,10 +264,6 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
             // CHECK that the valuation was performed
             Assert.That(result.Data, Is.Not.Empty);
             Assert.That(result.AggregationFailures, Is.Empty);
-            foreach (var val in result.Data)
-            {
-                Console.WriteLine(val.GetValueOrDefault(pvKey));
-            }
         }
     }
 }
