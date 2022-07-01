@@ -24,13 +24,7 @@ jobs:
 
       - name: Set env variable BRANCH_FOR_SLACK for Slack message
         run: |
-          if ${{ github.event_name == 'push' }} ; then
-            echo "BRANCH_FOR_SLACK=${{ github.ref  }}" >> $GITHUB_ENV
-          elif ${{ github.event_name == 'pull_request' }}; then
-            echo "BRANCH_FOR_SLACK=${{ github.base_ref  }}" >> $GITHUB_ENV
-          else
-            exit 1
-          fi
+          echo "BRANCH_FOR_SLACK=${{ github.base_ref  }}" >> $GITHUB_ENV
 
       - name: Run tests on DEVELOP branch
         if: ${{ github.base_ref == 'develop' || github.ref == 'refs/heads/develop' }}
