@@ -1,14 +1,14 @@
 name: Slack alert on PR
 
 on:
-  pull_request:
+  pull_request_target:
     branches: [ master, develop ]
 
 jobs:
 
   slack-alert-on-pr:
     runs-on: ubuntu-latest
-    timeout-minutes: 30
+    timeout-minutes: 3
 
     steps:
 
