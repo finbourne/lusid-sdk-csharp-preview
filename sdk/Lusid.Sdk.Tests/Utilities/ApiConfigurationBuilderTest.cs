@@ -10,8 +10,6 @@ namespace Lusid.Sdk.Tests.Utilities
 {
     public class ApiConfigurationBuilderTest
     {
-        private string _secretsFile;
-
         private string _cachedTokenUrl;
         private string _cachedApiUrl;
         private string _cachedClientId;
@@ -24,8 +22,6 @@ namespace Lusid.Sdk.Tests.Utilities
         [OneTimeSetUp]
         public void Setup()
         {
-            _secretsFile = Path.GetTempFileName();
-
             _cachedTokenUrl = Environment.GetEnvironmentVariable("FBN_TOKEN_URL") ??
                               Environment.GetEnvironmentVariable("fbn_token_url");
             _cachedApiUrl = Environment.GetEnvironmentVariable("FBN_LUSID_API_URL") ??
@@ -55,7 +51,6 @@ namespace Lusid.Sdk.Tests.Utilities
             Environment.SetEnvironmentVariable("FBN_PASSWORD", _cachedPassword);
             Environment.SetEnvironmentVariable("FBN_APP_NAME", _cachedApplicationName);
             Environment.SetEnvironmentVariable("FBN_ACCESS_TOKEN", _cachedPersonalAccessToken);
-            File.Delete(_secretsFile);
         }
 
         [TestCase(null)]
@@ -78,46 +73,46 @@ namespace Lusid.Sdk.Tests.Utilities
         [Test]
         public void Use_Secrets_File_If_It_Exists()
         {
-            PopulateDummySecretsFile(new Dictionary<string, string>
+            var secretsFile = PopulateDummySecretsFile(new Dictionary<string, string>
             {
-                {"tokenUrl", "<tokenUrl>"},
-                {"username", "<username>"},
-                {"password", "<password>"},
-                {"clientId", "<clientId>"},
-                {"clientSecret", "<clientSecret>"},
-                {"apiUrl", "<apiUrl>"},
+                {"tokenUrl", "<tokenUrl - Use_Secrets_File_If_It_Exists>"},
+                {"username", "<username - Use_Secrets_File_If_It_Exists>"},
+                {"password", "<password - Use_Secrets_File_If_It_Exists>"},
+                {"clientId", "<clientId - Use_Secrets_File_If_It_Exists>"},
+                {"clientSecret", "<clientSecret - Use_Secrets_File_If_It_Exists>"},
+                {"apiUrl", "<apiUrl - Use_Secrets_File_If_It_Exists>"},
             });
 
-            using var console = new InMemoryConsole();
-            var apiConfiguration = ApiConfigurationBuilder.Build(_secretsFile);
+            var apiConfiguration = ApiConfigurationBuilder.Build(secretsFile);
 
-            Assert.That(apiConfiguration.TokenUrl, Is.EqualTo("<tokenUrl>"));
-            Assert.That(apiConfiguration.Username, Is.EqualTo("<username>"));
-            Assert.That(apiConfiguration.Password, Is.EqualTo("<password>"));
-            Assert.That(apiConfiguration.ClientId, Is.EqualTo("<clientId>"));
-            Assert.That(apiConfiguration.ClientSecret, Is.EqualTo("<clientSecret>"));
-            Assert.That(apiConfiguration.ApiUrl, Is.EqualTo("<apiUrl>"));
-
-            StringAssert.Contains($"Loaded values from {_secretsFile}", console.GetOutput());
+            Assert.That(apiConfiguration.TokenUrl, Is.EqualTo("<tokenUrl - Use_Secrets_File_If_It_Exists>"));
+            Assert.That(apiConfiguration.Username, Is.EqualTo("<username - Use_Secrets_File_If_It_Exists>"));
+            Assert.That(apiConfiguration.Password, Is.EqualTo("<password - Use_Secrets_File_If_It_Exists>"));
+            Assert.That(apiConfiguration.ClientId, Is.EqualTo("<clientId - Use_Secrets_File_If_It_Exists>"));
+            Assert.That(apiConfiguration.ClientSecret, Is.EqualTo("<clientSecret - Use_Secrets_File_If_It_Exists>"));
+            Assert.That(apiConfiguration.ApiUrl, Is.EqualTo("<apiUrl - Use_Secrets_File_If_It_Exists>"));
+            
+            File.Delete(secretsFile); // cleanup
         }
 
         [Test]
         public void Throw_Exception_If_Secrets_File_Incomplete()
         {
-            PopulateDummySecretsFile(new Dictionary<string, string>
+            var secretsFile = PopulateDummySecretsFile(new Dictionary<string, string>
             {
-                {"tokenUrl", "<tokenUrl>"},
-                // {"username", "<username>"},
-                {"password", "<password>"},
-                // {"clientId", "<clientId>"},
-                {"clientSecret", "<clientSecret>"},
-                {"apiUrl", "<apiUrl>"},
+                {"tokenUrl", "<tokenUrl - Throw_Exception_If_Secrets_File_Incomplete>"},
+                // {"username", "<username - Throw_Exception_If_Secrets_File_Incomplete>"},
+                {"password", "<password - Throw_Exception_If_Secrets_File_Incomplete>"},
+                // {"clientId", "<clientId - Throw_Exception_If_Secrets_File_Incomplete>"},
+                {"clientSecret", "<clientSecret - Throw_Exception_If_Secrets_File_Incomplete>"},
+                {"apiUrl", "<apiUrl - Throw_Exception_If_Secrets_File_Incomplete>"},
             });
 
-            var exception = Assert.Throws<MissingConfigException>(() => ApiConfigurationBuilder.Build(_secretsFile));
+            var exception = Assert.Throws<MissingConfigException>(() => ApiConfigurationBuilder.Build(secretsFile));
             Assert.That(exception.Message,
                 Is.EqualTo(
                     "The provided secrets file is missing the following required values: ['username', 'clientId']"));
+            File.Delete(secretsFile); // cleanup
         }
 
         [Test]
@@ -131,7 +126,6 @@ namespace Lusid.Sdk.Tests.Utilities
             Environment.SetEnvironmentVariable("FBN_PASSWORD", "<env.password>");
             Environment.SetEnvironmentVariable("FBN_APP_NAME", "<env.app_name>");
 
-            using var console = new InMemoryConsole();
             var apiConfiguration = ApiConfigurationBuilder.Build(null);
             Assert.That(apiConfiguration.TokenUrl, Is.EqualTo("<env.tokenUrl>"));
             Assert.That(apiConfiguration.Username, Is.EqualTo("<env.username>"));
@@ -139,7 +133,6 @@ namespace Lusid.Sdk.Tests.Utilities
             Assert.That(apiConfiguration.ClientId, Is.EqualTo("<env.clientId>"));
             Assert.That(apiConfiguration.ClientSecret, Is.EqualTo("<env.clientSecret>"));
             Assert.That(apiConfiguration.ApiUrl, Is.EqualTo("<env.apiUrl>"));
-            StringAssert.Contains("Loaded values from environment", console.GetOutput());
         }
 
         [Test]
@@ -223,14 +216,17 @@ namespace Lusid.Sdk.Tests.Utilities
                     "The provided configuration section is missing the following required values: ['Password', 'ClientSecret']"));
         }
 
-        private void PopulateDummySecretsFile(Dictionary<string, string> config)
+        private String PopulateDummySecretsFile(Dictionary<string, string> config)
         {
+            var secretsFile = Path.GetTempFileName();
+
             var secrets = new Dictionary<string, object>
             {
                 ["api"] = config
             };
             var json = JsonSerializer.Serialize(secrets);
-            File.WriteAllText(_secretsFile, json);
+            File.WriteAllText(secretsFile, json);
+            return secretsFile;
         }
 
         class InMemoryConsole : IDisposable
