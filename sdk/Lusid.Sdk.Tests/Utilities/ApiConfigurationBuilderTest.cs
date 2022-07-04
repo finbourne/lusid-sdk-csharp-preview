@@ -167,8 +167,6 @@ namespace Lusid.Sdk.Tests.Utilities
                 { "api:ApplicationName", "<app_name>" }
             };
 
-            using var console = new InMemoryConsole();
-
             var config = new ConfigurationBuilder()
                 .AddInMemoryCollection(settings)
                 .Build();
@@ -181,8 +179,6 @@ namespace Lusid.Sdk.Tests.Utilities
             Assert.That(apiConfiguration.ClientId, Is.EqualTo("<clientId>"));
             Assert.That(apiConfiguration.ClientSecret, Is.EqualTo("<clientSecret>"));
             Assert.That(apiConfiguration.ApiUrl, Is.EqualTo("<apiUrl>"));
-
-            StringAssert.Contains($"Loaded values from configuration", console.GetOutput());
         }
 
         [Test]
@@ -227,30 +223,6 @@ namespace Lusid.Sdk.Tests.Utilities
             var json = JsonSerializer.Serialize(secrets);
             File.WriteAllText(secretsFile, json);
             return secretsFile;
-        }
-
-        class InMemoryConsole : IDisposable
-        {
-            private readonly StringWriter _stringWriter;
-            private readonly TextWriter _originalOutput;
-
-            public InMemoryConsole()
-            {
-                _stringWriter = new StringWriter();
-                _originalOutput = Console.Out;
-                Console.SetOut(_stringWriter);
-            }
-
-            public string GetOutput()
-            {
-                return _stringWriter.ToString();
-            }
-
-            public void Dispose()
-            {
-                Console.SetOut(_originalOutput);
-                _stringWriter.Dispose();
-            }
         }
     }
 }
