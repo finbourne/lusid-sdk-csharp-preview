@@ -19,6 +19,7 @@ namespace Lusid.Sdk.Tests.Utilities
         private string _cachedUsername;
         private string _cachedPassword;
         private string _cachedApplicationName;
+        private string _cachedPersonalAccessToken;
 
         [OneTimeSetUp]
         public void Setup()
@@ -39,6 +40,8 @@ namespace Lusid.Sdk.Tests.Utilities
                               Environment.GetEnvironmentVariable("fbn_password");
             _cachedApplicationName = Environment.GetEnvironmentVariable("FBN_APP_NAME") ??
                                      Environment.GetEnvironmentVariable("fbn_app_name");
+            _cachedPersonalAccessToken = Environment.GetEnvironmentVariable("FBN_ACCESS_TOKEN") ??
+                                         Environment.GetEnvironmentVariable("fbn_access_token");
         }
 
         [OneTimeTearDown]
@@ -51,6 +54,7 @@ namespace Lusid.Sdk.Tests.Utilities
             Environment.SetEnvironmentVariable("FBN_USERNAME", _cachedUsername);
             Environment.SetEnvironmentVariable("FBN_PASSWORD", _cachedPassword);
             Environment.SetEnvironmentVariable("FBN_APP_NAME", _cachedApplicationName);
+            Environment.SetEnvironmentVariable("FBN_ACCESS_TOKEN", _cachedPersonalAccessToken);
             File.Delete(_secretsFile);
         }
 
