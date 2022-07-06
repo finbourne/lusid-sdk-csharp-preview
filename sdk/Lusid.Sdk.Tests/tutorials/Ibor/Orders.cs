@@ -144,7 +144,11 @@ namespace Lusid.Sdk.Tests.Tutorials.Ibor
                             { $"Order/{testScope}/Account", new PerpetualProperty($"Order/{testScope}/Account", new PropertyValue("J Wilson")) },
                             { $"Order/{testScope}/Strategy", new PerpetualProperty($"Order/{testScope}/Strategy", new PropertyValue("RiskArb")) },
                         },
-                        side: "Buy"
+                        
+                        side: "Buy", 
+                        state: "New", 
+                        type: "Limit", 
+                        date: DateTimeOffset.Parse("2022-07-02")
                     )
                 });
 
@@ -193,7 +197,10 @@ namespace Lusid.Sdk.Tests.Tutorials.Ibor
                             { $"Order/{testScope}/Account", new PerpetualProperty($"Order/{testScope}/Account", new PropertyValue("J Wilson")) },
                             { $"Order/{testScope}/Strategy", new PerpetualProperty($"Order/{testScope}/Strategy", new PropertyValue("RiskArb")) },
                         },
-                        side: "Buy"
+                        side: "Buy", 
+                        state: "New", 
+                        type: "Limit", 
+                        date: DateTimeOffset.Parse("2022-07-02")
                     )
                 });
 
@@ -235,7 +242,10 @@ namespace Lusid.Sdk.Tests.Tutorials.Ibor
                         // this reference might disappear, or might become a strict reference to an existing portfolio
                         portfolioId: new ResourceId(testScope, "OrdersTestPortfolio"),
                         properties: new Dictionary<string, PerpetualProperty>(),
-                        side: "Buy"
+                        side: "Buy",
+                        state: "New", 
+                        type: "Limit", 
+                        date: DateTimeOffset.Parse("2022-07-02")
                     )
                 });
 
@@ -275,7 +285,10 @@ namespace Lusid.Sdk.Tests.Tutorials.Ibor
                             { $"Order/{testScope}/Account", new PerpetualProperty($"Order/{testScope}/Account", new PropertyValue("J Wilson")) },
                             { $"Order/{testScope}/Strategy", new PerpetualProperty($"Order/{testScope}/Strategy", new PropertyValue("RiskArb")) },
                         },
-                        side: "Buy"
+                        side: "Buy",
+                        state: "New", 
+                        type: "Limit", 
+                        date: DateTimeOffset.Parse("2022-07-02")
                         )
                 });
             
@@ -331,7 +344,10 @@ namespace Lusid.Sdk.Tests.Tutorials.Ibor
                             { $"Order/{testScope}/Scope", new PerpetualProperty($"Order/{testScope}/Scope", new PropertyValue(orderId1.Scope)) },
                             { $"Order/{testScope}/Code", new PerpetualProperty($"Order/{testScope}/Code", new PropertyValue(orderId1.Code)) },
                         },
-                        side: "Buy"
+                        side: "Buy",
+                        state: "New", 
+                        type: "Limit", 
+                        date: DateTimeOffset.Parse("2022-07-02")
                     ),
                     new OrderRequest(
                         id: orderId2,
@@ -357,7 +373,10 @@ namespace Lusid.Sdk.Tests.Tutorials.Ibor
                             { $"Order/{testScope}/Scope", new PerpetualProperty($"Order/{testScope}/Scope", new PropertyValue(orderId2.Scope)) },
                             { $"Order/{testScope}/Code", new PerpetualProperty($"Order/{testScope}/Code", new PropertyValue(orderId2.Code)) },
                         },
-                        side: "Sell"
+                        side: "Sell",
+                        state: "New", 
+                        type: "Limit", 
+                        date: DateTimeOffset.Parse("2022-07-02")
                     ),
                     new OrderRequest(
                         id: orderId3,
@@ -383,7 +402,10 @@ namespace Lusid.Sdk.Tests.Tutorials.Ibor
                             { $"Order/{testScope}/Scope", new PerpetualProperty($"Order/{testScope}/Scope", new PropertyValue(orderId3.Scope)) },
                             { $"Order/{testScope}/Code", new PerpetualProperty($"Order/{testScope}/Code", new PropertyValue(orderId3.Code)) },
                         },
-                        side: "Buy"
+                        side: "Buy",
+                        state: "New", 
+                        type: "Limit", 
+                        date: DateTimeOffset.Parse("2022-07-02")
                     )
                 });
 
