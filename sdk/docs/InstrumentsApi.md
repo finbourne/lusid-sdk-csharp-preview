@@ -6,7 +6,7 @@ Method | HTTP request | Description
 ------------- | ------------- | -------------
 [**DeleteInstrument**](InstrumentsApi.md#deleteinstrument) | **DELETE** /api/instruments/{identifierType}/{identifier} | [EARLY ACCESS] DeleteInstrument: Soft delete a single instrument
 [**DeleteInstrumentProperties**](InstrumentsApi.md#deleteinstrumentproperties) | **POST** /api/instruments/{identifierType}/{identifier}/properties/$delete | [EXPERIMENTAL] DeleteInstrumentProperties: Delete instrument properties
-[**DeleteInstruments**](InstrumentsApi.md#deleteinstruments) | **POST** /api/instruments/$delete | [EXPERIMENTAL] DeleteInstruments: Deletes multiple instruments from a set of specified LusidInstrumentId strings
+[**DeleteInstruments**](InstrumentsApi.md#deleteinstruments) | **POST** /api/instruments/$delete | [EXPERIMENTAL] DeleteInstruments: Soft or hard delete multiple instruments
 [**GetInstrument**](InstrumentsApi.md#getinstrument) | **GET** /api/instruments/{identifierType}/{identifier} | GetInstrument: Get instrument
 [**GetInstrumentIdentifierTypes**](InstrumentsApi.md#getinstrumentidentifiertypes) | **GET** /api/instruments/identifierTypes | GetInstrumentIdentifierTypes: Get instrument identifier types
 [**GetInstrumentPaymentDiary**](InstrumentsApi.md#getinstrumentpaymentdiary) | **GET** /api/instruments/{identifierType}/{identifier}/paymentdiary | [EXPERIMENTAL] GetInstrumentPaymentDiary: Get instrument payment diary
@@ -189,9 +189,9 @@ Name | Type | Description  | Notes
 # **DeleteInstruments**
 > DeleteInstrumentsResponse DeleteInstruments (List<string> requestBody, string deleteMode = null, string scope = null)
 
-[EXPERIMENTAL] DeleteInstruments: Deletes multiple instruments from a set of specified LusidInstrumentId strings
+[EXPERIMENTAL] DeleteInstruments: Soft or hard delete multiple instruments
 
-Deletes a number of specified instruments (limited to 2000), as identified by LusidInstrumentId identifiers.                For soft deletion, once deleted, an instrument is marked as inactive and can no longer be referenced when creating or updating  transactions or holdings. You can still query existing transactions and holdings related to the  deleted instrument.                For Hard delete; with the same behaviour as above, in addition:      (i)     all identifiers are removed      (ii)    the instrument is marked with a state of 'Deleted',      (iii)   the instrument name is pre-pended with 'DELETED '      (iv)    the instrument will not be returned by ListInstruments  The maximum number of instruments that this method can delete per request is 2,000.
+Deletes a number of instruments identified by LusidInstrumentId.                Soft deletion marks the instrument as inactive so it can no longer be referenced when creating or updating transactions or holdings. You can still query existing transactions and holdings related to the inactive instrument.                In addition to the above behaviour, hard deletion: (i) completely removes all external identifiers from the instrument; (ii) marks the instrument as 'Deleted'; (iii) prepends the instrument's name with 'DELETED '; (iv) prevents the instrument from being returned in list instruments queries.                Following hard deletion, an instrument may only be retrieved by making a direct get instrument request for the LusidInstrumentId. Instrument deletion cannot be undone. Please note that currency instruments cannot currently be deleted.  The maximum number of instruments that this method can delete per request is 2,000.
 
 ### Example
 ```csharp
@@ -214,12 +214,12 @@ namespace Example
 
             var apiInstance = new InstrumentsApi(config);
             var requestBody = new List<string>(); // List<string> | The list of lusidInstrumentId's to delete.
-            var deleteMode = deleteMode_example;  // string | The delete mode to use, currently only 'soft' is supported, if left unspecified, this argument is optional. (optional) 
-            var scope = scope_example;  // string | The scope in which the instrument lies. When not supplied the scope is 'default'. (optional)  (default to "default")
+            var deleteMode = deleteMode_example;  // string | The delete mode to use (defaults to 'Soft'). (optional) 
+            var scope = scope_example;  // string | The scope in which the instruments lie. When not supplied the scope is 'default'. (optional)  (default to "default")
 
             try
             {
-                // [EXPERIMENTAL] DeleteInstruments: Deletes multiple instruments from a set of specified LusidInstrumentId strings
+                // [EXPERIMENTAL] DeleteInstruments: Soft or hard delete multiple instruments
                 DeleteInstrumentsResponse result = apiInstance.DeleteInstruments(requestBody, deleteMode, scope);
                 Debug.WriteLine(result);
             }
@@ -239,8 +239,8 @@ namespace Example
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **requestBody** | [**List&lt;string&gt;**](string.md)| The list of lusidInstrumentId&#39;s to delete. | 
- **deleteMode** | **string**| The delete mode to use, currently only &#39;soft&#39; is supported, if left unspecified, this argument is optional. | [optional] 
- **scope** | **string**| The scope in which the instrument lies. When not supplied the scope is &#39;default&#39;. | [optional] [default to &quot;default&quot;]
+ **deleteMode** | **string**| The delete mode to use (defaults to &#39;Soft&#39;). | [optional] 
+ **scope** | **string**| The scope in which the instruments lie. When not supplied the scope is &#39;default&#39;. | [optional] [default to &quot;default&quot;]
 
 ### Return type
 
