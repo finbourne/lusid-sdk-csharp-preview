@@ -5,7 +5,7 @@ A generic event which contains a number of possible events derived from the econ
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**InstrumentEventType** | **string** | The Type of Event. The available values are: TransitionEvent, InternalEvent, CouponEvent, OpenEvent, CloseEvent | 
+**InstrumentEventType** | **string** | The Type of Event. The available values are: TransitionEvent, InternalEvent, CouponEvent, OpenEvent, CloseEvent, StockSplitEvent, BondDefaultEvent, CashDividendEvent | 
 **EventType** | **string** | What category of event does this represent; instrument opening, closing, transition or other. | [optional] [readonly] 
 **EventCategory** | **string** | What category of event does this represent; instrument opening, closing, transition or other. | [optional] 
 **EventSource** | **string** | What is the event source, what causes it to happen. | [optional] 
