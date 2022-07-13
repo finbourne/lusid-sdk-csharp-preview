@@ -424,7 +424,7 @@ This endpoint does not need any parameter.
 
 <a name="getinstrumentpaymentdiary"></a>
 # **GetInstrumentPaymentDiary**
-> InstrumentPaymentDiary GetInstrumentPaymentDiary (string identifierType, string identifier, string recipeScope = null, string recipeCode = null, DateTimeOrCutLabel effectiveAt = null, DateTimeOffset? asAt = null, string scope = null)
+> InstrumentPaymentDiary GetInstrumentPaymentDiary (string identifierType, string identifier, string recipeScope, string recipeCode, DateTimeOrCutLabel effectiveAt = null, DateTimeOffset? asAt = null, string scope = null)
 
 [EXPERIMENTAL] GetInstrumentPaymentDiary: Get instrument payment diary
 
@@ -452,8 +452,8 @@ namespace Example
             var apiInstance = new InstrumentsApi(config);
             var identifierType = identifierType_example;  // string | The identifier being supplied e.g. \"Figi\".
             var identifier = identifier_example;  // string | The value of the identifier for the requested instrument.
-            var recipeScope = recipeScope_example;  // string | The scope of the valuation recipe being used to generate the payment diary (optional) 
-            var recipeCode = recipeCode_example;  // string | The code of the valuation recipe being used to generate the payment diary (optional) 
+            var recipeScope = recipeScope_example;  // string | The scope of the valuation recipe being used to generate the payment diary
+            var recipeCode = recipeCode_example;  // string | The code of the valuation recipe being used to generate the payment diary
             var effectiveAt = effectiveAt_example;  // DateTimeOrCutLabel | The effective datetime or cut label at which to list the instrument's properties. Defaults to the current LUSID system datetime if not specified. (optional) 
             var asAt = 2013-10-20T19:20:30+01:00;  // DateTimeOffset? | The asAt datetime at which to list the instrument's properties. Defaults to return the latest version of each property if not specified. (optional) 
             var scope = scope_example;  // string | The scope in which the instrument lies. When not supplied the scope is 'default'. (optional)  (default to "default")
@@ -481,8 +481,8 @@ Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **identifierType** | **string**| The identifier being supplied e.g. \&quot;Figi\&quot;. | 
  **identifier** | **string**| The value of the identifier for the requested instrument. | 
- **recipeScope** | **string**| The scope of the valuation recipe being used to generate the payment diary | [optional] 
- **recipeCode** | **string**| The code of the valuation recipe being used to generate the payment diary | [optional] 
+ **recipeScope** | **string**| The scope of the valuation recipe being used to generate the payment diary | 
+ **recipeCode** | **string**| The code of the valuation recipe being used to generate the payment diary | 
  **effectiveAt** | **DateTimeOrCutLabel**| The effective datetime or cut label at which to list the instrument&#39;s properties. Defaults to the current LUSID system datetime if not specified. | [optional] 
  **asAt** | **DateTimeOffset?**| The asAt datetime at which to list the instrument&#39;s properties. Defaults to return the latest version of each property if not specified. | [optional] 
  **scope** | **string**| The scope in which the instrument lies. When not supplied the scope is &#39;default&#39;. | [optional] [default to &quot;default&quot;]
