@@ -23,7 +23,7 @@ Method | HTTP request | Description
 [**GetPortfolioGroupMetadata**](PortfolioGroupsApi.md#getportfoliogroupmetadata) | **GET** /api/portfoliogroups/{scope}/{code}/metadata | [EARLY ACCESS] GetPortfolioGroupMetadata: Get Access Metadata rules for Portfolio Group
 [**GetPortfolioGroupPropertyTimeSeries**](PortfolioGroupsApi.md#getportfoliogrouppropertytimeseries) | **GET** /api/portfoliogroups/{scope}/{code}/properties/time-series | [EARLY ACCESS] GetPortfolioGroupPropertyTimeSeries: Get the time series of a portfolio group property
 [**GetPortfolioGroupRelations**](PortfolioGroupsApi.md#getportfoliogrouprelations) | **GET** /api/portfoliogroups/{scope}/{code}/relations | [EXPERIMENTAL] GetPortfolioGroupRelations: Get Relations for Portfolio Group
-[**GetPortfolioGroupRelationships**](PortfolioGroupsApi.md#getportfoliogrouprelationships) | **GET** /api/portfoliogroups/{scope}/{code}/relationships | [EXPERIMENTAL] GetPortfolioGroupRelationships: Get Relationships for Portfolio Group
+[**GetPortfolioGroupRelationships**](PortfolioGroupsApi.md#getportfoliogrouprelationships) | **GET** /api/portfoliogroups/{scope}/{code}/relationships | [EARLY ACCESS] GetPortfolioGroupRelationships: Get Relationships for Portfolio Group
 [**GetTransactionsForPortfolioGroup**](PortfolioGroupsApi.md#gettransactionsforportfoliogroup) | **GET** /api/portfoliogroups/{scope}/{code}/transactions | GetTransactionsForPortfolioGroup: Get transactions for transaction portfolios in a portfolio group
 [**ListPortfolioGroups**](PortfolioGroupsApi.md#listportfoliogroups) | **GET** /api/portfoliogroups/{scope} | [EARLY ACCESS] ListPortfolioGroups: List portfolio groups
 [**PatchPortfolioGroupAccessMetadata**](PortfolioGroupsApi.md#patchportfoliogroupaccessmetadata) | **PATCH** /api/portfoliogroups/{scope}/{code}/metadata | [EXPERIMENTAL] PatchPortfolioGroupAccessMetadata: Patch Access Metadata rules for a Portfolio Group.
@@ -1634,7 +1634,7 @@ Name | Type | Description  | Notes
 # **GetPortfolioGroupRelationships**
 > ResourceListOfRelationship GetPortfolioGroupRelationships (string scope, string code, DateTimeOrCutLabel effectiveAt = null, DateTimeOffset? asAt = null, string filter = null, List<string> identifierTypes = null)
 
-[EXPERIMENTAL] GetPortfolioGroupRelationships: Get Relationships for Portfolio Group
+[EARLY ACCESS] GetPortfolioGroupRelationships: Get Relationships for Portfolio Group
 
 Get relationships for the specified Portfolio Group
 
@@ -1667,7 +1667,7 @@ namespace Example
 
             try
             {
-                // [EXPERIMENTAL] GetPortfolioGroupRelationships: Get Relationships for Portfolio Group
+                // [EARLY ACCESS] GetPortfolioGroupRelationships: Get Relationships for Portfolio Group
                 ResourceListOfRelationship result = apiInstance.GetPortfolioGroupRelationships(scope, code, effectiveAt, asAt, filter, identifierTypes);
                 Debug.WriteLine(result);
             }

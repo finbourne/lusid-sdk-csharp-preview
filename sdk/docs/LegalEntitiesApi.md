@@ -13,7 +13,7 @@ Method | HTTP request | Description
 [**GetLegalEntityAccessMetadataByKey**](LegalEntitiesApi.md#getlegalentityaccessmetadatabykey) | **GET** /api/legalentities/{idTypeScope}/{idTypeCode}/{code}/metadata/{metadataKey} | [EARLY ACCESS] GetLegalEntityAccessMetadataByKey: Get an entry identified by a metadataKey in the Access Metadata of a Legal Entity
 [**GetLegalEntityPropertyTimeSeries**](LegalEntitiesApi.md#getlegalentitypropertytimeseries) | **GET** /api/legalentities/{idTypeScope}/{idTypeCode}/{code}/properties/time-series | [EXPERIMENTAL] GetLegalEntityPropertyTimeSeries: Get Legal Entity Property Time Series
 [**GetLegalEntityRelations**](LegalEntitiesApi.md#getlegalentityrelations) | **GET** /api/legalentities/{idTypeScope}/{idTypeCode}/{code}/relations | [EXPERIMENTAL] GetLegalEntityRelations: Get Relations for Legal Entity
-[**GetLegalEntityRelationships**](LegalEntitiesApi.md#getlegalentityrelationships) | **GET** /api/legalentities/{idTypeScope}/{idTypeCode}/{code}/relationships | [EXPERIMENTAL] GetLegalEntityRelationships: Get Relationships for Legal Entity
+[**GetLegalEntityRelationships**](LegalEntitiesApi.md#getlegalentityrelationships) | **GET** /api/legalentities/{idTypeScope}/{idTypeCode}/{code}/relationships | [EARLY ACCESS] GetLegalEntityRelationships: Get Relationships for Legal Entity
 [**ListAllLegalEntities**](LegalEntitiesApi.md#listalllegalentities) | **GET** /api/legalentities | [EARLY ACCESS] ListAllLegalEntities: List Legal Entities
 [**ListLegalEntities**](LegalEntitiesApi.md#listlegalentities) | **GET** /api/legalentities/{idTypeScope}/{idTypeCode} | [EARLY ACCESS] ListLegalEntities: List Legal Entities
 [**PatchLegalEntityAccessMetadata**](LegalEntitiesApi.md#patchlegalentityaccessmetadata) | **PATCH** /api/legalentities/{idTypeScope}/{idTypeCode}/{code}/metadata | [EXPERIMENTAL] PatchLegalEntityAccessMetadata: Patch Access Metadata rules for a Legal Entity.
@@ -795,7 +795,7 @@ Name | Type | Description  | Notes
 # **GetLegalEntityRelationships**
 > ResourceListOfRelationship GetLegalEntityRelationships (string idTypeScope, string idTypeCode, string code, DateTimeOrCutLabel effectiveAt = null, DateTimeOffset? asAt = null, string filter = null, List<string> identifierTypes = null)
 
-[EXPERIMENTAL] GetLegalEntityRelationships: Get Relationships for Legal Entity
+[EARLY ACCESS] GetLegalEntityRelationships: Get Relationships for Legal Entity
 
 Get Relationships for the specified Legal Entity
 
@@ -829,7 +829,7 @@ namespace Example
 
             try
             {
-                // [EXPERIMENTAL] GetLegalEntityRelationships: Get Relationships for Legal Entity
+                // [EARLY ACCESS] GetLegalEntityRelationships: Get Relationships for Legal Entity
                 ResourceListOfRelationship result = apiInstance.GetLegalEntityRelationships(idTypeScope, idTypeCode, code, effectiveAt, asAt, filter, identifierTypes);
                 Debug.WriteLine(result);
             }

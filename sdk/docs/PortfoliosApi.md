@@ -16,7 +16,7 @@ Method | HTTP request | Description
 [**GetPortfolioProperties**](PortfoliosApi.md#getportfolioproperties) | **GET** /api/portfolios/{scope}/{code}/properties | GetPortfolioProperties: Get portfolio properties
 [**GetPortfolioPropertyTimeSeries**](PortfoliosApi.md#getportfoliopropertytimeseries) | **GET** /api/portfolios/{scope}/{code}/properties/time-series | [EXPERIMENTAL] GetPortfolioPropertyTimeSeries: Get portfolio property time series
 [**GetPortfolioRelations**](PortfoliosApi.md#getportfoliorelations) | **GET** /api/portfolios/{scope}/{code}/relations | [EXPERIMENTAL] GetPortfolioRelations: Get portfolio relations
-[**GetPortfolioRelationships**](PortfoliosApi.md#getportfoliorelationships) | **GET** /api/portfolios/{scope}/{code}/relationships | [EXPERIMENTAL] GetPortfolioRelationships: Get portfolio relationships
+[**GetPortfolioRelationships**](PortfoliosApi.md#getportfoliorelationships) | **GET** /api/portfolios/{scope}/{code}/relationships | [EARLY ACCESS] GetPortfolioRelationships: Get portfolio relationships
 [**GetPortfolioReturns**](PortfoliosApi.md#getportfolioreturns) | **GET** /api/portfolios/{scope}/{code}/returns/{returnScope}/{returnCode} | [EARLY ACCESS] GetPortfolioReturns: Get Returns
 [**GetPortfoliosAccessMetadataByKey**](PortfoliosApi.md#getportfoliosaccessmetadatabykey) | **GET** /api/portfolios/{scope}/{code}/metadata/{metadataKey} | [EARLY ACCESS] GetPortfoliosAccessMetadataByKey: Get an entry identified by a metadataKey in the access metadata object
 [**ListPortfolioProperties**](PortfoliosApi.md#listportfolioproperties) | **GET** /api/portfolios/{scope}/{code}/properties/list | [EXPERIMENTAL] ListPortfolioProperties: Get portfolio properties
@@ -1066,7 +1066,7 @@ Name | Type | Description  | Notes
 # **GetPortfolioRelationships**
 > ResourceListOfRelationship GetPortfolioRelationships (string scope, string code, DateTimeOrCutLabel effectiveAt = null, DateTimeOffset? asAt = null, string filter = null, List<string> identifierTypes = null)
 
-[EXPERIMENTAL] GetPortfolioRelationships: Get portfolio relationships
+[EARLY ACCESS] GetPortfolioRelationships: Get portfolio relationships
 
 Get relationships for a particular portfolio.
 
@@ -1099,7 +1099,7 @@ namespace Example
 
             try
             {
-                // [EXPERIMENTAL] GetPortfolioRelationships: Get portfolio relationships
+                // [EARLY ACCESS] GetPortfolioRelationships: Get portfolio relationships
                 ResourceListOfRelationship result = apiInstance.GetPortfolioRelationships(scope, code, effectiveAt, asAt, filter, identifierTypes);
                 Debug.WriteLine(result);
             }

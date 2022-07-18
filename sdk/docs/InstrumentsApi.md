@@ -12,7 +12,7 @@ Method | HTTP request | Description
 [**GetInstrumentPaymentDiary**](InstrumentsApi.md#getinstrumentpaymentdiary) | **GET** /api/instruments/{identifierType}/{identifier}/paymentdiary | [EXPERIMENTAL] GetInstrumentPaymentDiary: Get instrument payment diary
 [**GetInstrumentProperties**](InstrumentsApi.md#getinstrumentproperties) | **GET** /api/instruments/{identifierType}/{identifier}/properties | [EXPERIMENTAL] GetInstrumentProperties: Get instrument properties
 [**GetInstrumentPropertyTimeSeries**](InstrumentsApi.md#getinstrumentpropertytimeseries) | **GET** /api/instruments/{identifierType}/{identifier}/properties/time-series | [EARLY ACCESS] GetInstrumentPropertyTimeSeries: Get instrument property time series
-[**GetInstrumentRelationships**](InstrumentsApi.md#getinstrumentrelationships) | **GET** /api/instruments/{identifierType}/{identifier}/relationships | [EXPERIMENTAL] GetInstrumentRelationships: Get Instrument relationships
+[**GetInstrumentRelationships**](InstrumentsApi.md#getinstrumentrelationships) | **GET** /api/instruments/{identifierType}/{identifier}/relationships | [EARLY ACCESS] GetInstrumentRelationships: Get Instrument relationships
 [**GetInstruments**](InstrumentsApi.md#getinstruments) | **POST** /api/instruments/$get | GetInstruments: Get instruments
 [**ListInstrumentProperties**](InstrumentsApi.md#listinstrumentproperties) | **GET** /api/instruments/{identifierType}/{identifier}/properties/list | [EXPERIMENTAL] ListInstrumentProperties: Get instrument properties (with Pagination)
 [**ListInstruments**](InstrumentsApi.md#listinstruments) | **GET** /api/instruments | ListInstruments: List instruments
@@ -690,7 +690,7 @@ Name | Type | Description  | Notes
 # **GetInstrumentRelationships**
 > ResourceListOfRelationship GetInstrumentRelationships (string identifierType, string identifier, DateTimeOrCutLabel effectiveAt = null, DateTimeOffset? asAt = null, string filter = null, List<string> identifierTypes = null, string scope = null)
 
-[EXPERIMENTAL] GetInstrumentRelationships: Get Instrument relationships
+[EARLY ACCESS] GetInstrumentRelationships: Get Instrument relationships
 
 Get relationships for a particular Instrument.
 
@@ -724,7 +724,7 @@ namespace Example
 
             try
             {
-                // [EXPERIMENTAL] GetInstrumentRelationships: Get Instrument relationships
+                // [EARLY ACCESS] GetInstrumentRelationships: Get Instrument relationships
                 ResourceListOfRelationship result = apiInstance.GetInstrumentRelationships(identifierType, identifier, effectiveAt, asAt, filter, identifierTypes, scope);
                 Debug.WriteLine(result);
             }

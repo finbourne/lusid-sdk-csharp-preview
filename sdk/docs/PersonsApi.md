@@ -13,7 +13,7 @@ Method | HTTP request | Description
 [**GetPersonAccessMetadataByKey**](PersonsApi.md#getpersonaccessmetadatabykey) | **GET** /api/persons/{idTypeScope}/{idTypeCode}/{code}/metadata/{metadataKey} | [EARLY ACCESS] GetPersonAccessMetadataByKey: Get an entry identified by a metadataKey in the Access Metadata of a Person
 [**GetPersonPropertyTimeSeries**](PersonsApi.md#getpersonpropertytimeseries) | **GET** /api/persons/{idTypeScope}/{idTypeCode}/{code}/properties/time-series | [EXPERIMENTAL] GetPersonPropertyTimeSeries: Get Person Property Time Series
 [**GetPersonRelations**](PersonsApi.md#getpersonrelations) | **GET** /api/persons/{idTypeScope}/{idTypeCode}/{code}/relations | [EXPERIMENTAL] GetPersonRelations: Get Relations for Person
-[**GetPersonRelationships**](PersonsApi.md#getpersonrelationships) | **GET** /api/persons/{idTypeScope}/{idTypeCode}/{code}/relationships | [EXPERIMENTAL] GetPersonRelationships: Get Relationships for Person
+[**GetPersonRelationships**](PersonsApi.md#getpersonrelationships) | **GET** /api/persons/{idTypeScope}/{idTypeCode}/{code}/relationships | [EARLY ACCESS] GetPersonRelationships: Get Relationships for Person
 [**ListAllPersons**](PersonsApi.md#listallpersons) | **GET** /api/persons | [EXPERIMENTAL] ListAllPersons: List All Persons
 [**ListPersons**](PersonsApi.md#listpersons) | **GET** /api/persons/{idTypeScope}/{idTypeCode} | [EXPERIMENTAL] ListPersons: List Persons
 [**PatchPersonAccessMetadata**](PersonsApi.md#patchpersonaccessmetadata) | **PATCH** /api/persons/{idTypeScope}/{idTypeCode}/{code}/metadata | [EXPERIMENTAL] PatchPersonAccessMetadata: Patch Access Metadata rules for a Person.
@@ -795,7 +795,7 @@ Name | Type | Description  | Notes
 # **GetPersonRelationships**
 > ResourceListOfRelationship GetPersonRelationships (string idTypeScope, string idTypeCode, string code, DateTimeOrCutLabel effectiveAt = null, DateTimeOffset? asAt = null, string filter = null, List<string> identifierTypes = null)
 
-[EXPERIMENTAL] GetPersonRelationships: Get Relationships for Person
+[EARLY ACCESS] GetPersonRelationships: Get Relationships for Person
 
 Get relationships for the specified person.
 
@@ -829,7 +829,7 @@ namespace Example
 
             try
             {
-                // [EXPERIMENTAL] GetPersonRelationships: Get Relationships for Person
+                // [EARLY ACCESS] GetPersonRelationships: Get Relationships for Person
                 ResourceListOfRelationship result = apiInstance.GetPersonRelationships(idTypeScope, idTypeCode, code, effectiveAt, asAt, filter, identifierTypes);
                 Debug.WriteLine(result);
             }
