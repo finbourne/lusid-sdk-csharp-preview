@@ -75,7 +75,8 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
         }
 
         [LusidFeature("F5-15")]
-        [TestCase("Vanilla")]
+        [TestCase("VanillaEuropean")]
+        [TestCase("VanillaAmerican")]
         [TestCase("DigitalPayoff")]
         [TestCase("Barrier")]
         [TestCase("DoubleBarrier")]
@@ -83,10 +84,10 @@ namespace Lusid.Sdk.Tests.Tutorials.Instruments
         [TestCase("Notouch")]
         [TestCase("DoubleTouch")]
         [TestCase("DoubleNotouch")]
-        public void FxOptionCreationAndUpsertionExample(string flavor)
+        public void FxOptionCreationAndUpsertionExample(string exampleName)
         {
             // CREATE an Fx-Option (that can then be upserted into LUSID)
-            var fxOption = (FxOption) InstrumentExamples.CreateExampleFxOption(flavor:flavor);
+            var fxOption = (FxOption) InstrumentExamples.CreateExampleFxOption(example:exampleName);
             
             // ASSERT that it was created
             Assert.That(fxOption, Is.Not.Null);

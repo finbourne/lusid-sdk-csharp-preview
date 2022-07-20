@@ -86,8 +86,9 @@ namespace Lusid.Sdk.Tests.Utilities
                 instrumentType: LusidInstrument.InstrumentTypeEnum.ForwardRateAgreement);
         }
 
-        enum FxOptionFlavor {
-            Vanilla,
+        enum FxOptionExamples {
+            VanillaEuropean,
+            VanillaAmerican,
             DigitalPayoff,
             Barrier,
             DoubleBarrier,
@@ -99,11 +100,11 @@ namespace Lusid.Sdk.Tests.Utilities
 
         internal static LusidInstrument CreateExampleFxOption(
             bool isDeliveryNotCash = true,
-            string flavor = "Vanilla"
+            string example = "Vanilla"
         )
         {
 
-            if (flavor == FxOptionFlavor.Vanilla.ToString())
+            if (example == FxOptionExamples.VanillaEuropean.ToString())
             {
                 return new FxOption(
                     strike: 130,
@@ -118,7 +119,23 @@ namespace Lusid.Sdk.Tests.Utilities
                 );
             }
             
-            if (flavor == FxOptionFlavor.DigitalPayoff.ToString())
+            if (example == FxOptionExamples.VanillaAmerican.ToString())
+            {
+                return new FxOption(
+                    strike: 130,
+                    domCcy: "USD",
+                    fgnCcy: "JPY",
+                    exerciseType:"American",
+                    startDate: TestDataUtilities.StartDate,
+                    optionMaturityDate: TestDataUtilities.StartDate.AddYears(1),
+                    optionSettlementDate: TestDataUtilities.StartDate.AddYears(1).AddDays(2),
+                    isCallNotPut: true,
+                    isDeliveryNotCash: isDeliveryNotCash,
+                    instrumentType: LusidInstrument.InstrumentTypeEnum.FxOption
+                );
+            }
+            
+            if (example == FxOptionExamples.DigitalPayoff.ToString())
             {
                 return new FxOption(
                     strike: 130,
@@ -134,7 +151,7 @@ namespace Lusid.Sdk.Tests.Utilities
                 );
             }
 
-            if (flavor == FxOptionFlavor.Barrier.ToString())
+            if (example == FxOptionExamples.Barrier.ToString())
             {
                 return new FxOption(
                     strike: 130,
@@ -153,7 +170,7 @@ namespace Lusid.Sdk.Tests.Utilities
                 );
             }
 
-            if (flavor == FxOptionFlavor.DoubleBarrier.ToString())
+            if (example == FxOptionExamples.DoubleBarrier.ToString())
             {
                 return new FxOption(
                     strike: 130,
@@ -173,7 +190,7 @@ namespace Lusid.Sdk.Tests.Utilities
                 );
             }
 
-            if (flavor == FxOptionFlavor.Touch.ToString())
+            if (example == FxOptionExamples.Touch.ToString())
             {
                 return new FxOption(
                     domCcy: "USD",
@@ -192,7 +209,7 @@ namespace Lusid.Sdk.Tests.Utilities
                 );
             }
 
-            if (flavor == FxOptionFlavor.DoubleTouch.ToString())
+            if (example == FxOptionExamples.DoubleTouch.ToString())
             {
                 return new FxOption(
                     domCcy: "USD",
@@ -212,7 +229,7 @@ namespace Lusid.Sdk.Tests.Utilities
                 );
             }
 
-            if (flavor == FxOptionFlavor.Notouch.ToString())
+            if (example == FxOptionExamples.Notouch.ToString())
             {
                 return new FxOption(
                     domCcy: "USD",
@@ -231,7 +248,7 @@ namespace Lusid.Sdk.Tests.Utilities
                 );
             }
 
-            if (flavor == FxOptionFlavor.DoubleNotouch.ToString())
+            if (example == FxOptionExamples.DoubleNotouch.ToString())
             {
                 return new FxOption(
                     domCcy: "USD",
@@ -251,12 +268,12 @@ namespace Lusid.Sdk.Tests.Utilities
                 );
             }
 
-            string allFlavors = "";
-            foreach (var item in Enum.GetNames(typeof (FxOptionFlavor)))
+            string allExamples = "";
+            foreach (var item in Enum.GetNames(typeof (FxOptionExamples)))
             {
-                allFlavors += item + ",";
+                allExamples += item + ",";
             }
-            throw new ArgumentException($"FxOption flavor '{flavor}' is not supported. FxOption flavors are: [{allFlavors}]");
+            throw new ArgumentException($"FxOption example '{example}' is not found. Possible examples are: [{allExamples}]");
         }
         
         internal static LusidInstrument CreateExampleEquityOption(bool isCashSettled = false)
