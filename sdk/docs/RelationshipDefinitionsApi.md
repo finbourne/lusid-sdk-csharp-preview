@@ -4,18 +4,18 @@ All URIs are relative to *https://www.lusid.com/api*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
-[**CreateRelationshipDefinition**](RelationshipDefinitionsApi.md#createrelationshipdefinition) | **POST** /api/relationshipdefinitions | [EARLY ACCESS] CreateRelationshipDefinition: Create Relationship Definition
-[**DeleteRelationshipDefinition**](RelationshipDefinitionsApi.md#deleterelationshipdefinition) | **DELETE** /api/relationshipdefinitions/{scope}/{code} | [EARLY ACCESS] DeleteRelationshipDefinition: Delete Relationship Definition
-[**GetRelationshipDefinition**](RelationshipDefinitionsApi.md#getrelationshipdefinition) | **GET** /api/relationshipdefinitions/{scope}/{code} | [EARLY ACCESS] GetRelationshipDefinition: Get relationship definition
-[**ListRelationshipDefinitions**](RelationshipDefinitionsApi.md#listrelationshipdefinitions) | **GET** /api/relationshipdefinitions | [EARLY ACCESS] ListRelationshipDefinitions: List relationship definitions
-[**UpdateRelationshipDefinition**](RelationshipDefinitionsApi.md#updaterelationshipdefinition) | **PUT** /api/relationshipdefinitions/{scope}/{code} | [EARLY ACCESS] UpdateRelationshipDefinition: Update Relationship Definition
+[**CreateRelationshipDefinition**](RelationshipDefinitionsApi.md#createrelationshipdefinition) | **POST** /api/relationshipdefinitions | [EXPERIMENTAL] CreateRelationshipDefinition: Create Relationship Definition
+[**DeleteRelationshipDefinition**](RelationshipDefinitionsApi.md#deleterelationshipdefinition) | **DELETE** /api/relationshipdefinitions/{scope}/{code} | [EXPERIMENTAL] DeleteRelationshipDefinition: Delete Relationship Definition
+[**GetRelationshipDefinition**](RelationshipDefinitionsApi.md#getrelationshipdefinition) | **GET** /api/relationshipdefinitions/{scope}/{code} | [EXPERIMENTAL] GetRelationshipDefinition: Get relationship definition
+[**ListRelationshipDefinitions**](RelationshipDefinitionsApi.md#listrelationshipdefinitions) | **GET** /api/relationshipdefinitions | [EXPERIMENTAL] ListRelationshipDefinitions: List relationship definitions
+[**UpdateRelationshipDefinition**](RelationshipDefinitionsApi.md#updaterelationshipdefinition) | **PUT** /api/relationshipdefinitions/{scope}/{code} | [EXPERIMENTAL] UpdateRelationshipDefinition: Update Relationship Definition
 
 
 <a name="createrelationshipdefinition"></a>
 # **CreateRelationshipDefinition**
 > RelationshipDefinition CreateRelationshipDefinition (CreateRelationshipDefinitionRequest createRelationshipDefinitionRequest)
 
-[EARLY ACCESS] CreateRelationshipDefinition: Create Relationship Definition
+[EXPERIMENTAL] CreateRelationshipDefinition: Create Relationship Definition
 
 Create a new relationship definition to be used for creating relationships between entities.
 
@@ -43,7 +43,7 @@ namespace Example
 
             try
             {
-                // [EARLY ACCESS] CreateRelationshipDefinition: Create Relationship Definition
+                // [EXPERIMENTAL] CreateRelationshipDefinition: Create Relationship Definition
                 RelationshipDefinition result = apiInstance.CreateRelationshipDefinition(createRelationshipDefinitionRequest);
                 Debug.WriteLine(result);
             }
@@ -91,7 +91,7 @@ Name | Type | Description  | Notes
 # **DeleteRelationshipDefinition**
 > DeletedEntityResponse DeleteRelationshipDefinition (string scope, string code)
 
-[EARLY ACCESS] DeleteRelationshipDefinition: Delete Relationship Definition
+[EXPERIMENTAL] DeleteRelationshipDefinition: Delete Relationship Definition
 
 Delete the definition of the specified relationship.
 
@@ -120,7 +120,7 @@ namespace Example
 
             try
             {
-                // [EARLY ACCESS] DeleteRelationshipDefinition: Delete Relationship Definition
+                // [EXPERIMENTAL] DeleteRelationshipDefinition: Delete Relationship Definition
                 DeletedEntityResponse result = apiInstance.DeleteRelationshipDefinition(scope, code);
                 Debug.WriteLine(result);
             }
@@ -169,7 +169,7 @@ Name | Type | Description  | Notes
 # **GetRelationshipDefinition**
 > RelationshipDefinition GetRelationshipDefinition (string scope, string code, DateTimeOffset? asAt = null)
 
-[EARLY ACCESS] GetRelationshipDefinition: Get relationship definition
+[EXPERIMENTAL] GetRelationshipDefinition: Get relationship definition
 
 Retrieve the specified relationship definition
 
@@ -199,7 +199,7 @@ namespace Example
 
             try
             {
-                // [EARLY ACCESS] GetRelationshipDefinition: Get relationship definition
+                // [EXPERIMENTAL] GetRelationshipDefinition: Get relationship definition
                 RelationshipDefinition result = apiInstance.GetRelationshipDefinition(scope, code, asAt);
                 Debug.WriteLine(result);
             }
@@ -249,7 +249,7 @@ Name | Type | Description  | Notes
 # **ListRelationshipDefinitions**
 > PagedResourceListOfRelationshipDefinition ListRelationshipDefinitions (DateTimeOffset? asAt = null, string page = null, int? limit = null, string filter = null)
 
-[EARLY ACCESS] ListRelationshipDefinitions: List relationship definitions
+[EXPERIMENTAL] ListRelationshipDefinitions: List relationship definitions
 
 Retrieve one or more specified relationship definitions.
 
@@ -280,7 +280,7 @@ namespace Example
 
             try
             {
-                // [EARLY ACCESS] ListRelationshipDefinitions: List relationship definitions
+                // [EXPERIMENTAL] ListRelationshipDefinitions: List relationship definitions
                 PagedResourceListOfRelationshipDefinition result = apiInstance.ListRelationshipDefinitions(asAt, page, limit, filter);
                 Debug.WriteLine(result);
             }
@@ -331,7 +331,7 @@ Name | Type | Description  | Notes
 # **UpdateRelationshipDefinition**
 > RelationshipDefinition UpdateRelationshipDefinition (string scope, string code, UpdateRelationshipDefinitionRequest updateRelationshipDefinitionRequest)
 
-[EARLY ACCESS] UpdateRelationshipDefinition: Update Relationship Definition
+[EXPERIMENTAL] UpdateRelationshipDefinition: Update Relationship Definition
 
 Update the definition of a specified existing relationship. Not all elements within a relationship definition  are modifiable due to the potential implications for values already stored against the relationship.
 
@@ -361,7 +361,7 @@ namespace Example
 
             try
             {
-                // [EARLY ACCESS] UpdateRelationshipDefinition: Update Relationship Definition
+                // [EXPERIMENTAL] UpdateRelationshipDefinition: Update Relationship Definition
                 RelationshipDefinition result = apiInstance.UpdateRelationshipDefinition(scope, code, updateRelationshipDefinitionRequest);
                 Debug.WriteLine(result);
             }

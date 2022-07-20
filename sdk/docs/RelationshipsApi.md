@@ -4,15 +4,15 @@ All URIs are relative to *https://www.lusid.com/api*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
-[**CreateRelationship**](RelationshipsApi.md#createrelationship) | **POST** /api/relationshipdefinitions/{scope}/{code}/relationships | [EARLY ACCESS] CreateRelationship: Create Relationship
-[**DeleteRelationship**](RelationshipsApi.md#deleterelationship) | **POST** /api/relationshipdefinitions/{scope}/{code}/relationships/$delete | [EARLY ACCESS] DeleteRelationship: Delete Relationship
+[**CreateRelationship**](RelationshipsApi.md#createrelationship) | **POST** /api/relationshipdefinitions/{scope}/{code}/relationships | [EXPERIMENTAL] CreateRelationship: Create Relationship
+[**DeleteRelationship**](RelationshipsApi.md#deleterelationship) | **POST** /api/relationshipdefinitions/{scope}/{code}/relationships/$delete | [EXPERIMENTAL] DeleteRelationship: Delete Relationship
 
 
 <a name="createrelationship"></a>
 # **CreateRelationship**
 > CompleteRelationship CreateRelationship (string scope, string code, CreateRelationshipRequest createRelationshipRequest)
 
-[EARLY ACCESS] CreateRelationship: Create Relationship
+[EXPERIMENTAL] CreateRelationship: Create Relationship
 
 Create a relationship between two entity objects by their identifiers
 
@@ -42,7 +42,7 @@ namespace Example
 
             try
             {
-                // [EARLY ACCESS] CreateRelationship: Create Relationship
+                // [EXPERIMENTAL] CreateRelationship: Create Relationship
                 CompleteRelationship result = apiInstance.CreateRelationship(scope, code, createRelationshipRequest);
                 Debug.WriteLine(result);
             }
@@ -92,7 +92,7 @@ Name | Type | Description  | Notes
 # **DeleteRelationship**
 > DeletedEntityResponse DeleteRelationship (string scope, string code, DeleteRelationshipRequest deleteRelationshipRequest)
 
-[EARLY ACCESS] DeleteRelationship: Delete Relationship
+[EXPERIMENTAL] DeleteRelationship: Delete Relationship
 
 Delete a relationship between two entity objects represented by their identifiers
 
@@ -122,7 +122,7 @@ namespace Example
 
             try
             {
-                // [EARLY ACCESS] DeleteRelationship: Delete Relationship
+                // [EXPERIMENTAL] DeleteRelationship: Delete Relationship
                 DeletedEntityResponse result = apiInstance.DeleteRelationship(scope, code, deleteRelationshipRequest);
                 Debug.WriteLine(result);
             }
