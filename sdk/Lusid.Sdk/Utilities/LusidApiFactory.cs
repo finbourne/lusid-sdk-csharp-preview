@@ -29,7 +29,7 @@ namespace Lusid.Sdk.Utilities
         /// <summary>
         /// Create a new factory using the specified configuration
         /// </summary>
-        public LusidApiFactory(ApiConfiguration apiConfiguration)
+        public LusidApiFactory(ApiConfiguration apiConfiguration, int timeout = 100000)
         {
             if (apiConfiguration == null) throw new ArgumentNullException(nameof(apiConfiguration));
 
@@ -60,6 +60,7 @@ namespace Lusid.Sdk.Utilities
             };
             
             configuration.DefaultHeaders.Add("X-LUSID-Application", apiConfiguration.ApplicationName);
+            configuration.Timeout = timeout;
 
             _apis = Init(configuration);
         }
