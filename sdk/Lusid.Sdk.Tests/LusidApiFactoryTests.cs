@@ -523,5 +523,24 @@ namespace Lusid.Sdk.Tests
             // assert
             Assert.IsEmpty(api.Configuration.DefaultHeaders);
         }
+
+        [Test]
+        public void ApiFactoryWithTimeout() 
+        {
+            int timeout = 10;
+            int defaultTimeout = 100000;
+
+            var factory = LusidApiFactoryBuilder.Build("secrets.json", timeout);
+            var api = factory.Api<ScopesApi>();
+            
+            DateTime start = DateTime.Now;
+
+            Assert.That(() => api.ListScopes(null), Throws.InstanceOf<ApiException>().With.Message.EqualTo("Internal SDK error occurred when calling ListScopes: The operation has timed out."));
+            
+            DateTime finish = DateTime.Now;
+            TimeSpan elapsed = finish - start;
+
+            Assert.That(elapsed.TotalMilliseconds, Is.LessThanOrEqualTo((long)defaultTimeout));
+        }
     }
 }
