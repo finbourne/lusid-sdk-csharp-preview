@@ -535,19 +535,12 @@ namespace Lusid.Sdk.Tests
 
             DateTime start = DateTime.Now;
 
-            try
-            {
-                var _ = api.ListScopes(null);
-            }
-            catch (ApiException e)
-            {
-                Assert.That(e.Message, Is.AnyOf("Internal SDK error occurred when calling ListScopes: The operation has timed out.", "Internal SDK error occurred when calling ListScopes: The operation was canceled."));
+            Assert.That(() => api.ListScopes(null), Throws.InstanceOf<ApiException>().With.Message.EqualTo("Internal SDK error occurred when calling ListScopes: The operation has timed out.").Or.Message.EqualTo("Internal SDK error occurred when calling ListScopes: The operation was canceled."));
+            
+            DateTime finish = DateTime.Now;
+            TimeSpan elapsed = finish - start;
 
-                DateTime finish = DateTime.Now;
-                TimeSpan elapsed = finish - start;
-
-                Assert.That(elapsed.TotalMilliseconds, Is.LessThanOrEqualTo((long)defaultTimeout));
-            }
+            Assert.That(elapsed.TotalMilliseconds, Is.LessThanOrEqualTo((long)defaultTimeout));
         }
     }
 }
