@@ -1,5 +1,5 @@
 # Lusid.Sdk.Model.InstrumentEvent
-The event specific details. A different schema exists for each possible value of InstrumentEventType. Not all InstrumentEventTypes can be upserted
+Base class for representing instrument events in LUSID, such as dividends, stock splits, and option exercises.  This base class should not be directly instantiated; each supported InstrumentEventType has a corresponding inherited class.
 
 ## Properties
 

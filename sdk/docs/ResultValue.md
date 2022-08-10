@@ -1,5 +1,5 @@
 # Lusid.Sdk.Model.ResultValue
-The base class of the result values
+Base class for representing result values in LUSID.  This base class should not be directly instantiated; each supported ResultValueType has a corresponding inherited class.
 
 ## Properties
 
