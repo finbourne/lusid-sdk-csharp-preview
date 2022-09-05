@@ -22,7 +22,7 @@ To find out which category an API endpoint falls into, see [LUSID API Documentat
 
 ## Documentation
 
-For further documentation on building the SDK, running the tutorials and using the SDK please see the [wiki](https://github.com/finbourne/lusid-sdk-csharp-preview/wiki).
+For further documentation on building the SDK, running the tutorials and using the SDK please see the [wiki](https://github.com/finbourne/lusid-sdk-csharp-preview/wiki) and the [standalone examples repository](https://github.com/finbourne/lusid-sdk-examples-csharp).
 
 Documentation for namespaces, interfaces, classes, functions and other members of the
 SDK is [available to view online](https://lusid-sdk-csharp-preview.readthedocs.io/en/latest/).
