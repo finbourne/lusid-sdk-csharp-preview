@@ -4,7 +4,7 @@ All URIs are relative to *https://www.lusid.com/api*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
-[**InstrumentsSearch**](SearchApi.md#instrumentssearch) | **POST** /api/search/instruments | [EXPERIMENTAL] InstrumentsSearch: Instruments search
+[**InstrumentsSearch**](SearchApi.md#instrumentssearch) | **POST** /api/search/instruments | [EARLY ACCESS] InstrumentsSearch: Instruments search
 [**SearchPortfolioGroups**](SearchApi.md#searchportfoliogroups) | **GET** /api/search/portfoliogroups | SearchPortfolioGroups: Search Portfolio Groups
 [**SearchPortfolios**](SearchApi.md#searchportfolios) | **GET** /api/search/portfolios | SearchPortfolios: Search Portfolios
 [**SearchProperties**](SearchApi.md#searchproperties) | **GET** /api/search/propertydefinitions | SearchProperties: Search Property Definitions
@@ -14,7 +14,7 @@ Method | HTTP request | Description
 # **InstrumentsSearch**
 > ICollection&lt;InstrumentMatch&gt; InstrumentsSearch (List<InstrumentSearchProperty> instrumentSearchProperty, DateTimeOrCutLabel masteredEffectiveAt = null, bool? masteredOnly = null, string scope = null)
 
-[EXPERIMENTAL] InstrumentsSearch: Instruments search
+[EARLY ACCESS] InstrumentsSearch: Instruments search
 
 Search across all instruments that have been mastered in LUSID. Optionally augment the results with instruments from an external symbology service,  currently OpenFIGI.
 
@@ -45,7 +45,7 @@ namespace Example
 
             try
             {
-                // [EXPERIMENTAL] InstrumentsSearch: Instruments search
+                // [EARLY ACCESS] InstrumentsSearch: Instruments search
                 ICollection<InstrumentMatch> result = apiInstance.InstrumentsSearch(instrumentSearchProperty, masteredEffectiveAt, masteredOnly, scope);
                 Debug.WriteLine(result);
             }
