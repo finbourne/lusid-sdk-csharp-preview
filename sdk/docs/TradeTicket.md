@@ -17,6 +17,8 @@ Name | Type | Description | Notes
 **InstrumentName** | **string** | The name of the instrument. | [optional] 
 **InstrumentDefinition** | [**LusidInstrument**](LusidInstrument.md) |  | [optional] 
 **CounterpartyAgreementId** | [**ResourceId**](ResourceId.md) |  | [optional] 
+**InstrumentProperties** | [**List&lt;Property&gt;**](Property.md) | The set of instrument properties wanted on the instrument from the trade ticket. | [optional] 
+**TransactionProperties** | [**List&lt;Property&gt;**](Property.md) | The set of transaction properties wanted on the transaction from the trade ticket. | [optional] 
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 
