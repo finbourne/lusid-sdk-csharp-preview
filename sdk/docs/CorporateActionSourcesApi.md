@@ -501,7 +501,7 @@ Name | Type | Description  | Notes
 
 <a name="getinstrumentevents"></a>
 # **GetInstrumentEvents**
-> ResourceListOfInstrumentEventHolder GetInstrumentEvents (string scope, string code, DateTimeOffset? asAt = null, int? limit = null, string page = null, string filter = null)
+> PagedResourceListOfInstrumentEventHolder GetInstrumentEvents (string scope, string code, DateTimeOffset? asAt = null, int? limit = null, string page = null, string filter = null)
 
 [EXPERIMENTAL] GetInstrumentEvents: Get extrinsic instrument events out of a given corporate actions source.
 
@@ -537,7 +537,7 @@ namespace Example
             try
             {
                 // [EXPERIMENTAL] GetInstrumentEvents: Get extrinsic instrument events out of a given corporate actions source.
-                ResourceListOfInstrumentEventHolder result = apiInstance.GetInstrumentEvents(scope, code, asAt, limit, page, filter);
+                PagedResourceListOfInstrumentEventHolder result = apiInstance.GetInstrumentEvents(scope, code, asAt, limit, page, filter);
                 Debug.WriteLine(result);
             }
             catch (ApiException  e)
@@ -564,7 +564,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**ResourceListOfInstrumentEventHolder**](ResourceListOfInstrumentEventHolder.md)
+[**PagedResourceListOfInstrumentEventHolder**](PagedResourceListOfInstrumentEventHolder.md)
 
 ### Authorization
 
