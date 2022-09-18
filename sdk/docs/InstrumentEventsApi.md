@@ -248,7 +248,7 @@ Name | Type | Description  | Notes
 
 <a name="querytradetickets"></a>
 # **QueryTradeTickets**
-> ResourceListOfTradeTicket QueryTradeTickets (int? limit = null, string page = null, QueryTradeTicketsRequest queryTradeTicketsRequest = null)
+> ResourceListOfPortfolioTradeTicket QueryTradeTickets (int? limit = null, string page = null, QueryTradeTicketsRequest queryTradeTicketsRequest = null)
 
 [EXPERIMENTAL] QueryTradeTickets: Returns a list of trade tickets based on the holdings of the portfolios and date range specified in the query.
 
@@ -281,7 +281,7 @@ namespace Example
             try
             {
                 // [EXPERIMENTAL] QueryTradeTickets: Returns a list of trade tickets based on the holdings of the portfolios and date range specified in the query.
-                ResourceListOfTradeTicket result = apiInstance.QueryTradeTickets(limit, page, queryTradeTicketsRequest);
+                ResourceListOfPortfolioTradeTicket result = apiInstance.QueryTradeTickets(limit, page, queryTradeTicketsRequest);
                 Debug.WriteLine(result);
             }
             catch (ApiException  e)
@@ -305,7 +305,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**ResourceListOfTradeTicket**](ResourceListOfTradeTicket.md)
+[**ResourceListOfPortfolioTradeTicket**](ResourceListOfPortfolioTradeTicket.md)
 
 ### Authorization
 

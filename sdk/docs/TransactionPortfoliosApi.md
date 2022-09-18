@@ -449,7 +449,7 @@ Name | Type | Description  | Notes
 
 <a name="createtradeticket"></a>
 # **CreateTradeTicket**
-> TradeTicket CreateTradeTicket (string scope, string code, TradeTicket tradeTicket = null)
+> LusidTradeTicket CreateTradeTicket (string scope, string code, LusidTradeTicket lusidTradeTicket = null)
 
 [EXPERIMENTAL] CreateTradeTicket: Create Trade Ticket
 
@@ -477,12 +477,12 @@ namespace Example
             var apiInstance = new TransactionPortfoliosApi(config);
             var scope = scope_example;  // string | The scope of the transaction portfolio.
             var code = code_example;  // string | The code of the transaction portfolio. Together with the scope this uniquely identifies              the transaction portfolio.
-            var tradeTicket = new TradeTicket(); // TradeTicket | the trade ticket to upsert (optional) 
+            var lusidTradeTicket = new LusidTradeTicket(); // LusidTradeTicket | the trade ticket to upsert (optional) 
 
             try
             {
                 // [EXPERIMENTAL] CreateTradeTicket: Create Trade Ticket
-                TradeTicket result = apiInstance.CreateTradeTicket(scope, code, tradeTicket);
+                LusidTradeTicket result = apiInstance.CreateTradeTicket(scope, code, lusidTradeTicket);
                 Debug.WriteLine(result);
             }
             catch (ApiException  e)
@@ -502,11 +502,11 @@ Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **scope** | **string**| The scope of the transaction portfolio. | 
  **code** | **string**| The code of the transaction portfolio. Together with the scope this uniquely identifies              the transaction portfolio. | 
- **tradeTicket** | [**TradeTicket**](TradeTicket.md)| the trade ticket to upsert | [optional] 
+ **lusidTradeTicket** | [**LusidTradeTicket**](LusidTradeTicket.md)| the trade ticket to upsert | [optional] 
 
 ### Return type
 
-[**TradeTicket**](TradeTicket.md)
+[**LusidTradeTicket**](LusidTradeTicket.md)
 
 ### Authorization
 
