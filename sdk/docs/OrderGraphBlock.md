@@ -5,10 +5,6 @@
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **Block** | [**Block**](Block.md) |  | 
-**OrderIds** | [**List&lt;ResourceId&gt;**](ResourceId.md) | Identifiers for all the orders in this block - DEPRECATED: see Ordered. | 
-**PlacementIds** | [**List&lt;ResourceId&gt;**](ResourceId.md) | Identifiers of all placements for the block - DEPRECATED: see Placed. | 
-**AllocationIds** | [**List&lt;ResourceId&gt;**](ResourceId.md) | Identifiers for all allocations of placements to orders in the block - DEPRECATED: see Allocated. | 
-**ExecutionIds** | [**List&lt;ResourceId&gt;**](ResourceId.md) | Identifiers of all executions against placements in the block - DEPRECATED: see Executed. | 
 **Ordered** | [**OrderGraphBlockOrderSynopsis**](OrderGraphBlockOrderSynopsis.md) |  | 
 **Placed** | [**OrderGraphBlockPlacementSynopsis**](OrderGraphBlockPlacementSynopsis.md) |  | 
 **Executed** | [**OrderGraphBlockExecutionSynopsis**](OrderGraphBlockExecutionSynopsis.md) |  | 
