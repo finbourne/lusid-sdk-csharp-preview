@@ -12,7 +12,7 @@ Name | Type | Description | Notes
 **InstrumentScope** | **string** | The scope of the instrument. | 
 **Description** | **string** | The description of the instrument event. | 
 **InstrumentEvent** | [**InstrumentEvent**](InstrumentEvent.md) |  | 
-**Properties** | [**List&lt;Property&gt;**](Property.md) | The properties attached to this instrument event. | [optional] 
+**Properties** | [**List&lt;PerpetualProperty&gt;**](PerpetualProperty.md) | The properties attached to this instrument event. | [optional] 
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 
