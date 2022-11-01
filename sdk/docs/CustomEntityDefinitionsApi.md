@@ -7,6 +7,7 @@ Method | HTTP request | Description
 [**CreateCustomEntityDefinition**](CustomEntityDefinitionsApi.md#createcustomentitydefinition) | **POST** /api/customentities/entitytypes | [EXPERIMENTAL] CreateCustomEntityDefinition: Define a new Custom Entity type.
 [**GetDefinition**](CustomEntityDefinitionsApi.md#getdefinition) | **GET** /api/customentities/entitytypes/{entityType} | [EXPERIMENTAL] GetDefinition: Get a Custom Entity type definition.
 [**ListCustomEntityDefinitions**](CustomEntityDefinitionsApi.md#listcustomentitydefinitions) | **GET** /api/customentities/entitytypes | [EXPERIMENTAL] ListCustomEntityDefinitions: List the Custom Entity type definitions
+[**UpdateCustomEntityDefinition**](CustomEntityDefinitionsApi.md#updatecustomentitydefinition) | **PUT** /api/customentities/entitytypes/{entityType} | [EXPERIMENTAL] UpdateCustomEntityDefinition: Modify an existing Custom Entity type.
 
 
 <a name="createcustomentitydefinition"></a>
@@ -240,6 +241,84 @@ Name | Type | Description  | Notes
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
 | **200** | List Custom Entity type definitions. |  -  |
+| **400** | The details of the input related failure |  -  |
+| **0** | Error response |  -  |
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+<a name="updatecustomentitydefinition"></a>
+# **UpdateCustomEntityDefinition**
+> CustomEntityDefinition UpdateCustomEntityDefinition (string entityType, UpdateCustomEntityDefinitionRequest updateCustomEntityDefinitionRequest)
+
+[EXPERIMENTAL] UpdateCustomEntityDefinition: Modify an existing Custom Entity type.
+
+The API will return a Bad Request if the Custom Entity type does not exist.
+
+### Example
+```csharp
+using System.Collections.Generic;
+using System.Diagnostics;
+using Lusid.Sdk.Api;
+using Lusid.Sdk.Client;
+using Lusid.Sdk.Model;
+
+namespace Example
+{
+    public class UpdateCustomEntityDefinitionExample
+    {
+        public static void Main()
+        {
+            Configuration config = new Configuration();
+            config.BasePath = "https://www.lusid.com/api";
+            // Configure OAuth2 access token for authorization: oauth2
+            config.AccessToken = "YOUR_ACCESS_TOKEN";
+
+            var apiInstance = new CustomEntityDefinitionsApi(config);
+            var entityType = entityType_example;  // string | The identifier for the Custom Entity type, derived from the \"entityTypeName\" provided on creation.
+            var updateCustomEntityDefinitionRequest = new UpdateCustomEntityDefinitionRequest(); // UpdateCustomEntityDefinitionRequest | The payload containing the description of the Custom Entity type.
+
+            try
+            {
+                // [EXPERIMENTAL] UpdateCustomEntityDefinition: Modify an existing Custom Entity type.
+                CustomEntityDefinition result = apiInstance.UpdateCustomEntityDefinition(entityType, updateCustomEntityDefinitionRequest);
+                Debug.WriteLine(result);
+            }
+            catch (ApiException  e)
+            {
+                Debug.Print("Exception when calling CustomEntityDefinitionsApi.UpdateCustomEntityDefinition: " + e.Message );
+                Debug.Print("Status Code: "+ e.ErrorCode);
+                Debug.Print(e.StackTrace);
+            }
+        }
+    }
+}
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **entityType** | **string**| The identifier for the Custom Entity type, derived from the \&quot;entityTypeName\&quot; provided on creation. | 
+ **updateCustomEntityDefinitionRequest** | [**UpdateCustomEntityDefinitionRequest**](UpdateCustomEntityDefinitionRequest.md)| The payload containing the description of the Custom Entity type. | 
+
+### Return type
+
+[**CustomEntityDefinition**](CustomEntityDefinition.md)
+
+### Authorization
+
+[oauth2](../README.md#oauth2)
+
+### HTTP request headers
+
+ - **Content-Type**: application/json-patch+json, application/json, text/json, application/_*+json
+ - **Accept**: text/plain, application/json, text/json
+
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+| **200** | The updated Custom Entity type. |  -  |
 | **400** | The details of the input related failure |  -  |
 | **0** | Error response |  -  |
 
