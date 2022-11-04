@@ -258,7 +258,7 @@ Name | Type | Description  | Notes
 
 <a name="getcompliancerunresults"></a>
 # **GetComplianceRunResults**
-> ResourceListOfComplianceRuleResult GetComplianceRunResults (string runId, string page = null, int? limit = null)
+> ResourceListOfComplianceRuleResult GetComplianceRunResults (string runId, string page = null, int? limit = null, string filter = null)
 
 [EXPERIMENTAL] GetComplianceRunResults: Get the details of a single compliance run.
 
@@ -287,11 +287,12 @@ namespace Example
             var runId = runId_example;  // string | The unique identifier of the compliance run requested.
             var page = page_example;  // string | The pagination token to use to continue listing compliance rule results from a previous call to list compliance rule result.              This value is returned from the previous call. If a pagination token is provided the sortBy, filter, and asAt fields              must not have changed since the original request. Also, if set, a start value cannot be provided. (optional) 
             var limit = 56;  // int? | When paginating, limit the number of returned results to this many. (optional) 
+            var filter = filter_example;  // string | Expression to filter the result set. Read more about filtering results from LUSID here https://support.lusid.com/filtering-results-from-lusid. (optional) 
 
             try
             {
                 // [EXPERIMENTAL] GetComplianceRunResults: Get the details of a single compliance run.
-                ResourceListOfComplianceRuleResult result = apiInstance.GetComplianceRunResults(runId, page, limit);
+                ResourceListOfComplianceRuleResult result = apiInstance.GetComplianceRunResults(runId, page, limit, filter);
                 Debug.WriteLine(result);
             }
             catch (ApiException  e)
@@ -312,6 +313,7 @@ Name | Type | Description  | Notes
  **runId** | **string**| The unique identifier of the compliance run requested. | 
  **page** | **string**| The pagination token to use to continue listing compliance rule results from a previous call to list compliance rule result.              This value is returned from the previous call. If a pagination token is provided the sortBy, filter, and asAt fields              must not have changed since the original request. Also, if set, a start value cannot be provided. | [optional] 
  **limit** | **int?**| When paginating, limit the number of returned results to this many. | [optional] 
+ **filter** | **string**| Expression to filter the result set. Read more about filtering results from LUSID here https://support.lusid.com/filtering-results-from-lusid. | [optional] 
 
 ### Return type
 
@@ -338,7 +340,7 @@ Name | Type | Description  | Notes
 
 <a name="listcompliancerules"></a>
 # **ListComplianceRules**
-> ResourceListOfComplianceRule ListComplianceRules (DateTimeOrCutLabel effectiveAt = null, DateTimeOffset? asAt = null, int? limit = null, string filter = null, string page = null)
+> ResourceListOfComplianceRule ListComplianceRules (DateTimeOrCutLabel effectiveAt = null, DateTimeOffset? asAt = null, string page = null, int? limit = null, string filter = null)
 
 [EXPERIMENTAL] ListComplianceRules: List compliance rules, with optional filtering.
 
@@ -366,14 +368,14 @@ namespace Example
             var apiInstance = new ComplianceApi(config);
             var effectiveAt = effectiveAt_example;  // DateTimeOrCutLabel | The effective datetime or cut label at which to retrieve the rule definitions. Defaults to the current LUSID  system datetime if not specified. (optional) 
             var asAt = 2013-10-20T19:20:30+01:00;  // DateTimeOffset? | The asAt datetime at which to retrieve the rule definitions. Defaults to returning the latest version if not  specified. (optional) 
+            var page = page_example;  // string | The pagination token to use to continue listing entities; this value is returned from the previous call. If  a pagination token is provided, the filter, effectiveAt and asAt fields must not have changed since the  original request. (optional) 
             var limit = 56;  // int? | When paginating, limit the results to this number. Defaults to 100 if not specified. (optional) 
             var filter = filter_example;  // string | Expression to filter the results. (optional) 
-            var page = page_example;  // string | The pagination token to use to continue listing entities; this value is returned from the previous call. If  a pagination token is provided, the filter, effectiveAt and asAt fields must not have changed since the  original request. (optional) 
 
             try
             {
                 // [EXPERIMENTAL] ListComplianceRules: List compliance rules, with optional filtering.
-                ResourceListOfComplianceRule result = apiInstance.ListComplianceRules(effectiveAt, asAt, limit, filter, page);
+                ResourceListOfComplianceRule result = apiInstance.ListComplianceRules(effectiveAt, asAt, page, limit, filter);
                 Debug.WriteLine(result);
             }
             catch (ApiException  e)
@@ -393,9 +395,9 @@ Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **effectiveAt** | **DateTimeOrCutLabel**| The effective datetime or cut label at which to retrieve the rule definitions. Defaults to the current LUSID  system datetime if not specified. | [optional] 
  **asAt** | **DateTimeOffset?**| The asAt datetime at which to retrieve the rule definitions. Defaults to returning the latest version if not  specified. | [optional] 
+ **page** | **string**| The pagination token to use to continue listing entities; this value is returned from the previous call. If  a pagination token is provided, the filter, effectiveAt and asAt fields must not have changed since the  original request. | [optional] 
  **limit** | **int?**| When paginating, limit the results to this number. Defaults to 100 if not specified. | [optional] 
  **filter** | **string**| Expression to filter the results. | [optional] 
- **page** | **string**| The pagination token to use to continue listing entities; this value is returned from the previous call. If  a pagination token is provided, the filter, effectiveAt and asAt fields must not have changed since the  original request. | [optional] 
 
 ### Return type
 
