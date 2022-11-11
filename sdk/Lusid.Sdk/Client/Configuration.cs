@@ -118,7 +118,7 @@ namespace Lusid.Sdk.Client
             };
 
             // Setting Timeout has side effects (forces ApiClient creation).
-            Timeout = 100000;
+            Timeout = 120000;
         }
 
         /// <summary>
@@ -192,7 +192,7 @@ namespace Lusid.Sdk.Client
         public virtual IDictionary<string, string> DefaultHeaders { get; set; }
 
         /// <summary>
-        /// Gets or sets the HTTP timeout (milliseconds) of ApiClient. Default to 100000 milliseconds.
+        /// Gets or sets the HTTP timeout (milliseconds) of ApiClient. Default to 120000 milliseconds.
         /// </summary>
         public virtual int Timeout { get; set; }
 

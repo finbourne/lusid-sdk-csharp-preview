@@ -29,7 +29,7 @@ namespace Lusid.Sdk.Utilities
         /// <summary>
         /// Create a new factory using the specified configuration
         /// </summary>
-        public LusidApiFactory(ApiConfiguration apiConfiguration, int timeout = 100000)
+        public LusidApiFactory(ApiConfiguration apiConfiguration, int timeout = 120000)
         {
             if (apiConfiguration == null) throw new ArgumentNullException(nameof(apiConfiguration));
 

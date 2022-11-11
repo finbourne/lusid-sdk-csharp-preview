@@ -10,7 +10,7 @@ namespace Lusid.Sdk.Utilities
         /// <summary>
         /// Create an ILusidApiFactory using the specified configuration file.  For details on the format of the configuration file see https://support.lusid.com/getting-started-with-apis-sdks
         /// </summary>
-        public static ILusidApiFactory Build(string apiSecretsFilename, int timeout = 100000)
+        public static ILusidApiFactory Build(string apiSecretsFilename, int timeout = 120000)
         {
             var apiConfig = ApiConfigurationBuilder.Build(apiSecretsFilename);
             return new LusidApiFactory(apiConfig, timeout);
