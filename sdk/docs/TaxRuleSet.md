@@ -8,7 +8,7 @@ Name | Type | Description | Notes
 **DisplayName** | **string** | A user-friendly name | 
 **Description** | **string** | A description of what this rule set is for | 
 **OutputPropertyKey** | **string** | The property key that this rule set will write to | 
-**Rules** | [**List&lt;TaxRule&gt;**](TaxRule.md) | The rules of this rule set, which stipulate what rate to apply (i.e. write to the OutputPropertyKey) under certain conditions | [optional] 
+**Rules** | [**List&lt;TaxRule&gt;**](TaxRule.md) | The rules of this rule set, which stipulate what rate to apply (i.e. write to the OutputPropertyKey) under certain conditions | 
 **Version** | [**Version**](Version.md) |  | [optional] 
 **Links** | [**List&lt;Link&gt;**](Link.md) | Collection of links. | [optional] 
 
