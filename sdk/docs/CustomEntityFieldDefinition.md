@@ -8,7 +8,6 @@ Name | Type | Description | Notes
 **Lifetime** | **string** | Describes how the field’s values can change over time. The available values are: “Perpetual”, “TimeVariant”. | 
 **Type** | **string** | The value type for the field. Available values are: “String”, “Boolean”, “DateTime”, “Decimal”. | 
 **Required** | **bool** | Whether the field is required or not. | 
-**Description** | **string** | An optional description for the field. | [optional] 
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 
