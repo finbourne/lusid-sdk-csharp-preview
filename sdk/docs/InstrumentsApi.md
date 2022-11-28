@@ -1134,7 +1134,7 @@ Name | Type | Description  | Notes
 
 <a name="postinstrumentcapabilities"></a>
 # **PostInstrumentCapabilities**
-> InstrumentCapabilities PostInstrumentCapabilities (LusidInstrument lusidInstrument, string model = null, DateTimeOrCutLabel effectiveAt = null, DateTimeOffset? asAt = null, string scope = null)
+> InstrumentCapabilities PostInstrumentCapabilities (LusidInstrument lusidInstrument, string model = null, DateTimeOrCutLabel effectiveAt = null)
 
 [EXPERIMENTAL] PostInstrumentCapabilities: Given an example instrument provides instrument capabilities, outlining features, and, given the model, the capabilities also include supported addresses as well as economic dependencies.
 
@@ -1163,13 +1163,11 @@ namespace Example
             var lusidInstrument = new LusidInstrument(); // LusidInstrument | The definition of the instrument.
             var model = model_example;  // string | A pricing model for the instrument. Defaults to Unknown if not specified. If not specified the SupportedAddresses and EconomicDependencies are not provided. (optional) 
             var effectiveAt = effectiveAt_example;  // DateTimeOrCutLabel | The effective datetime or cut label at which to retrieve the instrument.              Defaults to the current LUSID system datetime if not specified. (optional) 
-            var asAt = 2013-10-20T19:20:30+01:00;  // DateTimeOffset? | The asAt datetime at which to retrieve the instrument. Defaults to              returning the latest version if not specified. (optional) 
-            var scope = scope_example;  // string | The scope in which the instrument lies. When not supplied the scope is 'default'. (optional)  (default to "default")
 
             try
             {
                 // [EXPERIMENTAL] PostInstrumentCapabilities: Given an example instrument provides instrument capabilities, outlining features, and, given the model, the capabilities also include supported addresses as well as economic dependencies.
-                InstrumentCapabilities result = apiInstance.PostInstrumentCapabilities(lusidInstrument, model, effectiveAt, asAt, scope);
+                InstrumentCapabilities result = apiInstance.PostInstrumentCapabilities(lusidInstrument, model, effectiveAt);
                 Debug.WriteLine(result);
             }
             catch (ApiException  e)
@@ -1190,8 +1188,6 @@ Name | Type | Description  | Notes
  **lusidInstrument** | [**LusidInstrument**](LusidInstrument.md)| The definition of the instrument. | 
  **model** | **string**| A pricing model for the instrument. Defaults to Unknown if not specified. If not specified the SupportedAddresses and EconomicDependencies are not provided. | [optional] 
  **effectiveAt** | **DateTimeOrCutLabel**| The effective datetime or cut label at which to retrieve the instrument.              Defaults to the current LUSID system datetime if not specified. | [optional] 
- **asAt** | **DateTimeOffset?**| The asAt datetime at which to retrieve the instrument. Defaults to              returning the latest version if not specified. | [optional] 
- **scope** | **string**| The scope in which the instrument lies. When not supplied the scope is &#39;default&#39;. | [optional] [default to &quot;default&quot;]
 
 ### Return type
 
