@@ -6,7 +6,7 @@ An instrument event equipped with additional metadata.
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **InstrumentEventId** | **string** | The unique identifier of this corporate action. | 
-**CorporateActionSourceId** | [**ResourceId**](ResourceId.md) |  | 
+**CorporateActionSourceId** | [**ResourceId**](ResourceId.md) |  | [optional] 
 **InstrumentIdentifiers** | **Dictionary&lt;string, string&gt;** | The set of identifiers which determine the instrument this event relates to. | 
 **LusidInstrumentId** | **string** | The LUID for the instrument. | 
 **InstrumentScope** | **string** | The scope of the instrument. | 
