@@ -2024,7 +2024,7 @@ Name | Type | Description  | Notes
 
 <a name="lookthroughtransactions"></a>
 # **LookThroughTransactions**
-> VersionedResourceListOfTransaction LookThroughTransactions (string scope, string code, DateTimeOrCutLabel fromTransactionDate = null, DateTimeOrCutLabel toTransactionDate = null, DateTimeOffset? asAt = null, string filter = null, List<string> propertyKeys = null, string page = null, int? limit = null, string quotesScope = null, string slice = null, string shareClass = null)
+> VersionedResourceListOfTransaction LookThroughTransactions (string scope, string code, DateTimeOrCutLabel fromTransactionDate = null, DateTimeOrCutLabel toTransactionDate = null, DateTimeOffset? asAt = null, string filter = null, List<string> propertyKeys = null, string page = null, int? limit = null, string quotesScope = null, string slice = null, string shareClass = null, bool? useAlternateScalingLogic = null, DateTimeOrCutLabel alternateEffectiveAt = null)
 
 [EXPERIMENTAL] LookThroughTransactions: Look through transactions
 
@@ -2062,11 +2062,13 @@ namespace Example
             var quotesScope = quotesScope_example;  // string | The scope containing the quotes with the FX rates used for currency conversion. (optional) 
             var slice = slice_example;  // string | When running LookThrough, define this slice as the root slice in the portfolio to look through from. (optional) 
             var shareClass = shareClass_example;  // string | When running LookThrough, use this along with the slice parameter to specify              the root share class in the slice in the portfolio to look through from. The slice parameter is a prerequisite              for this parameter to be valid. (optional) 
+            var useAlternateScalingLogic = true;  // bool? | When running LookThrough, set this flag to use the same scaling logic as for LT Holdings (optional)  (default to false)
+            var alternateEffectiveAt = alternateEffectiveAt_example;  // DateTimeOrCutLabel | This effectiveAt field is required when using alternate scaling logic to determine which fund and currency data is used for scaling (optional) 
 
             try
             {
                 // [EXPERIMENTAL] LookThroughTransactions: Look through transactions
-                VersionedResourceListOfTransaction result = apiInstance.LookThroughTransactions(scope, code, fromTransactionDate, toTransactionDate, asAt, filter, propertyKeys, page, limit, quotesScope, slice, shareClass);
+                VersionedResourceListOfTransaction result = apiInstance.LookThroughTransactions(scope, code, fromTransactionDate, toTransactionDate, asAt, filter, propertyKeys, page, limit, quotesScope, slice, shareClass, useAlternateScalingLogic, alternateEffectiveAt);
                 Debug.WriteLine(result);
             }
             catch (ApiException  e)
@@ -2096,6 +2098,8 @@ Name | Type | Description  | Notes
  **quotesScope** | **string**| The scope containing the quotes with the FX rates used for currency conversion. | [optional] 
  **slice** | **string**| When running LookThrough, define this slice as the root slice in the portfolio to look through from. | [optional] 
  **shareClass** | **string**| When running LookThrough, use this along with the slice parameter to specify              the root share class in the slice in the portfolio to look through from. The slice parameter is a prerequisite              for this parameter to be valid. | [optional] 
+ **useAlternateScalingLogic** | **bool?**| When running LookThrough, set this flag to use the same scaling logic as for LT Holdings | [optional] [default to false]
+ **alternateEffectiveAt** | **DateTimeOrCutLabel**| This effectiveAt field is required when using alternate scaling logic to determine which fund and currency data is used for scaling | [optional] 
 
 ### Return type
 
