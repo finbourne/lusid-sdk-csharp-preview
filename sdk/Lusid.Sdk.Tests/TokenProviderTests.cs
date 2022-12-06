@@ -1,11 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Lusid.Sdk.Tests.Utilities;
 using Lusid.Sdk.Utilities;
-using Microsoft.Extensions.Configuration;
 using Moq;
 using NUnit.Framework;
 
