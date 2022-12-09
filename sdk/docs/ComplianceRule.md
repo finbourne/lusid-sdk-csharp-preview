@@ -10,7 +10,6 @@ Name | Type | Description | Notes
 **Type** | **string** |  | 
 **PropertyKey** | **string** |  | [optional] 
 **Value** | **string** |  | [optional] 
-**AddressKey** | **string** |  | [optional] 
 **LowerBound** | **decimal** |  | 
 **UpperBound** | **decimal** |  | 
 **Schedule** | **string** |  | 
