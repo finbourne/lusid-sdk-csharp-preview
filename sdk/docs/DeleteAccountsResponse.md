@@ -1,0 +1,13 @@
+# Lusid.Sdk.Model.DeleteAccountsResponse
+The delete accounts response
+
+## Properties
+
+Name | Type | Description | Notes
+------------ | ------------- | ------------- | -------------
+**Version** | [**Version**](Version.md) |  | [optional] 
+**AccountIds** | **List&lt;string&gt;** | The Accounts which have been soft/hard deleted. | [optional] 
+**Links** | [**List&lt;Link&gt;**](Link.md) | Collection of links. | [optional] 
+
+[[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+
