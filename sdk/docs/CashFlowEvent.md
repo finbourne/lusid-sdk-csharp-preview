@@ -5,7 +5,7 @@ Definition of a CashFlow event.  This is an event that describes the occurence o
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**InstrumentEventType** | **string** | The Type of Event. The available values are: TransitionEvent, InformationalEvent, OpenEvent, CloseEvent, StockSplitEvent, BondDefaultEvent, CashDividendEvent, AmortisationEvent, CashFlowEvent, ExerciseEvent, ResetEvent | 
+**InstrumentEventType** | **string** | The Type of Event. The available values are: TransitionEvent, InformationalEvent, OpenEvent, CloseEvent, StockSplitEvent, BondDefaultEvent, CashDividendEvent, AmortisationEvent, CashFlowEvent, ExerciseEvent, ResetEvent, RawVendorEvent, InformationalErrorEvent | 
 **Amount** | **decimal?** | The quantity (amount) that will be paid, if known. This value will be negative if it is paid, and positive  if it is received. | [optional] 
 **Currency** | **string** | The payment currency of the cash flow. | 
 **EventType** | **string** | What type of internal event does this represent; coupon, principal, premium etc. | [readonly] 
