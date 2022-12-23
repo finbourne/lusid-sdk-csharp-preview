@@ -880,7 +880,7 @@ Name | Type | Description  | Notes
 
 <a name="getbucketedcashflows"></a>
 # **GetBucketedCashFlows**
-> BucketedCashFlowResponse GetBucketedCashFlows (string scope, string code, BucketedCashFlowRequest bucketedCashFlowRequest = null)
+> BucketedCashFlowResponse GetBucketedCashFlows (string scope, string code, bool? excludeUnsettledTrades = null, BucketedCashFlowRequest bucketedCashFlowRequest = null)
 
 [EXPERIMENTAL] GetBucketedCashFlows: Get bucketed cash flows from a list of portfolios
 
@@ -908,12 +908,13 @@ namespace Example
             var apiInstance = new TransactionPortfoliosApi(config);
             var scope = scope_example;  // string | The scope of the transaction portfolio.
             var code = code_example;  // string | The code of the transaction portfolio. Together with the scope this uniquely identifies the portfolio.
+            var excludeUnsettledTrades = true;  // bool? | If absent or set to false, cashflows will returned based on trade date - more specifically, cashflows from any unsettled trades will be included in the results. If set to true, unsettled trades will be excluded from the result set. (optional)  (default to false)
             var bucketedCashFlowRequest = new BucketedCashFlowRequest(); // BucketedCashFlowRequest | Request specifying the bucketing of cashflows (optional) 
 
             try
             {
                 // [EXPERIMENTAL] GetBucketedCashFlows: Get bucketed cash flows from a list of portfolios
-                BucketedCashFlowResponse result = apiInstance.GetBucketedCashFlows(scope, code, bucketedCashFlowRequest);
+                BucketedCashFlowResponse result = apiInstance.GetBucketedCashFlows(scope, code, excludeUnsettledTrades, bucketedCashFlowRequest);
                 Debug.WriteLine(result);
             }
             catch (ApiException  e)
@@ -933,6 +934,7 @@ Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **scope** | **string**| The scope of the transaction portfolio. | 
  **code** | **string**| The code of the transaction portfolio. Together with the scope this uniquely identifies the portfolio. | 
+ **excludeUnsettledTrades** | **bool?**| If absent or set to false, cashflows will returned based on trade date - more specifically, cashflows from any unsettled trades will be included in the results. If set to true, unsettled trades will be excluded from the result set. | [optional] [default to false]
  **bucketedCashFlowRequest** | [**BucketedCashFlowRequest**](BucketedCashFlowRequest.md)| Request specifying the bucketing of cashflows | [optional] 
 
 ### Return type
@@ -1306,7 +1308,7 @@ Name | Type | Description  | Notes
 
 <a name="getportfoliocashflows"></a>
 # **GetPortfolioCashFlows**
-> ResourceListOfInstrumentCashFlow GetPortfolioCashFlows (string scope, string code, DateTimeOrCutLabel effectiveAt = null, DateTimeOrCutLabel windowStart = null, DateTimeOrCutLabel windowEnd = null, DateTimeOffset? asAt = null, string filter = null, string recipeIdScope = null, string recipeIdCode = null)
+> ResourceListOfInstrumentCashFlow GetPortfolioCashFlows (string scope, string code, DateTimeOrCutLabel effectiveAt = null, DateTimeOrCutLabel windowStart = null, DateTimeOrCutLabel windowEnd = null, DateTimeOffset? asAt = null, string filter = null, string recipeIdScope = null, string recipeIdCode = null, bool? excludeUnsettledTrades = null)
 
 [BETA] GetPortfolioCashFlows: Get portfolio cash flows
 
@@ -1341,11 +1343,12 @@ namespace Example
             var filter = filter_example;  // string | Expression to filter the result set.               For example, to return only transactions with a transaction type of 'Buy', specify \"type eq 'Buy'\".               For more information about filtering LUSID results, see https://support.lusid.com/knowledgebase/article/KA-01914. (optional) 
             var recipeIdScope = recipeIdScope_example;  // string | The scope of the given recipeId (optional) 
             var recipeIdCode = recipeIdCode_example;  // string | The code of the given recipeID (optional) 
+            var excludeUnsettledTrades = true;  // bool? | If absent or set to false, cashflows will returned based on trade date - more specifically, cashflows from any unsettled trades will be included in the results. If set to true, unsettled trades will be excluded from the result set. (optional)  (default to false)
 
             try
             {
                 // [BETA] GetPortfolioCashFlows: Get portfolio cash flows
-                ResourceListOfInstrumentCashFlow result = apiInstance.GetPortfolioCashFlows(scope, code, effectiveAt, windowStart, windowEnd, asAt, filter, recipeIdScope, recipeIdCode);
+                ResourceListOfInstrumentCashFlow result = apiInstance.GetPortfolioCashFlows(scope, code, effectiveAt, windowStart, windowEnd, asAt, filter, recipeIdScope, recipeIdCode, excludeUnsettledTrades);
                 Debug.WriteLine(result);
             }
             catch (ApiException  e)
@@ -1372,6 +1375,7 @@ Name | Type | Description  | Notes
  **filter** | **string**| Expression to filter the result set.               For example, to return only transactions with a transaction type of &#39;Buy&#39;, specify \&quot;type eq &#39;Buy&#39;\&quot;.               For more information about filtering LUSID results, see https://support.lusid.com/knowledgebase/article/KA-01914. | [optional] 
  **recipeIdScope** | **string**| The scope of the given recipeId | [optional] 
  **recipeIdCode** | **string**| The code of the given recipeID | [optional] 
+ **excludeUnsettledTrades** | **bool?**| If absent or set to false, cashflows will returned based on trade date - more specifically, cashflows from any unsettled trades will be included in the results. If set to true, unsettled trades will be excluded from the result set. | [optional] [default to false]
 
 ### Return type
 
@@ -1398,7 +1402,7 @@ Name | Type | Description  | Notes
 
 <a name="getportfoliocashladder"></a>
 # **GetPortfolioCashLadder**
-> ResourceListOfPortfolioCashLadder GetPortfolioCashLadder (string scope, string code, DateTimeOrCutLabel fromEffectiveAt, DateTimeOrCutLabel toEffectiveAt, DateTimeOrCutLabel effectiveAt, DateTimeOffset? asAt = null, string filter = null, string recipeIdScope = null, string recipeIdCode = null)
+> ResourceListOfPortfolioCashLadder GetPortfolioCashLadder (string scope, string code, DateTimeOrCutLabel fromEffectiveAt, DateTimeOrCutLabel toEffectiveAt, DateTimeOrCutLabel effectiveAt, DateTimeOffset? asAt = null, string filter = null, string recipeIdScope = null, string recipeIdCode = null, bool? excludeUnsettledTrades = null)
 
 GetPortfolioCashLadder: Get portfolio cash ladder
 
@@ -1433,11 +1437,12 @@ namespace Example
             var filter = filter_example;  // string | Expression to filter the result set.              For example, to return only transactions with a transaction type of 'Buy', specify \"type eq 'Buy'\".              For more information about filtering LUSID results, see https://support.lusid.com/knowledgebase/article/KA-01914. (optional) 
             var recipeIdScope = recipeIdScope_example;  // string | The scope of the given recipeId (optional) 
             var recipeIdCode = recipeIdCode_example;  // string | The code of the given recipeID (optional) 
+            var excludeUnsettledTrades = true;  // bool? | If absent or set to false, cashflows will returned based on trade date - more specifically, cashflows from any unsettled trades will be included in the results. If set to true, unsettled trades will be excluded from the result set. (optional)  (default to false)
 
             try
             {
                 // GetPortfolioCashLadder: Get portfolio cash ladder
-                ResourceListOfPortfolioCashLadder result = apiInstance.GetPortfolioCashLadder(scope, code, fromEffectiveAt, toEffectiveAt, effectiveAt, asAt, filter, recipeIdScope, recipeIdCode);
+                ResourceListOfPortfolioCashLadder result = apiInstance.GetPortfolioCashLadder(scope, code, fromEffectiveAt, toEffectiveAt, effectiveAt, asAt, filter, recipeIdScope, recipeIdCode, excludeUnsettledTrades);
                 Debug.WriteLine(result);
             }
             catch (ApiException  e)
@@ -1464,6 +1469,7 @@ Name | Type | Description  | Notes
  **filter** | **string**| Expression to filter the result set.              For example, to return only transactions with a transaction type of &#39;Buy&#39;, specify \&quot;type eq &#39;Buy&#39;\&quot;.              For more information about filtering LUSID results, see https://support.lusid.com/knowledgebase/article/KA-01914. | [optional] 
  **recipeIdScope** | **string**| The scope of the given recipeId | [optional] 
  **recipeIdCode** | **string**| The code of the given recipeID | [optional] 
+ **excludeUnsettledTrades** | **bool?**| If absent or set to false, cashflows will returned based on trade date - more specifically, cashflows from any unsettled trades will be included in the results. If set to true, unsettled trades will be excluded from the result set. | [optional] [default to false]
 
 ### Return type
 
@@ -1756,7 +1762,7 @@ Name | Type | Description  | Notes
 
 <a name="getupsertableportfoliocashflows"></a>
 # **GetUpsertablePortfolioCashFlows**
-> ResourceListOfTransaction GetUpsertablePortfolioCashFlows (string scope, string code, DateTimeOrCutLabel effectiveAt = null, DateTimeOrCutLabel windowStart = null, DateTimeOrCutLabel windowEnd = null, DateTimeOffset? asAt = null, string filter = null, string recipeIdScope = null, string recipeIdCode = null)
+> ResourceListOfTransaction GetUpsertablePortfolioCashFlows (string scope, string code, DateTimeOrCutLabel effectiveAt = null, DateTimeOrCutLabel windowStart = null, DateTimeOrCutLabel windowEnd = null, DateTimeOffset? asAt = null, string filter = null, string recipeIdScope = null, string recipeIdCode = null, bool? excludeUnsettledTrades = null)
 
 [BETA] GetUpsertablePortfolioCashFlows: Get upsertable portfolio cash flows.
 
@@ -1791,11 +1797,12 @@ namespace Example
             var filter = filter_example;  // string | Expression to filter the result set.               For example, to return only transactions with a transaction type of 'Buy', specify \"type eq 'Buy'\".               For more information about filtering LUSID results, see https://support.lusid.com/knowledgebase/article/KA-01914. (optional) 
             var recipeIdScope = recipeIdScope_example;  // string | The scope of the given recipeId (optional) 
             var recipeIdCode = recipeIdCode_example;  // string | The code of the given recipeID (optional) 
+            var excludeUnsettledTrades = true;  // bool? | If absent or set to true, unsettled trades will be excluded from the result set. If set to false, cashflows will returned based on trade date - more specifically, cashflows from any unsettled trades will be included in the results. (optional)  (default to true)
 
             try
             {
                 // [BETA] GetUpsertablePortfolioCashFlows: Get upsertable portfolio cash flows.
-                ResourceListOfTransaction result = apiInstance.GetUpsertablePortfolioCashFlows(scope, code, effectiveAt, windowStart, windowEnd, asAt, filter, recipeIdScope, recipeIdCode);
+                ResourceListOfTransaction result = apiInstance.GetUpsertablePortfolioCashFlows(scope, code, effectiveAt, windowStart, windowEnd, asAt, filter, recipeIdScope, recipeIdCode, excludeUnsettledTrades);
                 Debug.WriteLine(result);
             }
             catch (ApiException  e)
@@ -1822,6 +1829,7 @@ Name | Type | Description  | Notes
  **filter** | **string**| Expression to filter the result set.               For example, to return only transactions with a transaction type of &#39;Buy&#39;, specify \&quot;type eq &#39;Buy&#39;\&quot;.               For more information about filtering LUSID results, see https://support.lusid.com/knowledgebase/article/KA-01914. | [optional] 
  **recipeIdScope** | **string**| The scope of the given recipeId | [optional] 
  **recipeIdCode** | **string**| The code of the given recipeID | [optional] 
+ **excludeUnsettledTrades** | **bool?**| If absent or set to true, unsettled trades will be excluded from the result set. If set to false, cashflows will returned based on trade date - more specifically, cashflows from any unsettled trades will be included in the results. | [optional] [default to true]
 
 ### Return type
 
