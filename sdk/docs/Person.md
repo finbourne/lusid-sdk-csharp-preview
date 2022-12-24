@@ -9,7 +9,7 @@ Name | Type | Description | Notes
 **Href** | **string** | The specifc Uniform Resource Identifier (URI) for this resource at the requested effective and asAt datetime. | [optional] 
 **LusidPersonId** | **string** | The unique LUSID Person Identifier of the Person. | [optional] 
 **Identifiers** | [**Dictionary&lt;string, Property&gt;**](Property.md) | Unique client-defined identifiers of the Person. | [optional] 
-**Properties** | [**Dictionary&lt;string, Property&gt;**](Property.md) | A set of properties associated to the Person. There can be multiple properties associated with a property key. | [optional] 
+**Properties** | **Dictionary&lt;string, List&lt;Property&gt;&gt;** | A set of properties associated to the Person. There can be multiple properties associated with a property key. | [optional] 
 **Relationships** | [**List&lt;Relationship&gt;**](Relationship.md) | A set of relationships associated to the Person. | [optional] 
 **Version** | [**Version**](Version.md) |  | [optional] 
 
