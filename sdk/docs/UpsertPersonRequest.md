@@ -5,7 +5,7 @@
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **Identifiers** | [**Dictionary&lt;string, Property&gt;**](Property.md) | The identifiers the person will be upserted with.The provided keys should be idTypeScope, idTypeCode, code | 
-**Properties** | **Dictionary&lt;string, List&lt;Property&gt;&gt;** | A set of properties associated to the Person. There can be multiple properties associated with a property key. | [optional] 
+**Properties** | [**Dictionary&lt;string, Property&gt;**](Property.md) | A set of properties associated to the Person. There can be multiple properties associated with a property key. | [optional] 
 **DisplayName** | **string** | The display name of the Person | 
 **Description** | **string** | The description of the Person | [optional] 
 
