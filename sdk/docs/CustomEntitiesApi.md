@@ -4,19 +4,19 @@ All URIs are relative to *https://www.lusid.com/api*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
-[**DeleteCustomEntity**](CustomEntitiesApi.md#deletecustomentity) | **DELETE** /api/customentities/{entityType}/{identifierType}/{identifierValue} | [EXPERIMENTAL] DeleteCustomEntity: Delete a Custom Entity instance.
-[**GetCustomEntity**](CustomEntitiesApi.md#getcustomentity) | **GET** /api/customentities/{entityType}/{identifierType}/{identifierValue} | [EXPERIMENTAL] GetCustomEntity: Get a Custom Entity instance.
-[**GetCustomEntityRelationships**](CustomEntitiesApi.md#getcustomentityrelationships) | **GET** /api/customentities/{entityType}/{identifierType}/{identifierValue}/relationships | [EXPERIMENTAL] GetCustomEntityRelationships: Get Relationships for Custom Entity
-[**ListCustomEntities**](CustomEntitiesApi.md#listcustomentities) | **GET** /api/customentities/{entityType} | [EXPERIMENTAL] ListCustomEntities: List Custom Entities of the specified entityType.
+[**DeleteCustomEntity**](CustomEntitiesApi.md#deletecustomentity) | **DELETE** /api/customentities/{entityType}/{identifierType}/{identifierValue} | [EARLY ACCESS] DeleteCustomEntity: Delete a Custom Entity instance.
+[**GetCustomEntity**](CustomEntitiesApi.md#getcustomentity) | **GET** /api/customentities/{entityType}/{identifierType}/{identifierValue} | [EARLY ACCESS] GetCustomEntity: Get a Custom Entity instance.
+[**GetCustomEntityRelationships**](CustomEntitiesApi.md#getcustomentityrelationships) | **GET** /api/customentities/{entityType}/{identifierType}/{identifierValue}/relationships | [EARLY ACCESS] GetCustomEntityRelationships: Get Relationships for Custom Entity
+[**ListCustomEntities**](CustomEntitiesApi.md#listcustomentities) | **GET** /api/customentities/{entityType} | [EARLY ACCESS] ListCustomEntities: List Custom Entities of the specified entityType.
 [**UpsertCustomEntities**](CustomEntitiesApi.md#upsertcustomentities) | **POST** /api/customentities/{entityType}/$batchUpsert | [EXPERIMENTAL] UpsertCustomEntities: Batch upsert instances of Custom Entities
-[**UpsertCustomEntity**](CustomEntitiesApi.md#upsertcustomentity) | **POST** /api/customentities/{entityType} | [EXPERIMENTAL] UpsertCustomEntity: Upsert a Custom Entity instance
+[**UpsertCustomEntity**](CustomEntitiesApi.md#upsertcustomentity) | **POST** /api/customentities/{entityType} | [EARLY ACCESS] UpsertCustomEntity: Upsert a Custom Entity instance
 
 
 <a name="deletecustomentity"></a>
 # **DeleteCustomEntity**
 > DeletedEntityResponse DeleteCustomEntity (string entityType, string identifierType, string identifierValue, string identifierScope)
 
-[EXPERIMENTAL] DeleteCustomEntity: Delete a Custom Entity instance.
+[EARLY ACCESS] DeleteCustomEntity: Delete a Custom Entity instance.
 
 Delete a Custom Entity instance by a specific entity type.
 
@@ -47,7 +47,7 @@ namespace Example
 
             try
             {
-                // [EXPERIMENTAL] DeleteCustomEntity: Delete a Custom Entity instance.
+                // [EARLY ACCESS] DeleteCustomEntity: Delete a Custom Entity instance.
                 DeletedEntityResponse result = apiInstance.DeleteCustomEntity(entityType, identifierType, identifierValue, identifierScope);
                 Debug.WriteLine(result);
             }
@@ -98,7 +98,7 @@ Name | Type | Description  | Notes
 # **GetCustomEntity**
 > CustomEntityResponse GetCustomEntity (string entityType, string identifierType, string identifierValue, string identifierScope, DateTimeOffset? asAt = null, DateTimeOrCutLabel effectiveAt = null, List<string> relatedEntityPropertyKeys = null, List<string> relationshipDefinitionIds = null)
 
-[EXPERIMENTAL] GetCustomEntity: Get a Custom Entity instance.
+[EARLY ACCESS] GetCustomEntity: Get a Custom Entity instance.
 
 Retrieve a Custom Entity instance by a specific entity type at a point in AsAt time.
 
@@ -133,7 +133,7 @@ namespace Example
 
             try
             {
-                // [EXPERIMENTAL] GetCustomEntity: Get a Custom Entity instance.
+                // [EARLY ACCESS] GetCustomEntity: Get a Custom Entity instance.
                 CustomEntityResponse result = apiInstance.GetCustomEntity(entityType, identifierType, identifierValue, identifierScope, asAt, effectiveAt, relatedEntityPropertyKeys, relationshipDefinitionIds);
                 Debug.WriteLine(result);
             }
@@ -188,7 +188,7 @@ Name | Type | Description  | Notes
 # **GetCustomEntityRelationships**
 > ResourceListOfRelationship GetCustomEntityRelationships (string entityType, string identifierScope, string identifierType, string identifierValue, DateTimeOrCutLabel effectiveAt = null, DateTimeOffset? asAt = null, string filter = null, List<string> identifierTypes = null)
 
-[EXPERIMENTAL] GetCustomEntityRelationships: Get Relationships for Custom Entity
+[EARLY ACCESS] GetCustomEntityRelationships: Get Relationships for Custom Entity
 
 Get relationships for the specified Custom Entity.
 
@@ -223,7 +223,7 @@ namespace Example
 
             try
             {
-                // [EXPERIMENTAL] GetCustomEntityRelationships: Get Relationships for Custom Entity
+                // [EARLY ACCESS] GetCustomEntityRelationships: Get Relationships for Custom Entity
                 ResourceListOfRelationship result = apiInstance.GetCustomEntityRelationships(entityType, identifierScope, identifierType, identifierValue, effectiveAt, asAt, filter, identifierTypes);
                 Debug.WriteLine(result);
             }
@@ -278,7 +278,7 @@ Name | Type | Description  | Notes
 # **ListCustomEntities**
 > PagedResourceListOfCustomEntityResponse ListCustomEntities (string entityType, DateTimeOrCutLabel effectiveAt = null, DateTimeOffset? asAt = null, int? limit = null, string filter = null, string page = null, List<string> relatedEntityPropertyKeys = null, List<string> relationshipDefinitionIds = null)
 
-[EXPERIMENTAL] ListCustomEntities: List Custom Entities of the specified entityType.
+[EARLY ACCESS] ListCustomEntities: List Custom Entities of the specified entityType.
 
 List all the Custom Entities matching particular criteria.
 
@@ -313,7 +313,7 @@ namespace Example
 
             try
             {
-                // [EXPERIMENTAL] ListCustomEntities: List Custom Entities of the specified entityType.
+                // [EARLY ACCESS] ListCustomEntities: List Custom Entities of the specified entityType.
                 PagedResourceListOfCustomEntityResponse result = apiInstance.ListCustomEntities(entityType, effectiveAt, asAt, limit, filter, page, relatedEntityPropertyKeys, relationshipDefinitionIds);
                 Debug.WriteLine(result);
             }
@@ -448,7 +448,7 @@ Name | Type | Description  | Notes
 # **UpsertCustomEntity**
 > CustomEntityResponse UpsertCustomEntity (string entityType, CustomEntityRequest customEntityRequest)
 
-[EXPERIMENTAL] UpsertCustomEntity: Upsert a Custom Entity instance
+[EARLY ACCESS] UpsertCustomEntity: Upsert a Custom Entity instance
 
 Insert the Custom Entity if it does not exist or update the Custom Entity with the supplied state if it does exist.
 
@@ -477,7 +477,7 @@ namespace Example
 
             try
             {
-                // [EXPERIMENTAL] UpsertCustomEntity: Upsert a Custom Entity instance
+                // [EARLY ACCESS] UpsertCustomEntity: Upsert a Custom Entity instance
                 CustomEntityResponse result = apiInstance.UpsertCustomEntity(entityType, customEntityRequest);
                 Debug.WriteLine(result);
             }
