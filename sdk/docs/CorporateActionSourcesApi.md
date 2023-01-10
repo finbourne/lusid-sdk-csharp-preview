@@ -7,12 +7,12 @@ Method | HTTP request | Description
 [**BatchUpsertCorporateActions**](CorporateActionSourcesApi.md#batchupsertcorporateactions) | **POST** /api/corporateactionsources/{scope}/{code}/corporateactions | [EARLY ACCESS] BatchUpsertCorporateActions: Batch upsert corporate actions (instrument transition events) to corporate action source.
 [**CreateCorporateActionSource**](CorporateActionSourcesApi.md#createcorporateactionsource) | **POST** /api/corporateactionsources | [EARLY ACCESS] CreateCorporateActionSource: Create corporate action source
 [**DeleteCorporateActionSource**](CorporateActionSourcesApi.md#deletecorporateactionsource) | **DELETE** /api/corporateactionsources/{scope}/{code} | [BETA] DeleteCorporateActionSource: Delete corporate actions (instrument transition events) from the corporate action source.
-[**DeleteCorporateActions**](CorporateActionSourcesApi.md#deletecorporateactions) | **DELETE** /api/corporateactionsources/{scope}/{code}/corporateactions | [EXPERIMENTAL] DeleteCorporateActions: Delete corporate actions
-[**DeleteInstrumentEvents**](CorporateActionSourcesApi.md#deleteinstrumentevents) | **DELETE** /api/corporateactionsources/{scope}/{code}/instrumentevents | [EXPERIMENTAL] DeleteInstrumentEvents: Delete corporate actions (instrument transition events) from the corporate action source.
+[**DeleteCorporateActions**](CorporateActionSourcesApi.md#deletecorporateactions) | **DELETE** /api/corporateactionsources/{scope}/{code}/corporateactions | [EARLY ACCESS] DeleteCorporateActions: Delete corporate actions
+[**DeleteInstrumentEvents**](CorporateActionSourcesApi.md#deleteinstrumentevents) | **DELETE** /api/corporateactionsources/{scope}/{code}/instrumentevents | [EARLY ACCESS] DeleteInstrumentEvents: Delete corporate actions (instrument transition events) from the corporate action source.
 [**GetCorporateActions**](CorporateActionSourcesApi.md#getcorporateactions) | **GET** /api/corporateactionsources/{scope}/{code}/corporateactions | [EARLY ACCESS] GetCorporateActions: List corporate actions (instrument transition events) from the corporate action source.
-[**GetInstrumentEvents**](CorporateActionSourcesApi.md#getinstrumentevents) | **GET** /api/corporateactionsources/{scope}/{code}/instrumentevents | [EXPERIMENTAL] GetInstrumentEvents: Get extrinsic instrument events out of a given corporate actions source.
+[**GetInstrumentEvents**](CorporateActionSourcesApi.md#getinstrumentevents) | **GET** /api/corporateactionsources/{scope}/{code}/instrumentevents | [EARLY ACCESS] GetInstrumentEvents: Get extrinsic instrument events out of a given corporate actions source.
 [**ListCorporateActionSources**](CorporateActionSourcesApi.md#listcorporateactionsources) | **GET** /api/corporateactionsources | [EARLY ACCESS] ListCorporateActionSources: List corporate action sources
-[**UpsertInstrumentEvents**](CorporateActionSourcesApi.md#upsertinstrumentevents) | **POST** /api/corporateactionsources/{scope}/{code}/instrumentevents | [EXPERIMENTAL] UpsertInstrumentEvents: Upsert instrument events to the provided corporate actions source.
+[**UpsertInstrumentEvents**](CorporateActionSourcesApi.md#upsertinstrumentevents) | **POST** /api/corporateactionsources/{scope}/{code}/instrumentevents | [EARLY ACCESS] UpsertInstrumentEvents: Upsert instrument events to the provided corporate actions source.
 
 
 <a name="batchupsertcorporateactions"></a>
@@ -253,7 +253,7 @@ Name | Type | Description  | Notes
 # **DeleteCorporateActions**
 > DeletedEntityResponse DeleteCorporateActions (string scope, string code, List<string> corporateActionIds)
 
-[EXPERIMENTAL] DeleteCorporateActions: Delete corporate actions
+[EARLY ACCESS] DeleteCorporateActions: Delete corporate actions
 
 Delete one or more corporate actions from a particular corporate action source.
 
@@ -283,7 +283,7 @@ namespace Example
 
             try
             {
-                // [EXPERIMENTAL] DeleteCorporateActions: Delete corporate actions
+                // [EARLY ACCESS] DeleteCorporateActions: Delete corporate actions
                 DeletedEntityResponse result = apiInstance.DeleteCorporateActions(scope, code, corporateActionIds);
                 Debug.WriteLine(result);
             }
@@ -333,7 +333,7 @@ Name | Type | Description  | Notes
 # **DeleteInstrumentEvents**
 > DeletedEntityResponse DeleteInstrumentEvents (string scope, string code, List<string> instrumentEventIds)
 
-[EXPERIMENTAL] DeleteInstrumentEvents: Delete corporate actions (instrument transition events) from the corporate action source.
+[EARLY ACCESS] DeleteInstrumentEvents: Delete corporate actions (instrument transition events) from the corporate action source.
 
 Delete one or more corporate actions from a particular corporate action source.
 
@@ -363,7 +363,7 @@ namespace Example
 
             try
             {
-                // [EXPERIMENTAL] DeleteInstrumentEvents: Delete corporate actions (instrument transition events) from the corporate action source.
+                // [EARLY ACCESS] DeleteInstrumentEvents: Delete corporate actions (instrument transition events) from the corporate action source.
                 DeletedEntityResponse result = apiInstance.DeleteInstrumentEvents(scope, code, instrumentEventIds);
                 Debug.WriteLine(result);
             }
@@ -503,7 +503,7 @@ Name | Type | Description  | Notes
 # **GetInstrumentEvents**
 > PagedResourceListOfInstrumentEventHolder GetInstrumentEvents (string scope, string code, DateTimeOffset? asAt = null, int? limit = null, string page = null, string filter = null)
 
-[EXPERIMENTAL] GetInstrumentEvents: Get extrinsic instrument events out of a given corporate actions source.
+[EARLY ACCESS] GetInstrumentEvents: Get extrinsic instrument events out of a given corporate actions source.
 
 Retrieves extrinsic corporate actions out of a corporate actions source
 
@@ -536,7 +536,7 @@ namespace Example
 
             try
             {
-                // [EXPERIMENTAL] GetInstrumentEvents: Get extrinsic instrument events out of a given corporate actions source.
+                // [EARLY ACCESS] GetInstrumentEvents: Get extrinsic instrument events out of a given corporate actions source.
                 PagedResourceListOfInstrumentEventHolder result = apiInstance.GetInstrumentEvents(scope, code, asAt, limit, page, filter);
                 Debug.WriteLine(result);
             }
@@ -673,7 +673,7 @@ Name | Type | Description  | Notes
 # **UpsertInstrumentEvents**
 > UpsertInstrumentEventsResponse UpsertInstrumentEvents (string scope, string code, List<UpsertInstrumentEventRequest> upsertInstrumentEventRequest = null)
 
-[EXPERIMENTAL] UpsertInstrumentEvents: Upsert instrument events to the provided corporate actions source.
+[EARLY ACCESS] UpsertInstrumentEvents: Upsert instrument events to the provided corporate actions source.
 
 Batch upsert instrument events to corporate action sources.
 
@@ -703,7 +703,7 @@ namespace Example
 
             try
             {
-                // [EXPERIMENTAL] UpsertInstrumentEvents: Upsert instrument events to the provided corporate actions source.
+                // [EARLY ACCESS] UpsertInstrumentEvents: Upsert instrument events to the provided corporate actions source.
                 UpsertInstrumentEventsResponse result = apiInstance.UpsertInstrumentEvents(scope, code, upsertInstrumentEventRequest);
                 Debug.WriteLine(result);
             }

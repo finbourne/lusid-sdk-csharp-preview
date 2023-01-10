@@ -4,17 +4,17 @@ All URIs are relative to *https://www.lusid.com/api*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
-[**DeleteBlock**](BlocksApi.md#deleteblock) | **DELETE** /api/blocks/{scope}/{code} | [EXPERIMENTAL] DeleteBlock: Delete block
-[**GetBlock**](BlocksApi.md#getblock) | **GET** /api/blocks/{scope}/{code} | [EXPERIMENTAL] GetBlock: Get Block
-[**ListBlocks**](BlocksApi.md#listblocks) | **GET** /api/blocks | [EXPERIMENTAL] ListBlocks: List Blocks
-[**UpsertBlocks**](BlocksApi.md#upsertblocks) | **POST** /api/blocks | [EXPERIMENTAL] UpsertBlocks: Upsert Block
+[**DeleteBlock**](BlocksApi.md#deleteblock) | **DELETE** /api/blocks/{scope}/{code} | [EARLY ACCESS] DeleteBlock: Delete block
+[**GetBlock**](BlocksApi.md#getblock) | **GET** /api/blocks/{scope}/{code} | [EARLY ACCESS] GetBlock: Get Block
+[**ListBlocks**](BlocksApi.md#listblocks) | **GET** /api/blocks | [EARLY ACCESS] ListBlocks: List Blocks
+[**UpsertBlocks**](BlocksApi.md#upsertblocks) | **POST** /api/blocks | [EARLY ACCESS] UpsertBlocks: Upsert Block
 
 
 <a name="deleteblock"></a>
 # **DeleteBlock**
 > DeletedEntityResponse DeleteBlock (string scope, string code)
 
-[EXPERIMENTAL] DeleteBlock: Delete block
+[EARLY ACCESS] DeleteBlock: Delete block
 
 Delete an block. Deletion will be valid from the block's creation datetime.  This means that the block will no longer exist at any effective datetime from the asAt datetime of deletion.
 
@@ -43,7 +43,7 @@ namespace Example
 
             try
             {
-                // [EXPERIMENTAL] DeleteBlock: Delete block
+                // [EARLY ACCESS] DeleteBlock: Delete block
                 DeletedEntityResponse result = apiInstance.DeleteBlock(scope, code);
                 Debug.WriteLine(result);
             }
@@ -92,7 +92,7 @@ Name | Type | Description  | Notes
 # **GetBlock**
 > Block GetBlock (string scope, string code, DateTimeOffset? asAt = null, List<string> propertyKeys = null)
 
-[EXPERIMENTAL] GetBlock: Get Block
+[EARLY ACCESS] GetBlock: Get Block
 
 Fetch a Block that matches the specified identifier
 
@@ -123,7 +123,7 @@ namespace Example
 
             try
             {
-                // [EXPERIMENTAL] GetBlock: Get Block
+                // [EARLY ACCESS] GetBlock: Get Block
                 Block result = apiInstance.GetBlock(scope, code, asAt, propertyKeys);
                 Debug.WriteLine(result);
             }
@@ -174,7 +174,7 @@ Name | Type | Description  | Notes
 # **ListBlocks**
 > PagedResourceListOfBlock ListBlocks (DateTimeOffset? asAt = null, string page = null, List<string> sortBy = null, int? limit = null, string filter = null, List<string> propertyKeys = null)
 
-[EXPERIMENTAL] ListBlocks: List Blocks
+[EARLY ACCESS] ListBlocks: List Blocks
 
 Fetch the last pre-AsAt date version of each block in scope (does not fetch the entire history).
 
@@ -207,7 +207,7 @@ namespace Example
 
             try
             {
-                // [EXPERIMENTAL] ListBlocks: List Blocks
+                // [EARLY ACCESS] ListBlocks: List Blocks
                 PagedResourceListOfBlock result = apiInstance.ListBlocks(asAt, page, sortBy, limit, filter, propertyKeys);
                 Debug.WriteLine(result);
             }
@@ -260,7 +260,7 @@ Name | Type | Description  | Notes
 # **UpsertBlocks**
 > ResourceListOfBlock UpsertBlocks (BlockSetRequest blockSetRequest = null)
 
-[EXPERIMENTAL] UpsertBlocks: Upsert Block
+[EARLY ACCESS] UpsertBlocks: Upsert Block
 
 Upsert; update existing blocks with given ids, or create new blocks otherwise.
 
@@ -288,7 +288,7 @@ namespace Example
 
             try
             {
-                // [EXPERIMENTAL] UpsertBlocks: Upsert Block
+                // [EARLY ACCESS] UpsertBlocks: Upsert Block
                 ResourceListOfBlock result = apiInstance.UpsertBlocks(blockSetRequest);
                 Debug.WriteLine(result);
             }

@@ -4,22 +4,22 @@ All URIs are relative to *https://www.lusid.com/api*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
-[**DeletePerson**](PersonsApi.md#deleteperson) | **DELETE** /api/persons/{idTypeScope}/{idTypeCode}/{code} | [EXPERIMENTAL] DeletePerson: Delete person
+[**DeletePerson**](PersonsApi.md#deleteperson) | **DELETE** /api/persons/{idTypeScope}/{idTypeCode}/{code} | [EARLY ACCESS] DeletePerson: Delete person
 [**DeletePersonAccessMetadata**](PersonsApi.md#deletepersonaccessmetadata) | **DELETE** /api/persons/{idTypeScope}/{idTypeCode}/{code}/metadata/{metadataKey} | [EARLY ACCESS] DeletePersonAccessMetadata: Delete a Person Access Metadata entry
-[**DeletePersonIdentifiers**](PersonsApi.md#deletepersonidentifiers) | **DELETE** /api/persons/{idTypeScope}/{idTypeCode}/{code}/identifiers | [EXPERIMENTAL] DeletePersonIdentifiers: Delete Person Identifiers
-[**DeletePersonProperties**](PersonsApi.md#deletepersonproperties) | **DELETE** /api/persons/{idTypeScope}/{idTypeCode}/{code}/properties | [EXPERIMENTAL] DeletePersonProperties: Delete Person Properties
+[**DeletePersonIdentifiers**](PersonsApi.md#deletepersonidentifiers) | **DELETE** /api/persons/{idTypeScope}/{idTypeCode}/{code}/identifiers | [EARLY ACCESS] DeletePersonIdentifiers: Delete Person Identifiers
+[**DeletePersonProperties**](PersonsApi.md#deletepersonproperties) | **DELETE** /api/persons/{idTypeScope}/{idTypeCode}/{code}/properties | [EARLY ACCESS] DeletePersonProperties: Delete Person Properties
 [**GetAllPersonAccessMetadata**](PersonsApi.md#getallpersonaccessmetadata) | **GET** /api/persons/{idTypeScope}/{idTypeCode}/{code}/metadata | [EARLY ACCESS] GetAllPersonAccessMetadata: Get Access Metadata rules for a Person
-[**GetPerson**](PersonsApi.md#getperson) | **GET** /api/persons/{idTypeScope}/{idTypeCode}/{code} | [EXPERIMENTAL] GetPerson: Get Person
+[**GetPerson**](PersonsApi.md#getperson) | **GET** /api/persons/{idTypeScope}/{idTypeCode}/{code} | [EARLY ACCESS] GetPerson: Get Person
 [**GetPersonAccessMetadataByKey**](PersonsApi.md#getpersonaccessmetadatabykey) | **GET** /api/persons/{idTypeScope}/{idTypeCode}/{code}/metadata/{metadataKey} | [EARLY ACCESS] GetPersonAccessMetadataByKey: Get an entry identified by a metadataKey in the Access Metadata of a Person
-[**GetPersonPropertyTimeSeries**](PersonsApi.md#getpersonpropertytimeseries) | **GET** /api/persons/{idTypeScope}/{idTypeCode}/{code}/properties/time-series | [EXPERIMENTAL] GetPersonPropertyTimeSeries: Get Person Property Time Series
-[**GetPersonRelations**](PersonsApi.md#getpersonrelations) | **GET** /api/persons/{idTypeScope}/{idTypeCode}/{code}/relations | [EXPERIMENTAL] GetPersonRelations: Get Relations for Person
+[**GetPersonPropertyTimeSeries**](PersonsApi.md#getpersonpropertytimeseries) | **GET** /api/persons/{idTypeScope}/{idTypeCode}/{code}/properties/time-series | [EARLY ACCESS] GetPersonPropertyTimeSeries: Get Person Property Time Series
+[**GetPersonRelations**](PersonsApi.md#getpersonrelations) | **GET** /api/persons/{idTypeScope}/{idTypeCode}/{code}/relations | [EARLY ACCESS] GetPersonRelations: Get Relations for Person
 [**GetPersonRelationships**](PersonsApi.md#getpersonrelationships) | **GET** /api/persons/{idTypeScope}/{idTypeCode}/{code}/relationships | [EARLY ACCESS] GetPersonRelationships: Get Relationships for Person
-[**ListAllPersons**](PersonsApi.md#listallpersons) | **GET** /api/persons | [EXPERIMENTAL] ListAllPersons: List All Persons
-[**ListPersons**](PersonsApi.md#listpersons) | **GET** /api/persons/{idTypeScope}/{idTypeCode} | [EXPERIMENTAL] ListPersons: List Persons
-[**PatchPersonAccessMetadata**](PersonsApi.md#patchpersonaccessmetadata) | **PATCH** /api/persons/{idTypeScope}/{idTypeCode}/{code}/metadata | [EXPERIMENTAL] PatchPersonAccessMetadata: Patch Access Metadata rules for a Person.
-[**SetPersonIdentifiers**](PersonsApi.md#setpersonidentifiers) | **POST** /api/persons/{idTypeScope}/{idTypeCode}/{code}/identifiers | [EXPERIMENTAL] SetPersonIdentifiers: Set Person Identifiers
-[**SetPersonProperties**](PersonsApi.md#setpersonproperties) | **POST** /api/persons/{idTypeScope}/{idTypeCode}/{code}/properties | [EXPERIMENTAL] SetPersonProperties: Set Person Properties
-[**UpsertPerson**](PersonsApi.md#upsertperson) | **POST** /api/persons | [EXPERIMENTAL] UpsertPerson: Upsert Person
+[**ListAllPersons**](PersonsApi.md#listallpersons) | **GET** /api/persons | [EARLY ACCESS] ListAllPersons: List All Persons
+[**ListPersons**](PersonsApi.md#listpersons) | **GET** /api/persons/{idTypeScope}/{idTypeCode} | [EARLY ACCESS] ListPersons: List Persons
+[**PatchPersonAccessMetadata**](PersonsApi.md#patchpersonaccessmetadata) | **PATCH** /api/persons/{idTypeScope}/{idTypeCode}/{code}/metadata | [EARLY ACCESS] PatchPersonAccessMetadata: Patch Access Metadata rules for a Person.
+[**SetPersonIdentifiers**](PersonsApi.md#setpersonidentifiers) | **POST** /api/persons/{idTypeScope}/{idTypeCode}/{code}/identifiers | [EARLY ACCESS] SetPersonIdentifiers: Set Person Identifiers
+[**SetPersonProperties**](PersonsApi.md#setpersonproperties) | **POST** /api/persons/{idTypeScope}/{idTypeCode}/{code}/properties | [EARLY ACCESS] SetPersonProperties: Set Person Properties
+[**UpsertPerson**](PersonsApi.md#upsertperson) | **POST** /api/persons | [EARLY ACCESS] UpsertPerson: Upsert Person
 [**UpsertPersonAccessMetadata**](PersonsApi.md#upsertpersonaccessmetadata) | **PUT** /api/persons/{idTypeScope}/{idTypeCode}/{code}/metadata/{metadataKey} | [EARLY ACCESS] UpsertPersonAccessMetadata: Upsert a Person Access Metadata entry associated with a specific metadataKey. This creates or updates the data in LUSID.
 
 
@@ -27,7 +27,7 @@ Method | HTTP request | Description
 # **DeletePerson**
 > DeletedEntityResponse DeletePerson (string idTypeScope, string idTypeCode, string code)
 
-[EXPERIMENTAL] DeletePerson: Delete person
+[EARLY ACCESS] DeletePerson: Delete person
 
 Delete a person. Deletion will be valid from the person's creation datetime.  This means that the person will no longer exist at any effective datetime from the asAt datetime of deletion.
 
@@ -57,7 +57,7 @@ namespace Example
 
             try
             {
-                // [EXPERIMENTAL] DeletePerson: Delete person
+                // [EARLY ACCESS] DeletePerson: Delete person
                 DeletedEntityResponse result = apiInstance.DeletePerson(idTypeScope, idTypeCode, code);
                 Debug.WriteLine(result);
             }
@@ -193,7 +193,7 @@ Name | Type | Description  | Notes
 # **DeletePersonIdentifiers**
 > DeletedEntityResponse DeletePersonIdentifiers (string idTypeScope, string idTypeCode, string code, List<string> propertyKeys, DateTimeOrCutLabel effectiveAt = null)
 
-[EXPERIMENTAL] DeletePersonIdentifiers: Delete Person Identifiers
+[EARLY ACCESS] DeletePersonIdentifiers: Delete Person Identifiers
 
 Delete identifiers that belong to the given property keys of the person.
 
@@ -225,7 +225,7 @@ namespace Example
 
             try
             {
-                // [EXPERIMENTAL] DeletePersonIdentifiers: Delete Person Identifiers
+                // [EARLY ACCESS] DeletePersonIdentifiers: Delete Person Identifiers
                 DeletedEntityResponse result = apiInstance.DeletePersonIdentifiers(idTypeScope, idTypeCode, code, propertyKeys, effectiveAt);
                 Debug.WriteLine(result);
             }
@@ -277,7 +277,7 @@ Name | Type | Description  | Notes
 # **DeletePersonProperties**
 > DeletedEntityResponse DeletePersonProperties (string idTypeScope, string idTypeCode, string code, List<string> propertyKeys, DateTimeOrCutLabel effectiveAt = null)
 
-[EXPERIMENTAL] DeletePersonProperties: Delete Person Properties
+[EARLY ACCESS] DeletePersonProperties: Delete Person Properties
 
 Delete all properties that belong to the given property keys of the person.
 
@@ -309,7 +309,7 @@ namespace Example
 
             try
             {
-                // [EXPERIMENTAL] DeletePersonProperties: Delete Person Properties
+                // [EARLY ACCESS] DeletePersonProperties: Delete Person Properties
                 DeletedEntityResponse result = apiInstance.DeletePersonProperties(idTypeScope, idTypeCode, code, propertyKeys, effectiveAt);
                 Debug.WriteLine(result);
             }
@@ -445,7 +445,7 @@ Name | Type | Description  | Notes
 # **GetPerson**
 > Person GetPerson (string idTypeScope, string idTypeCode, string code, List<string> propertyKeys = null, DateTimeOrCutLabel effectiveAt = null, DateTimeOffset? asAt = null, List<string> relationshipDefinitionIds = null)
 
-[EXPERIMENTAL] GetPerson: Get Person
+[EARLY ACCESS] GetPerson: Get Person
 
 Retrieve the definition of a person.
 
@@ -479,7 +479,7 @@ namespace Example
 
             try
             {
-                // [EXPERIMENTAL] GetPerson: Get Person
+                // [EARLY ACCESS] GetPerson: Get Person
                 Person result = apiInstance.GetPerson(idTypeScope, idTypeCode, code, propertyKeys, effectiveAt, asAt, relationshipDefinitionIds);
                 Debug.WriteLine(result);
             }
@@ -619,7 +619,7 @@ Name | Type | Description  | Notes
 # **GetPersonPropertyTimeSeries**
 > ResourceListOfPropertyInterval GetPersonPropertyTimeSeries (string idTypeScope, string idTypeCode, string code, string propertyKey, DateTimeOffset? asAt = null, string filter = null, string page = null, int? limit = null)
 
-[EXPERIMENTAL] GetPersonPropertyTimeSeries: Get Person Property Time Series
+[EARLY ACCESS] GetPersonPropertyTimeSeries: Get Person Property Time Series
 
 List the complete time series of a person property.
 
@@ -654,7 +654,7 @@ namespace Example
 
             try
             {
-                // [EXPERIMENTAL] GetPersonPropertyTimeSeries: Get Person Property Time Series
+                // [EARLY ACCESS] GetPersonPropertyTimeSeries: Get Person Property Time Series
                 ResourceListOfPropertyInterval result = apiInstance.GetPersonPropertyTimeSeries(idTypeScope, idTypeCode, code, propertyKey, asAt, filter, page, limit);
                 Debug.WriteLine(result);
             }
@@ -709,7 +709,7 @@ Name | Type | Description  | Notes
 # **GetPersonRelations**
 > ResourceListOfRelation GetPersonRelations (string idTypeScope, string idTypeCode, string code, DateTimeOrCutLabel effectiveAt = null, DateTimeOffset? asAt = null, string filter = null, List<string> identifierTypes = null)
 
-[EXPERIMENTAL] GetPersonRelations: Get Relations for Person
+[EARLY ACCESS] GetPersonRelations: Get Relations for Person
 
 Get relations for the specified person.
 
@@ -743,7 +743,7 @@ namespace Example
 
             try
             {
-                // [EXPERIMENTAL] GetPersonRelations: Get Relations for Person
+                // [EARLY ACCESS] GetPersonRelations: Get Relations for Person
                 ResourceListOfRelation result = apiInstance.GetPersonRelations(idTypeScope, idTypeCode, code, effectiveAt, asAt, filter, identifierTypes);
                 Debug.WriteLine(result);
             }
@@ -885,7 +885,7 @@ Name | Type | Description  | Notes
 # **ListAllPersons**
 > ResourceListOfPerson ListAllPersons (DateTimeOrCutLabel effectiveAt = null, DateTimeOffset? asAt = null, string page = null, int? limit = null, string filter = null, List<string> propertyKeys = null, List<string> relationshipDefinitionIds = null)
 
-[EXPERIMENTAL] ListAllPersons: List All Persons
+[EARLY ACCESS] ListAllPersons: List All Persons
 
 List all persons which the user is entitled to see.
 
@@ -919,7 +919,7 @@ namespace Example
 
             try
             {
-                // [EXPERIMENTAL] ListAllPersons: List All Persons
+                // [EARLY ACCESS] ListAllPersons: List All Persons
                 ResourceListOfPerson result = apiInstance.ListAllPersons(effectiveAt, asAt, page, limit, filter, propertyKeys, relationshipDefinitionIds);
                 Debug.WriteLine(result);
             }
@@ -973,7 +973,7 @@ Name | Type | Description  | Notes
 # **ListPersons**
 > PagedResourceListOfPerson ListPersons (string idTypeScope, string idTypeCode, DateTimeOrCutLabel effectiveAt = null, DateTimeOffset? asAt = null, string page = null, int? start = null, int? limit = null, string filter = null, List<string> propertyKeys = null, List<string> relationshipDefinitionIds = null)
 
-[EXPERIMENTAL] ListPersons: List Persons
+[EARLY ACCESS] ListPersons: List Persons
 
 List persons which have identifiers of a specific identifier type's scope and code, and satisfies filter criteria.
 
@@ -1010,7 +1010,7 @@ namespace Example
 
             try
             {
-                // [EXPERIMENTAL] ListPersons: List Persons
+                // [EARLY ACCESS] ListPersons: List Persons
                 PagedResourceListOfPerson result = apiInstance.ListPersons(idTypeScope, idTypeCode, effectiveAt, asAt, page, start, limit, filter, propertyKeys, relationshipDefinitionIds);
                 Debug.WriteLine(result);
             }
@@ -1067,7 +1067,7 @@ Name | Type | Description  | Notes
 # **PatchPersonAccessMetadata**
 > Dictionary&lt;string, List&lt;AccessMetadataValue&gt;&gt; PatchPersonAccessMetadata (string idTypeScope, string idTypeCode, string code, List<AccessMetadataOperation> accessMetadataOperation, DateTimeOrCutLabel effectiveAt = null, DateTimeOffset? effectiveUntil = null)
 
-[EXPERIMENTAL] PatchPersonAccessMetadata: Patch Access Metadata rules for a Person.
+[EARLY ACCESS] PatchPersonAccessMetadata: Patch Access Metadata rules for a Person.
 
 Patch Person Access Metadata Rules in a single scope.  The behaviour is defined by the JSON Patch specification.                Currently only 'add' is a supported operation on the patch document.    Currently only valid metadata keys are supported paths on the patch document.                The response will return any affected Person Access Metadata rules or a failure message if unsuccessful.                It is important to always check to verify success (or failure).                Multiple rules for a metadataKey can exist with different effective at dates, when resources are accessed the rule that is active for the current time will be fetched.
 
@@ -1100,7 +1100,7 @@ namespace Example
 
             try
             {
-                // [EXPERIMENTAL] PatchPersonAccessMetadata: Patch Access Metadata rules for a Person.
+                // [EARLY ACCESS] PatchPersonAccessMetadata: Patch Access Metadata rules for a Person.
                 Dictionary<string, List<AccessMetadataValue>> result = apiInstance.PatchPersonAccessMetadata(idTypeScope, idTypeCode, code, accessMetadataOperation, effectiveAt, effectiveUntil);
                 Debug.WriteLine(result);
             }
@@ -1153,7 +1153,7 @@ Name | Type | Description  | Notes
 # **SetPersonIdentifiers**
 > Person SetPersonIdentifiers (string idTypeScope, string idTypeCode, string code, SetPersonIdentifiersRequest setPersonIdentifiersRequest)
 
-[EXPERIMENTAL] SetPersonIdentifiers: Set Person Identifiers
+[EARLY ACCESS] SetPersonIdentifiers: Set Person Identifiers
 
 Set identifiers of the person.
 
@@ -1184,7 +1184,7 @@ namespace Example
 
             try
             {
-                // [EXPERIMENTAL] SetPersonIdentifiers: Set Person Identifiers
+                // [EARLY ACCESS] SetPersonIdentifiers: Set Person Identifiers
                 Person result = apiInstance.SetPersonIdentifiers(idTypeScope, idTypeCode, code, setPersonIdentifiersRequest);
                 Debug.WriteLine(result);
             }
@@ -1235,7 +1235,7 @@ Name | Type | Description  | Notes
 # **SetPersonProperties**
 > Person SetPersonProperties (string idTypeScope, string idTypeCode, string code, SetPersonPropertiesRequest setPersonPropertiesRequest)
 
-[EXPERIMENTAL] SetPersonProperties: Set Person Properties
+[EARLY ACCESS] SetPersonProperties: Set Person Properties
 
 Set properties of the person.
 
@@ -1266,7 +1266,7 @@ namespace Example
 
             try
             {
-                // [EXPERIMENTAL] SetPersonProperties: Set Person Properties
+                // [EARLY ACCESS] SetPersonProperties: Set Person Properties
                 Person result = apiInstance.SetPersonProperties(idTypeScope, idTypeCode, code, setPersonPropertiesRequest);
                 Debug.WriteLine(result);
             }
@@ -1317,7 +1317,7 @@ Name | Type | Description  | Notes
 # **UpsertPerson**
 > Person UpsertPerson (UpsertPersonRequest upsertPersonRequest)
 
-[EXPERIMENTAL] UpsertPerson: Upsert Person
+[EARLY ACCESS] UpsertPerson: Upsert Person
 
 Create or update a new person under the specified scope.
 
@@ -1345,7 +1345,7 @@ namespace Example
 
             try
             {
-                // [EXPERIMENTAL] UpsertPerson: Upsert Person
+                // [EARLY ACCESS] UpsertPerson: Upsert Person
                 Person result = apiInstance.UpsertPerson(upsertPersonRequest);
                 Debug.WriteLine(result);
             }
