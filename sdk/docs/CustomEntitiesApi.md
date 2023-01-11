@@ -8,7 +8,7 @@ Method | HTTP request | Description
 [**GetCustomEntity**](CustomEntitiesApi.md#getcustomentity) | **GET** /api/customentities/{entityType}/{identifierType}/{identifierValue} | [EARLY ACCESS] GetCustomEntity: Get a Custom Entity instance.
 [**GetCustomEntityRelationships**](CustomEntitiesApi.md#getcustomentityrelationships) | **GET** /api/customentities/{entityType}/{identifierType}/{identifierValue}/relationships | [EARLY ACCESS] GetCustomEntityRelationships: Get Relationships for Custom Entity
 [**ListCustomEntities**](CustomEntitiesApi.md#listcustomentities) | **GET** /api/customentities/{entityType} | [EARLY ACCESS] ListCustomEntities: List Custom Entities of the specified entityType.
-[**UpsertCustomEntities**](CustomEntitiesApi.md#upsertcustomentities) | **POST** /api/customentities/{entityType}/$batchUpsert | [EXPERIMENTAL] UpsertCustomEntities: Batch upsert instances of Custom Entities
+[**UpsertCustomEntities**](CustomEntitiesApi.md#upsertcustomentities) | **POST** /api/customentities/{entityType}/$batchUpsert | [EARLY ACCESS] UpsertCustomEntities: Batch upsert instances of Custom Entities
 [**UpsertCustomEntity**](CustomEntitiesApi.md#upsertcustomentity) | **POST** /api/customentities/{entityType} | [EARLY ACCESS] UpsertCustomEntity: Upsert a Custom Entity instance
 
 
@@ -368,7 +368,7 @@ Name | Type | Description  | Notes
 # **UpsertCustomEntities**
 > UpsertCustomEntitiesResponse UpsertCustomEntities (string entityType, string successMode, Dictionary<string, CustomEntityRequest> requestBody)
 
-[EXPERIMENTAL] UpsertCustomEntities: Batch upsert instances of Custom Entities
+[EARLY ACCESS] UpsertCustomEntities: Batch upsert instances of Custom Entities
 
 Note: If using partial failure modes, then it is important to check the response body for failures as any failures will still return a 200 status code
 
@@ -398,7 +398,7 @@ namespace Example
 
             try
             {
-                // [EXPERIMENTAL] UpsertCustomEntities: Batch upsert instances of Custom Entities
+                // [EARLY ACCESS] UpsertCustomEntities: Batch upsert instances of Custom Entities
                 UpsertCustomEntitiesResponse result = apiInstance.UpsertCustomEntities(entityType, successMode, requestBody);
                 Debug.WriteLine(result);
             }
