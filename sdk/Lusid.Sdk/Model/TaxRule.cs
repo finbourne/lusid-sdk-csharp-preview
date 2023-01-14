@@ -44,7 +44,7 @@ namespace Lusid.Sdk.Model
         /// <param name="description">A description for this rule (required).</param>
         /// <param name="rate">The rate to be applied if all criteria are met (required).</param>
         /// <param name="matchCriteria">A set of criteria to be met for this rule to be applied (required).</param>
-        /// <param name="links">Collection of links..</param>
+        /// <param name="links">links.</param>
         public TaxRule(string name = default(string), string description = default(string), decimal rate = default(decimal), List<MatchCriterion> matchCriteria = default(List<MatchCriterion>), List<Link> links = default(List<Link>))
         {
             // to ensure "name" is required (not null)
@@ -86,9 +86,8 @@ namespace Lusid.Sdk.Model
         public List<MatchCriterion> MatchCriteria { get; set; }
 
         /// <summary>
-        /// Collection of links.
+        /// Gets or Sets Links
         /// </summary>
-        /// <value>Collection of links.</value>
         [DataMember(Name = "links", EmitDefaultValue = true)]
         public List<Link> Links { get; set; }
 
