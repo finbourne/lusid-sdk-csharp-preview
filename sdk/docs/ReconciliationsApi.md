@@ -199,7 +199,7 @@ namespace Example
             config.AccessToken = "YOUR_ACCESS_TOKEN";
 
             var apiInstance = new ReconciliationsApi(config);
-            var reconciliationType = reconciliationType_example;  // string | Optional parameter to specify which type of mappings should be returned.              Currently only supports Transaction types (optional) 
+            var reconciliationType = reconciliationType_example;  // string | Optional parameter to specify which type of mappings should be returned.  Defaults to Transaction if not provided. (optional) 
 
             try
             {
@@ -222,7 +222,7 @@ namespace Example
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **reconciliationType** | **string**| Optional parameter to specify which type of mappings should be returned.              Currently only supports Transaction types | [optional] 
+ **reconciliationType** | **string**| Optional parameter to specify which type of mappings should be returned.  Defaults to Transaction if not provided. | [optional] 
 
 ### Return type
 
