@@ -40,7 +40,7 @@ namespace Lusid.Sdk.Model
         /// <param name="reportCurrency">Three letter ISO currency string indicating what currency to report in for ReportCcy denominated queries.  If not present then the currency of the relevant portfolio will be used in its place where relevant..</param>
         /// <param name="dataSchema">dataSchema.</param>
         /// <param name="failed">Information about where instruments have failed to return cashflows in so far as it is available.  e.g., failure to retrieve a market quote for a floating rate instrument..</param>
-        /// <param name="links">Collection of links..</param>
+        /// <param name="links">links.</param>
         public BucketedCashFlowResponse(string href = default(string), List<Dictionary<string, Object>> data = default(List<Dictionary<string, Object>>), string reportCurrency = default(string), ResultDataSchema dataSchema = default(ResultDataSchema), Dictionary<string, ErrorDetail> failed = default(Dictionary<string, ErrorDetail>), List<Link> links = default(List<Link>))
         {
             this.Href = href;
@@ -85,9 +85,8 @@ namespace Lusid.Sdk.Model
         public Dictionary<string, ErrorDetail> Failed { get; set; }
 
         /// <summary>
-        /// Collection of links.
+        /// Gets or Sets Links
         /// </summary>
-        /// <value>Collection of links.</value>
         [DataMember(Name = "links", EmitDefaultValue = true)]
         public List<Link> Links { get; set; }
 
