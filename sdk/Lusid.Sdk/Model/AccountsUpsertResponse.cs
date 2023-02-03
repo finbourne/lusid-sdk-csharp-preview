@@ -38,7 +38,7 @@ namespace Lusid.Sdk.Model
         /// <param name="href">The specific Uniform Resource Identifier (URI) for this resource at the requested effective and asAt datetime..</param>
         /// <param name="version">version.</param>
         /// <param name="accounts">The Accounts which have been upserted..</param>
-        /// <param name="links">Collection of links..</param>
+        /// <param name="links">links.</param>
         public AccountsUpsertResponse(string href = default(string), Version version = default(Version), List<Account> accounts = default(List<Account>), List<Link> links = default(List<Link>))
         {
             this.Href = href;
@@ -68,9 +68,8 @@ namespace Lusid.Sdk.Model
         public List<Account> Accounts { get; set; }
 
         /// <summary>
-        /// Collection of links.
+        /// Gets or Sets Links
         /// </summary>
-        /// <value>Collection of links.</value>
         [DataMember(Name = "links", EmitDefaultValue = true)]
         public List<Link> Links { get; set; }
 
