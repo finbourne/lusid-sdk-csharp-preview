@@ -48,7 +48,7 @@ namespace Lusid.Sdk.Model
         /// <param name="sourceInstrumentScope">The unqiue Lusid Instrument Id (LUID) of the instrument that the holding is in. (required).</param>
         /// <param name="sourceInstrumentId">The unqiue Lusid Instrument Id (LUID) of the instrument that the holding is in. (required).</param>
         /// <param name="diagnostics">Whilst a cash flow is defined by an (amount,ccy) pair and the date it is paid on there is additional information required for diagnostics. This includes a range of information and can be empty in the case of a simple cash quantity or where further information is not available. Typical information includes items such as reset dates, RIC, accrual start/end, number of days and curve data. (required).</param>
-        /// <param name="links">Collection of links..</param>
+        /// <param name="links">links.</param>
         public InstrumentCashFlow(DateTimeOffset paymentDate = default(DateTimeOffset), decimal? amount = default(decimal?), string currency = default(string), ResourceId sourcePortfolioId = default(ResourceId), string sourceTransactionId = default(string), string sourceInstrumentScope = default(string), string sourceInstrumentId = default(string), Dictionary<string, string> diagnostics = default(Dictionary<string, string>), List<Link> links = default(List<Link>))
         {
             this.PaymentDate = paymentDate;
@@ -124,9 +124,8 @@ namespace Lusid.Sdk.Model
         public Dictionary<string, string> Diagnostics { get; set; }
 
         /// <summary>
-        /// Collection of links.
+        /// Gets or Sets Links
         /// </summary>
-        /// <value>Collection of links.</value>
         [DataMember(Name = "links", EmitDefaultValue = true)]
         public List<Link> Links { get; set; }
 
