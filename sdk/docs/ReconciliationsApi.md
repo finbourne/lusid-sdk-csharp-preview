@@ -4,22 +4,22 @@ All URIs are relative to *https://www.lusid.com/api*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
-[**DeleteReconciliationMapping**](ReconciliationsApi.md#deletereconciliationmapping) | **DELETE** /api/portfolios/mapping/{scope}/{code} | [EXPERIMENTAL] DeleteReconciliationMapping: Delete a mapping
-[**GetReconciliationMapping**](ReconciliationsApi.md#getreconciliationmapping) | **GET** /api/portfolios/mapping/{scope}/{code} | [EXPERIMENTAL] GetReconciliationMapping: Get a mapping
-[**ListReconciliationMappings**](ReconciliationsApi.md#listreconciliationmappings) | **GET** /api/portfolios/mapping | [EXPERIMENTAL] ListReconciliationMappings: List the reconciliation mappings
+[**DeleteReconciliationMapping**](ReconciliationsApi.md#deletereconciliationmapping) | **DELETE** /api/portfolios/mapping/{scope}/{code} | [EARLY ACCESS] DeleteReconciliationMapping: Delete a mapping
+[**GetReconciliationMapping**](ReconciliationsApi.md#getreconciliationmapping) | **GET** /api/portfolios/mapping/{scope}/{code} | [EARLY ACCESS] GetReconciliationMapping: Get a mapping
+[**ListReconciliationMappings**](ReconciliationsApi.md#listreconciliationmappings) | **GET** /api/portfolios/mapping | [EARLY ACCESS] ListReconciliationMappings: List the reconciliation mappings
 [**ReconcileGeneric**](ReconciliationsApi.md#reconcilegeneric) | **POST** /api/portfolios/$reconcileGeneric | ReconcileGeneric: Reconcile either holdings or valuations performed on one or two sets of holdings using one or two configuration recipes.                The output is configurable for various types of comparisons, to allow tolerances on numerical and date-time data or case-insensitivity on strings,  and elision of resulting differences where they are &#39;empty&#39; or null or zero.
 [**ReconcileHoldings**](ReconciliationsApi.md#reconcileholdings) | **POST** /api/portfolios/$reconcileholdings | [EARLY ACCESS] ReconcileHoldings: Reconcile portfolio holdings
 [**ReconcileInline**](ReconciliationsApi.md#reconcileinline) | **POST** /api/portfolios/$reconcileInline | ReconcileInline: Reconcile valuations performed on one or two sets of inline instruments using one or two configuration recipes.
-[**ReconcileTransactions**](ReconciliationsApi.md#reconciletransactions) | **POST** /api/portfolios/$reconcileTransactions | [EXPERIMENTAL] ReconcileTransactions: Perform a Transactions Reconciliation.
+[**ReconcileTransactions**](ReconciliationsApi.md#reconciletransactions) | **POST** /api/portfolios/$reconcileTransactions | [EARLY ACCESS] ReconcileTransactions: Perform a Transactions Reconciliation.
 [**ReconcileValuation**](ReconciliationsApi.md#reconcilevaluation) | **POST** /api/portfolios/$reconcileValuation | ReconcileValuation: Reconcile valuations performed on one or two sets of holdings using one or two configuration recipes.
-[**UpsertReconciliationMapping**](ReconciliationsApi.md#upsertreconciliationmapping) | **POST** /api/portfolios/mapping | [EXPERIMENTAL] UpsertReconciliationMapping: Create or update a mapping
+[**UpsertReconciliationMapping**](ReconciliationsApi.md#upsertreconciliationmapping) | **POST** /api/portfolios/mapping | [EARLY ACCESS] UpsertReconciliationMapping: Create or update a mapping
 
 
 <a name="deletereconciliationmapping"></a>
 # **DeleteReconciliationMapping**
 > string DeleteReconciliationMapping (string scope, string code)
 
-[EXPERIMENTAL] DeleteReconciliationMapping: Delete a mapping
+[EARLY ACCESS] DeleteReconciliationMapping: Delete a mapping
 
 Deletes the mapping identified by the scope and code
 
@@ -48,7 +48,7 @@ namespace Example
 
             try
             {
-                // [EXPERIMENTAL] DeleteReconciliationMapping: Delete a mapping
+                // [EARLY ACCESS] DeleteReconciliationMapping: Delete a mapping
                 string result = apiInstance.DeleteReconciliationMapping(scope, code);
                 Debug.WriteLine(result);
             }
@@ -97,7 +97,7 @@ Name | Type | Description  | Notes
 # **GetReconciliationMapping**
 > Mapping GetReconciliationMapping (string scope, string code)
 
-[EXPERIMENTAL] GetReconciliationMapping: Get a mapping
+[EARLY ACCESS] GetReconciliationMapping: Get a mapping
 
 Gets a mapping identified by the given scope and code
 
@@ -126,7 +126,7 @@ namespace Example
 
             try
             {
-                // [EXPERIMENTAL] GetReconciliationMapping: Get a mapping
+                // [EARLY ACCESS] GetReconciliationMapping: Get a mapping
                 Mapping result = apiInstance.GetReconciliationMapping(scope, code);
                 Debug.WriteLine(result);
             }
@@ -175,7 +175,7 @@ Name | Type | Description  | Notes
 # **ListReconciliationMappings**
 > ResourceListOfMapping ListReconciliationMappings (string reconciliationType = null)
 
-[EXPERIMENTAL] ListReconciliationMappings: List the reconciliation mappings
+[EARLY ACCESS] ListReconciliationMappings: List the reconciliation mappings
 
 Lists all mappings this user is entitled to see
 
@@ -203,7 +203,7 @@ namespace Example
 
             try
             {
-                // [EXPERIMENTAL] ListReconciliationMappings: List the reconciliation mappings
+                // [EARLY ACCESS] ListReconciliationMappings: List the reconciliation mappings
                 ResourceListOfMapping result = apiInstance.ListReconciliationMappings(reconciliationType);
                 Debug.WriteLine(result);
             }
@@ -487,7 +487,7 @@ Name | Type | Description  | Notes
 # **ReconcileTransactions**
 > TransactionsReconciliationsResponse ReconcileTransactions (TransactionReconciliationRequest transactionReconciliationRequest = null)
 
-[EXPERIMENTAL] ReconcileTransactions: Perform a Transactions Reconciliation.
+[EARLY ACCESS] ReconcileTransactions: Perform a Transactions Reconciliation.
 
 Evaluates two sets of transactions to determine which transactions from each set likely match  using the rules of a specified mapping.
 
@@ -515,7 +515,7 @@ namespace Example
 
             try
             {
-                // [EXPERIMENTAL] ReconcileTransactions: Perform a Transactions Reconciliation.
+                // [EARLY ACCESS] ReconcileTransactions: Perform a Transactions Reconciliation.
                 TransactionsReconciliationsResponse result = apiInstance.ReconcileTransactions(transactionReconciliationRequest);
                 Debug.WriteLine(result);
             }
@@ -639,7 +639,7 @@ Name | Type | Description  | Notes
 # **UpsertReconciliationMapping**
 > Mapping UpsertReconciliationMapping (Mapping mapping = null)
 
-[EXPERIMENTAL] UpsertReconciliationMapping: Create or update a mapping
+[EARLY ACCESS] UpsertReconciliationMapping: Create or update a mapping
 
 If no mapping exists with the specified scope and code will create a new one.  Else will update the existing mapping
 
@@ -667,7 +667,7 @@ namespace Example
 
             try
             {
-                // [EXPERIMENTAL] UpsertReconciliationMapping: Create or update a mapping
+                // [EARLY ACCESS] UpsertReconciliationMapping: Create or update a mapping
                 Mapping result = apiInstance.UpsertReconciliationMapping(mapping);
                 Debug.WriteLine(result);
             }
