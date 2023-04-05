@@ -4,17 +4,17 @@ All URIs are relative to *https://www.lusid.com/api*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
-[**DeletePlacement**](PlacementsApi.md#deleteplacement) | **DELETE** /api/placements/{scope}/{code} | [EXPERIMENTAL] DeletePlacement: Delete placement
-[**GetPlacement**](PlacementsApi.md#getplacement) | **GET** /api/placements/{scope}/{code} | [EXPERIMENTAL] GetPlacement: Get Placement
-[**ListPlacements**](PlacementsApi.md#listplacements) | **GET** /api/placements | [EXPERIMENTAL] ListPlacements: List Placements
-[**UpsertPlacements**](PlacementsApi.md#upsertplacements) | **POST** /api/placements | [EXPERIMENTAL] UpsertPlacements: Upsert Placement
+[**DeletePlacement**](PlacementsApi.md#deleteplacement) | **DELETE** /api/placements/{scope}/{code} | [EARLY ACCESS] DeletePlacement: Delete placement
+[**GetPlacement**](PlacementsApi.md#getplacement) | **GET** /api/placements/{scope}/{code} | [EARLY ACCESS] GetPlacement: Get Placement
+[**ListPlacements**](PlacementsApi.md#listplacements) | **GET** /api/placements | [EARLY ACCESS] ListPlacements: List Placements
+[**UpsertPlacements**](PlacementsApi.md#upsertplacements) | **POST** /api/placements | [EARLY ACCESS] UpsertPlacements: Upsert Placement
 
 
 <a name="deleteplacement"></a>
 # **DeletePlacement**
 > DeletedEntityResponse DeletePlacement (string scope, string code)
 
-[EXPERIMENTAL] DeletePlacement: Delete placement
+[EARLY ACCESS] DeletePlacement: Delete placement
 
 Delete an placement. Deletion will be valid from the placement's creation datetime.  This means that the placement will no longer exist at any effective datetime from the asAt datetime of deletion.
 
@@ -43,7 +43,7 @@ namespace Example
 
             try
             {
-                // [EXPERIMENTAL] DeletePlacement: Delete placement
+                // [EARLY ACCESS] DeletePlacement: Delete placement
                 DeletedEntityResponse result = apiInstance.DeletePlacement(scope, code);
                 Debug.WriteLine(result);
             }
@@ -92,7 +92,7 @@ Name | Type | Description  | Notes
 # **GetPlacement**
 > Placement GetPlacement (string scope, string code, DateTimeOffset? asAt = null, List<string> propertyKeys = null)
 
-[EXPERIMENTAL] GetPlacement: Get Placement
+[EARLY ACCESS] GetPlacement: Get Placement
 
 Fetch a Placement that matches the specified identifier
 
@@ -123,7 +123,7 @@ namespace Example
 
             try
             {
-                // [EXPERIMENTAL] GetPlacement: Get Placement
+                // [EARLY ACCESS] GetPlacement: Get Placement
                 Placement result = apiInstance.GetPlacement(scope, code, asAt, propertyKeys);
                 Debug.WriteLine(result);
             }
@@ -174,7 +174,7 @@ Name | Type | Description  | Notes
 # **ListPlacements**
 > PagedResourceListOfPlacement ListPlacements (DateTimeOffset? asAt = null, string page = null, List<string> sortBy = null, int? limit = null, string filter = null, List<string> propertyKeys = null)
 
-[EXPERIMENTAL] ListPlacements: List Placements
+[EARLY ACCESS] ListPlacements: List Placements
 
 Fetch the last pre-AsAt date version of each placement in scope (does not fetch the entire history).
 
@@ -207,7 +207,7 @@ namespace Example
 
             try
             {
-                // [EXPERIMENTAL] ListPlacements: List Placements
+                // [EARLY ACCESS] ListPlacements: List Placements
                 PagedResourceListOfPlacement result = apiInstance.ListPlacements(asAt, page, sortBy, limit, filter, propertyKeys);
                 Debug.WriteLine(result);
             }
@@ -260,7 +260,7 @@ Name | Type | Description  | Notes
 # **UpsertPlacements**
 > ResourceListOfPlacement UpsertPlacements (PlacementSetRequest placementSetRequest = null)
 
-[EXPERIMENTAL] UpsertPlacements: Upsert Placement
+[EARLY ACCESS] UpsertPlacements: Upsert Placement
 
 Upsert; update existing placements with given ids, or create new placements otherwise.
 
@@ -288,7 +288,7 @@ namespace Example
 
             try
             {
-                // [EXPERIMENTAL] UpsertPlacements: Upsert Placement
+                // [EARLY ACCESS] UpsertPlacements: Upsert Placement
                 ResourceListOfPlacement result = apiInstance.UpsertPlacements(placementSetRequest);
                 Debug.WriteLine(result);
             }
