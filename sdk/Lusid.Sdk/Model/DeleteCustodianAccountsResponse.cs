@@ -37,7 +37,7 @@ namespace Lusid.Sdk.Model
         /// </summary>
         /// <param name="version">version.</param>
         /// <param name="custodianAccountIds">The Custodian Accounts which have been soft/hard deleted..</param>
-        /// <param name="links">Collection of links..</param>
+        /// <param name="links">links.</param>
         public DeleteCustodianAccountsResponse(Version version = default(Version), List<ResourceId> custodianAccountIds = default(List<ResourceId>), List<Link> links = default(List<Link>))
         {
             this.Version = version;
@@ -59,9 +59,8 @@ namespace Lusid.Sdk.Model
         public List<ResourceId> CustodianAccountIds { get; set; }
 
         /// <summary>
-        /// Collection of links.
+        /// Gets or Sets Links
         /// </summary>
-        /// <value>Collection of links.</value>
         [DataMember(Name = "links", EmitDefaultValue = true)]
         public List<Link> Links { get; set; }
 
