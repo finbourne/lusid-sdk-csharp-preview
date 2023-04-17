@@ -41,7 +41,7 @@ namespace Lusid.Sdk.Model
         /// <param name="version">version.</param>
         /// <param name="legs">Aggregated sets of Cashflows..</param>
         /// <param name="href">The specific Uniform Resource Identifier (URI) for this resource at the requested effective and asAt datetime..</param>
-        /// <param name="links">Collection of links..</param>
+        /// <param name="links">links.</param>
         public InstrumentPaymentDiary(string instrumentIdType = default(string), string instrumentId = default(string), string instrumentScope = default(string), Version version = default(Version), List<InstrumentPaymentDiaryLeg> legs = default(List<InstrumentPaymentDiaryLeg>), string href = default(string), List<Link> links = default(List<Link>))
         {
             this.InstrumentIdType = instrumentIdType;
@@ -95,9 +95,8 @@ namespace Lusid.Sdk.Model
         public string Href { get; set; }
 
         /// <summary>
-        /// Collection of links.
+        /// Gets or Sets Links
         /// </summary>
-        /// <value>Collection of links.</value>
         [DataMember(Name = "links", EmitDefaultValue = true)]
         public List<Link> Links { get; set; }
 
