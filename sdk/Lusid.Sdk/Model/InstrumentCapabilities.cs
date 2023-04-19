@@ -40,7 +40,7 @@ namespace Lusid.Sdk.Model
         /// <param name="features">Features of the instrument describing its optionality, payoff type and more e.g. &#39;Instrument/Features/Exercise: American&#39;, &#39;Instrument/Features/Product: Option&#39;.</param>
         /// <param name="supportedAddresses">Queryable addresses supported by the model, e.g. &#39;Valuation/Pv&#39;, &#39;Valuation/Accrued&#39;..</param>
         /// <param name="economicDependencies">Economic dependencies for the model, e.g. &#39;Fx:GBP.USD&#39;, &#39;Cash:GBP&#39;, &#39;Rates:GBP.GBPOIS&#39;..</param>
-        /// <param name="links">Collection of links..</param>
+        /// <param name="links">links.</param>
         public InstrumentCapabilities(string instrumentId = default(string), string model = default(string), Dictionary<string, string> features = default(Dictionary<string, string>), List<DescribedAddressKey> supportedAddresses = default(List<DescribedAddressKey>), List<EconomicDependency> economicDependencies = default(List<EconomicDependency>), List<Link> links = default(List<Link>))
         {
             this.InstrumentId = instrumentId;
@@ -87,9 +87,8 @@ namespace Lusid.Sdk.Model
         public List<EconomicDependency> EconomicDependencies { get; set; }
 
         /// <summary>
-        /// Collection of links.
+        /// Gets or Sets Links
         /// </summary>
-        /// <value>Collection of links.</value>
         [DataMember(Name = "links", EmitDefaultValue = true)]
         public List<Link> Links { get; set; }
 
