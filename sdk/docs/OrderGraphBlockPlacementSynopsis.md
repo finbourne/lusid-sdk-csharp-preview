@@ -4,6 +4,7 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
+**States** | **string** | List of placement states of all the placements on this block. | 
 **Quantity** | **decimal** | Total number of units placed. | 
 **Details** | [**List&lt;OrderGraphBlockPlacementDetail&gt;**](OrderGraphBlockPlacementDetail.md) | Identifiers for each placement in this block. | 
 
