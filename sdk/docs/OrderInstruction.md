@@ -6,7 +6,15 @@ Record of an order instruction
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **Id** | [**ResourceId**](ResourceId.md) |  | 
+**CreatedDate** | **DateTimeOffset** | The active date of this order instruction. | 
 **Properties** | [**Dictionary&lt;string, PerpetualProperty&gt;**](PerpetualProperty.md) | Client-defined properties associated with this execution. | [optional] 
+**PortfolioId** | [**ResourceId**](ResourceId.md) |  | [optional] 
+**InstrumentIdentifiers** | **Dictionary&lt;string, string&gt;** | The instrument ordered. | 
+**Quantity** | **decimal?** | The quantity of given instrument ordered. | [optional] 
+**Weight** | **decimal?** | The weight of given instrument ordered. | [optional] 
+**Price** | [**CurrencyAndAmount**](CurrencyAndAmount.md) |  | [optional] 
+**InstrumentScope** | **string** | The scope in which the instrument lies | [optional] 
+**LusidInstrumentId** | **string** | The LUSID instrument id for the instrument ordered. | [optional] 
 **Version** | [**Version**](Version.md) |  | [optional] 
 **Links** | [**List&lt;Link&gt;**](Link.md) | Collection of links. | [optional] 
 
