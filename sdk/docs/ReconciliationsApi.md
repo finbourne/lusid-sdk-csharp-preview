@@ -4,16 +4,177 @@ All URIs are relative to *https://www.lusid.com/api*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
+[**CreateScheduledReconciliation**](ReconciliationsApi.md#createscheduledreconciliation) | **POST** /api/portfolios/$scheduledReconciliation/{scope} | [EXPERIMENTAL] CreateScheduledReconciliation: Create a scheduled reconciliation
+[**DeleteReconciliation**](ReconciliationsApi.md#deletereconciliation) | **DELETE** /api/portfolios/$scheduledReconciliation/{scope}/{code} | [EXPERIMENTAL] DeleteReconciliation: Delete scheduled reconciliation
 [**DeleteReconciliationMapping**](ReconciliationsApi.md#deletereconciliationmapping) | **DELETE** /api/portfolios/mapping/{scope}/{code} | [EARLY ACCESS] DeleteReconciliationMapping: Delete a mapping
+[**GetReconciliation**](ReconciliationsApi.md#getreconciliation) | **GET** /api/portfolios/$scheduledReconciliation/{scope}/{code} | [EXPERIMENTAL] GetReconciliation: Get scheduled reconciliation
 [**GetReconciliationMapping**](ReconciliationsApi.md#getreconciliationmapping) | **GET** /api/portfolios/mapping/{scope}/{code} | [EARLY ACCESS] GetReconciliationMapping: Get a mapping
 [**ListReconciliationMappings**](ReconciliationsApi.md#listreconciliationmappings) | **GET** /api/portfolios/mapping | [EARLY ACCESS] ListReconciliationMappings: List the reconciliation mappings
+[**ListReconciliations**](ReconciliationsApi.md#listreconciliations) | **GET** /api/portfolios/$scheduledReconciliation | [EXPERIMENTAL] ListReconciliations: List scheduled reconciliations
 [**ReconcileGeneric**](ReconciliationsApi.md#reconcilegeneric) | **POST** /api/portfolios/$reconcileGeneric | ReconcileGeneric: Reconcile either holdings or valuations performed on one or two sets of holdings using one or two configuration recipes.                The output is configurable for various types of comparisons, to allow tolerances on numerical and date-time data or case-insensitivity on strings,  and elision of resulting differences where they are &#39;empty&#39; or null or zero.
 [**ReconcileHoldings**](ReconciliationsApi.md#reconcileholdings) | **POST** /api/portfolios/$reconcileholdings | [EARLY ACCESS] ReconcileHoldings: Reconcile portfolio holdings
 [**ReconcileInline**](ReconciliationsApi.md#reconcileinline) | **POST** /api/portfolios/$reconcileInline | ReconcileInline: Reconcile valuations performed on one or two sets of inline instruments using one or two configuration recipes.
 [**ReconcileTransactions**](ReconciliationsApi.md#reconciletransactions) | **POST** /api/portfolios/$reconcileTransactions | [EARLY ACCESS] ReconcileTransactions: Perform a Transactions Reconciliation.
 [**ReconcileValuation**](ReconciliationsApi.md#reconcilevaluation) | **POST** /api/portfolios/$reconcileValuation | ReconcileValuation: Reconcile valuations performed on one or two sets of holdings using one or two configuration recipes.
+[**UpdateReconciliation**](ReconciliationsApi.md#updatereconciliation) | **POST** /api/portfolios/$scheduledReconciliation/{scope}/{code} | [EXPERIMENTAL] UpdateReconciliation: Update scheduled reconciliation
 [**UpsertReconciliationMapping**](ReconciliationsApi.md#upsertreconciliationmapping) | **POST** /api/portfolios/mapping | [EARLY ACCESS] UpsertReconciliationMapping: Create or update a mapping
 
+
+<a name="createscheduledreconciliation"></a>
+# **CreateScheduledReconciliation**
+> Reconciliation CreateScheduledReconciliation (string scope, CreateReconciliationRequest createReconciliationRequest = null)
+
+[EXPERIMENTAL] CreateScheduledReconciliation: Create a scheduled reconciliation
+
+Create a scheduled reconciliation for the given request
+
+### Example
+```csharp
+using System.Collections.Generic;
+using System.Diagnostics;
+using Lusid.Sdk.Api;
+using Lusid.Sdk.Client;
+using Lusid.Sdk.Model;
+
+namespace Example
+{
+    public class CreateScheduledReconciliationExample
+    {
+        public static void Main()
+        {
+            Configuration config = new Configuration();
+            config.BasePath = "https://www.lusid.com/api";
+            // Configure OAuth2 access token for authorization: oauth2
+            config.AccessToken = "YOUR_ACCESS_TOKEN";
+
+            var apiInstance = new ReconciliationsApi(config);
+            var scope = scope_example;  // string | The scope of the reconciliation
+            var createReconciliationRequest = new CreateReconciliationRequest(); // CreateReconciliationRequest | The definition of the reconciliation (optional) 
+
+            try
+            {
+                // [EXPERIMENTAL] CreateScheduledReconciliation: Create a scheduled reconciliation
+                Reconciliation result = apiInstance.CreateScheduledReconciliation(scope, createReconciliationRequest);
+                Debug.WriteLine(result);
+            }
+            catch (ApiException  e)
+            {
+                Debug.Print("Exception when calling ReconciliationsApi.CreateScheduledReconciliation: " + e.Message );
+                Debug.Print("Status Code: "+ e.ErrorCode);
+                Debug.Print(e.StackTrace);
+            }
+        }
+    }
+}
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **scope** | **string**| The scope of the reconciliation | 
+ **createReconciliationRequest** | [**CreateReconciliationRequest**](CreateReconciliationRequest.md)| The definition of the reconciliation | [optional] 
+
+### Return type
+
+[**Reconciliation**](Reconciliation.md)
+
+### Authorization
+
+[oauth2](../README.md#oauth2)
+
+### HTTP request headers
+
+ - **Content-Type**: application/json-patch+json, application/json, text/json, application/_*+json
+ - **Accept**: text/plain, application/json, text/json
+
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+| **201** | The newly created scheduled reconciliation |  -  |
+| **400** | The details of the input related failure |  -  |
+| **0** | Error response |  -  |
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+<a name="deletereconciliation"></a>
+# **DeleteReconciliation**
+> DeletedEntityResponse DeleteReconciliation (string scope, string code)
+
+[EXPERIMENTAL] DeleteReconciliation: Delete scheduled reconciliation
+
+Delete the given scheduled reconciliation
+
+### Example
+```csharp
+using System.Collections.Generic;
+using System.Diagnostics;
+using Lusid.Sdk.Api;
+using Lusid.Sdk.Client;
+using Lusid.Sdk.Model;
+
+namespace Example
+{
+    public class DeleteReconciliationExample
+    {
+        public static void Main()
+        {
+            Configuration config = new Configuration();
+            config.BasePath = "https://www.lusid.com/api";
+            // Configure OAuth2 access token for authorization: oauth2
+            config.AccessToken = "YOUR_ACCESS_TOKEN";
+
+            var apiInstance = new ReconciliationsApi(config);
+            var scope = scope_example;  // string | The scope of the scheduled reconciliation
+            var code = code_example;  // string | The code of the scheduled reconciliation
+
+            try
+            {
+                // [EXPERIMENTAL] DeleteReconciliation: Delete scheduled reconciliation
+                DeletedEntityResponse result = apiInstance.DeleteReconciliation(scope, code);
+                Debug.WriteLine(result);
+            }
+            catch (ApiException  e)
+            {
+                Debug.Print("Exception when calling ReconciliationsApi.DeleteReconciliation: " + e.Message );
+                Debug.Print("Status Code: "+ e.ErrorCode);
+                Debug.Print(e.StackTrace);
+            }
+        }
+    }
+}
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **scope** | **string**| The scope of the scheduled reconciliation | 
+ **code** | **string**| The code of the scheduled reconciliation | 
+
+### Return type
+
+[**DeletedEntityResponse**](DeletedEntityResponse.md)
+
+### Authorization
+
+[oauth2](../README.md#oauth2)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: text/plain, application/json, text/json
+
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+| **200** | The reconciliation at the requested as at was deleted |  -  |
+| **400** | The details of the input related failure |  -  |
+| **0** | Error response |  -  |
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 <a name="deletereconciliationmapping"></a>
 # **DeleteReconciliationMapping**
@@ -93,6 +254,90 @@ Name | Type | Description  | Notes
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
+<a name="getreconciliation"></a>
+# **GetReconciliation**
+> Reconciliation GetReconciliation (string scope, string code, DateTimeOrCutLabel effectiveAt = null, DateTimeOffset? asAt = null, List<string> propertyKeys = null)
+
+[EXPERIMENTAL] GetReconciliation: Get scheduled reconciliation
+
+Get the requested scheduled reconciliation
+
+### Example
+```csharp
+using System.Collections.Generic;
+using System.Diagnostics;
+using Lusid.Sdk.Api;
+using Lusid.Sdk.Client;
+using Lusid.Sdk.Model;
+
+namespace Example
+{
+    public class GetReconciliationExample
+    {
+        public static void Main()
+        {
+            Configuration config = new Configuration();
+            config.BasePath = "https://www.lusid.com/api";
+            // Configure OAuth2 access token for authorization: oauth2
+            config.AccessToken = "YOUR_ACCESS_TOKEN";
+
+            var apiInstance = new ReconciliationsApi(config);
+            var scope = scope_example;  // string | The scope of the scheduled reconciliation
+            var code = code_example;  // string | The code of the scheduled reconciliation
+            var effectiveAt = effectiveAt_example;  // DateTimeOrCutLabel | The effective datetime or cut label at which to retrieve the scheduled reconciliation. Defaults to the current LUSID system datetime if not specified. (optional) 
+            var asAt = 2013-10-20T19:20:30+01:00;  // DateTimeOffset? | The asAt datetime at which to retrieve the scheduled reconciliation. Defaults to returning the latest version of the reconciliation if not specified. (optional) 
+            var propertyKeys = new List<string>(); // List<string> | A list of property keys from the 'Reconciliation' property domain to decorate onto the reconciliation.              These must take the form {domain}/{scope}/{code}, for example 'Reconciliation/Broker/Id'. (optional) 
+
+            try
+            {
+                // [EXPERIMENTAL] GetReconciliation: Get scheduled reconciliation
+                Reconciliation result = apiInstance.GetReconciliation(scope, code, effectiveAt, asAt, propertyKeys);
+                Debug.WriteLine(result);
+            }
+            catch (ApiException  e)
+            {
+                Debug.Print("Exception when calling ReconciliationsApi.GetReconciliation: " + e.Message );
+                Debug.Print("Status Code: "+ e.ErrorCode);
+                Debug.Print(e.StackTrace);
+            }
+        }
+    }
+}
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **scope** | **string**| The scope of the scheduled reconciliation | 
+ **code** | **string**| The code of the scheduled reconciliation | 
+ **effectiveAt** | **DateTimeOrCutLabel**| The effective datetime or cut label at which to retrieve the scheduled reconciliation. Defaults to the current LUSID system datetime if not specified. | [optional] 
+ **asAt** | **DateTimeOffset?**| The asAt datetime at which to retrieve the scheduled reconciliation. Defaults to returning the latest version of the reconciliation if not specified. | [optional] 
+ **propertyKeys** | [**List&lt;string&gt;**](string.md)| A list of property keys from the &#39;Reconciliation&#39; property domain to decorate onto the reconciliation.              These must take the form {domain}/{scope}/{code}, for example &#39;Reconciliation/Broker/Id&#39;. | [optional] 
+
+### Return type
+
+[**Reconciliation**](Reconciliation.md)
+
+### Authorization
+
+[oauth2](../README.md#oauth2)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: text/plain, application/json, text/json
+
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+| **200** | The requested scheduled reconciliation |  -  |
+| **400** | The details of the input related failure |  -  |
+| **0** | Error response |  -  |
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
 <a name="getreconciliationmapping"></a>
 # **GetReconciliationMapping**
 > Mapping GetReconciliationMapping (string scope, string code)
@@ -122,7 +367,7 @@ namespace Example
 
             var apiInstance = new ReconciliationsApi(config);
             var scope = scope_example;  // string | The scope of the mapping.
-            var code = code_example;  // string | The code fof the mapping.
+            var code = code_example;  // string | The code of the mapping.
 
             try
             {
@@ -146,7 +391,7 @@ namespace Example
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **scope** | **string**| The scope of the mapping. | 
- **code** | **string**| The code fof the mapping. | 
+ **code** | **string**| The code of the mapping. | 
 
 ### Return type
 
@@ -242,6 +487,94 @@ Name | Type | Description  | Notes
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
 | **200** | The mappings that the caller has access to. |  -  |
+| **400** | The details of the input related failure |  -  |
+| **0** | Error response |  -  |
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+<a name="listreconciliations"></a>
+# **ListReconciliations**
+> PagedResourceListOfReconciliation ListReconciliations (DateTimeOrCutLabel effectiveAt = null, DateTimeOffset? asAt = null, string page = null, int? start = null, int? limit = null, string filter = null, List<string> propertyKeys = null)
+
+[EXPERIMENTAL] ListReconciliations: List scheduled reconciliations
+
+List all the scheduled reconciliations matching particular criteria
+
+### Example
+```csharp
+using System.Collections.Generic;
+using System.Diagnostics;
+using Lusid.Sdk.Api;
+using Lusid.Sdk.Client;
+using Lusid.Sdk.Model;
+
+namespace Example
+{
+    public class ListReconciliationsExample
+    {
+        public static void Main()
+        {
+            Configuration config = new Configuration();
+            config.BasePath = "https://www.lusid.com/api";
+            // Configure OAuth2 access token for authorization: oauth2
+            config.AccessToken = "YOUR_ACCESS_TOKEN";
+
+            var apiInstance = new ReconciliationsApi(config);
+            var effectiveAt = effectiveAt_example;  // DateTimeOrCutLabel | The effective datetime or cut label at which to list the TimeVariant properties for the reconciliation. Defaults to the current LUSID              system datetime if not specified. (optional) 
+            var asAt = 2013-10-20T19:20:30+01:00;  // DateTimeOffset? | The asAt datetime at which to list the reconciliation. Defaults to returning the latest version              of each reconciliation if not specified. (optional) 
+            var page = page_example;  // string | The pagination token to use to continue listing reconciliations; this              value is returned from the previous call. If a pagination token is provided, the filter, effectiveAt              and asAt fields must not have changed since the original request. Also, if set, a start value cannot be provided. (optional) 
+            var start = 56;  // int? | When paginating, skip this number of results. (optional) 
+            var limit = 56;  // int? | When paginating, limit the results to this number. Defaults to 100 if not specified. (optional) 
+            var filter = filter_example;  // string | Expression to filter the results.              For example, to filter on the reconciliation type, specify \"id.Code eq '001'\". For more information about filtering              results, see https://support.lusid.com/knowledgebase/article/KA-01914. (optional) 
+            var propertyKeys = new List<string>(); // List<string> | A list of property keys from the 'Reconciliation' domain to decorate onto each reconciliation.              These must take the format {domain}/{scope}/{code}, for example 'Reconciliation/Broker/Id'. (optional) 
+
+            try
+            {
+                // [EXPERIMENTAL] ListReconciliations: List scheduled reconciliations
+                PagedResourceListOfReconciliation result = apiInstance.ListReconciliations(effectiveAt, asAt, page, start, limit, filter, propertyKeys);
+                Debug.WriteLine(result);
+            }
+            catch (ApiException  e)
+            {
+                Debug.Print("Exception when calling ReconciliationsApi.ListReconciliations: " + e.Message );
+                Debug.Print("Status Code: "+ e.ErrorCode);
+                Debug.Print(e.StackTrace);
+            }
+        }
+    }
+}
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **effectiveAt** | **DateTimeOrCutLabel**| The effective datetime or cut label at which to list the TimeVariant properties for the reconciliation. Defaults to the current LUSID              system datetime if not specified. | [optional] 
+ **asAt** | **DateTimeOffset?**| The asAt datetime at which to list the reconciliation. Defaults to returning the latest version              of each reconciliation if not specified. | [optional] 
+ **page** | **string**| The pagination token to use to continue listing reconciliations; this              value is returned from the previous call. If a pagination token is provided, the filter, effectiveAt              and asAt fields must not have changed since the original request. Also, if set, a start value cannot be provided. | [optional] 
+ **start** | **int?**| When paginating, skip this number of results. | [optional] 
+ **limit** | **int?**| When paginating, limit the results to this number. Defaults to 100 if not specified. | [optional] 
+ **filter** | **string**| Expression to filter the results.              For example, to filter on the reconciliation type, specify \&quot;id.Code eq &#39;001&#39;\&quot;. For more information about filtering              results, see https://support.lusid.com/knowledgebase/article/KA-01914. | [optional] 
+ **propertyKeys** | [**List&lt;string&gt;**](string.md)| A list of property keys from the &#39;Reconciliation&#39; domain to decorate onto each reconciliation.              These must take the format {domain}/{scope}/{code}, for example &#39;Reconciliation/Broker/Id&#39;. | [optional] 
+
+### Return type
+
+[**PagedResourceListOfReconciliation**](PagedResourceListOfReconciliation.md)
+
+### Authorization
+
+[oauth2](../README.md#oauth2)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: text/plain, application/json, text/json
+
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+| **200** | List of all scheduled reconciliations |  -  |
 | **400** | The details of the input related failure |  -  |
 | **0** | Error response |  -  |
 
@@ -630,6 +963,86 @@ Name | Type | Description  | Notes
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
 | **200** | The requested reconciliation |  -  |
+| **400** | The details of the input related failure |  -  |
+| **0** | Error response |  -  |
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+<a name="updatereconciliation"></a>
+# **UpdateReconciliation**
+> Reconciliation UpdateReconciliation (string scope, string code, UpdateReconciliationRequest updateReconciliationRequest = null)
+
+[EXPERIMENTAL] UpdateReconciliation: Update scheduled reconciliation
+
+Update a given scheduled reconciliation
+
+### Example
+```csharp
+using System.Collections.Generic;
+using System.Diagnostics;
+using Lusid.Sdk.Api;
+using Lusid.Sdk.Client;
+using Lusid.Sdk.Model;
+
+namespace Example
+{
+    public class UpdateReconciliationExample
+    {
+        public static void Main()
+        {
+            Configuration config = new Configuration();
+            config.BasePath = "https://www.lusid.com/api";
+            // Configure OAuth2 access token for authorization: oauth2
+            config.AccessToken = "YOUR_ACCESS_TOKEN";
+
+            var apiInstance = new ReconciliationsApi(config);
+            var scope = scope_example;  // string | The scope of the reconciliation to be updated
+            var code = code_example;  // string | The code of the reconciliation to be updated
+            var updateReconciliationRequest = new UpdateReconciliationRequest(); // UpdateReconciliationRequest | The updated definition of the reconciliation (optional) 
+
+            try
+            {
+                // [EXPERIMENTAL] UpdateReconciliation: Update scheduled reconciliation
+                Reconciliation result = apiInstance.UpdateReconciliation(scope, code, updateReconciliationRequest);
+                Debug.WriteLine(result);
+            }
+            catch (ApiException  e)
+            {
+                Debug.Print("Exception when calling ReconciliationsApi.UpdateReconciliation: " + e.Message );
+                Debug.Print("Status Code: "+ e.ErrorCode);
+                Debug.Print(e.StackTrace);
+            }
+        }
+    }
+}
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **scope** | **string**| The scope of the reconciliation to be updated | 
+ **code** | **string**| The code of the reconciliation to be updated | 
+ **updateReconciliationRequest** | [**UpdateReconciliationRequest**](UpdateReconciliationRequest.md)| The updated definition of the reconciliation | [optional] 
+
+### Return type
+
+[**Reconciliation**](Reconciliation.md)
+
+### Authorization
+
+[oauth2](../README.md#oauth2)
+
+### HTTP request headers
+
+ - **Content-Type**: application/json-patch+json, application/json, text/json, application/_*+json
+ - **Accept**: text/plain, application/json, text/json
+
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+| **200** | The updated scheduled reconciliation |  -  |
 | **400** | The details of the input related failure |  -  |
 | **0** | Error response |  -  |
 
