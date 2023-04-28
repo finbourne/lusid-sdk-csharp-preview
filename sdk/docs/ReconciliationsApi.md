@@ -4,24 +4,28 @@ All URIs are relative to *https://www.lusid.com/api*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
-[**CreateScheduledReconciliation**](ReconciliationsApi.md#createscheduledreconciliation) | **POST** /api/portfolios/$scheduledReconciliation/{scope} | [EXPERIMENTAL] CreateScheduledReconciliation: Create a scheduled reconciliation
-[**DeleteReconciliation**](ReconciliationsApi.md#deletereconciliation) | **DELETE** /api/portfolios/$scheduledReconciliation/{scope}/{code} | [EXPERIMENTAL] DeleteReconciliation: Delete scheduled reconciliation
+[**CreateScheduledReconciliation**](ReconciliationsApi.md#createscheduledreconciliation) | **POST** /api/portfolios/$scheduledReconciliations/{scope} | [EXPERIMENTAL] CreateScheduledReconciliation: Create a scheduled reconciliation
+[**DeleteReconciliation**](ReconciliationsApi.md#deletereconciliation) | **DELETE** /api/portfolios/$scheduledReconciliations/{scope}/{code} | [EXPERIMENTAL] DeleteReconciliation: Delete scheduled reconciliation
+[**DeleteReconciliationBreak**](ReconciliationsApi.md#deletereconciliationbreak) | **DELETE** /api/portfolios/$scheduledReconciliations/{scope}/{code}/runs/{runDate}/{version}/breaks/{breakId} | [EXPERIMENTAL] DeleteReconciliationBreak: Delete reconciliation break
 [**DeleteReconciliationMapping**](ReconciliationsApi.md#deletereconciliationmapping) | **DELETE** /api/portfolios/mapping/{scope}/{code} | [EARLY ACCESS] DeleteReconciliationMapping: Delete a mapping
-[**DeleteReconciliationRun**](ReconciliationsApi.md#deletereconciliationrun) | **DELETE** /api/portfolios/$scheduledReconciliation/run/{scope}/{code}/{runDate}/{version} | [EXPERIMENTAL] DeleteReconciliationRun: Delete reconciliation run
-[**GetReconciliation**](ReconciliationsApi.md#getreconciliation) | **GET** /api/portfolios/$scheduledReconciliation/{scope}/{code} | [EXPERIMENTAL] GetReconciliation: Get scheduled reconciliation
+[**DeleteReconciliationRun**](ReconciliationsApi.md#deletereconciliationrun) | **DELETE** /api/portfolios/$scheduledReconciliations/{scope}/{code}/runs/{runDate}/{version} | [EXPERIMENTAL] DeleteReconciliationRun: Delete reconciliation run
+[**GetReconciliation**](ReconciliationsApi.md#getreconciliation) | **GET** /api/portfolios/$scheduledReconciliations/{scope}/{code} | [EXPERIMENTAL] GetReconciliation: Get scheduled reconciliation
+[**GetReconciliationBreak**](ReconciliationsApi.md#getreconciliationbreak) | **GET** /api/portfolios/$scheduledReconciliations/{scope}/{code}/runs/{runDate}/{version}/breaks/{breakId} | [EXPERIMENTAL] GetReconciliationBreak: Get reconciliation break
 [**GetReconciliationMapping**](ReconciliationsApi.md#getreconciliationmapping) | **GET** /api/portfolios/mapping/{scope}/{code} | [EARLY ACCESS] GetReconciliationMapping: Get a mapping
-[**GetReconciliationRun**](ReconciliationsApi.md#getreconciliationrun) | **GET** /api/portfolios/$scheduledReconciliation/run/{scope}/{code}/{runDate}/{version} | [EXPERIMENTAL] GetReconciliationRun: Get a reconciliation run
+[**GetReconciliationRun**](ReconciliationsApi.md#getreconciliationrun) | **GET** /api/portfolios/$scheduledReconciliations/{scope}/{code}/runs/{runDate}/{version} | [EXPERIMENTAL] GetReconciliationRun: Get a reconciliation run
+[**ListReconciliationBreaks**](ReconciliationsApi.md#listreconciliationbreaks) | **GET** /api/portfolios/$scheduledReconciliations/{scope}/{code}/runs/{runDate}/{version}/breaks | [EXPERIMENTAL] ListReconciliationBreaks: List reconciliation breaks
 [**ListReconciliationMappings**](ReconciliationsApi.md#listreconciliationmappings) | **GET** /api/portfolios/mapping | [EARLY ACCESS] ListReconciliationMappings: List the reconciliation mappings
-[**ListReconciliationRuns**](ReconciliationsApi.md#listreconciliationruns) | **GET** /api/portfolios/$scheduledReconciliation/run/{scope}/{code} | [EXPERIMENTAL] ListReconciliationRuns: List Reconciliation runs
-[**ListReconciliations**](ReconciliationsApi.md#listreconciliations) | **GET** /api/portfolios/$scheduledReconciliation | [EXPERIMENTAL] ListReconciliations: List scheduled reconciliations
+[**ListReconciliationRuns**](ReconciliationsApi.md#listreconciliationruns) | **GET** /api/portfolios/$scheduledReconciliations/{scope}/{code}/runs | [EXPERIMENTAL] ListReconciliationRuns: List Reconciliation runs
+[**ListReconciliations**](ReconciliationsApi.md#listreconciliations) | **GET** /api/portfolios/$scheduledReconciliations | [EXPERIMENTAL] ListReconciliations: List scheduled reconciliations
 [**ReconcileGeneric**](ReconciliationsApi.md#reconcilegeneric) | **POST** /api/portfolios/$reconcileGeneric | ReconcileGeneric: Reconcile either holdings or valuations performed on one or two sets of holdings using one or two configuration recipes.                The output is configurable for various types of comparisons, to allow tolerances on numerical and date-time data or case-insensitivity on strings,  and elision of resulting differences where they are &#39;empty&#39; or null or zero.
 [**ReconcileHoldings**](ReconciliationsApi.md#reconcileholdings) | **POST** /api/portfolios/$reconcileholdings | [EARLY ACCESS] ReconcileHoldings: Reconcile portfolio holdings
 [**ReconcileInline**](ReconciliationsApi.md#reconcileinline) | **POST** /api/portfolios/$reconcileInline | ReconcileInline: Reconcile valuations performed on one or two sets of inline instruments using one or two configuration recipes.
 [**ReconcileTransactions**](ReconciliationsApi.md#reconciletransactions) | **POST** /api/portfolios/$reconcileTransactions | [EARLY ACCESS] ReconcileTransactions: Perform a Transactions Reconciliation.
 [**ReconcileValuation**](ReconciliationsApi.md#reconcilevaluation) | **POST** /api/portfolios/$reconcileValuation | ReconcileValuation: Reconcile valuations performed on one or two sets of holdings using one or two configuration recipes.
-[**UpdateReconciliation**](ReconciliationsApi.md#updatereconciliation) | **POST** /api/portfolios/$scheduledReconciliation/{scope}/{code} | [EXPERIMENTAL] UpdateReconciliation: Update scheduled reconciliation
+[**UpdateReconciliation**](ReconciliationsApi.md#updatereconciliation) | **POST** /api/portfolios/$scheduledReconciliations/{scope}/{code} | [EXPERIMENTAL] UpdateReconciliation: Update scheduled reconciliation
+[**UpsertReconciliationBreak**](ReconciliationsApi.md#upsertreconciliationbreak) | **POST** /api/portfolios/$scheduledReconciliations/{scope}/{code}/runs/{runDate}/{version} | [EXPERIMENTAL] UpsertReconciliationBreak: Upsert a reconciliation break
 [**UpsertReconciliationMapping**](ReconciliationsApi.md#upsertreconciliationmapping) | **POST** /api/portfolios/mapping | [EARLY ACCESS] UpsertReconciliationMapping: Create or update a mapping
-[**UpsertReconciliationRun**](ReconciliationsApi.md#upsertreconciliationrun) | **POST** /api/portfolios/$scheduledReconciliation/run/{scope}/{code} | [EXPERIMENTAL] UpsertReconciliationRun: Update or Create a reconciliation run
+[**UpsertReconciliationRun**](ReconciliationsApi.md#upsertreconciliationrun) | **POST** /api/portfolios/$scheduledReconciliations/{scope}/{code}/runs | [EXPERIMENTAL] UpsertReconciliationRun: Update or Create a reconciliation run
 
 
 <a name="createscheduledreconciliation"></a>
@@ -175,6 +179,90 @@ Name | Type | Description  | Notes
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
 | **200** | The reconciliation at the requested as at was deleted |  -  |
+| **400** | The details of the input related failure |  -  |
+| **0** | Error response |  -  |
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+<a name="deletereconciliationbreak"></a>
+# **DeleteReconciliationBreak**
+> DeletedEntityResponse DeleteReconciliationBreak (string scope, string code, DateTimeOffset runDate, int version, string breakId)
+
+[EXPERIMENTAL] DeleteReconciliationBreak: Delete reconciliation break
+
+Delete the given reconciliation break
+
+### Example
+```csharp
+using System.Collections.Generic;
+using System.Diagnostics;
+using Lusid.Sdk.Api;
+using Lusid.Sdk.Client;
+using Lusid.Sdk.Model;
+
+namespace Example
+{
+    public class DeleteReconciliationBreakExample
+    {
+        public static void Main()
+        {
+            Configuration config = new Configuration();
+            config.BasePath = "https://www.lusid.com/api";
+            // Configure OAuth2 access token for authorization: oauth2
+            config.AccessToken = "YOUR_ACCESS_TOKEN";
+
+            var apiInstance = new ReconciliationsApi(config);
+            var scope = scope_example;  // string | The scope of the reconciliation associated with the break
+            var code = code_example;  // string | The code of the reconciliation associated with the break
+            var runDate = 2013-10-20T19:20:30+01:00;  // DateTimeOffset | The date of the run associated with the break
+            var version = 56;  // int | The version number of the run associated with the break
+            var breakId = breakId_example;  // string | The unique identifier for the break
+
+            try
+            {
+                // [EXPERIMENTAL] DeleteReconciliationBreak: Delete reconciliation break
+                DeletedEntityResponse result = apiInstance.DeleteReconciliationBreak(scope, code, runDate, version, breakId);
+                Debug.WriteLine(result);
+            }
+            catch (ApiException  e)
+            {
+                Debug.Print("Exception when calling ReconciliationsApi.DeleteReconciliationBreak: " + e.Message );
+                Debug.Print("Status Code: "+ e.ErrorCode);
+                Debug.Print(e.StackTrace);
+            }
+        }
+    }
+}
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **scope** | **string**| The scope of the reconciliation associated with the break | 
+ **code** | **string**| The code of the reconciliation associated with the break | 
+ **runDate** | **DateTimeOffset**| The date of the run associated with the break | 
+ **version** | **int**| The version number of the run associated with the break | 
+ **breakId** | **string**| The unique identifier for the break | 
+
+### Return type
+
+[**DeletedEntityResponse**](DeletedEntityResponse.md)
+
+### Authorization
+
+[oauth2](../README.md#oauth2)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: text/plain, application/json, text/json
+
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+| **200** | The datetime that the reconciliation break was deleted |  -  |
 | **400** | The details of the input related failure |  -  |
 | **0** | Error response |  -  |
 
@@ -424,6 +512,92 @@ Name | Type | Description  | Notes
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
+<a name="getreconciliationbreak"></a>
+# **GetReconciliationBreak**
+> ReconciliationRunBreak GetReconciliationBreak (string scope, string code, DateTimeOffset runDate, int version, string breakId, DateTimeOffset? asAt = null)
+
+[EXPERIMENTAL] GetReconciliationBreak: Get reconciliation break
+
+Get the requested reconciliation break
+
+### Example
+```csharp
+using System.Collections.Generic;
+using System.Diagnostics;
+using Lusid.Sdk.Api;
+using Lusid.Sdk.Client;
+using Lusid.Sdk.Model;
+
+namespace Example
+{
+    public class GetReconciliationBreakExample
+    {
+        public static void Main()
+        {
+            Configuration config = new Configuration();
+            config.BasePath = "https://www.lusid.com/api";
+            // Configure OAuth2 access token for authorization: oauth2
+            config.AccessToken = "YOUR_ACCESS_TOKEN";
+
+            var apiInstance = new ReconciliationsApi(config);
+            var scope = scope_example;  // string | The scope of the reconciliation associated with the break
+            var code = code_example;  // string | The code of the reconciliation associated with the break
+            var runDate = 2013-10-20T19:20:30+01:00;  // DateTimeOffset | The date of the run associated with the break
+            var version = 56;  // int | The version number of the run associated with the break
+            var breakId = breakId_example;  // string | The unique identifier for the break
+            var asAt = 2013-10-20T19:20:30+01:00;  // DateTimeOffset? | The asAt datetime at which to retrieve the reconciliation break. Defaults to returning the latest version of the reconciliation break if not specified. (optional) 
+
+            try
+            {
+                // [EXPERIMENTAL] GetReconciliationBreak: Get reconciliation break
+                ReconciliationRunBreak result = apiInstance.GetReconciliationBreak(scope, code, runDate, version, breakId, asAt);
+                Debug.WriteLine(result);
+            }
+            catch (ApiException  e)
+            {
+                Debug.Print("Exception when calling ReconciliationsApi.GetReconciliationBreak: " + e.Message );
+                Debug.Print("Status Code: "+ e.ErrorCode);
+                Debug.Print(e.StackTrace);
+            }
+        }
+    }
+}
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **scope** | **string**| The scope of the reconciliation associated with the break | 
+ **code** | **string**| The code of the reconciliation associated with the break | 
+ **runDate** | **DateTimeOffset**| The date of the run associated with the break | 
+ **version** | **int**| The version number of the run associated with the break | 
+ **breakId** | **string**| The unique identifier for the break | 
+ **asAt** | **DateTimeOffset?**| The asAt datetime at which to retrieve the reconciliation break. Defaults to returning the latest version of the reconciliation break if not specified. | [optional] 
+
+### Return type
+
+[**ReconciliationRunBreak**](ReconciliationRunBreak.md)
+
+### Authorization
+
+[oauth2](../README.md#oauth2)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: text/plain, application/json, text/json
+
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+| **200** | The requested reconciliation break |  -  |
+| **400** | The details of the input related failure |  -  |
+| **0** | Error response |  -  |
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
 <a name="getreconciliationmapping"></a>
 # **GetReconciliationMapping**
 > Mapping GetReconciliationMapping (string scope, string code)
@@ -583,6 +757,100 @@ Name | Type | Description  | Notes
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
 | **200** | The requested reconciliation run |  -  |
+| **400** | The details of the input related failure |  -  |
+| **0** | Error response |  -  |
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+<a name="listreconciliationbreaks"></a>
+# **ListReconciliationBreaks**
+> PagedResourceListOfReconciliationRunBreak ListReconciliationBreaks (string scope, string code, DateTimeOffset runDate, int version, DateTimeOrCutLabel effectiveAt = null, DateTimeOffset? asAt = null, string page = null, int? start = null, int? limit = null, string filter = null)
+
+[EXPERIMENTAL] ListReconciliationBreaks: List reconciliation breaks
+
+List all reconciliation breaks associated with a given run
+
+### Example
+```csharp
+using System.Collections.Generic;
+using System.Diagnostics;
+using Lusid.Sdk.Api;
+using Lusid.Sdk.Client;
+using Lusid.Sdk.Model;
+
+namespace Example
+{
+    public class ListReconciliationBreaksExample
+    {
+        public static void Main()
+        {
+            Configuration config = new Configuration();
+            config.BasePath = "https://www.lusid.com/api";
+            // Configure OAuth2 access token for authorization: oauth2
+            config.AccessToken = "YOUR_ACCESS_TOKEN";
+
+            var apiInstance = new ReconciliationsApi(config);
+            var scope = scope_example;  // string | The scope of the reconciliation associated with the break
+            var code = code_example;  // string | The code of the reconciliation associated with the break
+            var runDate = 2013-10-20T19:20:30+01:00;  // DateTimeOffset | The date of the run associated with the break
+            var version = 56;  // int | The version number of the run associated with the break
+            var effectiveAt = effectiveAt_example;  // DateTimeOrCutLabel | The effective datetime or cut label at which to list the reconciliation runs. Defaults to the current LUSID              system datetime if not specified. (optional) 
+            var asAt = 2013-10-20T19:20:30+01:00;  // DateTimeOffset? | The asAt datetime at which to list the reconciliation runs. Defaults to returning the latest version              of each run if not specified. (optional) 
+            var page = page_example;  // string | The pagination token to use to continue listing reconciliation runs; this              value is returned from the previous call. If a pagination token is provided, the filter, effectiveAt              and asAt fields must not have changed since the original request. Also, if set, a start value cannot be provided. (optional) 
+            var start = 56;  // int? | When paginating, skip this number of results. (optional) 
+            var limit = 56;  // int? | When paginating, limit the results to this number. Defaults to 100 if not specified. (optional) 
+            var filter = filter_example;  // string | Expression to filter the results. (optional) 
+
+            try
+            {
+                // [EXPERIMENTAL] ListReconciliationBreaks: List reconciliation breaks
+                PagedResourceListOfReconciliationRunBreak result = apiInstance.ListReconciliationBreaks(scope, code, runDate, version, effectiveAt, asAt, page, start, limit, filter);
+                Debug.WriteLine(result);
+            }
+            catch (ApiException  e)
+            {
+                Debug.Print("Exception when calling ReconciliationsApi.ListReconciliationBreaks: " + e.Message );
+                Debug.Print("Status Code: "+ e.ErrorCode);
+                Debug.Print(e.StackTrace);
+            }
+        }
+    }
+}
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **scope** | **string**| The scope of the reconciliation associated with the break | 
+ **code** | **string**| The code of the reconciliation associated with the break | 
+ **runDate** | **DateTimeOffset**| The date of the run associated with the break | 
+ **version** | **int**| The version number of the run associated with the break | 
+ **effectiveAt** | **DateTimeOrCutLabel**| The effective datetime or cut label at which to list the reconciliation runs. Defaults to the current LUSID              system datetime if not specified. | [optional] 
+ **asAt** | **DateTimeOffset?**| The asAt datetime at which to list the reconciliation runs. Defaults to returning the latest version              of each run if not specified. | [optional] 
+ **page** | **string**| The pagination token to use to continue listing reconciliation runs; this              value is returned from the previous call. If a pagination token is provided, the filter, effectiveAt              and asAt fields must not have changed since the original request. Also, if set, a start value cannot be provided. | [optional] 
+ **start** | **int?**| When paginating, skip this number of results. | [optional] 
+ **limit** | **int?**| When paginating, limit the results to this number. Defaults to 100 if not specified. | [optional] 
+ **filter** | **string**| Expression to filter the results. | [optional] 
+
+### Return type
+
+[**PagedResourceListOfReconciliationRunBreak**](PagedResourceListOfReconciliationRunBreak.md)
+
+### Authorization
+
+[oauth2](../README.md#oauth2)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: text/plain, application/json, text/json
+
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+| **200** | The requested reconciliation breaks |  -  |
 | **400** | The details of the input related failure |  -  |
 | **0** | Error response |  -  |
 
@@ -1305,6 +1573,90 @@ Name | Type | Description  | Notes
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
 | **200** | The updated scheduled reconciliation |  -  |
+| **400** | The details of the input related failure |  -  |
+| **0** | Error response |  -  |
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+<a name="upsertreconciliationbreak"></a>
+# **UpsertReconciliationBreak**
+> ReconciliationRunBreak UpsertReconciliationBreak (string scope, string code, DateTimeOffset runDate, int version, UpsertReconciliationBreakRequest upsertReconciliationBreakRequest = null)
+
+[EXPERIMENTAL] UpsertReconciliationBreak: Upsert a reconciliation break
+
+Update or create a given reconciliation break
+
+### Example
+```csharp
+using System.Collections.Generic;
+using System.Diagnostics;
+using Lusid.Sdk.Api;
+using Lusid.Sdk.Client;
+using Lusid.Sdk.Model;
+
+namespace Example
+{
+    public class UpsertReconciliationBreakExample
+    {
+        public static void Main()
+        {
+            Configuration config = new Configuration();
+            config.BasePath = "https://www.lusid.com/api";
+            // Configure OAuth2 access token for authorization: oauth2
+            config.AccessToken = "YOUR_ACCESS_TOKEN";
+
+            var apiInstance = new ReconciliationsApi(config);
+            var scope = scope_example;  // string | The scope of the reconciliation associated with the break
+            var code = code_example;  // string | The code of the reconciliation associated with the break
+            var runDate = 2013-10-20T19:20:30+01:00;  // DateTimeOffset | The date of the run associated with the break
+            var version = 56;  // int | The version number of the run associated with the break
+            var upsertReconciliationBreakRequest = new UpsertReconciliationBreakRequest(); // UpsertReconciliationBreakRequest | The definition of the reconciliation break request (optional) 
+
+            try
+            {
+                // [EXPERIMENTAL] UpsertReconciliationBreak: Upsert a reconciliation break
+                ReconciliationRunBreak result = apiInstance.UpsertReconciliationBreak(scope, code, runDate, version, upsertReconciliationBreakRequest);
+                Debug.WriteLine(result);
+            }
+            catch (ApiException  e)
+            {
+                Debug.Print("Exception when calling ReconciliationsApi.UpsertReconciliationBreak: " + e.Message );
+                Debug.Print("Status Code: "+ e.ErrorCode);
+                Debug.Print(e.StackTrace);
+            }
+        }
+    }
+}
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **scope** | **string**| The scope of the reconciliation associated with the break | 
+ **code** | **string**| The code of the reconciliation associated with the break | 
+ **runDate** | **DateTimeOffset**| The date of the run associated with the break | 
+ **version** | **int**| The version number of the run associated with the break | 
+ **upsertReconciliationBreakRequest** | [**UpsertReconciliationBreakRequest**](UpsertReconciliationBreakRequest.md)| The definition of the reconciliation break request | [optional] 
+
+### Return type
+
+[**ReconciliationRunBreak**](ReconciliationRunBreak.md)
+
+### Authorization
+
+[oauth2](../README.md#oauth2)
+
+### HTTP request headers
+
+ - **Content-Type**: application/json-patch+json, application/json, text/json, application/_*+json
+ - **Accept**: text/plain, application/json, text/json
+
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+| **201** | The newly created reconciliation break |  -  |
 | **400** | The details of the input related failure |  -  |
 | **0** | Error response |  -  |
 
