@@ -17,7 +17,7 @@ Name | Type | Description | Notes
 **Valuations** | [**ReconciliationConfiguration**](ReconciliationConfiguration.md) |  | [optional] 
 **Properties** | [**Dictionary&lt;string, Property&gt;**](Property.md) | Reconciliation properties | [optional] 
 **Version** | [**Version**](Version.md) |  | [optional] 
-**Links** | [**List&lt;Link&gt;**](Link.md) | Collection of links. | [optional] 
+**Links** | [**List&lt;Link&gt;**](Link.md) |  | [optional] 
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 
