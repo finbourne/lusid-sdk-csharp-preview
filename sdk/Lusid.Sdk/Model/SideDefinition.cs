@@ -47,7 +47,7 @@ namespace Lusid.Sdk.Model
         /// <param name="units">The value, field or property key defining the side&#39;s units. (required).</param>
         /// <param name="amount">The value, field or property key defining the side&#39;s amount (required).</param>
         /// <param name="notionalAmount">The value, field or property key defining the side&#39;s notional amount.</param>
-        /// <param name="links">Collection of links..</param>
+        /// <param name="links">links.</param>
         public SideDefinition(string side = default(string), string security = default(string), string currency = default(string), string rate = default(string), string units = default(string), string amount = default(string), string notionalAmount = default(string), List<Link> links = default(List<Link>))
         {
             // to ensure "side" is required (not null)
@@ -116,9 +116,8 @@ namespace Lusid.Sdk.Model
         public string NotionalAmount { get; set; }
 
         /// <summary>
-        /// Collection of links.
+        /// Gets or Sets Links
         /// </summary>
-        /// <value>Collection of links.</value>
         [DataMember(Name = "links", EmitDefaultValue = true)]
         public List<Link> Links { get; set; }
 

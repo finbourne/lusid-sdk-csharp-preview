@@ -40,7 +40,7 @@ namespace Lusid.Sdk.Model
         /// <param name="leftFields">Fields for the left hand side of the reconciliation.</param>
         /// <param name="rightFields">Fields for the right hand side of the reconciliation.</param>
         /// <param name="diff">The difference between two matching fields.</param>
-        /// <param name="links">Collection of links..</param>
+        /// <param name="links">links.</param>
         public ReconciliationRunBreak(ReconciliationBreakId id = default(ReconciliationBreakId), string href = default(string), Dictionary<string, string> leftFields = default(Dictionary<string, string>), Dictionary<string, string> rightFields = default(Dictionary<string, string>), string diff = default(string), List<Link> links = default(List<Link>))
         {
             this.Id = id;
@@ -86,9 +86,8 @@ namespace Lusid.Sdk.Model
         public string Diff { get; set; }
 
         /// <summary>
-        /// Collection of links.
+        /// Gets or Sets Links
         /// </summary>
-        /// <value>Collection of links.</value>
         [DataMember(Name = "links", EmitDefaultValue = true)]
         public List<Link> Links { get; set; }
 
