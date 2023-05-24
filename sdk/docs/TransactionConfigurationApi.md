@@ -13,7 +13,7 @@ Method | HTTP request | Description
 
 <a name="deletetransactiontype"></a>
 # **DeleteTransactionType**
-> DeletedEntityResponse DeleteTransactionType (string source, string type, string scope = null)
+> DeletedEntityResponse DeleteTransactionType (string source, string type)
 
 [EXPERIMENTAL] DeleteTransactionType: Delete a transaction type
 
@@ -41,12 +41,11 @@ namespace Example
             var apiInstance = new TransactionConfigurationApi(config);
             var source = source_example;  // string | The source that the type is in
             var type = type_example;  // string | One of the type's aliases
-            var scope = scope_example;  // string | The scope in which the transaction types exists. When not supplied the scope is 'default'. (optional)  (default to "default")
 
             try
             {
                 // [EXPERIMENTAL] DeleteTransactionType: Delete a transaction type
-                DeletedEntityResponse result = apiInstance.DeleteTransactionType(source, type, scope);
+                DeletedEntityResponse result = apiInstance.DeleteTransactionType(source, type);
                 Debug.WriteLine(result);
             }
             catch (ApiException  e)
@@ -66,7 +65,6 @@ Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **source** | **string**| The source that the type is in | 
  **type** | **string**| One of the type&#39;s aliases | 
- **scope** | **string**| The scope in which the transaction types exists. When not supplied the scope is &#39;default&#39;. | [optional] [default to &quot;default&quot;]
 
 ### Return type
 
@@ -93,7 +91,7 @@ Name | Type | Description  | Notes
 
 <a name="gettransactiontype"></a>
 # **GetTransactionType**
-> TransactionType GetTransactionType (string source, string type, DateTimeOffset? asAt = null, string scope = null)
+> TransactionType GetTransactionType (string source, string type, DateTimeOffset? asAt = null)
 
 [EXPERIMENTAL] GetTransactionType: Get a single transaction configuration type
 
@@ -122,12 +120,11 @@ namespace Example
             var source = source_example;  // string | The source that the type is in
             var type = type_example;  // string | One of the type's aliases
             var asAt = 2013-10-20T19:20:30+01:00;  // DateTimeOffset? | The asAt datetime at which to retrieve the transaction configuration.              Defaults to returning the latest version of the transaction configuration type if not specified (optional) 
-            var scope = scope_example;  // string | The scope in which the transaction types exists. When not supplied the scope is 'default'. (optional)  (default to "default")
 
             try
             {
                 // [EXPERIMENTAL] GetTransactionType: Get a single transaction configuration type
-                TransactionType result = apiInstance.GetTransactionType(source, type, asAt, scope);
+                TransactionType result = apiInstance.GetTransactionType(source, type, asAt);
                 Debug.WriteLine(result);
             }
             catch (ApiException  e)
@@ -148,7 +145,6 @@ Name | Type | Description  | Notes
  **source** | **string**| The source that the type is in | 
  **type** | **string**| One of the type&#39;s aliases | 
  **asAt** | **DateTimeOffset?**| The asAt datetime at which to retrieve the transaction configuration.              Defaults to returning the latest version of the transaction configuration type if not specified | [optional] 
- **scope** | **string**| The scope in which the transaction types exists. When not supplied the scope is &#39;default&#39;. | [optional] [default to &quot;default&quot;]
 
 ### Return type
 
@@ -175,7 +171,7 @@ Name | Type | Description  | Notes
 
 <a name="listtransactiontypes"></a>
 # **ListTransactionTypes**
-> Dictionary&lt;string, List&lt;TransactionType&gt;&gt; ListTransactionTypes (DateTimeOffset? asAt = null, string scope = null)
+> Dictionary&lt;string, List&lt;TransactionType&gt;&gt; ListTransactionTypes (DateTimeOffset? asAt = null)
 
 [EXPERIMENTAL] ListTransactionTypes: List transaction types
 
@@ -202,12 +198,11 @@ namespace Example
 
             var apiInstance = new TransactionConfigurationApi(config);
             var asAt = 2013-10-20T19:20:30+01:00;  // DateTimeOffset? | The asAt datetime at which to retrieve the transaction types. Defaults              to returning the latest versions if not specified. (optional) 
-            var scope = scope_example;  // string | The scope in which the side exists. When not supplied the scope is 'default'. (optional)  (default to "default")
 
             try
             {
                 // [EXPERIMENTAL] ListTransactionTypes: List transaction types
-                Dictionary<string, List<TransactionType>> result = apiInstance.ListTransactionTypes(asAt, scope);
+                Dictionary<string, List<TransactionType>> result = apiInstance.ListTransactionTypes(asAt);
                 Debug.WriteLine(result);
             }
             catch (ApiException  e)
@@ -226,7 +221,6 @@ namespace Example
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **asAt** | **DateTimeOffset?**| The asAt datetime at which to retrieve the transaction types. Defaults              to returning the latest versions if not specified. | [optional] 
- **scope** | **string**| The scope in which the side exists. When not supplied the scope is &#39;default&#39;. | [optional] [default to &quot;default&quot;]
 
 ### Return type
 
@@ -253,7 +247,7 @@ Name | Type | Description  | Notes
 
 <a name="setsidedefinition"></a>
 # **SetSideDefinition**
-> SideDefinition SetSideDefinition (string side, SideDefinitionRequest sideDefinitionRequest, string scope = null)
+> SideDefinition SetSideDefinition (string side, SideDefinitionRequest sideDefinitionRequest)
 
 [EXPERIMENTAL] SetSideDefinition: Set a side definition
 
@@ -281,12 +275,11 @@ namespace Example
             var apiInstance = new TransactionConfigurationApi(config);
             var side = side_example;  // string | The label to uniquely identify the side.
             var sideDefinitionRequest = new SideDefinitionRequest(); // SideDefinitionRequest | The side definition to create or replace.
-            var scope = scope_example;  // string | The scope in which the side exists. When not supplied the scope is 'default'. (optional)  (default to "default")
 
             try
             {
                 // [EXPERIMENTAL] SetSideDefinition: Set a side definition
-                SideDefinition result = apiInstance.SetSideDefinition(side, sideDefinitionRequest, scope);
+                SideDefinition result = apiInstance.SetSideDefinition(side, sideDefinitionRequest);
                 Debug.WriteLine(result);
             }
             catch (ApiException  e)
@@ -306,7 +299,6 @@ Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **side** | **string**| The label to uniquely identify the side. | 
  **sideDefinitionRequest** | [**SideDefinitionRequest**](SideDefinitionRequest.md)| The side definition to create or replace. | 
- **scope** | **string**| The scope in which the side exists. When not supplied the scope is &#39;default&#39;. | [optional] [default to &quot;default&quot;]
 
 ### Return type
 
@@ -333,7 +325,7 @@ Name | Type | Description  | Notes
 
 <a name="settransactiontype"></a>
 # **SetTransactionType**
-> TransactionType SetTransactionType (string source, string type, TransactionTypeRequest transactionTypeRequest, string scope = null)
+> TransactionType SetTransactionType (string source, string type, TransactionTypeRequest transactionTypeRequest)
 
 [EXPERIMENTAL] SetTransactionType: Set a specific transaction type
 
@@ -362,12 +354,11 @@ namespace Example
             var source = source_example;  // string | The source to set the transaction configuration for
             var type = type_example;  // string | One of the transaction configuration alias types to uniquely identify the configuration
             var transactionTypeRequest = new TransactionTypeRequest(); // TransactionTypeRequest | The transaction configuration to set
-            var scope = scope_example;  // string | The scope in which the transaction types exists. When not supplied the scope is 'default'. (optional)  (default to "default")
 
             try
             {
                 // [EXPERIMENTAL] SetTransactionType: Set a specific transaction type
-                TransactionType result = apiInstance.SetTransactionType(source, type, transactionTypeRequest, scope);
+                TransactionType result = apiInstance.SetTransactionType(source, type, transactionTypeRequest);
                 Debug.WriteLine(result);
             }
             catch (ApiException  e)
@@ -388,7 +379,6 @@ Name | Type | Description  | Notes
  **source** | **string**| The source to set the transaction configuration for | 
  **type** | **string**| One of the transaction configuration alias types to uniquely identify the configuration | 
  **transactionTypeRequest** | [**TransactionTypeRequest**](TransactionTypeRequest.md)| The transaction configuration to set | 
- **scope** | **string**| The scope in which the transaction types exists. When not supplied the scope is &#39;default&#39;. | [optional] [default to &quot;default&quot;]
 
 ### Return type
 
