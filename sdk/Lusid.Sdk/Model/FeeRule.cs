@@ -56,7 +56,7 @@ namespace Lusid.Sdk.Model
         /// <param name="additionalKeys">additionalKeys.</param>
         /// <param name="description">description.</param>
         /// <param name="version">version.</param>
-        /// <param name="links">Collection of links..</param>
+        /// <param name="links">links.</param>
         public FeeRule(string code = default(string), string transactionPropertyKey = default(string), string transactionType = default(string), string country = default(string), string counterparty = default(string), string transactionCurrency = default(string), string settlementCurrency = default(string), string executionBroker = default(string), string custodian = default(string), string exchange = default(string), CalculationInfo fee = default(CalculationInfo), CalculationInfo minFee = default(CalculationInfo), CalculationInfo maxFee = default(CalculationInfo), Dictionary<string, string> additionalKeys = default(Dictionary<string, string>), string description = default(string), Version version = default(Version), List<Link> links = default(List<Link>))
         {
             // to ensure "code" is required (not null)
@@ -186,9 +186,8 @@ namespace Lusid.Sdk.Model
         public Version Version { get; set; }
 
         /// <summary>
-        /// Collection of links.
+        /// Gets or Sets Links
         /// </summary>
-        /// <value>Collection of links.</value>
         [DataMember(Name = "links", EmitDefaultValue = true)]
         public List<Link> Links { get; set; }
 
