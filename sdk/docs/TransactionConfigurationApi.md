@@ -9,7 +9,7 @@ Method | HTTP request | Description
 [**DeleteTransactionTypeSource**](TransactionConfigurationApi.md#deletetransactiontypesource) | **DELETE** /api/transactionconfiguration/types/{source}/$delete | [EXPERIMENTAL] DeleteTransactionTypeSource: Delete all transaction types for the given source and scope
 [**GetSideDefinition**](TransactionConfigurationApi.md#getsidedefinition) | **GET** /api/transactionconfiguration/sides/{side} | [EXPERIMENTAL] GetSideDefinition: Get the side definition for a given side name( or label)
 [**GetTransactionType**](TransactionConfigurationApi.md#gettransactiontype) | **GET** /api/transactionconfiguration/types/{source}/{type} | [EXPERIMENTAL] GetTransactionType: Get a single transaction configuration type
-[**ListSidesDefinition**](TransactionConfigurationApi.md#listsidesdefinition) | **GET** /api/transactionconfiguration/sides | [EXPERIMENTAL] ListSidesDefinition: List the side definitions
+[**ListSideDefinitions**](TransactionConfigurationApi.md#listsidedefinitions) | **GET** /api/transactionconfiguration/sides | [EXPERIMENTAL] ListSideDefinitions: List the side definitions
 [**ListTransactionTypes**](TransactionConfigurationApi.md#listtransactiontypes) | **GET** /api/transactionconfiguration/types | [EXPERIMENTAL] ListTransactionTypes: List transaction types
 [**SetSideDefinition**](TransactionConfigurationApi.md#setsidedefinition) | **PUT** /api/transactionconfiguration/sides/{side} | [EXPERIMENTAL] SetSideDefinition: Set a side definition
 [**SetSideDefinitions**](TransactionConfigurationApi.md#setsidedefinitions) | **PUT** /api/transactionconfiguration/sides | [EXPERIMENTAL] SetSideDefinitions: Set the given side definitions
@@ -415,11 +415,11 @@ Name | Type | Description  | Notes
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
-<a name="listsidesdefinition"></a>
-# **ListSidesDefinition**
-> ResourceListOfSideDefinition ListSidesDefinition (DateTimeOffset? asAt = null, string scope = null)
+<a name="listsidedefinitions"></a>
+# **ListSideDefinitions**
+> ResourceListOfSideDefinition ListSideDefinitions (DateTimeOffset? asAt = null, string scope = null)
 
-[EXPERIMENTAL] ListSidesDefinition: List the side definitions
+[EXPERIMENTAL] ListSideDefinitions: List the side definitions
 
 List all the side definitions in the given scope
 
@@ -433,7 +433,7 @@ using Lusid.Sdk.Model;
 
 namespace Example
 {
-    public class ListSidesDefinitionExample
+    public class ListSideDefinitionsExample
     {
         public static void Main()
         {
@@ -448,13 +448,13 @@ namespace Example
 
             try
             {
-                // [EXPERIMENTAL] ListSidesDefinition: List the side definitions
-                ResourceListOfSideDefinition result = apiInstance.ListSidesDefinition(asAt, scope);
+                // [EXPERIMENTAL] ListSideDefinitions: List the side definitions
+                ResourceListOfSideDefinition result = apiInstance.ListSideDefinitions(asAt, scope);
                 Debug.WriteLine(result);
             }
             catch (ApiException  e)
             {
-                Debug.Print("Exception when calling TransactionConfigurationApi.ListSidesDefinition: " + e.Message );
+                Debug.Print("Exception when calling TransactionConfigurationApi.ListSideDefinitions: " + e.Message );
                 Debug.Print("Status Code: "+ e.ErrorCode);
                 Debug.Print(e.StackTrace);
             }
