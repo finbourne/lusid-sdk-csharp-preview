@@ -10,7 +10,7 @@ Name | Type | Description | Notes
 **NextPage** | **string** | The next page of results. | [optional] 
 **PreviousPage** | **string** | The previous page of results. | [optional] 
 **Warnings** | [**List&lt;Warning&gt;**](Warning.md) |  | [optional] 
-**Links** | [**List&lt;Link&gt;**](Link.md) |  | [optional] 
+**Links** | [**List&lt;Link&gt;**](Link.md) | Collection of links. | [optional] 
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 
