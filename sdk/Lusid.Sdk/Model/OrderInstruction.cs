@@ -51,7 +51,7 @@ namespace Lusid.Sdk.Model
         /// <param name="instrumentScope">The scope in which the instrument lies.</param>
         /// <param name="lusidInstrumentId">The LUSID instrument id for the instrument ordered..</param>
         /// <param name="version">version.</param>
-        /// <param name="links">Collection of links..</param>
+        /// <param name="links">links.</param>
         public OrderInstruction(ResourceId id = default(ResourceId), DateTimeOffset createdDate = default(DateTimeOffset), Dictionary<string, PerpetualProperty> properties = default(Dictionary<string, PerpetualProperty>), ResourceId portfolioId = default(ResourceId), Dictionary<string, string> instrumentIdentifiers = default(Dictionary<string, string>), decimal? quantity = default(decimal?), decimal? weight = default(decimal?), CurrencyAndAmount price = default(CurrencyAndAmount), string instrumentScope = default(string), string lusidInstrumentId = default(string), Version version = default(Version), List<Link> links = default(List<Link>))
         {
             // to ensure "id" is required (not null)
@@ -144,9 +144,8 @@ namespace Lusid.Sdk.Model
         public Version Version { get; set; }
 
         /// <summary>
-        /// Collection of links.
+        /// Gets or Sets Links
         /// </summary>
-        /// <value>Collection of links.</value>
         [DataMember(Name = "links", EmitDefaultValue = true)]
         public List<Link> Links { get; set; }
 
