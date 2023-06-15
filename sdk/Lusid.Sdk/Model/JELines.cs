@@ -60,7 +60,7 @@ namespace Lusid.Sdk.Model
         /// <param name="movementName">The name of the movement. (required).</param>
         /// <param name="holdingType">Defines the broad category holding within the portfolio. (required).</param>
         /// <param name="economicBucket">Raw JE Line details of the economic bucket for the JE Line. (required).</param>
-        /// <param name="links">Collection of links..</param>
+        /// <param name="links">links.</param>
         public JELines(DateTimeOffset accountingDate = default(DateTimeOffset), DateTimeOffset activityDate = default(DateTimeOffset), ResourceId portfolioId = default(ResourceId), string instrumentId = default(string), string instrumentScope = default(string), Dictionary<string, PerpetualProperty> subHoldingKeys = default(Dictionary<string, PerpetualProperty>), string taxLotId = default(string), string glCode = default(string), CurrencyAndAmount local = default(CurrencyAndAmount), CurrencyAndAmount _base = default(CurrencyAndAmount), ResourceId postingModuleId = default(ResourceId), string postingRule = default(string), DateTimeOffset asAtDate = default(DateTimeOffset), string activitiesDescription = default(string), string sourceType = default(string), string sourceId = default(string), Dictionary<string, Property> properties = default(Dictionary<string, Property>), string movementName = default(string), string holdingType = default(string), string economicBucket = default(string), List<Link> links = default(List<Link>))
         {
             this.AccountingDate = accountingDate;
@@ -237,9 +237,8 @@ namespace Lusid.Sdk.Model
         public string EconomicBucket { get; set; }
 
         /// <summary>
-        /// Collection of links.
+        /// Gets or Sets Links
         /// </summary>
-        /// <value>Collection of links.</value>
         [DataMember(Name = "links", EmitDefaultValue = true)]
         public List<Link> Links { get; set; }
 
