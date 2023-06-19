@@ -47,7 +47,7 @@ namespace Lusid.Sdk.Model
         /// <param name="valuations">valuations.</param>
         /// <param name="properties">Reconciliation properties.</param>
         /// <param name="version">version.</param>
-        /// <param name="links">Collection of links..</param>
+        /// <param name="links">links.</param>
         public Reconciliation(ReconciliationId id = default(ReconciliationId), string href = default(string), string name = default(string), string description = default(string), bool isPortfolioGroup = default(bool), ResourceId left = default(ResourceId), ResourceId right = default(ResourceId), ReconciliationTransactions transactions = default(ReconciliationTransactions), ReconciliationConfiguration positions = default(ReconciliationConfiguration), ReconciliationConfiguration valuations = default(ReconciliationConfiguration), Dictionary<string, Property> properties = default(Dictionary<string, Property>), Version version = default(Version), List<Link> links = default(List<Link>))
         {
             this.Id = id;
@@ -143,9 +143,8 @@ namespace Lusid.Sdk.Model
         public Version Version { get; set; }
 
         /// <summary>
-        /// Collection of links.
+        /// Gets or Sets Links
         /// </summary>
-        /// <value>Collection of links.</value>
         [DataMember(Name = "links", EmitDefaultValue = true)]
         public List<Link> Links { get; set; }
 
