@@ -10,7 +10,7 @@ Method | HTTP request | Description
 
 <a name="listordergraphblocks"></a>
 # **ListOrderGraphBlocks**
-> PagedResourceListOfOrderGraphBlock ListOrderGraphBlocks (DateTimeOffset? asAt = null, string paginationToken = null, List<string> sortBy = null, int? limit = null, string filter = null, List<string> propertyKeys = null)
+> PagedResourceListOfOrderGraphBlock ListOrderGraphBlocks (DateTimeOffset? asAt = null, string paginationToken = null, List<string> sortBy = null, int? limit = null, string filter = null, List<string> propertyKeys = null, bool? useComplianceV2 = null)
 
 [EXPERIMENTAL] ListOrderGraphBlocks: Lists blocks that pass the filter provided, and builds a summary picture of the state of their associated order entities.
 
@@ -42,11 +42,12 @@ namespace Example
             var limit = 56;  // int? | See https://support.lusid.com/knowledgebase/article/KA-01915/ (optional) 
             var filter = filter_example;  // string | See https://support.lusid.com/knowledgebase/article/KA-01914/ (optional)  (default to "")
             var propertyKeys = new List<string>(); // List<string> | Must be block-level properties. See https://support.lusid.com/knowledgebase/article/KA-01855/ (optional) 
+            var useComplianceV2 = true;  // bool? | Whether to use the V2 compliance engine when deriving compliance statuses for orders. (default: false) (optional)  (default to false)
 
             try
             {
                 // [EXPERIMENTAL] ListOrderGraphBlocks: Lists blocks that pass the filter provided, and builds a summary picture of the state of their associated order entities.
-                PagedResourceListOfOrderGraphBlock result = apiInstance.ListOrderGraphBlocks(asAt, paginationToken, sortBy, limit, filter, propertyKeys);
+                PagedResourceListOfOrderGraphBlock result = apiInstance.ListOrderGraphBlocks(asAt, paginationToken, sortBy, limit, filter, propertyKeys, useComplianceV2);
                 Debug.WriteLine(result);
             }
             catch (ApiException  e)
@@ -70,6 +71,7 @@ Name | Type | Description  | Notes
  **limit** | **int?**| See https://support.lusid.com/knowledgebase/article/KA-01915/ | [optional] 
  **filter** | **string**| See https://support.lusid.com/knowledgebase/article/KA-01914/ | [optional] [default to &quot;&quot;]
  **propertyKeys** | [**List&lt;string&gt;**](string.md)| Must be block-level properties. See https://support.lusid.com/knowledgebase/article/KA-01855/ | [optional] 
+ **useComplianceV2** | **bool?**| Whether to use the V2 compliance engine when deriving compliance statuses for orders. (default: false) | [optional] [default to false]
 
 ### Return type
 

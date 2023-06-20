@@ -10,7 +10,7 @@ Method | HTTP request | Description
 [**GetAccount**](ChartOfAccountsApi.md#getaccount) | **GET** /api/chartofaccounts/{scope}/{code}/accounts/{accountCode} | [EXPERIMENTAL] GetAccount: Get Account
 [**GetChartOfAccounts**](ChartOfAccountsApi.md#getchartofaccounts) | **GET** /api/chartofaccounts/{scope}/{code} | [EXPERIMENTAL] GetChartOfAccounts: Get ChartOfAccounts
 [**ListAccounts**](ChartOfAccountsApi.md#listaccounts) | **GET** /api/chartofaccounts/{scope}/{code}/accounts | [EXPERIMENTAL] ListAccounts: List Accounts
-[**ListChartsOfAccounts**](ChartOfAccountsApi.md#listchartsofaccounts) | **GET** /api/chartofaccounts | [EXPERIMENTAL] ListChartsOfAccounts: List charts of accounts
+[**ListChartsOfAccounts**](ChartOfAccountsApi.md#listchartsofaccounts) | **GET** /api/chartofaccounts | [EXPERIMENTAL] ListChartsOfAccounts: List chart of accounts
 [**UpsertAccounts**](ChartOfAccountsApi.md#upsertaccounts) | **POST** /api/chartofaccounts/{scope}/{code}/accounts | [EXPERIMENTAL] UpsertAccounts: Upsert Accounts
 [**UpsertAccountsProperties**](ChartOfAccountsApi.md#upsertaccountsproperties) | **POST** /api/chartofaccounts/{scope}/{code}/accounts/{accountCode}/properties/$upsert | [EXPERIMENTAL] UpsertAccountsProperties: Upsert accounts properties
 [**UpsertChartOfAccountsProperties**](ChartOfAccountsApi.md#upsertchartofaccountsproperties) | **POST** /api/chartofaccounts/{scope}/{code}/properties/$upsert | [EXPERIMENTAL] UpsertChartOfAccountsProperties: Upsert chart of accounts properties
@@ -88,7 +88,7 @@ Name | Type | Description  | Notes
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
-| **201** | The newly created char of accounts. |  -  |
+| **201** | The newly created chart of accounts. |  -  |
 | **400** | The details of the input related failure |  -  |
 | **0** | Error response |  -  |
 
@@ -455,7 +455,7 @@ namespace Example
             var scope = scope_example;  // string | The scope of the chart of account.
             var code = code_example;  // string | The code of the chart of account. Together with the scope this uniquely identifies              the chart of accounts.
             var effectiveAt = effectiveAt_example;  // DateTimeOrCutLabel | The effective datetime or cut label at which to list the TimeVariant properties decorated on Accounts. Defaults to the current LUSID              system datetime if not specified. (optional) 
-            var asAt = 2013-10-20T19:20:30+01:00;  // DateTimeOffset? | The asAt datetime at which to retrieve the instrument. Defaults to              returning the latest version if not specified. (optional) 
+            var asAt = 2013-10-20T19:20:30+01:00;  // DateTimeOffset? | The asAt datetime at which to retrieve the Accounts. Defaults to              returning the latest version if not specified. (optional) 
             var page = page_example;  // string | The pagination token to use to continue listing charts of accounts; this              value is returned from the previous call. If a pagination token is provided, the filter, effectiveAt              and asAt fields must not have changed since the original request. Also, if set, a start value cannot be provided. (optional) 
             var start = 56;  // int? | When paginating, skip this number of results. (optional) 
             var limit = 56;  // int? | When paginating, limit the results to this number. Defaults to 100 if not specified. (optional) 
@@ -486,7 +486,7 @@ Name | Type | Description  | Notes
  **scope** | **string**| The scope of the chart of account. | 
  **code** | **string**| The code of the chart of account. Together with the scope this uniquely identifies              the chart of accounts. | 
  **effectiveAt** | **DateTimeOrCutLabel**| The effective datetime or cut label at which to list the TimeVariant properties decorated on Accounts. Defaults to the current LUSID              system datetime if not specified. | [optional] 
- **asAt** | **DateTimeOffset?**| The asAt datetime at which to retrieve the instrument. Defaults to              returning the latest version if not specified. | [optional] 
+ **asAt** | **DateTimeOffset?**| The asAt datetime at which to retrieve the Accounts. Defaults to              returning the latest version if not specified. | [optional] 
  **page** | **string**| The pagination token to use to continue listing charts of accounts; this              value is returned from the previous call. If a pagination token is provided, the filter, effectiveAt              and asAt fields must not have changed since the original request. Also, if set, a start value cannot be provided. | [optional] 
  **start** | **int?**| When paginating, skip this number of results. | [optional] 
  **limit** | **int?**| When paginating, limit the results to this number. Defaults to 100 if not specified. | [optional] 
@@ -510,7 +510,7 @@ Name | Type | Description  | Notes
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
-| **200** | The accounts in the give chart of accounts. |  -  |
+| **200** | The accounts in the given chart of accounts. |  -  |
 | **400** | The details of the input related failure |  -  |
 | **0** | Error response |  -  |
 
@@ -520,7 +520,7 @@ Name | Type | Description  | Notes
 # **ListChartsOfAccounts**
 > PagedResourceListOfChartOfAccounts ListChartsOfAccounts (DateTimeOrCutLabel effectiveAt = null, DateTimeOffset? asAt = null, string page = null, int? start = null, int? limit = null, string filter = null, List<string> propertyKeys = null)
 
-[EXPERIMENTAL] ListChartsOfAccounts: List charts of accounts
+[EXPERIMENTAL] ListChartsOfAccounts: List chart of accounts
 
 List all the charts of accounts matching particular criteria.
 
@@ -554,7 +554,7 @@ namespace Example
 
             try
             {
-                // [EXPERIMENTAL] ListChartsOfAccounts: List charts of accounts
+                // [EXPERIMENTAL] ListChartsOfAccounts: List chart of accounts
                 PagedResourceListOfChartOfAccounts result = apiInstance.ListChartsOfAccounts(effectiveAt, asAt, page, start, limit, filter, propertyKeys);
                 Debug.WriteLine(result);
             }
