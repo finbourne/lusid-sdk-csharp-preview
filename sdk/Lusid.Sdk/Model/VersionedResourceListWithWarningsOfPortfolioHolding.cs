@@ -46,7 +46,7 @@ namespace Lusid.Sdk.Model
         /// <param name="nextPage">The next page of results..</param>
         /// <param name="previousPage">The previous page of results..</param>
         /// <param name="warnings">warnings.</param>
-        /// <param name="links">Collection of links..</param>
+        /// <param name="links">links.</param>
         public VersionedResourceListWithWarningsOfPortfolioHolding(Version version = default(Version), List<PortfolioHolding> values = default(List<PortfolioHolding>), string href = default(string), string nextPage = default(string), string previousPage = default(string), List<Warning> warnings = default(List<Warning>), List<Link> links = default(List<Link>))
         {
             // to ensure "version" is required (not null)
@@ -101,9 +101,8 @@ namespace Lusid.Sdk.Model
         public List<Warning> Warnings { get; set; }
 
         /// <summary>
-        /// Collection of links.
+        /// Gets or Sets Links
         /// </summary>
-        /// <value>Collection of links.</value>
         [DataMember(Name = "links", EmitDefaultValue = true)]
         public List<Link> Links { get; set; }
 

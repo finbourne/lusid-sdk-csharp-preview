@@ -44,7 +44,7 @@ namespace Lusid.Sdk.Model
         /// <param name="inwardDescription">The description to relate target entity object and source entity object.</param>
         /// <param name="lifeTime">Describes how the relations can change over time, allowed values are \&quot;Perpetual\&quot; and \&quot;TimeVariant\&quot;.</param>
         /// <param name="constraintStyle">Describes the uniqueness and cardinality for relations with a specific source entity object and relations under this definition. Allowed values are \&quot;Property\&quot; and \&quot;Collection\&quot;, defaults to \&quot;Collection\&quot; if not specified..</param>
-        /// <param name="links">Collection of links..</param>
+        /// <param name="links">links.</param>
         public RelationDefinition(Version version = default(Version), ResourceId relationDefinitionId = default(ResourceId), string sourceEntityDomain = default(string), string targetEntityDomain = default(string), string displayName = default(string), string outwardDescription = default(string), string inwardDescription = default(string), string lifeTime = default(string), string constraintStyle = default(string), List<Link> links = default(List<Link>))
         {
             this.Version = version;
@@ -121,9 +121,8 @@ namespace Lusid.Sdk.Model
         public string ConstraintStyle { get; set; }
 
         /// <summary>
-        /// Collection of links.
+        /// Gets or Sets Links
         /// </summary>
-        /// <value>Collection of links.</value>
         [DataMember(Name = "links", EmitDefaultValue = true)]
         public List<Link> Links { get; set; }
 
