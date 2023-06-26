@@ -5,6 +5,7 @@ All URIs are relative to *https://www.lusid.com/api*
 Method | HTTP request | Description
 ------------- | ------------- | -------------
 [**ListOrderGraphBlocks**](OrderGraphApi.md#listordergraphblocks) | **GET** /api/ordergraph/blocks | [EXPERIMENTAL] ListOrderGraphBlocks: Lists blocks that pass the filter provided, and builds a summary picture of the state of their associated order entities.
+[**ListOrderGraphPlacementChildren**](OrderGraphApi.md#listordergraphplacementchildren) | **GET** /api/ordergraph/placementchildren/{scope}/{code} | [EXPERIMENTAL] ListOrderGraphPlacementChildren: Lists all placements for the parent placement specified by the scope and code, and builds a summary picture of the state of their associated order entities.
 [**ListOrderGraphPlacements**](OrderGraphApi.md#listordergraphplacements) | **GET** /api/ordergraph/placements | [EXPERIMENTAL] ListOrderGraphPlacements: Lists placements that pass the filter provided, and builds a summary picture of the state of their associated order entities.
 
 
@@ -91,6 +92,94 @@ Name | Type | Description  | Notes
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
 | **200** | Blocks in scope. |  -  |
+| **400** | The details of the input related failure |  -  |
+| **0** | Error response |  -  |
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+<a name="listordergraphplacementchildren"></a>
+# **ListOrderGraphPlacementChildren**
+> PagedResourceListOfOrderGraphPlacement ListOrderGraphPlacementChildren (string scope, string code, DateTimeOffset? asAt = null, string paginationToken = null, List<string> sortBy = null, int? limit = null, List<string> propertyKeys = null)
+
+[EXPERIMENTAL] ListOrderGraphPlacementChildren: Lists all placements for the parent placement specified by the scope and code, and builds a summary picture of the state of their associated order entities.
+
+Lists all child order placements, for the specified parent placement, along with the IDs of the block and order that the  placement is for, each placement's quantity, the IDs of all allocations and executions in the placement  and the total quantities of those, and a simple text field describing the overall state of the placement.
+
+### Example
+```csharp
+using System.Collections.Generic;
+using System.Diagnostics;
+using Lusid.Sdk.Api;
+using Lusid.Sdk.Client;
+using Lusid.Sdk.Model;
+
+namespace Example
+{
+    public class ListOrderGraphPlacementChildrenExample
+    {
+        public static void Main()
+        {
+            Configuration config = new Configuration();
+            config.BasePath = "https://www.lusid.com/api";
+            // Configure OAuth2 access token for authorization: oauth2
+            config.AccessToken = "YOUR_ACCESS_TOKEN";
+
+            var apiInstance = new OrderGraphApi(config);
+            var scope = scope_example;  // string | The parent placement's scope
+            var code = code_example;  // string | The parent placement's code
+            var asAt = 2013-10-20T19:20:30+01:00;  // DateTimeOffset? | See https://support.lusid.com/knowledgebase/article/KA-01832/ (optional) 
+            var paginationToken = paginationToken_example;  // string | See https://support.lusid.com/knowledgebase/article/KA-01915/ (optional) 
+            var sortBy = new List<string>(); // List<string> | Order the results by these fields. Use use the '-' sign to denote descending order e.g. -MyFieldName. (optional) 
+            var limit = 56;  // int? | See https://support.lusid.com/knowledgebase/article/KA-01915/ (optional) 
+            var propertyKeys = new List<string>(); // List<string> | Must be placement properties. See https://support.lusid.com/knowledgebase/article/KA-01855/ (optional) 
+
+            try
+            {
+                // [EXPERIMENTAL] ListOrderGraphPlacementChildren: Lists all placements for the parent placement specified by the scope and code, and builds a summary picture of the state of their associated order entities.
+                PagedResourceListOfOrderGraphPlacement result = apiInstance.ListOrderGraphPlacementChildren(scope, code, asAt, paginationToken, sortBy, limit, propertyKeys);
+                Debug.WriteLine(result);
+            }
+            catch (ApiException  e)
+            {
+                Debug.Print("Exception when calling OrderGraphApi.ListOrderGraphPlacementChildren: " + e.Message );
+                Debug.Print("Status Code: "+ e.ErrorCode);
+                Debug.Print(e.StackTrace);
+            }
+        }
+    }
+}
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **scope** | **string**| The parent placement&#39;s scope | 
+ **code** | **string**| The parent placement&#39;s code | 
+ **asAt** | **DateTimeOffset?**| See https://support.lusid.com/knowledgebase/article/KA-01832/ | [optional] 
+ **paginationToken** | **string**| See https://support.lusid.com/knowledgebase/article/KA-01915/ | [optional] 
+ **sortBy** | [**List&lt;string&gt;**](string.md)| Order the results by these fields. Use use the &#39;-&#39; sign to denote descending order e.g. -MyFieldName. | [optional] 
+ **limit** | **int?**| See https://support.lusid.com/knowledgebase/article/KA-01915/ | [optional] 
+ **propertyKeys** | [**List&lt;string&gt;**](string.md)| Must be placement properties. See https://support.lusid.com/knowledgebase/article/KA-01855/ | [optional] 
+
+### Return type
+
+[**PagedResourceListOfOrderGraphPlacement**](PagedResourceListOfOrderGraphPlacement.md)
+
+### Authorization
+
+[oauth2](../README.md#oauth2)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: text/plain, application/json, text/json
+
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+| **200** | List all child Placements for the specified Placement. |  -  |
 | **400** | The details of the input related failure |  -  |
 | **0** | Error response |  -  |
 
