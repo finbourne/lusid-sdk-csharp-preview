@@ -8,7 +8,7 @@
     <Company>FINBOURNE Technology Limited</Company>
     <Product>LUSID</Product>
     <Description>LUSID SDK</Description>
-    <RepositoryUrl>https://github.com/finbourne/lusid-sdk-csharp</RepositoryUrl>
+    <RepositoryUrl>https://github.com/finbourne/lusid-sdk-csharp-preview</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
   </PropertyGroup>
 
