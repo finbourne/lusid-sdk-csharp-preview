@@ -758,7 +758,7 @@ namespace Example
 
             var apiInstance = new TransactionConfigurationApi(config);
             var source = source_example;  // string | The source to set the transaction configuration for
-            var type = type_example;  // string | One of the transaction configuration alias types to uniquely identify the configuration
+            var type = type_example;  // string | One of the transaction configuration alias types to uniquely identify the configuration. If this type does not exist, then a new transaction type is created using the body of the request in the given source, without including this type
             var transactionTypeRequest = new TransactionTypeRequest(); // TransactionTypeRequest | The transaction configuration to set
             var scope = scope_example;  // string | The scope in which the transaction types exists. When not supplied the scope is 'default'. (optional)  (default to "default")
 
@@ -784,7 +784,7 @@ namespace Example
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **source** | **string**| The source to set the transaction configuration for | 
- **type** | **string**| One of the transaction configuration alias types to uniquely identify the configuration | 
+ **type** | **string**| One of the transaction configuration alias types to uniquely identify the configuration. If this type does not exist, then a new transaction type is created using the body of the request in the given source, without including this type | 
  **transactionTypeRequest** | [**TransactionTypeRequest**](TransactionTypeRequest.md)| The transaction configuration to set | 
  **scope** | **string**| The scope in which the transaction types exists. When not supplied the scope is &#39;default&#39;. | [optional] [default to &quot;default&quot;]
 
