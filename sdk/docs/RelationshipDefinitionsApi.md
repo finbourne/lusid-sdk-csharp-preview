@@ -247,7 +247,7 @@ Name | Type | Description  | Notes
 
 <a name="listrelationshipdefinitions"></a>
 # **ListRelationshipDefinitions**
-> PagedResourceListOfRelationshipDefinition ListRelationshipDefinitions (DateTimeOffset? asAt = null, string page = null, int? limit = null, string filter = null)
+> PagedResourceListOfRelationshipDefinition ListRelationshipDefinitions (DateTimeOffset? asAt = null, string page = null, int? limit = null, string filter = null, List<string> sortBy = null)
 
 [EARLY ACCESS] ListRelationshipDefinitions: List relationship definitions
 
@@ -274,14 +274,15 @@ namespace Example
 
             var apiInstance = new RelationshipDefinitionsApi(config);
             var asAt = 2013-10-20T19:20:30+01:00;  // DateTimeOffset? | The asAt datetime at which to retrieve the relationship definitions. Defaults to return              the latest version of each definition if not specified. (optional) 
-            var page = page_example;  // string | The pagination token to use to continue listing relationship definitions from a previous call to list relationship definitions. This  value is returned from the previous call. If a pagination token is provided the filter, asAt field  must not have changed since the original request. (optional) 
+            var page = page_example;  // string | The pagination token to use to continue listing relationship definitions from a previous call to list relationship definitions. This  value is returned from the previous call. If a pagination token is provided the filter, sortBy and asAt field  must not have changed since the original request. (optional) 
             var limit = 56;  // int? | When paginating, limit the number of returned results to this many. Defaults to 100 if not specified. (optional) 
             var filter = filter_example;  // string | Expression to filter the result set.              For example, to filter on the Scope, use \"scope eq 'ExampleScope'\"              Read more about filtering results from LUSID here https://support.lusid.com/filtering-results-from-lusid. (optional) 
+            var sortBy = new List<string>(); // List<string> | A list of field names to sort by, each suffixed by \" ASC\" or \" DESC\" (optional) 
 
             try
             {
                 // [EARLY ACCESS] ListRelationshipDefinitions: List relationship definitions
-                PagedResourceListOfRelationshipDefinition result = apiInstance.ListRelationshipDefinitions(asAt, page, limit, filter);
+                PagedResourceListOfRelationshipDefinition result = apiInstance.ListRelationshipDefinitions(asAt, page, limit, filter, sortBy);
                 Debug.WriteLine(result);
             }
             catch (ApiException  e)
@@ -300,9 +301,10 @@ namespace Example
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **asAt** | **DateTimeOffset?**| The asAt datetime at which to retrieve the relationship definitions. Defaults to return              the latest version of each definition if not specified. | [optional] 
- **page** | **string**| The pagination token to use to continue listing relationship definitions from a previous call to list relationship definitions. This  value is returned from the previous call. If a pagination token is provided the filter, asAt field  must not have changed since the original request. | [optional] 
+ **page** | **string**| The pagination token to use to continue listing relationship definitions from a previous call to list relationship definitions. This  value is returned from the previous call. If a pagination token is provided the filter, sortBy and asAt field  must not have changed since the original request. | [optional] 
  **limit** | **int?**| When paginating, limit the number of returned results to this many. Defaults to 100 if not specified. | [optional] 
  **filter** | **string**| Expression to filter the result set.              For example, to filter on the Scope, use \&quot;scope eq &#39;ExampleScope&#39;\&quot;              Read more about filtering results from LUSID here https://support.lusid.com/filtering-results-from-lusid. | [optional] 
+ **sortBy** | [**List&lt;string&gt;**](string.md)| A list of field names to sort by, each suffixed by \&quot; ASC\&quot; or \&quot; DESC\&quot; | [optional] 
 
 ### Return type
 

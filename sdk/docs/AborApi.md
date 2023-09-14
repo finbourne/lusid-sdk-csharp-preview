@@ -4,13 +4,97 @@ All URIs are relative to *https://www.lusid.com/api*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
+[**AddDiaryEntry**](AborApi.md#adddiaryentry) | **POST** /api/abor/{scope}/{code}/accountingdiary/{diaryEntryCode} | [EXPERIMENTAL] AddDiaryEntry: Add a diary entry to the specified Abor.
 [**CreateAbor**](AborApi.md#createabor) | **POST** /api/abor/{scope} | [EXPERIMENTAL] CreateAbor: Create an Abor.
 [**DeleteAbor**](AborApi.md#deleteabor) | **DELETE** /api/abor/{scope}/{code} | [EXPERIMENTAL] DeleteAbor: Delete an Abor.
 [**GetAbor**](AborApi.md#getabor) | **GET** /api/abor/{scope}/{code} | [EXPERIMENTAL] GetAbor: Get Abor.
 [**GetJELines**](AborApi.md#getjelines) | **POST** /api/abor/{scope}/{code}/JELines/$query | [EXPERIMENTAL] GetJELines: Get the JELines for the given Abor.
 [**ListAbors**](AborApi.md#listabors) | **GET** /api/abor | [EXPERIMENTAL] ListAbors: List Abors.
+[**ListDiaryEntries**](AborApi.md#listdiaryentries) | **GET** /api/abor/{scope}/{code}/accountingdiary | [EXPERIMENTAL] ListDiaryEntries: List diary entries.
 [**UpsertAborProperties**](AborApi.md#upsertaborproperties) | **POST** /api/abor/{scope}/{code}/properties/$upsert | [EXPERIMENTAL] UpsertAborProperties: Upsert Abor properties
 
+
+<a name="adddiaryentry"></a>
+# **AddDiaryEntry**
+> DiaryEntry AddDiaryEntry (string scope, string code, string diaryEntryCode, DiaryEntryRequest diaryEntryRequest)
+
+[EXPERIMENTAL] AddDiaryEntry: Add a diary entry to the specified Abor.
+
+Adds a new diary entry to the specified Abor
+
+### Example
+```csharp
+using System.Collections.Generic;
+using System.Diagnostics;
+using Lusid.Sdk.Api;
+using Lusid.Sdk.Client;
+using Lusid.Sdk.Model;
+
+namespace Example
+{
+    public class AddDiaryEntryExample
+    {
+        public static void Main()
+        {
+            Configuration config = new Configuration();
+            config.BasePath = "https://www.lusid.com/api";
+            // Configure OAuth2 access token for authorization: oauth2
+            config.AccessToken = "YOUR_ACCESS_TOKEN";
+
+            var apiInstance = new AborApi(config);
+            var scope = scope_example;  // string | The scope of the Abor.
+            var code = code_example;  // string | The code of the Abor.
+            var diaryEntryCode = diaryEntryCode_example;  // string | Diary entry code
+            var diaryEntryRequest = new DiaryEntryRequest(); // DiaryEntryRequest | The diary entry to add.
+
+            try
+            {
+                // [EXPERIMENTAL] AddDiaryEntry: Add a diary entry to the specified Abor.
+                DiaryEntry result = apiInstance.AddDiaryEntry(scope, code, diaryEntryCode, diaryEntryRequest);
+                Debug.WriteLine(result);
+            }
+            catch (ApiException  e)
+            {
+                Debug.Print("Exception when calling AborApi.AddDiaryEntry: " + e.Message );
+                Debug.Print("Status Code: "+ e.ErrorCode);
+                Debug.Print(e.StackTrace);
+            }
+        }
+    }
+}
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **scope** | **string**| The scope of the Abor. | 
+ **code** | **string**| The code of the Abor. | 
+ **diaryEntryCode** | **string**| Diary entry code | 
+ **diaryEntryRequest** | [**DiaryEntryRequest**](DiaryEntryRequest.md)| The diary entry to add. | 
+
+### Return type
+
+[**DiaryEntry**](DiaryEntry.md)
+
+### Authorization
+
+[oauth2](../README.md#oauth2)
+
+### HTTP request headers
+
+ - **Content-Type**: application/json-patch+json, application/json, text/json, application/_*+json
+ - **Accept**: text/plain, application/json, text/json
+
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+| **201** | The newly added diary entry. |  -  |
+| **400** | The details of the input related failure |  -  |
+| **0** | Error response |  -  |
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 <a name="createabor"></a>
 # **CreateAbor**
@@ -426,6 +510,96 @@ Name | Type | Description  | Notes
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
+<a name="listdiaryentries"></a>
+# **ListDiaryEntries**
+> PagedResourceListOfDiaryEntry ListDiaryEntries (string scope, string code, DateTimeOrCutLabel effectiveAt = null, DateTimeOffset? asAt = null, string page = null, int? limit = null, string filter = null, List<string> propertyKeys = null)
+
+[EXPERIMENTAL] ListDiaryEntries: List diary entries.
+
+List all the diary entries matching particular criteria.
+
+### Example
+```csharp
+using System.Collections.Generic;
+using System.Diagnostics;
+using Lusid.Sdk.Api;
+using Lusid.Sdk.Client;
+using Lusid.Sdk.Model;
+
+namespace Example
+{
+    public class ListDiaryEntriesExample
+    {
+        public static void Main()
+        {
+            Configuration config = new Configuration();
+            config.BasePath = "https://www.lusid.com/api";
+            // Configure OAuth2 access token for authorization: oauth2
+            config.AccessToken = "YOUR_ACCESS_TOKEN";
+
+            var apiInstance = new AborApi(config);
+            var scope = scope_example;  // string | The scope of the Abor.
+            var code = code_example;  // string | The code of the Abor.
+            var effectiveAt = effectiveAt_example;  // DateTimeOrCutLabel | The effective datetime or cut label at which to list the TimeVariant properties for the Diary Entries. Defaults to the current LUSID              system datetime if not specified. (optional) 
+            var asAt = 2013-10-20T19:20:30+01:00;  // DateTimeOffset? | The asAt datetime at which to list the DiaryEntry. Defaults to returning the latest version of each DiaryEntry if not specified. (optional) 
+            var page = page_example;  // string | The pagination token to use to continue listing diary entries; this              value is returned from the previous call. If a pagination token is provided, the filter, effectiveAt              and asAt fields must not have changed since the original request. Also, if set, a start value cannot be provided. (optional) 
+            var limit = 56;  // int? | When paginating, limit the results to this number. Defaults to 100 if not specified. (optional) 
+            var filter = filter_example;  // string | Expression to filter the results.              For example, to filter on the DiaryEntry type, specify \"type eq 'PeriodBoundary'\". For more information about filtering              results, see https://support.lusid.com/knowledgebase/article/KA-01914. (optional) 
+            var propertyKeys = new List<string>(); // List<string> | A list of property keys from the 'DiaryEntry' domain to decorate onto each DiaryEntry.              These must take the format {domain}/{scope}/{code}, for example 'DiaryEntry/Report/Id'. (optional) 
+
+            try
+            {
+                // [EXPERIMENTAL] ListDiaryEntries: List diary entries.
+                PagedResourceListOfDiaryEntry result = apiInstance.ListDiaryEntries(scope, code, effectiveAt, asAt, page, limit, filter, propertyKeys);
+                Debug.WriteLine(result);
+            }
+            catch (ApiException  e)
+            {
+                Debug.Print("Exception when calling AborApi.ListDiaryEntries: " + e.Message );
+                Debug.Print("Status Code: "+ e.ErrorCode);
+                Debug.Print(e.StackTrace);
+            }
+        }
+    }
+}
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **scope** | **string**| The scope of the Abor. | 
+ **code** | **string**| The code of the Abor. | 
+ **effectiveAt** | **DateTimeOrCutLabel**| The effective datetime or cut label at which to list the TimeVariant properties for the Diary Entries. Defaults to the current LUSID              system datetime if not specified. | [optional] 
+ **asAt** | **DateTimeOffset?**| The asAt datetime at which to list the DiaryEntry. Defaults to returning the latest version of each DiaryEntry if not specified. | [optional] 
+ **page** | **string**| The pagination token to use to continue listing diary entries; this              value is returned from the previous call. If a pagination token is provided, the filter, effectiveAt              and asAt fields must not have changed since the original request. Also, if set, a start value cannot be provided. | [optional] 
+ **limit** | **int?**| When paginating, limit the results to this number. Defaults to 100 if not specified. | [optional] 
+ **filter** | **string**| Expression to filter the results.              For example, to filter on the DiaryEntry type, specify \&quot;type eq &#39;PeriodBoundary&#39;\&quot;. For more information about filtering              results, see https://support.lusid.com/knowledgebase/article/KA-01914. | [optional] 
+ **propertyKeys** | [**List&lt;string&gt;**](string.md)| A list of property keys from the &#39;DiaryEntry&#39; domain to decorate onto each DiaryEntry.              These must take the format {domain}/{scope}/{code}, for example &#39;DiaryEntry/Report/Id&#39;. | [optional] 
+
+### Return type
+
+[**PagedResourceListOfDiaryEntry**](PagedResourceListOfDiaryEntry.md)
+
+### Authorization
+
+[oauth2](../README.md#oauth2)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: text/plain, application/json, text/json
+
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+| **200** | The requested diary entries. |  -  |
+| **400** | The details of the input related failure |  -  |
+| **0** | Error response |  -  |
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
 <a name="upsertaborproperties"></a>
 # **UpsertAborProperties**
 > AborProperties UpsertAborProperties (string scope, string code, Dictionary<string, Property> requestBody = null)
@@ -456,7 +630,7 @@ namespace Example
             var apiInstance = new AborApi(config);
             var scope = scope_example;  // string | The scope of the Abor to update or insert the properties onto.
             var code = code_example;  // string | The code of the Abor to update or insert the properties onto. Together with the scope this uniquely identifies the Abor.
-            var requestBody = new Dictionary<string, Property>(); // Dictionary<string, Property> | The properties to be updated or inserted onto the chart of account. Each property in               the request must be keyed by its unique property key. This has the format {domain}/{scope}/{code} e.g. \"Abor/Manager/Id\". (optional) 
+            var requestBody = new Dictionary<string, Property>(); // Dictionary<string, Property> | The properties to be updated or inserted onto the Abor. Each property in               the request must be keyed by its unique property key. This has the format {domain}/{scope}/{code} e.g. \"Abor/Manager/Id\". (optional) 
 
             try
             {
@@ -481,7 +655,7 @@ Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **scope** | **string**| The scope of the Abor to update or insert the properties onto. | 
  **code** | **string**| The code of the Abor to update or insert the properties onto. Together with the scope this uniquely identifies the Abor. | 
- **requestBody** | [**Dictionary&lt;string, Property&gt;**](Property.md)| The properties to be updated or inserted onto the chart of account. Each property in               the request must be keyed by its unique property key. This has the format {domain}/{scope}/{code} e.g. \&quot;Abor/Manager/Id\&quot;. | [optional] 
+ **requestBody** | [**Dictionary&lt;string, Property&gt;**](Property.md)| The properties to be updated or inserted onto the Abor. Each property in               the request must be keyed by its unique property key. This has the format {domain}/{scope}/{code} e.g. \&quot;Abor/Manager/Id\&quot;. | [optional] 
 
 ### Return type
 

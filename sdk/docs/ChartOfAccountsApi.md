@@ -10,10 +10,10 @@ Method | HTTP request | Description
 [**GetAccount**](ChartOfAccountsApi.md#getaccount) | **GET** /api/chartofaccounts/{scope}/{code}/accounts/{accountCode} | [EXPERIMENTAL] GetAccount: Get Account
 [**GetChartOfAccounts**](ChartOfAccountsApi.md#getchartofaccounts) | **GET** /api/chartofaccounts/{scope}/{code} | [EXPERIMENTAL] GetChartOfAccounts: Get ChartOfAccounts
 [**ListAccounts**](ChartOfAccountsApi.md#listaccounts) | **GET** /api/chartofaccounts/{scope}/{code}/accounts | [EXPERIMENTAL] ListAccounts: List Accounts
-[**ListChartsOfAccounts**](ChartOfAccountsApi.md#listchartsofaccounts) | **GET** /api/chartofaccounts | [EXPERIMENTAL] ListChartsOfAccounts: List chart of accounts
+[**ListChartsOfAccounts**](ChartOfAccountsApi.md#listchartsofaccounts) | **GET** /api/chartofaccounts | [EXPERIMENTAL] ListChartsOfAccounts: List Charts of Accounts
 [**UpsertAccounts**](ChartOfAccountsApi.md#upsertaccounts) | **POST** /api/chartofaccounts/{scope}/{code}/accounts | [EXPERIMENTAL] UpsertAccounts: Upsert Accounts
 [**UpsertAccountsProperties**](ChartOfAccountsApi.md#upsertaccountsproperties) | **POST** /api/chartofaccounts/{scope}/{code}/accounts/{accountCode}/properties/$upsert | [EXPERIMENTAL] UpsertAccountsProperties: Upsert accounts properties
-[**UpsertChartOfAccountsProperties**](ChartOfAccountsApi.md#upsertchartofaccountsproperties) | **POST** /api/chartofaccounts/{scope}/{code}/properties/$upsert | [EXPERIMENTAL] UpsertChartOfAccountsProperties: Upsert chart of accounts properties
+[**UpsertChartOfAccountsProperties**](ChartOfAccountsApi.md#upsertchartofaccountsproperties) | **POST** /api/chartofaccounts/{scope}/{code}/properties/$upsert | [EXPERIMENTAL] UpsertChartOfAccountsProperties: Upsert Chart of Accounts properties
 
 
 <a name="createchartofaccounts"></a>
@@ -22,7 +22,7 @@ Method | HTTP request | Description
 
 [EXPERIMENTAL] CreateChartOfAccounts: Create a Chart of Accounts
 
-Create the given chart of accounts.
+Create the given Chart of Accounts.
 
 ### Example
 ```csharp
@@ -88,7 +88,7 @@ Name | Type | Description  | Notes
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
-| **201** | The newly created chart of accounts. |  -  |
+| **201** | The newly created Chart of Accounts. |  -  |
 | **400** | The details of the input related failure |  -  |
 | **0** | Error response |  -  |
 
@@ -100,7 +100,7 @@ Name | Type | Description  | Notes
 
 [EXPERIMENTAL] DeleteAccounts: Soft or hard delete multiple accounts
 
-Delete one or more account from the chart of accounts. Soft deletion marks the account as inactive  While the Hard deletion is deleting the account.  The maximum number of accounts that this method can delete per request is 2,000.
+Delete one or more account from the Chart of Accounts. Soft deletion marks the account as inactive  While the Hard deletion is deleting the account.  The maximum number of accounts that this method can delete per request is 2,000.
 
 ### Example
 ```csharp
@@ -122,8 +122,8 @@ namespace Example
             config.AccessToken = "YOUR_ACCESS_TOKEN";
 
             var apiInstance = new ChartOfAccountsApi(config);
-            var scope = scope_example;  // string | The scope of the chart of accounts.
-            var code = code_example;  // string | The code of the chart of accounts. Together with the scope this uniquely identifies              the Chart of Accounts.
+            var scope = scope_example;  // string | The scope of the Chart of Accounts.
+            var code = code_example;  // string | The code of the Chart of Accounts. Together with the scope this uniquely identifies              the Chart of Accounts.
             var requestBody = new List<string>(); // List<string> | The codes of the accounts to delete.
             var deleteMode = deleteMode_example;  // string | The delete mode to use (defaults to 'Soft'). (optional) 
 
@@ -148,8 +148,8 @@ namespace Example
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **scope** | **string**| The scope of the chart of accounts. | 
- **code** | **string**| The code of the chart of accounts. Together with the scope this uniquely identifies              the Chart of Accounts. | 
+ **scope** | **string**| The scope of the Chart of Accounts. | 
+ **code** | **string**| The code of the Chart of Accounts. Together with the scope this uniquely identifies              the Chart of Accounts. | 
  **requestBody** | [**List&lt;string&gt;**](string.md)| The codes of the accounts to delete. | 
  **deleteMode** | **string**| The delete mode to use (defaults to &#39;Soft&#39;). | [optional] 
 
@@ -170,7 +170,7 @@ Name | Type | Description  | Notes
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
-| **200** | The datetime that the accounts were deleted. |  -  |
+| **200** | The datetime that the Accounts were deleted. |  -  |
 | **400** | The details of the input related failure |  -  |
 | **0** | Error response |  -  |
 
@@ -182,7 +182,7 @@ Name | Type | Description  | Notes
 
 [EXPERIMENTAL] DeleteChartOfAccounts: Delete a Chart of Accounts
 
-Delete the given chart of accounts.
+Delete the given Chart of Accounts.
 
 ### Example
 ```csharp
@@ -205,7 +205,7 @@ namespace Example
 
             var apiInstance = new ChartOfAccountsApi(config);
             var scope = scope_example;  // string | The scope of the Chart of Accounts to be deleted.
-            var code = code_example;  // string | The code of the Chart of Accounts to be deleted.Together with the scope this uniquely identifies the chart of accounts.
+            var code = code_example;  // string | The code of the Chart of Accounts to be deleted. Together with the scope this uniquely identifies the Chart of Accounts.
 
             try
             {
@@ -229,7 +229,7 @@ namespace Example
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **scope** | **string**| The scope of the Chart of Accounts to be deleted. | 
- **code** | **string**| The code of the Chart of Accounts to be deleted.Together with the scope this uniquely identifies the chart of accounts. | 
+ **code** | **string**| The code of the Chart of Accounts to be deleted. Together with the scope this uniquely identifies the Chart of Accounts. | 
 
 ### Return type
 
@@ -248,7 +248,7 @@ Name | Type | Description  | Notes
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
-| **200** | The datetime that the chart of accounts was deleted |  -  |
+| **200** | The datetime that the Chart of Accounts was deleted. |  -  |
 | **400** | The details of the input related failure |  -  |
 | **0** | Error response |  -  |
 
@@ -282,8 +282,8 @@ namespace Example
             config.AccessToken = "YOUR_ACCESS_TOKEN";
 
             var apiInstance = new ChartOfAccountsApi(config);
-            var scope = scope_example;  // string | The scope of the ChartOfAccounts.
-            var code = code_example;  // string | The code of the ChartOfAccounts. Together with the scope this uniquely identifies the ChartOfAccounts.
+            var scope = scope_example;  // string | The scope of the Chart of Accounts.
+            var code = code_example;  // string | The code of the Chart of Accounts. Together with the scope this uniquely identifies the Chart of Accounts.
             var accountCode = accountCode_example;  // string | The code of the Account.
             var effectiveAt = effectiveAt_example;  // DateTimeOrCutLabel | The effective datetime or cut label at which to retrieve the Account properties. Defaults to the current LUSID system datetime if not specified. (optional) 
             var asAt = 2013-10-20T19:20:30+01:00;  // DateTimeOffset? | The asAt datetime at which to retrieve the Account definition. Defaults to returning the latest version of the Account definition if not specified. (optional) 
@@ -310,8 +310,8 @@ namespace Example
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **scope** | **string**| The scope of the ChartOfAccounts. | 
- **code** | **string**| The code of the ChartOfAccounts. Together with the scope this uniquely identifies the ChartOfAccounts. | 
+ **scope** | **string**| The scope of the Chart of Accounts. | 
+ **code** | **string**| The code of the Chart of Accounts. Together with the scope this uniquely identifies the Chart of Accounts. | 
  **accountCode** | **string**| The code of the Account. | 
  **effectiveAt** | **DateTimeOrCutLabel**| The effective datetime or cut label at which to retrieve the Account properties. Defaults to the current LUSID system datetime if not specified. | [optional] 
  **asAt** | **DateTimeOffset?**| The asAt datetime at which to retrieve the Account definition. Defaults to returning the latest version of the Account definition if not specified. | [optional] 
@@ -334,7 +334,7 @@ Name | Type | Description  | Notes
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
-| **200** | The requested Account definition |  -  |
+| **200** | The requested Account definition. |  -  |
 | **400** | The details of the input related failure |  -  |
 | **0** | Error response |  -  |
 
@@ -346,7 +346,7 @@ Name | Type | Description  | Notes
 
 [EXPERIMENTAL] GetChartOfAccounts: Get ChartOfAccounts
 
-Retrieve the definition of a particular ChartOfAccounts.
+Retrieve the definition of a particular Chart of Accounts.
 
 ### Example
 ```csharp
@@ -368,11 +368,11 @@ namespace Example
             config.AccessToken = "YOUR_ACCESS_TOKEN";
 
             var apiInstance = new ChartOfAccountsApi(config);
-            var scope = scope_example;  // string | The scope of the ChartOfAccounts.
-            var code = code_example;  // string | The code of the ChartOfAccounts. Together with the scope this uniquely identifies the ChartOfAccounts.
-            var effectiveAt = effectiveAt_example;  // DateTimeOrCutLabel | The effective datetime or cut label at which to retrieve the ChartOfAccounts properties. Defaults to the current LUSID system datetime if not specified. (optional) 
-            var asAt = 2013-10-20T19:20:30+01:00;  // DateTimeOffset? | The asAt datetime at which to retrieve the ChartOfAccounts definition. Defaults to returning the latest version of the ChartOfAccounts definition if not specified. (optional) 
-            var propertyKeys = new List<string>(); // List<string> | A list of property keys from the 'ChartOfAccounts' domain to decorate onto the ChartOfAccounts.              These must take the format {domain}/{scope}/{code}, for example 'ChartOfAccounts/Manager/Id'. If not provided will return all the entitled properties for that ChartOfAccounts. (optional) 
+            var scope = scope_example;  // string | The scope of the Chart of Accounts.
+            var code = code_example;  // string | The code of the Chart of Accounts. Together with the scope this uniquely identifies the Chart of Accounts.
+            var effectiveAt = effectiveAt_example;  // DateTimeOrCutLabel | The effective datetime or cut label at which to retrieve the Chart of Accounts properties. Defaults to the current LUSID system datetime if not specified. (optional) 
+            var asAt = 2013-10-20T19:20:30+01:00;  // DateTimeOffset? | The asAt datetime at which to retrieve the Chart of Accounts definition. Defaults to returning the latest version of the Chart of Accounts definition if not specified. (optional) 
+            var propertyKeys = new List<string>(); // List<string> | A list of property keys from the 'ChartOfAccounts' domain to decorate onto the Chart of Accounts.              These must take the format {domain}/{scope}/{code}, for example 'ChartOfAccounts/Manager/Id'. If not provided will return all the entitled properties for that Chart of Accounts. (optional) 
 
             try
             {
@@ -395,11 +395,11 @@ namespace Example
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **scope** | **string**| The scope of the ChartOfAccounts. | 
- **code** | **string**| The code of the ChartOfAccounts. Together with the scope this uniquely identifies the ChartOfAccounts. | 
- **effectiveAt** | **DateTimeOrCutLabel**| The effective datetime or cut label at which to retrieve the ChartOfAccounts properties. Defaults to the current LUSID system datetime if not specified. | [optional] 
- **asAt** | **DateTimeOffset?**| The asAt datetime at which to retrieve the ChartOfAccounts definition. Defaults to returning the latest version of the ChartOfAccounts definition if not specified. | [optional] 
- **propertyKeys** | [**List&lt;string&gt;**](string.md)| A list of property keys from the &#39;ChartOfAccounts&#39; domain to decorate onto the ChartOfAccounts.              These must take the format {domain}/{scope}/{code}, for example &#39;ChartOfAccounts/Manager/Id&#39;. If not provided will return all the entitled properties for that ChartOfAccounts. | [optional] 
+ **scope** | **string**| The scope of the Chart of Accounts. | 
+ **code** | **string**| The code of the Chart of Accounts. Together with the scope this uniquely identifies the Chart of Accounts. | 
+ **effectiveAt** | **DateTimeOrCutLabel**| The effective datetime or cut label at which to retrieve the Chart of Accounts properties. Defaults to the current LUSID system datetime if not specified. | [optional] 
+ **asAt** | **DateTimeOffset?**| The asAt datetime at which to retrieve the Chart of Accounts definition. Defaults to returning the latest version of the Chart of Accounts definition if not specified. | [optional] 
+ **propertyKeys** | [**List&lt;string&gt;**](string.md)| A list of property keys from the &#39;ChartOfAccounts&#39; domain to decorate onto the Chart of Accounts.              These must take the format {domain}/{scope}/{code}, for example &#39;ChartOfAccounts/Manager/Id&#39;. If not provided will return all the entitled properties for that Chart of Accounts. | [optional] 
 
 ### Return type
 
@@ -418,7 +418,7 @@ Name | Type | Description  | Notes
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
-| **200** | The requested ChartOfAccounts definition |  -  |
+| **200** | The requested Chart Of Accounts definition. |  -  |
 | **400** | The details of the input related failure |  -  |
 | **0** | Error response |  -  |
 
@@ -430,7 +430,7 @@ Name | Type | Description  | Notes
 
 [EXPERIMENTAL] ListAccounts: List Accounts
 
-List the accounts in a chart of accounts
+List the accounts in a Chart of Accounts
 
 ### Example
 ```csharp
@@ -452,8 +452,8 @@ namespace Example
             config.AccessToken = "YOUR_ACCESS_TOKEN";
 
             var apiInstance = new ChartOfAccountsApi(config);
-            var scope = scope_example;  // string | The scope of the chart of account.
-            var code = code_example;  // string | The code of the chart of account. Together with the scope this uniquely identifies              the chart of accounts.
+            var scope = scope_example;  // string | The scope of the Chart of Accounts.
+            var code = code_example;  // string | The code of the Chart of Accounts. Together with the scope this uniquely identifies              the Chart of Accounts.
             var effectiveAt = effectiveAt_example;  // DateTimeOrCutLabel | The effective datetime or cut label at which to list the TimeVariant properties decorated on Accounts. Defaults to the current LUSID              system datetime if not specified. (optional) 
             var asAt = 2013-10-20T19:20:30+01:00;  // DateTimeOffset? | The asAt datetime at which to retrieve the Accounts. Defaults to              returning the latest version if not specified. (optional) 
             var page = page_example;  // string | The pagination token to use to continue listing charts of accounts; this              value is returned from the previous call. If a pagination token is provided, the filter, effectiveAt              and asAt fields must not have changed since the original request. Also, if set, a start value cannot be provided. (optional) 
@@ -483,8 +483,8 @@ namespace Example
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **scope** | **string**| The scope of the chart of account. | 
- **code** | **string**| The code of the chart of account. Together with the scope this uniquely identifies              the chart of accounts. | 
+ **scope** | **string**| The scope of the Chart of Accounts. | 
+ **code** | **string**| The code of the Chart of Accounts. Together with the scope this uniquely identifies              the Chart of Accounts. | 
  **effectiveAt** | **DateTimeOrCutLabel**| The effective datetime or cut label at which to list the TimeVariant properties decorated on Accounts. Defaults to the current LUSID              system datetime if not specified. | [optional] 
  **asAt** | **DateTimeOffset?**| The asAt datetime at which to retrieve the Accounts. Defaults to              returning the latest version if not specified. | [optional] 
  **page** | **string**| The pagination token to use to continue listing charts of accounts; this              value is returned from the previous call. If a pagination token is provided, the filter, effectiveAt              and asAt fields must not have changed since the original request. Also, if set, a start value cannot be provided. | [optional] 
@@ -510,7 +510,7 @@ Name | Type | Description  | Notes
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
-| **200** | The accounts in the given chart of accounts. |  -  |
+| **200** | The Accounts in the given Chart of Accounts. |  -  |
 | **400** | The details of the input related failure |  -  |
 | **0** | Error response |  -  |
 
@@ -520,9 +520,9 @@ Name | Type | Description  | Notes
 # **ListChartsOfAccounts**
 > PagedResourceListOfChartOfAccounts ListChartsOfAccounts (DateTimeOrCutLabel effectiveAt = null, DateTimeOffset? asAt = null, string page = null, int? start = null, int? limit = null, string filter = null, List<string> propertyKeys = null)
 
-[EXPERIMENTAL] ListChartsOfAccounts: List chart of accounts
+[EXPERIMENTAL] ListChartsOfAccounts: List Charts of Accounts
 
-List all the charts of accounts matching particular criteria.
+List all the Charts of Accounts matching particular criteria.
 
 ### Example
 ```csharp
@@ -545,16 +545,16 @@ namespace Example
 
             var apiInstance = new ChartOfAccountsApi(config);
             var effectiveAt = effectiveAt_example;  // DateTimeOrCutLabel | The effective datetime or cut label at which to list the TimeVariant properties for the Chart Of Accounts. Defaults to the current LUSID              system datetime if not specified. (optional) 
-            var asAt = 2013-10-20T19:20:30+01:00;  // DateTimeOffset? | The asAt datetime at which to list the charts of accounts. Defaults to returning the latest version              of each chart of accounts if not specified. (optional) 
+            var asAt = 2013-10-20T19:20:30+01:00;  // DateTimeOffset? | The asAt datetime at which to list the charts of accounts. Defaults to returning the latest version              of each Chart of Accounts if not specified. (optional) 
             var page = page_example;  // string | The pagination token to use to continue listing charts of accounts; this              value is returned from the previous call. If a pagination token is provided, the filter, effectiveAt              and asAt fields must not have changed since the original request. Also, if set, a start value cannot be provided. (optional) 
             var start = 56;  // int? | When paginating, skip this number of results. (optional) 
             var limit = 56;  // int? | When paginating, limit the results to this number. Defaults to 100 if not specified. (optional) 
-            var filter = filter_example;  // string | Expression to filter the results.              For example, to filter on the ChartOfAccounts type, specify \"id.Code eq '001'\". For more information about filtering              results, see https://support.lusid.com/knowledgebase/article/KA-01914. (optional) 
-            var propertyKeys = new List<string>(); // List<string> | A list of property keys from the 'ChartOfAccounts' domain to decorate onto each chart of accounts.              These must take the format {domain}/{scope}/{code}, for example 'ChartOfAccounts/Manager/Id'. (optional) 
+            var filter = filter_example;  // string | Expression to filter the results.              For example, to filter on the Chart of Accounts type, specify \"id.Code eq '001'\". For more information about filtering              results, see https://support.lusid.com/knowledgebase/article/KA-01914. (optional) 
+            var propertyKeys = new List<string>(); // List<string> | A list of property keys from the 'ChartOfAccounts' domain to decorate onto each Chart of Accounts.              These must take the format {domain}/{scope}/{code}, for example 'ChartOfAccounts/Manager/Id'. (optional) 
 
             try
             {
-                // [EXPERIMENTAL] ListChartsOfAccounts: List chart of accounts
+                // [EXPERIMENTAL] ListChartsOfAccounts: List Charts of Accounts
                 PagedResourceListOfChartOfAccounts result = apiInstance.ListChartsOfAccounts(effectiveAt, asAt, page, start, limit, filter, propertyKeys);
                 Debug.WriteLine(result);
             }
@@ -574,12 +574,12 @@ namespace Example
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **effectiveAt** | **DateTimeOrCutLabel**| The effective datetime or cut label at which to list the TimeVariant properties for the Chart Of Accounts. Defaults to the current LUSID              system datetime if not specified. | [optional] 
- **asAt** | **DateTimeOffset?**| The asAt datetime at which to list the charts of accounts. Defaults to returning the latest version              of each chart of accounts if not specified. | [optional] 
+ **asAt** | **DateTimeOffset?**| The asAt datetime at which to list the charts of accounts. Defaults to returning the latest version              of each Chart of Accounts if not specified. | [optional] 
  **page** | **string**| The pagination token to use to continue listing charts of accounts; this              value is returned from the previous call. If a pagination token is provided, the filter, effectiveAt              and asAt fields must not have changed since the original request. Also, if set, a start value cannot be provided. | [optional] 
  **start** | **int?**| When paginating, skip this number of results. | [optional] 
  **limit** | **int?**| When paginating, limit the results to this number. Defaults to 100 if not specified. | [optional] 
- **filter** | **string**| Expression to filter the results.              For example, to filter on the ChartOfAccounts type, specify \&quot;id.Code eq &#39;001&#39;\&quot;. For more information about filtering              results, see https://support.lusid.com/knowledgebase/article/KA-01914. | [optional] 
- **propertyKeys** | [**List&lt;string&gt;**](string.md)| A list of property keys from the &#39;ChartOfAccounts&#39; domain to decorate onto each chart of accounts.              These must take the format {domain}/{scope}/{code}, for example &#39;ChartOfAccounts/Manager/Id&#39;. | [optional] 
+ **filter** | **string**| Expression to filter the results.              For example, to filter on the Chart of Accounts type, specify \&quot;id.Code eq &#39;001&#39;\&quot;. For more information about filtering              results, see https://support.lusid.com/knowledgebase/article/KA-01914. | [optional] 
+ **propertyKeys** | [**List&lt;string&gt;**](string.md)| A list of property keys from the &#39;ChartOfAccounts&#39; domain to decorate onto each Chart of Accounts.              These must take the format {domain}/{scope}/{code}, for example &#39;ChartOfAccounts/Manager/Id&#39;. | [optional] 
 
 ### Return type
 
@@ -598,7 +598,7 @@ Name | Type | Description  | Notes
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
-| **200** | The requested charts of accounts |  -  |
+| **200** | The requested Charts of Accounts. |  -  |
 | **400** | The details of the input related failure |  -  |
 | **0** | Error response |  -  |
 
@@ -610,7 +610,7 @@ Name | Type | Description  | Notes
 
 [EXPERIMENTAL] UpsertAccounts: Upsert Accounts
 
-Create or update accounts in the chart of accounts. An account will be updated  if it already exists and created if it does not.  The maximum number of accounts that this method can upsert per request is 2,000.
+Create or update accounts in the Chart of Accounts. An account will be updated  if it already exists and created if it does not.  The maximum number of accounts that this method can upsert per request is 2,000.
 
 ### Example
 ```csharp
@@ -632,8 +632,8 @@ namespace Example
             config.AccessToken = "YOUR_ACCESS_TOKEN";
 
             var apiInstance = new ChartOfAccountsApi(config);
-            var scope = scope_example;  // string | The scope of the chart of account.
-            var code = code_example;  // string | The code of the chart of account. Together with the scope this uniquely identifies              the chart of accounts.
+            var scope = scope_example;  // string | The scope of the Chart of Accounts.
+            var code = code_example;  // string | The code of the Chart of Accounts. Together with the scope this uniquely identifies              the Chart of Accounts.
             var account = new List<Account>(); // List<Account> | A list of accounts to be created or updated.
 
             try
@@ -657,8 +657,8 @@ namespace Example
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **scope** | **string**| The scope of the chart of account. | 
- **code** | **string**| The code of the chart of account. Together with the scope this uniquely identifies              the chart of accounts. | 
+ **scope** | **string**| The scope of the Chart of Accounts. | 
+ **code** | **string**| The code of the Chart of Accounts. Together with the scope this uniquely identifies              the Chart of Accounts. | 
  **account** | [**List&lt;Account&gt;**](Account.md)| A list of accounts to be created or updated. | 
 
 ### Return type
@@ -678,7 +678,7 @@ Name | Type | Description  | Notes
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
-| **200** | The newly upserted accounts. |  -  |
+| **200** | The newly upserted Accounts. |  -  |
 | **400** | The details of the input related failure |  -  |
 | **0** | Error response |  -  |
 
@@ -690,7 +690,7 @@ Name | Type | Description  | Notes
 
 [EXPERIMENTAL] UpsertAccountsProperties: Upsert accounts properties
 
-Update or insert one or more properties onto a single account. A property will be updated if it  already exists and inserted if it does not. All properties must be of the domain 'Account'.                Upserting a property that exists for a chart of accounts, with a null value, will delete the instance of the property for that group.                Properties have an <i>effectiveFrom</i> datetime for which the property is valid, and an <i>effectiveUntil</i>  datetime until which the property is valid. Not supplying an <i>effectiveUntil</i> datetime results in the property being  valid indefinitely, or until the next <i>effectiveFrom</i> datetime of the property.
+Update or insert one or more properties onto a single account. A property will be updated if it  already exists and inserted if it does not. All properties must be of the domain 'Account'.                Upserting a property that exists for an account, with a null value, will delete the instance of the property for that group.                Properties have an <i>effectiveFrom</i> datetime for which the property is valid, and an <i>effectiveUntil</i>  datetime until which the property is valid. Not supplying an <i>effectiveUntil</i> datetime results in the property being  valid indefinitely, or until the next <i>effectiveFrom</i> datetime of the property.
 
 ### Example
 ```csharp
@@ -713,7 +713,7 @@ namespace Example
 
             var apiInstance = new ChartOfAccountsApi(config);
             var scope = scope_example;  // string | The scope of the Chart of Accounts to update or insert the properties onto.
-            var code = code_example;  // string | The code of the Chart of Accounts to update or insert the properties onto. Together with the scope this uniquely identifies the chart of accounts.
+            var code = code_example;  // string | The code of the Chart of Accounts to update or insert the properties onto. Together with the scope this uniquely identifies the Chart of Accounts.
             var accountCode = accountCode_example;  // string | The unique ID of the account to create or update properties for.
             var requestBody = new Dictionary<string, Property>(); // Dictionary<string, Property> | The properties to be updated or inserted onto the chart of account. Each property in               the request must be keyed by its unique property key. This has the format {domain}/{scope}/{code} e.g. \"Account/Manager/Id\". (optional) 
 
@@ -739,7 +739,7 @@ namespace Example
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **scope** | **string**| The scope of the Chart of Accounts to update or insert the properties onto. | 
- **code** | **string**| The code of the Chart of Accounts to update or insert the properties onto. Together with the scope this uniquely identifies the chart of accounts. | 
+ **code** | **string**| The code of the Chart of Accounts to update or insert the properties onto. Together with the scope this uniquely identifies the Chart of Accounts. | 
  **accountCode** | **string**| The unique ID of the account to create or update properties for. | 
  **requestBody** | [**Dictionary&lt;string, Property&gt;**](Property.md)| The properties to be updated or inserted onto the chart of account. Each property in               the request must be keyed by its unique property key. This has the format {domain}/{scope}/{code} e.g. \&quot;Account/Manager/Id\&quot;. | [optional] 
 
@@ -760,7 +760,7 @@ Name | Type | Description  | Notes
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
-| **200** | The updated or inserted properties |  -  |
+| **200** | The updated or inserted properties. |  -  |
 | **400** | The details of the input related failure |  -  |
 | **0** | Error response |  -  |
 
@@ -770,9 +770,9 @@ Name | Type | Description  | Notes
 # **UpsertChartOfAccountsProperties**
 > ChartOfAccountsProperties UpsertChartOfAccountsProperties (string scope, string code, Dictionary<string, Property> requestBody = null)
 
-[EXPERIMENTAL] UpsertChartOfAccountsProperties: Upsert chart of accounts properties
+[EXPERIMENTAL] UpsertChartOfAccountsProperties: Upsert Chart of Accounts properties
 
-Update or insert one or more properties onto a single chart of accounts. A property will be updated if it  already exists and inserted if it does not. All properties must be of the domain 'ChartOfAccounts'.                Upserting a property that exists for a chart of accounts, with a null value, will delete the instance of the property for that group.                Properties have an <i>effectiveFrom</i> datetime for which the property is valid, and an <i>effectiveUntil</i>  datetime until which the property is valid. Not supplying an <i>effectiveUntil</i> datetime results in the property being  valid indefinitely, or until the next <i>effectiveFrom</i> datetime of the property.
+Update or insert one or more properties onto a single Chart of Accounts. A property will be updated if it  already exists and inserted if it does not. All properties must be of the domain 'ChartOfAccounts'.                Upserting a property that exists for a Chart of Accounts, with a null value, will delete the instance of the property for that group.                Properties have an <i>effectiveFrom</i> datetime for which the property is valid, and an <i>effectiveUntil</i>  datetime until which the property is valid. Not supplying an <i>effectiveUntil</i> datetime results in the property being  valid indefinitely, or until the next <i>effectiveFrom</i> datetime of the property.
 
 ### Example
 ```csharp
@@ -795,12 +795,12 @@ namespace Example
 
             var apiInstance = new ChartOfAccountsApi(config);
             var scope = scope_example;  // string | The scope of the Chart of Accounts to update or insert the properties onto.
-            var code = code_example;  // string | The code of the Chart of Accounts to update or insert the properties onto. Together with the scope this uniquely identifies the chart of accounts.
+            var code = code_example;  // string | The code of the Chart of Accounts to update or insert the properties onto. Together with the scope this uniquely identifies the Chart of Accounts.
             var requestBody = new Dictionary<string, Property>(); // Dictionary<string, Property> | The properties to be updated or inserted onto the chart of account. Each property in               the request must be keyed by its unique property key. This has the format {domain}/{scope}/{code} e.g. \"ChartOfAccounts/Manager/Id\". (optional) 
 
             try
             {
-                // [EXPERIMENTAL] UpsertChartOfAccountsProperties: Upsert chart of accounts properties
+                // [EXPERIMENTAL] UpsertChartOfAccountsProperties: Upsert Chart of Accounts properties
                 ChartOfAccountsProperties result = apiInstance.UpsertChartOfAccountsProperties(scope, code, requestBody);
                 Debug.WriteLine(result);
             }
@@ -820,7 +820,7 @@ namespace Example
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **scope** | **string**| The scope of the Chart of Accounts to update or insert the properties onto. | 
- **code** | **string**| The code of the Chart of Accounts to update or insert the properties onto. Together with the scope this uniquely identifies the chart of accounts. | 
+ **code** | **string**| The code of the Chart of Accounts to update or insert the properties onto. Together with the scope this uniquely identifies the Chart of Accounts. | 
  **requestBody** | [**Dictionary&lt;string, Property&gt;**](Property.md)| The properties to be updated or inserted onto the chart of account. Each property in               the request must be keyed by its unique property key. This has the format {domain}/{scope}/{code} e.g. \&quot;ChartOfAccounts/Manager/Id\&quot;. | [optional] 
 
 ### Return type
@@ -840,7 +840,7 @@ Name | Type | Description  | Notes
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
-| **200** | The updated or inserted properties |  -  |
+| **200** | The updated or inserted properties. |  -  |
 | **400** | The details of the input related failure |  -  |
 | **0** | Error response |  -  |
 

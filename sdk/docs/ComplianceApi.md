@@ -4,23 +4,25 @@ All URIs are relative to *https://www.lusid.com/api*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
-[**DeleteComplianceRule**](ComplianceApi.md#deletecompliancerule) | **DELETE** /api/compliance/rules/{scope}/{code} | [EXPERIMENTAL] DeleteComplianceRule: Deletes a compliance rule.
-[**GetBreachedOrdersInfo**](ComplianceApi.md#getbreachedordersinfo) | **GET** /api/compliance/runs/breached/{runId} | [EXPERIMENTAL] GetBreachedOrdersInfo: Get the Ids of Breached orders in a given compliance run and the corresponding list of rules that could have caused it.
-[**GetComplianceRule**](ComplianceApi.md#getcompliancerule) | **GET** /api/compliance/rules/{scope}/{code} | [EXPERIMENTAL] GetComplianceRule: Retrieve the definition of single compliance rule.
-[**GetComplianceRunResults**](ComplianceApi.md#getcompliancerunresults) | **GET** /api/compliance/runs/{runId} | [EXPERIMENTAL] GetComplianceRunResults: Get the details of a single compliance run.
-[**ListComplianceRules**](ComplianceApi.md#listcompliancerules) | **GET** /api/compliance/rules | [EXPERIMENTAL] ListComplianceRules: List compliance rules, with optional filtering.
-[**ListComplianceRunInfo**](ComplianceApi.md#listcomplianceruninfo) | **GET** /api/compliance/runs | [EXPERIMENTAL] ListComplianceRunInfo: List historical compliance run ids.
-[**RunCompliance**](ComplianceApi.md#runcompliance) | **POST** /api/compliance/runs | [EXPERIMENTAL] RunCompliance: Kick off the compliance check process
-[**UpsertComplianceRules**](ComplianceApi.md#upsertcompliancerules) | **POST** /api/compliance/rules | [EXPERIMENTAL] UpsertComplianceRules: Upsert compliance rules.
+[**DeleteComplianceRule**](ComplianceApi.md#deletecompliancerule) | **DELETE** /api/compliance/rules/{scope}/{code} | [EARLY ACCESS] DeleteComplianceRule: Delete compliance rule.
+[**GetComplianceRule**](ComplianceApi.md#getcompliancerule) | **GET** /api/compliance/rules/{scope}/{code} | [EARLY ACCESS] GetComplianceRule: Get compliance rule.
+[**GetComplianceRunSummary**](ComplianceApi.md#getcompliancerunsummary) | **GET** /api/compliance/runs/summary/{scope}/{code} | [EARLY ACCESS] GetComplianceRunSummary: Get summary results for a specific compliance run.
+[**GetComplianceTemplate**](ComplianceApi.md#getcompliancetemplate) | **GET** /api/compliance/templates/{scope}/{code} | [EARLY ACCESS] GetComplianceTemplate: Get the requested compliance template.
+[**ListComplianceRules**](ComplianceApi.md#listcompliancerules) | **GET** /api/compliance/rules | [EARLY ACCESS] ListComplianceRules: List compliance rules.
+[**ListComplianceRuns**](ComplianceApi.md#listcomplianceruns) | **GET** /api/compliance/runs | [EARLY ACCESS] ListComplianceRuns: List historical compliance run identifiers.
+[**ListComplianceTemplates**](ComplianceApi.md#listcompliancetemplates) | **GET** /api/compliance/templates | [EARLY ACCESS] ListComplianceTemplates: List compliance templates.
+[**RunCompliance**](ComplianceApi.md#runcompliance) | **POST** /api/compliance/runs | [EARLY ACCESS] RunCompliance: Run a compliance check.
+[**UpsertComplianceRule**](ComplianceApi.md#upsertcompliancerule) | **POST** /api/compliance/rules | [EARLY ACCESS] UpsertComplianceRule: Upsert a compliance rule.
+[**UpsertComplianceRunSummary**](ComplianceApi.md#upsertcompliancerunsummary) | **POST** /api/compliance/runs/summary | [EARLY ACCESS] UpsertComplianceRunSummary: Upsert a compliance run summary.
 
 
 <a name="deletecompliancerule"></a>
 # **DeleteComplianceRule**
 > DeletedEntityResponse DeleteComplianceRule (string scope, string code)
 
-[EXPERIMENTAL] DeleteComplianceRule: Deletes a compliance rule.
+[EARLY ACCESS] DeleteComplianceRule: Delete compliance rule.
 
-Deletes the rule for all effective time.                The rule will remain viewable at previous as at times, and as part of the results of compliance runs, but it  will no longer be considered in new compliance runs.                This cannot be undone.
+Use this endpoint to delete a compliance rule. The rule will be recoverable for asat times earlier than the  delete time, but will otherwise appear to have never existed.
 
 ### Example
 ```csharp
@@ -42,12 +44,12 @@ namespace Example
             config.AccessToken = "YOUR_ACCESS_TOKEN";
 
             var apiInstance = new ComplianceApi(config);
-            var scope = scope_example;  // string | The compliance rule scope.
-            var code = code_example;  // string | The compliance rule code.
+            var scope = scope_example;  // string | The compliance rule's scope.
+            var code = code_example;  // string | The compliance rule's code.
 
             try
             {
-                // [EXPERIMENTAL] DeleteComplianceRule: Deletes a compliance rule.
+                // [EARLY ACCESS] DeleteComplianceRule: Delete compliance rule.
                 DeletedEntityResponse result = apiInstance.DeleteComplianceRule(scope, code);
                 Debug.WriteLine(result);
             }
@@ -66,8 +68,8 @@ namespace Example
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **scope** | **string**| The compliance rule scope. | 
- **code** | **string**| The compliance rule code. | 
+ **scope** | **string**| The compliance rule&#39;s scope. | 
+ **code** | **string**| The compliance rule&#39;s code. | 
 
 ### Return type
 
@@ -92,95 +94,13 @@ Name | Type | Description  | Notes
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
-<a name="getbreachedordersinfo"></a>
-# **GetBreachedOrdersInfo**
-> ResourceListOfComplianceBreachedOrderInfo GetBreachedOrdersInfo (string runId, string orderScope = null, string orderCode = null, int? limit = null)
-
-[EXPERIMENTAL] GetBreachedOrdersInfo: Get the Ids of Breached orders in a given compliance run and the corresponding list of rules that could have caused it.
-
-Use this endpoint to get a list or breached orders and the set of rules that may have caused the breach.
-
-### Example
-```csharp
-using System.Collections.Generic;
-using System.Diagnostics;
-using Lusid.Sdk.Api;
-using Lusid.Sdk.Client;
-using Lusid.Sdk.Model;
-
-namespace Example
-{
-    public class GetBreachedOrdersInfoExample
-    {
-        public static void Main()
-        {
-            Configuration config = new Configuration();
-            config.BasePath = "https://www.lusid.com/api";
-            // Configure OAuth2 access token for authorization: oauth2
-            config.AccessToken = "YOUR_ACCESS_TOKEN";
-
-            var apiInstance = new ComplianceApi(config);
-            var runId = runId_example;  // string | The RunId that the results should be checked for
-            var orderScope = orderScope_example;  // string | Optional. Find rules related to a specific order by providing an Order Scope/Code combination (optional) 
-            var orderCode = orderCode_example;  // string | Optional. Find rules related to a specific order by providing an Order Scope/Code combination (optional) 
-            var limit = 56;  // int? | When paginating, limit the number of returned results to this many. (optional) 
-
-            try
-            {
-                // [EXPERIMENTAL] GetBreachedOrdersInfo: Get the Ids of Breached orders in a given compliance run and the corresponding list of rules that could have caused it.
-                ResourceListOfComplianceBreachedOrderInfo result = apiInstance.GetBreachedOrdersInfo(runId, orderScope, orderCode, limit);
-                Debug.WriteLine(result);
-            }
-            catch (ApiException  e)
-            {
-                Debug.Print("Exception when calling ComplianceApi.GetBreachedOrdersInfo: " + e.Message );
-                Debug.Print("Status Code: "+ e.ErrorCode);
-                Debug.Print(e.StackTrace);
-            }
-        }
-    }
-}
-```
-
-### Parameters
-
-Name | Type | Description  | Notes
-------------- | ------------- | ------------- | -------------
- **runId** | **string**| The RunId that the results should be checked for | 
- **orderScope** | **string**| Optional. Find rules related to a specific order by providing an Order Scope/Code combination | [optional] 
- **orderCode** | **string**| Optional. Find rules related to a specific order by providing an Order Scope/Code combination | [optional] 
- **limit** | **int?**| When paginating, limit the number of returned results to this many. | [optional] 
-
-### Return type
-
-[**ResourceListOfComplianceBreachedOrderInfo**](ResourceListOfComplianceBreachedOrderInfo.md)
-
-### Authorization
-
-[oauth2](../README.md#oauth2)
-
-### HTTP request headers
-
- - **Content-Type**: Not defined
- - **Accept**: text/plain, application/json, text/json
-
-
-### HTTP response details
-| Status code | Description | Response headers |
-|-------------|-------------|------------------|
-| **200** | The potentially breached orders and their rules from a specific compliance run |  -  |
-| **400** | The details of the input related failure |  -  |
-| **0** | Error response |  -  |
-
-[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
-
 <a name="getcompliancerule"></a>
 # **GetComplianceRule**
-> ComplianceRule GetComplianceRule (string scope, string code, DateTimeOrCutLabel effectiveAt = null, DateTimeOffset? asAt = null)
+> ComplianceRuleResponse GetComplianceRule (string scope, string code, DateTimeOffset? asAt = null, List<string> propertyKeys = null)
 
-[EXPERIMENTAL] GetComplianceRule: Retrieve the definition of single compliance rule.
+[EARLY ACCESS] GetComplianceRule: Get compliance rule.
 
-Retrieves the compliance rule definition at the given effective and as at times.
+Use this endpoint to retrieve a single compliance rule.
 
 ### Example
 ```csharp
@@ -202,15 +122,15 @@ namespace Example
             config.AccessToken = "YOUR_ACCESS_TOKEN";
 
             var apiInstance = new ComplianceApi(config);
-            var scope = scope_example;  // string | The compliance rule scope.
-            var code = code_example;  // string | The compliance rule code.
-            var effectiveAt = effectiveAt_example;  // DateTimeOrCutLabel | The effective datetime or cut label at which to retrieve the rule definition. Defaults to the current LUSID  system datetime if not specified. (optional) 
-            var asAt = 2013-10-20T19:20:30+01:00;  // DateTimeOffset? | The asAt datetime at which to retrieve the rule definition. Defaults to returning the latest version if not  specified. (optional) 
+            var scope = scope_example;  // string | The compliance rule's scope.
+            var code = code_example;  // string | The compliance rule's code.
+            var asAt = 2013-10-20T19:20:30+01:00;  // DateTimeOffset? | Optional. Asat time for query. (optional) 
+            var propertyKeys = new List<string>(); // List<string> | A list of property keys from the 'Compliance' domain to decorate onto the rule.              These must take the format {domain}/{scope}/{code}, for example 'Compliance/live/UCITS'. (optional) 
 
             try
             {
-                // [EXPERIMENTAL] GetComplianceRule: Retrieve the definition of single compliance rule.
-                ComplianceRule result = apiInstance.GetComplianceRule(scope, code, effectiveAt, asAt);
+                // [EARLY ACCESS] GetComplianceRule: Get compliance rule.
+                ComplianceRuleResponse result = apiInstance.GetComplianceRule(scope, code, asAt, propertyKeys);
                 Debug.WriteLine(result);
             }
             catch (ApiException  e)
@@ -228,14 +148,14 @@ namespace Example
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **scope** | **string**| The compliance rule scope. | 
- **code** | **string**| The compliance rule code. | 
- **effectiveAt** | **DateTimeOrCutLabel**| The effective datetime or cut label at which to retrieve the rule definition. Defaults to the current LUSID  system datetime if not specified. | [optional] 
- **asAt** | **DateTimeOffset?**| The asAt datetime at which to retrieve the rule definition. Defaults to returning the latest version if not  specified. | [optional] 
+ **scope** | **string**| The compliance rule&#39;s scope. | 
+ **code** | **string**| The compliance rule&#39;s code. | 
+ **asAt** | **DateTimeOffset?**| Optional. Asat time for query. | [optional] 
+ **propertyKeys** | [**List&lt;string&gt;**](string.md)| A list of property keys from the &#39;Compliance&#39; domain to decorate onto the rule.              These must take the format {domain}/{scope}/{code}, for example &#39;Compliance/live/UCITS&#39;. | [optional] 
 
 ### Return type
 
-[**ComplianceRule**](ComplianceRule.md)
+[**ComplianceRuleResponse**](ComplianceRuleResponse.md)
 
 ### Authorization
 
@@ -250,19 +170,19 @@ Name | Type | Description  | Notes
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
-| **200** | Details of one compliance rule. |  -  |
+| **200** | The requested compliance rule. |  -  |
 | **400** | The details of the input related failure |  -  |
 | **0** | Error response |  -  |
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
-<a name="getcompliancerunresults"></a>
-# **GetComplianceRunResults**
-> ResourceListOfComplianceRuleResult GetComplianceRunResults (string runId, string page = null, int? limit = null, string filter = null)
+<a name="getcompliancerunsummary"></a>
+# **GetComplianceRunSummary**
+> ComplianceRunSummary GetComplianceRunSummary (string scope, string code)
 
-[EXPERIMENTAL] GetComplianceRunResults: Get the details of a single compliance run.
+[EARLY ACCESS] GetComplianceRunSummary: Get summary results for a specific compliance run.
 
-Use this endpoint to fetch the detail associated with a specific compliance run, including a breakdown  of the passing state of each rule, portfolio combination.
+Specify a run scope and code from a previously run compliance check to get summarised results.
 
 ### Example
 ```csharp
@@ -274,7 +194,7 @@ using Lusid.Sdk.Model;
 
 namespace Example
 {
-    public class GetComplianceRunResultsExample
+    public class GetComplianceRunSummaryExample
     {
         public static void Main()
         {
@@ -284,20 +204,18 @@ namespace Example
             config.AccessToken = "YOUR_ACCESS_TOKEN";
 
             var apiInstance = new ComplianceApi(config);
-            var runId = runId_example;  // string | The unique identifier of the compliance run requested.
-            var page = page_example;  // string | The pagination token to use to continue listing compliance rule results from a previous call to list compliance rule result.              This value is returned from the previous call. If a pagination token is provided the sortBy, filter, and asAt fields              must not have changed since the original request. Also, if set, a start value cannot be provided. (optional) 
-            var limit = 56;  // int? | When paginating, limit the number of returned results to this many. (optional) 
-            var filter = filter_example;  // string | Expression to filter the result set. Read more about filtering results from LUSID here https://support.lusid.com/filtering-results-from-lusid. (optional) 
+            var scope = scope_example;  // string | Required: Run Scope.
+            var code = code_example;  // string | Required: Run Code.
 
             try
             {
-                // [EXPERIMENTAL] GetComplianceRunResults: Get the details of a single compliance run.
-                ResourceListOfComplianceRuleResult result = apiInstance.GetComplianceRunResults(runId, page, limit, filter);
+                // [EARLY ACCESS] GetComplianceRunSummary: Get summary results for a specific compliance run.
+                ComplianceRunSummary result = apiInstance.GetComplianceRunSummary(scope, code);
                 Debug.WriteLine(result);
             }
             catch (ApiException  e)
             {
-                Debug.Print("Exception when calling ComplianceApi.GetComplianceRunResults: " + e.Message );
+                Debug.Print("Exception when calling ComplianceApi.GetComplianceRunSummary: " + e.Message );
                 Debug.Print("Status Code: "+ e.ErrorCode);
                 Debug.Print(e.StackTrace);
             }
@@ -310,14 +228,12 @@ namespace Example
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **runId** | **string**| The unique identifier of the compliance run requested. | 
- **page** | **string**| The pagination token to use to continue listing compliance rule results from a previous call to list compliance rule result.              This value is returned from the previous call. If a pagination token is provided the sortBy, filter, and asAt fields              must not have changed since the original request. Also, if set, a start value cannot be provided. | [optional] 
- **limit** | **int?**| When paginating, limit the number of returned results to this many. | [optional] 
- **filter** | **string**| Expression to filter the result set. Read more about filtering results from LUSID here https://support.lusid.com/filtering-results-from-lusid. | [optional] 
+ **scope** | **string**| Required: Run Scope. | 
+ **code** | **string**| Required: Run Code. | 
 
 ### Return type
 
-[**ResourceListOfComplianceRuleResult**](ResourceListOfComplianceRuleResult.md)
+[**ComplianceRunSummary**](ComplianceRunSummary.md)
 
 ### Authorization
 
@@ -332,7 +248,87 @@ Name | Type | Description  | Notes
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
-| **200** | The rule results of a specific compliance run |  -  |
+| **201** | The requested compliance run summary. |  -  |
+| **400** | The details of the input related failure |  -  |
+| **0** | Error response |  -  |
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+<a name="getcompliancetemplate"></a>
+# **GetComplianceTemplate**
+> ComplianceTemplate GetComplianceTemplate (string scope, string code, DateTimeOffset? asAt = null)
+
+[EARLY ACCESS] GetComplianceTemplate: Get the requested compliance template.
+
+Use this endpoint to fetch a specific compliance template.
+
+### Example
+```csharp
+using System.Collections.Generic;
+using System.Diagnostics;
+using Lusid.Sdk.Api;
+using Lusid.Sdk.Client;
+using Lusid.Sdk.Model;
+
+namespace Example
+{
+    public class GetComplianceTemplateExample
+    {
+        public static void Main()
+        {
+            Configuration config = new Configuration();
+            config.BasePath = "https://www.lusid.com/api";
+            // Configure OAuth2 access token for authorization: oauth2
+            config.AccessToken = "YOUR_ACCESS_TOKEN";
+
+            var apiInstance = new ComplianceApi(config);
+            var scope = scope_example;  // string | Scope of TemplateID
+            var code = code_example;  // string | Code of TemplateID
+            var asAt = 2013-10-20T19:20:30+01:00;  // DateTimeOffset? | Optional. The time at which to get results from. Default : latest (optional) 
+
+            try
+            {
+                // [EARLY ACCESS] GetComplianceTemplate: Get the requested compliance template.
+                ComplianceTemplate result = apiInstance.GetComplianceTemplate(scope, code, asAt);
+                Debug.WriteLine(result);
+            }
+            catch (ApiException  e)
+            {
+                Debug.Print("Exception when calling ComplianceApi.GetComplianceTemplate: " + e.Message );
+                Debug.Print("Status Code: "+ e.ErrorCode);
+                Debug.Print(e.StackTrace);
+            }
+        }
+    }
+}
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **scope** | **string**| Scope of TemplateID | 
+ **code** | **string**| Code of TemplateID | 
+ **asAt** | **DateTimeOffset?**| Optional. The time at which to get results from. Default : latest | [optional] 
+
+### Return type
+
+[**ComplianceTemplate**](ComplianceTemplate.md)
+
+### Authorization
+
+[oauth2](../README.md#oauth2)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: text/plain, application/json, text/json
+
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+| **200** | The requested compliance template. |  -  |
 | **400** | The details of the input related failure |  -  |
 | **0** | Error response |  -  |
 
@@ -340,11 +336,11 @@ Name | Type | Description  | Notes
 
 <a name="listcompliancerules"></a>
 # **ListComplianceRules**
-> ResourceListOfComplianceRule ListComplianceRules (DateTimeOrCutLabel effectiveAt = null, DateTimeOffset? asAt = null, string page = null, int? limit = null, string filter = null)
+> PagedResourceListOfComplianceRuleResponse ListComplianceRules (DateTimeOffset? asAt = null, string page = null, int? limit = null, string filter = null, List<string> propertyKeys = null)
 
-[EXPERIMENTAL] ListComplianceRules: List compliance rules, with optional filtering.
+[EARLY ACCESS] ListComplianceRules: List compliance rules.
 
-For more information about filtering results,  see https://support.lusid.com/knowledgebase/article/KA-01914.
+Use this endpoint to retrieve all compliance rules, or a subset defined by an optional filter.
 
 ### Example
 ```csharp
@@ -366,16 +362,16 @@ namespace Example
             config.AccessToken = "YOUR_ACCESS_TOKEN";
 
             var apiInstance = new ComplianceApi(config);
-            var effectiveAt = effectiveAt_example;  // DateTimeOrCutLabel | The effective datetime or cut label at which to retrieve the rule definitions. Defaults to the current LUSID  system datetime if not specified. (optional) 
-            var asAt = 2013-10-20T19:20:30+01:00;  // DateTimeOffset? | The asAt datetime at which to retrieve the rule definitions. Defaults to returning the latest version if not  specified. (optional) 
-            var page = page_example;  // string | The pagination token to use to continue listing entities; this value is returned from the previous call. If  a pagination token is provided, the filter, effectiveAt and asAt fields must not have changed since the  original request. (optional) 
-            var limit = 56;  // int? | When paginating, limit the results to this number. Defaults to 100 if not specified. (optional) 
-            var filter = filter_example;  // string | Expression to filter the results. (optional) 
+            var asAt = 2013-10-20T19:20:30+01:00;  // DateTimeOffset? | Optional. Asat time. (optional) 
+            var page = page_example;  // string | Optional. Pagination token. (optional) 
+            var limit = 56;  // int? | Optional. Entries per page. (optional) 
+            var filter = filter_example;  // string | Optional. Filter. (optional) 
+            var propertyKeys = new List<string>(); // List<string> | A list of property keys from the 'Compliance' domain to decorate onto each rule.              These must take the format {domain}/{scope}/{code}, for example 'Compliance/live/UCITS'. If not provided will return all the entitled properties for each rule. (optional) 
 
             try
             {
-                // [EXPERIMENTAL] ListComplianceRules: List compliance rules, with optional filtering.
-                ResourceListOfComplianceRule result = apiInstance.ListComplianceRules(effectiveAt, asAt, page, limit, filter);
+                // [EARLY ACCESS] ListComplianceRules: List compliance rules.
+                PagedResourceListOfComplianceRuleResponse result = apiInstance.ListComplianceRules(asAt, page, limit, filter, propertyKeys);
                 Debug.WriteLine(result);
             }
             catch (ApiException  e)
@@ -393,15 +389,15 @@ namespace Example
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **effectiveAt** | **DateTimeOrCutLabel**| The effective datetime or cut label at which to retrieve the rule definitions. Defaults to the current LUSID  system datetime if not specified. | [optional] 
- **asAt** | **DateTimeOffset?**| The asAt datetime at which to retrieve the rule definitions. Defaults to returning the latest version if not  specified. | [optional] 
- **page** | **string**| The pagination token to use to continue listing entities; this value is returned from the previous call. If  a pagination token is provided, the filter, effectiveAt and asAt fields must not have changed since the  original request. | [optional] 
- **limit** | **int?**| When paginating, limit the results to this number. Defaults to 100 if not specified. | [optional] 
- **filter** | **string**| Expression to filter the results. | [optional] 
+ **asAt** | **DateTimeOffset?**| Optional. Asat time. | [optional] 
+ **page** | **string**| Optional. Pagination token. | [optional] 
+ **limit** | **int?**| Optional. Entries per page. | [optional] 
+ **filter** | **string**| Optional. Filter. | [optional] 
+ **propertyKeys** | [**List&lt;string&gt;**](string.md)| A list of property keys from the &#39;Compliance&#39; domain to decorate onto each rule.              These must take the format {domain}/{scope}/{code}, for example &#39;Compliance/live/UCITS&#39;. If not provided will return all the entitled properties for each rule. | [optional] 
 
 ### Return type
 
-[**ResourceListOfComplianceRule**](ResourceListOfComplianceRule.md)
+[**PagedResourceListOfComplianceRuleResponse**](PagedResourceListOfComplianceRuleResponse.md)
 
 ### Authorization
 
@@ -416,19 +412,19 @@ Name | Type | Description  | Notes
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
-| **200** | A filtered list of compliance rules available. |  -  |
+| **200** | The list of compliance rules. |  -  |
 | **400** | The details of the input related failure |  -  |
 | **0** | Error response |  -  |
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
-<a name="listcomplianceruninfo"></a>
-# **ListComplianceRunInfo**
-> ResourceListOfComplianceRunInfo ListComplianceRunInfo (DateTimeOffset? asAt = null, string page = null, int? limit = null, string filter = null)
+<a name="listcomplianceruns"></a>
+# **ListComplianceRuns**
+> PagedResourceListOfComplianceRunInfoV2 ListComplianceRuns (DateTimeOffset? asAt = null, string page = null, int? limit = null, string filter = null, List<string> sortBy = null)
 
-[EXPERIMENTAL] ListComplianceRunInfo: List historical compliance run ids.
+[EARLY ACCESS] ListComplianceRuns: List historical compliance run identifiers.
 
-Use this endpoint to fetch a list of all historical compliance runs.
+Lists RunIds of prior compliance runs, or a subset with a filter.
 
 ### Example
 ```csharp
@@ -440,7 +436,7 @@ using Lusid.Sdk.Model;
 
 namespace Example
 {
-    public class ListComplianceRunInfoExample
+    public class ListComplianceRunsExample
     {
         public static void Main()
         {
@@ -451,19 +447,20 @@ namespace Example
 
             var apiInstance = new ComplianceApi(config);
             var asAt = 2013-10-20T19:20:30+01:00;  // DateTimeOffset? | Optional. The time at which to get results from. Default : latest (optional) 
-            var page = page_example;  // string | The pagination token to use to continue listing compliance runs from a previous call to list compliance runs.              This value is returned from the previous call. If a pagination token is provided the sortBy, filter, and asAt fields              must not have changed since the original request. Also, if set, a start value cannot be provided. (optional) 
-            var limit = 56;  // int? | When paginating, limit the number of returned results to this many. (optional) 
-            var filter = filter_example;  // string | Expression to filter the result set. Read more about filtering results from LUSID here https://support.lusid.com/filtering-results-from-lusid. (optional) 
+            var page = page_example;  // string | Optional. The pagination token to use to continue listing compliance runs from a previous call to list compliance runs.              This value is returned from the previous call. If a pagination token is provided the sortBy, filter, and asAt fields              must not have changed since the original request. Also, if set, a start value cannot be provided. (optional) 
+            var limit = 56;  // int? | Optional. When paginating, limit the number of returned results to this many. (optional) 
+            var filter = filter_example;  // string | Optional. Expression to filter the result set. Read more about filtering results from LUSID here https://support.lusid.com/filtering-results-from-lusid. (optional) 
+            var sortBy = new List<string>(); // List<string> | Optional. A list of field names to sort by, each suffixed by \"ASC\" or \"DESC\" (optional) 
 
             try
             {
-                // [EXPERIMENTAL] ListComplianceRunInfo: List historical compliance run ids.
-                ResourceListOfComplianceRunInfo result = apiInstance.ListComplianceRunInfo(asAt, page, limit, filter);
+                // [EARLY ACCESS] ListComplianceRuns: List historical compliance run identifiers.
+                PagedResourceListOfComplianceRunInfoV2 result = apiInstance.ListComplianceRuns(asAt, page, limit, filter, sortBy);
                 Debug.WriteLine(result);
             }
             catch (ApiException  e)
             {
-                Debug.Print("Exception when calling ComplianceApi.ListComplianceRunInfo: " + e.Message );
+                Debug.Print("Exception when calling ComplianceApi.ListComplianceRuns: " + e.Message );
                 Debug.Print("Status Code: "+ e.ErrorCode);
                 Debug.Print(e.StackTrace);
             }
@@ -477,13 +474,14 @@ namespace Example
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **asAt** | **DateTimeOffset?**| Optional. The time at which to get results from. Default : latest | [optional] 
- **page** | **string**| The pagination token to use to continue listing compliance runs from a previous call to list compliance runs.              This value is returned from the previous call. If a pagination token is provided the sortBy, filter, and asAt fields              must not have changed since the original request. Also, if set, a start value cannot be provided. | [optional] 
- **limit** | **int?**| When paginating, limit the number of returned results to this many. | [optional] 
- **filter** | **string**| Expression to filter the result set. Read more about filtering results from LUSID here https://support.lusid.com/filtering-results-from-lusid. | [optional] 
+ **page** | **string**| Optional. The pagination token to use to continue listing compliance runs from a previous call to list compliance runs.              This value is returned from the previous call. If a pagination token is provided the sortBy, filter, and asAt fields              must not have changed since the original request. Also, if set, a start value cannot be provided. | [optional] 
+ **limit** | **int?**| Optional. When paginating, limit the number of returned results to this many. | [optional] 
+ **filter** | **string**| Optional. Expression to filter the result set. Read more about filtering results from LUSID here https://support.lusid.com/filtering-results-from-lusid. | [optional] 
+ **sortBy** | [**List&lt;string&gt;**](string.md)| Optional. A list of field names to sort by, each suffixed by \&quot;ASC\&quot; or \&quot;DESC\&quot; | [optional] 
 
 ### Return type
 
-[**ResourceListOfComplianceRunInfo**](ResourceListOfComplianceRunInfo.md)
+[**PagedResourceListOfComplianceRunInfoV2**](PagedResourceListOfComplianceRunInfoV2.md)
 
 ### Authorization
 
@@ -498,7 +496,91 @@ Name | Type | Description  | Notes
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
-| **200** | The List of IDs and information for all compliance runs completed |  -  |
+| **200** | List of previous compliance RunIds |  -  |
+| **400** | The details of the input related failure |  -  |
+| **0** | Error response |  -  |
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+<a name="listcompliancetemplates"></a>
+# **ListComplianceTemplates**
+> PagedResourceListOfComplianceTemplate ListComplianceTemplates (DateTimeOffset? asAt = null, string page = null, int? start = null, int? limit = null, string filter = null)
+
+[EARLY ACCESS] ListComplianceTemplates: List compliance templates.
+
+Use this endpoint to fetch a list of all available compliance template ids, or a subset using a filter.
+
+### Example
+```csharp
+using System.Collections.Generic;
+using System.Diagnostics;
+using Lusid.Sdk.Api;
+using Lusid.Sdk.Client;
+using Lusid.Sdk.Model;
+
+namespace Example
+{
+    public class ListComplianceTemplatesExample
+    {
+        public static void Main()
+        {
+            Configuration config = new Configuration();
+            config.BasePath = "https://www.lusid.com/api";
+            // Configure OAuth2 access token for authorization: oauth2
+            config.AccessToken = "YOUR_ACCESS_TOKEN";
+
+            var apiInstance = new ComplianceApi(config);
+            var asAt = 2013-10-20T19:20:30+01:00;  // DateTimeOffset? | Optional. The time at which to get results from. Default : latest (optional) 
+            var page = page_example;  // string | Optional. The pagination token to use to continue listing compliance runs from a previous call to list compliance runs.              This value is returned from the previous call. If a pagination token is provided the sortBy, filter, and asAt fields              must not have changed since the original request. Also, if set, a start value cannot be provided. (optional) 
+            var start = 56;  // int? | Optional. When paginating, skip this number of results. (optional) 
+            var limit = 56;  // int? | Optional. When paginating, limit the number of returned results to this many. (optional) 
+            var filter = filter_example;  // string | Optional. Expression to filter the result set. Read more about filtering results from LUSID here https://support.lusid.com/filtering-results-from-lusid. (optional) 
+
+            try
+            {
+                // [EARLY ACCESS] ListComplianceTemplates: List compliance templates.
+                PagedResourceListOfComplianceTemplate result = apiInstance.ListComplianceTemplates(asAt, page, start, limit, filter);
+                Debug.WriteLine(result);
+            }
+            catch (ApiException  e)
+            {
+                Debug.Print("Exception when calling ComplianceApi.ListComplianceTemplates: " + e.Message );
+                Debug.Print("Status Code: "+ e.ErrorCode);
+                Debug.Print(e.StackTrace);
+            }
+        }
+    }
+}
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **asAt** | **DateTimeOffset?**| Optional. The time at which to get results from. Default : latest | [optional] 
+ **page** | **string**| Optional. The pagination token to use to continue listing compliance runs from a previous call to list compliance runs.              This value is returned from the previous call. If a pagination token is provided the sortBy, filter, and asAt fields              must not have changed since the original request. Also, if set, a start value cannot be provided. | [optional] 
+ **start** | **int?**| Optional. When paginating, skip this number of results. | [optional] 
+ **limit** | **int?**| Optional. When paginating, limit the number of returned results to this many. | [optional] 
+ **filter** | **string**| Optional. Expression to filter the result set. Read more about filtering results from LUSID here https://support.lusid.com/filtering-results-from-lusid. | [optional] 
+
+### Return type
+
+[**PagedResourceListOfComplianceTemplate**](PagedResourceListOfComplianceTemplate.md)
+
+### Authorization
+
+[oauth2](../README.md#oauth2)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: text/plain, application/json, text/json
+
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+| **200** | The list of compliance templates available. |  -  |
 | **400** | The details of the input related failure |  -  |
 | **0** | Error response |  -  |
 
@@ -506,11 +588,11 @@ Name | Type | Description  | Notes
 
 <a name="runcompliance"></a>
 # **RunCompliance**
-> ComplianceRunInfo RunCompliance (bool isPreTrade, string recipeIdScope, string recipeIdCode = null, bool? byTaxlots = null)
+> ComplianceRunInfoV2 RunCompliance (string runScope, string ruleScope, bool isPreTrade, string recipeIdScope, string recipeIdCode)
 
-[EXPERIMENTAL] RunCompliance: Kick off the compliance check process
+[EARLY ACCESS] RunCompliance: Run a compliance check.
 
-Use this endpoint to fetch the start a compliance run, based on a pre-set mapping file.
+Use this endpoint to run a compliance check using rules from a specific scope.
 
 ### Example
 ```csharp
@@ -532,15 +614,16 @@ namespace Example
             config.AccessToken = "YOUR_ACCESS_TOKEN";
 
             var apiInstance = new ComplianceApi(config);
+            var runScope = runScope_example;  // string | Required: Scope to save the run results in.
+            var ruleScope = ruleScope_example;  // string | Required: Scope from which to select rules to be run.
             var isPreTrade = true;  // bool | Required: Boolean flag indicating if a run should be PreTrade (Including orders). For post-trade only, set to false
             var recipeIdScope = recipeIdScope_example;  // string | Required: the scope of the recipe to be used
-            var recipeIdCode = recipeIdCode_example;  // string | Optional: The code of the recipe to be used. If left blank, the default recipe will be used. (optional) 
-            var byTaxlots = true;  // bool? | Optional. (optional) 
+            var recipeIdCode = recipeIdCode_example;  // string | Required: The code of the recipe to be used. If left blank, the default recipe will be used.
 
             try
             {
-                // [EXPERIMENTAL] RunCompliance: Kick off the compliance check process
-                ComplianceRunInfo result = apiInstance.RunCompliance(isPreTrade, recipeIdScope, recipeIdCode, byTaxlots);
+                // [EARLY ACCESS] RunCompliance: Run a compliance check.
+                ComplianceRunInfoV2 result = apiInstance.RunCompliance(runScope, ruleScope, isPreTrade, recipeIdScope, recipeIdCode);
                 Debug.WriteLine(result);
             }
             catch (ApiException  e)
@@ -558,14 +641,15 @@ namespace Example
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
+ **runScope** | **string**| Required: Scope to save the run results in. | 
+ **ruleScope** | **string**| Required: Scope from which to select rules to be run. | 
  **isPreTrade** | **bool**| Required: Boolean flag indicating if a run should be PreTrade (Including orders). For post-trade only, set to false | 
  **recipeIdScope** | **string**| Required: the scope of the recipe to be used | 
- **recipeIdCode** | **string**| Optional: The code of the recipe to be used. If left blank, the default recipe will be used. | [optional] 
- **byTaxlots** | **bool?**| Optional. | [optional] 
+ **recipeIdCode** | **string**| Required: The code of the recipe to be used. If left blank, the default recipe will be used. | 
 
 ### Return type
 
-[**ComplianceRunInfo**](ComplianceRunInfo.md)
+[**ComplianceRunInfoV2**](ComplianceRunInfoV2.md)
 
 ### Authorization
 
@@ -586,13 +670,13 @@ Name | Type | Description  | Notes
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
-<a name="upsertcompliancerules"></a>
-# **UpsertComplianceRules**
-> ComplianceRuleUpsertResponse UpsertComplianceRules (Dictionary<string, ComplianceRuleUpsertRequest> requestBody, DateTimeOrCutLabel effectiveAt = null)
+<a name="upsertcompliancerule"></a>
+# **UpsertComplianceRule**
+> ComplianceRuleResponse UpsertComplianceRule (UpsertComplianceRuleRequest upsertComplianceRuleRequest = null)
 
-[EXPERIMENTAL] UpsertComplianceRules: Upsert compliance rules.
+[EARLY ACCESS] UpsertComplianceRule: Upsert a compliance rule.
 
-To upsert a new rule, the code field must be left empty, a code will then be assigned and returned as part  of the response. To update an existing rule, include the rule code. It is possible to both create and update  compliance rules in the same request.                The upsert is transactional - either all create/update operations will succeed or none of them will.
+Use this endpoint to upsert a single compliance rule. The template and variation specified must already  exist, as must the portfolio group. The parameters passed must match those required by the template variation.
 
 ### Example
 ```csharp
@@ -604,7 +688,7 @@ using Lusid.Sdk.Model;
 
 namespace Example
 {
-    public class UpsertComplianceRulesExample
+    public class UpsertComplianceRuleExample
     {
         public static void Main()
         {
@@ -614,18 +698,17 @@ namespace Example
             config.AccessToken = "YOUR_ACCESS_TOKEN";
 
             var apiInstance = new ComplianceApi(config);
-            var requestBody = new Dictionary<string, ComplianceRuleUpsertRequest>(); // Dictionary<string, ComplianceRuleUpsertRequest> | A dictionary of upsert request identifiers to rule upsert requests. The request               identifiers are valid for the request only and can be used to link the upserted compliance rule to the code               of a created compliance rule.
-            var effectiveAt = effectiveAt_example;  // DateTimeOrCutLabel | The effective datetime or cut label at which the rule will take effect. Defaults to the current LUSID  system datetime if not specified. In the case of an update, the changes will take place from this effective  time until the next effective time that the rule as been upserted at. For example, consider a rule that  already exists, and has previously had an update applied so that the definition will change on the first day  of the coming month. An upsert effective from the current day will only change the definition until the  first day of the coming month. An additional upsert at the same time (first day of the month) is required  if the newly-updated definition is to supersede the future definition. (optional) 
+            var upsertComplianceRuleRequest = new UpsertComplianceRuleRequest(); // UpsertComplianceRuleRequest |  (optional) 
 
             try
             {
-                // [EXPERIMENTAL] UpsertComplianceRules: Upsert compliance rules.
-                ComplianceRuleUpsertResponse result = apiInstance.UpsertComplianceRules(requestBody, effectiveAt);
+                // [EARLY ACCESS] UpsertComplianceRule: Upsert a compliance rule.
+                ComplianceRuleResponse result = apiInstance.UpsertComplianceRule(upsertComplianceRuleRequest);
                 Debug.WriteLine(result);
             }
             catch (ApiException  e)
             {
-                Debug.Print("Exception when calling ComplianceApi.UpsertComplianceRules: " + e.Message );
+                Debug.Print("Exception when calling ComplianceApi.UpsertComplianceRule: " + e.Message );
                 Debug.Print("Status Code: "+ e.ErrorCode);
                 Debug.Print(e.StackTrace);
             }
@@ -638,12 +721,11 @@ namespace Example
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **requestBody** | [**Dictionary&lt;string, ComplianceRuleUpsertRequest&gt;**](ComplianceRuleUpsertRequest.md)| A dictionary of upsert request identifiers to rule upsert requests. The request               identifiers are valid for the request only and can be used to link the upserted compliance rule to the code               of a created compliance rule. | 
- **effectiveAt** | **DateTimeOrCutLabel**| The effective datetime or cut label at which the rule will take effect. Defaults to the current LUSID  system datetime if not specified. In the case of an update, the changes will take place from this effective  time until the next effective time that the rule as been upserted at. For example, consider a rule that  already exists, and has previously had an update applied so that the definition will change on the first day  of the coming month. An upsert effective from the current day will only change the definition until the  first day of the coming month. An additional upsert at the same time (first day of the month) is required  if the newly-updated definition is to supersede the future definition. | [optional] 
+ **upsertComplianceRuleRequest** | [**UpsertComplianceRuleRequest**](UpsertComplianceRuleRequest.md)|  | [optional] 
 
 ### Return type
 
-[**ComplianceRuleUpsertResponse**](ComplianceRuleUpsertResponse.md)
+[**ComplianceRuleResponse**](ComplianceRuleResponse.md)
 
 ### Authorization
 
@@ -658,7 +740,83 @@ Name | Type | Description  | Notes
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
-| **200** | Upsert compliance rules. New compliance rules must have an empty code field. Where a codeis given, this rule must already exist and will be updated. |  -  |
+| **200** | The upserted compliance rule. |  -  |
+| **400** | The details of the input related failure |  -  |
+| **0** | Error response |  -  |
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+<a name="upsertcompliancerunsummary"></a>
+# **UpsertComplianceRunSummary**
+> ComplianceRunSummary UpsertComplianceRunSummary (UpsertComplianceRunSummaryRequest upsertComplianceRunSummaryRequest = null)
+
+[EARLY ACCESS] UpsertComplianceRunSummary: Upsert a compliance run summary.
+
+Use this endpoint to upsert a compliance run result summary.
+
+### Example
+```csharp
+using System.Collections.Generic;
+using System.Diagnostics;
+using Lusid.Sdk.Api;
+using Lusid.Sdk.Client;
+using Lusid.Sdk.Model;
+
+namespace Example
+{
+    public class UpsertComplianceRunSummaryExample
+    {
+        public static void Main()
+        {
+            Configuration config = new Configuration();
+            config.BasePath = "https://www.lusid.com/api";
+            // Configure OAuth2 access token for authorization: oauth2
+            config.AccessToken = "YOUR_ACCESS_TOKEN";
+
+            var apiInstance = new ComplianceApi(config);
+            var upsertComplianceRunSummaryRequest = new UpsertComplianceRunSummaryRequest(); // UpsertComplianceRunSummaryRequest |  (optional) 
+
+            try
+            {
+                // [EARLY ACCESS] UpsertComplianceRunSummary: Upsert a compliance run summary.
+                ComplianceRunSummary result = apiInstance.UpsertComplianceRunSummary(upsertComplianceRunSummaryRequest);
+                Debug.WriteLine(result);
+            }
+            catch (ApiException  e)
+            {
+                Debug.Print("Exception when calling ComplianceApi.UpsertComplianceRunSummary: " + e.Message );
+                Debug.Print("Status Code: "+ e.ErrorCode);
+                Debug.Print(e.StackTrace);
+            }
+        }
+    }
+}
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **upsertComplianceRunSummaryRequest** | [**UpsertComplianceRunSummaryRequest**](UpsertComplianceRunSummaryRequest.md)|  | [optional] 
+
+### Return type
+
+[**ComplianceRunSummary**](ComplianceRunSummary.md)
+
+### Authorization
+
+[oauth2](../README.md#oauth2)
+
+### HTTP request headers
+
+ - **Content-Type**: application/json-patch+json, application/json, text/json, application/_*+json
+ - **Accept**: text/plain, application/json, text/json
+
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+| **200** | The upserted compliance run summary. |  -  |
 | **400** | The details of the input related failure |  -  |
 | **0** | Error response |  -  |
 

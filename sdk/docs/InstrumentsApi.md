@@ -4,6 +4,7 @@ All URIs are relative to *https://www.lusid.com/api*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
+[**BatchUpsertInstrumentProperties**](InstrumentsApi.md#batchupsertinstrumentproperties) | **POST** /api/instruments/$batchupsertproperties | [EARLY ACCESS] BatchUpsertInstrumentProperties: Batch upsert instruments properties
 [**DeleteInstrument**](InstrumentsApi.md#deleteinstrument) | **DELETE** /api/instruments/{identifierType}/{identifier} | [EARLY ACCESS] DeleteInstrument: Soft delete a single instrument
 [**DeleteInstrumentProperties**](InstrumentsApi.md#deleteinstrumentproperties) | **POST** /api/instruments/{identifierType}/{identifier}/properties/$delete | [EARLY ACCESS] DeleteInstrumentProperties: Delete instrument properties
 [**DeleteInstruments**](InstrumentsApi.md#deleteinstruments) | **POST** /api/instruments/$delete | [EARLY ACCESS] DeleteInstruments: Soft or hard delete multiple instruments
@@ -24,6 +25,88 @@ Method | HTTP request | Description
 [**UpsertInstruments**](InstrumentsApi.md#upsertinstruments) | **POST** /api/instruments | UpsertInstruments: Upsert instruments
 [**UpsertInstrumentsProperties**](InstrumentsApi.md#upsertinstrumentsproperties) | **POST** /api/instruments/$upsertproperties | UpsertInstrumentsProperties: Upsert instruments properties
 
+
+<a name="batchupsertinstrumentproperties"></a>
+# **BatchUpsertInstrumentProperties**
+> BatchUpsertInstrumentPropertiesResponse BatchUpsertInstrumentProperties (Dictionary<string, UpsertInstrumentPropertyRequest> requestBody, string scope = null, DateTimeOrCutLabel identifierEffectiveAt = null, string successMode = null)
+
+[EARLY ACCESS] BatchUpsertInstrumentProperties: Batch upsert instruments properties
+
+Create or update one or more properties for particular instruments.    Each instrument property is updated if it exists and created if it does not. For any failures, a reason  is provided.    Properties have an <i>effectiveFrom</i> datetime from which the property is valid, and an <i>effectiveUntil</i>  datetime until which the property is valid. Not supplying an <i>effectiveUntil</i> datetime results in the property being  valid indefinitely, or until the next <i>effectiveFrom</i> datetime of the property.
+
+### Example
+```csharp
+using System.Collections.Generic;
+using System.Diagnostics;
+using Lusid.Sdk.Api;
+using Lusid.Sdk.Client;
+using Lusid.Sdk.Model;
+
+namespace Example
+{
+    public class BatchUpsertInstrumentPropertiesExample
+    {
+        public static void Main()
+        {
+            Configuration config = new Configuration();
+            config.BasePath = "https://www.lusid.com/api";
+            // Configure OAuth2 access token for authorization: oauth2
+            config.AccessToken = "YOUR_ACCESS_TOKEN";
+
+            var apiInstance = new InstrumentsApi(config);
+            var requestBody = new Dictionary<string, UpsertInstrumentPropertyRequest>(); // Dictionary<string, UpsertInstrumentPropertyRequest> | A list of instruments and associated instrument properties to create or update.
+            var scope = scope_example;  // string | The scope in which the instrument lies. When not supplied the scope is 'default'. (optional)  (default to "default")
+            var identifierEffectiveAt = identifierEffectiveAt_example;  // DateTimeOrCutLabel | The effective datetime used to resolve each instrument from the provided identifiers. Defaults to the current LUSID system datetime if not specified. (optional) 
+            var successMode = successMode_example;  // string | Whether the batch request should fail Atomically or in a Partial fashion - Allowed Values: Atomic, Partial. (optional)  (default to "Partial")
+
+            try
+            {
+                // [EARLY ACCESS] BatchUpsertInstrumentProperties: Batch upsert instruments properties
+                BatchUpsertInstrumentPropertiesResponse result = apiInstance.BatchUpsertInstrumentProperties(requestBody, scope, identifierEffectiveAt, successMode);
+                Debug.WriteLine(result);
+            }
+            catch (ApiException  e)
+            {
+                Debug.Print("Exception when calling InstrumentsApi.BatchUpsertInstrumentProperties: " + e.Message );
+                Debug.Print("Status Code: "+ e.ErrorCode);
+                Debug.Print(e.StackTrace);
+            }
+        }
+    }
+}
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **requestBody** | [**Dictionary&lt;string, UpsertInstrumentPropertyRequest&gt;**](UpsertInstrumentPropertyRequest.md)| A list of instruments and associated instrument properties to create or update. | 
+ **scope** | **string**| The scope in which the instrument lies. When not supplied the scope is &#39;default&#39;. | [optional] [default to &quot;default&quot;]
+ **identifierEffectiveAt** | **DateTimeOrCutLabel**| The effective datetime used to resolve each instrument from the provided identifiers. Defaults to the current LUSID system datetime if not specified. | [optional] 
+ **successMode** | **string**| Whether the batch request should fail Atomically or in a Partial fashion - Allowed Values: Atomic, Partial. | [optional] [default to &quot;Partial&quot;]
+
+### Return type
+
+[**BatchUpsertInstrumentPropertiesResponse**](BatchUpsertInstrumentPropertiesResponse.md)
+
+### Authorization
+
+[oauth2](../README.md#oauth2)
+
+### HTTP request headers
+
+ - **Content-Type**: application/json-patch+json, application/json, text/json, application/_*+json
+ - **Accept**: text/plain, application/json, text/json
+
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+| **201** | The successfully upserted properties along with any failures. |  -  |
+| **400** | The details of the input related failure |  -  |
+| **0** | Error response |  -  |
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 <a name="deleteinstrument"></a>
 # **DeleteInstrument**

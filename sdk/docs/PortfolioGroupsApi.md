@@ -1816,7 +1816,7 @@ Name | Type | Description  | Notes
 
 <a name="listportfoliogroups"></a>
 # **ListPortfolioGroups**
-> ResourceListOfPortfolioGroup ListPortfolioGroups (string scope, DateTimeOrCutLabel effectiveAt = null, DateTimeOffset? asAt = null, string filter = null, List<string> relatedEntityPropertyKeys = null, List<string> relationshipDefinitionIds = null)
+> PagedResourceListOfPortfolioGroup ListPortfolioGroups (string scope, DateTimeOrCutLabel effectiveAt = null, DateTimeOffset? asAt = null, string page = null, int? limit = null, string filter = null, List<string> sortBy = null, List<string> relatedEntityPropertyKeys = null, List<string> relationshipDefinitionIds = null)
 
 [EARLY ACCESS] ListPortfolioGroups: List portfolio groups
 
@@ -1845,14 +1845,17 @@ namespace Example
             var scope = scope_example;  // string | The scope to list the portfolio groups in.
             var effectiveAt = effectiveAt_example;  // DateTimeOrCutLabel | The effective datetime or cut label at which to list the portfolio groups. Defaults to the current LUSID system datetime if not specified. (optional) 
             var asAt = 2013-10-20T19:20:30+01:00;  // DateTimeOffset? | The asAt datetime at which to list the portfolio groups. Defaults to return the latest version of each portfolio group if not specified. (optional) 
+            var page = page_example;  // string | The pagination token to use to continue listing portfolio groups from a previous call to list portfolio groups. This  value is returned from the previous call. If a pagination token is provided the filter, effectiveAt, sortBy  and asAt fields must not have changed since the original request. (optional) 
+            var limit = 56;  // int? | When paginating, limit the number of returned results to this many. Defaults to no limit if not specified. (optional) 
             var filter = filter_example;  // string | Expression to filter the result set.              For example, to filter on the Display Name, use \"displayName eq 'string'\"              Read more about filtering results from LUSID here https://support.lusid.com/filtering-results-from-lusid. (optional) 
+            var sortBy = new List<string>(); // List<string> | A list of field names to sort by, each suffixed by \" ASC\" or \" DESC\" (optional) 
             var relatedEntityPropertyKeys = new List<string>(); // List<string> | A list of property keys from any domain that supports relationships              to decorate onto related entities. These must take the format {domain}/{scope}/{code}, for example 'Portfolio/Manager/Id'. (optional) 
             var relationshipDefinitionIds = new List<string>(); // List<string> | A list of relationship definitions that are used to decorate related entities              onto the portfolio groups in the response. These must take the form {relationshipDefinitionScope}/{relationshipDefinitionCode}. (optional) 
 
             try
             {
                 // [EARLY ACCESS] ListPortfolioGroups: List portfolio groups
-                ResourceListOfPortfolioGroup result = apiInstance.ListPortfolioGroups(scope, effectiveAt, asAt, filter, relatedEntityPropertyKeys, relationshipDefinitionIds);
+                PagedResourceListOfPortfolioGroup result = apiInstance.ListPortfolioGroups(scope, effectiveAt, asAt, page, limit, filter, sortBy, relatedEntityPropertyKeys, relationshipDefinitionIds);
                 Debug.WriteLine(result);
             }
             catch (ApiException  e)
@@ -1873,13 +1876,16 @@ Name | Type | Description  | Notes
  **scope** | **string**| The scope to list the portfolio groups in. | 
  **effectiveAt** | **DateTimeOrCutLabel**| The effective datetime or cut label at which to list the portfolio groups. Defaults to the current LUSID system datetime if not specified. | [optional] 
  **asAt** | **DateTimeOffset?**| The asAt datetime at which to list the portfolio groups. Defaults to return the latest version of each portfolio group if not specified. | [optional] 
+ **page** | **string**| The pagination token to use to continue listing portfolio groups from a previous call to list portfolio groups. This  value is returned from the previous call. If a pagination token is provided the filter, effectiveAt, sortBy  and asAt fields must not have changed since the original request. | [optional] 
+ **limit** | **int?**| When paginating, limit the number of returned results to this many. Defaults to no limit if not specified. | [optional] 
  **filter** | **string**| Expression to filter the result set.              For example, to filter on the Display Name, use \&quot;displayName eq &#39;string&#39;\&quot;              Read more about filtering results from LUSID here https://support.lusid.com/filtering-results-from-lusid. | [optional] 
+ **sortBy** | [**List&lt;string&gt;**](string.md)| A list of field names to sort by, each suffixed by \&quot; ASC\&quot; or \&quot; DESC\&quot; | [optional] 
  **relatedEntityPropertyKeys** | [**List&lt;string&gt;**](string.md)| A list of property keys from any domain that supports relationships              to decorate onto related entities. These must take the format {domain}/{scope}/{code}, for example &#39;Portfolio/Manager/Id&#39;. | [optional] 
  **relationshipDefinitionIds** | [**List&lt;string&gt;**](string.md)| A list of relationship definitions that are used to decorate related entities              onto the portfolio groups in the response. These must take the form {relationshipDefinitionScope}/{relationshipDefinitionCode}. | [optional] 
 
 ### Return type
 
-[**ResourceListOfPortfolioGroup**](ResourceListOfPortfolioGroup.md)
+[**PagedResourceListOfPortfolioGroup**](PagedResourceListOfPortfolioGroup.md)
 
 ### Authorization
 

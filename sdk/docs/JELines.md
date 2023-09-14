@@ -15,7 +15,7 @@ Name | Type | Description | Notes
 **GlCode** | **string** | Code of general ledger the JE lines posting to. | 
 **Local** | [**CurrencyAndAmount**](CurrencyAndAmount.md) |  | 
 **Base** | [**CurrencyAndAmount**](CurrencyAndAmount.md) |  | 
-**PostingModuleId** | [**ResourceId**](ResourceId.md) |  | 
+**PostingModuleId** | [**ResourceId**](ResourceId.md) |  | [optional] 
 **PostingRule** | **string** | The rule generating the JELinse. | 
 **AsAtDate** | **DateTimeOffset** | The corresponding input date and time of the Transaction generating the JELine. | 
 **ActivitiesDescription** | **string** | This would be the description of the business activities where these JE lines are posting for. | [optional] 
@@ -25,7 +25,7 @@ Name | Type | Description | Notes
 **MovementName** | **string** | The name of the movement. | 
 **HoldingType** | **string** | Defines the broad category holding within the portfolio. | 
 **EconomicBucket** | **string** | Raw JE Line details of the economic bucket for the JE Line. | 
-**Links** | [**List&lt;Link&gt;**](Link.md) |  | [optional] 
+**Links** | [**List&lt;Link&gt;**](Link.md) | Collection of links. | [optional] 
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 
