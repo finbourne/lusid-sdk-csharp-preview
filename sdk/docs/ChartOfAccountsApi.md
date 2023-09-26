@@ -11,6 +11,7 @@ Method | HTTP request | Description
 [**DeletePostingModule**](ChartOfAccountsApi.md#deletepostingmodule) | **DELETE** /api/chartofaccounts/{scope}/{code}/postingmodules/{postingModuleCode} | [EXPERIMENTAL] DeletePostingModule: Delete a Posting Module.
 [**GetAccount**](ChartOfAccountsApi.md#getaccount) | **GET** /api/chartofaccounts/{scope}/{code}/accounts/{accountCode} | [EXPERIMENTAL] GetAccount: Get Account
 [**GetChartOfAccounts**](ChartOfAccountsApi.md#getchartofaccounts) | **GET** /api/chartofaccounts/{scope}/{code} | [EXPERIMENTAL] GetChartOfAccounts: Get ChartOfAccounts
+[**GetPostingModule**](ChartOfAccountsApi.md#getpostingmodule) | **GET** /api/chartofaccounts/{scope}/{code}/postingmodules/{postingModuleCode} | [EXPERIMENTAL] GetPostingModule: Get a Posting Module
 [**ListAccounts**](ChartOfAccountsApi.md#listaccounts) | **GET** /api/chartofaccounts/{scope}/{code}/accounts | [EXPERIMENTAL] ListAccounts: List Accounts
 [**ListChartsOfAccounts**](ChartOfAccountsApi.md#listchartsofaccounts) | **GET** /api/chartofaccounts | [EXPERIMENTAL] ListChartsOfAccounts: List Charts of Accounts
 [**ListPostingModuleRules**](ChartOfAccountsApi.md#listpostingmodulerules) | **GET** /api/chartofaccounts/{scope}/{code}/postingmodules/{postingModuleCode}/postingrules | [EXPERIMENTAL] ListPostingModuleRules: List Posting Module Rules
@@ -102,7 +103,7 @@ Name | Type | Description  | Notes
 
 <a name="createpostingmodule"></a>
 # **CreatePostingModule**
-> PostingModuleCreateResponse CreatePostingModule (string scope, string code, PostingModuleRequest postingModuleRequest)
+> PostingModuleResponse CreatePostingModule (string scope, string code, PostingModuleRequest postingModuleRequest)
 
 [EXPERIMENTAL] CreatePostingModule: Create a Posting Module
 
@@ -135,7 +136,7 @@ namespace Example
             try
             {
                 // [EXPERIMENTAL] CreatePostingModule: Create a Posting Module
-                PostingModuleCreateResponse result = apiInstance.CreatePostingModule(scope, code, postingModuleRequest);
+                PostingModuleResponse result = apiInstance.CreatePostingModule(scope, code, postingModuleRequest);
                 Debug.WriteLine(result);
             }
             catch (ApiException  e)
@@ -159,7 +160,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**PostingModuleCreateResponse**](PostingModuleCreateResponse.md)
+[**PostingModuleResponse**](PostingModuleResponse.md)
 
 ### Authorization
 
@@ -585,6 +586,86 @@ Name | Type | Description  | Notes
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
 | **200** | The requested Chart Of Accounts definition. |  -  |
+| **400** | The details of the input related failure |  -  |
+| **0** | Error response |  -  |
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+<a name="getpostingmodule"></a>
+# **GetPostingModule**
+> PostingModuleResponse GetPostingModule (string scope, string code, string postingModuleCode)
+
+[EXPERIMENTAL] GetPostingModule: Get a Posting Module
+
+Retrieve the definition of a Posting Module complete with its rules.
+
+### Example
+```csharp
+using System.Collections.Generic;
+using System.Diagnostics;
+using Lusid.Sdk.Api;
+using Lusid.Sdk.Client;
+using Lusid.Sdk.Model;
+
+namespace Example
+{
+    public class GetPostingModuleExample
+    {
+        public static void Main()
+        {
+            Configuration config = new Configuration();
+            config.BasePath = "https://www.lusid.com/api";
+            // Configure OAuth2 access token for authorization: oauth2
+            config.AccessToken = "YOUR_ACCESS_TOKEN";
+
+            var apiInstance = new ChartOfAccountsApi(config);
+            var scope = scope_example;  // string | The scope of the Chart of Accounts.
+            var code = code_example;  // string | The code of the Chart of Accounts. Together with the scope this uniquely identifies the Chart of Accounts.
+            var postingModuleCode = postingModuleCode_example;  // string | The code of the Posting Module.
+
+            try
+            {
+                // [EXPERIMENTAL] GetPostingModule: Get a Posting Module
+                PostingModuleResponse result = apiInstance.GetPostingModule(scope, code, postingModuleCode);
+                Debug.WriteLine(result);
+            }
+            catch (ApiException  e)
+            {
+                Debug.Print("Exception when calling ChartOfAccountsApi.GetPostingModule: " + e.Message );
+                Debug.Print("Status Code: "+ e.ErrorCode);
+                Debug.Print(e.StackTrace);
+            }
+        }
+    }
+}
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **scope** | **string**| The scope of the Chart of Accounts. | 
+ **code** | **string**| The code of the Chart of Accounts. Together with the scope this uniquely identifies the Chart of Accounts. | 
+ **postingModuleCode** | **string**| The code of the Posting Module. | 
+
+### Return type
+
+[**PostingModuleResponse**](PostingModuleResponse.md)
+
+### Authorization
+
+[oauth2](../README.md#oauth2)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: text/plain, application/json, text/json
+
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+| **200** | The full definition of the Posting Module. |  -  |
 | **400** | The details of the input related failure |  -  |
 | **0** | Error response |  -  |
 
