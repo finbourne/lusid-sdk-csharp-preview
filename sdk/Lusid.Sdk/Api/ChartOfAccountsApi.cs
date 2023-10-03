@@ -428,6 +428,33 @@ namespace Lusid.Sdk.Api
         /// <returns>ApiResponse of PostingModuleRulesUpdatedResponse</returns>
         ApiResponse<PostingModuleRulesUpdatedResponse> SetPostingModuleRulesWithHttpInfo(string scope, string code, string postingModuleCode, List<PostingModuleRule> postingModuleRule);
         /// <summary>
+        /// [EXPERIMENTAL] UpsertAccountProperties: Upsert account properties
+        /// </summary>
+        /// <remarks>
+        /// Update or insert one or more properties onto a single account. A property will be updated if it  already exists and inserted if it does not. All properties must be of the domain &#39;Account&#39;.                Upserting a property that exists for an account, with a null value, will delete the instance of the property for that group.                Properties have an &lt;i&gt;effectiveFrom&lt;/i&gt; datetime for which the property is valid, and an &lt;i&gt;effectiveUntil&lt;/i&gt;  datetime until which the property is valid. Not supplying an &lt;i&gt;effectiveUntil&lt;/i&gt; datetime results in the property being  valid indefinitely, or until the next &lt;i&gt;effectiveFrom&lt;/i&gt; datetime of the property.
+        /// </remarks>
+        /// <exception cref="Lusid.Sdk.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="scope">The scope of the Chart of Accounts to update or insert the properties onto.</param>
+        /// <param name="code">The code of the Chart of Accounts to update or insert the properties onto. Together with the scope this uniquely identifies the Chart of Accounts.</param>
+        /// <param name="accountCode">The unique ID of the account to create or update properties for.</param>
+        /// <param name="requestBody">The properties to be updated or inserted onto the chart of account. Each property in               the request must be keyed by its unique property key. This has the format {domain}/{scope}/{code} e.g. \&quot;Account/Manager/Id\&quot;. (optional)</param>
+        /// <returns>AccountProperties</returns>
+        AccountProperties UpsertAccountProperties(string scope, string code, string accountCode, Dictionary<string, Property> requestBody = default(Dictionary<string, Property>));
+
+        /// <summary>
+        /// [EXPERIMENTAL] UpsertAccountProperties: Upsert account properties
+        /// </summary>
+        /// <remarks>
+        /// Update or insert one or more properties onto a single account. A property will be updated if it  already exists and inserted if it does not. All properties must be of the domain &#39;Account&#39;.                Upserting a property that exists for an account, with a null value, will delete the instance of the property for that group.                Properties have an &lt;i&gt;effectiveFrom&lt;/i&gt; datetime for which the property is valid, and an &lt;i&gt;effectiveUntil&lt;/i&gt;  datetime until which the property is valid. Not supplying an &lt;i&gt;effectiveUntil&lt;/i&gt; datetime results in the property being  valid indefinitely, or until the next &lt;i&gt;effectiveFrom&lt;/i&gt; datetime of the property.
+        /// </remarks>
+        /// <exception cref="Lusid.Sdk.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="scope">The scope of the Chart of Accounts to update or insert the properties onto.</param>
+        /// <param name="code">The code of the Chart of Accounts to update or insert the properties onto. Together with the scope this uniquely identifies the Chart of Accounts.</param>
+        /// <param name="accountCode">The unique ID of the account to create or update properties for.</param>
+        /// <param name="requestBody">The properties to be updated or inserted onto the chart of account. Each property in               the request must be keyed by its unique property key. This has the format {domain}/{scope}/{code} e.g. \&quot;Account/Manager/Id\&quot;. (optional)</param>
+        /// <returns>ApiResponse of AccountProperties</returns>
+        ApiResponse<AccountProperties> UpsertAccountPropertiesWithHttpInfo(string scope, string code, string accountCode, Dictionary<string, Property> requestBody = default(Dictionary<string, Property>));
+        /// <summary>
         /// [EXPERIMENTAL] UpsertAccounts: Upsert Accounts
         /// </summary>
         /// <remarks>
@@ -452,33 +479,6 @@ namespace Lusid.Sdk.Api
         /// <param name="account">A list of accounts to be created or updated.</param>
         /// <returns>ApiResponse of AccountsUpsertResponse</returns>
         ApiResponse<AccountsUpsertResponse> UpsertAccountsWithHttpInfo(string scope, string code, List<Account> account);
-        /// <summary>
-        /// [EXPERIMENTAL] UpsertAccountsProperties: Upsert accounts properties
-        /// </summary>
-        /// <remarks>
-        /// Update or insert one or more properties onto a single account. A property will be updated if it  already exists and inserted if it does not. All properties must be of the domain &#39;Account&#39;.                Upserting a property that exists for an account, with a null value, will delete the instance of the property for that group.                Properties have an &lt;i&gt;effectiveFrom&lt;/i&gt; datetime for which the property is valid, and an &lt;i&gt;effectiveUntil&lt;/i&gt;  datetime until which the property is valid. Not supplying an &lt;i&gt;effectiveUntil&lt;/i&gt; datetime results in the property being  valid indefinitely, or until the next &lt;i&gt;effectiveFrom&lt;/i&gt; datetime of the property.
-        /// </remarks>
-        /// <exception cref="Lusid.Sdk.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="scope">The scope of the Chart of Accounts to update or insert the properties onto.</param>
-        /// <param name="code">The code of the Chart of Accounts to update or insert the properties onto. Together with the scope this uniquely identifies the Chart of Accounts.</param>
-        /// <param name="accountCode">The unique ID of the account to create or update properties for.</param>
-        /// <param name="requestBody">The properties to be updated or inserted onto the chart of account. Each property in               the request must be keyed by its unique property key. This has the format {domain}/{scope}/{code} e.g. \&quot;Account/Manager/Id\&quot;. (optional)</param>
-        /// <returns>AccountProperties</returns>
-        AccountProperties UpsertAccountsProperties(string scope, string code, string accountCode, Dictionary<string, Property> requestBody = default(Dictionary<string, Property>));
-
-        /// <summary>
-        /// [EXPERIMENTAL] UpsertAccountsProperties: Upsert accounts properties
-        /// </summary>
-        /// <remarks>
-        /// Update or insert one or more properties onto a single account. A property will be updated if it  already exists and inserted if it does not. All properties must be of the domain &#39;Account&#39;.                Upserting a property that exists for an account, with a null value, will delete the instance of the property for that group.                Properties have an &lt;i&gt;effectiveFrom&lt;/i&gt; datetime for which the property is valid, and an &lt;i&gt;effectiveUntil&lt;/i&gt;  datetime until which the property is valid. Not supplying an &lt;i&gt;effectiveUntil&lt;/i&gt; datetime results in the property being  valid indefinitely, or until the next &lt;i&gt;effectiveFrom&lt;/i&gt; datetime of the property.
-        /// </remarks>
-        /// <exception cref="Lusid.Sdk.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="scope">The scope of the Chart of Accounts to update or insert the properties onto.</param>
-        /// <param name="code">The code of the Chart of Accounts to update or insert the properties onto. Together with the scope this uniquely identifies the Chart of Accounts.</param>
-        /// <param name="accountCode">The unique ID of the account to create or update properties for.</param>
-        /// <param name="requestBody">The properties to be updated or inserted onto the chart of account. Each property in               the request must be keyed by its unique property key. This has the format {domain}/{scope}/{code} e.g. \&quot;Account/Manager/Id\&quot;. (optional)</param>
-        /// <returns>ApiResponse of AccountProperties</returns>
-        ApiResponse<AccountProperties> UpsertAccountsPropertiesWithHttpInfo(string scope, string code, string accountCode, Dictionary<string, Property> requestBody = default(Dictionary<string, Property>));
         /// <summary>
         /// [EXPERIMENTAL] UpsertChartOfAccountsProperties: Upsert Chart of Accounts properties
         /// </summary>
@@ -942,6 +942,35 @@ namespace Lusid.Sdk.Api
         /// <returns>Task of ApiResponse (PostingModuleRulesUpdatedResponse)</returns>
         System.Threading.Tasks.Task<ApiResponse<PostingModuleRulesUpdatedResponse>> SetPostingModuleRulesWithHttpInfoAsync(string scope, string code, string postingModuleCode, List<PostingModuleRule> postingModuleRule, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
         /// <summary>
+        /// [EXPERIMENTAL] UpsertAccountProperties: Upsert account properties
+        /// </summary>
+        /// <remarks>
+        /// Update or insert one or more properties onto a single account. A property will be updated if it  already exists and inserted if it does not. All properties must be of the domain &#39;Account&#39;.                Upserting a property that exists for an account, with a null value, will delete the instance of the property for that group.                Properties have an &lt;i&gt;effectiveFrom&lt;/i&gt; datetime for which the property is valid, and an &lt;i&gt;effectiveUntil&lt;/i&gt;  datetime until which the property is valid. Not supplying an &lt;i&gt;effectiveUntil&lt;/i&gt; datetime results in the property being  valid indefinitely, or until the next &lt;i&gt;effectiveFrom&lt;/i&gt; datetime of the property.
+        /// </remarks>
+        /// <exception cref="Lusid.Sdk.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="scope">The scope of the Chart of Accounts to update or insert the properties onto.</param>
+        /// <param name="code">The code of the Chart of Accounts to update or insert the properties onto. Together with the scope this uniquely identifies the Chart of Accounts.</param>
+        /// <param name="accountCode">The unique ID of the account to create or update properties for.</param>
+        /// <param name="requestBody">The properties to be updated or inserted onto the chart of account. Each property in               the request must be keyed by its unique property key. This has the format {domain}/{scope}/{code} e.g. \&quot;Account/Manager/Id\&quot;. (optional)</param>
+        /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
+        /// <returns>Task of AccountProperties</returns>
+        System.Threading.Tasks.Task<AccountProperties> UpsertAccountPropertiesAsync(string scope, string code, string accountCode, Dictionary<string, Property> requestBody = default(Dictionary<string, Property>), System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+
+        /// <summary>
+        /// [EXPERIMENTAL] UpsertAccountProperties: Upsert account properties
+        /// </summary>
+        /// <remarks>
+        /// Update or insert one or more properties onto a single account. A property will be updated if it  already exists and inserted if it does not. All properties must be of the domain &#39;Account&#39;.                Upserting a property that exists for an account, with a null value, will delete the instance of the property for that group.                Properties have an &lt;i&gt;effectiveFrom&lt;/i&gt; datetime for which the property is valid, and an &lt;i&gt;effectiveUntil&lt;/i&gt;  datetime until which the property is valid. Not supplying an &lt;i&gt;effectiveUntil&lt;/i&gt; datetime results in the property being  valid indefinitely, or until the next &lt;i&gt;effectiveFrom&lt;/i&gt; datetime of the property.
+        /// </remarks>
+        /// <exception cref="Lusid.Sdk.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="scope">The scope of the Chart of Accounts to update or insert the properties onto.</param>
+        /// <param name="code">The code of the Chart of Accounts to update or insert the properties onto. Together with the scope this uniquely identifies the Chart of Accounts.</param>
+        /// <param name="accountCode">The unique ID of the account to create or update properties for.</param>
+        /// <param name="requestBody">The properties to be updated or inserted onto the chart of account. Each property in               the request must be keyed by its unique property key. This has the format {domain}/{scope}/{code} e.g. \&quot;Account/Manager/Id\&quot;. (optional)</param>
+        /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
+        /// <returns>Task of ApiResponse (AccountProperties)</returns>
+        System.Threading.Tasks.Task<ApiResponse<AccountProperties>> UpsertAccountPropertiesWithHttpInfoAsync(string scope, string code, string accountCode, Dictionary<string, Property> requestBody = default(Dictionary<string, Property>), System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+        /// <summary>
         /// [EXPERIMENTAL] UpsertAccounts: Upsert Accounts
         /// </summary>
         /// <remarks>
@@ -968,35 +997,6 @@ namespace Lusid.Sdk.Api
         /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
         /// <returns>Task of ApiResponse (AccountsUpsertResponse)</returns>
         System.Threading.Tasks.Task<ApiResponse<AccountsUpsertResponse>> UpsertAccountsWithHttpInfoAsync(string scope, string code, List<Account> account, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
-        /// <summary>
-        /// [EXPERIMENTAL] UpsertAccountsProperties: Upsert accounts properties
-        /// </summary>
-        /// <remarks>
-        /// Update or insert one or more properties onto a single account. A property will be updated if it  already exists and inserted if it does not. All properties must be of the domain &#39;Account&#39;.                Upserting a property that exists for an account, with a null value, will delete the instance of the property for that group.                Properties have an &lt;i&gt;effectiveFrom&lt;/i&gt; datetime for which the property is valid, and an &lt;i&gt;effectiveUntil&lt;/i&gt;  datetime until which the property is valid. Not supplying an &lt;i&gt;effectiveUntil&lt;/i&gt; datetime results in the property being  valid indefinitely, or until the next &lt;i&gt;effectiveFrom&lt;/i&gt; datetime of the property.
-        /// </remarks>
-        /// <exception cref="Lusid.Sdk.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="scope">The scope of the Chart of Accounts to update or insert the properties onto.</param>
-        /// <param name="code">The code of the Chart of Accounts to update or insert the properties onto. Together with the scope this uniquely identifies the Chart of Accounts.</param>
-        /// <param name="accountCode">The unique ID of the account to create or update properties for.</param>
-        /// <param name="requestBody">The properties to be updated or inserted onto the chart of account. Each property in               the request must be keyed by its unique property key. This has the format {domain}/{scope}/{code} e.g. \&quot;Account/Manager/Id\&quot;. (optional)</param>
-        /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
-        /// <returns>Task of AccountProperties</returns>
-        System.Threading.Tasks.Task<AccountProperties> UpsertAccountsPropertiesAsync(string scope, string code, string accountCode, Dictionary<string, Property> requestBody = default(Dictionary<string, Property>), System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
-
-        /// <summary>
-        /// [EXPERIMENTAL] UpsertAccountsProperties: Upsert accounts properties
-        /// </summary>
-        /// <remarks>
-        /// Update or insert one or more properties onto a single account. A property will be updated if it  already exists and inserted if it does not. All properties must be of the domain &#39;Account&#39;.                Upserting a property that exists for an account, with a null value, will delete the instance of the property for that group.                Properties have an &lt;i&gt;effectiveFrom&lt;/i&gt; datetime for which the property is valid, and an &lt;i&gt;effectiveUntil&lt;/i&gt;  datetime until which the property is valid. Not supplying an &lt;i&gt;effectiveUntil&lt;/i&gt; datetime results in the property being  valid indefinitely, or until the next &lt;i&gt;effectiveFrom&lt;/i&gt; datetime of the property.
-        /// </remarks>
-        /// <exception cref="Lusid.Sdk.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="scope">The scope of the Chart of Accounts to update or insert the properties onto.</param>
-        /// <param name="code">The code of the Chart of Accounts to update or insert the properties onto. Together with the scope this uniquely identifies the Chart of Accounts.</param>
-        /// <param name="accountCode">The unique ID of the account to create or update properties for.</param>
-        /// <param name="requestBody">The properties to be updated or inserted onto the chart of account. Each property in               the request must be keyed by its unique property key. This has the format {domain}/{scope}/{code} e.g. \&quot;Account/Manager/Id\&quot;. (optional)</param>
-        /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
-        /// <returns>Task of ApiResponse (AccountProperties)</returns>
-        System.Threading.Tasks.Task<ApiResponse<AccountProperties>> UpsertAccountsPropertiesWithHttpInfoAsync(string scope, string code, string accountCode, Dictionary<string, Property> requestBody = default(Dictionary<string, Property>), System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
         /// <summary>
         /// [EXPERIMENTAL] UpsertChartOfAccountsProperties: Upsert Chart of Accounts properties
         /// </summary>
@@ -3808,6 +3808,187 @@ namespace Lusid.Sdk.Api
         }
 
         /// <summary>
+        /// [EXPERIMENTAL] UpsertAccountProperties: Upsert account properties Update or insert one or more properties onto a single account. A property will be updated if it  already exists and inserted if it does not. All properties must be of the domain &#39;Account&#39;.                Upserting a property that exists for an account, with a null value, will delete the instance of the property for that group.                Properties have an &lt;i&gt;effectiveFrom&lt;/i&gt; datetime for which the property is valid, and an &lt;i&gt;effectiveUntil&lt;/i&gt;  datetime until which the property is valid. Not supplying an &lt;i&gt;effectiveUntil&lt;/i&gt; datetime results in the property being  valid indefinitely, or until the next &lt;i&gt;effectiveFrom&lt;/i&gt; datetime of the property.
+        /// </summary>
+        /// <exception cref="Lusid.Sdk.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="scope">The scope of the Chart of Accounts to update or insert the properties onto.</param>
+        /// <param name="code">The code of the Chart of Accounts to update or insert the properties onto. Together with the scope this uniquely identifies the Chart of Accounts.</param>
+        /// <param name="accountCode">The unique ID of the account to create or update properties for.</param>
+        /// <param name="requestBody">The properties to be updated or inserted onto the chart of account. Each property in               the request must be keyed by its unique property key. This has the format {domain}/{scope}/{code} e.g. \&quot;Account/Manager/Id\&quot;. (optional)</param>
+        /// <returns>AccountProperties</returns>
+        public AccountProperties UpsertAccountProperties(string scope, string code, string accountCode, Dictionary<string, Property> requestBody = default(Dictionary<string, Property>))
+        {
+            Lusid.Sdk.Client.ApiResponse<AccountProperties> localVarResponse = UpsertAccountPropertiesWithHttpInfo(scope, code, accountCode, requestBody);
+            return localVarResponse.Data;
+        }
+
+        /// <summary>
+        /// [EXPERIMENTAL] UpsertAccountProperties: Upsert account properties Update or insert one or more properties onto a single account. A property will be updated if it  already exists and inserted if it does not. All properties must be of the domain &#39;Account&#39;.                Upserting a property that exists for an account, with a null value, will delete the instance of the property for that group.                Properties have an &lt;i&gt;effectiveFrom&lt;/i&gt; datetime for which the property is valid, and an &lt;i&gt;effectiveUntil&lt;/i&gt;  datetime until which the property is valid. Not supplying an &lt;i&gt;effectiveUntil&lt;/i&gt; datetime results in the property being  valid indefinitely, or until the next &lt;i&gt;effectiveFrom&lt;/i&gt; datetime of the property.
+        /// </summary>
+        /// <exception cref="Lusid.Sdk.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="scope">The scope of the Chart of Accounts to update or insert the properties onto.</param>
+        /// <param name="code">The code of the Chart of Accounts to update or insert the properties onto. Together with the scope this uniquely identifies the Chart of Accounts.</param>
+        /// <param name="accountCode">The unique ID of the account to create or update properties for.</param>
+        /// <param name="requestBody">The properties to be updated or inserted onto the chart of account. Each property in               the request must be keyed by its unique property key. This has the format {domain}/{scope}/{code} e.g. \&quot;Account/Manager/Id\&quot;. (optional)</param>
+        /// <returns>ApiResponse of AccountProperties</returns>
+        public Lusid.Sdk.Client.ApiResponse<AccountProperties> UpsertAccountPropertiesWithHttpInfo(string scope, string code, string accountCode, Dictionary<string, Property> requestBody = default(Dictionary<string, Property>))
+        {
+            // verify the required parameter 'scope' is set
+            if (scope == null)
+                throw new Lusid.Sdk.Client.ApiException(400, "Missing required parameter 'scope' when calling ChartOfAccountsApi->UpsertAccountProperties");
+
+            // verify the required parameter 'code' is set
+            if (code == null)
+                throw new Lusid.Sdk.Client.ApiException(400, "Missing required parameter 'code' when calling ChartOfAccountsApi->UpsertAccountProperties");
+
+            // verify the required parameter 'accountCode' is set
+            if (accountCode == null)
+                throw new Lusid.Sdk.Client.ApiException(400, "Missing required parameter 'accountCode' when calling ChartOfAccountsApi->UpsertAccountProperties");
+
+            Lusid.Sdk.Client.RequestOptions localVarRequestOptions = new Lusid.Sdk.Client.RequestOptions();
+
+            String[] _contentTypes = new String[] {
+                "application/json-patch+json",
+                "application/json",
+                "text/json",
+                "application/_*+json"
+            };
+
+            // to determine the Accept header
+            String[] _accepts = new String[] {
+                "text/plain",
+                "application/json",
+                "text/json"
+            };
+
+            var localVarContentType = Lusid.Sdk.Client.ClientUtils.SelectHeaderContentType(_contentTypes);
+            if (localVarContentType != null) localVarRequestOptions.HeaderParameters.Add("Content-Type", localVarContentType);
+
+            var localVarAccept = Lusid.Sdk.Client.ClientUtils.SelectHeaderAccept(_accepts);
+            if (localVarAccept != null) localVarRequestOptions.HeaderParameters.Add("Accept", localVarAccept);
+
+            localVarRequestOptions.PathParameters.Add("scope", Lusid.Sdk.Client.ClientUtils.ParameterToString(scope)); // path parameter
+            localVarRequestOptions.PathParameters.Add("code", Lusid.Sdk.Client.ClientUtils.ParameterToString(code)); // path parameter
+            localVarRequestOptions.PathParameters.Add("accountCode", Lusid.Sdk.Client.ClientUtils.ParameterToString(accountCode)); // path parameter
+            localVarRequestOptions.Data = requestBody;
+
+            // authentication (oauth2) required
+            // oauth required
+            if (!String.IsNullOrEmpty(this.Configuration.AccessToken))
+            {
+                localVarRequestOptions.HeaderParameters.Add("Authorization", "Bearer " + this.Configuration.AccessToken);
+            }
+
+            //  set the LUSID header
+            localVarRequestOptions.HeaderParameters.Add("X-LUSID-Sdk-Language", "C#");
+            localVarRequestOptions.HeaderParameters.Add("X-LUSID-Sdk-Version", "1.1.88");
+
+            // make the HTTP request
+            var localVarResponse = this.Client.Post<AccountProperties>("/api/chartofaccounts/{scope}/{code}/accounts/{accountCode}/properties/$upsert", localVarRequestOptions, this.Configuration);
+
+            if (this.ExceptionFactory != null)
+            {
+                Exception _exception = this.ExceptionFactory("UpsertAccountProperties", localVarResponse);
+                if (_exception != null) throw _exception;
+            }
+
+            return localVarResponse;
+        }
+
+        /// <summary>
+        /// [EXPERIMENTAL] UpsertAccountProperties: Upsert account properties Update or insert one or more properties onto a single account. A property will be updated if it  already exists and inserted if it does not. All properties must be of the domain &#39;Account&#39;.                Upserting a property that exists for an account, with a null value, will delete the instance of the property for that group.                Properties have an &lt;i&gt;effectiveFrom&lt;/i&gt; datetime for which the property is valid, and an &lt;i&gt;effectiveUntil&lt;/i&gt;  datetime until which the property is valid. Not supplying an &lt;i&gt;effectiveUntil&lt;/i&gt; datetime results in the property being  valid indefinitely, or until the next &lt;i&gt;effectiveFrom&lt;/i&gt; datetime of the property.
+        /// </summary>
+        /// <exception cref="Lusid.Sdk.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="scope">The scope of the Chart of Accounts to update or insert the properties onto.</param>
+        /// <param name="code">The code of the Chart of Accounts to update or insert the properties onto. Together with the scope this uniquely identifies the Chart of Accounts.</param>
+        /// <param name="accountCode">The unique ID of the account to create or update properties for.</param>
+        /// <param name="requestBody">The properties to be updated or inserted onto the chart of account. Each property in               the request must be keyed by its unique property key. This has the format {domain}/{scope}/{code} e.g. \&quot;Account/Manager/Id\&quot;. (optional)</param>
+        /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
+        /// <returns>Task of AccountProperties</returns>
+        public async System.Threading.Tasks.Task<AccountProperties> UpsertAccountPropertiesAsync(string scope, string code, string accountCode, Dictionary<string, Property> requestBody = default(Dictionary<string, Property>), System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
+        {
+            Lusid.Sdk.Client.ApiResponse<AccountProperties> localVarResponse = await UpsertAccountPropertiesWithHttpInfoAsync(scope, code, accountCode, requestBody, cancellationToken).ConfigureAwait(false);
+            return localVarResponse.Data;
+        }
+
+        /// <summary>
+        /// [EXPERIMENTAL] UpsertAccountProperties: Upsert account properties Update or insert one or more properties onto a single account. A property will be updated if it  already exists and inserted if it does not. All properties must be of the domain &#39;Account&#39;.                Upserting a property that exists for an account, with a null value, will delete the instance of the property for that group.                Properties have an &lt;i&gt;effectiveFrom&lt;/i&gt; datetime for which the property is valid, and an &lt;i&gt;effectiveUntil&lt;/i&gt;  datetime until which the property is valid. Not supplying an &lt;i&gt;effectiveUntil&lt;/i&gt; datetime results in the property being  valid indefinitely, or until the next &lt;i&gt;effectiveFrom&lt;/i&gt; datetime of the property.
+        /// </summary>
+        /// <exception cref="Lusid.Sdk.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="scope">The scope of the Chart of Accounts to update or insert the properties onto.</param>
+        /// <param name="code">The code of the Chart of Accounts to update or insert the properties onto. Together with the scope this uniquely identifies the Chart of Accounts.</param>
+        /// <param name="accountCode">The unique ID of the account to create or update properties for.</param>
+        /// <param name="requestBody">The properties to be updated or inserted onto the chart of account. Each property in               the request must be keyed by its unique property key. This has the format {domain}/{scope}/{code} e.g. \&quot;Account/Manager/Id\&quot;. (optional)</param>
+        /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
+        /// <returns>Task of ApiResponse (AccountProperties)</returns>
+        public async System.Threading.Tasks.Task<Lusid.Sdk.Client.ApiResponse<AccountProperties>> UpsertAccountPropertiesWithHttpInfoAsync(string scope, string code, string accountCode, Dictionary<string, Property> requestBody = default(Dictionary<string, Property>), System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
+        {
+            // verify the required parameter 'scope' is set
+            if (scope == null)
+                throw new Lusid.Sdk.Client.ApiException(400, "Missing required parameter 'scope' when calling ChartOfAccountsApi->UpsertAccountProperties");
+
+            // verify the required parameter 'code' is set
+            if (code == null)
+                throw new Lusid.Sdk.Client.ApiException(400, "Missing required parameter 'code' when calling ChartOfAccountsApi->UpsertAccountProperties");
+
+            // verify the required parameter 'accountCode' is set
+            if (accountCode == null)
+                throw new Lusid.Sdk.Client.ApiException(400, "Missing required parameter 'accountCode' when calling ChartOfAccountsApi->UpsertAccountProperties");
+
+
+            Lusid.Sdk.Client.RequestOptions localVarRequestOptions = new Lusid.Sdk.Client.RequestOptions();
+
+            String[] _contentTypes = new String[] {
+                "application/json-patch+json", 
+                "application/json", 
+                "text/json", 
+                "application/_*+json"
+            };
+
+            // to determine the Accept header
+            String[] _accepts = new String[] {
+                "text/plain",
+                "application/json",
+                "text/json"
+            };
+
+
+            var localVarContentType = Lusid.Sdk.Client.ClientUtils.SelectHeaderContentType(_contentTypes);
+            if (localVarContentType != null) localVarRequestOptions.HeaderParameters.Add("Content-Type", localVarContentType);
+
+            var localVarAccept = Lusid.Sdk.Client.ClientUtils.SelectHeaderAccept(_accepts);
+            if (localVarAccept != null) localVarRequestOptions.HeaderParameters.Add("Accept", localVarAccept);
+
+            localVarRequestOptions.PathParameters.Add("scope", Lusid.Sdk.Client.ClientUtils.ParameterToString(scope)); // path parameter
+            localVarRequestOptions.PathParameters.Add("code", Lusid.Sdk.Client.ClientUtils.ParameterToString(code)); // path parameter
+            localVarRequestOptions.PathParameters.Add("accountCode", Lusid.Sdk.Client.ClientUtils.ParameterToString(accountCode)); // path parameter
+            localVarRequestOptions.Data = requestBody;
+
+            // authentication (oauth2) required
+            // oauth required
+            if (!String.IsNullOrEmpty(this.Configuration.AccessToken))
+            {
+                localVarRequestOptions.HeaderParameters.Add("Authorization", "Bearer " + this.Configuration.AccessToken);
+            }
+
+            //  set the LUSID header
+            localVarRequestOptions.HeaderParameters.Add("X-LUSID-Sdk-Language", "C#");
+            localVarRequestOptions.HeaderParameters.Add("X-LUSID-Sdk-Version", "1.1.88");
+
+            // make the HTTP request
+
+            var localVarResponse = await this.AsynchronousClient.PostAsync<AccountProperties>("/api/chartofaccounts/{scope}/{code}/accounts/{accountCode}/properties/$upsert", localVarRequestOptions, this.Configuration, cancellationToken).ConfigureAwait(false);
+
+            if (this.ExceptionFactory != null)
+            {
+                Exception _exception = this.ExceptionFactory("UpsertAccountProperties", localVarResponse);
+                if (_exception != null) throw _exception;
+            }
+
+            return localVarResponse;
+        }
+
+        /// <summary>
         /// [EXPERIMENTAL] UpsertAccounts: Upsert Accounts Create or update accounts in the Chart of Accounts. An account will be updated  if it already exists and created if it does not.  The maximum number of accounts that this method can upsert per request is 2,000.
         /// </summary>
         /// <exception cref="Lusid.Sdk.Client.ApiException">Thrown when fails to make API call</exception>
@@ -3976,187 +4157,6 @@ namespace Lusid.Sdk.Api
             if (this.ExceptionFactory != null)
             {
                 Exception _exception = this.ExceptionFactory("UpsertAccounts", localVarResponse);
-                if (_exception != null) throw _exception;
-            }
-
-            return localVarResponse;
-        }
-
-        /// <summary>
-        /// [EXPERIMENTAL] UpsertAccountsProperties: Upsert accounts properties Update or insert one or more properties onto a single account. A property will be updated if it  already exists and inserted if it does not. All properties must be of the domain &#39;Account&#39;.                Upserting a property that exists for an account, with a null value, will delete the instance of the property for that group.                Properties have an &lt;i&gt;effectiveFrom&lt;/i&gt; datetime for which the property is valid, and an &lt;i&gt;effectiveUntil&lt;/i&gt;  datetime until which the property is valid. Not supplying an &lt;i&gt;effectiveUntil&lt;/i&gt; datetime results in the property being  valid indefinitely, or until the next &lt;i&gt;effectiveFrom&lt;/i&gt; datetime of the property.
-        /// </summary>
-        /// <exception cref="Lusid.Sdk.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="scope">The scope of the Chart of Accounts to update or insert the properties onto.</param>
-        /// <param name="code">The code of the Chart of Accounts to update or insert the properties onto. Together with the scope this uniquely identifies the Chart of Accounts.</param>
-        /// <param name="accountCode">The unique ID of the account to create or update properties for.</param>
-        /// <param name="requestBody">The properties to be updated or inserted onto the chart of account. Each property in               the request must be keyed by its unique property key. This has the format {domain}/{scope}/{code} e.g. \&quot;Account/Manager/Id\&quot;. (optional)</param>
-        /// <returns>AccountProperties</returns>
-        public AccountProperties UpsertAccountsProperties(string scope, string code, string accountCode, Dictionary<string, Property> requestBody = default(Dictionary<string, Property>))
-        {
-            Lusid.Sdk.Client.ApiResponse<AccountProperties> localVarResponse = UpsertAccountsPropertiesWithHttpInfo(scope, code, accountCode, requestBody);
-            return localVarResponse.Data;
-        }
-
-        /// <summary>
-        /// [EXPERIMENTAL] UpsertAccountsProperties: Upsert accounts properties Update or insert one or more properties onto a single account. A property will be updated if it  already exists and inserted if it does not. All properties must be of the domain &#39;Account&#39;.                Upserting a property that exists for an account, with a null value, will delete the instance of the property for that group.                Properties have an &lt;i&gt;effectiveFrom&lt;/i&gt; datetime for which the property is valid, and an &lt;i&gt;effectiveUntil&lt;/i&gt;  datetime until which the property is valid. Not supplying an &lt;i&gt;effectiveUntil&lt;/i&gt; datetime results in the property being  valid indefinitely, or until the next &lt;i&gt;effectiveFrom&lt;/i&gt; datetime of the property.
-        /// </summary>
-        /// <exception cref="Lusid.Sdk.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="scope">The scope of the Chart of Accounts to update or insert the properties onto.</param>
-        /// <param name="code">The code of the Chart of Accounts to update or insert the properties onto. Together with the scope this uniquely identifies the Chart of Accounts.</param>
-        /// <param name="accountCode">The unique ID of the account to create or update properties for.</param>
-        /// <param name="requestBody">The properties to be updated or inserted onto the chart of account. Each property in               the request must be keyed by its unique property key. This has the format {domain}/{scope}/{code} e.g. \&quot;Account/Manager/Id\&quot;. (optional)</param>
-        /// <returns>ApiResponse of AccountProperties</returns>
-        public Lusid.Sdk.Client.ApiResponse<AccountProperties> UpsertAccountsPropertiesWithHttpInfo(string scope, string code, string accountCode, Dictionary<string, Property> requestBody = default(Dictionary<string, Property>))
-        {
-            // verify the required parameter 'scope' is set
-            if (scope == null)
-                throw new Lusid.Sdk.Client.ApiException(400, "Missing required parameter 'scope' when calling ChartOfAccountsApi->UpsertAccountsProperties");
-
-            // verify the required parameter 'code' is set
-            if (code == null)
-                throw new Lusid.Sdk.Client.ApiException(400, "Missing required parameter 'code' when calling ChartOfAccountsApi->UpsertAccountsProperties");
-
-            // verify the required parameter 'accountCode' is set
-            if (accountCode == null)
-                throw new Lusid.Sdk.Client.ApiException(400, "Missing required parameter 'accountCode' when calling ChartOfAccountsApi->UpsertAccountsProperties");
-
-            Lusid.Sdk.Client.RequestOptions localVarRequestOptions = new Lusid.Sdk.Client.RequestOptions();
-
-            String[] _contentTypes = new String[] {
-                "application/json-patch+json",
-                "application/json",
-                "text/json",
-                "application/_*+json"
-            };
-
-            // to determine the Accept header
-            String[] _accepts = new String[] {
-                "text/plain",
-                "application/json",
-                "text/json"
-            };
-
-            var localVarContentType = Lusid.Sdk.Client.ClientUtils.SelectHeaderContentType(_contentTypes);
-            if (localVarContentType != null) localVarRequestOptions.HeaderParameters.Add("Content-Type", localVarContentType);
-
-            var localVarAccept = Lusid.Sdk.Client.ClientUtils.SelectHeaderAccept(_accepts);
-            if (localVarAccept != null) localVarRequestOptions.HeaderParameters.Add("Accept", localVarAccept);
-
-            localVarRequestOptions.PathParameters.Add("scope", Lusid.Sdk.Client.ClientUtils.ParameterToString(scope)); // path parameter
-            localVarRequestOptions.PathParameters.Add("code", Lusid.Sdk.Client.ClientUtils.ParameterToString(code)); // path parameter
-            localVarRequestOptions.PathParameters.Add("accountCode", Lusid.Sdk.Client.ClientUtils.ParameterToString(accountCode)); // path parameter
-            localVarRequestOptions.Data = requestBody;
-
-            // authentication (oauth2) required
-            // oauth required
-            if (!String.IsNullOrEmpty(this.Configuration.AccessToken))
-            {
-                localVarRequestOptions.HeaderParameters.Add("Authorization", "Bearer " + this.Configuration.AccessToken);
-            }
-
-            //  set the LUSID header
-            localVarRequestOptions.HeaderParameters.Add("X-LUSID-Sdk-Language", "C#");
-            localVarRequestOptions.HeaderParameters.Add("X-LUSID-Sdk-Version", "1.1.88");
-
-            // make the HTTP request
-            var localVarResponse = this.Client.Post<AccountProperties>("/api/chartofaccounts/{scope}/{code}/accounts/{accountCode}/properties/$upsert", localVarRequestOptions, this.Configuration);
-
-            if (this.ExceptionFactory != null)
-            {
-                Exception _exception = this.ExceptionFactory("UpsertAccountsProperties", localVarResponse);
-                if (_exception != null) throw _exception;
-            }
-
-            return localVarResponse;
-        }
-
-        /// <summary>
-        /// [EXPERIMENTAL] UpsertAccountsProperties: Upsert accounts properties Update or insert one or more properties onto a single account. A property will be updated if it  already exists and inserted if it does not. All properties must be of the domain &#39;Account&#39;.                Upserting a property that exists for an account, with a null value, will delete the instance of the property for that group.                Properties have an &lt;i&gt;effectiveFrom&lt;/i&gt; datetime for which the property is valid, and an &lt;i&gt;effectiveUntil&lt;/i&gt;  datetime until which the property is valid. Not supplying an &lt;i&gt;effectiveUntil&lt;/i&gt; datetime results in the property being  valid indefinitely, or until the next &lt;i&gt;effectiveFrom&lt;/i&gt; datetime of the property.
-        /// </summary>
-        /// <exception cref="Lusid.Sdk.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="scope">The scope of the Chart of Accounts to update or insert the properties onto.</param>
-        /// <param name="code">The code of the Chart of Accounts to update or insert the properties onto. Together with the scope this uniquely identifies the Chart of Accounts.</param>
-        /// <param name="accountCode">The unique ID of the account to create or update properties for.</param>
-        /// <param name="requestBody">The properties to be updated or inserted onto the chart of account. Each property in               the request must be keyed by its unique property key. This has the format {domain}/{scope}/{code} e.g. \&quot;Account/Manager/Id\&quot;. (optional)</param>
-        /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
-        /// <returns>Task of AccountProperties</returns>
-        public async System.Threading.Tasks.Task<AccountProperties> UpsertAccountsPropertiesAsync(string scope, string code, string accountCode, Dictionary<string, Property> requestBody = default(Dictionary<string, Property>), System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
-        {
-            Lusid.Sdk.Client.ApiResponse<AccountProperties> localVarResponse = await UpsertAccountsPropertiesWithHttpInfoAsync(scope, code, accountCode, requestBody, cancellationToken).ConfigureAwait(false);
-            return localVarResponse.Data;
-        }
-
-        /// <summary>
-        /// [EXPERIMENTAL] UpsertAccountsProperties: Upsert accounts properties Update or insert one or more properties onto a single account. A property will be updated if it  already exists and inserted if it does not. All properties must be of the domain &#39;Account&#39;.                Upserting a property that exists for an account, with a null value, will delete the instance of the property for that group.                Properties have an &lt;i&gt;effectiveFrom&lt;/i&gt; datetime for which the property is valid, and an &lt;i&gt;effectiveUntil&lt;/i&gt;  datetime until which the property is valid. Not supplying an &lt;i&gt;effectiveUntil&lt;/i&gt; datetime results in the property being  valid indefinitely, or until the next &lt;i&gt;effectiveFrom&lt;/i&gt; datetime of the property.
-        /// </summary>
-        /// <exception cref="Lusid.Sdk.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="scope">The scope of the Chart of Accounts to update or insert the properties onto.</param>
-        /// <param name="code">The code of the Chart of Accounts to update or insert the properties onto. Together with the scope this uniquely identifies the Chart of Accounts.</param>
-        /// <param name="accountCode">The unique ID of the account to create or update properties for.</param>
-        /// <param name="requestBody">The properties to be updated or inserted onto the chart of account. Each property in               the request must be keyed by its unique property key. This has the format {domain}/{scope}/{code} e.g. \&quot;Account/Manager/Id\&quot;. (optional)</param>
-        /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
-        /// <returns>Task of ApiResponse (AccountProperties)</returns>
-        public async System.Threading.Tasks.Task<Lusid.Sdk.Client.ApiResponse<AccountProperties>> UpsertAccountsPropertiesWithHttpInfoAsync(string scope, string code, string accountCode, Dictionary<string, Property> requestBody = default(Dictionary<string, Property>), System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
-        {
-            // verify the required parameter 'scope' is set
-            if (scope == null)
-                throw new Lusid.Sdk.Client.ApiException(400, "Missing required parameter 'scope' when calling ChartOfAccountsApi->UpsertAccountsProperties");
-
-            // verify the required parameter 'code' is set
-            if (code == null)
-                throw new Lusid.Sdk.Client.ApiException(400, "Missing required parameter 'code' when calling ChartOfAccountsApi->UpsertAccountsProperties");
-
-            // verify the required parameter 'accountCode' is set
-            if (accountCode == null)
-                throw new Lusid.Sdk.Client.ApiException(400, "Missing required parameter 'accountCode' when calling ChartOfAccountsApi->UpsertAccountsProperties");
-
-
-            Lusid.Sdk.Client.RequestOptions localVarRequestOptions = new Lusid.Sdk.Client.RequestOptions();
-
-            String[] _contentTypes = new String[] {
-                "application/json-patch+json", 
-                "application/json", 
-                "text/json", 
-                "application/_*+json"
-            };
-
-            // to determine the Accept header
-            String[] _accepts = new String[] {
-                "text/plain",
-                "application/json",
-                "text/json"
-            };
-
-
-            var localVarContentType = Lusid.Sdk.Client.ClientUtils.SelectHeaderContentType(_contentTypes);
-            if (localVarContentType != null) localVarRequestOptions.HeaderParameters.Add("Content-Type", localVarContentType);
-
-            var localVarAccept = Lusid.Sdk.Client.ClientUtils.SelectHeaderAccept(_accepts);
-            if (localVarAccept != null) localVarRequestOptions.HeaderParameters.Add("Accept", localVarAccept);
-
-            localVarRequestOptions.PathParameters.Add("scope", Lusid.Sdk.Client.ClientUtils.ParameterToString(scope)); // path parameter
-            localVarRequestOptions.PathParameters.Add("code", Lusid.Sdk.Client.ClientUtils.ParameterToString(code)); // path parameter
-            localVarRequestOptions.PathParameters.Add("accountCode", Lusid.Sdk.Client.ClientUtils.ParameterToString(accountCode)); // path parameter
-            localVarRequestOptions.Data = requestBody;
-
-            // authentication (oauth2) required
-            // oauth required
-            if (!String.IsNullOrEmpty(this.Configuration.AccessToken))
-            {
-                localVarRequestOptions.HeaderParameters.Add("Authorization", "Bearer " + this.Configuration.AccessToken);
-            }
-
-            //  set the LUSID header
-            localVarRequestOptions.HeaderParameters.Add("X-LUSID-Sdk-Language", "C#");
-            localVarRequestOptions.HeaderParameters.Add("X-LUSID-Sdk-Version", "1.1.88");
-
-            // make the HTTP request
-
-            var localVarResponse = await this.AsynchronousClient.PostAsync<AccountProperties>("/api/chartofaccounts/{scope}/{code}/accounts/{accountCode}/properties/$upsert", localVarRequestOptions, this.Configuration, cancellationToken).ConfigureAwait(false);
-
-            if (this.ExceptionFactory != null)
-            {
-                Exception _exception = this.ExceptionFactory("UpsertAccountsProperties", localVarResponse);
                 if (_exception != null) throw _exception;
             }
 
