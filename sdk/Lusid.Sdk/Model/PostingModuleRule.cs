@@ -40,9 +40,9 @@ namespace Lusid.Sdk.Model
         /// <summary>
         /// Initializes a new instance of the <see cref="PostingModuleRule" /> class.
         /// </summary>
-        /// <param name="ruleId">The identifier for the rule (required).</param>
-        /// <param name="account">The account to post the Activity credit or debit to (required).</param>
-        /// <param name="ruleFilter">The filter syntax for the rule. See KB for filter syntax https://support.lusid.com/knowledgebase/article/KA-02140 (required).</param>
+        /// <param name="ruleId">The identifier for the Posting Rule. (required).</param>
+        /// <param name="account">The account to post the Activity credit or debit to. (required).</param>
+        /// <param name="ruleFilter">The filter syntax for the Posting Rule. See https://support.lusid.com/knowledgebase/article/KA-02140 for more information on filter syntax. (required).</param>
         public PostingModuleRule(string ruleId = default(string), string account = default(string), string ruleFilter = default(string))
         {
             // to ensure "ruleId" is required (not null)
@@ -54,23 +54,23 @@ namespace Lusid.Sdk.Model
         }
 
         /// <summary>
-        /// The identifier for the rule
+        /// The identifier for the Posting Rule.
         /// </summary>
-        /// <value>The identifier for the rule</value>
+        /// <value>The identifier for the Posting Rule.</value>
         [DataMember(Name = "ruleId", IsRequired = true, EmitDefaultValue = false)]
         public string RuleId { get; set; }
 
         /// <summary>
-        /// The account to post the Activity credit or debit to
+        /// The account to post the Activity credit or debit to.
         /// </summary>
-        /// <value>The account to post the Activity credit or debit to</value>
+        /// <value>The account to post the Activity credit or debit to.</value>
         [DataMember(Name = "account", IsRequired = true, EmitDefaultValue = false)]
         public string Account { get; set; }
 
         /// <summary>
-        /// The filter syntax for the rule. See KB for filter syntax https://support.lusid.com/knowledgebase/article/KA-02140
+        /// The filter syntax for the Posting Rule. See https://support.lusid.com/knowledgebase/article/KA-02140 for more information on filter syntax.
         /// </summary>
-        /// <value>The filter syntax for the rule. See KB for filter syntax https://support.lusid.com/knowledgebase/article/KA-02140</value>
+        /// <value>The filter syntax for the Posting Rule. See https://support.lusid.com/knowledgebase/article/KA-02140 for more information on filter syntax.</value>
         [DataMember(Name = "ruleFilter", IsRequired = true, EmitDefaultValue = false)]
         public string RuleFilter { get; set; }
 

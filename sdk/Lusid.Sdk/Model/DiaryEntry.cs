@@ -49,7 +49,7 @@ namespace Lusid.Sdk.Model
         /// <param name="effectiveAt">The effective time of the diary entry. (required).</param>
         /// <param name="queryAsAt">The query time of the diary entry. Defaults to latest..</param>
         /// <param name="previousEntryTime">The entry time of the previous diary entry..</param>
-        /// <param name="properties">Properties to add to the diary entry..</param>
+        /// <param name="properties">A set of properties for the diary entry..</param>
         /// <param name="version">version.</param>
         /// <param name="links">Collection of links..</param>
         public DiaryEntry(string href = default(string), ResourceId aborId = default(ResourceId), string diaryEntryCode = default(string), string type = default(string), string name = default(string), string status = default(string), DateTimeOffset effectiveAt = default(DateTimeOffset), DateTimeOffset queryAsAt = default(DateTimeOffset), DateTimeOffset previousEntryTime = default(DateTimeOffset), Dictionary<string, Property> properties = default(Dictionary<string, Property>), Version version = default(Version), List<Link> links = default(List<Link>))
@@ -133,9 +133,9 @@ namespace Lusid.Sdk.Model
         public DateTimeOffset PreviousEntryTime { get; set; }
 
         /// <summary>
-        /// Properties to add to the diary entry.
+        /// A set of properties for the diary entry.
         /// </summary>
-        /// <value>Properties to add to the diary entry.</value>
+        /// <value>A set of properties for the diary entry.</value>
         [DataMember(Name = "properties", EmitDefaultValue = true)]
         public Dictionary<string, Property> Properties { get; set; }
 

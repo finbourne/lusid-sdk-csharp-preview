@@ -36,7 +36,7 @@ namespace Lusid.Sdk.Model
         /// Initializes a new instance of the <see cref="ChartOfAccountsProperties" /> class.
         /// </summary>
         /// <param name="href">The specific Uniform Resource Identifier (URI) for this resource at the requested effective and asAt datetime..</param>
-        /// <param name="properties">The chart of accounts properties. These will be from the &#39;ChartOfAccounts&#39; domain..</param>
+        /// <param name="properties">The Chart of Accounts properties. These will be from the &#39;ChartOfAccounts&#39; domain..</param>
         /// <param name="version">version.</param>
         /// <param name="links">Collection of links..</param>
         public ChartOfAccountsProperties(string href = default(string), Dictionary<string, Property> properties = default(Dictionary<string, Property>), Version version = default(Version), List<Link> links = default(List<Link>))
@@ -55,9 +55,9 @@ namespace Lusid.Sdk.Model
         public string Href { get; set; }
 
         /// <summary>
-        /// The chart of accounts properties. These will be from the &#39;ChartOfAccounts&#39; domain.
+        /// The Chart of Accounts properties. These will be from the &#39;ChartOfAccounts&#39; domain.
         /// </summary>
-        /// <value>The chart of accounts properties. These will be from the &#39;ChartOfAccounts&#39; domain.</value>
+        /// <value>The Chart of Accounts properties. These will be from the &#39;ChartOfAccounts&#39; domain.</value>
         [DataMember(Name = "properties", EmitDefaultValue = true)]
         public Dictionary<string, Property> Properties { get; set; }
 
