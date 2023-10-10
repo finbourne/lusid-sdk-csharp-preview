@@ -5,7 +5,7 @@ A General Ledger Profile Definition.
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**GeneralLedgerProfileCode** | **string** | The code of the Posting Module. | 
+**GeneralLedgerProfileCode** | **string** | The unique code for the General Ledger Profile | 
 **DisplayName** | **string** | The name of the General Ledger Profile | 
 **Description** | **string** | A description for the General Ledger Profile | [optional] 
 **GeneralLedgerProfileMappings** | [**List&lt;GeneralLedgerProfileMapping&gt;**](GeneralLedgerProfileMapping.md) | Rules for mapping Account or property values to aggregation pattern definitions | 
