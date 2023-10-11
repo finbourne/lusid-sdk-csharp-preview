@@ -44,7 +44,8 @@ namespace Lusid.Sdk.Model
         /// <param name="description">The description of the Compliance Template Variation (required).</param>
         /// <param name="requiredParameters">A parameter required by a Compliance Template Variation (required).</param>
         /// <param name="properties">Properties associated with the Compliance Template Variation (required).</param>
-        public ComplianceTemplateVariation(string label = default(string), string description = default(string), List<ComplianceTemplateParameter> requiredParameters = default(List<ComplianceTemplateParameter>), Dictionary<string, PerpetualProperty> properties = default(Dictionary<string, PerpetualProperty>))
+        /// <param name="acceptedAddressKeys">acceptedAddressKeys (required).</param>
+        public ComplianceTemplateVariation(string label = default(string), string description = default(string), List<ComplianceTemplateParameter> requiredParameters = default(List<ComplianceTemplateParameter>), Dictionary<string, PerpetualProperty> properties = default(Dictionary<string, PerpetualProperty>), ResourceId acceptedAddressKeys = default(ResourceId))
         {
             // to ensure "label" is required (not null)
             this.Label = label ?? throw new ArgumentNullException("label is a required property for ComplianceTemplateVariation and cannot be null");
@@ -54,6 +55,8 @@ namespace Lusid.Sdk.Model
             this.RequiredParameters = requiredParameters ?? throw new ArgumentNullException("requiredParameters is a required property for ComplianceTemplateVariation and cannot be null");
             // to ensure "properties" is required (not null)
             this.Properties = properties ?? throw new ArgumentNullException("properties is a required property for ComplianceTemplateVariation and cannot be null");
+            // to ensure "acceptedAddressKeys" is required (not null)
+            this.AcceptedAddressKeys = acceptedAddressKeys ?? throw new ArgumentNullException("acceptedAddressKeys is a required property for ComplianceTemplateVariation and cannot be null");
         }
 
         /// <summary>
@@ -85,6 +88,12 @@ namespace Lusid.Sdk.Model
         public Dictionary<string, PerpetualProperty> Properties { get; set; }
 
         /// <summary>
+        /// Gets or Sets AcceptedAddressKeys
+        /// </summary>
+        [DataMember(Name = "acceptedAddressKeys", IsRequired = true, EmitDefaultValue = false)]
+        public ResourceId AcceptedAddressKeys { get; set; }
+
+        /// <summary>
         /// Returns the string presentation of the object
         /// </summary>
         /// <returns>String presentation of the object</returns>
@@ -96,6 +105,7 @@ namespace Lusid.Sdk.Model
             sb.Append("  Description: ").Append(Description).Append("\n");
             sb.Append("  RequiredParameters: ").Append(RequiredParameters).Append("\n");
             sb.Append("  Properties: ").Append(Properties).Append("\n");
+            sb.Append("  AcceptedAddressKeys: ").Append(AcceptedAddressKeys).Append("\n");
             sb.Append("}\n");
             return sb.ToString();
         }
@@ -151,6 +161,11 @@ namespace Lusid.Sdk.Model
                     this.Properties != null &&
                     input.Properties != null &&
                     this.Properties.SequenceEqual(input.Properties)
+                ) && 
+                (
+                    this.AcceptedAddressKeys == input.AcceptedAddressKeys ||
+                    (this.AcceptedAddressKeys != null &&
+                    this.AcceptedAddressKeys.Equals(input.AcceptedAddressKeys))
                 );
         }
 
@@ -171,6 +186,8 @@ namespace Lusid.Sdk.Model
                     hashCode = hashCode * 59 + this.RequiredParameters.GetHashCode();
                 if (this.Properties != null)
                     hashCode = hashCode * 59 + this.Properties.GetHashCode();
+                if (this.AcceptedAddressKeys != null)
+                    hashCode = hashCode * 59 + this.AcceptedAddressKeys.GetHashCode();
                 return hashCode;
             }
         }
