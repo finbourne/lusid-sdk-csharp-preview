@@ -41,7 +41,7 @@ namespace Lusid.Sdk.Model
         /// Initializes a new instance of the <see cref="TrialBalance" /> class.
         /// </summary>
         /// <param name="generalLedgerAccountCode">The Account code that the trial balance results have been grouped against (required).</param>
-        /// <param name="description">The description of the record (required).</param>
+        /// <param name="description">The description of the record.</param>
         /// <param name="levels">The levels that have been derived from the specified General Ledger Profile (required).</param>
         /// <param name="accountType">The account type attributed to the record (required).</param>
         /// <param name="opening">The opening balance at the start of the period (required).</param>
@@ -53,8 +53,6 @@ namespace Lusid.Sdk.Model
         {
             // to ensure "generalLedgerAccountCode" is required (not null)
             this.GeneralLedgerAccountCode = generalLedgerAccountCode ?? throw new ArgumentNullException("generalLedgerAccountCode is a required property for TrialBalance and cannot be null");
-            // to ensure "description" is required (not null)
-            this.Description = description ?? throw new ArgumentNullException("description is a required property for TrialBalance and cannot be null");
             // to ensure "levels" is required (not null)
             this.Levels = levels ?? throw new ArgumentNullException("levels is a required property for TrialBalance and cannot be null");
             // to ensure "accountType" is required (not null)
@@ -63,6 +61,7 @@ namespace Lusid.Sdk.Model
             this.Closing = closing;
             this.Debit = debit;
             this.Credit = credit;
+            this.Description = description;
             this.Links = links;
         }
 
@@ -77,7 +76,7 @@ namespace Lusid.Sdk.Model
         /// The description of the record
         /// </summary>
         /// <value>The description of the record</value>
-        [DataMember(Name = "description", IsRequired = true, EmitDefaultValue = false)]
+        [DataMember(Name = "description", EmitDefaultValue = true)]
         public string Description { get; set; }
 
         /// <summary>
