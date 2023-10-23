@@ -49,13 +49,14 @@ namespace Lusid.Sdk.Model
         /// <param name="roundingMethod">When bucketing, there is not a unique way to allocate the bucket points.  RoundingMethod Supported string (enumeration) values are: [RoundDown, RoundUp]. (required).</param>
         /// <param name="bucketingDates">A list of dates to perform cashflow bucketing upon.  If this is provided, the list of tenors for bucketing should be empty..</param>
         /// <param name="bucketingTenors">A list of tenors to perform cashflow bucketing upon.  If this is provided, the list of dates for bucketing should be empty..</param>
+        /// <param name="bucketingSchedule">bucketingSchedule.</param>
         /// <param name="reportCurrency">Three letter ISO currency string indicating what currency to report in for ReportCurrency denominated queries. (required).</param>
         /// <param name="groupBy">The set of items by which to perform grouping. This primarily matters when one or more of the metric operators is a mapping  that reduces set size, e.g. sum or proportion. The group-by statement determines the set of keys by which to break the results out..</param>
         /// <param name="addresses">The set of items that the user wishes to see in the results. If empty, will be defaulted to standard ones..</param>
         /// <param name="equipWithSubtotals">Flag directing the Valuation call to populate the results with subtotals of aggregates..</param>
         /// <param name="excludeUnsettledTrades">Flag directing the Valuation call to exclude cashflows from unsettled trades.  If absent or set to false, cashflows will returned based on trade date - more specifically, cashflows from any unsettled trades will be included in the results. If set to true, unsettled trades will be excluded from the result set..</param>
         /// <param name="cashFlowType">Indicate the requested cash flow representation InstrumentCashFlows or PortfolioCashFlows (GetCashLadder uses this)  Options: [InstrumentCashFlow, PortfolioCashFlow].</param>
-        public QueryBucketedCashFlowsRequest(DateTimeOffset? asAt = default(DateTimeOffset?), DateTimeOffset windowStart = default(DateTimeOffset), DateTimeOffset windowEnd = default(DateTimeOffset), List<PortfolioEntityId> portfolioEntityIds = default(List<PortfolioEntityId>), DateTimeOffset effectiveAt = default(DateTimeOffset), ResourceId recipeId = default(ResourceId), string roundingMethod = default(string), List<DateTimeOffset> bucketingDates = default(List<DateTimeOffset>), List<string> bucketingTenors = default(List<string>), string reportCurrency = default(string), List<string> groupBy = default(List<string>), List<string> addresses = default(List<string>), bool equipWithSubtotals = default(bool), bool excludeUnsettledTrades = default(bool), string cashFlowType = default(string))
+        public QueryBucketedCashFlowsRequest(DateTimeOffset? asAt = default(DateTimeOffset?), DateTimeOffset windowStart = default(DateTimeOffset), DateTimeOffset windowEnd = default(DateTimeOffset), List<PortfolioEntityId> portfolioEntityIds = default(List<PortfolioEntityId>), DateTimeOffset effectiveAt = default(DateTimeOffset), ResourceId recipeId = default(ResourceId), string roundingMethod = default(string), List<DateTimeOffset> bucketingDates = default(List<DateTimeOffset>), List<string> bucketingTenors = default(List<string>), BucketingSchedule bucketingSchedule = default(BucketingSchedule), string reportCurrency = default(string), List<string> groupBy = default(List<string>), List<string> addresses = default(List<string>), bool equipWithSubtotals = default(bool), bool excludeUnsettledTrades = default(bool), string cashFlowType = default(string))
         {
             this.WindowStart = windowStart;
             this.WindowEnd = windowEnd;
@@ -71,6 +72,7 @@ namespace Lusid.Sdk.Model
             this.AsAt = asAt;
             this.BucketingDates = bucketingDates;
             this.BucketingTenors = bucketingTenors;
+            this.BucketingSchedule = bucketingSchedule;
             this.GroupBy = groupBy;
             this.Addresses = addresses;
             this.EquipWithSubtotals = equipWithSubtotals;
@@ -141,6 +143,12 @@ namespace Lusid.Sdk.Model
         public List<string> BucketingTenors { get; set; }
 
         /// <summary>
+        /// Gets or Sets BucketingSchedule
+        /// </summary>
+        [DataMember(Name = "bucketingSchedule", EmitDefaultValue = false)]
+        public BucketingSchedule BucketingSchedule { get; set; }
+
+        /// <summary>
         /// Three letter ISO currency string indicating what currency to report in for ReportCurrency denominated queries.
         /// </summary>
         /// <value>Three letter ISO currency string indicating what currency to report in for ReportCurrency denominated queries.</value>
@@ -199,6 +207,7 @@ namespace Lusid.Sdk.Model
             sb.Append("  RoundingMethod: ").Append(RoundingMethod).Append("\n");
             sb.Append("  BucketingDates: ").Append(BucketingDates).Append("\n");
             sb.Append("  BucketingTenors: ").Append(BucketingTenors).Append("\n");
+            sb.Append("  BucketingSchedule: ").Append(BucketingSchedule).Append("\n");
             sb.Append("  ReportCurrency: ").Append(ReportCurrency).Append("\n");
             sb.Append("  GroupBy: ").Append(GroupBy).Append("\n");
             sb.Append("  Addresses: ").Append(Addresses).Append("\n");
@@ -288,6 +297,11 @@ namespace Lusid.Sdk.Model
                     this.BucketingTenors.SequenceEqual(input.BucketingTenors)
                 ) && 
                 (
+                    this.BucketingSchedule == input.BucketingSchedule ||
+                    (this.BucketingSchedule != null &&
+                    this.BucketingSchedule.Equals(input.BucketingSchedule))
+                ) && 
+                (
                     this.ReportCurrency == input.ReportCurrency ||
                     (this.ReportCurrency != null &&
                     this.ReportCurrency.Equals(input.ReportCurrency))
@@ -346,6 +360,8 @@ namespace Lusid.Sdk.Model
                     hashCode = hashCode * 59 + this.BucketingDates.GetHashCode();
                 if (this.BucketingTenors != null)
                     hashCode = hashCode * 59 + this.BucketingTenors.GetHashCode();
+                if (this.BucketingSchedule != null)
+                    hashCode = hashCode * 59 + this.BucketingSchedule.GetHashCode();
                 if (this.ReportCurrency != null)
                     hashCode = hashCode * 59 + this.ReportCurrency.GetHashCode();
                 if (this.GroupBy != null)
