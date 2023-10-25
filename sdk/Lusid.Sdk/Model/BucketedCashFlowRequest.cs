@@ -43,7 +43,6 @@ namespace Lusid.Sdk.Model
         /// <param name="roundingMethod">When bucketing, there is not a unique way to allocate the bucket points.  RoundingMethod Supported string (enumeration) values are: [RoundDown, RoundUp]. (required).</param>
         /// <param name="bucketingDates">A list of dates to perform cashflow bucketing upon.  If this is provided, the list of tenors for bucketing should be empty..</param>
         /// <param name="bucketTenors">A list of tenors to perform cashflow bucketing upon.  If this is provided, the list of dates for bucketing should be empty..</param>
-        /// <param name="bucketingSchedule">bucketingSchedule.</param>
         /// <param name="effectiveAt">The valuation (pricing) effective datetime or cut label (inclusive) at which to evaluate the cashflows.  This determines whether cashflows are evaluated in a historic or forward looking context and will, for certain models, affect where data is looked up.  For example, on a swap if the effectiveAt is in the middle of the window, cashflows before it will be historic and resets assumed to exist where if the effectiveAt  is before the start of the range they are forward looking and will be expectations assuming the model supports that.  There is evidently a presumption here about availability of data and that the effectiveAt is realistically on or before the real-world today..</param>
         /// <param name="windowStart">The lower bound effective datetime or cut label (inclusive) from which to retrieve the cashflows.  There is no lower bound if this is not specified..</param>
         /// <param name="windowEnd">The upper bound effective datetime or cut label (inclusive) from which to retrieve the cashflows.  The upper bound defaults to &#39;today&#39; if it is not specified.</param>
@@ -55,13 +54,13 @@ namespace Lusid.Sdk.Model
         /// <param name="asAt">The time of the system at which to query for bucketed cashflows..</param>
         /// <param name="excludeUnsettledTrades">Flag directing the Valuation call to exclude cashflows from unsettled trades.  If absent or set to false, cashflows will returned based on trade date - more specifically, cashflows from any unsettled trades will be included in the results. If set to true, unsettled trades will be excluded from the result set..</param>
         /// <param name="cashFlowType">Indicate the requested cash flow representation InstrumentCashFlows or PortfolioCashFlows (GetCashLadder uses this)  Options: [InstrumentCashFlow, PortfolioCashFlow].</param>
-        public BucketedCashFlowRequest(string roundingMethod = default(string), List<DateTimeOffset> bucketingDates = default(List<DateTimeOffset>), List<string> bucketTenors = default(List<string>), BucketingSchedule bucketingSchedule = default(BucketingSchedule), string effectiveAt = default(string), string windowStart = default(string), string windowEnd = default(string), ResourceId recipeId = default(ResourceId), string reportCurrency = default(string), List<string> groupBy = default(List<string>), List<string> addresses = default(List<string>), bool equipWithSubtotals = default(bool), DateTimeOffset? asAt = default(DateTimeOffset?), bool excludeUnsettledTrades = default(bool), string cashFlowType = default(string))
+        /// <param name="bucketingSchedule">bucketingSchedule.</param>
+        public BucketedCashFlowRequest(string roundingMethod = default(string), List<DateTimeOffset> bucketingDates = default(List<DateTimeOffset>), List<string> bucketTenors = default(List<string>), string effectiveAt = default(string), string windowStart = default(string), string windowEnd = default(string), ResourceId recipeId = default(ResourceId), string reportCurrency = default(string), List<string> groupBy = default(List<string>), List<string> addresses = default(List<string>), bool equipWithSubtotals = default(bool), DateTimeOffset? asAt = default(DateTimeOffset?), bool excludeUnsettledTrades = default(bool), string cashFlowType = default(string), BucketingSchedule bucketingSchedule = default(BucketingSchedule))
         {
             // to ensure "roundingMethod" is required (not null)
             this.RoundingMethod = roundingMethod ?? throw new ArgumentNullException("roundingMethod is a required property for BucketedCashFlowRequest and cannot be null");
             this.BucketingDates = bucketingDates;
             this.BucketTenors = bucketTenors;
-            this.BucketingSchedule = bucketingSchedule;
             this.EffectiveAt = effectiveAt;
             this.WindowStart = windowStart;
             this.WindowEnd = windowEnd;
@@ -73,6 +72,7 @@ namespace Lusid.Sdk.Model
             this.AsAt = asAt;
             this.ExcludeUnsettledTrades = excludeUnsettledTrades;
             this.CashFlowType = cashFlowType;
+            this.BucketingSchedule = bucketingSchedule;
         }
 
         /// <summary>
@@ -95,12 +95,6 @@ namespace Lusid.Sdk.Model
         /// <value>A list of tenors to perform cashflow bucketing upon.  If this is provided, the list of dates for bucketing should be empty.</value>
         [DataMember(Name = "bucketTenors", EmitDefaultValue = true)]
         public List<string> BucketTenors { get; set; }
-
-        /// <summary>
-        /// Gets or Sets BucketingSchedule
-        /// </summary>
-        [DataMember(Name = "bucketingSchedule", EmitDefaultValue = false)]
-        public BucketingSchedule BucketingSchedule { get; set; }
 
         /// <summary>
         /// The valuation (pricing) effective datetime or cut label (inclusive) at which to evaluate the cashflows.  This determines whether cashflows are evaluated in a historic or forward looking context and will, for certain models, affect where data is looked up.  For example, on a swap if the effectiveAt is in the middle of the window, cashflows before it will be historic and resets assumed to exist where if the effectiveAt  is before the start of the range they are forward looking and will be expectations assuming the model supports that.  There is evidently a presumption here about availability of data and that the effectiveAt is realistically on or before the real-world today.
@@ -179,6 +173,12 @@ namespace Lusid.Sdk.Model
         public string CashFlowType { get; set; }
 
         /// <summary>
+        /// Gets or Sets BucketingSchedule
+        /// </summary>
+        [DataMember(Name = "bucketingSchedule", EmitDefaultValue = false)]
+        public BucketingSchedule BucketingSchedule { get; set; }
+
+        /// <summary>
         /// Returns the string presentation of the object
         /// </summary>
         /// <returns>String presentation of the object</returns>
@@ -189,7 +189,6 @@ namespace Lusid.Sdk.Model
             sb.Append("  RoundingMethod: ").Append(RoundingMethod).Append("\n");
             sb.Append("  BucketingDates: ").Append(BucketingDates).Append("\n");
             sb.Append("  BucketTenors: ").Append(BucketTenors).Append("\n");
-            sb.Append("  BucketingSchedule: ").Append(BucketingSchedule).Append("\n");
             sb.Append("  EffectiveAt: ").Append(EffectiveAt).Append("\n");
             sb.Append("  WindowStart: ").Append(WindowStart).Append("\n");
             sb.Append("  WindowEnd: ").Append(WindowEnd).Append("\n");
@@ -201,6 +200,7 @@ namespace Lusid.Sdk.Model
             sb.Append("  AsAt: ").Append(AsAt).Append("\n");
             sb.Append("  ExcludeUnsettledTrades: ").Append(ExcludeUnsettledTrades).Append("\n");
             sb.Append("  CashFlowType: ").Append(CashFlowType).Append("\n");
+            sb.Append("  BucketingSchedule: ").Append(BucketingSchedule).Append("\n");
             sb.Append("}\n");
             return sb.ToString();
         }
@@ -251,11 +251,6 @@ namespace Lusid.Sdk.Model
                     this.BucketTenors != null &&
                     input.BucketTenors != null &&
                     this.BucketTenors.SequenceEqual(input.BucketTenors)
-                ) && 
-                (
-                    this.BucketingSchedule == input.BucketingSchedule ||
-                    (this.BucketingSchedule != null &&
-                    this.BucketingSchedule.Equals(input.BucketingSchedule))
                 ) && 
                 (
                     this.EffectiveAt == input.EffectiveAt ||
@@ -311,6 +306,11 @@ namespace Lusid.Sdk.Model
                     this.CashFlowType == input.CashFlowType ||
                     (this.CashFlowType != null &&
                     this.CashFlowType.Equals(input.CashFlowType))
+                ) && 
+                (
+                    this.BucketingSchedule == input.BucketingSchedule ||
+                    (this.BucketingSchedule != null &&
+                    this.BucketingSchedule.Equals(input.BucketingSchedule))
                 );
         }
 
@@ -329,8 +329,6 @@ namespace Lusid.Sdk.Model
                     hashCode = hashCode * 59 + this.BucketingDates.GetHashCode();
                 if (this.BucketTenors != null)
                     hashCode = hashCode * 59 + this.BucketTenors.GetHashCode();
-                if (this.BucketingSchedule != null)
-                    hashCode = hashCode * 59 + this.BucketingSchedule.GetHashCode();
                 if (this.EffectiveAt != null)
                     hashCode = hashCode * 59 + this.EffectiveAt.GetHashCode();
                 if (this.WindowStart != null)
@@ -351,6 +349,8 @@ namespace Lusid.Sdk.Model
                 hashCode = hashCode * 59 + this.ExcludeUnsettledTrades.GetHashCode();
                 if (this.CashFlowType != null)
                     hashCode = hashCode * 59 + this.CashFlowType.GetHashCode();
+                if (this.BucketingSchedule != null)
+                    hashCode = hashCode * 59 + this.BucketingSchedule.GetHashCode();
                 return hashCode;
             }
         }
