@@ -96,7 +96,8 @@ namespace Lusid.Sdk.Model
         /// <param name="entryDateTime">The asAt datetime that the transaction was added to LUSID..</param>
         /// <param name="cancelDateTime">If the transaction has been cancelled, the asAt datetime that the transaction was cancelled..</param>
         /// <param name="realisedGainLoss">The collection of realised gains or losses resulting from relevant transactions e.g. a sale transaction. The cost used in calculating the realised gain or loss is determined by the accounting method defined when the transaction portfolio is created..</param>
-        public OutputTransaction(string transactionId = default(string), string type = default(string), string description = default(string), Dictionary<string, string> instrumentIdentifiers = default(Dictionary<string, string>), string instrumentScope = default(string), string instrumentUid = default(string), DateTimeOffset transactionDate = default(DateTimeOffset), DateTimeOffset settlementDate = default(DateTimeOffset), decimal units = default(decimal), decimal transactionAmount = default(decimal), TransactionPrice transactionPrice = default(TransactionPrice), CurrencyAndAmount totalConsideration = default(CurrencyAndAmount), decimal exchangeRate = default(decimal), decimal? transactionToPortfolioRate = default(decimal?), string transactionCurrency = default(string), Dictionary<string, PerpetualProperty> properties = default(Dictionary<string, PerpetualProperty>), string counterpartyId = default(string), string source = default(string), TransactionStatusEnum? transactionStatus = default(TransactionStatusEnum?), DateTimeOffset entryDateTime = default(DateTimeOffset), DateTimeOffset? cancelDateTime = default(DateTimeOffset?), List<RealisedGainLoss> realisedGainLoss = default(List<RealisedGainLoss>))
+        /// <param name="holdingIds">The collection of single identifiers for the holding within the portfolio. The holdingId is constructed from the LusidInstrumentId, sub-holding keys and currrency and is unique within the portfolio..</param>
+        public OutputTransaction(string transactionId = default(string), string type = default(string), string description = default(string), Dictionary<string, string> instrumentIdentifiers = default(Dictionary<string, string>), string instrumentScope = default(string), string instrumentUid = default(string), DateTimeOffset transactionDate = default(DateTimeOffset), DateTimeOffset settlementDate = default(DateTimeOffset), decimal units = default(decimal), decimal transactionAmount = default(decimal), TransactionPrice transactionPrice = default(TransactionPrice), CurrencyAndAmount totalConsideration = default(CurrencyAndAmount), decimal exchangeRate = default(decimal), decimal? transactionToPortfolioRate = default(decimal?), string transactionCurrency = default(string), Dictionary<string, PerpetualProperty> properties = default(Dictionary<string, PerpetualProperty>), string counterpartyId = default(string), string source = default(string), TransactionStatusEnum? transactionStatus = default(TransactionStatusEnum?), DateTimeOffset entryDateTime = default(DateTimeOffset), DateTimeOffset? cancelDateTime = default(DateTimeOffset?), List<RealisedGainLoss> realisedGainLoss = default(List<RealisedGainLoss>), List<long> holdingIds = default(List<long>))
         {
             // to ensure "transactionId" is required (not null)
             this.TransactionId = transactionId ?? throw new ArgumentNullException("transactionId is a required property for OutputTransaction and cannot be null");
@@ -123,6 +124,7 @@ namespace Lusid.Sdk.Model
             this.EntryDateTime = entryDateTime;
             this.CancelDateTime = cancelDateTime;
             this.RealisedGainLoss = realisedGainLoss;
+            this.HoldingIds = holdingIds;
         }
 
         /// <summary>
@@ -271,6 +273,13 @@ namespace Lusid.Sdk.Model
         public List<RealisedGainLoss> RealisedGainLoss { get; set; }
 
         /// <summary>
+        /// The collection of single identifiers for the holding within the portfolio. The holdingId is constructed from the LusidInstrumentId, sub-holding keys and currrency and is unique within the portfolio.
+        /// </summary>
+        /// <value>The collection of single identifiers for the holding within the portfolio. The holdingId is constructed from the LusidInstrumentId, sub-holding keys and currrency and is unique within the portfolio.</value>
+        [DataMember(Name = "holdingIds", EmitDefaultValue = true)]
+        public List<long> HoldingIds { get; set; }
+
+        /// <summary>
         /// Returns the string presentation of the object
         /// </summary>
         /// <returns>String presentation of the object</returns>
@@ -300,6 +309,7 @@ namespace Lusid.Sdk.Model
             sb.Append("  EntryDateTime: ").Append(EntryDateTime).Append("\n");
             sb.Append("  CancelDateTime: ").Append(CancelDateTime).Append("\n");
             sb.Append("  RealisedGainLoss: ").Append(RealisedGainLoss).Append("\n");
+            sb.Append("  HoldingIds: ").Append(HoldingIds).Append("\n");
             sb.Append("}\n");
             return sb.ToString();
         }
@@ -442,6 +452,12 @@ namespace Lusid.Sdk.Model
                     this.RealisedGainLoss != null &&
                     input.RealisedGainLoss != null &&
                     this.RealisedGainLoss.SequenceEqual(input.RealisedGainLoss)
+                ) && 
+                (
+                    this.HoldingIds == input.HoldingIds ||
+                    this.HoldingIds != null &&
+                    input.HoldingIds != null &&
+                    this.HoldingIds.SequenceEqual(input.HoldingIds)
                 );
         }
 
@@ -494,6 +510,8 @@ namespace Lusid.Sdk.Model
                     hashCode = hashCode * 59 + this.CancelDateTime.GetHashCode();
                 if (this.RealisedGainLoss != null)
                     hashCode = hashCode * 59 + this.RealisedGainLoss.GetHashCode();
+                if (this.HoldingIds != null)
+                    hashCode = hashCode * 59 + this.HoldingIds.GetHashCode();
                 return hashCode;
             }
         }
