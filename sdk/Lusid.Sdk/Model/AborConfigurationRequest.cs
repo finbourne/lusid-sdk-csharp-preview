@@ -47,7 +47,8 @@ namespace Lusid.Sdk.Model
         /// <param name="chartOfAccountsId">chartOfAccountsId (required).</param>
         /// <param name="postingModuleCodes">The Posting Module Codes from which the rules to be applied are retrieved..</param>
         /// <param name="properties">A set of properties for the Abor Configuration..</param>
-        public AborConfigurationRequest(string code = default(string), string displayName = default(string), string description = default(string), ResourceId recipeId = default(ResourceId), ResourceId chartOfAccountsId = default(ResourceId), List<string> postingModuleCodes = default(List<string>), Dictionary<string, Property> properties = default(Dictionary<string, Property>))
+        /// <param name="cleardownModuleCodes">The Cleardown Module Codes from which the rules to be applied are retrieved..</param>
+        public AborConfigurationRequest(string code = default(string), string displayName = default(string), string description = default(string), ResourceId recipeId = default(ResourceId), ResourceId chartOfAccountsId = default(ResourceId), List<string> postingModuleCodes = default(List<string>), Dictionary<string, Property> properties = default(Dictionary<string, Property>), List<string> cleardownModuleCodes = default(List<string>))
         {
             // to ensure "code" is required (not null)
             this.Code = code ?? throw new ArgumentNullException("code is a required property for AborConfigurationRequest and cannot be null");
@@ -59,6 +60,7 @@ namespace Lusid.Sdk.Model
             this.Description = description;
             this.PostingModuleCodes = postingModuleCodes;
             this.Properties = properties;
+            this.CleardownModuleCodes = cleardownModuleCodes;
         }
 
         /// <summary>
@@ -109,6 +111,13 @@ namespace Lusid.Sdk.Model
         public Dictionary<string, Property> Properties { get; set; }
 
         /// <summary>
+        /// The Cleardown Module Codes from which the rules to be applied are retrieved.
+        /// </summary>
+        /// <value>The Cleardown Module Codes from which the rules to be applied are retrieved.</value>
+        [DataMember(Name = "cleardownModuleCodes", EmitDefaultValue = true)]
+        public List<string> CleardownModuleCodes { get; set; }
+
+        /// <summary>
         /// Returns the string presentation of the object
         /// </summary>
         /// <returns>String presentation of the object</returns>
@@ -123,6 +132,7 @@ namespace Lusid.Sdk.Model
             sb.Append("  ChartOfAccountsId: ").Append(ChartOfAccountsId).Append("\n");
             sb.Append("  PostingModuleCodes: ").Append(PostingModuleCodes).Append("\n");
             sb.Append("  Properties: ").Append(Properties).Append("\n");
+            sb.Append("  CleardownModuleCodes: ").Append(CleardownModuleCodes).Append("\n");
             sb.Append("}\n");
             return sb.ToString();
         }
@@ -193,6 +203,12 @@ namespace Lusid.Sdk.Model
                     this.Properties != null &&
                     input.Properties != null &&
                     this.Properties.SequenceEqual(input.Properties)
+                ) && 
+                (
+                    this.CleardownModuleCodes == input.CleardownModuleCodes ||
+                    this.CleardownModuleCodes != null &&
+                    input.CleardownModuleCodes != null &&
+                    this.CleardownModuleCodes.SequenceEqual(input.CleardownModuleCodes)
                 );
         }
 
@@ -219,6 +235,8 @@ namespace Lusid.Sdk.Model
                     hashCode = hashCode * 59 + this.PostingModuleCodes.GetHashCode();
                 if (this.Properties != null)
                     hashCode = hashCode * 59 + this.Properties.GetHashCode();
+                if (this.CleardownModuleCodes != null)
+                    hashCode = hashCode * 59 + this.CleardownModuleCodes.GetHashCode();
                 return hashCode;
             }
         }
