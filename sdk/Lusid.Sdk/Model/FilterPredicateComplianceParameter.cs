@@ -21,163 +21,40 @@ using System.Text.RegularExpressions;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using Newtonsoft.Json.Linq;
+using JsonSubTypes;
 using System.ComponentModel.DataAnnotations;
 using OpenAPIDateConverter = Lusid.Sdk.Client.OpenAPIDateConverter;
 
 namespace Lusid.Sdk.Model
 {
     /// <summary>
-    /// AddressKeyListComplianceParameterAllOf
+    /// FilterPredicateComplianceParameter
     /// </summary>
-    [DataContract(Name = "AddressKeyListComplianceParameter_allOf")]
-    public partial class AddressKeyListComplianceParameterAllOf : IEquatable<AddressKeyListComplianceParameterAllOf>
+    [DataContract(Name = "FilterPredicateComplianceParameter")]
+    [JsonConverter(typeof(JsonSubtypes), "ComplianceParameterType")]
+    public partial class FilterPredicateComplianceParameter : ComplianceParameter, IEquatable<FilterPredicateComplianceParameter>
     {
         /// <summary>
-        /// The parameter type. The available values are: BoolComplianceParameter, StringComplianceParameter, DecimalComplianceParameter, DateTimeComplianceParameter, PropertyKeyComplianceParameter, AddressKeyComplianceParameter, PortfolioIdComplianceParameter, PortfolioGroupIdComplianceParameter, StringListComplianceParameter, BoolListComplianceParameter, DateTimeListComplianceParameter, DecimalListComplianceParameter, PropertyKeyListComplianceParameter, AddressKeyListComplianceParameter, PortfolioIdListComplianceParameter, PortfolioGroupIdListComplianceParameter, InstrumentListComplianceParameter, FilterPredicateComplianceParameter
-        /// </summary>
-        /// <value>The parameter type. The available values are: BoolComplianceParameter, StringComplianceParameter, DecimalComplianceParameter, DateTimeComplianceParameter, PropertyKeyComplianceParameter, AddressKeyComplianceParameter, PortfolioIdComplianceParameter, PortfolioGroupIdComplianceParameter, StringListComplianceParameter, BoolListComplianceParameter, DateTimeListComplianceParameter, DecimalListComplianceParameter, PropertyKeyListComplianceParameter, AddressKeyListComplianceParameter, PortfolioIdListComplianceParameter, PortfolioGroupIdListComplianceParameter, InstrumentListComplianceParameter, FilterPredicateComplianceParameter</value>
-        [JsonConverter(typeof(StringEnumConverter))]
-        public enum ComplianceParameterTypeEnum
-        {
-            /// <summary>
-            /// Enum BoolComplianceParameter for value: BoolComplianceParameter
-            /// </summary>
-            [EnumMember(Value = "BoolComplianceParameter")]
-            BoolComplianceParameter = 1,
-
-            /// <summary>
-            /// Enum StringComplianceParameter for value: StringComplianceParameter
-            /// </summary>
-            [EnumMember(Value = "StringComplianceParameter")]
-            StringComplianceParameter = 2,
-
-            /// <summary>
-            /// Enum DecimalComplianceParameter for value: DecimalComplianceParameter
-            /// </summary>
-            [EnumMember(Value = "DecimalComplianceParameter")]
-            DecimalComplianceParameter = 3,
-
-            /// <summary>
-            /// Enum DateTimeComplianceParameter for value: DateTimeComplianceParameter
-            /// </summary>
-            [EnumMember(Value = "DateTimeComplianceParameter")]
-            DateTimeComplianceParameter = 4,
-
-            /// <summary>
-            /// Enum PropertyKeyComplianceParameter for value: PropertyKeyComplianceParameter
-            /// </summary>
-            [EnumMember(Value = "PropertyKeyComplianceParameter")]
-            PropertyKeyComplianceParameter = 5,
-
-            /// <summary>
-            /// Enum AddressKeyComplianceParameter for value: AddressKeyComplianceParameter
-            /// </summary>
-            [EnumMember(Value = "AddressKeyComplianceParameter")]
-            AddressKeyComplianceParameter = 6,
-
-            /// <summary>
-            /// Enum PortfolioIdComplianceParameter for value: PortfolioIdComplianceParameter
-            /// </summary>
-            [EnumMember(Value = "PortfolioIdComplianceParameter")]
-            PortfolioIdComplianceParameter = 7,
-
-            /// <summary>
-            /// Enum PortfolioGroupIdComplianceParameter for value: PortfolioGroupIdComplianceParameter
-            /// </summary>
-            [EnumMember(Value = "PortfolioGroupIdComplianceParameter")]
-            PortfolioGroupIdComplianceParameter = 8,
-
-            /// <summary>
-            /// Enum StringListComplianceParameter for value: StringListComplianceParameter
-            /// </summary>
-            [EnumMember(Value = "StringListComplianceParameter")]
-            StringListComplianceParameter = 9,
-
-            /// <summary>
-            /// Enum BoolListComplianceParameter for value: BoolListComplianceParameter
-            /// </summary>
-            [EnumMember(Value = "BoolListComplianceParameter")]
-            BoolListComplianceParameter = 10,
-
-            /// <summary>
-            /// Enum DateTimeListComplianceParameter for value: DateTimeListComplianceParameter
-            /// </summary>
-            [EnumMember(Value = "DateTimeListComplianceParameter")]
-            DateTimeListComplianceParameter = 11,
-
-            /// <summary>
-            /// Enum DecimalListComplianceParameter for value: DecimalListComplianceParameter
-            /// </summary>
-            [EnumMember(Value = "DecimalListComplianceParameter")]
-            DecimalListComplianceParameter = 12,
-
-            /// <summary>
-            /// Enum PropertyKeyListComplianceParameter for value: PropertyKeyListComplianceParameter
-            /// </summary>
-            [EnumMember(Value = "PropertyKeyListComplianceParameter")]
-            PropertyKeyListComplianceParameter = 13,
-
-            /// <summary>
-            /// Enum AddressKeyListComplianceParameter for value: AddressKeyListComplianceParameter
-            /// </summary>
-            [EnumMember(Value = "AddressKeyListComplianceParameter")]
-            AddressKeyListComplianceParameter = 14,
-
-            /// <summary>
-            /// Enum PortfolioIdListComplianceParameter for value: PortfolioIdListComplianceParameter
-            /// </summary>
-            [EnumMember(Value = "PortfolioIdListComplianceParameter")]
-            PortfolioIdListComplianceParameter = 15,
-
-            /// <summary>
-            /// Enum PortfolioGroupIdListComplianceParameter for value: PortfolioGroupIdListComplianceParameter
-            /// </summary>
-            [EnumMember(Value = "PortfolioGroupIdListComplianceParameter")]
-            PortfolioGroupIdListComplianceParameter = 16,
-
-            /// <summary>
-            /// Enum InstrumentListComplianceParameter for value: InstrumentListComplianceParameter
-            /// </summary>
-            [EnumMember(Value = "InstrumentListComplianceParameter")]
-            InstrumentListComplianceParameter = 17,
-
-            /// <summary>
-            /// Enum FilterPredicateComplianceParameter for value: FilterPredicateComplianceParameter
-            /// </summary>
-            [EnumMember(Value = "FilterPredicateComplianceParameter")]
-            FilterPredicateComplianceParameter = 18
-
-        }
-
-
-        /// <summary>
-        /// The parameter type. The available values are: BoolComplianceParameter, StringComplianceParameter, DecimalComplianceParameter, DateTimeComplianceParameter, PropertyKeyComplianceParameter, AddressKeyComplianceParameter, PortfolioIdComplianceParameter, PortfolioGroupIdComplianceParameter, StringListComplianceParameter, BoolListComplianceParameter, DateTimeListComplianceParameter, DecimalListComplianceParameter, PropertyKeyListComplianceParameter, AddressKeyListComplianceParameter, PortfolioIdListComplianceParameter, PortfolioGroupIdListComplianceParameter, InstrumentListComplianceParameter, FilterPredicateComplianceParameter
-        /// </summary>
-        /// <value>The parameter type. The available values are: BoolComplianceParameter, StringComplianceParameter, DecimalComplianceParameter, DateTimeComplianceParameter, PropertyKeyComplianceParameter, AddressKeyComplianceParameter, PortfolioIdComplianceParameter, PortfolioGroupIdComplianceParameter, StringListComplianceParameter, BoolListComplianceParameter, DateTimeListComplianceParameter, DecimalListComplianceParameter, PropertyKeyListComplianceParameter, AddressKeyListComplianceParameter, PortfolioIdListComplianceParameter, PortfolioGroupIdListComplianceParameter, InstrumentListComplianceParameter, FilterPredicateComplianceParameter</value>
-        [DataMember(Name = "complianceParameterType", IsRequired = true, EmitDefaultValue = false)]
-        public ComplianceParameterTypeEnum ComplianceParameterType { get; set; }
-        /// <summary>
-        /// Initializes a new instance of the <see cref="AddressKeyListComplianceParameterAllOf" /> class.
+        /// Initializes a new instance of the <see cref="FilterPredicateComplianceParameter" /> class.
         /// </summary>
         [JsonConstructorAttribute]
-        protected AddressKeyListComplianceParameterAllOf() { }
+        protected FilterPredicateComplianceParameter() { }
         /// <summary>
-        /// Initializes a new instance of the <see cref="AddressKeyListComplianceParameterAllOf" /> class.
+        /// Initializes a new instance of the <see cref="FilterPredicateComplianceParameter" /> class.
         /// </summary>
         /// <param name="value">value (required).</param>
-        /// <param name="complianceParameterType">The parameter type. The available values are: BoolComplianceParameter, StringComplianceParameter, DecimalComplianceParameter, DateTimeComplianceParameter, PropertyKeyComplianceParameter, AddressKeyComplianceParameter, PortfolioIdComplianceParameter, PortfolioGroupIdComplianceParameter, StringListComplianceParameter, BoolListComplianceParameter, DateTimeListComplianceParameter, DecimalListComplianceParameter, PropertyKeyListComplianceParameter, AddressKeyListComplianceParameter, PortfolioIdListComplianceParameter, PortfolioGroupIdListComplianceParameter, InstrumentListComplianceParameter, FilterPredicateComplianceParameter (required).</param>
-        public AddressKeyListComplianceParameterAllOf(ResourceId value = default(ResourceId), ComplianceParameterTypeEnum complianceParameterType = default(ComplianceParameterTypeEnum))
+        /// <param name="complianceParameterType">The parameter type. The available values are: BoolComplianceParameter, StringComplianceParameter, DecimalComplianceParameter, DateTimeComplianceParameter, PropertyKeyComplianceParameter, AddressKeyComplianceParameter, PortfolioIdComplianceParameter, PortfolioGroupIdComplianceParameter, StringListComplianceParameter, BoolListComplianceParameter, DateTimeListComplianceParameter, DecimalListComplianceParameter, PropertyKeyListComplianceParameter, AddressKeyListComplianceParameter, PortfolioIdListComplianceParameter, PortfolioGroupIdListComplianceParameter, InstrumentListComplianceParameter, FilterPredicateComplianceParameter (required) (default to &quot;FilterPredicateComplianceParameter&quot;).</param>
+        public FilterPredicateComplianceParameter(string value = default(string), ComplianceParameterTypeEnum complianceParameterType = default(ComplianceParameterTypeEnum)) : base(complianceParameterType)
         {
             // to ensure "value" is required (not null)
-            this.Value = value ?? throw new ArgumentNullException("value is a required property for AddressKeyListComplianceParameterAllOf and cannot be null");
-            this.ComplianceParameterType = complianceParameterType;
+            this.Value = value ?? throw new ArgumentNullException("value is a required property for FilterPredicateComplianceParameter and cannot be null");
         }
 
         /// <summary>
         /// Gets or Sets Value
         /// </summary>
         [DataMember(Name = "value", IsRequired = true, EmitDefaultValue = false)]
-        public ResourceId Value { get; set; }
+        public string Value { get; set; }
 
         /// <summary>
         /// Returns the string presentation of the object
@@ -186,9 +63,9 @@ namespace Lusid.Sdk.Model
         public override string ToString()
         {
             var sb = new StringBuilder();
-            sb.Append("class AddressKeyListComplianceParameterAllOf {\n");
+            sb.Append("class FilterPredicateComplianceParameter {\n");
+            sb.Append("  ").Append(base.ToString().Replace("\n", "\n  ")).Append("\n");
             sb.Append("  Value: ").Append(Value).Append("\n");
-            sb.Append("  ComplianceParameterType: ").Append(ComplianceParameterType).Append("\n");
             sb.Append("}\n");
             return sb.ToString();
         }
@@ -197,7 +74,7 @@ namespace Lusid.Sdk.Model
         /// Returns the JSON string presentation of the object
         /// </summary>
         /// <returns>JSON string presentation of the object</returns>
-        public virtual string ToJson()
+        public override string ToJson()
         {
             return Newtonsoft.Json.JsonConvert.SerializeObject(this, Newtonsoft.Json.Formatting.Indented);
         }
@@ -209,28 +86,24 @@ namespace Lusid.Sdk.Model
         /// <returns>Boolean</returns>
         public override bool Equals(object input)
         {
-            return this.Equals(input as AddressKeyListComplianceParameterAllOf);
+            return this.Equals(input as FilterPredicateComplianceParameter);
         }
 
         /// <summary>
-        /// Returns true if AddressKeyListComplianceParameterAllOf instances are equal
+        /// Returns true if FilterPredicateComplianceParameter instances are equal
         /// </summary>
-        /// <param name="input">Instance of AddressKeyListComplianceParameterAllOf to be compared</param>
+        /// <param name="input">Instance of FilterPredicateComplianceParameter to be compared</param>
         /// <returns>Boolean</returns>
-        public bool Equals(AddressKeyListComplianceParameterAllOf input)
+        public bool Equals(FilterPredicateComplianceParameter input)
         {
             if (input == null)
                 return false;
 
-            return 
+            return base.Equals(input) && 
                 (
                     this.Value == input.Value ||
                     (this.Value != null &&
                     this.Value.Equals(input.Value))
-                ) && 
-                (
-                    this.ComplianceParameterType == input.ComplianceParameterType ||
-                    this.ComplianceParameterType.Equals(input.ComplianceParameterType)
                 );
         }
 
@@ -242,10 +115,9 @@ namespace Lusid.Sdk.Model
         {
             unchecked // Overflow is fine, just wrap
             {
-                int hashCode = 41;
+                int hashCode = base.GetHashCode();
                 if (this.Value != null)
                     hashCode = hashCode * 59 + this.Value.GetHashCode();
-                hashCode = hashCode * 59 + this.ComplianceParameterType.GetHashCode();
                 return hashCode;
             }
         }
