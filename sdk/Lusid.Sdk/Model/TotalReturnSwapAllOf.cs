@@ -274,17 +274,17 @@ namespace Lusid.Sdk.Model
         /// </summary>
         /// <param name="startDate">The start date of the instrument. This is normally synonymous with the trade-date. (required).</param>
         /// <param name="maturityDate">The final maturity date of the instrument. This means the last date on which the instruments makes a payment of any amount.  For the avoidance of doubt, that is not necessarily prior to its last sensitivity date for the purposes of risk; e.g. instruments such as  Constant Maturity Swaps (CMS) often have sensitivities to rates that may well be observed or set prior to the maturity date, but refer to a termination date beyond it. (required).</param>
-        /// <param name="paymentLeg">paymentLeg (required).</param>
-        /// <param name="underlyingLeg">underlyingLeg (required).</param>
+        /// <param name="assetLeg">assetLeg (required).</param>
+        /// <param name="fundingLeg">fundingLeg (required).</param>
         /// <param name="instrumentType">The available values are: QuotedSecurity, InterestRateSwap, FxForward, Future, ExoticInstrument, FxOption, CreditDefaultSwap, InterestRateSwaption, Bond, EquityOption, FixedLeg, FloatingLeg, BespokeCashFlowsLeg, Unknown, TermDeposit, ContractForDifference, EquitySwap, CashPerpetual, CapFloor, CashSettled, CdsIndex, Basket, FundingLeg, FxSwap, ForwardRateAgreement, SimpleInstrument, Repo, Equity, ExchangeTradedOption, ReferenceInstrument, ComplexBond, InflationLinkedBond, InflationSwap, SimpleCashFlowLoan, TotalReturnSwap, InflationLeg (required).</param>
-        public TotalReturnSwapAllOf(DateTimeOffset startDate = default(DateTimeOffset), DateTimeOffset maturityDate = default(DateTimeOffset), InstrumentLeg paymentLeg = default(InstrumentLeg), UnderlyingLeg underlyingLeg = default(UnderlyingLeg), InstrumentTypeEnum instrumentType = default(InstrumentTypeEnum))
+        public TotalReturnSwapAllOf(DateTimeOffset startDate = default(DateTimeOffset), DateTimeOffset maturityDate = default(DateTimeOffset), AssetLeg assetLeg = default(AssetLeg), InstrumentLeg fundingLeg = default(InstrumentLeg), InstrumentTypeEnum instrumentType = default(InstrumentTypeEnum))
         {
             this.StartDate = startDate;
             this.MaturityDate = maturityDate;
-            // to ensure "paymentLeg" is required (not null)
-            this.PaymentLeg = paymentLeg ?? throw new ArgumentNullException("paymentLeg is a required property for TotalReturnSwapAllOf and cannot be null");
-            // to ensure "underlyingLeg" is required (not null)
-            this.UnderlyingLeg = underlyingLeg ?? throw new ArgumentNullException("underlyingLeg is a required property for TotalReturnSwapAllOf and cannot be null");
+            // to ensure "assetLeg" is required (not null)
+            this.AssetLeg = assetLeg ?? throw new ArgumentNullException("assetLeg is a required property for TotalReturnSwapAllOf and cannot be null");
+            // to ensure "fundingLeg" is required (not null)
+            this.FundingLeg = fundingLeg ?? throw new ArgumentNullException("fundingLeg is a required property for TotalReturnSwapAllOf and cannot be null");
             this.InstrumentType = instrumentType;
         }
 
@@ -303,16 +303,16 @@ namespace Lusid.Sdk.Model
         public DateTimeOffset MaturityDate { get; set; }
 
         /// <summary>
-        /// Gets or Sets PaymentLeg
+        /// Gets or Sets AssetLeg
         /// </summary>
-        [DataMember(Name = "paymentLeg", IsRequired = true, EmitDefaultValue = false)]
-        public InstrumentLeg PaymentLeg { get; set; }
+        [DataMember(Name = "assetLeg", IsRequired = true, EmitDefaultValue = false)]
+        public AssetLeg AssetLeg { get; set; }
 
         /// <summary>
-        /// Gets or Sets UnderlyingLeg
+        /// Gets or Sets FundingLeg
         /// </summary>
-        [DataMember(Name = "underlyingLeg", IsRequired = true, EmitDefaultValue = false)]
-        public UnderlyingLeg UnderlyingLeg { get; set; }
+        [DataMember(Name = "fundingLeg", IsRequired = true, EmitDefaultValue = false)]
+        public InstrumentLeg FundingLeg { get; set; }
 
         /// <summary>
         /// Returns the string presentation of the object
@@ -324,8 +324,8 @@ namespace Lusid.Sdk.Model
             sb.Append("class TotalReturnSwapAllOf {\n");
             sb.Append("  StartDate: ").Append(StartDate).Append("\n");
             sb.Append("  MaturityDate: ").Append(MaturityDate).Append("\n");
-            sb.Append("  PaymentLeg: ").Append(PaymentLeg).Append("\n");
-            sb.Append("  UnderlyingLeg: ").Append(UnderlyingLeg).Append("\n");
+            sb.Append("  AssetLeg: ").Append(AssetLeg).Append("\n");
+            sb.Append("  FundingLeg: ").Append(FundingLeg).Append("\n");
             sb.Append("  InstrumentType: ").Append(InstrumentType).Append("\n");
             sb.Append("}\n");
             return sb.ToString();
@@ -372,14 +372,14 @@ namespace Lusid.Sdk.Model
                     this.MaturityDate.Equals(input.MaturityDate))
                 ) && 
                 (
-                    this.PaymentLeg == input.PaymentLeg ||
-                    (this.PaymentLeg != null &&
-                    this.PaymentLeg.Equals(input.PaymentLeg))
+                    this.AssetLeg == input.AssetLeg ||
+                    (this.AssetLeg != null &&
+                    this.AssetLeg.Equals(input.AssetLeg))
                 ) && 
                 (
-                    this.UnderlyingLeg == input.UnderlyingLeg ||
-                    (this.UnderlyingLeg != null &&
-                    this.UnderlyingLeg.Equals(input.UnderlyingLeg))
+                    this.FundingLeg == input.FundingLeg ||
+                    (this.FundingLeg != null &&
+                    this.FundingLeg.Equals(input.FundingLeg))
                 ) && 
                 (
                     this.InstrumentType == input.InstrumentType ||
@@ -400,10 +400,10 @@ namespace Lusid.Sdk.Model
                     hashCode = hashCode * 59 + this.StartDate.GetHashCode();
                 if (this.MaturityDate != null)
                     hashCode = hashCode * 59 + this.MaturityDate.GetHashCode();
-                if (this.PaymentLeg != null)
-                    hashCode = hashCode * 59 + this.PaymentLeg.GetHashCode();
-                if (this.UnderlyingLeg != null)
-                    hashCode = hashCode * 59 + this.UnderlyingLeg.GetHashCode();
+                if (this.AssetLeg != null)
+                    hashCode = hashCode * 59 + this.AssetLeg.GetHashCode();
+                if (this.FundingLeg != null)
+                    hashCode = hashCode * 59 + this.FundingLeg.GetHashCode();
                 hashCode = hashCode * 59 + this.InstrumentType.GetHashCode();
                 return hashCode;
             }
