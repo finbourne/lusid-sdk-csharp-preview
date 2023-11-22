@@ -46,8 +46,9 @@ namespace Lusid.Sdk.Model
         /// <param name="ruleStatus">ruleStatus (required).</param>
         /// <param name="affectedPortfolios">affectedPortfolios (required).</param>
         /// <param name="affectedOrders">affectedOrders (required).</param>
+        /// <param name="parametersUsed">parametersUsed (required).</param>
         /// <param name="ruleBreakdown">ruleBreakdown (required).</param>
-        public ComplianceSummaryRuleResultRequest(ResourceId ruleId = default(ResourceId), ResourceId templateId = default(ResourceId), string variation = default(string), string ruleStatus = default(string), List<ResourceId> affectedPortfolios = default(List<ResourceId>), List<ResourceId> affectedOrders = default(List<ResourceId>), Dictionary<string, ComplianceRuleBreakdownRequest> ruleBreakdown = default(Dictionary<string, ComplianceRuleBreakdownRequest>))
+        public ComplianceSummaryRuleResultRequest(ResourceId ruleId = default(ResourceId), ResourceId templateId = default(ResourceId), string variation = default(string), string ruleStatus = default(string), List<ResourceId> affectedPortfolios = default(List<ResourceId>), List<ResourceId> affectedOrders = default(List<ResourceId>), Dictionary<string, string> parametersUsed = default(Dictionary<string, string>), Dictionary<string, ComplianceRuleBreakdownRequest> ruleBreakdown = default(Dictionary<string, ComplianceRuleBreakdownRequest>))
         {
             // to ensure "ruleId" is required (not null)
             this.RuleId = ruleId ?? throw new ArgumentNullException("ruleId is a required property for ComplianceSummaryRuleResultRequest and cannot be null");
@@ -61,6 +62,8 @@ namespace Lusid.Sdk.Model
             this.AffectedPortfolios = affectedPortfolios ?? throw new ArgumentNullException("affectedPortfolios is a required property for ComplianceSummaryRuleResultRequest and cannot be null");
             // to ensure "affectedOrders" is required (not null)
             this.AffectedOrders = affectedOrders ?? throw new ArgumentNullException("affectedOrders is a required property for ComplianceSummaryRuleResultRequest and cannot be null");
+            // to ensure "parametersUsed" is required (not null)
+            this.ParametersUsed = parametersUsed ?? throw new ArgumentNullException("parametersUsed is a required property for ComplianceSummaryRuleResultRequest and cannot be null");
             // to ensure "ruleBreakdown" is required (not null)
             this.RuleBreakdown = ruleBreakdown ?? throw new ArgumentNullException("ruleBreakdown is a required property for ComplianceSummaryRuleResultRequest and cannot be null");
         }
@@ -102,6 +105,12 @@ namespace Lusid.Sdk.Model
         public List<ResourceId> AffectedOrders { get; set; }
 
         /// <summary>
+        /// Gets or Sets ParametersUsed
+        /// </summary>
+        [DataMember(Name = "parametersUsed", IsRequired = true, EmitDefaultValue = false)]
+        public Dictionary<string, string> ParametersUsed { get; set; }
+
+        /// <summary>
         /// Gets or Sets RuleBreakdown
         /// </summary>
         [DataMember(Name = "ruleBreakdown", IsRequired = true, EmitDefaultValue = false)]
@@ -121,6 +130,7 @@ namespace Lusid.Sdk.Model
             sb.Append("  RuleStatus: ").Append(RuleStatus).Append("\n");
             sb.Append("  AffectedPortfolios: ").Append(AffectedPortfolios).Append("\n");
             sb.Append("  AffectedOrders: ").Append(AffectedOrders).Append("\n");
+            sb.Append("  ParametersUsed: ").Append(ParametersUsed).Append("\n");
             sb.Append("  RuleBreakdown: ").Append(RuleBreakdown).Append("\n");
             sb.Append("}\n");
             return sb.ToString();
@@ -189,6 +199,12 @@ namespace Lusid.Sdk.Model
                     this.AffectedOrders.SequenceEqual(input.AffectedOrders)
                 ) && 
                 (
+                    this.ParametersUsed == input.ParametersUsed ||
+                    this.ParametersUsed != null &&
+                    input.ParametersUsed != null &&
+                    this.ParametersUsed.SequenceEqual(input.ParametersUsed)
+                ) && 
+                (
                     this.RuleBreakdown == input.RuleBreakdown ||
                     this.RuleBreakdown != null &&
                     input.RuleBreakdown != null &&
@@ -217,6 +233,8 @@ namespace Lusid.Sdk.Model
                     hashCode = hashCode * 59 + this.AffectedPortfolios.GetHashCode();
                 if (this.AffectedOrders != null)
                     hashCode = hashCode * 59 + this.AffectedOrders.GetHashCode();
+                if (this.ParametersUsed != null)
+                    hashCode = hashCode * 59 + this.ParametersUsed.GetHashCode();
                 if (this.RuleBreakdown != null)
                     hashCode = hashCode * 59 + this.RuleBreakdown.GetHashCode();
                 return hashCode;

@@ -43,9 +43,8 @@ namespace Lusid.Sdk.Model
         /// <param name="groupStatus">groupStatus (required).</param>
         /// <param name="resultsUsed">resultsUsed (required).</param>
         /// <param name="propertiesUsed">propertiesUsed (required).</param>
-        /// <param name="parametersUsed">parametersUsed (required).</param>
         /// <param name="missingDataInformation">missingDataInformation (required).</param>
-        public ComplianceRuleBreakdownRequest(string groupStatus = default(string), Dictionary<string, decimal> resultsUsed = default(Dictionary<string, decimal>), Dictionary<string, List<Property>> propertiesUsed = default(Dictionary<string, List<Property>>), Dictionary<string, string> parametersUsed = default(Dictionary<string, string>), List<string> missingDataInformation = default(List<string>))
+        public ComplianceRuleBreakdownRequest(string groupStatus = default(string), Dictionary<string, decimal> resultsUsed = default(Dictionary<string, decimal>), Dictionary<string, List<Property>> propertiesUsed = default(Dictionary<string, List<Property>>), List<string> missingDataInformation = default(List<string>))
         {
             // to ensure "groupStatus" is required (not null)
             this.GroupStatus = groupStatus ?? throw new ArgumentNullException("groupStatus is a required property for ComplianceRuleBreakdownRequest and cannot be null");
@@ -53,8 +52,6 @@ namespace Lusid.Sdk.Model
             this.ResultsUsed = resultsUsed ?? throw new ArgumentNullException("resultsUsed is a required property for ComplianceRuleBreakdownRequest and cannot be null");
             // to ensure "propertiesUsed" is required (not null)
             this.PropertiesUsed = propertiesUsed ?? throw new ArgumentNullException("propertiesUsed is a required property for ComplianceRuleBreakdownRequest and cannot be null");
-            // to ensure "parametersUsed" is required (not null)
-            this.ParametersUsed = parametersUsed ?? throw new ArgumentNullException("parametersUsed is a required property for ComplianceRuleBreakdownRequest and cannot be null");
             // to ensure "missingDataInformation" is required (not null)
             this.MissingDataInformation = missingDataInformation ?? throw new ArgumentNullException("missingDataInformation is a required property for ComplianceRuleBreakdownRequest and cannot be null");
         }
@@ -78,12 +75,6 @@ namespace Lusid.Sdk.Model
         public Dictionary<string, List<Property>> PropertiesUsed { get; set; }
 
         /// <summary>
-        /// Gets or Sets ParametersUsed
-        /// </summary>
-        [DataMember(Name = "parametersUsed", IsRequired = true, EmitDefaultValue = false)]
-        public Dictionary<string, string> ParametersUsed { get; set; }
-
-        /// <summary>
         /// Gets or Sets MissingDataInformation
         /// </summary>
         [DataMember(Name = "missingDataInformation", IsRequired = true, EmitDefaultValue = false)]
@@ -100,7 +91,6 @@ namespace Lusid.Sdk.Model
             sb.Append("  GroupStatus: ").Append(GroupStatus).Append("\n");
             sb.Append("  ResultsUsed: ").Append(ResultsUsed).Append("\n");
             sb.Append("  PropertiesUsed: ").Append(PropertiesUsed).Append("\n");
-            sb.Append("  ParametersUsed: ").Append(ParametersUsed).Append("\n");
             sb.Append("  MissingDataInformation: ").Append(MissingDataInformation).Append("\n");
             sb.Append("}\n");
             return sb.ToString();
@@ -154,12 +144,6 @@ namespace Lusid.Sdk.Model
                     this.PropertiesUsed.SequenceEqual(input.PropertiesUsed)
                 ) && 
                 (
-                    this.ParametersUsed == input.ParametersUsed ||
-                    this.ParametersUsed != null &&
-                    input.ParametersUsed != null &&
-                    this.ParametersUsed.SequenceEqual(input.ParametersUsed)
-                ) && 
-                (
                     this.MissingDataInformation == input.MissingDataInformation ||
                     this.MissingDataInformation != null &&
                     input.MissingDataInformation != null &&
@@ -182,8 +166,6 @@ namespace Lusid.Sdk.Model
                     hashCode = hashCode * 59 + this.ResultsUsed.GetHashCode();
                 if (this.PropertiesUsed != null)
                     hashCode = hashCode * 59 + this.PropertiesUsed.GetHashCode();
-                if (this.ParametersUsed != null)
-                    hashCode = hashCode * 59 + this.ParametersUsed.GetHashCode();
                 if (this.MissingDataInformation != null)
                     hashCode = hashCode * 59 + this.MissingDataInformation.GetHashCode();
                 return hashCode;
