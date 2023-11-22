@@ -42,14 +42,17 @@ namespace Lusid.Sdk.Model
         /// </summary>
         /// <param name="id">id (required).</param>
         /// <param name="complianceState">The compliance state of this order. Possible values are &#39;Pending&#39;, &#39;Failed&#39;, &#39;Manually approved&#39; and &#39;Passed&#39;. (required).</param>
+        /// <param name="approvalState">The approval state of this order. Possible values are &#39;Pending&#39;, &#39;Rejected&#39; and &#39;Approved&#39;. (required).</param>
         /// <param name="portfolioId">portfolioId.</param>
         /// <param name="portfolioName">The name of the order&#39;s referenced Portfolio..</param>
-        public OrderGraphBlockOrderDetail(ResourceId id = default(ResourceId), string complianceState = default(string), ResourceId portfolioId = default(ResourceId), string portfolioName = default(string))
+        public OrderGraphBlockOrderDetail(ResourceId id = default(ResourceId), string complianceState = default(string), string approvalState = default(string), ResourceId portfolioId = default(ResourceId), string portfolioName = default(string))
         {
             // to ensure "id" is required (not null)
             this.Id = id ?? throw new ArgumentNullException("id is a required property for OrderGraphBlockOrderDetail and cannot be null");
             // to ensure "complianceState" is required (not null)
             this.ComplianceState = complianceState ?? throw new ArgumentNullException("complianceState is a required property for OrderGraphBlockOrderDetail and cannot be null");
+            // to ensure "approvalState" is required (not null)
+            this.ApprovalState = approvalState ?? throw new ArgumentNullException("approvalState is a required property for OrderGraphBlockOrderDetail and cannot be null");
             this.PortfolioId = portfolioId;
             this.PortfolioName = portfolioName;
         }
@@ -66,6 +69,13 @@ namespace Lusid.Sdk.Model
         /// <value>The compliance state of this order. Possible values are &#39;Pending&#39;, &#39;Failed&#39;, &#39;Manually approved&#39; and &#39;Passed&#39;.</value>
         [DataMember(Name = "complianceState", IsRequired = true, EmitDefaultValue = false)]
         public string ComplianceState { get; set; }
+
+        /// <summary>
+        /// The approval state of this order. Possible values are &#39;Pending&#39;, &#39;Rejected&#39; and &#39;Approved&#39;.
+        /// </summary>
+        /// <value>The approval state of this order. Possible values are &#39;Pending&#39;, &#39;Rejected&#39; and &#39;Approved&#39;.</value>
+        [DataMember(Name = "approvalState", IsRequired = true, EmitDefaultValue = false)]
+        public string ApprovalState { get; set; }
 
         /// <summary>
         /// Gets or Sets PortfolioId
@@ -90,6 +100,7 @@ namespace Lusid.Sdk.Model
             sb.Append("class OrderGraphBlockOrderDetail {\n");
             sb.Append("  Id: ").Append(Id).Append("\n");
             sb.Append("  ComplianceState: ").Append(ComplianceState).Append("\n");
+            sb.Append("  ApprovalState: ").Append(ApprovalState).Append("\n");
             sb.Append("  PortfolioId: ").Append(PortfolioId).Append("\n");
             sb.Append("  PortfolioName: ").Append(PortfolioName).Append("\n");
             sb.Append("}\n");
@@ -137,6 +148,11 @@ namespace Lusid.Sdk.Model
                     this.ComplianceState.Equals(input.ComplianceState))
                 ) && 
                 (
+                    this.ApprovalState == input.ApprovalState ||
+                    (this.ApprovalState != null &&
+                    this.ApprovalState.Equals(input.ApprovalState))
+                ) && 
+                (
                     this.PortfolioId == input.PortfolioId ||
                     (this.PortfolioId != null &&
                     this.PortfolioId.Equals(input.PortfolioId))
@@ -161,6 +177,8 @@ namespace Lusid.Sdk.Model
                     hashCode = hashCode * 59 + this.Id.GetHashCode();
                 if (this.ComplianceState != null)
                     hashCode = hashCode * 59 + this.ComplianceState.GetHashCode();
+                if (this.ApprovalState != null)
+                    hashCode = hashCode * 59 + this.ApprovalState.GetHashCode();
                 if (this.PortfolioId != null)
                     hashCode = hashCode * 59 + this.PortfolioId.GetHashCode();
                 if (this.PortfolioName != null)
