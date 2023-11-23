@@ -188,8 +188,8 @@ namespace Lusid.Sdk.Api
         /// Retrieves extrinsic corporate actions out of a corporate actions source
         /// </remarks>
         /// <exception cref="Lusid.Sdk.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="scope">The scope of the portfolio.</param>
-        /// <param name="code">The code of the portfolio.</param>
+        /// <param name="scope">The scope of the corporate action source.</param>
+        /// <param name="code">The code of the corporate action source.</param>
         /// <param name="asAt">Optional. The AsAt date of the data. (optional)</param>
         /// <param name="limit">Optional. When paginating, limit the number of returned results to this many. If not specified, a default  of 1000 is used. (optional, default to 1000)</param>
         /// <param name="page">Optional. The pagination token to use to continue listing items from a previous call. Page values are  return from list calls, and must be supplied exactly as returned. Additionally, when specifying this  value, asAt, filter and limit must not  be modified. (optional)</param>
@@ -204,8 +204,8 @@ namespace Lusid.Sdk.Api
         /// Retrieves extrinsic corporate actions out of a corporate actions source
         /// </remarks>
         /// <exception cref="Lusid.Sdk.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="scope">The scope of the portfolio.</param>
-        /// <param name="code">The code of the portfolio.</param>
+        /// <param name="scope">The scope of the corporate action source.</param>
+        /// <param name="code">The code of the corporate action source.</param>
         /// <param name="asAt">Optional. The AsAt date of the data. (optional)</param>
         /// <param name="limit">Optional. When paginating, limit the number of returned results to this many. If not specified, a default  of 1000 is used. (optional, default to 1000)</param>
         /// <param name="page">Optional. The pagination token to use to continue listing items from a previous call. Page values are  return from list calls, and must be supplied exactly as returned. Additionally, when specifying this  value, asAt, filter and limit must not  be modified. (optional)</param>
@@ -448,8 +448,8 @@ namespace Lusid.Sdk.Api
         /// Retrieves extrinsic corporate actions out of a corporate actions source
         /// </remarks>
         /// <exception cref="Lusid.Sdk.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="scope">The scope of the portfolio.</param>
-        /// <param name="code">The code of the portfolio.</param>
+        /// <param name="scope">The scope of the corporate action source.</param>
+        /// <param name="code">The code of the corporate action source.</param>
         /// <param name="asAt">Optional. The AsAt date of the data. (optional)</param>
         /// <param name="limit">Optional. When paginating, limit the number of returned results to this many. If not specified, a default  of 1000 is used. (optional, default to 1000)</param>
         /// <param name="page">Optional. The pagination token to use to continue listing items from a previous call. Page values are  return from list calls, and must be supplied exactly as returned. Additionally, when specifying this  value, asAt, filter and limit must not  be modified. (optional)</param>
@@ -465,8 +465,8 @@ namespace Lusid.Sdk.Api
         /// Retrieves extrinsic corporate actions out of a corporate actions source
         /// </remarks>
         /// <exception cref="Lusid.Sdk.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="scope">The scope of the portfolio.</param>
-        /// <param name="code">The code of the portfolio.</param>
+        /// <param name="scope">The scope of the corporate action source.</param>
+        /// <param name="code">The code of the corporate action source.</param>
         /// <param name="asAt">Optional. The AsAt date of the data. (optional)</param>
         /// <param name="limit">Optional. When paginating, limit the number of returned results to this many. If not specified, a default  of 1000 is used. (optional, default to 1000)</param>
         /// <param name="page">Optional. The pagination token to use to continue listing items from a previous call. Page values are  return from list calls, and must be supplied exactly as returned. Additionally, when specifying this  value, asAt, filter and limit must not  be modified. (optional)</param>
@@ -1679,8 +1679,8 @@ namespace Lusid.Sdk.Api
         /// [EARLY ACCESS] GetInstrumentEvents: Get extrinsic instrument events out of a given corporate actions source. Retrieves extrinsic corporate actions out of a corporate actions source
         /// </summary>
         /// <exception cref="Lusid.Sdk.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="scope">The scope of the portfolio.</param>
-        /// <param name="code">The code of the portfolio.</param>
+        /// <param name="scope">The scope of the corporate action source.</param>
+        /// <param name="code">The code of the corporate action source.</param>
         /// <param name="asAt">Optional. The AsAt date of the data. (optional)</param>
         /// <param name="limit">Optional. When paginating, limit the number of returned results to this many. If not specified, a default  of 1000 is used. (optional, default to 1000)</param>
         /// <param name="page">Optional. The pagination token to use to continue listing items from a previous call. Page values are  return from list calls, and must be supplied exactly as returned. Additionally, when specifying this  value, asAt, filter and limit must not  be modified. (optional)</param>
@@ -1696,8 +1696,8 @@ namespace Lusid.Sdk.Api
         /// [EARLY ACCESS] GetInstrumentEvents: Get extrinsic instrument events out of a given corporate actions source. Retrieves extrinsic corporate actions out of a corporate actions source
         /// </summary>
         /// <exception cref="Lusid.Sdk.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="scope">The scope of the portfolio.</param>
-        /// <param name="code">The code of the portfolio.</param>
+        /// <param name="scope">The scope of the corporate action source.</param>
+        /// <param name="code">The code of the corporate action source.</param>
         /// <param name="asAt">Optional. The AsAt date of the data. (optional)</param>
         /// <param name="limit">Optional. When paginating, limit the number of returned results to this many. If not specified, a default  of 1000 is used. (optional, default to 1000)</param>
         /// <param name="page">Optional. The pagination token to use to continue listing items from a previous call. Page values are  return from list calls, and must be supplied exactly as returned. Additionally, when specifying this  value, asAt, filter and limit must not  be modified. (optional)</param>
@@ -1777,8 +1777,8 @@ namespace Lusid.Sdk.Api
         /// [EARLY ACCESS] GetInstrumentEvents: Get extrinsic instrument events out of a given corporate actions source. Retrieves extrinsic corporate actions out of a corporate actions source
         /// </summary>
         /// <exception cref="Lusid.Sdk.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="scope">The scope of the portfolio.</param>
-        /// <param name="code">The code of the portfolio.</param>
+        /// <param name="scope">The scope of the corporate action source.</param>
+        /// <param name="code">The code of the corporate action source.</param>
         /// <param name="asAt">Optional. The AsAt date of the data. (optional)</param>
         /// <param name="limit">Optional. When paginating, limit the number of returned results to this many. If not specified, a default  of 1000 is used. (optional, default to 1000)</param>
         /// <param name="page">Optional. The pagination token to use to continue listing items from a previous call. Page values are  return from list calls, and must be supplied exactly as returned. Additionally, when specifying this  value, asAt, filter and limit must not  be modified. (optional)</param>
@@ -1795,8 +1795,8 @@ namespace Lusid.Sdk.Api
         /// [EARLY ACCESS] GetInstrumentEvents: Get extrinsic instrument events out of a given corporate actions source. Retrieves extrinsic corporate actions out of a corporate actions source
         /// </summary>
         /// <exception cref="Lusid.Sdk.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="scope">The scope of the portfolio.</param>
-        /// <param name="code">The code of the portfolio.</param>
+        /// <param name="scope">The scope of the corporate action source.</param>
+        /// <param name="code">The code of the corporate action source.</param>
         /// <param name="asAt">Optional. The AsAt date of the data. (optional)</param>
         /// <param name="limit">Optional. When paginating, limit the number of returned results to this many. If not specified, a default  of 1000 is used. (optional, default to 1000)</param>
         /// <param name="page">Optional. The pagination token to use to continue listing items from a previous call. Page values are  return from list calls, and must be supplied exactly as returned. Additionally, when specifying this  value, asAt, filter and limit must not  be modified. (optional)</param>
