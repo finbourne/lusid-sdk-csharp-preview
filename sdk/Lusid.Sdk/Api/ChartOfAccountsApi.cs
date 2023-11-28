@@ -51,6 +51,31 @@ namespace Lusid.Sdk.Api
         /// <returns>ApiResponse of ChartOfAccounts</returns>
         ApiResponse<ChartOfAccounts> CreateChartOfAccountsWithHttpInfo(string scope, ChartOfAccountsRequest chartOfAccountsRequest);
         /// <summary>
+        /// [EXPERIMENTAL] CreateCleardownModule: Create a Cleardown Module
+        /// </summary>
+        /// <remarks>
+        /// Create the given Cleardown Module.
+        /// </remarks>
+        /// <exception cref="Lusid.Sdk.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="scope">The scope of the Chart of Accounts.</param>
+        /// <param name="code">The code of the Chart of Accounts. Together with the scope this uniquely identifies the Chart of Accounts.</param>
+        /// <param name="cleardownModuleRequest">The definition of the Cleardown Module.</param>
+        /// <returns>CleardownModuleResponse</returns>
+        CleardownModuleResponse CreateCleardownModule(string scope, string code, CleardownModuleRequest cleardownModuleRequest);
+
+        /// <summary>
+        /// [EXPERIMENTAL] CreateCleardownModule: Create a Cleardown Module
+        /// </summary>
+        /// <remarks>
+        /// Create the given Cleardown Module.
+        /// </remarks>
+        /// <exception cref="Lusid.Sdk.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="scope">The scope of the Chart of Accounts.</param>
+        /// <param name="code">The code of the Chart of Accounts. Together with the scope this uniquely identifies the Chart of Accounts.</param>
+        /// <param name="cleardownModuleRequest">The definition of the Cleardown Module.</param>
+        /// <returns>ApiResponse of CleardownModuleResponse</returns>
+        ApiResponse<CleardownModuleResponse> CreateCleardownModuleWithHttpInfo(string scope, string code, CleardownModuleRequest cleardownModuleRequest);
+        /// <summary>
         /// [EXPERIMENTAL] CreateGeneralLedgerProfile: Create a General Ledger Profile.
         /// </summary>
         /// <remarks>
@@ -150,6 +175,31 @@ namespace Lusid.Sdk.Api
         /// <param name="code">The code of the Chart of Accounts to be deleted. Together with the scope this uniquely identifies the Chart of Accounts.</param>
         /// <returns>ApiResponse of DeletedEntityResponse</returns>
         ApiResponse<DeletedEntityResponse> DeleteChartOfAccountsWithHttpInfo(string scope, string code);
+        /// <summary>
+        /// [EXPERIMENTAL] DeleteCleardownModule: Delete a Cleardown Module.
+        /// </summary>
+        /// <remarks>
+        /// Delete the given Cleardown Module.
+        /// </remarks>
+        /// <exception cref="Lusid.Sdk.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="scope">The scope of the Chart of Accounts.</param>
+        /// <param name="code">The code of the Chart of Accounts. Together with the scope this uniquely identifies the Chart of Accounts.</param>
+        /// <param name="cleardownModuleCode">The code of the Cleardown Module to be deleted.</param>
+        /// <returns>DeletedEntityResponse</returns>
+        DeletedEntityResponse DeleteCleardownModule(string scope, string code, string cleardownModuleCode);
+
+        /// <summary>
+        /// [EXPERIMENTAL] DeleteCleardownModule: Delete a Cleardown Module.
+        /// </summary>
+        /// <remarks>
+        /// Delete the given Cleardown Module.
+        /// </remarks>
+        /// <exception cref="Lusid.Sdk.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="scope">The scope of the Chart of Accounts.</param>
+        /// <param name="code">The code of the Chart of Accounts. Together with the scope this uniquely identifies the Chart of Accounts.</param>
+        /// <param name="cleardownModuleCode">The code of the Cleardown Module to be deleted.</param>
+        /// <returns>ApiResponse of DeletedEntityResponse</returns>
+        ApiResponse<DeletedEntityResponse> DeleteCleardownModuleWithHttpInfo(string scope, string code, string cleardownModuleCode);
         /// <summary>
         /// [EXPERIMENTAL] DeleteGeneralLedgerProfile: Delete a General Ledger Profile.
         /// </summary>
@@ -260,6 +310,31 @@ namespace Lusid.Sdk.Api
         /// <param name="propertyKeys">A list of property keys from the &#39;ChartOfAccounts&#39; domain to decorate onto the Chart of Accounts.              These must take the format {domain}/{scope}/{code}, for example &#39;ChartOfAccounts/Manager/Id&#39;. If not provided will return all the entitled properties for that Chart of Accounts. (optional)</param>
         /// <returns>ApiResponse of ChartOfAccounts</returns>
         ApiResponse<ChartOfAccounts> GetChartOfAccountsWithHttpInfo(string scope, string code, DateTimeOrCutLabel effectiveAt = default(DateTimeOrCutLabel), DateTimeOffset? asAt = default(DateTimeOffset?), List<string> propertyKeys = default(List<string>));
+        /// <summary>
+        /// [EXPERIMENTAL] GetCleardownModule: Get a Cleardown Module
+        /// </summary>
+        /// <remarks>
+        /// Retrieve the definition of a Cleardown Module complete with its rules.
+        /// </remarks>
+        /// <exception cref="Lusid.Sdk.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="scope">The scope of the Chart of Accounts.</param>
+        /// <param name="code">The code of the Chart of Accounts. Together with the scope this uniquely identifies the Chart of Accounts.</param>
+        /// <param name="cleardownModuleCode">The code of the Cleardown Module.</param>
+        /// <returns>CleardownModuleResponse</returns>
+        CleardownModuleResponse GetCleardownModule(string scope, string code, string cleardownModuleCode);
+
+        /// <summary>
+        /// [EXPERIMENTAL] GetCleardownModule: Get a Cleardown Module
+        /// </summary>
+        /// <remarks>
+        /// Retrieve the definition of a Cleardown Module complete with its rules.
+        /// </remarks>
+        /// <exception cref="Lusid.Sdk.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="scope">The scope of the Chart of Accounts.</param>
+        /// <param name="code">The code of the Chart of Accounts. Together with the scope this uniquely identifies the Chart of Accounts.</param>
+        /// <param name="cleardownModuleCode">The code of the Cleardown Module.</param>
+        /// <returns>ApiResponse of CleardownModuleResponse</returns>
+        ApiResponse<CleardownModuleResponse> GetCleardownModuleWithHttpInfo(string scope, string code, string cleardownModuleCode);
         /// <summary>
         /// [EXPERIMENTAL] GetGeneralLedgerProfile: Get a General Ledger Profile.
         /// </summary>
@@ -381,6 +456,74 @@ namespace Lusid.Sdk.Api
         /// <returns>ApiResponse of PagedResourceListOfChartOfAccounts</returns>
         ApiResponse<PagedResourceListOfChartOfAccounts> ListChartsOfAccountsWithHttpInfo(DateTimeOrCutLabel effectiveAt = default(DateTimeOrCutLabel), DateTimeOffset? asAt = default(DateTimeOffset?), string page = default(string), int? start = default(int?), int? limit = default(int?), string filter = default(string), List<string> propertyKeys = default(List<string>));
         /// <summary>
+        /// [EXPERIMENTAL] ListCleardownModuleRules: List Cleardown Module Rules
+        /// </summary>
+        /// <remarks>
+        /// List the Rules in a Cleardown Module
+        /// </remarks>
+        /// <exception cref="Lusid.Sdk.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="scope">The scope of the Chart of Accounts.</param>
+        /// <param name="code">The code of the Chart of Accounts. Together with the scope this uniquely identifies the Chart of Accounts.</param>
+        /// <param name="cleardownModuleCode">The code of the cleardown module.</param>
+        /// <param name="asAt">The asAt datetime at which to retrieve the instrument. Defaults to              returning the latest version if not specified. (optional)</param>
+        /// <param name="page">The pagination token to use to continue listing cleardown module rules; this              value is returned from the previous call. If a pagination token is provided, the filter              and asAt fields must not have changed since the original request. Also, if set, a start value cannot be provided. (optional)</param>
+        /// <param name="start">When paginating, skip this number of results. (optional)</param>
+        /// <param name="limit">When paginating, limit the results to this number. Defaults to 100 if not specified. (optional)</param>
+        /// <param name="filter">Expression to filter the results.              For example, to filter on the rule id, specify \&quot;ruleId eq &#39;rule 1&#39;\&quot;. For more information about filtering              results, see https://support.lusid.com/knowledgebase/article/KA-01914. (optional)</param>
+        /// <returns>PagedResourceListOfCleardownModuleRule</returns>
+        PagedResourceListOfCleardownModuleRule ListCleardownModuleRules(string scope, string code, string cleardownModuleCode, DateTimeOffset? asAt = default(DateTimeOffset?), string page = default(string), int? start = default(int?), int? limit = default(int?), string filter = default(string));
+
+        /// <summary>
+        /// [EXPERIMENTAL] ListCleardownModuleRules: List Cleardown Module Rules
+        /// </summary>
+        /// <remarks>
+        /// List the Rules in a Cleardown Module
+        /// </remarks>
+        /// <exception cref="Lusid.Sdk.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="scope">The scope of the Chart of Accounts.</param>
+        /// <param name="code">The code of the Chart of Accounts. Together with the scope this uniquely identifies the Chart of Accounts.</param>
+        /// <param name="cleardownModuleCode">The code of the cleardown module.</param>
+        /// <param name="asAt">The asAt datetime at which to retrieve the instrument. Defaults to              returning the latest version if not specified. (optional)</param>
+        /// <param name="page">The pagination token to use to continue listing cleardown module rules; this              value is returned from the previous call. If a pagination token is provided, the filter              and asAt fields must not have changed since the original request. Also, if set, a start value cannot be provided. (optional)</param>
+        /// <param name="start">When paginating, skip this number of results. (optional)</param>
+        /// <param name="limit">When paginating, limit the results to this number. Defaults to 100 if not specified. (optional)</param>
+        /// <param name="filter">Expression to filter the results.              For example, to filter on the rule id, specify \&quot;ruleId eq &#39;rule 1&#39;\&quot;. For more information about filtering              results, see https://support.lusid.com/knowledgebase/article/KA-01914. (optional)</param>
+        /// <returns>ApiResponse of PagedResourceListOfCleardownModuleRule</returns>
+        ApiResponse<PagedResourceListOfCleardownModuleRule> ListCleardownModuleRulesWithHttpInfo(string scope, string code, string cleardownModuleCode, DateTimeOffset? asAt = default(DateTimeOffset?), string page = default(string), int? start = default(int?), int? limit = default(int?), string filter = default(string));
+        /// <summary>
+        /// [EXPERIMENTAL] ListCleardownModules: List Cleardown Modules
+        /// </summary>
+        /// <remarks>
+        /// List all the Cleardown Modules matching particular criteria.
+        /// </remarks>
+        /// <exception cref="Lusid.Sdk.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="scope">The scope of the Chart of Accounts.</param>
+        /// <param name="code">The code of the Chart of Accounts. Together with the scope this uniquely identifies the Chart of Accounts.</param>
+        /// <param name="asAt">The asAt datetime at which to list the Cleardown Module. Defaults to returning the latest version              of each Cleardown Module if not specified. (optional)</param>
+        /// <param name="page">The pagination token to use to continue listing Cleardown Modules; this              value is returned from the previous call. If a pagination token is provided, the filter, effectiveAt              and asAt fields must not have changed since the original request. Also, if set, a start value cannot be provided. (optional)</param>
+        /// <param name="start">When paginating, skip this number of results. (optional)</param>
+        /// <param name="limit">When paginating, limit the results to this number. Defaults to 100 if not specified. (optional)</param>
+        /// <param name="filter">Expression to filter the results.              For example, to filter on the Cleardown Module status, specify \&quot;status eq &#39;Active&#39;\&quot;. For more information about filtering              results, see https://support.lusid.com/knowledgebase/article/KA-01914. (optional)</param>
+        /// <returns>PagedResourceListOfCleardownModuleResponse</returns>
+        PagedResourceListOfCleardownModuleResponse ListCleardownModules(string scope, string code, DateTimeOffset? asAt = default(DateTimeOffset?), string page = default(string), int? start = default(int?), int? limit = default(int?), string filter = default(string));
+
+        /// <summary>
+        /// [EXPERIMENTAL] ListCleardownModules: List Cleardown Modules
+        /// </summary>
+        /// <remarks>
+        /// List all the Cleardown Modules matching particular criteria.
+        /// </remarks>
+        /// <exception cref="Lusid.Sdk.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="scope">The scope of the Chart of Accounts.</param>
+        /// <param name="code">The code of the Chart of Accounts. Together with the scope this uniquely identifies the Chart of Accounts.</param>
+        /// <param name="asAt">The asAt datetime at which to list the Cleardown Module. Defaults to returning the latest version              of each Cleardown Module if not specified. (optional)</param>
+        /// <param name="page">The pagination token to use to continue listing Cleardown Modules; this              value is returned from the previous call. If a pagination token is provided, the filter, effectiveAt              and asAt fields must not have changed since the original request. Also, if set, a start value cannot be provided. (optional)</param>
+        /// <param name="start">When paginating, skip this number of results. (optional)</param>
+        /// <param name="limit">When paginating, limit the results to this number. Defaults to 100 if not specified. (optional)</param>
+        /// <param name="filter">Expression to filter the results.              For example, to filter on the Cleardown Module status, specify \&quot;status eq &#39;Active&#39;\&quot;. For more information about filtering              results, see https://support.lusid.com/knowledgebase/article/KA-01914. (optional)</param>
+        /// <returns>ApiResponse of PagedResourceListOfCleardownModuleResponse</returns>
+        ApiResponse<PagedResourceListOfCleardownModuleResponse> ListCleardownModulesWithHttpInfo(string scope, string code, DateTimeOffset? asAt = default(DateTimeOffset?), string page = default(string), int? start = default(int?), int? limit = default(int?), string filter = default(string));
+        /// <summary>
         /// [EXPERIMENTAL] ListGeneralLedgerProfiles: List General Ledger Profiles.
         /// </summary>
         /// <remarks>
@@ -481,6 +624,60 @@ namespace Lusid.Sdk.Api
         /// <param name="filter">Expression to filter the results.              For example, to filter on the Posting Module status, specify \&quot;status eq &#39;Active&#39;\&quot;. For more information about filtering              results, see https://support.lusid.com/knowledgebase/article/KA-01914. (optional)</param>
         /// <returns>ApiResponse of PagedResourceListOfPostingModuleResponse</returns>
         ApiResponse<PagedResourceListOfPostingModuleResponse> ListPostingModulesWithHttpInfo(string scope, string code, DateTimeOffset? asAt = default(DateTimeOffset?), string page = default(string), int? start = default(int?), int? limit = default(int?), string filter = default(string));
+        /// <summary>
+        /// [EXPERIMENTAL] SetCleardownModuleDetails: Set the details of a Cleardown Module
+        /// </summary>
+        /// <remarks>
+        /// Update the given Cleardown Module details.
+        /// </remarks>
+        /// <exception cref="Lusid.Sdk.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="scope">The scope of the Chart of Accounts.</param>
+        /// <param name="code">The code of the Chart of Accounts. Together with the scope this uniquely identifies the Chart of Accounts.</param>
+        /// <param name="cleardownModuleCode">The code of the Cleardown Module to be updated.</param>
+        /// <param name="cleardownModuleDetails">The new details for the Cleardown Module.</param>
+        /// <returns>CleardownModuleResponse</returns>
+        CleardownModuleResponse SetCleardownModuleDetails(string scope, string code, string cleardownModuleCode, CleardownModuleDetails cleardownModuleDetails);
+
+        /// <summary>
+        /// [EXPERIMENTAL] SetCleardownModuleDetails: Set the details of a Cleardown Module
+        /// </summary>
+        /// <remarks>
+        /// Update the given Cleardown Module details.
+        /// </remarks>
+        /// <exception cref="Lusid.Sdk.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="scope">The scope of the Chart of Accounts.</param>
+        /// <param name="code">The code of the Chart of Accounts. Together with the scope this uniquely identifies the Chart of Accounts.</param>
+        /// <param name="cleardownModuleCode">The code of the Cleardown Module to be updated.</param>
+        /// <param name="cleardownModuleDetails">The new details for the Cleardown Module.</param>
+        /// <returns>ApiResponse of CleardownModuleResponse</returns>
+        ApiResponse<CleardownModuleResponse> SetCleardownModuleDetailsWithHttpInfo(string scope, string code, string cleardownModuleCode, CleardownModuleDetails cleardownModuleDetails);
+        /// <summary>
+        /// [EXPERIMENTAL] SetCleardownModuleRules: Set the rules of a Cleardown Module
+        /// </summary>
+        /// <remarks>
+        /// Set the given Cleardown Modules rules, this will replace the existing set of rules for the cleardown module.
+        /// </remarks>
+        /// <exception cref="Lusid.Sdk.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="scope">The scope of the Chart of Accounts.</param>
+        /// <param name="code">The code of the Chart of Accounts. Together with the scope this uniquely identifies the Chart of Accounts.</param>
+        /// <param name="cleardownModuleCode">The code of the Cleardown Module to be updated.</param>
+        /// <param name="cleardownModuleRule">The new rule set for the Cleardown Module.</param>
+        /// <returns>CleardownModuleRulesUpdatedResponse</returns>
+        CleardownModuleRulesUpdatedResponse SetCleardownModuleRules(string scope, string code, string cleardownModuleCode, List<CleardownModuleRule> cleardownModuleRule);
+
+        /// <summary>
+        /// [EXPERIMENTAL] SetCleardownModuleRules: Set the rules of a Cleardown Module
+        /// </summary>
+        /// <remarks>
+        /// Set the given Cleardown Modules rules, this will replace the existing set of rules for the cleardown module.
+        /// </remarks>
+        /// <exception cref="Lusid.Sdk.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="scope">The scope of the Chart of Accounts.</param>
+        /// <param name="code">The code of the Chart of Accounts. Together with the scope this uniquely identifies the Chart of Accounts.</param>
+        /// <param name="cleardownModuleCode">The code of the Cleardown Module to be updated.</param>
+        /// <param name="cleardownModuleRule">The new rule set for the Cleardown Module.</param>
+        /// <returns>ApiResponse of CleardownModuleRulesUpdatedResponse</returns>
+        ApiResponse<CleardownModuleRulesUpdatedResponse> SetCleardownModuleRulesWithHttpInfo(string scope, string code, string cleardownModuleCode, List<CleardownModuleRule> cleardownModuleRule);
         /// <summary>
         /// [EXPERIMENTAL] SetGeneralLedgerProfileMappings: Sets the General Ledger Profile Mappings.
         /// </summary>
@@ -674,6 +871,33 @@ namespace Lusid.Sdk.Api
         /// <returns>Task of ApiResponse (ChartOfAccounts)</returns>
         System.Threading.Tasks.Task<ApiResponse<ChartOfAccounts>> CreateChartOfAccountsWithHttpInfoAsync(string scope, ChartOfAccountsRequest chartOfAccountsRequest, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
         /// <summary>
+        /// [EXPERIMENTAL] CreateCleardownModule: Create a Cleardown Module
+        /// </summary>
+        /// <remarks>
+        /// Create the given Cleardown Module.
+        /// </remarks>
+        /// <exception cref="Lusid.Sdk.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="scope">The scope of the Chart of Accounts.</param>
+        /// <param name="code">The code of the Chart of Accounts. Together with the scope this uniquely identifies the Chart of Accounts.</param>
+        /// <param name="cleardownModuleRequest">The definition of the Cleardown Module.</param>
+        /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
+        /// <returns>Task of CleardownModuleResponse</returns>
+        System.Threading.Tasks.Task<CleardownModuleResponse> CreateCleardownModuleAsync(string scope, string code, CleardownModuleRequest cleardownModuleRequest, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+
+        /// <summary>
+        /// [EXPERIMENTAL] CreateCleardownModule: Create a Cleardown Module
+        /// </summary>
+        /// <remarks>
+        /// Create the given Cleardown Module.
+        /// </remarks>
+        /// <exception cref="Lusid.Sdk.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="scope">The scope of the Chart of Accounts.</param>
+        /// <param name="code">The code of the Chart of Accounts. Together with the scope this uniquely identifies the Chart of Accounts.</param>
+        /// <param name="cleardownModuleRequest">The definition of the Cleardown Module.</param>
+        /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
+        /// <returns>Task of ApiResponse (CleardownModuleResponse)</returns>
+        System.Threading.Tasks.Task<ApiResponse<CleardownModuleResponse>> CreateCleardownModuleWithHttpInfoAsync(string scope, string code, CleardownModuleRequest cleardownModuleRequest, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+        /// <summary>
         /// [EXPERIMENTAL] CreateGeneralLedgerProfile: Create a General Ledger Profile.
         /// </summary>
         /// <remarks>
@@ -781,6 +1005,33 @@ namespace Lusid.Sdk.Api
         /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
         /// <returns>Task of ApiResponse (DeletedEntityResponse)</returns>
         System.Threading.Tasks.Task<ApiResponse<DeletedEntityResponse>> DeleteChartOfAccountsWithHttpInfoAsync(string scope, string code, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+        /// <summary>
+        /// [EXPERIMENTAL] DeleteCleardownModule: Delete a Cleardown Module.
+        /// </summary>
+        /// <remarks>
+        /// Delete the given Cleardown Module.
+        /// </remarks>
+        /// <exception cref="Lusid.Sdk.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="scope">The scope of the Chart of Accounts.</param>
+        /// <param name="code">The code of the Chart of Accounts. Together with the scope this uniquely identifies the Chart of Accounts.</param>
+        /// <param name="cleardownModuleCode">The code of the Cleardown Module to be deleted.</param>
+        /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
+        /// <returns>Task of DeletedEntityResponse</returns>
+        System.Threading.Tasks.Task<DeletedEntityResponse> DeleteCleardownModuleAsync(string scope, string code, string cleardownModuleCode, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+
+        /// <summary>
+        /// [EXPERIMENTAL] DeleteCleardownModule: Delete a Cleardown Module.
+        /// </summary>
+        /// <remarks>
+        /// Delete the given Cleardown Module.
+        /// </remarks>
+        /// <exception cref="Lusid.Sdk.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="scope">The scope of the Chart of Accounts.</param>
+        /// <param name="code">The code of the Chart of Accounts. Together with the scope this uniquely identifies the Chart of Accounts.</param>
+        /// <param name="cleardownModuleCode">The code of the Cleardown Module to be deleted.</param>
+        /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
+        /// <returns>Task of ApiResponse (DeletedEntityResponse)</returns>
+        System.Threading.Tasks.Task<ApiResponse<DeletedEntityResponse>> DeleteCleardownModuleWithHttpInfoAsync(string scope, string code, string cleardownModuleCode, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
         /// <summary>
         /// [EXPERIMENTAL] DeleteGeneralLedgerProfile: Delete a General Ledger Profile.
         /// </summary>
@@ -899,6 +1150,33 @@ namespace Lusid.Sdk.Api
         /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
         /// <returns>Task of ApiResponse (ChartOfAccounts)</returns>
         System.Threading.Tasks.Task<ApiResponse<ChartOfAccounts>> GetChartOfAccountsWithHttpInfoAsync(string scope, string code, DateTimeOrCutLabel effectiveAt = default(DateTimeOrCutLabel), DateTimeOffset? asAt = default(DateTimeOffset?), List<string> propertyKeys = default(List<string>), System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+        /// <summary>
+        /// [EXPERIMENTAL] GetCleardownModule: Get a Cleardown Module
+        /// </summary>
+        /// <remarks>
+        /// Retrieve the definition of a Cleardown Module complete with its rules.
+        /// </remarks>
+        /// <exception cref="Lusid.Sdk.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="scope">The scope of the Chart of Accounts.</param>
+        /// <param name="code">The code of the Chart of Accounts. Together with the scope this uniquely identifies the Chart of Accounts.</param>
+        /// <param name="cleardownModuleCode">The code of the Cleardown Module.</param>
+        /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
+        /// <returns>Task of CleardownModuleResponse</returns>
+        System.Threading.Tasks.Task<CleardownModuleResponse> GetCleardownModuleAsync(string scope, string code, string cleardownModuleCode, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+
+        /// <summary>
+        /// [EXPERIMENTAL] GetCleardownModule: Get a Cleardown Module
+        /// </summary>
+        /// <remarks>
+        /// Retrieve the definition of a Cleardown Module complete with its rules.
+        /// </remarks>
+        /// <exception cref="Lusid.Sdk.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="scope">The scope of the Chart of Accounts.</param>
+        /// <param name="code">The code of the Chart of Accounts. Together with the scope this uniquely identifies the Chart of Accounts.</param>
+        /// <param name="cleardownModuleCode">The code of the Cleardown Module.</param>
+        /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
+        /// <returns>Task of ApiResponse (CleardownModuleResponse)</returns>
+        System.Threading.Tasks.Task<ApiResponse<CleardownModuleResponse>> GetCleardownModuleWithHttpInfoAsync(string scope, string code, string cleardownModuleCode, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
         /// <summary>
         /// [EXPERIMENTAL] GetGeneralLedgerProfile: Get a General Ledger Profile.
         /// </summary>
@@ -1028,6 +1306,78 @@ namespace Lusid.Sdk.Api
         /// <returns>Task of ApiResponse (PagedResourceListOfChartOfAccounts)</returns>
         System.Threading.Tasks.Task<ApiResponse<PagedResourceListOfChartOfAccounts>> ListChartsOfAccountsWithHttpInfoAsync(DateTimeOrCutLabel effectiveAt = default(DateTimeOrCutLabel), DateTimeOffset? asAt = default(DateTimeOffset?), string page = default(string), int? start = default(int?), int? limit = default(int?), string filter = default(string), List<string> propertyKeys = default(List<string>), System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
         /// <summary>
+        /// [EXPERIMENTAL] ListCleardownModuleRules: List Cleardown Module Rules
+        /// </summary>
+        /// <remarks>
+        /// List the Rules in a Cleardown Module
+        /// </remarks>
+        /// <exception cref="Lusid.Sdk.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="scope">The scope of the Chart of Accounts.</param>
+        /// <param name="code">The code of the Chart of Accounts. Together with the scope this uniquely identifies the Chart of Accounts.</param>
+        /// <param name="cleardownModuleCode">The code of the cleardown module.</param>
+        /// <param name="asAt">The asAt datetime at which to retrieve the instrument. Defaults to              returning the latest version if not specified. (optional)</param>
+        /// <param name="page">The pagination token to use to continue listing cleardown module rules; this              value is returned from the previous call. If a pagination token is provided, the filter              and asAt fields must not have changed since the original request. Also, if set, a start value cannot be provided. (optional)</param>
+        /// <param name="start">When paginating, skip this number of results. (optional)</param>
+        /// <param name="limit">When paginating, limit the results to this number. Defaults to 100 if not specified. (optional)</param>
+        /// <param name="filter">Expression to filter the results.              For example, to filter on the rule id, specify \&quot;ruleId eq &#39;rule 1&#39;\&quot;. For more information about filtering              results, see https://support.lusid.com/knowledgebase/article/KA-01914. (optional)</param>
+        /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
+        /// <returns>Task of PagedResourceListOfCleardownModuleRule</returns>
+        System.Threading.Tasks.Task<PagedResourceListOfCleardownModuleRule> ListCleardownModuleRulesAsync(string scope, string code, string cleardownModuleCode, DateTimeOffset? asAt = default(DateTimeOffset?), string page = default(string), int? start = default(int?), int? limit = default(int?), string filter = default(string), System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+
+        /// <summary>
+        /// [EXPERIMENTAL] ListCleardownModuleRules: List Cleardown Module Rules
+        /// </summary>
+        /// <remarks>
+        /// List the Rules in a Cleardown Module
+        /// </remarks>
+        /// <exception cref="Lusid.Sdk.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="scope">The scope of the Chart of Accounts.</param>
+        /// <param name="code">The code of the Chart of Accounts. Together with the scope this uniquely identifies the Chart of Accounts.</param>
+        /// <param name="cleardownModuleCode">The code of the cleardown module.</param>
+        /// <param name="asAt">The asAt datetime at which to retrieve the instrument. Defaults to              returning the latest version if not specified. (optional)</param>
+        /// <param name="page">The pagination token to use to continue listing cleardown module rules; this              value is returned from the previous call. If a pagination token is provided, the filter              and asAt fields must not have changed since the original request. Also, if set, a start value cannot be provided. (optional)</param>
+        /// <param name="start">When paginating, skip this number of results. (optional)</param>
+        /// <param name="limit">When paginating, limit the results to this number. Defaults to 100 if not specified. (optional)</param>
+        /// <param name="filter">Expression to filter the results.              For example, to filter on the rule id, specify \&quot;ruleId eq &#39;rule 1&#39;\&quot;. For more information about filtering              results, see https://support.lusid.com/knowledgebase/article/KA-01914. (optional)</param>
+        /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
+        /// <returns>Task of ApiResponse (PagedResourceListOfCleardownModuleRule)</returns>
+        System.Threading.Tasks.Task<ApiResponse<PagedResourceListOfCleardownModuleRule>> ListCleardownModuleRulesWithHttpInfoAsync(string scope, string code, string cleardownModuleCode, DateTimeOffset? asAt = default(DateTimeOffset?), string page = default(string), int? start = default(int?), int? limit = default(int?), string filter = default(string), System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+        /// <summary>
+        /// [EXPERIMENTAL] ListCleardownModules: List Cleardown Modules
+        /// </summary>
+        /// <remarks>
+        /// List all the Cleardown Modules matching particular criteria.
+        /// </remarks>
+        /// <exception cref="Lusid.Sdk.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="scope">The scope of the Chart of Accounts.</param>
+        /// <param name="code">The code of the Chart of Accounts. Together with the scope this uniquely identifies the Chart of Accounts.</param>
+        /// <param name="asAt">The asAt datetime at which to list the Cleardown Module. Defaults to returning the latest version              of each Cleardown Module if not specified. (optional)</param>
+        /// <param name="page">The pagination token to use to continue listing Cleardown Modules; this              value is returned from the previous call. If a pagination token is provided, the filter, effectiveAt              and asAt fields must not have changed since the original request. Also, if set, a start value cannot be provided. (optional)</param>
+        /// <param name="start">When paginating, skip this number of results. (optional)</param>
+        /// <param name="limit">When paginating, limit the results to this number. Defaults to 100 if not specified. (optional)</param>
+        /// <param name="filter">Expression to filter the results.              For example, to filter on the Cleardown Module status, specify \&quot;status eq &#39;Active&#39;\&quot;. For more information about filtering              results, see https://support.lusid.com/knowledgebase/article/KA-01914. (optional)</param>
+        /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
+        /// <returns>Task of PagedResourceListOfCleardownModuleResponse</returns>
+        System.Threading.Tasks.Task<PagedResourceListOfCleardownModuleResponse> ListCleardownModulesAsync(string scope, string code, DateTimeOffset? asAt = default(DateTimeOffset?), string page = default(string), int? start = default(int?), int? limit = default(int?), string filter = default(string), System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+
+        /// <summary>
+        /// [EXPERIMENTAL] ListCleardownModules: List Cleardown Modules
+        /// </summary>
+        /// <remarks>
+        /// List all the Cleardown Modules matching particular criteria.
+        /// </remarks>
+        /// <exception cref="Lusid.Sdk.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="scope">The scope of the Chart of Accounts.</param>
+        /// <param name="code">The code of the Chart of Accounts. Together with the scope this uniquely identifies the Chart of Accounts.</param>
+        /// <param name="asAt">The asAt datetime at which to list the Cleardown Module. Defaults to returning the latest version              of each Cleardown Module if not specified. (optional)</param>
+        /// <param name="page">The pagination token to use to continue listing Cleardown Modules; this              value is returned from the previous call. If a pagination token is provided, the filter, effectiveAt              and asAt fields must not have changed since the original request. Also, if set, a start value cannot be provided. (optional)</param>
+        /// <param name="start">When paginating, skip this number of results. (optional)</param>
+        /// <param name="limit">When paginating, limit the results to this number. Defaults to 100 if not specified. (optional)</param>
+        /// <param name="filter">Expression to filter the results.              For example, to filter on the Cleardown Module status, specify \&quot;status eq &#39;Active&#39;\&quot;. For more information about filtering              results, see https://support.lusid.com/knowledgebase/article/KA-01914. (optional)</param>
+        /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
+        /// <returns>Task of ApiResponse (PagedResourceListOfCleardownModuleResponse)</returns>
+        System.Threading.Tasks.Task<ApiResponse<PagedResourceListOfCleardownModuleResponse>> ListCleardownModulesWithHttpInfoAsync(string scope, string code, DateTimeOffset? asAt = default(DateTimeOffset?), string page = default(string), int? start = default(int?), int? limit = default(int?), string filter = default(string), System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+        /// <summary>
         /// [EXPERIMENTAL] ListGeneralLedgerProfiles: List General Ledger Profiles.
         /// </summary>
         /// <remarks>
@@ -1134,6 +1484,64 @@ namespace Lusid.Sdk.Api
         /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
         /// <returns>Task of ApiResponse (PagedResourceListOfPostingModuleResponse)</returns>
         System.Threading.Tasks.Task<ApiResponse<PagedResourceListOfPostingModuleResponse>> ListPostingModulesWithHttpInfoAsync(string scope, string code, DateTimeOffset? asAt = default(DateTimeOffset?), string page = default(string), int? start = default(int?), int? limit = default(int?), string filter = default(string), System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+        /// <summary>
+        /// [EXPERIMENTAL] SetCleardownModuleDetails: Set the details of a Cleardown Module
+        /// </summary>
+        /// <remarks>
+        /// Update the given Cleardown Module details.
+        /// </remarks>
+        /// <exception cref="Lusid.Sdk.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="scope">The scope of the Chart of Accounts.</param>
+        /// <param name="code">The code of the Chart of Accounts. Together with the scope this uniquely identifies the Chart of Accounts.</param>
+        /// <param name="cleardownModuleCode">The code of the Cleardown Module to be updated.</param>
+        /// <param name="cleardownModuleDetails">The new details for the Cleardown Module.</param>
+        /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
+        /// <returns>Task of CleardownModuleResponse</returns>
+        System.Threading.Tasks.Task<CleardownModuleResponse> SetCleardownModuleDetailsAsync(string scope, string code, string cleardownModuleCode, CleardownModuleDetails cleardownModuleDetails, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+
+        /// <summary>
+        /// [EXPERIMENTAL] SetCleardownModuleDetails: Set the details of a Cleardown Module
+        /// </summary>
+        /// <remarks>
+        /// Update the given Cleardown Module details.
+        /// </remarks>
+        /// <exception cref="Lusid.Sdk.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="scope">The scope of the Chart of Accounts.</param>
+        /// <param name="code">The code of the Chart of Accounts. Together with the scope this uniquely identifies the Chart of Accounts.</param>
+        /// <param name="cleardownModuleCode">The code of the Cleardown Module to be updated.</param>
+        /// <param name="cleardownModuleDetails">The new details for the Cleardown Module.</param>
+        /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
+        /// <returns>Task of ApiResponse (CleardownModuleResponse)</returns>
+        System.Threading.Tasks.Task<ApiResponse<CleardownModuleResponse>> SetCleardownModuleDetailsWithHttpInfoAsync(string scope, string code, string cleardownModuleCode, CleardownModuleDetails cleardownModuleDetails, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+        /// <summary>
+        /// [EXPERIMENTAL] SetCleardownModuleRules: Set the rules of a Cleardown Module
+        /// </summary>
+        /// <remarks>
+        /// Set the given Cleardown Modules rules, this will replace the existing set of rules for the cleardown module.
+        /// </remarks>
+        /// <exception cref="Lusid.Sdk.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="scope">The scope of the Chart of Accounts.</param>
+        /// <param name="code">The code of the Chart of Accounts. Together with the scope this uniquely identifies the Chart of Accounts.</param>
+        /// <param name="cleardownModuleCode">The code of the Cleardown Module to be updated.</param>
+        /// <param name="cleardownModuleRule">The new rule set for the Cleardown Module.</param>
+        /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
+        /// <returns>Task of CleardownModuleRulesUpdatedResponse</returns>
+        System.Threading.Tasks.Task<CleardownModuleRulesUpdatedResponse> SetCleardownModuleRulesAsync(string scope, string code, string cleardownModuleCode, List<CleardownModuleRule> cleardownModuleRule, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+
+        /// <summary>
+        /// [EXPERIMENTAL] SetCleardownModuleRules: Set the rules of a Cleardown Module
+        /// </summary>
+        /// <remarks>
+        /// Set the given Cleardown Modules rules, this will replace the existing set of rules for the cleardown module.
+        /// </remarks>
+        /// <exception cref="Lusid.Sdk.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="scope">The scope of the Chart of Accounts.</param>
+        /// <param name="code">The code of the Chart of Accounts. Together with the scope this uniquely identifies the Chart of Accounts.</param>
+        /// <param name="cleardownModuleCode">The code of the Cleardown Module to be updated.</param>
+        /// <param name="cleardownModuleRule">The new rule set for the Cleardown Module.</param>
+        /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
+        /// <returns>Task of ApiResponse (CleardownModuleRulesUpdatedResponse)</returns>
+        System.Threading.Tasks.Task<ApiResponse<CleardownModuleRulesUpdatedResponse>> SetCleardownModuleRulesWithHttpInfoAsync(string scope, string code, string cleardownModuleCode, List<CleardownModuleRule> cleardownModuleRule, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
         /// <summary>
         /// [EXPERIMENTAL] SetGeneralLedgerProfileMappings: Sets the General Ledger Profile Mappings.
         /// </summary>
@@ -1576,6 +1984,181 @@ namespace Lusid.Sdk.Api
             if (this.ExceptionFactory != null)
             {
                 Exception _exception = this.ExceptionFactory("CreateChartOfAccounts", localVarResponse);
+                if (_exception != null) throw _exception;
+            }
+
+            return localVarResponse;
+        }
+
+        /// <summary>
+        /// [EXPERIMENTAL] CreateCleardownModule: Create a Cleardown Module Create the given Cleardown Module.
+        /// </summary>
+        /// <exception cref="Lusid.Sdk.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="scope">The scope of the Chart of Accounts.</param>
+        /// <param name="code">The code of the Chart of Accounts. Together with the scope this uniquely identifies the Chart of Accounts.</param>
+        /// <param name="cleardownModuleRequest">The definition of the Cleardown Module.</param>
+        /// <returns>CleardownModuleResponse</returns>
+        public CleardownModuleResponse CreateCleardownModule(string scope, string code, CleardownModuleRequest cleardownModuleRequest)
+        {
+            Lusid.Sdk.Client.ApiResponse<CleardownModuleResponse> localVarResponse = CreateCleardownModuleWithHttpInfo(scope, code, cleardownModuleRequest);
+            return localVarResponse.Data;
+        }
+
+        /// <summary>
+        /// [EXPERIMENTAL] CreateCleardownModule: Create a Cleardown Module Create the given Cleardown Module.
+        /// </summary>
+        /// <exception cref="Lusid.Sdk.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="scope">The scope of the Chart of Accounts.</param>
+        /// <param name="code">The code of the Chart of Accounts. Together with the scope this uniquely identifies the Chart of Accounts.</param>
+        /// <param name="cleardownModuleRequest">The definition of the Cleardown Module.</param>
+        /// <returns>ApiResponse of CleardownModuleResponse</returns>
+        public Lusid.Sdk.Client.ApiResponse<CleardownModuleResponse> CreateCleardownModuleWithHttpInfo(string scope, string code, CleardownModuleRequest cleardownModuleRequest)
+        {
+            // verify the required parameter 'scope' is set
+            if (scope == null)
+                throw new Lusid.Sdk.Client.ApiException(400, "Missing required parameter 'scope' when calling ChartOfAccountsApi->CreateCleardownModule");
+
+            // verify the required parameter 'code' is set
+            if (code == null)
+                throw new Lusid.Sdk.Client.ApiException(400, "Missing required parameter 'code' when calling ChartOfAccountsApi->CreateCleardownModule");
+
+            // verify the required parameter 'cleardownModuleRequest' is set
+            if (cleardownModuleRequest == null)
+                throw new Lusid.Sdk.Client.ApiException(400, "Missing required parameter 'cleardownModuleRequest' when calling ChartOfAccountsApi->CreateCleardownModule");
+
+            Lusid.Sdk.Client.RequestOptions localVarRequestOptions = new Lusid.Sdk.Client.RequestOptions();
+
+            String[] _contentTypes = new String[] {
+                "application/json-patch+json",
+                "application/json",
+                "text/json",
+                "application/_*+json"
+            };
+
+            // to determine the Accept header
+            String[] _accepts = new String[] {
+                "text/plain",
+                "application/json",
+                "text/json"
+            };
+
+            var localVarContentType = Lusid.Sdk.Client.ClientUtils.SelectHeaderContentType(_contentTypes);
+            if (localVarContentType != null) localVarRequestOptions.HeaderParameters.Add("Content-Type", localVarContentType);
+
+            var localVarAccept = Lusid.Sdk.Client.ClientUtils.SelectHeaderAccept(_accepts);
+            if (localVarAccept != null) localVarRequestOptions.HeaderParameters.Add("Accept", localVarAccept);
+
+            localVarRequestOptions.PathParameters.Add("scope", Lusid.Sdk.Client.ClientUtils.ParameterToString(scope)); // path parameter
+            localVarRequestOptions.PathParameters.Add("code", Lusid.Sdk.Client.ClientUtils.ParameterToString(code)); // path parameter
+            localVarRequestOptions.Data = cleardownModuleRequest;
+
+            // authentication (oauth2) required
+            // oauth required
+            if (!String.IsNullOrEmpty(this.Configuration.AccessToken))
+            {
+                localVarRequestOptions.HeaderParameters.Add("Authorization", "Bearer " + this.Configuration.AccessToken);
+            }
+
+            //  set the LUSID header
+            localVarRequestOptions.HeaderParameters.Add("X-LUSID-Sdk-Language", "C#");
+            localVarRequestOptions.HeaderParameters.Add("X-LUSID-Sdk-Version", "1.1.170");
+
+            // make the HTTP request
+            var localVarResponse = this.Client.Post<CleardownModuleResponse>("/api/chartofaccounts/{scope}/{code}/cleardownmodules", localVarRequestOptions, this.Configuration);
+
+            if (this.ExceptionFactory != null)
+            {
+                Exception _exception = this.ExceptionFactory("CreateCleardownModule", localVarResponse);
+                if (_exception != null) throw _exception;
+            }
+
+            return localVarResponse;
+        }
+
+        /// <summary>
+        /// [EXPERIMENTAL] CreateCleardownModule: Create a Cleardown Module Create the given Cleardown Module.
+        /// </summary>
+        /// <exception cref="Lusid.Sdk.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="scope">The scope of the Chart of Accounts.</param>
+        /// <param name="code">The code of the Chart of Accounts. Together with the scope this uniquely identifies the Chart of Accounts.</param>
+        /// <param name="cleardownModuleRequest">The definition of the Cleardown Module.</param>
+        /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
+        /// <returns>Task of CleardownModuleResponse</returns>
+        public async System.Threading.Tasks.Task<CleardownModuleResponse> CreateCleardownModuleAsync(string scope, string code, CleardownModuleRequest cleardownModuleRequest, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
+        {
+            Lusid.Sdk.Client.ApiResponse<CleardownModuleResponse> localVarResponse = await CreateCleardownModuleWithHttpInfoAsync(scope, code, cleardownModuleRequest, cancellationToken).ConfigureAwait(false);
+            return localVarResponse.Data;
+        }
+
+        /// <summary>
+        /// [EXPERIMENTAL] CreateCleardownModule: Create a Cleardown Module Create the given Cleardown Module.
+        /// </summary>
+        /// <exception cref="Lusid.Sdk.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="scope">The scope of the Chart of Accounts.</param>
+        /// <param name="code">The code of the Chart of Accounts. Together with the scope this uniquely identifies the Chart of Accounts.</param>
+        /// <param name="cleardownModuleRequest">The definition of the Cleardown Module.</param>
+        /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
+        /// <returns>Task of ApiResponse (CleardownModuleResponse)</returns>
+        public async System.Threading.Tasks.Task<Lusid.Sdk.Client.ApiResponse<CleardownModuleResponse>> CreateCleardownModuleWithHttpInfoAsync(string scope, string code, CleardownModuleRequest cleardownModuleRequest, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
+        {
+            // verify the required parameter 'scope' is set
+            if (scope == null)
+                throw new Lusid.Sdk.Client.ApiException(400, "Missing required parameter 'scope' when calling ChartOfAccountsApi->CreateCleardownModule");
+
+            // verify the required parameter 'code' is set
+            if (code == null)
+                throw new Lusid.Sdk.Client.ApiException(400, "Missing required parameter 'code' when calling ChartOfAccountsApi->CreateCleardownModule");
+
+            // verify the required parameter 'cleardownModuleRequest' is set
+            if (cleardownModuleRequest == null)
+                throw new Lusid.Sdk.Client.ApiException(400, "Missing required parameter 'cleardownModuleRequest' when calling ChartOfAccountsApi->CreateCleardownModule");
+
+
+            Lusid.Sdk.Client.RequestOptions localVarRequestOptions = new Lusid.Sdk.Client.RequestOptions();
+
+            String[] _contentTypes = new String[] {
+                "application/json-patch+json", 
+                "application/json", 
+                "text/json", 
+                "application/_*+json"
+            };
+
+            // to determine the Accept header
+            String[] _accepts = new String[] {
+                "text/plain",
+                "application/json",
+                "text/json"
+            };
+
+
+            var localVarContentType = Lusid.Sdk.Client.ClientUtils.SelectHeaderContentType(_contentTypes);
+            if (localVarContentType != null) localVarRequestOptions.HeaderParameters.Add("Content-Type", localVarContentType);
+
+            var localVarAccept = Lusid.Sdk.Client.ClientUtils.SelectHeaderAccept(_accepts);
+            if (localVarAccept != null) localVarRequestOptions.HeaderParameters.Add("Accept", localVarAccept);
+
+            localVarRequestOptions.PathParameters.Add("scope", Lusid.Sdk.Client.ClientUtils.ParameterToString(scope)); // path parameter
+            localVarRequestOptions.PathParameters.Add("code", Lusid.Sdk.Client.ClientUtils.ParameterToString(code)); // path parameter
+            localVarRequestOptions.Data = cleardownModuleRequest;
+
+            // authentication (oauth2) required
+            // oauth required
+            if (!String.IsNullOrEmpty(this.Configuration.AccessToken))
+            {
+                localVarRequestOptions.HeaderParameters.Add("Authorization", "Bearer " + this.Configuration.AccessToken);
+            }
+
+            //  set the LUSID header
+            localVarRequestOptions.HeaderParameters.Add("X-LUSID-Sdk-Language", "C#");
+            localVarRequestOptions.HeaderParameters.Add("X-LUSID-Sdk-Version", "1.1.170");
+
+            // make the HTTP request
+
+            var localVarResponse = await this.AsynchronousClient.PostAsync<CleardownModuleResponse>("/api/chartofaccounts/{scope}/{code}/cleardownmodules", localVarRequestOptions, this.Configuration, cancellationToken).ConfigureAwait(false);
+
+            if (this.ExceptionFactory != null)
+            {
+                Exception _exception = this.ExceptionFactory("CreateCleardownModule", localVarResponse);
                 if (_exception != null) throw _exception;
             }
 
@@ -2266,6 +2849,173 @@ namespace Lusid.Sdk.Api
             if (this.ExceptionFactory != null)
             {
                 Exception _exception = this.ExceptionFactory("DeleteChartOfAccounts", localVarResponse);
+                if (_exception != null) throw _exception;
+            }
+
+            return localVarResponse;
+        }
+
+        /// <summary>
+        /// [EXPERIMENTAL] DeleteCleardownModule: Delete a Cleardown Module. Delete the given Cleardown Module.
+        /// </summary>
+        /// <exception cref="Lusid.Sdk.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="scope">The scope of the Chart of Accounts.</param>
+        /// <param name="code">The code of the Chart of Accounts. Together with the scope this uniquely identifies the Chart of Accounts.</param>
+        /// <param name="cleardownModuleCode">The code of the Cleardown Module to be deleted.</param>
+        /// <returns>DeletedEntityResponse</returns>
+        public DeletedEntityResponse DeleteCleardownModule(string scope, string code, string cleardownModuleCode)
+        {
+            Lusid.Sdk.Client.ApiResponse<DeletedEntityResponse> localVarResponse = DeleteCleardownModuleWithHttpInfo(scope, code, cleardownModuleCode);
+            return localVarResponse.Data;
+        }
+
+        /// <summary>
+        /// [EXPERIMENTAL] DeleteCleardownModule: Delete a Cleardown Module. Delete the given Cleardown Module.
+        /// </summary>
+        /// <exception cref="Lusid.Sdk.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="scope">The scope of the Chart of Accounts.</param>
+        /// <param name="code">The code of the Chart of Accounts. Together with the scope this uniquely identifies the Chart of Accounts.</param>
+        /// <param name="cleardownModuleCode">The code of the Cleardown Module to be deleted.</param>
+        /// <returns>ApiResponse of DeletedEntityResponse</returns>
+        public Lusid.Sdk.Client.ApiResponse<DeletedEntityResponse> DeleteCleardownModuleWithHttpInfo(string scope, string code, string cleardownModuleCode)
+        {
+            // verify the required parameter 'scope' is set
+            if (scope == null)
+                throw new Lusid.Sdk.Client.ApiException(400, "Missing required parameter 'scope' when calling ChartOfAccountsApi->DeleteCleardownModule");
+
+            // verify the required parameter 'code' is set
+            if (code == null)
+                throw new Lusid.Sdk.Client.ApiException(400, "Missing required parameter 'code' when calling ChartOfAccountsApi->DeleteCleardownModule");
+
+            // verify the required parameter 'cleardownModuleCode' is set
+            if (cleardownModuleCode == null)
+                throw new Lusid.Sdk.Client.ApiException(400, "Missing required parameter 'cleardownModuleCode' when calling ChartOfAccountsApi->DeleteCleardownModule");
+
+            Lusid.Sdk.Client.RequestOptions localVarRequestOptions = new Lusid.Sdk.Client.RequestOptions();
+
+            String[] _contentTypes = new String[] {
+            };
+
+            // to determine the Accept header
+            String[] _accepts = new String[] {
+                "text/plain",
+                "application/json",
+                "text/json"
+            };
+
+            var localVarContentType = Lusid.Sdk.Client.ClientUtils.SelectHeaderContentType(_contentTypes);
+            if (localVarContentType != null) localVarRequestOptions.HeaderParameters.Add("Content-Type", localVarContentType);
+
+            var localVarAccept = Lusid.Sdk.Client.ClientUtils.SelectHeaderAccept(_accepts);
+            if (localVarAccept != null) localVarRequestOptions.HeaderParameters.Add("Accept", localVarAccept);
+
+            localVarRequestOptions.PathParameters.Add("scope", Lusid.Sdk.Client.ClientUtils.ParameterToString(scope)); // path parameter
+            localVarRequestOptions.PathParameters.Add("code", Lusid.Sdk.Client.ClientUtils.ParameterToString(code)); // path parameter
+            localVarRequestOptions.PathParameters.Add("cleardownModuleCode", Lusid.Sdk.Client.ClientUtils.ParameterToString(cleardownModuleCode)); // path parameter
+
+            // authentication (oauth2) required
+            // oauth required
+            if (!String.IsNullOrEmpty(this.Configuration.AccessToken))
+            {
+                localVarRequestOptions.HeaderParameters.Add("Authorization", "Bearer " + this.Configuration.AccessToken);
+            }
+
+            //  set the LUSID header
+            localVarRequestOptions.HeaderParameters.Add("X-LUSID-Sdk-Language", "C#");
+            localVarRequestOptions.HeaderParameters.Add("X-LUSID-Sdk-Version", "1.1.170");
+
+            // make the HTTP request
+            var localVarResponse = this.Client.Delete<DeletedEntityResponse>("/api/chartofaccounts/{scope}/{code}/cleardownmodules/{cleardownModuleCode}", localVarRequestOptions, this.Configuration);
+
+            if (this.ExceptionFactory != null)
+            {
+                Exception _exception = this.ExceptionFactory("DeleteCleardownModule", localVarResponse);
+                if (_exception != null) throw _exception;
+            }
+
+            return localVarResponse;
+        }
+
+        /// <summary>
+        /// [EXPERIMENTAL] DeleteCleardownModule: Delete a Cleardown Module. Delete the given Cleardown Module.
+        /// </summary>
+        /// <exception cref="Lusid.Sdk.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="scope">The scope of the Chart of Accounts.</param>
+        /// <param name="code">The code of the Chart of Accounts. Together with the scope this uniquely identifies the Chart of Accounts.</param>
+        /// <param name="cleardownModuleCode">The code of the Cleardown Module to be deleted.</param>
+        /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
+        /// <returns>Task of DeletedEntityResponse</returns>
+        public async System.Threading.Tasks.Task<DeletedEntityResponse> DeleteCleardownModuleAsync(string scope, string code, string cleardownModuleCode, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
+        {
+            Lusid.Sdk.Client.ApiResponse<DeletedEntityResponse> localVarResponse = await DeleteCleardownModuleWithHttpInfoAsync(scope, code, cleardownModuleCode, cancellationToken).ConfigureAwait(false);
+            return localVarResponse.Data;
+        }
+
+        /// <summary>
+        /// [EXPERIMENTAL] DeleteCleardownModule: Delete a Cleardown Module. Delete the given Cleardown Module.
+        /// </summary>
+        /// <exception cref="Lusid.Sdk.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="scope">The scope of the Chart of Accounts.</param>
+        /// <param name="code">The code of the Chart of Accounts. Together with the scope this uniquely identifies the Chart of Accounts.</param>
+        /// <param name="cleardownModuleCode">The code of the Cleardown Module to be deleted.</param>
+        /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
+        /// <returns>Task of ApiResponse (DeletedEntityResponse)</returns>
+        public async System.Threading.Tasks.Task<Lusid.Sdk.Client.ApiResponse<DeletedEntityResponse>> DeleteCleardownModuleWithHttpInfoAsync(string scope, string code, string cleardownModuleCode, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
+        {
+            // verify the required parameter 'scope' is set
+            if (scope == null)
+                throw new Lusid.Sdk.Client.ApiException(400, "Missing required parameter 'scope' when calling ChartOfAccountsApi->DeleteCleardownModule");
+
+            // verify the required parameter 'code' is set
+            if (code == null)
+                throw new Lusid.Sdk.Client.ApiException(400, "Missing required parameter 'code' when calling ChartOfAccountsApi->DeleteCleardownModule");
+
+            // verify the required parameter 'cleardownModuleCode' is set
+            if (cleardownModuleCode == null)
+                throw new Lusid.Sdk.Client.ApiException(400, "Missing required parameter 'cleardownModuleCode' when calling ChartOfAccountsApi->DeleteCleardownModule");
+
+
+            Lusid.Sdk.Client.RequestOptions localVarRequestOptions = new Lusid.Sdk.Client.RequestOptions();
+
+            String[] _contentTypes = new String[] {
+            };
+
+            // to determine the Accept header
+            String[] _accepts = new String[] {
+                "text/plain",
+                "application/json",
+                "text/json"
+            };
+
+
+            var localVarContentType = Lusid.Sdk.Client.ClientUtils.SelectHeaderContentType(_contentTypes);
+            if (localVarContentType != null) localVarRequestOptions.HeaderParameters.Add("Content-Type", localVarContentType);
+
+            var localVarAccept = Lusid.Sdk.Client.ClientUtils.SelectHeaderAccept(_accepts);
+            if (localVarAccept != null) localVarRequestOptions.HeaderParameters.Add("Accept", localVarAccept);
+
+            localVarRequestOptions.PathParameters.Add("scope", Lusid.Sdk.Client.ClientUtils.ParameterToString(scope)); // path parameter
+            localVarRequestOptions.PathParameters.Add("code", Lusid.Sdk.Client.ClientUtils.ParameterToString(code)); // path parameter
+            localVarRequestOptions.PathParameters.Add("cleardownModuleCode", Lusid.Sdk.Client.ClientUtils.ParameterToString(cleardownModuleCode)); // path parameter
+
+            // authentication (oauth2) required
+            // oauth required
+            if (!String.IsNullOrEmpty(this.Configuration.AccessToken))
+            {
+                localVarRequestOptions.HeaderParameters.Add("Authorization", "Bearer " + this.Configuration.AccessToken);
+            }
+
+            //  set the LUSID header
+            localVarRequestOptions.HeaderParameters.Add("X-LUSID-Sdk-Language", "C#");
+            localVarRequestOptions.HeaderParameters.Add("X-LUSID-Sdk-Version", "1.1.170");
+
+            // make the HTTP request
+
+            var localVarResponse = await this.AsynchronousClient.DeleteAsync<DeletedEntityResponse>("/api/chartofaccounts/{scope}/{code}/cleardownmodules/{cleardownModuleCode}", localVarRequestOptions, this.Configuration, cancellationToken).ConfigureAwait(false);
+
+            if (this.ExceptionFactory != null)
+            {
+                Exception _exception = this.ExceptionFactory("DeleteCleardownModule", localVarResponse);
                 if (_exception != null) throw _exception;
             }
 
@@ -2992,6 +3742,173 @@ namespace Lusid.Sdk.Api
             if (this.ExceptionFactory != null)
             {
                 Exception _exception = this.ExceptionFactory("GetChartOfAccounts", localVarResponse);
+                if (_exception != null) throw _exception;
+            }
+
+            return localVarResponse;
+        }
+
+        /// <summary>
+        /// [EXPERIMENTAL] GetCleardownModule: Get a Cleardown Module Retrieve the definition of a Cleardown Module complete with its rules.
+        /// </summary>
+        /// <exception cref="Lusid.Sdk.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="scope">The scope of the Chart of Accounts.</param>
+        /// <param name="code">The code of the Chart of Accounts. Together with the scope this uniquely identifies the Chart of Accounts.</param>
+        /// <param name="cleardownModuleCode">The code of the Cleardown Module.</param>
+        /// <returns>CleardownModuleResponse</returns>
+        public CleardownModuleResponse GetCleardownModule(string scope, string code, string cleardownModuleCode)
+        {
+            Lusid.Sdk.Client.ApiResponse<CleardownModuleResponse> localVarResponse = GetCleardownModuleWithHttpInfo(scope, code, cleardownModuleCode);
+            return localVarResponse.Data;
+        }
+
+        /// <summary>
+        /// [EXPERIMENTAL] GetCleardownModule: Get a Cleardown Module Retrieve the definition of a Cleardown Module complete with its rules.
+        /// </summary>
+        /// <exception cref="Lusid.Sdk.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="scope">The scope of the Chart of Accounts.</param>
+        /// <param name="code">The code of the Chart of Accounts. Together with the scope this uniquely identifies the Chart of Accounts.</param>
+        /// <param name="cleardownModuleCode">The code of the Cleardown Module.</param>
+        /// <returns>ApiResponse of CleardownModuleResponse</returns>
+        public Lusid.Sdk.Client.ApiResponse<CleardownModuleResponse> GetCleardownModuleWithHttpInfo(string scope, string code, string cleardownModuleCode)
+        {
+            // verify the required parameter 'scope' is set
+            if (scope == null)
+                throw new Lusid.Sdk.Client.ApiException(400, "Missing required parameter 'scope' when calling ChartOfAccountsApi->GetCleardownModule");
+
+            // verify the required parameter 'code' is set
+            if (code == null)
+                throw new Lusid.Sdk.Client.ApiException(400, "Missing required parameter 'code' when calling ChartOfAccountsApi->GetCleardownModule");
+
+            // verify the required parameter 'cleardownModuleCode' is set
+            if (cleardownModuleCode == null)
+                throw new Lusid.Sdk.Client.ApiException(400, "Missing required parameter 'cleardownModuleCode' when calling ChartOfAccountsApi->GetCleardownModule");
+
+            Lusid.Sdk.Client.RequestOptions localVarRequestOptions = new Lusid.Sdk.Client.RequestOptions();
+
+            String[] _contentTypes = new String[] {
+            };
+
+            // to determine the Accept header
+            String[] _accepts = new String[] {
+                "text/plain",
+                "application/json",
+                "text/json"
+            };
+
+            var localVarContentType = Lusid.Sdk.Client.ClientUtils.SelectHeaderContentType(_contentTypes);
+            if (localVarContentType != null) localVarRequestOptions.HeaderParameters.Add("Content-Type", localVarContentType);
+
+            var localVarAccept = Lusid.Sdk.Client.ClientUtils.SelectHeaderAccept(_accepts);
+            if (localVarAccept != null) localVarRequestOptions.HeaderParameters.Add("Accept", localVarAccept);
+
+            localVarRequestOptions.PathParameters.Add("scope", Lusid.Sdk.Client.ClientUtils.ParameterToString(scope)); // path parameter
+            localVarRequestOptions.PathParameters.Add("code", Lusid.Sdk.Client.ClientUtils.ParameterToString(code)); // path parameter
+            localVarRequestOptions.PathParameters.Add("cleardownModuleCode", Lusid.Sdk.Client.ClientUtils.ParameterToString(cleardownModuleCode)); // path parameter
+
+            // authentication (oauth2) required
+            // oauth required
+            if (!String.IsNullOrEmpty(this.Configuration.AccessToken))
+            {
+                localVarRequestOptions.HeaderParameters.Add("Authorization", "Bearer " + this.Configuration.AccessToken);
+            }
+
+            //  set the LUSID header
+            localVarRequestOptions.HeaderParameters.Add("X-LUSID-Sdk-Language", "C#");
+            localVarRequestOptions.HeaderParameters.Add("X-LUSID-Sdk-Version", "1.1.170");
+
+            // make the HTTP request
+            var localVarResponse = this.Client.Get<CleardownModuleResponse>("/api/chartofaccounts/{scope}/{code}/cleardownmodules/{cleardownModuleCode}", localVarRequestOptions, this.Configuration);
+
+            if (this.ExceptionFactory != null)
+            {
+                Exception _exception = this.ExceptionFactory("GetCleardownModule", localVarResponse);
+                if (_exception != null) throw _exception;
+            }
+
+            return localVarResponse;
+        }
+
+        /// <summary>
+        /// [EXPERIMENTAL] GetCleardownModule: Get a Cleardown Module Retrieve the definition of a Cleardown Module complete with its rules.
+        /// </summary>
+        /// <exception cref="Lusid.Sdk.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="scope">The scope of the Chart of Accounts.</param>
+        /// <param name="code">The code of the Chart of Accounts. Together with the scope this uniquely identifies the Chart of Accounts.</param>
+        /// <param name="cleardownModuleCode">The code of the Cleardown Module.</param>
+        /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
+        /// <returns>Task of CleardownModuleResponse</returns>
+        public async System.Threading.Tasks.Task<CleardownModuleResponse> GetCleardownModuleAsync(string scope, string code, string cleardownModuleCode, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
+        {
+            Lusid.Sdk.Client.ApiResponse<CleardownModuleResponse> localVarResponse = await GetCleardownModuleWithHttpInfoAsync(scope, code, cleardownModuleCode, cancellationToken).ConfigureAwait(false);
+            return localVarResponse.Data;
+        }
+
+        /// <summary>
+        /// [EXPERIMENTAL] GetCleardownModule: Get a Cleardown Module Retrieve the definition of a Cleardown Module complete with its rules.
+        /// </summary>
+        /// <exception cref="Lusid.Sdk.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="scope">The scope of the Chart of Accounts.</param>
+        /// <param name="code">The code of the Chart of Accounts. Together with the scope this uniquely identifies the Chart of Accounts.</param>
+        /// <param name="cleardownModuleCode">The code of the Cleardown Module.</param>
+        /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
+        /// <returns>Task of ApiResponse (CleardownModuleResponse)</returns>
+        public async System.Threading.Tasks.Task<Lusid.Sdk.Client.ApiResponse<CleardownModuleResponse>> GetCleardownModuleWithHttpInfoAsync(string scope, string code, string cleardownModuleCode, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
+        {
+            // verify the required parameter 'scope' is set
+            if (scope == null)
+                throw new Lusid.Sdk.Client.ApiException(400, "Missing required parameter 'scope' when calling ChartOfAccountsApi->GetCleardownModule");
+
+            // verify the required parameter 'code' is set
+            if (code == null)
+                throw new Lusid.Sdk.Client.ApiException(400, "Missing required parameter 'code' when calling ChartOfAccountsApi->GetCleardownModule");
+
+            // verify the required parameter 'cleardownModuleCode' is set
+            if (cleardownModuleCode == null)
+                throw new Lusid.Sdk.Client.ApiException(400, "Missing required parameter 'cleardownModuleCode' when calling ChartOfAccountsApi->GetCleardownModule");
+
+
+            Lusid.Sdk.Client.RequestOptions localVarRequestOptions = new Lusid.Sdk.Client.RequestOptions();
+
+            String[] _contentTypes = new String[] {
+            };
+
+            // to determine the Accept header
+            String[] _accepts = new String[] {
+                "text/plain",
+                "application/json",
+                "text/json"
+            };
+
+
+            var localVarContentType = Lusid.Sdk.Client.ClientUtils.SelectHeaderContentType(_contentTypes);
+            if (localVarContentType != null) localVarRequestOptions.HeaderParameters.Add("Content-Type", localVarContentType);
+
+            var localVarAccept = Lusid.Sdk.Client.ClientUtils.SelectHeaderAccept(_accepts);
+            if (localVarAccept != null) localVarRequestOptions.HeaderParameters.Add("Accept", localVarAccept);
+
+            localVarRequestOptions.PathParameters.Add("scope", Lusid.Sdk.Client.ClientUtils.ParameterToString(scope)); // path parameter
+            localVarRequestOptions.PathParameters.Add("code", Lusid.Sdk.Client.ClientUtils.ParameterToString(code)); // path parameter
+            localVarRequestOptions.PathParameters.Add("cleardownModuleCode", Lusid.Sdk.Client.ClientUtils.ParameterToString(cleardownModuleCode)); // path parameter
+
+            // authentication (oauth2) required
+            // oauth required
+            if (!String.IsNullOrEmpty(this.Configuration.AccessToken))
+            {
+                localVarRequestOptions.HeaderParameters.Add("Authorization", "Bearer " + this.Configuration.AccessToken);
+            }
+
+            //  set the LUSID header
+            localVarRequestOptions.HeaderParameters.Add("X-LUSID-Sdk-Language", "C#");
+            localVarRequestOptions.HeaderParameters.Add("X-LUSID-Sdk-Version", "1.1.170");
+
+            // make the HTTP request
+
+            var localVarResponse = await this.AsynchronousClient.GetAsync<CleardownModuleResponse>("/api/chartofaccounts/{scope}/{code}/cleardownmodules/{cleardownModuleCode}", localVarRequestOptions, this.Configuration, cancellationToken).ConfigureAwait(false);
+
+            if (this.ExceptionFactory != null)
+            {
+                Exception _exception = this.ExceptionFactory("GetCleardownModule", localVarResponse);
                 if (_exception != null) throw _exception;
             }
 
@@ -3779,6 +4696,446 @@ namespace Lusid.Sdk.Api
         }
 
         /// <summary>
+        /// [EXPERIMENTAL] ListCleardownModuleRules: List Cleardown Module Rules List the Rules in a Cleardown Module
+        /// </summary>
+        /// <exception cref="Lusid.Sdk.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="scope">The scope of the Chart of Accounts.</param>
+        /// <param name="code">The code of the Chart of Accounts. Together with the scope this uniquely identifies the Chart of Accounts.</param>
+        /// <param name="cleardownModuleCode">The code of the cleardown module.</param>
+        /// <param name="asAt">The asAt datetime at which to retrieve the instrument. Defaults to              returning the latest version if not specified. (optional)</param>
+        /// <param name="page">The pagination token to use to continue listing cleardown module rules; this              value is returned from the previous call. If a pagination token is provided, the filter              and asAt fields must not have changed since the original request. Also, if set, a start value cannot be provided. (optional)</param>
+        /// <param name="start">When paginating, skip this number of results. (optional)</param>
+        /// <param name="limit">When paginating, limit the results to this number. Defaults to 100 if not specified. (optional)</param>
+        /// <param name="filter">Expression to filter the results.              For example, to filter on the rule id, specify \&quot;ruleId eq &#39;rule 1&#39;\&quot;. For more information about filtering              results, see https://support.lusid.com/knowledgebase/article/KA-01914. (optional)</param>
+        /// <returns>PagedResourceListOfCleardownModuleRule</returns>
+        public PagedResourceListOfCleardownModuleRule ListCleardownModuleRules(string scope, string code, string cleardownModuleCode, DateTimeOffset? asAt = default(DateTimeOffset?), string page = default(string), int? start = default(int?), int? limit = default(int?), string filter = default(string))
+        {
+            Lusid.Sdk.Client.ApiResponse<PagedResourceListOfCleardownModuleRule> localVarResponse = ListCleardownModuleRulesWithHttpInfo(scope, code, cleardownModuleCode, asAt, page, start, limit, filter);
+            return localVarResponse.Data;
+        }
+
+        /// <summary>
+        /// [EXPERIMENTAL] ListCleardownModuleRules: List Cleardown Module Rules List the Rules in a Cleardown Module
+        /// </summary>
+        /// <exception cref="Lusid.Sdk.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="scope">The scope of the Chart of Accounts.</param>
+        /// <param name="code">The code of the Chart of Accounts. Together with the scope this uniquely identifies the Chart of Accounts.</param>
+        /// <param name="cleardownModuleCode">The code of the cleardown module.</param>
+        /// <param name="asAt">The asAt datetime at which to retrieve the instrument. Defaults to              returning the latest version if not specified. (optional)</param>
+        /// <param name="page">The pagination token to use to continue listing cleardown module rules; this              value is returned from the previous call. If a pagination token is provided, the filter              and asAt fields must not have changed since the original request. Also, if set, a start value cannot be provided. (optional)</param>
+        /// <param name="start">When paginating, skip this number of results. (optional)</param>
+        /// <param name="limit">When paginating, limit the results to this number. Defaults to 100 if not specified. (optional)</param>
+        /// <param name="filter">Expression to filter the results.              For example, to filter on the rule id, specify \&quot;ruleId eq &#39;rule 1&#39;\&quot;. For more information about filtering              results, see https://support.lusid.com/knowledgebase/article/KA-01914. (optional)</param>
+        /// <returns>ApiResponse of PagedResourceListOfCleardownModuleRule</returns>
+        public Lusid.Sdk.Client.ApiResponse<PagedResourceListOfCleardownModuleRule> ListCleardownModuleRulesWithHttpInfo(string scope, string code, string cleardownModuleCode, DateTimeOffset? asAt = default(DateTimeOffset?), string page = default(string), int? start = default(int?), int? limit = default(int?), string filter = default(string))
+        {
+            // verify the required parameter 'scope' is set
+            if (scope == null)
+                throw new Lusid.Sdk.Client.ApiException(400, "Missing required parameter 'scope' when calling ChartOfAccountsApi->ListCleardownModuleRules");
+
+            // verify the required parameter 'code' is set
+            if (code == null)
+                throw new Lusid.Sdk.Client.ApiException(400, "Missing required parameter 'code' when calling ChartOfAccountsApi->ListCleardownModuleRules");
+
+            // verify the required parameter 'cleardownModuleCode' is set
+            if (cleardownModuleCode == null)
+                throw new Lusid.Sdk.Client.ApiException(400, "Missing required parameter 'cleardownModuleCode' when calling ChartOfAccountsApi->ListCleardownModuleRules");
+
+            Lusid.Sdk.Client.RequestOptions localVarRequestOptions = new Lusid.Sdk.Client.RequestOptions();
+
+            String[] _contentTypes = new String[] {
+            };
+
+            // to determine the Accept header
+            String[] _accepts = new String[] {
+                "text/plain",
+                "application/json",
+                "text/json"
+            };
+
+            var localVarContentType = Lusid.Sdk.Client.ClientUtils.SelectHeaderContentType(_contentTypes);
+            if (localVarContentType != null) localVarRequestOptions.HeaderParameters.Add("Content-Type", localVarContentType);
+
+            var localVarAccept = Lusid.Sdk.Client.ClientUtils.SelectHeaderAccept(_accepts);
+            if (localVarAccept != null) localVarRequestOptions.HeaderParameters.Add("Accept", localVarAccept);
+
+            localVarRequestOptions.PathParameters.Add("scope", Lusid.Sdk.Client.ClientUtils.ParameterToString(scope)); // path parameter
+            localVarRequestOptions.PathParameters.Add("code", Lusid.Sdk.Client.ClientUtils.ParameterToString(code)); // path parameter
+            localVarRequestOptions.PathParameters.Add("cleardownModuleCode", Lusid.Sdk.Client.ClientUtils.ParameterToString(cleardownModuleCode)); // path parameter
+            if (asAt != null)
+            {
+                localVarRequestOptions.QueryParameters.Add(Lusid.Sdk.Client.ClientUtils.ParameterToMultiMap("", "asAt", asAt));
+            }
+            if (page != null)
+            {
+                localVarRequestOptions.QueryParameters.Add(Lusid.Sdk.Client.ClientUtils.ParameterToMultiMap("", "page", page));
+            }
+            if (start != null)
+            {
+                localVarRequestOptions.QueryParameters.Add(Lusid.Sdk.Client.ClientUtils.ParameterToMultiMap("", "start", start));
+            }
+            if (limit != null)
+            {
+                localVarRequestOptions.QueryParameters.Add(Lusid.Sdk.Client.ClientUtils.ParameterToMultiMap("", "limit", limit));
+            }
+            if (filter != null)
+            {
+                localVarRequestOptions.QueryParameters.Add(Lusid.Sdk.Client.ClientUtils.ParameterToMultiMap("", "filter", filter));
+            }
+
+            // authentication (oauth2) required
+            // oauth required
+            if (!String.IsNullOrEmpty(this.Configuration.AccessToken))
+            {
+                localVarRequestOptions.HeaderParameters.Add("Authorization", "Bearer " + this.Configuration.AccessToken);
+            }
+
+            //  set the LUSID header
+            localVarRequestOptions.HeaderParameters.Add("X-LUSID-Sdk-Language", "C#");
+            localVarRequestOptions.HeaderParameters.Add("X-LUSID-Sdk-Version", "1.1.170");
+
+            // make the HTTP request
+            var localVarResponse = this.Client.Get<PagedResourceListOfCleardownModuleRule>("/api/chartofaccounts/{scope}/{code}/cleardownmodules/{cleardownModuleCode}/cleardownrules", localVarRequestOptions, this.Configuration);
+
+            if (this.ExceptionFactory != null)
+            {
+                Exception _exception = this.ExceptionFactory("ListCleardownModuleRules", localVarResponse);
+                if (_exception != null) throw _exception;
+            }
+
+            return localVarResponse;
+        }
+
+        /// <summary>
+        /// [EXPERIMENTAL] ListCleardownModuleRules: List Cleardown Module Rules List the Rules in a Cleardown Module
+        /// </summary>
+        /// <exception cref="Lusid.Sdk.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="scope">The scope of the Chart of Accounts.</param>
+        /// <param name="code">The code of the Chart of Accounts. Together with the scope this uniquely identifies the Chart of Accounts.</param>
+        /// <param name="cleardownModuleCode">The code of the cleardown module.</param>
+        /// <param name="asAt">The asAt datetime at which to retrieve the instrument. Defaults to              returning the latest version if not specified. (optional)</param>
+        /// <param name="page">The pagination token to use to continue listing cleardown module rules; this              value is returned from the previous call. If a pagination token is provided, the filter              and asAt fields must not have changed since the original request. Also, if set, a start value cannot be provided. (optional)</param>
+        /// <param name="start">When paginating, skip this number of results. (optional)</param>
+        /// <param name="limit">When paginating, limit the results to this number. Defaults to 100 if not specified. (optional)</param>
+        /// <param name="filter">Expression to filter the results.              For example, to filter on the rule id, specify \&quot;ruleId eq &#39;rule 1&#39;\&quot;. For more information about filtering              results, see https://support.lusid.com/knowledgebase/article/KA-01914. (optional)</param>
+        /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
+        /// <returns>Task of PagedResourceListOfCleardownModuleRule</returns>
+        public async System.Threading.Tasks.Task<PagedResourceListOfCleardownModuleRule> ListCleardownModuleRulesAsync(string scope, string code, string cleardownModuleCode, DateTimeOffset? asAt = default(DateTimeOffset?), string page = default(string), int? start = default(int?), int? limit = default(int?), string filter = default(string), System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
+        {
+            Lusid.Sdk.Client.ApiResponse<PagedResourceListOfCleardownModuleRule> localVarResponse = await ListCleardownModuleRulesWithHttpInfoAsync(scope, code, cleardownModuleCode, asAt, page, start, limit, filter, cancellationToken).ConfigureAwait(false);
+            return localVarResponse.Data;
+        }
+
+        /// <summary>
+        /// [EXPERIMENTAL] ListCleardownModuleRules: List Cleardown Module Rules List the Rules in a Cleardown Module
+        /// </summary>
+        /// <exception cref="Lusid.Sdk.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="scope">The scope of the Chart of Accounts.</param>
+        /// <param name="code">The code of the Chart of Accounts. Together with the scope this uniquely identifies the Chart of Accounts.</param>
+        /// <param name="cleardownModuleCode">The code of the cleardown module.</param>
+        /// <param name="asAt">The asAt datetime at which to retrieve the instrument. Defaults to              returning the latest version if not specified. (optional)</param>
+        /// <param name="page">The pagination token to use to continue listing cleardown module rules; this              value is returned from the previous call. If a pagination token is provided, the filter              and asAt fields must not have changed since the original request. Also, if set, a start value cannot be provided. (optional)</param>
+        /// <param name="start">When paginating, skip this number of results. (optional)</param>
+        /// <param name="limit">When paginating, limit the results to this number. Defaults to 100 if not specified. (optional)</param>
+        /// <param name="filter">Expression to filter the results.              For example, to filter on the rule id, specify \&quot;ruleId eq &#39;rule 1&#39;\&quot;. For more information about filtering              results, see https://support.lusid.com/knowledgebase/article/KA-01914. (optional)</param>
+        /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
+        /// <returns>Task of ApiResponse (PagedResourceListOfCleardownModuleRule)</returns>
+        public async System.Threading.Tasks.Task<Lusid.Sdk.Client.ApiResponse<PagedResourceListOfCleardownModuleRule>> ListCleardownModuleRulesWithHttpInfoAsync(string scope, string code, string cleardownModuleCode, DateTimeOffset? asAt = default(DateTimeOffset?), string page = default(string), int? start = default(int?), int? limit = default(int?), string filter = default(string), System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
+        {
+            // verify the required parameter 'scope' is set
+            if (scope == null)
+                throw new Lusid.Sdk.Client.ApiException(400, "Missing required parameter 'scope' when calling ChartOfAccountsApi->ListCleardownModuleRules");
+
+            // verify the required parameter 'code' is set
+            if (code == null)
+                throw new Lusid.Sdk.Client.ApiException(400, "Missing required parameter 'code' when calling ChartOfAccountsApi->ListCleardownModuleRules");
+
+            // verify the required parameter 'cleardownModuleCode' is set
+            if (cleardownModuleCode == null)
+                throw new Lusid.Sdk.Client.ApiException(400, "Missing required parameter 'cleardownModuleCode' when calling ChartOfAccountsApi->ListCleardownModuleRules");
+
+
+            Lusid.Sdk.Client.RequestOptions localVarRequestOptions = new Lusid.Sdk.Client.RequestOptions();
+
+            String[] _contentTypes = new String[] {
+            };
+
+            // to determine the Accept header
+            String[] _accepts = new String[] {
+                "text/plain",
+                "application/json",
+                "text/json"
+            };
+
+
+            var localVarContentType = Lusid.Sdk.Client.ClientUtils.SelectHeaderContentType(_contentTypes);
+            if (localVarContentType != null) localVarRequestOptions.HeaderParameters.Add("Content-Type", localVarContentType);
+
+            var localVarAccept = Lusid.Sdk.Client.ClientUtils.SelectHeaderAccept(_accepts);
+            if (localVarAccept != null) localVarRequestOptions.HeaderParameters.Add("Accept", localVarAccept);
+
+            localVarRequestOptions.PathParameters.Add("scope", Lusid.Sdk.Client.ClientUtils.ParameterToString(scope)); // path parameter
+            localVarRequestOptions.PathParameters.Add("code", Lusid.Sdk.Client.ClientUtils.ParameterToString(code)); // path parameter
+            localVarRequestOptions.PathParameters.Add("cleardownModuleCode", Lusid.Sdk.Client.ClientUtils.ParameterToString(cleardownModuleCode)); // path parameter
+            if (asAt != null)
+            {
+                localVarRequestOptions.QueryParameters.Add(Lusid.Sdk.Client.ClientUtils.ParameterToMultiMap("", "asAt", asAt));
+            }
+            if (page != null)
+            {
+                localVarRequestOptions.QueryParameters.Add(Lusid.Sdk.Client.ClientUtils.ParameterToMultiMap("", "page", page));
+            }
+            if (start != null)
+            {
+                localVarRequestOptions.QueryParameters.Add(Lusid.Sdk.Client.ClientUtils.ParameterToMultiMap("", "start", start));
+            }
+            if (limit != null)
+            {
+                localVarRequestOptions.QueryParameters.Add(Lusid.Sdk.Client.ClientUtils.ParameterToMultiMap("", "limit", limit));
+            }
+            if (filter != null)
+            {
+                localVarRequestOptions.QueryParameters.Add(Lusid.Sdk.Client.ClientUtils.ParameterToMultiMap("", "filter", filter));
+            }
+
+            // authentication (oauth2) required
+            // oauth required
+            if (!String.IsNullOrEmpty(this.Configuration.AccessToken))
+            {
+                localVarRequestOptions.HeaderParameters.Add("Authorization", "Bearer " + this.Configuration.AccessToken);
+            }
+
+            //  set the LUSID header
+            localVarRequestOptions.HeaderParameters.Add("X-LUSID-Sdk-Language", "C#");
+            localVarRequestOptions.HeaderParameters.Add("X-LUSID-Sdk-Version", "1.1.170");
+
+            // make the HTTP request
+
+            var localVarResponse = await this.AsynchronousClient.GetAsync<PagedResourceListOfCleardownModuleRule>("/api/chartofaccounts/{scope}/{code}/cleardownmodules/{cleardownModuleCode}/cleardownrules", localVarRequestOptions, this.Configuration, cancellationToken).ConfigureAwait(false);
+
+            if (this.ExceptionFactory != null)
+            {
+                Exception _exception = this.ExceptionFactory("ListCleardownModuleRules", localVarResponse);
+                if (_exception != null) throw _exception;
+            }
+
+            return localVarResponse;
+        }
+
+        /// <summary>
+        /// [EXPERIMENTAL] ListCleardownModules: List Cleardown Modules List all the Cleardown Modules matching particular criteria.
+        /// </summary>
+        /// <exception cref="Lusid.Sdk.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="scope">The scope of the Chart of Accounts.</param>
+        /// <param name="code">The code of the Chart of Accounts. Together with the scope this uniquely identifies the Chart of Accounts.</param>
+        /// <param name="asAt">The asAt datetime at which to list the Cleardown Module. Defaults to returning the latest version              of each Cleardown Module if not specified. (optional)</param>
+        /// <param name="page">The pagination token to use to continue listing Cleardown Modules; this              value is returned from the previous call. If a pagination token is provided, the filter, effectiveAt              and asAt fields must not have changed since the original request. Also, if set, a start value cannot be provided. (optional)</param>
+        /// <param name="start">When paginating, skip this number of results. (optional)</param>
+        /// <param name="limit">When paginating, limit the results to this number. Defaults to 100 if not specified. (optional)</param>
+        /// <param name="filter">Expression to filter the results.              For example, to filter on the Cleardown Module status, specify \&quot;status eq &#39;Active&#39;\&quot;. For more information about filtering              results, see https://support.lusid.com/knowledgebase/article/KA-01914. (optional)</param>
+        /// <returns>PagedResourceListOfCleardownModuleResponse</returns>
+        public PagedResourceListOfCleardownModuleResponse ListCleardownModules(string scope, string code, DateTimeOffset? asAt = default(DateTimeOffset?), string page = default(string), int? start = default(int?), int? limit = default(int?), string filter = default(string))
+        {
+            Lusid.Sdk.Client.ApiResponse<PagedResourceListOfCleardownModuleResponse> localVarResponse = ListCleardownModulesWithHttpInfo(scope, code, asAt, page, start, limit, filter);
+            return localVarResponse.Data;
+        }
+
+        /// <summary>
+        /// [EXPERIMENTAL] ListCleardownModules: List Cleardown Modules List all the Cleardown Modules matching particular criteria.
+        /// </summary>
+        /// <exception cref="Lusid.Sdk.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="scope">The scope of the Chart of Accounts.</param>
+        /// <param name="code">The code of the Chart of Accounts. Together with the scope this uniquely identifies the Chart of Accounts.</param>
+        /// <param name="asAt">The asAt datetime at which to list the Cleardown Module. Defaults to returning the latest version              of each Cleardown Module if not specified. (optional)</param>
+        /// <param name="page">The pagination token to use to continue listing Cleardown Modules; this              value is returned from the previous call. If a pagination token is provided, the filter, effectiveAt              and asAt fields must not have changed since the original request. Also, if set, a start value cannot be provided. (optional)</param>
+        /// <param name="start">When paginating, skip this number of results. (optional)</param>
+        /// <param name="limit">When paginating, limit the results to this number. Defaults to 100 if not specified. (optional)</param>
+        /// <param name="filter">Expression to filter the results.              For example, to filter on the Cleardown Module status, specify \&quot;status eq &#39;Active&#39;\&quot;. For more information about filtering              results, see https://support.lusid.com/knowledgebase/article/KA-01914. (optional)</param>
+        /// <returns>ApiResponse of PagedResourceListOfCleardownModuleResponse</returns>
+        public Lusid.Sdk.Client.ApiResponse<PagedResourceListOfCleardownModuleResponse> ListCleardownModulesWithHttpInfo(string scope, string code, DateTimeOffset? asAt = default(DateTimeOffset?), string page = default(string), int? start = default(int?), int? limit = default(int?), string filter = default(string))
+        {
+            // verify the required parameter 'scope' is set
+            if (scope == null)
+                throw new Lusid.Sdk.Client.ApiException(400, "Missing required parameter 'scope' when calling ChartOfAccountsApi->ListCleardownModules");
+
+            // verify the required parameter 'code' is set
+            if (code == null)
+                throw new Lusid.Sdk.Client.ApiException(400, "Missing required parameter 'code' when calling ChartOfAccountsApi->ListCleardownModules");
+
+            Lusid.Sdk.Client.RequestOptions localVarRequestOptions = new Lusid.Sdk.Client.RequestOptions();
+
+            String[] _contentTypes = new String[] {
+            };
+
+            // to determine the Accept header
+            String[] _accepts = new String[] {
+                "text/plain",
+                "application/json",
+                "text/json"
+            };
+
+            var localVarContentType = Lusid.Sdk.Client.ClientUtils.SelectHeaderContentType(_contentTypes);
+            if (localVarContentType != null) localVarRequestOptions.HeaderParameters.Add("Content-Type", localVarContentType);
+
+            var localVarAccept = Lusid.Sdk.Client.ClientUtils.SelectHeaderAccept(_accepts);
+            if (localVarAccept != null) localVarRequestOptions.HeaderParameters.Add("Accept", localVarAccept);
+
+            localVarRequestOptions.PathParameters.Add("scope", Lusid.Sdk.Client.ClientUtils.ParameterToString(scope)); // path parameter
+            localVarRequestOptions.PathParameters.Add("code", Lusid.Sdk.Client.ClientUtils.ParameterToString(code)); // path parameter
+            if (asAt != null)
+            {
+                localVarRequestOptions.QueryParameters.Add(Lusid.Sdk.Client.ClientUtils.ParameterToMultiMap("", "asAt", asAt));
+            }
+            if (page != null)
+            {
+                localVarRequestOptions.QueryParameters.Add(Lusid.Sdk.Client.ClientUtils.ParameterToMultiMap("", "page", page));
+            }
+            if (start != null)
+            {
+                localVarRequestOptions.QueryParameters.Add(Lusid.Sdk.Client.ClientUtils.ParameterToMultiMap("", "start", start));
+            }
+            if (limit != null)
+            {
+                localVarRequestOptions.QueryParameters.Add(Lusid.Sdk.Client.ClientUtils.ParameterToMultiMap("", "limit", limit));
+            }
+            if (filter != null)
+            {
+                localVarRequestOptions.QueryParameters.Add(Lusid.Sdk.Client.ClientUtils.ParameterToMultiMap("", "filter", filter));
+            }
+
+            // authentication (oauth2) required
+            // oauth required
+            if (!String.IsNullOrEmpty(this.Configuration.AccessToken))
+            {
+                localVarRequestOptions.HeaderParameters.Add("Authorization", "Bearer " + this.Configuration.AccessToken);
+            }
+
+            //  set the LUSID header
+            localVarRequestOptions.HeaderParameters.Add("X-LUSID-Sdk-Language", "C#");
+            localVarRequestOptions.HeaderParameters.Add("X-LUSID-Sdk-Version", "1.1.170");
+
+            // make the HTTP request
+            var localVarResponse = this.Client.Get<PagedResourceListOfCleardownModuleResponse>("/api/chartofaccounts/{scope}/{code}/cleardownmodules", localVarRequestOptions, this.Configuration);
+
+            if (this.ExceptionFactory != null)
+            {
+                Exception _exception = this.ExceptionFactory("ListCleardownModules", localVarResponse);
+                if (_exception != null) throw _exception;
+            }
+
+            return localVarResponse;
+        }
+
+        /// <summary>
+        /// [EXPERIMENTAL] ListCleardownModules: List Cleardown Modules List all the Cleardown Modules matching particular criteria.
+        /// </summary>
+        /// <exception cref="Lusid.Sdk.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="scope">The scope of the Chart of Accounts.</param>
+        /// <param name="code">The code of the Chart of Accounts. Together with the scope this uniquely identifies the Chart of Accounts.</param>
+        /// <param name="asAt">The asAt datetime at which to list the Cleardown Module. Defaults to returning the latest version              of each Cleardown Module if not specified. (optional)</param>
+        /// <param name="page">The pagination token to use to continue listing Cleardown Modules; this              value is returned from the previous call. If a pagination token is provided, the filter, effectiveAt              and asAt fields must not have changed since the original request. Also, if set, a start value cannot be provided. (optional)</param>
+        /// <param name="start">When paginating, skip this number of results. (optional)</param>
+        /// <param name="limit">When paginating, limit the results to this number. Defaults to 100 if not specified. (optional)</param>
+        /// <param name="filter">Expression to filter the results.              For example, to filter on the Cleardown Module status, specify \&quot;status eq &#39;Active&#39;\&quot;. For more information about filtering              results, see https://support.lusid.com/knowledgebase/article/KA-01914. (optional)</param>
+        /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
+        /// <returns>Task of PagedResourceListOfCleardownModuleResponse</returns>
+        public async System.Threading.Tasks.Task<PagedResourceListOfCleardownModuleResponse> ListCleardownModulesAsync(string scope, string code, DateTimeOffset? asAt = default(DateTimeOffset?), string page = default(string), int? start = default(int?), int? limit = default(int?), string filter = default(string), System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
+        {
+            Lusid.Sdk.Client.ApiResponse<PagedResourceListOfCleardownModuleResponse> localVarResponse = await ListCleardownModulesWithHttpInfoAsync(scope, code, asAt, page, start, limit, filter, cancellationToken).ConfigureAwait(false);
+            return localVarResponse.Data;
+        }
+
+        /// <summary>
+        /// [EXPERIMENTAL] ListCleardownModules: List Cleardown Modules List all the Cleardown Modules matching particular criteria.
+        /// </summary>
+        /// <exception cref="Lusid.Sdk.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="scope">The scope of the Chart of Accounts.</param>
+        /// <param name="code">The code of the Chart of Accounts. Together with the scope this uniquely identifies the Chart of Accounts.</param>
+        /// <param name="asAt">The asAt datetime at which to list the Cleardown Module. Defaults to returning the latest version              of each Cleardown Module if not specified. (optional)</param>
+        /// <param name="page">The pagination token to use to continue listing Cleardown Modules; this              value is returned from the previous call. If a pagination token is provided, the filter, effectiveAt              and asAt fields must not have changed since the original request. Also, if set, a start value cannot be provided. (optional)</param>
+        /// <param name="start">When paginating, skip this number of results. (optional)</param>
+        /// <param name="limit">When paginating, limit the results to this number. Defaults to 100 if not specified. (optional)</param>
+        /// <param name="filter">Expression to filter the results.              For example, to filter on the Cleardown Module status, specify \&quot;status eq &#39;Active&#39;\&quot;. For more information about filtering              results, see https://support.lusid.com/knowledgebase/article/KA-01914. (optional)</param>
+        /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
+        /// <returns>Task of ApiResponse (PagedResourceListOfCleardownModuleResponse)</returns>
+        public async System.Threading.Tasks.Task<Lusid.Sdk.Client.ApiResponse<PagedResourceListOfCleardownModuleResponse>> ListCleardownModulesWithHttpInfoAsync(string scope, string code, DateTimeOffset? asAt = default(DateTimeOffset?), string page = default(string), int? start = default(int?), int? limit = default(int?), string filter = default(string), System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
+        {
+            // verify the required parameter 'scope' is set
+            if (scope == null)
+                throw new Lusid.Sdk.Client.ApiException(400, "Missing required parameter 'scope' when calling ChartOfAccountsApi->ListCleardownModules");
+
+            // verify the required parameter 'code' is set
+            if (code == null)
+                throw new Lusid.Sdk.Client.ApiException(400, "Missing required parameter 'code' when calling ChartOfAccountsApi->ListCleardownModules");
+
+
+            Lusid.Sdk.Client.RequestOptions localVarRequestOptions = new Lusid.Sdk.Client.RequestOptions();
+
+            String[] _contentTypes = new String[] {
+            };
+
+            // to determine the Accept header
+            String[] _accepts = new String[] {
+                "text/plain",
+                "application/json",
+                "text/json"
+            };
+
+
+            var localVarContentType = Lusid.Sdk.Client.ClientUtils.SelectHeaderContentType(_contentTypes);
+            if (localVarContentType != null) localVarRequestOptions.HeaderParameters.Add("Content-Type", localVarContentType);
+
+            var localVarAccept = Lusid.Sdk.Client.ClientUtils.SelectHeaderAccept(_accepts);
+            if (localVarAccept != null) localVarRequestOptions.HeaderParameters.Add("Accept", localVarAccept);
+
+            localVarRequestOptions.PathParameters.Add("scope", Lusid.Sdk.Client.ClientUtils.ParameterToString(scope)); // path parameter
+            localVarRequestOptions.PathParameters.Add("code", Lusid.Sdk.Client.ClientUtils.ParameterToString(code)); // path parameter
+            if (asAt != null)
+            {
+                localVarRequestOptions.QueryParameters.Add(Lusid.Sdk.Client.ClientUtils.ParameterToMultiMap("", "asAt", asAt));
+            }
+            if (page != null)
+            {
+                localVarRequestOptions.QueryParameters.Add(Lusid.Sdk.Client.ClientUtils.ParameterToMultiMap("", "page", page));
+            }
+            if (start != null)
+            {
+                localVarRequestOptions.QueryParameters.Add(Lusid.Sdk.Client.ClientUtils.ParameterToMultiMap("", "start", start));
+            }
+            if (limit != null)
+            {
+                localVarRequestOptions.QueryParameters.Add(Lusid.Sdk.Client.ClientUtils.ParameterToMultiMap("", "limit", limit));
+            }
+            if (filter != null)
+            {
+                localVarRequestOptions.QueryParameters.Add(Lusid.Sdk.Client.ClientUtils.ParameterToMultiMap("", "filter", filter));
+            }
+
+            // authentication (oauth2) required
+            // oauth required
+            if (!String.IsNullOrEmpty(this.Configuration.AccessToken))
+            {
+                localVarRequestOptions.HeaderParameters.Add("Authorization", "Bearer " + this.Configuration.AccessToken);
+            }
+
+            //  set the LUSID header
+            localVarRequestOptions.HeaderParameters.Add("X-LUSID-Sdk-Language", "C#");
+            localVarRequestOptions.HeaderParameters.Add("X-LUSID-Sdk-Version", "1.1.170");
+
+            // make the HTTP request
+
+            var localVarResponse = await this.AsynchronousClient.GetAsync<PagedResourceListOfCleardownModuleResponse>("/api/chartofaccounts/{scope}/{code}/cleardownmodules", localVarRequestOptions, this.Configuration, cancellationToken).ConfigureAwait(false);
+
+            if (this.ExceptionFactory != null)
+            {
+                Exception _exception = this.ExceptionFactory("ListCleardownModules", localVarResponse);
+                if (_exception != null) throw _exception;
+            }
+
+            return localVarResponse;
+        }
+
+        /// <summary>
         /// [EXPERIMENTAL] ListGeneralLedgerProfiles: List General Ledger Profiles. List all the General Ledger profiles matching particular criteria.
         /// </summary>
         /// <exception cref="Lusid.Sdk.Client.ApiException">Thrown when fails to make API call</exception>
@@ -4425,6 +5782,384 @@ namespace Lusid.Sdk.Api
             if (this.ExceptionFactory != null)
             {
                 Exception _exception = this.ExceptionFactory("ListPostingModules", localVarResponse);
+                if (_exception != null) throw _exception;
+            }
+
+            return localVarResponse;
+        }
+
+        /// <summary>
+        /// [EXPERIMENTAL] SetCleardownModuleDetails: Set the details of a Cleardown Module Update the given Cleardown Module details.
+        /// </summary>
+        /// <exception cref="Lusid.Sdk.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="scope">The scope of the Chart of Accounts.</param>
+        /// <param name="code">The code of the Chart of Accounts. Together with the scope this uniquely identifies the Chart of Accounts.</param>
+        /// <param name="cleardownModuleCode">The code of the Cleardown Module to be updated.</param>
+        /// <param name="cleardownModuleDetails">The new details for the Cleardown Module.</param>
+        /// <returns>CleardownModuleResponse</returns>
+        public CleardownModuleResponse SetCleardownModuleDetails(string scope, string code, string cleardownModuleCode, CleardownModuleDetails cleardownModuleDetails)
+        {
+            Lusid.Sdk.Client.ApiResponse<CleardownModuleResponse> localVarResponse = SetCleardownModuleDetailsWithHttpInfo(scope, code, cleardownModuleCode, cleardownModuleDetails);
+            return localVarResponse.Data;
+        }
+
+        /// <summary>
+        /// [EXPERIMENTAL] SetCleardownModuleDetails: Set the details of a Cleardown Module Update the given Cleardown Module details.
+        /// </summary>
+        /// <exception cref="Lusid.Sdk.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="scope">The scope of the Chart of Accounts.</param>
+        /// <param name="code">The code of the Chart of Accounts. Together with the scope this uniquely identifies the Chart of Accounts.</param>
+        /// <param name="cleardownModuleCode">The code of the Cleardown Module to be updated.</param>
+        /// <param name="cleardownModuleDetails">The new details for the Cleardown Module.</param>
+        /// <returns>ApiResponse of CleardownModuleResponse</returns>
+        public Lusid.Sdk.Client.ApiResponse<CleardownModuleResponse> SetCleardownModuleDetailsWithHttpInfo(string scope, string code, string cleardownModuleCode, CleardownModuleDetails cleardownModuleDetails)
+        {
+            // verify the required parameter 'scope' is set
+            if (scope == null)
+                throw new Lusid.Sdk.Client.ApiException(400, "Missing required parameter 'scope' when calling ChartOfAccountsApi->SetCleardownModuleDetails");
+
+            // verify the required parameter 'code' is set
+            if (code == null)
+                throw new Lusid.Sdk.Client.ApiException(400, "Missing required parameter 'code' when calling ChartOfAccountsApi->SetCleardownModuleDetails");
+
+            // verify the required parameter 'cleardownModuleCode' is set
+            if (cleardownModuleCode == null)
+                throw new Lusid.Sdk.Client.ApiException(400, "Missing required parameter 'cleardownModuleCode' when calling ChartOfAccountsApi->SetCleardownModuleDetails");
+
+            // verify the required parameter 'cleardownModuleDetails' is set
+            if (cleardownModuleDetails == null)
+                throw new Lusid.Sdk.Client.ApiException(400, "Missing required parameter 'cleardownModuleDetails' when calling ChartOfAccountsApi->SetCleardownModuleDetails");
+
+            Lusid.Sdk.Client.RequestOptions localVarRequestOptions = new Lusid.Sdk.Client.RequestOptions();
+
+            String[] _contentTypes = new String[] {
+                "application/json-patch+json",
+                "application/json",
+                "text/json",
+                "application/_*+json"
+            };
+
+            // to determine the Accept header
+            String[] _accepts = new String[] {
+                "text/plain",
+                "application/json",
+                "text/json"
+            };
+
+            var localVarContentType = Lusid.Sdk.Client.ClientUtils.SelectHeaderContentType(_contentTypes);
+            if (localVarContentType != null) localVarRequestOptions.HeaderParameters.Add("Content-Type", localVarContentType);
+
+            var localVarAccept = Lusid.Sdk.Client.ClientUtils.SelectHeaderAccept(_accepts);
+            if (localVarAccept != null) localVarRequestOptions.HeaderParameters.Add("Accept", localVarAccept);
+
+            localVarRequestOptions.PathParameters.Add("scope", Lusid.Sdk.Client.ClientUtils.ParameterToString(scope)); // path parameter
+            localVarRequestOptions.PathParameters.Add("code", Lusid.Sdk.Client.ClientUtils.ParameterToString(code)); // path parameter
+            localVarRequestOptions.PathParameters.Add("cleardownModuleCode", Lusid.Sdk.Client.ClientUtils.ParameterToString(cleardownModuleCode)); // path parameter
+            localVarRequestOptions.Data = cleardownModuleDetails;
+
+            // authentication (oauth2) required
+            // oauth required
+            if (!String.IsNullOrEmpty(this.Configuration.AccessToken))
+            {
+                localVarRequestOptions.HeaderParameters.Add("Authorization", "Bearer " + this.Configuration.AccessToken);
+            }
+
+            //  set the LUSID header
+            localVarRequestOptions.HeaderParameters.Add("X-LUSID-Sdk-Language", "C#");
+            localVarRequestOptions.HeaderParameters.Add("X-LUSID-Sdk-Version", "1.1.170");
+
+            // make the HTTP request
+            var localVarResponse = this.Client.Put<CleardownModuleResponse>("/api/chartofaccounts/{scope}/{code}/cleardownmodules/{cleardownModuleCode}", localVarRequestOptions, this.Configuration);
+
+            if (this.ExceptionFactory != null)
+            {
+                Exception _exception = this.ExceptionFactory("SetCleardownModuleDetails", localVarResponse);
+                if (_exception != null) throw _exception;
+            }
+
+            return localVarResponse;
+        }
+
+        /// <summary>
+        /// [EXPERIMENTAL] SetCleardownModuleDetails: Set the details of a Cleardown Module Update the given Cleardown Module details.
+        /// </summary>
+        /// <exception cref="Lusid.Sdk.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="scope">The scope of the Chart of Accounts.</param>
+        /// <param name="code">The code of the Chart of Accounts. Together with the scope this uniquely identifies the Chart of Accounts.</param>
+        /// <param name="cleardownModuleCode">The code of the Cleardown Module to be updated.</param>
+        /// <param name="cleardownModuleDetails">The new details for the Cleardown Module.</param>
+        /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
+        /// <returns>Task of CleardownModuleResponse</returns>
+        public async System.Threading.Tasks.Task<CleardownModuleResponse> SetCleardownModuleDetailsAsync(string scope, string code, string cleardownModuleCode, CleardownModuleDetails cleardownModuleDetails, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
+        {
+            Lusid.Sdk.Client.ApiResponse<CleardownModuleResponse> localVarResponse = await SetCleardownModuleDetailsWithHttpInfoAsync(scope, code, cleardownModuleCode, cleardownModuleDetails, cancellationToken).ConfigureAwait(false);
+            return localVarResponse.Data;
+        }
+
+        /// <summary>
+        /// [EXPERIMENTAL] SetCleardownModuleDetails: Set the details of a Cleardown Module Update the given Cleardown Module details.
+        /// </summary>
+        /// <exception cref="Lusid.Sdk.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="scope">The scope of the Chart of Accounts.</param>
+        /// <param name="code">The code of the Chart of Accounts. Together with the scope this uniquely identifies the Chart of Accounts.</param>
+        /// <param name="cleardownModuleCode">The code of the Cleardown Module to be updated.</param>
+        /// <param name="cleardownModuleDetails">The new details for the Cleardown Module.</param>
+        /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
+        /// <returns>Task of ApiResponse (CleardownModuleResponse)</returns>
+        public async System.Threading.Tasks.Task<Lusid.Sdk.Client.ApiResponse<CleardownModuleResponse>> SetCleardownModuleDetailsWithHttpInfoAsync(string scope, string code, string cleardownModuleCode, CleardownModuleDetails cleardownModuleDetails, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
+        {
+            // verify the required parameter 'scope' is set
+            if (scope == null)
+                throw new Lusid.Sdk.Client.ApiException(400, "Missing required parameter 'scope' when calling ChartOfAccountsApi->SetCleardownModuleDetails");
+
+            // verify the required parameter 'code' is set
+            if (code == null)
+                throw new Lusid.Sdk.Client.ApiException(400, "Missing required parameter 'code' when calling ChartOfAccountsApi->SetCleardownModuleDetails");
+
+            // verify the required parameter 'cleardownModuleCode' is set
+            if (cleardownModuleCode == null)
+                throw new Lusid.Sdk.Client.ApiException(400, "Missing required parameter 'cleardownModuleCode' when calling ChartOfAccountsApi->SetCleardownModuleDetails");
+
+            // verify the required parameter 'cleardownModuleDetails' is set
+            if (cleardownModuleDetails == null)
+                throw new Lusid.Sdk.Client.ApiException(400, "Missing required parameter 'cleardownModuleDetails' when calling ChartOfAccountsApi->SetCleardownModuleDetails");
+
+
+            Lusid.Sdk.Client.RequestOptions localVarRequestOptions = new Lusid.Sdk.Client.RequestOptions();
+
+            String[] _contentTypes = new String[] {
+                "application/json-patch+json", 
+                "application/json", 
+                "text/json", 
+                "application/_*+json"
+            };
+
+            // to determine the Accept header
+            String[] _accepts = new String[] {
+                "text/plain",
+                "application/json",
+                "text/json"
+            };
+
+
+            var localVarContentType = Lusid.Sdk.Client.ClientUtils.SelectHeaderContentType(_contentTypes);
+            if (localVarContentType != null) localVarRequestOptions.HeaderParameters.Add("Content-Type", localVarContentType);
+
+            var localVarAccept = Lusid.Sdk.Client.ClientUtils.SelectHeaderAccept(_accepts);
+            if (localVarAccept != null) localVarRequestOptions.HeaderParameters.Add("Accept", localVarAccept);
+
+            localVarRequestOptions.PathParameters.Add("scope", Lusid.Sdk.Client.ClientUtils.ParameterToString(scope)); // path parameter
+            localVarRequestOptions.PathParameters.Add("code", Lusid.Sdk.Client.ClientUtils.ParameterToString(code)); // path parameter
+            localVarRequestOptions.PathParameters.Add("cleardownModuleCode", Lusid.Sdk.Client.ClientUtils.ParameterToString(cleardownModuleCode)); // path parameter
+            localVarRequestOptions.Data = cleardownModuleDetails;
+
+            // authentication (oauth2) required
+            // oauth required
+            if (!String.IsNullOrEmpty(this.Configuration.AccessToken))
+            {
+                localVarRequestOptions.HeaderParameters.Add("Authorization", "Bearer " + this.Configuration.AccessToken);
+            }
+
+            //  set the LUSID header
+            localVarRequestOptions.HeaderParameters.Add("X-LUSID-Sdk-Language", "C#");
+            localVarRequestOptions.HeaderParameters.Add("X-LUSID-Sdk-Version", "1.1.170");
+
+            // make the HTTP request
+
+            var localVarResponse = await this.AsynchronousClient.PutAsync<CleardownModuleResponse>("/api/chartofaccounts/{scope}/{code}/cleardownmodules/{cleardownModuleCode}", localVarRequestOptions, this.Configuration, cancellationToken).ConfigureAwait(false);
+
+            if (this.ExceptionFactory != null)
+            {
+                Exception _exception = this.ExceptionFactory("SetCleardownModuleDetails", localVarResponse);
+                if (_exception != null) throw _exception;
+            }
+
+            return localVarResponse;
+        }
+
+        /// <summary>
+        /// [EXPERIMENTAL] SetCleardownModuleRules: Set the rules of a Cleardown Module Set the given Cleardown Modules rules, this will replace the existing set of rules for the cleardown module.
+        /// </summary>
+        /// <exception cref="Lusid.Sdk.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="scope">The scope of the Chart of Accounts.</param>
+        /// <param name="code">The code of the Chart of Accounts. Together with the scope this uniquely identifies the Chart of Accounts.</param>
+        /// <param name="cleardownModuleCode">The code of the Cleardown Module to be updated.</param>
+        /// <param name="cleardownModuleRule">The new rule set for the Cleardown Module.</param>
+        /// <returns>CleardownModuleRulesUpdatedResponse</returns>
+        public CleardownModuleRulesUpdatedResponse SetCleardownModuleRules(string scope, string code, string cleardownModuleCode, List<CleardownModuleRule> cleardownModuleRule)
+        {
+            Lusid.Sdk.Client.ApiResponse<CleardownModuleRulesUpdatedResponse> localVarResponse = SetCleardownModuleRulesWithHttpInfo(scope, code, cleardownModuleCode, cleardownModuleRule);
+            return localVarResponse.Data;
+        }
+
+        /// <summary>
+        /// [EXPERIMENTAL] SetCleardownModuleRules: Set the rules of a Cleardown Module Set the given Cleardown Modules rules, this will replace the existing set of rules for the cleardown module.
+        /// </summary>
+        /// <exception cref="Lusid.Sdk.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="scope">The scope of the Chart of Accounts.</param>
+        /// <param name="code">The code of the Chart of Accounts. Together with the scope this uniquely identifies the Chart of Accounts.</param>
+        /// <param name="cleardownModuleCode">The code of the Cleardown Module to be updated.</param>
+        /// <param name="cleardownModuleRule">The new rule set for the Cleardown Module.</param>
+        /// <returns>ApiResponse of CleardownModuleRulesUpdatedResponse</returns>
+        public Lusid.Sdk.Client.ApiResponse<CleardownModuleRulesUpdatedResponse> SetCleardownModuleRulesWithHttpInfo(string scope, string code, string cleardownModuleCode, List<CleardownModuleRule> cleardownModuleRule)
+        {
+            // verify the required parameter 'scope' is set
+            if (scope == null)
+                throw new Lusid.Sdk.Client.ApiException(400, "Missing required parameter 'scope' when calling ChartOfAccountsApi->SetCleardownModuleRules");
+
+            // verify the required parameter 'code' is set
+            if (code == null)
+                throw new Lusid.Sdk.Client.ApiException(400, "Missing required parameter 'code' when calling ChartOfAccountsApi->SetCleardownModuleRules");
+
+            // verify the required parameter 'cleardownModuleCode' is set
+            if (cleardownModuleCode == null)
+                throw new Lusid.Sdk.Client.ApiException(400, "Missing required parameter 'cleardownModuleCode' when calling ChartOfAccountsApi->SetCleardownModuleRules");
+
+            // verify the required parameter 'cleardownModuleRule' is set
+            if (cleardownModuleRule == null)
+                throw new Lusid.Sdk.Client.ApiException(400, "Missing required parameter 'cleardownModuleRule' when calling ChartOfAccountsApi->SetCleardownModuleRules");
+
+            Lusid.Sdk.Client.RequestOptions localVarRequestOptions = new Lusid.Sdk.Client.RequestOptions();
+
+            String[] _contentTypes = new String[] {
+                "application/json-patch+json",
+                "application/json",
+                "text/json",
+                "application/_*+json"
+            };
+
+            // to determine the Accept header
+            String[] _accepts = new String[] {
+                "text/plain",
+                "application/json",
+                "text/json"
+            };
+
+            var localVarContentType = Lusid.Sdk.Client.ClientUtils.SelectHeaderContentType(_contentTypes);
+            if (localVarContentType != null) localVarRequestOptions.HeaderParameters.Add("Content-Type", localVarContentType);
+
+            var localVarAccept = Lusid.Sdk.Client.ClientUtils.SelectHeaderAccept(_accepts);
+            if (localVarAccept != null) localVarRequestOptions.HeaderParameters.Add("Accept", localVarAccept);
+
+            localVarRequestOptions.PathParameters.Add("scope", Lusid.Sdk.Client.ClientUtils.ParameterToString(scope)); // path parameter
+            localVarRequestOptions.PathParameters.Add("code", Lusid.Sdk.Client.ClientUtils.ParameterToString(code)); // path parameter
+            localVarRequestOptions.PathParameters.Add("cleardownModuleCode", Lusid.Sdk.Client.ClientUtils.ParameterToString(cleardownModuleCode)); // path parameter
+            localVarRequestOptions.Data = cleardownModuleRule;
+
+            // authentication (oauth2) required
+            // oauth required
+            if (!String.IsNullOrEmpty(this.Configuration.AccessToken))
+            {
+                localVarRequestOptions.HeaderParameters.Add("Authorization", "Bearer " + this.Configuration.AccessToken);
+            }
+
+            //  set the LUSID header
+            localVarRequestOptions.HeaderParameters.Add("X-LUSID-Sdk-Language", "C#");
+            localVarRequestOptions.HeaderParameters.Add("X-LUSID-Sdk-Version", "1.1.170");
+
+            // make the HTTP request
+            var localVarResponse = this.Client.Put<CleardownModuleRulesUpdatedResponse>("/api/chartofaccounts/{scope}/{code}/cleardownmodules/{cleardownModuleCode}/cleardownrules", localVarRequestOptions, this.Configuration);
+
+            if (this.ExceptionFactory != null)
+            {
+                Exception _exception = this.ExceptionFactory("SetCleardownModuleRules", localVarResponse);
+                if (_exception != null) throw _exception;
+            }
+
+            return localVarResponse;
+        }
+
+        /// <summary>
+        /// [EXPERIMENTAL] SetCleardownModuleRules: Set the rules of a Cleardown Module Set the given Cleardown Modules rules, this will replace the existing set of rules for the cleardown module.
+        /// </summary>
+        /// <exception cref="Lusid.Sdk.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="scope">The scope of the Chart of Accounts.</param>
+        /// <param name="code">The code of the Chart of Accounts. Together with the scope this uniquely identifies the Chart of Accounts.</param>
+        /// <param name="cleardownModuleCode">The code of the Cleardown Module to be updated.</param>
+        /// <param name="cleardownModuleRule">The new rule set for the Cleardown Module.</param>
+        /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
+        /// <returns>Task of CleardownModuleRulesUpdatedResponse</returns>
+        public async System.Threading.Tasks.Task<CleardownModuleRulesUpdatedResponse> SetCleardownModuleRulesAsync(string scope, string code, string cleardownModuleCode, List<CleardownModuleRule> cleardownModuleRule, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
+        {
+            Lusid.Sdk.Client.ApiResponse<CleardownModuleRulesUpdatedResponse> localVarResponse = await SetCleardownModuleRulesWithHttpInfoAsync(scope, code, cleardownModuleCode, cleardownModuleRule, cancellationToken).ConfigureAwait(false);
+            return localVarResponse.Data;
+        }
+
+        /// <summary>
+        /// [EXPERIMENTAL] SetCleardownModuleRules: Set the rules of a Cleardown Module Set the given Cleardown Modules rules, this will replace the existing set of rules for the cleardown module.
+        /// </summary>
+        /// <exception cref="Lusid.Sdk.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="scope">The scope of the Chart of Accounts.</param>
+        /// <param name="code">The code of the Chart of Accounts. Together with the scope this uniquely identifies the Chart of Accounts.</param>
+        /// <param name="cleardownModuleCode">The code of the Cleardown Module to be updated.</param>
+        /// <param name="cleardownModuleRule">The new rule set for the Cleardown Module.</param>
+        /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
+        /// <returns>Task of ApiResponse (CleardownModuleRulesUpdatedResponse)</returns>
+        public async System.Threading.Tasks.Task<Lusid.Sdk.Client.ApiResponse<CleardownModuleRulesUpdatedResponse>> SetCleardownModuleRulesWithHttpInfoAsync(string scope, string code, string cleardownModuleCode, List<CleardownModuleRule> cleardownModuleRule, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
+        {
+            // verify the required parameter 'scope' is set
+            if (scope == null)
+                throw new Lusid.Sdk.Client.ApiException(400, "Missing required parameter 'scope' when calling ChartOfAccountsApi->SetCleardownModuleRules");
+
+            // verify the required parameter 'code' is set
+            if (code == null)
+                throw new Lusid.Sdk.Client.ApiException(400, "Missing required parameter 'code' when calling ChartOfAccountsApi->SetCleardownModuleRules");
+
+            // verify the required parameter 'cleardownModuleCode' is set
+            if (cleardownModuleCode == null)
+                throw new Lusid.Sdk.Client.ApiException(400, "Missing required parameter 'cleardownModuleCode' when calling ChartOfAccountsApi->SetCleardownModuleRules");
+
+            // verify the required parameter 'cleardownModuleRule' is set
+            if (cleardownModuleRule == null)
+                throw new Lusid.Sdk.Client.ApiException(400, "Missing required parameter 'cleardownModuleRule' when calling ChartOfAccountsApi->SetCleardownModuleRules");
+
+
+            Lusid.Sdk.Client.RequestOptions localVarRequestOptions = new Lusid.Sdk.Client.RequestOptions();
+
+            String[] _contentTypes = new String[] {
+                "application/json-patch+json", 
+                "application/json", 
+                "text/json", 
+                "application/_*+json"
+            };
+
+            // to determine the Accept header
+            String[] _accepts = new String[] {
+                "text/plain",
+                "application/json",
+                "text/json"
+            };
+
+
+            var localVarContentType = Lusid.Sdk.Client.ClientUtils.SelectHeaderContentType(_contentTypes);
+            if (localVarContentType != null) localVarRequestOptions.HeaderParameters.Add("Content-Type", localVarContentType);
+
+            var localVarAccept = Lusid.Sdk.Client.ClientUtils.SelectHeaderAccept(_accepts);
+            if (localVarAccept != null) localVarRequestOptions.HeaderParameters.Add("Accept", localVarAccept);
+
+            localVarRequestOptions.PathParameters.Add("scope", Lusid.Sdk.Client.ClientUtils.ParameterToString(scope)); // path parameter
+            localVarRequestOptions.PathParameters.Add("code", Lusid.Sdk.Client.ClientUtils.ParameterToString(code)); // path parameter
+            localVarRequestOptions.PathParameters.Add("cleardownModuleCode", Lusid.Sdk.Client.ClientUtils.ParameterToString(cleardownModuleCode)); // path parameter
+            localVarRequestOptions.Data = cleardownModuleRule;
+
+            // authentication (oauth2) required
+            // oauth required
+            if (!String.IsNullOrEmpty(this.Configuration.AccessToken))
+            {
+                localVarRequestOptions.HeaderParameters.Add("Authorization", "Bearer " + this.Configuration.AccessToken);
+            }
+
+            //  set the LUSID header
+            localVarRequestOptions.HeaderParameters.Add("X-LUSID-Sdk-Language", "C#");
+            localVarRequestOptions.HeaderParameters.Add("X-LUSID-Sdk-Version", "1.1.170");
+
+            // make the HTTP request
+
+            var localVarResponse = await this.AsynchronousClient.PutAsync<CleardownModuleRulesUpdatedResponse>("/api/chartofaccounts/{scope}/{code}/cleardownmodules/{cleardownModuleCode}/cleardownrules", localVarRequestOptions, this.Configuration, cancellationToken).ConfigureAwait(false);
+
+            if (this.ExceptionFactory != null)
+            {
+                Exception _exception = this.ExceptionFactory("SetCleardownModuleRules", localVarResponse);
                 if (_exception != null) throw _exception;
             }
 
