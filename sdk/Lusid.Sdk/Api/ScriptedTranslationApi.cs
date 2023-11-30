@@ -190,9 +190,9 @@ namespace Lusid.Sdk.Api
         /// Upsert the given dialect.
         /// </remarks>
         /// <exception cref="Lusid.Sdk.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="dialect">The dialect to upsert.</param>
+        /// <param name="upsertDialectRequest">The dialect to upsert.</param>
         /// <returns>Dialect</returns>
-        Dialect UpsertTranslationDialect(Dialect dialect);
+        Dialect UpsertTranslationDialect(UpsertDialectRequest upsertDialectRequest);
 
         /// <summary>
         /// [EARLY ACCESS] UpsertTranslationDialect: Upsert a Dialect.
@@ -201,9 +201,9 @@ namespace Lusid.Sdk.Api
         /// Upsert the given dialect.
         /// </remarks>
         /// <exception cref="Lusid.Sdk.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="dialect">The dialect to upsert.</param>
+        /// <param name="upsertDialectRequest">The dialect to upsert.</param>
         /// <returns>ApiResponse of Dialect</returns>
-        ApiResponse<Dialect> UpsertTranslationDialectWithHttpInfo(Dialect dialect);
+        ApiResponse<Dialect> UpsertTranslationDialectWithHttpInfo(UpsertDialectRequest upsertDialectRequest);
         /// <summary>
         /// [EARLY ACCESS] UpsertTranslationScript: Upsert a translation script.
         /// </summary>
@@ -211,9 +211,9 @@ namespace Lusid.Sdk.Api
         /// Upserts a translation script to be used for translating financial entities.
         /// </remarks>
         /// <exception cref="Lusid.Sdk.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="translationScript">The translation script to be upserted.</param>
+        /// <param name="upsertTranslationScriptRequest">The translation script to be upserted.</param>
         /// <returns>TranslationScript</returns>
-        TranslationScript UpsertTranslationScript(TranslationScript translationScript);
+        TranslationScript UpsertTranslationScript(UpsertTranslationScriptRequest upsertTranslationScriptRequest);
 
         /// <summary>
         /// [EARLY ACCESS] UpsertTranslationScript: Upsert a translation script.
@@ -222,9 +222,9 @@ namespace Lusid.Sdk.Api
         /// Upserts a translation script to be used for translating financial entities.
         /// </remarks>
         /// <exception cref="Lusid.Sdk.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="translationScript">The translation script to be upserted.</param>
+        /// <param name="upsertTranslationScriptRequest">The translation script to be upserted.</param>
         /// <returns>ApiResponse of TranslationScript</returns>
-        ApiResponse<TranslationScript> UpsertTranslationScriptWithHttpInfo(TranslationScript translationScript);
+        ApiResponse<TranslationScript> UpsertTranslationScriptWithHttpInfo(UpsertTranslationScriptRequest upsertTranslationScriptRequest);
         #endregion Synchronous Operations
     }
 
@@ -409,10 +409,10 @@ namespace Lusid.Sdk.Api
         /// Upsert the given dialect.
         /// </remarks>
         /// <exception cref="Lusid.Sdk.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="dialect">The dialect to upsert.</param>
+        /// <param name="upsertDialectRequest">The dialect to upsert.</param>
         /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
         /// <returns>Task of Dialect</returns>
-        System.Threading.Tasks.Task<Dialect> UpsertTranslationDialectAsync(Dialect dialect, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+        System.Threading.Tasks.Task<Dialect> UpsertTranslationDialectAsync(UpsertDialectRequest upsertDialectRequest, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
 
         /// <summary>
         /// [EARLY ACCESS] UpsertTranslationDialect: Upsert a Dialect.
@@ -421,10 +421,10 @@ namespace Lusid.Sdk.Api
         /// Upsert the given dialect.
         /// </remarks>
         /// <exception cref="Lusid.Sdk.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="dialect">The dialect to upsert.</param>
+        /// <param name="upsertDialectRequest">The dialect to upsert.</param>
         /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
         /// <returns>Task of ApiResponse (Dialect)</returns>
-        System.Threading.Tasks.Task<ApiResponse<Dialect>> UpsertTranslationDialectWithHttpInfoAsync(Dialect dialect, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+        System.Threading.Tasks.Task<ApiResponse<Dialect>> UpsertTranslationDialectWithHttpInfoAsync(UpsertDialectRequest upsertDialectRequest, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
         /// <summary>
         /// [EARLY ACCESS] UpsertTranslationScript: Upsert a translation script.
         /// </summary>
@@ -432,10 +432,10 @@ namespace Lusid.Sdk.Api
         /// Upserts a translation script to be used for translating financial entities.
         /// </remarks>
         /// <exception cref="Lusid.Sdk.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="translationScript">The translation script to be upserted.</param>
+        /// <param name="upsertTranslationScriptRequest">The translation script to be upserted.</param>
         /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
         /// <returns>Task of TranslationScript</returns>
-        System.Threading.Tasks.Task<TranslationScript> UpsertTranslationScriptAsync(TranslationScript translationScript, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+        System.Threading.Tasks.Task<TranslationScript> UpsertTranslationScriptAsync(UpsertTranslationScriptRequest upsertTranslationScriptRequest, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
 
         /// <summary>
         /// [EARLY ACCESS] UpsertTranslationScript: Upsert a translation script.
@@ -444,10 +444,10 @@ namespace Lusid.Sdk.Api
         /// Upserts a translation script to be used for translating financial entities.
         /// </remarks>
         /// <exception cref="Lusid.Sdk.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="translationScript">The translation script to be upserted.</param>
+        /// <param name="upsertTranslationScriptRequest">The translation script to be upserted.</param>
         /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
         /// <returns>Task of ApiResponse (TranslationScript)</returns>
-        System.Threading.Tasks.Task<ApiResponse<TranslationScript>> UpsertTranslationScriptWithHttpInfoAsync(TranslationScript translationScript, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+        System.Threading.Tasks.Task<ApiResponse<TranslationScript>> UpsertTranslationScriptWithHttpInfoAsync(UpsertTranslationScriptRequest upsertTranslationScriptRequest, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
         #endregion Asynchronous Operations
     }
 
@@ -1609,11 +1609,11 @@ namespace Lusid.Sdk.Api
         /// [EARLY ACCESS] UpsertTranslationDialect: Upsert a Dialect. Upsert the given dialect.
         /// </summary>
         /// <exception cref="Lusid.Sdk.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="dialect">The dialect to upsert.</param>
+        /// <param name="upsertDialectRequest">The dialect to upsert.</param>
         /// <returns>Dialect</returns>
-        public Dialect UpsertTranslationDialect(Dialect dialect)
+        public Dialect UpsertTranslationDialect(UpsertDialectRequest upsertDialectRequest)
         {
-            Lusid.Sdk.Client.ApiResponse<Dialect> localVarResponse = UpsertTranslationDialectWithHttpInfo(dialect);
+            Lusid.Sdk.Client.ApiResponse<Dialect> localVarResponse = UpsertTranslationDialectWithHttpInfo(upsertDialectRequest);
             return localVarResponse.Data;
         }
 
@@ -1621,13 +1621,13 @@ namespace Lusid.Sdk.Api
         /// [EARLY ACCESS] UpsertTranslationDialect: Upsert a Dialect. Upsert the given dialect.
         /// </summary>
         /// <exception cref="Lusid.Sdk.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="dialect">The dialect to upsert.</param>
+        /// <param name="upsertDialectRequest">The dialect to upsert.</param>
         /// <returns>ApiResponse of Dialect</returns>
-        public Lusid.Sdk.Client.ApiResponse<Dialect> UpsertTranslationDialectWithHttpInfo(Dialect dialect)
+        public Lusid.Sdk.Client.ApiResponse<Dialect> UpsertTranslationDialectWithHttpInfo(UpsertDialectRequest upsertDialectRequest)
         {
-            // verify the required parameter 'dialect' is set
-            if (dialect == null)
-                throw new Lusid.Sdk.Client.ApiException(400, "Missing required parameter 'dialect' when calling ScriptedTranslationApi->UpsertTranslationDialect");
+            // verify the required parameter 'upsertDialectRequest' is set
+            if (upsertDialectRequest == null)
+                throw new Lusid.Sdk.Client.ApiException(400, "Missing required parameter 'upsertDialectRequest' when calling ScriptedTranslationApi->UpsertTranslationDialect");
 
             Lusid.Sdk.Client.RequestOptions localVarRequestOptions = new Lusid.Sdk.Client.RequestOptions();
 
@@ -1651,7 +1651,7 @@ namespace Lusid.Sdk.Api
             var localVarAccept = Lusid.Sdk.Client.ClientUtils.SelectHeaderAccept(_accepts);
             if (localVarAccept != null) localVarRequestOptions.HeaderParameters.Add("Accept", localVarAccept);
 
-            localVarRequestOptions.Data = dialect;
+            localVarRequestOptions.Data = upsertDialectRequest;
 
             // authentication (oauth2) required
             // oauth required
@@ -1680,12 +1680,12 @@ namespace Lusid.Sdk.Api
         /// [EARLY ACCESS] UpsertTranslationDialect: Upsert a Dialect. Upsert the given dialect.
         /// </summary>
         /// <exception cref="Lusid.Sdk.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="dialect">The dialect to upsert.</param>
+        /// <param name="upsertDialectRequest">The dialect to upsert.</param>
         /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
         /// <returns>Task of Dialect</returns>
-        public async System.Threading.Tasks.Task<Dialect> UpsertTranslationDialectAsync(Dialect dialect, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
+        public async System.Threading.Tasks.Task<Dialect> UpsertTranslationDialectAsync(UpsertDialectRequest upsertDialectRequest, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
-            Lusid.Sdk.Client.ApiResponse<Dialect> localVarResponse = await UpsertTranslationDialectWithHttpInfoAsync(dialect, cancellationToken).ConfigureAwait(false);
+            Lusid.Sdk.Client.ApiResponse<Dialect> localVarResponse = await UpsertTranslationDialectWithHttpInfoAsync(upsertDialectRequest, cancellationToken).ConfigureAwait(false);
             return localVarResponse.Data;
         }
 
@@ -1693,14 +1693,14 @@ namespace Lusid.Sdk.Api
         /// [EARLY ACCESS] UpsertTranslationDialect: Upsert a Dialect. Upsert the given dialect.
         /// </summary>
         /// <exception cref="Lusid.Sdk.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="dialect">The dialect to upsert.</param>
+        /// <param name="upsertDialectRequest">The dialect to upsert.</param>
         /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
         /// <returns>Task of ApiResponse (Dialect)</returns>
-        public async System.Threading.Tasks.Task<Lusid.Sdk.Client.ApiResponse<Dialect>> UpsertTranslationDialectWithHttpInfoAsync(Dialect dialect, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
+        public async System.Threading.Tasks.Task<Lusid.Sdk.Client.ApiResponse<Dialect>> UpsertTranslationDialectWithHttpInfoAsync(UpsertDialectRequest upsertDialectRequest, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
-            // verify the required parameter 'dialect' is set
-            if (dialect == null)
-                throw new Lusid.Sdk.Client.ApiException(400, "Missing required parameter 'dialect' when calling ScriptedTranslationApi->UpsertTranslationDialect");
+            // verify the required parameter 'upsertDialectRequest' is set
+            if (upsertDialectRequest == null)
+                throw new Lusid.Sdk.Client.ApiException(400, "Missing required parameter 'upsertDialectRequest' when calling ScriptedTranslationApi->UpsertTranslationDialect");
 
 
             Lusid.Sdk.Client.RequestOptions localVarRequestOptions = new Lusid.Sdk.Client.RequestOptions();
@@ -1726,7 +1726,7 @@ namespace Lusid.Sdk.Api
             var localVarAccept = Lusid.Sdk.Client.ClientUtils.SelectHeaderAccept(_accepts);
             if (localVarAccept != null) localVarRequestOptions.HeaderParameters.Add("Accept", localVarAccept);
 
-            localVarRequestOptions.Data = dialect;
+            localVarRequestOptions.Data = upsertDialectRequest;
 
             // authentication (oauth2) required
             // oauth required
@@ -1756,11 +1756,11 @@ namespace Lusid.Sdk.Api
         /// [EARLY ACCESS] UpsertTranslationScript: Upsert a translation script. Upserts a translation script to be used for translating financial entities.
         /// </summary>
         /// <exception cref="Lusid.Sdk.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="translationScript">The translation script to be upserted.</param>
+        /// <param name="upsertTranslationScriptRequest">The translation script to be upserted.</param>
         /// <returns>TranslationScript</returns>
-        public TranslationScript UpsertTranslationScript(TranslationScript translationScript)
+        public TranslationScript UpsertTranslationScript(UpsertTranslationScriptRequest upsertTranslationScriptRequest)
         {
-            Lusid.Sdk.Client.ApiResponse<TranslationScript> localVarResponse = UpsertTranslationScriptWithHttpInfo(translationScript);
+            Lusid.Sdk.Client.ApiResponse<TranslationScript> localVarResponse = UpsertTranslationScriptWithHttpInfo(upsertTranslationScriptRequest);
             return localVarResponse.Data;
         }
 
@@ -1768,13 +1768,13 @@ namespace Lusid.Sdk.Api
         /// [EARLY ACCESS] UpsertTranslationScript: Upsert a translation script. Upserts a translation script to be used for translating financial entities.
         /// </summary>
         /// <exception cref="Lusid.Sdk.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="translationScript">The translation script to be upserted.</param>
+        /// <param name="upsertTranslationScriptRequest">The translation script to be upserted.</param>
         /// <returns>ApiResponse of TranslationScript</returns>
-        public Lusid.Sdk.Client.ApiResponse<TranslationScript> UpsertTranslationScriptWithHttpInfo(TranslationScript translationScript)
+        public Lusid.Sdk.Client.ApiResponse<TranslationScript> UpsertTranslationScriptWithHttpInfo(UpsertTranslationScriptRequest upsertTranslationScriptRequest)
         {
-            // verify the required parameter 'translationScript' is set
-            if (translationScript == null)
-                throw new Lusid.Sdk.Client.ApiException(400, "Missing required parameter 'translationScript' when calling ScriptedTranslationApi->UpsertTranslationScript");
+            // verify the required parameter 'upsertTranslationScriptRequest' is set
+            if (upsertTranslationScriptRequest == null)
+                throw new Lusid.Sdk.Client.ApiException(400, "Missing required parameter 'upsertTranslationScriptRequest' when calling ScriptedTranslationApi->UpsertTranslationScript");
 
             Lusid.Sdk.Client.RequestOptions localVarRequestOptions = new Lusid.Sdk.Client.RequestOptions();
 
@@ -1798,7 +1798,7 @@ namespace Lusid.Sdk.Api
             var localVarAccept = Lusid.Sdk.Client.ClientUtils.SelectHeaderAccept(_accepts);
             if (localVarAccept != null) localVarRequestOptions.HeaderParameters.Add("Accept", localVarAccept);
 
-            localVarRequestOptions.Data = translationScript;
+            localVarRequestOptions.Data = upsertTranslationScriptRequest;
 
             // authentication (oauth2) required
             // oauth required
@@ -1827,12 +1827,12 @@ namespace Lusid.Sdk.Api
         /// [EARLY ACCESS] UpsertTranslationScript: Upsert a translation script. Upserts a translation script to be used for translating financial entities.
         /// </summary>
         /// <exception cref="Lusid.Sdk.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="translationScript">The translation script to be upserted.</param>
+        /// <param name="upsertTranslationScriptRequest">The translation script to be upserted.</param>
         /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
         /// <returns>Task of TranslationScript</returns>
-        public async System.Threading.Tasks.Task<TranslationScript> UpsertTranslationScriptAsync(TranslationScript translationScript, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
+        public async System.Threading.Tasks.Task<TranslationScript> UpsertTranslationScriptAsync(UpsertTranslationScriptRequest upsertTranslationScriptRequest, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
-            Lusid.Sdk.Client.ApiResponse<TranslationScript> localVarResponse = await UpsertTranslationScriptWithHttpInfoAsync(translationScript, cancellationToken).ConfigureAwait(false);
+            Lusid.Sdk.Client.ApiResponse<TranslationScript> localVarResponse = await UpsertTranslationScriptWithHttpInfoAsync(upsertTranslationScriptRequest, cancellationToken).ConfigureAwait(false);
             return localVarResponse.Data;
         }
 
@@ -1840,14 +1840,14 @@ namespace Lusid.Sdk.Api
         /// [EARLY ACCESS] UpsertTranslationScript: Upsert a translation script. Upserts a translation script to be used for translating financial entities.
         /// </summary>
         /// <exception cref="Lusid.Sdk.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="translationScript">The translation script to be upserted.</param>
+        /// <param name="upsertTranslationScriptRequest">The translation script to be upserted.</param>
         /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
         /// <returns>Task of ApiResponse (TranslationScript)</returns>
-        public async System.Threading.Tasks.Task<Lusid.Sdk.Client.ApiResponse<TranslationScript>> UpsertTranslationScriptWithHttpInfoAsync(TranslationScript translationScript, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
+        public async System.Threading.Tasks.Task<Lusid.Sdk.Client.ApiResponse<TranslationScript>> UpsertTranslationScriptWithHttpInfoAsync(UpsertTranslationScriptRequest upsertTranslationScriptRequest, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
-            // verify the required parameter 'translationScript' is set
-            if (translationScript == null)
-                throw new Lusid.Sdk.Client.ApiException(400, "Missing required parameter 'translationScript' when calling ScriptedTranslationApi->UpsertTranslationScript");
+            // verify the required parameter 'upsertTranslationScriptRequest' is set
+            if (upsertTranslationScriptRequest == null)
+                throw new Lusid.Sdk.Client.ApiException(400, "Missing required parameter 'upsertTranslationScriptRequest' when calling ScriptedTranslationApi->UpsertTranslationScript");
 
 
             Lusid.Sdk.Client.RequestOptions localVarRequestOptions = new Lusid.Sdk.Client.RequestOptions();
@@ -1873,7 +1873,7 @@ namespace Lusid.Sdk.Api
             var localVarAccept = Lusid.Sdk.Client.ClientUtils.SelectHeaderAccept(_accepts);
             if (localVarAccept != null) localVarRequestOptions.HeaderParameters.Add("Accept", localVarAccept);
 
-            localVarRequestOptions.Data = translationScript;
+            localVarRequestOptions.Data = upsertTranslationScriptRequest;
 
             // authentication (oauth2) required
             // oauth required
