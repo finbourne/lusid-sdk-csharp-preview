@@ -526,7 +526,7 @@ namespace Example
 
             var apiInstance = new ComplianceApi(config);
             var asAt = 2013-10-20T19:20:30+01:00;  // DateTimeOffset? | Optional. The time at which to get results from. Default : latest (optional) 
-            var page = page_example;  // string | Optional. The pagination token to use to continue listing compliance runs from a previous call to list compliance runs.              This value is returned from the previous call. If a pagination token is provided the sortBy, filter, and asAt fields              must not have changed since the original request. Also, if set, a start value cannot be provided. (optional) 
+            var page = page_example;  // string | Optional. The pagination token to use to continue listing compliance runs from a previous call to list compliance runs.              This value is returned from the previous call. If a pagination token is provided the sortBy, filter, and asAt fields              must not have changed since the original request. (optional) 
             var limit = 56;  // int? | Optional. When paginating, limit the number of returned results to this many. (optional) 
             var filter = filter_example;  // string | Optional. Expression to filter the result set. Read more about filtering results from LUSID here https://support.lusid.com/filtering-results-from-lusid. (optional) 
             var sortBy = new List<string>(); // List<string> | Optional. A list of field names to sort by, each suffixed by \"ASC\" or \"DESC\" (optional) 
@@ -553,7 +553,7 @@ namespace Example
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **asAt** | **DateTimeOffset?**| Optional. The time at which to get results from. Default : latest | [optional] 
- **page** | **string**| Optional. The pagination token to use to continue listing compliance runs from a previous call to list compliance runs.              This value is returned from the previous call. If a pagination token is provided the sortBy, filter, and asAt fields              must not have changed since the original request. Also, if set, a start value cannot be provided. | [optional] 
+ **page** | **string**| Optional. The pagination token to use to continue listing compliance runs from a previous call to list compliance runs.              This value is returned from the previous call. If a pagination token is provided the sortBy, filter, and asAt fields              must not have changed since the original request. | [optional] 
  **limit** | **int?**| Optional. When paginating, limit the number of returned results to this many. | [optional] 
  **filter** | **string**| Optional. Expression to filter the result set. Read more about filtering results from LUSID here https://support.lusid.com/filtering-results-from-lusid. | [optional] 
  **sortBy** | [**List&lt;string&gt;**](string.md)| Optional. A list of field names to sort by, each suffixed by \&quot;ASC\&quot; or \&quot;DESC\&quot; | [optional] 
@@ -583,7 +583,7 @@ Name | Type | Description  | Notes
 
 <a name="listcompliancetemplates"></a>
 # **ListComplianceTemplates**
-> PagedResourceListOfComplianceTemplate ListComplianceTemplates (DateTimeOffset? asAt = null, string page = null, int? start = null, int? limit = null, string filter = null)
+> PagedResourceListOfComplianceTemplate ListComplianceTemplates (DateTimeOffset? asAt = null, string page = null, int? limit = null, string filter = null)
 
 [EARLY ACCESS] ListComplianceTemplates: List compliance templates.
 
@@ -610,15 +610,14 @@ namespace Example
 
             var apiInstance = new ComplianceApi(config);
             var asAt = 2013-10-20T19:20:30+01:00;  // DateTimeOffset? | Optional. The time at which to get results from. Default : latest (optional) 
-            var page = page_example;  // string | Optional. The pagination token to use to continue listing compliance runs from a previous call to list compliance runs.              This value is returned from the previous call. If a pagination token is provided the sortBy, filter, and asAt fields              must not have changed since the original request. Also, if set, a start value cannot be provided. (optional) 
-            var start = 56;  // int? | Optional. When paginating, skip this number of results. (optional) 
+            var page = page_example;  // string | Optional. The pagination token to use to continue listing compliance runs from a previous call to list compliance runs.              This value is returned from the previous call. If a pagination token is provided the sortBy, filter, and asAt fields              must not have changed since the original request. (optional) 
             var limit = 56;  // int? | Optional. When paginating, limit the number of returned results to this many. (optional) 
             var filter = filter_example;  // string | Optional. Expression to filter the result set. Read more about filtering results from LUSID here https://support.lusid.com/filtering-results-from-lusid. (optional) 
 
             try
             {
                 // [EARLY ACCESS] ListComplianceTemplates: List compliance templates.
-                PagedResourceListOfComplianceTemplate result = apiInstance.ListComplianceTemplates(asAt, page, start, limit, filter);
+                PagedResourceListOfComplianceTemplate result = apiInstance.ListComplianceTemplates(asAt, page, limit, filter);
                 Debug.WriteLine(result);
             }
             catch (ApiException  e)
@@ -637,8 +636,7 @@ namespace Example
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **asAt** | **DateTimeOffset?**| Optional. The time at which to get results from. Default : latest | [optional] 
- **page** | **string**| Optional. The pagination token to use to continue listing compliance runs from a previous call to list compliance runs.              This value is returned from the previous call. If a pagination token is provided the sortBy, filter, and asAt fields              must not have changed since the original request. Also, if set, a start value cannot be provided. | [optional] 
- **start** | **int?**| Optional. When paginating, skip this number of results. | [optional] 
+ **page** | **string**| Optional. The pagination token to use to continue listing compliance runs from a previous call to list compliance runs.              This value is returned from the previous call. If a pagination token is provided the sortBy, filter, and asAt fields              must not have changed since the original request. | [optional] 
  **limit** | **int?**| Optional. When paginating, limit the number of returned results to this many. | [optional] 
  **filter** | **string**| Optional. Expression to filter the result set. Read more about filtering results from LUSID here https://support.lusid.com/filtering-results-from-lusid. | [optional] 
 

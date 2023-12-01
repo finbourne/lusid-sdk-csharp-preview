@@ -765,7 +765,7 @@ Name | Type | Description  | Notes
 
 <a name="listreconciliationbreaks"></a>
 # **ListReconciliationBreaks**
-> PagedResourceListOfReconciliationRunBreak ListReconciliationBreaks (string scope, string code, DateTimeOffset runDate, int version, DateTimeOrCutLabel effectiveAt = null, DateTimeOffset? asAt = null, string page = null, int? start = null, int? limit = null, string filter = null)
+> PagedResourceListOfReconciliationRunBreak ListReconciliationBreaks (string scope, string code, DateTimeOffset runDate, int version, DateTimeOrCutLabel effectiveAt = null, DateTimeOffset? asAt = null, string page = null, int? limit = null, string filter = null)
 
 [EXPERIMENTAL] ListReconciliationBreaks: List reconciliation breaks
 
@@ -797,15 +797,14 @@ namespace Example
             var version = 56;  // int | The version number of the run associated with the break
             var effectiveAt = effectiveAt_example;  // DateTimeOrCutLabel | The effective datetime or cut label at which to list the reconciliation runs. Defaults to the current LUSID              system datetime if not specified. (optional) 
             var asAt = 2013-10-20T19:20:30+01:00;  // DateTimeOffset? | The asAt datetime at which to list the reconciliation runs. Defaults to returning the latest version              of each run if not specified. (optional) 
-            var page = page_example;  // string | The pagination token to use to continue listing reconciliation runs; this              value is returned from the previous call. If a pagination token is provided, the filter, effectiveAt              and asAt fields must not have changed since the original request. Also, if set, a start value cannot be provided. (optional) 
-            var start = 56;  // int? | When paginating, skip this number of results. (optional) 
+            var page = page_example;  // string | The pagination token to use to continue listing reconciliation runs; this              value is returned from the previous call. If a pagination token is provided, the filter, effectiveAt              and asAt fields must not have changed since the original request. (optional) 
             var limit = 56;  // int? | When paginating, limit the results to this number. Defaults to 100 if not specified. (optional) 
             var filter = filter_example;  // string | Expression to filter the results. (optional) 
 
             try
             {
                 // [EXPERIMENTAL] ListReconciliationBreaks: List reconciliation breaks
-                PagedResourceListOfReconciliationRunBreak result = apiInstance.ListReconciliationBreaks(scope, code, runDate, version, effectiveAt, asAt, page, start, limit, filter);
+                PagedResourceListOfReconciliationRunBreak result = apiInstance.ListReconciliationBreaks(scope, code, runDate, version, effectiveAt, asAt, page, limit, filter);
                 Debug.WriteLine(result);
             }
             catch (ApiException  e)
@@ -829,8 +828,7 @@ Name | Type | Description  | Notes
  **version** | **int**| The version number of the run associated with the break | 
  **effectiveAt** | **DateTimeOrCutLabel**| The effective datetime or cut label at which to list the reconciliation runs. Defaults to the current LUSID              system datetime if not specified. | [optional] 
  **asAt** | **DateTimeOffset?**| The asAt datetime at which to list the reconciliation runs. Defaults to returning the latest version              of each run if not specified. | [optional] 
- **page** | **string**| The pagination token to use to continue listing reconciliation runs; this              value is returned from the previous call. If a pagination token is provided, the filter, effectiveAt              and asAt fields must not have changed since the original request. Also, if set, a start value cannot be provided. | [optional] 
- **start** | **int?**| When paginating, skip this number of results. | [optional] 
+ **page** | **string**| The pagination token to use to continue listing reconciliation runs; this              value is returned from the previous call. If a pagination token is provided, the filter, effectiveAt              and asAt fields must not have changed since the original request. | [optional] 
  **limit** | **int?**| When paginating, limit the results to this number. Defaults to 100 if not specified. | [optional] 
  **filter** | **string**| Expression to filter the results. | [optional] 
 
@@ -935,7 +933,7 @@ Name | Type | Description  | Notes
 
 <a name="listreconciliationruns"></a>
 # **ListReconciliationRuns**
-> PagedResourceListOfReconciliationRun ListReconciliationRuns (string scope, string code, DateTimeOrCutLabel effectiveAt = null, DateTimeOffset? asAt = null, string page = null, int? start = null, int? limit = null, string filter = null)
+> PagedResourceListOfReconciliationRun ListReconciliationRuns (string scope, string code, DateTimeOrCutLabel effectiveAt = null, DateTimeOffset? asAt = null, string page = null, int? limit = null, string filter = null)
 
 [EXPERIMENTAL] ListReconciliationRuns: List Reconciliation runs
 
@@ -965,15 +963,14 @@ namespace Example
             var code = code_example;  // string | The code of the reconciliation
             var effectiveAt = effectiveAt_example;  // DateTimeOrCutLabel | The effective datetime or cut label at which to list the reconciliation runs. Defaults to the current LUSID              system datetime if not specified. (optional) 
             var asAt = 2013-10-20T19:20:30+01:00;  // DateTimeOffset? | The asAt datetime at which to list the reconciliation runs. Defaults to returning the latest version              of each run if not specified. (optional) 
-            var page = page_example;  // string | The pagination token to use to continue listing reconciliation runs; this              value is returned from the previous call. If a pagination token is provided, the filter, effectiveAt              and asAt fields must not have changed since the original request. Also, if set, a start value cannot be provided. (optional) 
-            var start = 56;  // int? | When paginating, skip this number of results. (optional) 
+            var page = page_example;  // string | The pagination token to use to continue listing reconciliation runs; this              value is returned from the previous call. If a pagination token is provided, the filter, effectiveAt              and asAt fields must not have changed since the original request. (optional) 
             var limit = 56;  // int? | When paginating, limit the results to this number. Defaults to 100 if not specified. (optional) 
             var filter = filter_example;  // string | Expression to filter the results.              For example, to filter on the run date, specify \"Date eq 10/03/2018\". For more information about filtering              results, see https://support.lusid.com/knowledgebase/article/KA-01914. (optional) 
 
             try
             {
                 // [EXPERIMENTAL] ListReconciliationRuns: List Reconciliation runs
-                PagedResourceListOfReconciliationRun result = apiInstance.ListReconciliationRuns(scope, code, effectiveAt, asAt, page, start, limit, filter);
+                PagedResourceListOfReconciliationRun result = apiInstance.ListReconciliationRuns(scope, code, effectiveAt, asAt, page, limit, filter);
                 Debug.WriteLine(result);
             }
             catch (ApiException  e)
@@ -995,8 +992,7 @@ Name | Type | Description  | Notes
  **code** | **string**| The code of the reconciliation | 
  **effectiveAt** | **DateTimeOrCutLabel**| The effective datetime or cut label at which to list the reconciliation runs. Defaults to the current LUSID              system datetime if not specified. | [optional] 
  **asAt** | **DateTimeOffset?**| The asAt datetime at which to list the reconciliation runs. Defaults to returning the latest version              of each run if not specified. | [optional] 
- **page** | **string**| The pagination token to use to continue listing reconciliation runs; this              value is returned from the previous call. If a pagination token is provided, the filter, effectiveAt              and asAt fields must not have changed since the original request. Also, if set, a start value cannot be provided. | [optional] 
- **start** | **int?**| When paginating, skip this number of results. | [optional] 
+ **page** | **string**| The pagination token to use to continue listing reconciliation runs; this              value is returned from the previous call. If a pagination token is provided, the filter, effectiveAt              and asAt fields must not have changed since the original request. | [optional] 
  **limit** | **int?**| When paginating, limit the results to this number. Defaults to 100 if not specified. | [optional] 
  **filter** | **string**| Expression to filter the results.              For example, to filter on the run date, specify \&quot;Date eq 10/03/2018\&quot;. For more information about filtering              results, see https://support.lusid.com/knowledgebase/article/KA-01914. | [optional] 
 
@@ -1025,7 +1021,7 @@ Name | Type | Description  | Notes
 
 <a name="listreconciliations"></a>
 # **ListReconciliations**
-> PagedResourceListOfReconciliation ListReconciliations (DateTimeOrCutLabel effectiveAt = null, DateTimeOffset? asAt = null, string page = null, int? start = null, int? limit = null, string filter = null, List<string> propertyKeys = null)
+> PagedResourceListOfReconciliation ListReconciliations (DateTimeOrCutLabel effectiveAt = null, DateTimeOffset? asAt = null, string page = null, int? limit = null, string filter = null, List<string> propertyKeys = null)
 
 [EXPERIMENTAL] ListReconciliations: List scheduled reconciliations
 
@@ -1053,8 +1049,7 @@ namespace Example
             var apiInstance = new ReconciliationsApi(config);
             var effectiveAt = effectiveAt_example;  // DateTimeOrCutLabel | The effective datetime or cut label at which to list the TimeVariant properties for the reconciliation. Defaults to the current LUSID              system datetime if not specified. (optional) 
             var asAt = 2013-10-20T19:20:30+01:00;  // DateTimeOffset? | The asAt datetime at which to list the reconciliation. Defaults to returning the latest version              of each reconciliation if not specified. (optional) 
-            var page = page_example;  // string | The pagination token to use to continue listing reconciliations; this              value is returned from the previous call. If a pagination token is provided, the filter, effectiveAt              and asAt fields must not have changed since the original request. Also, if set, a start value cannot be provided. (optional) 
-            var start = 56;  // int? | When paginating, skip this number of results. (optional) 
+            var page = page_example;  // string | The pagination token to use to continue listing reconciliations; this              value is returned from the previous call. If a pagination token is provided, the filter, effectiveAt              and asAt fields must not have changed since the original request. (optional) 
             var limit = 56;  // int? | When paginating, limit the results to this number. Defaults to 100 if not specified. (optional) 
             var filter = filter_example;  // string | Expression to filter the results.              For example, to filter on the reconciliation type, specify \"id.Code eq '001'\". For more information about filtering              results, see https://support.lusid.com/knowledgebase/article/KA-01914. (optional) 
             var propertyKeys = new List<string>(); // List<string> | A list of property keys from the 'Reconciliation' domain to decorate onto each reconciliation.              These must take the format {domain}/{scope}/{code}, for example 'Reconciliation/Broker/Id'. (optional) 
@@ -1062,7 +1057,7 @@ namespace Example
             try
             {
                 // [EXPERIMENTAL] ListReconciliations: List scheduled reconciliations
-                PagedResourceListOfReconciliation result = apiInstance.ListReconciliations(effectiveAt, asAt, page, start, limit, filter, propertyKeys);
+                PagedResourceListOfReconciliation result = apiInstance.ListReconciliations(effectiveAt, asAt, page, limit, filter, propertyKeys);
                 Debug.WriteLine(result);
             }
             catch (ApiException  e)
@@ -1082,8 +1077,7 @@ Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **effectiveAt** | **DateTimeOrCutLabel**| The effective datetime or cut label at which to list the TimeVariant properties for the reconciliation. Defaults to the current LUSID              system datetime if not specified. | [optional] 
  **asAt** | **DateTimeOffset?**| The asAt datetime at which to list the reconciliation. Defaults to returning the latest version              of each reconciliation if not specified. | [optional] 
- **page** | **string**| The pagination token to use to continue listing reconciliations; this              value is returned from the previous call. If a pagination token is provided, the filter, effectiveAt              and asAt fields must not have changed since the original request. Also, if set, a start value cannot be provided. | [optional] 
- **start** | **int?**| When paginating, skip this number of results. | [optional] 
+ **page** | **string**| The pagination token to use to continue listing reconciliations; this              value is returned from the previous call. If a pagination token is provided, the filter, effectiveAt              and asAt fields must not have changed since the original request. | [optional] 
  **limit** | **int?**| When paginating, limit the results to this number. Defaults to 100 if not specified. | [optional] 
  **filter** | **string**| Expression to filter the results.              For example, to filter on the reconciliation type, specify \&quot;id.Code eq &#39;001&#39;\&quot;. For more information about filtering              results, see https://support.lusid.com/knowledgebase/article/KA-01914. | [optional] 
  **propertyKeys** | [**List&lt;string&gt;**](string.md)| A list of property keys from the &#39;Reconciliation&#39; domain to decorate onto each reconciliation.              These must take the format {domain}/{scope}/{code}, for example &#39;Reconciliation/Broker/Id&#39;. | [optional] 
@@ -1189,7 +1183,7 @@ Name | Type | Description  | Notes
 
 <a name="reconcileholdings"></a>
 # **ReconcileHoldings**
-> ResourceListOfReconciliationBreak ReconcileHoldings (List<string> sortBy = null, int? start = null, int? limit = null, string filter = null, PortfoliosReconciliationRequest portfoliosReconciliationRequest = null)
+> ResourceListOfReconciliationBreak ReconcileHoldings (List<string> sortBy = null, int? limit = null, string filter = null, PortfoliosReconciliationRequest portfoliosReconciliationRequest = null)
 
 [EARLY ACCESS] ReconcileHoldings: Reconcile portfolio holdings
 
@@ -1216,7 +1210,6 @@ namespace Example
 
             var apiInstance = new ReconciliationsApi(config);
             var sortBy = new List<string>(); // List<string> | Optional. Order the results by these fields. Use use the '-' sign to denote descending order e.g. -MyFieldName (optional) 
-            var start = 56;  // int? | Optional. When paginating, skip this number of results (optional) 
             var limit = 56;  // int? | Optional. When paginating, limit the number of returned results to this many. (optional) 
             var filter = filter_example;  // string | Optional. Expression to filter the result set.              For example, to filter on the left portfolio Code, use \"left.portfolioId.code eq 'string'\"              Read more about filtering results from LUSID here https://support.lusid.com/filtering-results-from-lusid. (optional) 
             var portfoliosReconciliationRequest = new PortfoliosReconciliationRequest(); // PortfoliosReconciliationRequest | The specifications of the inputs to the reconciliation (optional) 
@@ -1224,7 +1217,7 @@ namespace Example
             try
             {
                 // [EARLY ACCESS] ReconcileHoldings: Reconcile portfolio holdings
-                ResourceListOfReconciliationBreak result = apiInstance.ReconcileHoldings(sortBy, start, limit, filter, portfoliosReconciliationRequest);
+                ResourceListOfReconciliationBreak result = apiInstance.ReconcileHoldings(sortBy, limit, filter, portfoliosReconciliationRequest);
                 Debug.WriteLine(result);
             }
             catch (ApiException  e)
@@ -1243,7 +1236,6 @@ namespace Example
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **sortBy** | [**List&lt;string&gt;**](string.md)| Optional. Order the results by these fields. Use use the &#39;-&#39; sign to denote descending order e.g. -MyFieldName | [optional] 
- **start** | **int?**| Optional. When paginating, skip this number of results | [optional] 
  **limit** | **int?**| Optional. When paginating, limit the number of returned results to this many. | [optional] 
  **filter** | **string**| Optional. Expression to filter the result set.              For example, to filter on the left portfolio Code, use \&quot;left.portfolioId.code eq &#39;string&#39;\&quot;              Read more about filtering results from LUSID here https://support.lusid.com/filtering-results-from-lusid. | [optional] 
  **portfoliosReconciliationRequest** | [**PortfoliosReconciliationRequest**](PortfoliosReconciliationRequest.md)| The specifications of the inputs to the reconciliation | [optional] 

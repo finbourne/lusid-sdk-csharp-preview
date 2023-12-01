@@ -361,11 +361,11 @@ Name | Type | Description  | Notes
 
 <a name="listquotes"></a>
 # **ListQuotes**
-> ResourceListOfQuote ListQuotes (string scope, DateTimeOffset? asAt = null, string page = null, int? start = null, int? limit = null, string filter = null)
+> ResourceListOfQuote ListQuotes (string scope, DateTimeOffset? asAt = null, string page = null, int? limit = null, string filter = null)
 
 [DEPRECATED] ListQuotes: List quotes
 
-List all the quotes from a single scope at the specified date/time  Please use M:Finbourne.WebApi.Controllers.QuotesController.ListQuotesForScope(System.String,System.Nullable{System.DateTimeOffset},System.String,System.Nullable{System.Int32},System.Nullable{System.Int32},System.String) - the signature and behaviour of this endpoint will be changing to omit scope
+List all the quotes from a single scope at the specified date/time  Please use M:Finbourne.WebApi.Controllers.QuotesController.ListQuotesForScope(System.String,System.Nullable{System.DateTimeOffset},System.String,System.Nullable{System.Int32},System.String) - the signature and behaviour of this endpoint will be changing to omit scope
 
 ### Example
 ```csharp
@@ -389,15 +389,14 @@ namespace Example
             var apiInstance = new QuotesApi(config);
             var scope = scope_example;  // string | The scope of the quotes to list.
             var asAt = 2013-10-20T19:20:30+01:00;  // DateTimeOffset? | The asAt datetime at which to list the quotes. Defaults to latest if not specified. (optional) 
-            var page = page_example;  // string | The pagination token to use to continue listing quotes from a previous call to list quotes.              This value is returned from the previous call. If a pagination token is provided the sortBy, filter, effectiveAt, and asAt fields              must not have changed since the original request. Also, if set, a start value cannot be provided. (optional) 
-            var start = 56;  // int? | When paginating, skip this number of results. (optional) 
+            var page = page_example;  // string | The pagination token to use to continue listing quotes from a previous call to list quotes.              This value is returned from the previous call. If a pagination token is provided the sortBy, filter, effectiveAt, and asAt fields              must not have changed since the original request. (optional) 
             var limit = 56;  // int? | When paginating, limit the number of returned results to this many. (optional) 
             var filter = filter_example;  // string | Expression to filter the result set.              Read more about filtering results from LUSID here https://support.lusid.com/filtering-results-from-lusid. (optional) 
 
             try
             {
                 // [DEPRECATED] ListQuotes: List quotes
-                ResourceListOfQuote result = apiInstance.ListQuotes(scope, asAt, page, start, limit, filter);
+                ResourceListOfQuote result = apiInstance.ListQuotes(scope, asAt, page, limit, filter);
                 Debug.WriteLine(result);
             }
             catch (ApiException  e)
@@ -417,8 +416,7 @@ Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **scope** | **string**| The scope of the quotes to list. | 
  **asAt** | **DateTimeOffset?**| The asAt datetime at which to list the quotes. Defaults to latest if not specified. | [optional] 
- **page** | **string**| The pagination token to use to continue listing quotes from a previous call to list quotes.              This value is returned from the previous call. If a pagination token is provided the sortBy, filter, effectiveAt, and asAt fields              must not have changed since the original request. Also, if set, a start value cannot be provided. | [optional] 
- **start** | **int?**| When paginating, skip this number of results. | [optional] 
+ **page** | **string**| The pagination token to use to continue listing quotes from a previous call to list quotes.              This value is returned from the previous call. If a pagination token is provided the sortBy, filter, effectiveAt, and asAt fields              must not have changed since the original request. | [optional] 
  **limit** | **int?**| When paginating, limit the number of returned results to this many. | [optional] 
  **filter** | **string**| Expression to filter the result set.              Read more about filtering results from LUSID here https://support.lusid.com/filtering-results-from-lusid. | [optional] 
 
@@ -525,7 +523,7 @@ Name | Type | Description  | Notes
 
 <a name="listquotesforscope"></a>
 # **ListQuotesForScope**
-> ResourceListOfQuote ListQuotesForScope (string scope, DateTimeOffset? asAt = null, string page = null, int? start = null, int? limit = null, string filter = null)
+> ResourceListOfQuote ListQuotesForScope (string scope, DateTimeOffset? asAt = null, string page = null, int? limit = null, string filter = null)
 
 ListQuotesForScope: List quotes for scope
 
@@ -553,15 +551,14 @@ namespace Example
             var apiInstance = new QuotesApi(config);
             var scope = scope_example;  // string | The scope of the quotes to list.
             var asAt = 2013-10-20T19:20:30+01:00;  // DateTimeOffset? | The asAt datetime at which to list the quotes. Defaults to latest if not specified. (optional) 
-            var page = page_example;  // string | The pagination token to use to continue listing quotes from a previous call to list quotes.              This value is returned from the previous call. If a pagination token is provided the sortBy, filter, effectiveAt, and asAt fields              must not have changed since the original request. Also, if set, a start value cannot be provided. (optional) 
-            var start = 56;  // int? | When paginating, skip this number of results. (optional) 
+            var page = page_example;  // string | The pagination token to use to continue listing quotes from a previous call to list quotes.              This value is returned from the previous call. If a pagination token is provided the sortBy, filter, effectiveAt, and asAt fields              must not have changed since the original request. (optional) 
             var limit = 56;  // int? | When paginating, limit the number of returned results to this many. (optional) 
             var filter = filter_example;  // string | Expression to filter the result set.              Read more about filtering results from LUSID here https://support.lusid.com/filtering-results-from-lusid. (optional) 
 
             try
             {
                 // ListQuotesForScope: List quotes for scope
-                ResourceListOfQuote result = apiInstance.ListQuotesForScope(scope, asAt, page, start, limit, filter);
+                ResourceListOfQuote result = apiInstance.ListQuotesForScope(scope, asAt, page, limit, filter);
                 Debug.WriteLine(result);
             }
             catch (ApiException  e)
@@ -581,8 +578,7 @@ Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **scope** | **string**| The scope of the quotes to list. | 
  **asAt** | **DateTimeOffset?**| The asAt datetime at which to list the quotes. Defaults to latest if not specified. | [optional] 
- **page** | **string**| The pagination token to use to continue listing quotes from a previous call to list quotes.              This value is returned from the previous call. If a pagination token is provided the sortBy, filter, effectiveAt, and asAt fields              must not have changed since the original request. Also, if set, a start value cannot be provided. | [optional] 
- **start** | **int?**| When paginating, skip this number of results. | [optional] 
+ **page** | **string**| The pagination token to use to continue listing quotes from a previous call to list quotes.              This value is returned from the previous call. If a pagination token is provided the sortBy, filter, effectiveAt, and asAt fields              must not have changed since the original request. | [optional] 
  **limit** | **int?**| When paginating, limit the number of returned results to this many. | [optional] 
  **filter** | **string**| Expression to filter the result set.              Read more about filtering results from LUSID here https://support.lusid.com/filtering-results-from-lusid. | [optional] 
 

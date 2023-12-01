@@ -769,7 +769,7 @@ namespace Example
 
             var apiInstance = new CalendarsApi(config);
             var asAt = 2013-10-20T19:20:30+01:00;  // DateTimeOffset? | The AsAt datetime at which to retrieve the calendars (optional) 
-            var page = page_example;  // string | The pagination token to use to continue listing calendars from a previous call to list calendars.              This value is returned from the previous call. If a pagination token is provided the sortBy, filter, and asAt fields              must not have changed since the original request. Also, if set, a start value cannot be provided. (optional) 
+            var page = page_example;  // string | The pagination token to use to continue listing calendars from a previous call to list calendars.              This value is returned from the previous call. If a pagination token is provided the sortBy, filter, and asAt fields              must not have changed since the original request. (optional) 
             var limit = 56;  // int? | When paginating, limit the number of returned results to this many. (optional) 
             var propertyKeys = new List<string>(); // List<string> | A list of property keys from the \"Calendar\" domain to decorate onto the calendar,               These take the format {domain}/{scope}/{code} e.g. \"Calendar/System/Name\". (optional) 
             var filter = filter_example;  // string | Expression to filter the result set. Read more about filtering results from LUSID here https://support.lusid.com/filtering-results-from-lusid. (optional) 
@@ -796,7 +796,7 @@ namespace Example
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **asAt** | **DateTimeOffset?**| The AsAt datetime at which to retrieve the calendars | [optional] 
- **page** | **string**| The pagination token to use to continue listing calendars from a previous call to list calendars.              This value is returned from the previous call. If a pagination token is provided the sortBy, filter, and asAt fields              must not have changed since the original request. Also, if set, a start value cannot be provided. | [optional] 
+ **page** | **string**| The pagination token to use to continue listing calendars from a previous call to list calendars.              This value is returned from the previous call. If a pagination token is provided the sortBy, filter, and asAt fields              must not have changed since the original request. | [optional] 
  **limit** | **int?**| When paginating, limit the number of returned results to this many. | [optional] 
  **propertyKeys** | [**List&lt;string&gt;**](string.md)| A list of property keys from the \&quot;Calendar\&quot; domain to decorate onto the calendar,               These take the format {domain}/{scope}/{code} e.g. \&quot;Calendar/System/Name\&quot;. | [optional] 
  **filter** | **string**| Expression to filter the result set. Read more about filtering results from LUSID here https://support.lusid.com/filtering-results-from-lusid. | [optional] 
@@ -826,7 +826,7 @@ Name | Type | Description  | Notes
 
 <a name="listcalendarsinscope"></a>
 # **ListCalendarsInScope**
-> PagedResourceListOfCalendar ListCalendarsInScope (string scope, DateTimeOffset? asAt = null, string page = null, int? start = null, int? limit = null, List<string> propertyKeys = null, string filter = null)
+> PagedResourceListOfCalendar ListCalendarsInScope (string scope, DateTimeOffset? asAt = null, string page = null, int? limit = null, List<string> propertyKeys = null, string filter = null)
 
 [EARLY ACCESS] ListCalendarsInScope: List all calenders in a specified scope
 
@@ -854,8 +854,7 @@ namespace Example
             var apiInstance = new CalendarsApi(config);
             var scope = scope_example;  // string | Scope of the calendars
             var asAt = 2013-10-20T19:20:30+01:00;  // DateTimeOffset? | The AsAt datetime at which to retrieve the calendars (optional) 
-            var page = page_example;  // string | The pagination token to use to continue listing calendars from a previous call to list calendars.              This value is returned from the previous call. If a pagination token is provided the sortBy, filter, and asAt fields              must not have changed since the original request. Also, if set, a start value cannot be provided. (optional) 
-            var start = 56;  // int? | When paginating, skip this number of results. (optional) 
+            var page = page_example;  // string | The pagination token to use to continue listing calendars from a previous call to list calendars.              This value is returned from the previous call. If a pagination token is provided the sortBy, filter, and asAt fields              must not have changed since the original request. (optional) 
             var limit = 56;  // int? | When paginating, limit the number of returned results to this many. (optional) 
             var propertyKeys = new List<string>(); // List<string> | A list of property keys from the \"Calendar\" domain to decorate onto the calendar,               These take the format {domain}/{scope}/{code} e.g. \"Calendar/System/Name\". (optional) 
             var filter = filter_example;  // string | Expression to filter the result set. Read more about filtering results from LUSID here https://support.lusid.com/filtering-results-from-lusid. (optional) 
@@ -863,7 +862,7 @@ namespace Example
             try
             {
                 // [EARLY ACCESS] ListCalendarsInScope: List all calenders in a specified scope
-                PagedResourceListOfCalendar result = apiInstance.ListCalendarsInScope(scope, asAt, page, start, limit, propertyKeys, filter);
+                PagedResourceListOfCalendar result = apiInstance.ListCalendarsInScope(scope, asAt, page, limit, propertyKeys, filter);
                 Debug.WriteLine(result);
             }
             catch (ApiException  e)
@@ -883,8 +882,7 @@ Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **scope** | **string**| Scope of the calendars | 
  **asAt** | **DateTimeOffset?**| The AsAt datetime at which to retrieve the calendars | [optional] 
- **page** | **string**| The pagination token to use to continue listing calendars from a previous call to list calendars.              This value is returned from the previous call. If a pagination token is provided the sortBy, filter, and asAt fields              must not have changed since the original request. Also, if set, a start value cannot be provided. | [optional] 
- **start** | **int?**| When paginating, skip this number of results. | [optional] 
+ **page** | **string**| The pagination token to use to continue listing calendars from a previous call to list calendars.              This value is returned from the previous call. If a pagination token is provided the sortBy, filter, and asAt fields              must not have changed since the original request. | [optional] 
  **limit** | **int?**| When paginating, limit the number of returned results to this many. | [optional] 
  **propertyKeys** | [**List&lt;string&gt;**](string.md)| A list of property keys from the \&quot;Calendar\&quot; domain to decorate onto the calendar,               These take the format {domain}/{scope}/{code} e.g. \&quot;Calendar/System/Name\&quot;. | [optional] 
  **filter** | **string**| Expression to filter the result set. Read more about filtering results from LUSID here https://support.lusid.com/filtering-results-from-lusid. | [optional] 
