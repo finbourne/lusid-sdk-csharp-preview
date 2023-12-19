@@ -6,8 +6,7 @@ Method | HTTP request | Description
 ------------- | ------------- | -------------
 [**DeleteComplianceRule**](ComplianceApi.md#deletecompliancerule) | **DELETE** /api/compliance/rules/{scope}/{code} | [EARLY ACCESS] DeleteComplianceRule: Delete compliance rule.
 [**GetComplianceRule**](ComplianceApi.md#getcompliancerule) | **GET** /api/compliance/rules/{scope}/{code} | [EARLY ACCESS] GetComplianceRule: Get compliance rule.
-[**GetComplianceRuleResultDetails**](ComplianceApi.md#getcomplianceruleresultdetails) | **GET** /api/compliance/runs/summary/{runScope}/{runCode}/{ruleScope}/{ruleCode} | [EARLY ACCESS] GetComplianceRuleResultDetails: Get summary results for a specific rule within a compliance run.
-[**GetComplianceRunSummary**](ComplianceApi.md#getcompliancerunsummary) | **GET** /api/compliance/runs/summary/{runScope}/{runCode} | [EARLY ACCESS] GetComplianceRunSummary: Get summary results for a specific compliance run.
+[**GetComplianceRuleResult**](ComplianceApi.md#getcomplianceruleresult) | **GET** /api/compliance/runs/summary/{runScope}/{runCode}/{ruleScope}/{ruleCode} | [EARLY ACCESS] GetComplianceRuleResult: Get detailed results for a specific rule within a compliance run.
 [**GetComplianceTemplate**](ComplianceApi.md#getcompliancetemplate) | **GET** /api/compliance/templates/{scope}/{code} | [EARLY ACCESS] GetComplianceTemplate: Get the requested compliance template.
 [**GetDecoratedComplianceRunSummary**](ComplianceApi.md#getdecoratedcompliancerunsummary) | **GET** /api/compliance/runs/summary/{scope}/{code}/$decorate | [EARLY ACCESS] GetDecoratedComplianceRunSummary: Get decorated summary results for a specific compliance run.
 [**ListComplianceRules**](ComplianceApi.md#listcompliancerules) | **GET** /api/compliance/rules | [EARLY ACCESS] ListComplianceRules: List compliance rules.
@@ -178,11 +177,11 @@ Name | Type | Description  | Notes
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
-<a name="getcomplianceruleresultdetails"></a>
-# **GetComplianceRuleResultDetails**
-> ComplianceRunSummary GetComplianceRuleResultDetails (string runScope, string runCode, string ruleScope, string ruleCode)
+<a name="getcomplianceruleresult"></a>
+# **GetComplianceRuleResult**
+> ComplianceRuleResultV2 GetComplianceRuleResult (string runScope, string runCode, string ruleScope, string ruleCode)
 
-[EARLY ACCESS] GetComplianceRuleResultDetails: Get summary results for a specific rule within a compliance run.
+[EARLY ACCESS] GetComplianceRuleResult: Get detailed results for a specific rule within a compliance run.
 
 Specify a run scope and code from a previously run compliance check, and the scope and code of a rule within that run, to get detailed results for that rule.
 
@@ -196,7 +195,7 @@ using Lusid.Sdk.Model;
 
 namespace Example
 {
-    public class GetComplianceRuleResultDetailsExample
+    public class GetComplianceRuleResultExample
     {
         public static void Main()
         {
@@ -213,13 +212,13 @@ namespace Example
 
             try
             {
-                // [EARLY ACCESS] GetComplianceRuleResultDetails: Get summary results for a specific rule within a compliance run.
-                ComplianceRunSummary result = apiInstance.GetComplianceRuleResultDetails(runScope, runCode, ruleScope, ruleCode);
+                // [EARLY ACCESS] GetComplianceRuleResult: Get detailed results for a specific rule within a compliance run.
+                ComplianceRuleResultV2 result = apiInstance.GetComplianceRuleResult(runScope, runCode, ruleScope, ruleCode);
                 Debug.WriteLine(result);
             }
             catch (ApiException  e)
             {
-                Debug.Print("Exception when calling ComplianceApi.GetComplianceRuleResultDetails: " + e.Message );
+                Debug.Print("Exception when calling ComplianceApi.GetComplianceRuleResult: " + e.Message );
                 Debug.Print("Status Code: "+ e.ErrorCode);
                 Debug.Print(e.StackTrace);
             }
@@ -239,7 +238,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**ComplianceRunSummary**](ComplianceRunSummary.md)
+[**ComplianceRuleResultV2**](ComplianceRuleResultV2.md)
 
 ### Authorization
 
@@ -255,84 +254,6 @@ Name | Type | Description  | Notes
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
 | **200** | The requested compliance run summary details for a specific rule. |  -  |
-| **400** | The details of the input related failure |  -  |
-| **0** | Error response |  -  |
-
-[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
-
-<a name="getcompliancerunsummary"></a>
-# **GetComplianceRunSummary**
-> ComplianceRunSummary GetComplianceRunSummary (string runScope, string runCode)
-
-[EARLY ACCESS] GetComplianceRunSummary: Get summary results for a specific compliance run.
-
-Specify a run scope and code from a previously run compliance check to get summarised results.
-
-### Example
-```csharp
-using System.Collections.Generic;
-using System.Diagnostics;
-using Lusid.Sdk.Api;
-using Lusid.Sdk.Client;
-using Lusid.Sdk.Model;
-
-namespace Example
-{
-    public class GetComplianceRunSummaryExample
-    {
-        public static void Main()
-        {
-            Configuration config = new Configuration();
-            config.BasePath = "https://www.lusid.com/api";
-            // Configure OAuth2 access token for authorization: oauth2
-            config.AccessToken = "YOUR_ACCESS_TOKEN";
-
-            var apiInstance = new ComplianceApi(config);
-            var runScope = runScope_example;  // string | Required: Run Scope.
-            var runCode = runCode_example;  // string | Required: Run Code.
-
-            try
-            {
-                // [EARLY ACCESS] GetComplianceRunSummary: Get summary results for a specific compliance run.
-                ComplianceRunSummary result = apiInstance.GetComplianceRunSummary(runScope, runCode);
-                Debug.WriteLine(result);
-            }
-            catch (ApiException  e)
-            {
-                Debug.Print("Exception when calling ComplianceApi.GetComplianceRunSummary: " + e.Message );
-                Debug.Print("Status Code: "+ e.ErrorCode);
-                Debug.Print(e.StackTrace);
-            }
-        }
-    }
-}
-```
-
-### Parameters
-
-Name | Type | Description  | Notes
-------------- | ------------- | ------------- | -------------
- **runScope** | **string**| Required: Run Scope. | 
- **runCode** | **string**| Required: Run Code. | 
-
-### Return type
-
-[**ComplianceRunSummary**](ComplianceRunSummary.md)
-
-### Authorization
-
-[oauth2](../README.md#oauth2)
-
-### HTTP request headers
-
- - **Content-Type**: Not defined
- - **Accept**: text/plain, application/json, text/json
-
-
-### HTTP response details
-| Status code | Description | Response headers |
-|-------------|-------------|------------------|
-| **201** | The requested compliance run summary. |  -  |
 | **400** | The details of the input related failure |  -  |
 | **0** | Error response |  -  |
 
@@ -908,7 +829,7 @@ Name | Type | Description  | Notes
 
 <a name="upsertcompliancerunsummary"></a>
 # **UpsertComplianceRunSummary**
-> ComplianceRunSummary UpsertComplianceRunSummary (UpsertComplianceRunSummaryRequest upsertComplianceRunSummaryRequest = null)
+> UpsertComplianceRunSummaryResult UpsertComplianceRunSummary (UpsertComplianceRunSummaryRequest upsertComplianceRunSummaryRequest = null)
 
 [EARLY ACCESS] UpsertComplianceRunSummary: Upsert a compliance run summary.
 
@@ -939,7 +860,7 @@ namespace Example
             try
             {
                 // [EARLY ACCESS] UpsertComplianceRunSummary: Upsert a compliance run summary.
-                ComplianceRunSummary result = apiInstance.UpsertComplianceRunSummary(upsertComplianceRunSummaryRequest);
+                UpsertComplianceRunSummaryResult result = apiInstance.UpsertComplianceRunSummary(upsertComplianceRunSummaryRequest);
                 Debug.WriteLine(result);
             }
             catch (ApiException  e)
@@ -961,7 +882,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**ComplianceRunSummary**](ComplianceRunSummary.md)
+[**UpsertComplianceRunSummaryResult**](UpsertComplianceRunSummaryResult.md)
 
 ### Authorization
 
