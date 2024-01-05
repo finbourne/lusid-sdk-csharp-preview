@@ -5,12 +5,13 @@ All URIs are relative to *https://www.lusid.com/api*
 Method | HTTP request | Description
 ------------- | ------------- | -------------
 [**CreateTransactionTemplate**](InstrumentEventTypesApi.md#createtransactiontemplate) | **POST** /api/instrumenteventtypes/{instrumentEventType}/transactiontemplates/{instrumentType}/{scope} | [EXPERIMENTAL] CreateTransactionTemplate: Create Transaction Template
+[**GetTransactionTemplate**](InstrumentEventTypesApi.md#gettransactiontemplate) | **GET** /api/instrumenteventtypes/{instrumentEventType}/transactiontemplates | [EXPERIMENTAL] GetTransactionTemplate: Get Transaction Template
 [**GetTransactionTemplateSpecification**](InstrumentEventTypesApi.md#gettransactiontemplatespecification) | **GET** /api/instrumenteventtypes/{instrumentEventType}/transactiontemplatespecification | [EXPERIMENTAL] GetTransactionTemplateSpecification: Get Transaction Template Specification.
 
 
 <a name="createtransactiontemplate"></a>
 # **CreateTransactionTemplate**
-> TransactionTemplateResponse CreateTransactionTemplate (string instrumentEventType, string instrumentType, string scope, TransactionTemplateRequest transactionTemplateRequest)
+> TransactionTemplate CreateTransactionTemplate (string instrumentEventType, string instrumentType, string scope, TransactionTemplateRequest transactionTemplateRequest)
 
 [EXPERIMENTAL] CreateTransactionTemplate: Create Transaction Template
 
@@ -44,7 +45,7 @@ namespace Example
             try
             {
                 // [EXPERIMENTAL] CreateTransactionTemplate: Create Transaction Template
-                TransactionTemplateResponse result = apiInstance.CreateTransactionTemplate(instrumentEventType, instrumentType, scope, transactionTemplateRequest);
+                TransactionTemplate result = apiInstance.CreateTransactionTemplate(instrumentEventType, instrumentType, scope, transactionTemplateRequest);
                 Debug.WriteLine(result);
             }
             catch (ApiException  e)
@@ -69,7 +70,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**TransactionTemplateResponse**](TransactionTemplateResponse.md)
+[**TransactionTemplate**](TransactionTemplate.md)
 
 ### Authorization
 
@@ -85,6 +86,86 @@ Name | Type | Description  | Notes
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
 | **201** | The response of the transaction template that was created. |  -  |
+| **400** | The details of the input related failure |  -  |
+| **0** | Error response |  -  |
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+<a name="gettransactiontemplate"></a>
+# **GetTransactionTemplate**
+> TransactionTemplate GetTransactionTemplate (string instrumentEventType, string scope = null, DateTimeOffset? asAt = null)
+
+[EXPERIMENTAL] GetTransactionTemplate: Get Transaction Template
+
+Gets the Transaction Template that for the instrument event type within the scope specified.
+
+### Example
+```csharp
+using System.Collections.Generic;
+using System.Diagnostics;
+using Lusid.Sdk.Api;
+using Lusid.Sdk.Client;
+using Lusid.Sdk.Model;
+
+namespace Example
+{
+    public class GetTransactionTemplateExample
+    {
+        public static void Main()
+        {
+            Configuration config = new Configuration();
+            config.BasePath = "https://www.lusid.com/api";
+            // Configure OAuth2 access token for authorization: oauth2
+            config.AccessToken = "YOUR_ACCESS_TOKEN";
+
+            var apiInstance = new InstrumentEventTypesApi(config);
+            var instrumentEventType = instrumentEventType_example;  // string | The instrument event type of the transaction template
+            var scope = scope_example;  // string | The scope in which the template lies. When not supplied the scope is 'default'. (optional) 
+            var asAt = 2013-10-20T19:20:30+01:00;  // DateTimeOffset? | The AsAt time of the requested Transaction Template (optional) 
+
+            try
+            {
+                // [EXPERIMENTAL] GetTransactionTemplate: Get Transaction Template
+                TransactionTemplate result = apiInstance.GetTransactionTemplate(instrumentEventType, scope, asAt);
+                Debug.WriteLine(result);
+            }
+            catch (ApiException  e)
+            {
+                Debug.Print("Exception when calling InstrumentEventTypesApi.GetTransactionTemplate: " + e.Message );
+                Debug.Print("Status Code: "+ e.ErrorCode);
+                Debug.Print(e.StackTrace);
+            }
+        }
+    }
+}
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **instrumentEventType** | **string**| The instrument event type of the transaction template | 
+ **scope** | **string**| The scope in which the template lies. When not supplied the scope is &#39;default&#39;. | [optional] 
+ **asAt** | **DateTimeOffset?**| The AsAt time of the requested Transaction Template | [optional] 
+
+### Return type
+
+[**TransactionTemplate**](TransactionTemplate.md)
+
+### Authorization
+
+[oauth2](../README.md#oauth2)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: text/plain, application/json, text/json
+
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+| **200** | The asAt datetime at which the transaction template was created. |  -  |
 | **400** | The details of the input related failure |  -  |
 | **0** | Error response |  -  |
 

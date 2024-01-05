@@ -213,7 +213,7 @@ Name | Type | Description  | Notes
 
 <a name="batchupserttransactions"></a>
 # **BatchUpsertTransactions**
-> BatchUpsertPortfolioTransactionsResponse BatchUpsertTransactions (string scope, string code, string successMode, Dictionary<string, TransactionRequest> requestBody)
+> BatchUpsertPortfolioTransactionsResponse BatchUpsertTransactions (string scope, string code, string successMode, Dictionary<string, TransactionRequest> requestBody, bool? preserveProperties = null)
 
 [EARLY ACCESS] BatchUpsertTransactions: Batch upsert transactions
 
@@ -243,11 +243,12 @@ namespace Example
             var code = code_example;  // string | The code of the transaction portfolio. Together with the scope this uniquely identifies              the transaction portfolio.
             var successMode = successMode_example;  // string | Whether the batch request should fail Atomically or in a Partial fashion - Allowed Values: Atomic, Partial. (default to "Partial")
             var requestBody = new Dictionary<string, TransactionRequest>(); // Dictionary<string, TransactionRequest> | The payload describing the transactions to be created or updated.
+            var preserveProperties = true;  // bool? | If set to true, only the properties provided will be updated, if not specified or set to false, the entire property set will be overwritten by the provided properties. (optional)  (default to false)
 
             try
             {
                 // [EARLY ACCESS] BatchUpsertTransactions: Batch upsert transactions
-                BatchUpsertPortfolioTransactionsResponse result = apiInstance.BatchUpsertTransactions(scope, code, successMode, requestBody);
+                BatchUpsertPortfolioTransactionsResponse result = apiInstance.BatchUpsertTransactions(scope, code, successMode, requestBody, preserveProperties);
                 Debug.WriteLine(result);
             }
             catch (ApiException  e)
@@ -269,6 +270,7 @@ Name | Type | Description  | Notes
  **code** | **string**| The code of the transaction portfolio. Together with the scope this uniquely identifies              the transaction portfolio. | 
  **successMode** | **string**| Whether the batch request should fail Atomically or in a Partial fashion - Allowed Values: Atomic, Partial. | [default to &quot;Partial&quot;]
  **requestBody** | [**Dictionary&lt;string, TransactionRequest&gt;**](TransactionRequest.md)| The payload describing the transactions to be created or updated. | 
+ **preserveProperties** | **bool?**| If set to true, only the properties provided will be updated, if not specified or set to false, the entire property set will be overwritten by the provided properties. | [optional] [default to false]
 
 ### Return type
 
@@ -3161,7 +3163,7 @@ Name | Type | Description  | Notes
 
 <a name="upserttransactions"></a>
 # **UpsertTransactions**
-> UpsertPortfolioTransactionsResponse UpsertTransactions (string scope, string code, List<TransactionRequest> transactionRequest)
+> UpsertPortfolioTransactionsResponse UpsertTransactions (string scope, string code, List<TransactionRequest> transactionRequest, bool? preserveProperties = null)
 
 UpsertTransactions: Upsert transactions
 
@@ -3190,11 +3192,12 @@ namespace Example
             var scope = scope_example;  // string | The scope of the transaction portfolio.
             var code = code_example;  // string | The code of the transaction portfolio. Together with the scope this uniquely identifies              the transaction portfolio.
             var transactionRequest = new List<TransactionRequest>(); // List<TransactionRequest> | A list of transactions to be created or updated.
+            var preserveProperties = true;  // bool? | If set to true, only the properties provided will be updated, if not specified or set to false, the entire property set will be overwritten by the provided properties. (optional)  (default to false)
 
             try
             {
                 // UpsertTransactions: Upsert transactions
-                UpsertPortfolioTransactionsResponse result = apiInstance.UpsertTransactions(scope, code, transactionRequest);
+                UpsertPortfolioTransactionsResponse result = apiInstance.UpsertTransactions(scope, code, transactionRequest, preserveProperties);
                 Debug.WriteLine(result);
             }
             catch (ApiException  e)
@@ -3215,6 +3218,7 @@ Name | Type | Description  | Notes
  **scope** | **string**| The scope of the transaction portfolio. | 
  **code** | **string**| The code of the transaction portfolio. Together with the scope this uniquely identifies              the transaction portfolio. | 
  **transactionRequest** | [**List&lt;TransactionRequest&gt;**](TransactionRequest.md)| A list of transactions to be created or updated. | 
+ **preserveProperties** | **bool?**| If set to true, only the properties provided will be updated, if not specified or set to false, the entire property set will be overwritten by the provided properties. | [optional] [default to false]
 
 ### Return type
 
