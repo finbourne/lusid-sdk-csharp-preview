@@ -28,33 +28,33 @@ using OpenAPIDateConverter = Lusid.Sdk.Client.OpenAPIDateConverter;
 namespace Lusid.Sdk.Model
 {
     /// <summary>
-    /// AddressKeyListComplianceParameter
+    /// GroupFilterPredicateComplianceParameter
     /// </summary>
-    [DataContract(Name = "AddressKeyListComplianceParameter")]
+    [DataContract(Name = "GroupFilterPredicateComplianceParameter")]
     [JsonConverter(typeof(JsonSubtypes), "ComplianceParameterType")]
-    public partial class AddressKeyListComplianceParameter : ComplianceParameter, IEquatable<AddressKeyListComplianceParameter>
+    public partial class GroupFilterPredicateComplianceParameter : ComplianceParameter, IEquatable<GroupFilterPredicateComplianceParameter>
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="AddressKeyListComplianceParameter" /> class.
+        /// Initializes a new instance of the <see cref="GroupFilterPredicateComplianceParameter" /> class.
         /// </summary>
         [JsonConstructorAttribute]
-        protected AddressKeyListComplianceParameter() { }
+        protected GroupFilterPredicateComplianceParameter() { }
         /// <summary>
-        /// Initializes a new instance of the <see cref="AddressKeyListComplianceParameter" /> class.
+        /// Initializes a new instance of the <see cref="GroupFilterPredicateComplianceParameter" /> class.
         /// </summary>
         /// <param name="value">value (required).</param>
-        /// <param name="complianceParameterType">The parameter type. The available values are: BoolComplianceParameter, StringComplianceParameter, DecimalComplianceParameter, DateTimeComplianceParameter, PropertyKeyComplianceParameter, AddressKeyComplianceParameter, PortfolioIdComplianceParameter, PortfolioGroupIdComplianceParameter, StringListComplianceParameter, BoolListComplianceParameter, DateTimeListComplianceParameter, DecimalListComplianceParameter, PropertyKeyListComplianceParameter, AddressKeyListComplianceParameter, PortfolioIdListComplianceParameter, PortfolioGroupIdListComplianceParameter, InstrumentListComplianceParameter, FilterPredicateComplianceParameter, GroupFilterPredicateComplianceParameter (required) (default to &quot;AddressKeyListComplianceParameter&quot;).</param>
-        public AddressKeyListComplianceParameter(ResourceId value = default(ResourceId), ComplianceParameterTypeEnum complianceParameterType = default(ComplianceParameterTypeEnum)) : base(complianceParameterType)
+        /// <param name="complianceParameterType">The parameter type. The available values are: BoolComplianceParameter, StringComplianceParameter, DecimalComplianceParameter, DateTimeComplianceParameter, PropertyKeyComplianceParameter, AddressKeyComplianceParameter, PortfolioIdComplianceParameter, PortfolioGroupIdComplianceParameter, StringListComplianceParameter, BoolListComplianceParameter, DateTimeListComplianceParameter, DecimalListComplianceParameter, PropertyKeyListComplianceParameter, AddressKeyListComplianceParameter, PortfolioIdListComplianceParameter, PortfolioGroupIdListComplianceParameter, InstrumentListComplianceParameter, FilterPredicateComplianceParameter, GroupFilterPredicateComplianceParameter (required) (default to &quot;GroupFilterPredicateComplianceParameter&quot;).</param>
+        public GroupFilterPredicateComplianceParameter(string value = default(string), ComplianceParameterTypeEnum complianceParameterType = default(ComplianceParameterTypeEnum)) : base(complianceParameterType)
         {
             // to ensure "value" is required (not null)
-            this.Value = value ?? throw new ArgumentNullException("value is a required property for AddressKeyListComplianceParameter and cannot be null");
+            this.Value = value ?? throw new ArgumentNullException("value is a required property for GroupFilterPredicateComplianceParameter and cannot be null");
         }
 
         /// <summary>
         /// Gets or Sets Value
         /// </summary>
         [DataMember(Name = "value", IsRequired = true, EmitDefaultValue = false)]
-        public ResourceId Value { get; set; }
+        public string Value { get; set; }
 
         /// <summary>
         /// Returns the string presentation of the object
@@ -63,7 +63,7 @@ namespace Lusid.Sdk.Model
         public override string ToString()
         {
             var sb = new StringBuilder();
-            sb.Append("class AddressKeyListComplianceParameter {\n");
+            sb.Append("class GroupFilterPredicateComplianceParameter {\n");
             sb.Append("  ").Append(base.ToString().Replace("\n", "\n  ")).Append("\n");
             sb.Append("  Value: ").Append(Value).Append("\n");
             sb.Append("}\n");
@@ -86,15 +86,15 @@ namespace Lusid.Sdk.Model
         /// <returns>Boolean</returns>
         public override bool Equals(object input)
         {
-            return this.Equals(input as AddressKeyListComplianceParameter);
+            return this.Equals(input as GroupFilterPredicateComplianceParameter);
         }
 
         /// <summary>
-        /// Returns true if AddressKeyListComplianceParameter instances are equal
+        /// Returns true if GroupFilterPredicateComplianceParameter instances are equal
         /// </summary>
-        /// <param name="input">Instance of AddressKeyListComplianceParameter to be compared</param>
+        /// <param name="input">Instance of GroupFilterPredicateComplianceParameter to be compared</param>
         /// <returns>Boolean</returns>
-        public bool Equals(AddressKeyListComplianceParameter input)
+        public bool Equals(GroupFilterPredicateComplianceParameter input)
         {
             if (input == null)
                 return false;
