@@ -1261,7 +1261,7 @@ Name | Type | Description  | Notes
 
 <a name="listchartsofaccounts"></a>
 # **ListChartsOfAccounts**
-> PagedResourceListOfChartOfAccounts ListChartsOfAccounts (DateTimeOrCutLabel effectiveAt = null, DateTimeOffset? asAt = null, string page = null, int? limit = null, string filter = null, List<string> propertyKeys = null)
+> PagedResourceListOfChartOfAccounts ListChartsOfAccounts (DateTimeOrCutLabel effectiveAt = null, DateTimeOffset? asAt = null, string page = null, int? limit = null, string filter = null, List<string> sortBy = null, List<string> propertyKeys = null)
 
 [EXPERIMENTAL] ListChartsOfAccounts: List Charts of Accounts
 
@@ -1292,12 +1292,13 @@ namespace Example
             var page = page_example;  // string | The pagination token to use to continue listing charts of accounts; this              value is returned from the previous call. If a pagination token is provided, the filter, effectiveAt              and asAt fields must not have changed since the original request. (optional) 
             var limit = 56;  // int? | When paginating, limit the results to this number. Defaults to 100 if not specified. (optional) 
             var filter = filter_example;  // string | Expression to filter the results.              For example, to filter on the Chart of Accounts type, specify \"id.Code eq '001'\". For more information about filtering              results, see https://support.lusid.com/knowledgebase/article/KA-01914. (optional) 
+            var sortBy = new List<string>(); // List<string> | A list of field names or properties to sort by, each suffixed by \" ASC\" or \" DESC\" (optional) 
             var propertyKeys = new List<string>(); // List<string> | A list of property keys from the 'ChartOfAccounts' domain to decorate onto each Chart of Accounts.              These must take the format {domain}/{scope}/{code}, for example 'ChartOfAccounts/Manager/Id'. (optional) 
 
             try
             {
                 // [EXPERIMENTAL] ListChartsOfAccounts: List Charts of Accounts
-                PagedResourceListOfChartOfAccounts result = apiInstance.ListChartsOfAccounts(effectiveAt, asAt, page, limit, filter, propertyKeys);
+                PagedResourceListOfChartOfAccounts result = apiInstance.ListChartsOfAccounts(effectiveAt, asAt, page, limit, filter, sortBy, propertyKeys);
                 Debug.WriteLine(result);
             }
             catch (ApiException  e)
@@ -1320,6 +1321,7 @@ Name | Type | Description  | Notes
  **page** | **string**| The pagination token to use to continue listing charts of accounts; this              value is returned from the previous call. If a pagination token is provided, the filter, effectiveAt              and asAt fields must not have changed since the original request. | [optional] 
  **limit** | **int?**| When paginating, limit the results to this number. Defaults to 100 if not specified. | [optional] 
  **filter** | **string**| Expression to filter the results.              For example, to filter on the Chart of Accounts type, specify \&quot;id.Code eq &#39;001&#39;\&quot;. For more information about filtering              results, see https://support.lusid.com/knowledgebase/article/KA-01914. | [optional] 
+ **sortBy** | [**List&lt;string&gt;**](string.md)| A list of field names or properties to sort by, each suffixed by \&quot; ASC\&quot; or \&quot; DESC\&quot; | [optional] 
  **propertyKeys** | [**List&lt;string&gt;**](string.md)| A list of property keys from the &#39;ChartOfAccounts&#39; domain to decorate onto each Chart of Accounts.              These must take the format {domain}/{scope}/{code}, for example &#39;ChartOfAccounts/Manager/Id&#39;. | [optional] 
 
 ### Return type
@@ -1435,7 +1437,7 @@ Name | Type | Description  | Notes
 
 <a name="listcleardownmodules"></a>
 # **ListCleardownModules**
-> PagedResourceListOfCleardownModuleResponse ListCleardownModules (string scope, string code, DateTimeOffset? asAt = null, string page = null, int? limit = null, string filter = null)
+> PagedResourceListOfCleardownModuleResponse ListCleardownModules (string scope, string code, DateTimeOffset? asAt = null, string page = null, int? limit = null, string filter = null, List<string> sortBy = null)
 
 [EXPERIMENTAL] ListCleardownModules: List Cleardown Modules
 
@@ -1467,11 +1469,12 @@ namespace Example
             var page = page_example;  // string | The pagination token to use to continue listing Cleardown Modules; this              value is returned from the previous call. If a pagination token is provided, the filter, effectiveAt              and asAt fields must not have changed since the original request. (optional) 
             var limit = 56;  // int? | When paginating, limit the results to this number. Defaults to 100 if not specified. (optional) 
             var filter = filter_example;  // string | Expression to filter the results.              For example, to filter on the Cleardown Module status, specify \"status eq 'Active'\". For more information about filtering              results, see https://support.lusid.com/knowledgebase/article/KA-01914. (optional) 
+            var sortBy = new List<string>(); // List<string> | A list of field names or properties to sort by, each suffixed by \" ASC\" or \" DESC\" (optional) 
 
             try
             {
                 // [EXPERIMENTAL] ListCleardownModules: List Cleardown Modules
-                PagedResourceListOfCleardownModuleResponse result = apiInstance.ListCleardownModules(scope, code, asAt, page, limit, filter);
+                PagedResourceListOfCleardownModuleResponse result = apiInstance.ListCleardownModules(scope, code, asAt, page, limit, filter, sortBy);
                 Debug.WriteLine(result);
             }
             catch (ApiException  e)
@@ -1495,6 +1498,7 @@ Name | Type | Description  | Notes
  **page** | **string**| The pagination token to use to continue listing Cleardown Modules; this              value is returned from the previous call. If a pagination token is provided, the filter, effectiveAt              and asAt fields must not have changed since the original request. | [optional] 
  **limit** | **int?**| When paginating, limit the results to this number. Defaults to 100 if not specified. | [optional] 
  **filter** | **string**| Expression to filter the results.              For example, to filter on the Cleardown Module status, specify \&quot;status eq &#39;Active&#39;\&quot;. For more information about filtering              results, see https://support.lusid.com/knowledgebase/article/KA-01914. | [optional] 
+ **sortBy** | [**List&lt;string&gt;**](string.md)| A list of field names or properties to sort by, each suffixed by \&quot; ASC\&quot; or \&quot; DESC\&quot; | [optional] 
 
 ### Return type
 
@@ -1521,7 +1525,7 @@ Name | Type | Description  | Notes
 
 <a name="listgeneralledgerprofiles"></a>
 # **ListGeneralLedgerProfiles**
-> PagedResourceListOfGeneralLedgerProfileResponse ListGeneralLedgerProfiles (string scope, string code, DateTimeOffset? asAt = null, string page = null, int? limit = null, string filter = null)
+> PagedResourceListOfGeneralLedgerProfileResponse ListGeneralLedgerProfiles (string scope, string code, DateTimeOffset? asAt = null, string page = null, int? limit = null, string filter = null, List<string> sortBy = null)
 
 [EXPERIMENTAL] ListGeneralLedgerProfiles: List General Ledger Profiles.
 
@@ -1553,11 +1557,12 @@ namespace Example
             var page = page_example;  // string | The pagination token to use to continue listing General Ledger Profiles; this              value is returned from the previous call. If a pagination token is provided, the filter, effectiveAt              and asAt fields must not have changed since the original request. (optional) 
             var limit = 56;  // int? | When paginating, limit the results to this number. Defaults to 100 if not specified. (optional) 
             var filter = filter_example;  // string | Expression to filter the results.              For example, to filter on the General Ledger profiles type, specify \"type eq 'PeriodBoundary'\". For more information about filtering              results, see https://support.lusid.com/knowledgebase/article/KA-01914. (optional) 
+            var sortBy = new List<string>(); // List<string> | A list of field names or properties to sort by, each suffixed by \" ASC\" or \" DESC\" (optional) 
 
             try
             {
                 // [EXPERIMENTAL] ListGeneralLedgerProfiles: List General Ledger Profiles.
-                PagedResourceListOfGeneralLedgerProfileResponse result = apiInstance.ListGeneralLedgerProfiles(scope, code, asAt, page, limit, filter);
+                PagedResourceListOfGeneralLedgerProfileResponse result = apiInstance.ListGeneralLedgerProfiles(scope, code, asAt, page, limit, filter, sortBy);
                 Debug.WriteLine(result);
             }
             catch (ApiException  e)
@@ -1581,6 +1586,7 @@ Name | Type | Description  | Notes
  **page** | **string**| The pagination token to use to continue listing General Ledger Profiles; this              value is returned from the previous call. If a pagination token is provided, the filter, effectiveAt              and asAt fields must not have changed since the original request. | [optional] 
  **limit** | **int?**| When paginating, limit the results to this number. Defaults to 100 if not specified. | [optional] 
  **filter** | **string**| Expression to filter the results.              For example, to filter on the General Ledger profiles type, specify \&quot;type eq &#39;PeriodBoundary&#39;\&quot;. For more information about filtering              results, see https://support.lusid.com/knowledgebase/article/KA-01914. | [optional] 
+ **sortBy** | [**List&lt;string&gt;**](string.md)| A list of field names or properties to sort by, each suffixed by \&quot; ASC\&quot; or \&quot; DESC\&quot; | [optional] 
 
 ### Return type
 
@@ -1695,7 +1701,7 @@ Name | Type | Description  | Notes
 
 <a name="listpostingmodules"></a>
 # **ListPostingModules**
-> PagedResourceListOfPostingModuleResponse ListPostingModules (string scope, string code, DateTimeOffset? asAt = null, string page = null, int? limit = null, string filter = null)
+> PagedResourceListOfPostingModuleResponse ListPostingModules (string scope, string code, DateTimeOffset? asAt = null, string page = null, int? limit = null, string filter = null, List<string> sortBy = null)
 
 [EXPERIMENTAL] ListPostingModules: List Posting Modules
 
@@ -1727,11 +1733,12 @@ namespace Example
             var page = page_example;  // string | The pagination token to use to continue listing Posting Modules; this              value is returned from the previous call. If a pagination token is provided, the filter, effectiveAt              and asAt fields must not have changed since the original request. (optional) 
             var limit = 56;  // int? | When paginating, limit the results to this number. Defaults to 100 if not specified. (optional) 
             var filter = filter_example;  // string | Expression to filter the results.              For example, to filter on the Posting Module status, specify \"status eq 'Active'\". For more information about filtering              results, see https://support.lusid.com/knowledgebase/article/KA-01914. (optional) 
+            var sortBy = new List<string>(); // List<string> | A list of field names or properties to sort by, each suffixed by \" ASC\" or \" DESC\" (optional) 
 
             try
             {
                 // [EXPERIMENTAL] ListPostingModules: List Posting Modules
-                PagedResourceListOfPostingModuleResponse result = apiInstance.ListPostingModules(scope, code, asAt, page, limit, filter);
+                PagedResourceListOfPostingModuleResponse result = apiInstance.ListPostingModules(scope, code, asAt, page, limit, filter, sortBy);
                 Debug.WriteLine(result);
             }
             catch (ApiException  e)
@@ -1755,6 +1762,7 @@ Name | Type | Description  | Notes
  **page** | **string**| The pagination token to use to continue listing Posting Modules; this              value is returned from the previous call. If a pagination token is provided, the filter, effectiveAt              and asAt fields must not have changed since the original request. | [optional] 
  **limit** | **int?**| When paginating, limit the results to this number. Defaults to 100 if not specified. | [optional] 
  **filter** | **string**| Expression to filter the results.              For example, to filter on the Posting Module status, specify \&quot;status eq &#39;Active&#39;\&quot;. For more information about filtering              results, see https://support.lusid.com/knowledgebase/article/KA-01914. | [optional] 
+ **sortBy** | [**List&lt;string&gt;**](string.md)| A list of field names or properties to sort by, each suffixed by \&quot; ASC\&quot; or \&quot; DESC\&quot; | [optional] 
 
 ### Return type
 
