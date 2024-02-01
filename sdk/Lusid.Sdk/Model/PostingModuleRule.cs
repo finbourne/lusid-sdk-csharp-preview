@@ -41,16 +41,17 @@ namespace Lusid.Sdk.Model
         /// Initializes a new instance of the <see cref="PostingModuleRule" /> class.
         /// </summary>
         /// <param name="ruleId">The identifier for the Posting Rule. (required).</param>
-        /// <param name="account">The account to post the Activity credit or debit to. (required).</param>
+        /// <param name="account">The general ledger account to post the Activity credit or debit to..</param>
         /// <param name="ruleFilter">The filter syntax for the Posting Rule. See https://support.lusid.com/knowledgebase/article/KA-02140 for more information on filter syntax. (required).</param>
-        public PostingModuleRule(string ruleId = default(string), string account = default(string), string ruleFilter = default(string))
+        /// <param name="generalLedgerAccountCode">The general ledger account to post the Activity credit or debit to..</param>
+        public PostingModuleRule(string ruleId = default(string), string account = default(string), string ruleFilter = default(string), string generalLedgerAccountCode = default(string))
         {
             // to ensure "ruleId" is required (not null)
             this.RuleId = ruleId ?? throw new ArgumentNullException("ruleId is a required property for PostingModuleRule and cannot be null");
-            // to ensure "account" is required (not null)
-            this.Account = account ?? throw new ArgumentNullException("account is a required property for PostingModuleRule and cannot be null");
             // to ensure "ruleFilter" is required (not null)
             this.RuleFilter = ruleFilter ?? throw new ArgumentNullException("ruleFilter is a required property for PostingModuleRule and cannot be null");
+            this.Account = account;
+            this.GeneralLedgerAccountCode = generalLedgerAccountCode;
         }
 
         /// <summary>
@@ -61,10 +62,10 @@ namespace Lusid.Sdk.Model
         public string RuleId { get; set; }
 
         /// <summary>
-        /// The account to post the Activity credit or debit to.
+        /// The general ledger account to post the Activity credit or debit to.
         /// </summary>
-        /// <value>The account to post the Activity credit or debit to.</value>
-        [DataMember(Name = "account", IsRequired = true, EmitDefaultValue = false)]
+        /// <value>The general ledger account to post the Activity credit or debit to.</value>
+        [DataMember(Name = "account", EmitDefaultValue = true)]
         public string Account { get; set; }
 
         /// <summary>
@@ -73,6 +74,13 @@ namespace Lusid.Sdk.Model
         /// <value>The filter syntax for the Posting Rule. See https://support.lusid.com/knowledgebase/article/KA-02140 for more information on filter syntax.</value>
         [DataMember(Name = "ruleFilter", IsRequired = true, EmitDefaultValue = false)]
         public string RuleFilter { get; set; }
+
+        /// <summary>
+        /// The general ledger account to post the Activity credit or debit to.
+        /// </summary>
+        /// <value>The general ledger account to post the Activity credit or debit to.</value>
+        [DataMember(Name = "generalLedgerAccountCode", EmitDefaultValue = true)]
+        public string GeneralLedgerAccountCode { get; set; }
 
         /// <summary>
         /// Returns the string presentation of the object
@@ -85,6 +93,7 @@ namespace Lusid.Sdk.Model
             sb.Append("  RuleId: ").Append(RuleId).Append("\n");
             sb.Append("  Account: ").Append(Account).Append("\n");
             sb.Append("  RuleFilter: ").Append(RuleFilter).Append("\n");
+            sb.Append("  GeneralLedgerAccountCode: ").Append(GeneralLedgerAccountCode).Append("\n");
             sb.Append("}\n");
             return sb.ToString();
         }
@@ -133,6 +142,11 @@ namespace Lusid.Sdk.Model
                     this.RuleFilter == input.RuleFilter ||
                     (this.RuleFilter != null &&
                     this.RuleFilter.Equals(input.RuleFilter))
+                ) && 
+                (
+                    this.GeneralLedgerAccountCode == input.GeneralLedgerAccountCode ||
+                    (this.GeneralLedgerAccountCode != null &&
+                    this.GeneralLedgerAccountCode.Equals(input.GeneralLedgerAccountCode))
                 );
         }
 
@@ -151,6 +165,8 @@ namespace Lusid.Sdk.Model
                     hashCode = hashCode * 59 + this.Account.GetHashCode();
                 if (this.RuleFilter != null)
                     hashCode = hashCode * 59 + this.RuleFilter.GetHashCode();
+                if (this.GeneralLedgerAccountCode != null)
+                    hashCode = hashCode * 59 + this.GeneralLedgerAccountCode.GetHashCode();
                 return hashCode;
             }
         }
