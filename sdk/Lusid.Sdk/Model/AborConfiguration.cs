@@ -47,11 +47,11 @@ namespace Lusid.Sdk.Model
         /// <param name="recipeId">recipeId.</param>
         /// <param name="chartOfAccountsId">chartOfAccountsId (required).</param>
         /// <param name="postingModuleCodes">The Posting Module Codes from which the rules to be applied are retrieved..</param>
+        /// <param name="cleardownModuleCodes">The Cleardown Module Codes from which the rules to be applied are retrieved..</param>
         /// <param name="properties">A set of properties for the Abor Configuration..</param>
         /// <param name="version">version.</param>
-        /// <param name="cleardownModuleCodes">The Cleardown Module Codes from which the rules to be applied are retrieved..</param>
         /// <param name="links">Collection of links..</param>
-        public AborConfiguration(string href = default(string), ResourceId id = default(ResourceId), string displayName = default(string), string description = default(string), ResourceId recipeId = default(ResourceId), ResourceId chartOfAccountsId = default(ResourceId), List<string> postingModuleCodes = default(List<string>), Dictionary<string, Property> properties = default(Dictionary<string, Property>), Version version = default(Version), List<string> cleardownModuleCodes = default(List<string>), List<Link> links = default(List<Link>))
+        public AborConfiguration(string href = default(string), ResourceId id = default(ResourceId), string displayName = default(string), string description = default(string), ResourceId recipeId = default(ResourceId), ResourceId chartOfAccountsId = default(ResourceId), List<string> postingModuleCodes = default(List<string>), List<string> cleardownModuleCodes = default(List<string>), Dictionary<string, Property> properties = default(Dictionary<string, Property>), Version version = default(Version), List<Link> links = default(List<Link>))
         {
             // to ensure "id" is required (not null)
             this.Id = id ?? throw new ArgumentNullException("id is a required property for AborConfiguration and cannot be null");
@@ -62,9 +62,9 @@ namespace Lusid.Sdk.Model
             this.Description = description;
             this.RecipeId = recipeId;
             this.PostingModuleCodes = postingModuleCodes;
+            this.CleardownModuleCodes = cleardownModuleCodes;
             this.Properties = properties;
             this.Version = version;
-            this.CleardownModuleCodes = cleardownModuleCodes;
             this.Links = links;
         }
 
@@ -115,6 +115,13 @@ namespace Lusid.Sdk.Model
         public List<string> PostingModuleCodes { get; set; }
 
         /// <summary>
+        /// The Cleardown Module Codes from which the rules to be applied are retrieved.
+        /// </summary>
+        /// <value>The Cleardown Module Codes from which the rules to be applied are retrieved.</value>
+        [DataMember(Name = "cleardownModuleCodes", EmitDefaultValue = true)]
+        public List<string> CleardownModuleCodes { get; set; }
+
+        /// <summary>
         /// A set of properties for the Abor Configuration.
         /// </summary>
         /// <value>A set of properties for the Abor Configuration.</value>
@@ -126,13 +133,6 @@ namespace Lusid.Sdk.Model
         /// </summary>
         [DataMember(Name = "version", EmitDefaultValue = false)]
         public Version Version { get; set; }
-
-        /// <summary>
-        /// The Cleardown Module Codes from which the rules to be applied are retrieved.
-        /// </summary>
-        /// <value>The Cleardown Module Codes from which the rules to be applied are retrieved.</value>
-        [DataMember(Name = "cleardownModuleCodes", EmitDefaultValue = true)]
-        public List<string> CleardownModuleCodes { get; set; }
 
         /// <summary>
         /// Collection of links.
@@ -156,9 +156,9 @@ namespace Lusid.Sdk.Model
             sb.Append("  RecipeId: ").Append(RecipeId).Append("\n");
             sb.Append("  ChartOfAccountsId: ").Append(ChartOfAccountsId).Append("\n");
             sb.Append("  PostingModuleCodes: ").Append(PostingModuleCodes).Append("\n");
+            sb.Append("  CleardownModuleCodes: ").Append(CleardownModuleCodes).Append("\n");
             sb.Append("  Properties: ").Append(Properties).Append("\n");
             sb.Append("  Version: ").Append(Version).Append("\n");
-            sb.Append("  CleardownModuleCodes: ").Append(CleardownModuleCodes).Append("\n");
             sb.Append("  Links: ").Append(Links).Append("\n");
             sb.Append("}\n");
             return sb.ToString();
@@ -231,6 +231,12 @@ namespace Lusid.Sdk.Model
                     this.PostingModuleCodes.SequenceEqual(input.PostingModuleCodes)
                 ) && 
                 (
+                    this.CleardownModuleCodes == input.CleardownModuleCodes ||
+                    this.CleardownModuleCodes != null &&
+                    input.CleardownModuleCodes != null &&
+                    this.CleardownModuleCodes.SequenceEqual(input.CleardownModuleCodes)
+                ) && 
+                (
                     this.Properties == input.Properties ||
                     this.Properties != null &&
                     input.Properties != null &&
@@ -240,12 +246,6 @@ namespace Lusid.Sdk.Model
                     this.Version == input.Version ||
                     (this.Version != null &&
                     this.Version.Equals(input.Version))
-                ) && 
-                (
-                    this.CleardownModuleCodes == input.CleardownModuleCodes ||
-                    this.CleardownModuleCodes != null &&
-                    input.CleardownModuleCodes != null &&
-                    this.CleardownModuleCodes.SequenceEqual(input.CleardownModuleCodes)
                 ) && 
                 (
                     this.Links == input.Links ||
@@ -278,12 +278,12 @@ namespace Lusid.Sdk.Model
                     hashCode = hashCode * 59 + this.ChartOfAccountsId.GetHashCode();
                 if (this.PostingModuleCodes != null)
                     hashCode = hashCode * 59 + this.PostingModuleCodes.GetHashCode();
+                if (this.CleardownModuleCodes != null)
+                    hashCode = hashCode * 59 + this.CleardownModuleCodes.GetHashCode();
                 if (this.Properties != null)
                     hashCode = hashCode * 59 + this.Properties.GetHashCode();
                 if (this.Version != null)
                     hashCode = hashCode * 59 + this.Version.GetHashCode();
-                if (this.CleardownModuleCodes != null)
-                    hashCode = hashCode * 59 + this.CleardownModuleCodes.GetHashCode();
                 if (this.Links != null)
                     hashCode = hashCode * 59 + this.Links.GetHashCode();
                 return hashCode;
