@@ -28,6 +28,54 @@ namespace Lusid.Sdk.Api
     {
         #region Synchronous Operations
         /// <summary>
+        /// [EXPERIMENTAL] DeleteRecipeComposer: Delete a Recipe Composer, assuming that it is present.
+        /// </summary>
+        /// <remarks>
+        /// Delete the specified Recipe Composer from a single scope.                The response will return either detail of the deleted item, or an explanation (failure) as to why this did not succeed.                It is important to always check for any unsuccessful response.
+        /// </remarks>
+        /// <exception cref="Lusid.Sdk.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="scope">The scope of the Recipe Composer to delete.</param>
+        /// <param name="code">The Recipe Composer to delete.</param>
+        /// <returns>AnnulSingleStructuredDataResponse</returns>
+        AnnulSingleStructuredDataResponse DeleteRecipeComposer(string scope, string code);
+
+        /// <summary>
+        /// [EXPERIMENTAL] DeleteRecipeComposer: Delete a Recipe Composer, assuming that it is present.
+        /// </summary>
+        /// <remarks>
+        /// Delete the specified Recipe Composer from a single scope.                The response will return either detail of the deleted item, or an explanation (failure) as to why this did not succeed.                It is important to always check for any unsuccessful response.
+        /// </remarks>
+        /// <exception cref="Lusid.Sdk.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="scope">The scope of the Recipe Composer to delete.</param>
+        /// <param name="code">The Recipe Composer to delete.</param>
+        /// <returns>ApiResponse of AnnulSingleStructuredDataResponse</returns>
+        ApiResponse<AnnulSingleStructuredDataResponse> DeleteRecipeComposerWithHttpInfo(string scope, string code);
+        /// <summary>
+        /// [EXPERIMENTAL] GetRecipeComposer: Get Recipe Composer
+        /// </summary>
+        /// <remarks>
+        /// Get a Recipe Composer from a single scope.                The response will return either the recipe composer that has been stored, or a failure explaining why the request was unsuccessful.                It is important to always check for any unsuccessful requests (failures).
+        /// </remarks>
+        /// <exception cref="Lusid.Sdk.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="scope">The scope of the Recipe Composer to retrieve.</param>
+        /// <param name="code">The name of the Recipe Composer to retrieve the data for.</param>
+        /// <param name="asAt">The asAt datetime at which to retrieve the Recipe Composer. Defaults to return the latest version if not specified. (optional)</param>
+        /// <returns>GetRecipeComposerResponse</returns>
+        GetRecipeComposerResponse GetRecipeComposer(string scope, string code, DateTimeOffset? asAt = default(DateTimeOffset?));
+
+        /// <summary>
+        /// [EXPERIMENTAL] GetRecipeComposer: Get Recipe Composer
+        /// </summary>
+        /// <remarks>
+        /// Get a Recipe Composer from a single scope.                The response will return either the recipe composer that has been stored, or a failure explaining why the request was unsuccessful.                It is important to always check for any unsuccessful requests (failures).
+        /// </remarks>
+        /// <exception cref="Lusid.Sdk.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="scope">The scope of the Recipe Composer to retrieve.</param>
+        /// <param name="code">The name of the Recipe Composer to retrieve the data for.</param>
+        /// <param name="asAt">The asAt datetime at which to retrieve the Recipe Composer. Defaults to return the latest version if not specified. (optional)</param>
+        /// <returns>ApiResponse of GetRecipeComposerResponse</returns>
+        ApiResponse<GetRecipeComposerResponse> GetRecipeComposerWithHttpInfo(string scope, string code, DateTimeOffset? asAt = default(DateTimeOffset?));
+        /// <summary>
         /// [EXPERIMENTAL] GetRecipeComposerResolvedInline: Given a Recipe Composer, this endpoint shows what configuration recipe it would resolve to, able to access the already upserted configuration recipes as well as plain inline string inputs.
         /// </summary>
         /// <remarks>
@@ -48,6 +96,50 @@ namespace Lusid.Sdk.Api
         /// <param name="upsertRecipeComposerRequest">Recipe composer used to resolve into the Configuration Recipe.</param>
         /// <returns>ApiResponse of GetRecipeResponse</returns>
         ApiResponse<GetRecipeResponse> GetRecipeComposerResolvedInlineWithHttpInfo(UpsertRecipeComposerRequest upsertRecipeComposerRequest);
+        /// <summary>
+        /// [EXPERIMENTAL] ListRecipeComposers: List the set of Recipe Composers
+        /// </summary>
+        /// <remarks>
+        /// List the set of Recipe Composers at the specified date/time and scope
+        /// </remarks>
+        /// <exception cref="Lusid.Sdk.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="asAt">The asAt datetime at which to list the Recipes Composers. Defaults to latest if not specified. (optional)</param>
+        /// <param name="filter">Expression to filter the result set. Read more about filtering results from LUSID here:              https://support.lusid.com/filtering-results-from-lusid. (optional)</param>
+        /// <returns>ResourceListOfGetRecipeComposerResponse</returns>
+        ResourceListOfGetRecipeComposerResponse ListRecipeComposers(DateTimeOffset? asAt = default(DateTimeOffset?), string filter = default(string));
+
+        /// <summary>
+        /// [EXPERIMENTAL] ListRecipeComposers: List the set of Recipe Composers
+        /// </summary>
+        /// <remarks>
+        /// List the set of Recipe Composers at the specified date/time and scope
+        /// </remarks>
+        /// <exception cref="Lusid.Sdk.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="asAt">The asAt datetime at which to list the Recipes Composers. Defaults to latest if not specified. (optional)</param>
+        /// <param name="filter">Expression to filter the result set. Read more about filtering results from LUSID here:              https://support.lusid.com/filtering-results-from-lusid. (optional)</param>
+        /// <returns>ApiResponse of ResourceListOfGetRecipeComposerResponse</returns>
+        ApiResponse<ResourceListOfGetRecipeComposerResponse> ListRecipeComposersWithHttpInfo(DateTimeOffset? asAt = default(DateTimeOffset?), string filter = default(string));
+        /// <summary>
+        /// [EXPERIMENTAL] UpsertRecipeComposer: Upsert a Recipe Composer. This creates or updates the data in Lusid.
+        /// </summary>
+        /// <remarks>
+        /// Update or insert one Recipe Composer in a single scope. An item will be updated if it already exists  and inserted if it does not.                The response will return the successfully updated or inserted Recipe Composer or failure message if unsuccessful                It is important to always check to verify success (or failure).
+        /// </remarks>
+        /// <exception cref="Lusid.Sdk.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="upsertRecipeComposerRequest">The Recipe Composer to update or insert</param>
+        /// <returns>UpsertSingleStructuredDataResponse</returns>
+        UpsertSingleStructuredDataResponse UpsertRecipeComposer(UpsertRecipeComposerRequest upsertRecipeComposerRequest);
+
+        /// <summary>
+        /// [EXPERIMENTAL] UpsertRecipeComposer: Upsert a Recipe Composer. This creates or updates the data in Lusid.
+        /// </summary>
+        /// <remarks>
+        /// Update or insert one Recipe Composer in a single scope. An item will be updated if it already exists  and inserted if it does not.                The response will return the successfully updated or inserted Recipe Composer or failure message if unsuccessful                It is important to always check to verify success (or failure).
+        /// </remarks>
+        /// <exception cref="Lusid.Sdk.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="upsertRecipeComposerRequest">The Recipe Composer to update or insert</param>
+        /// <returns>ApiResponse of UpsertSingleStructuredDataResponse</returns>
+        ApiResponse<UpsertSingleStructuredDataResponse> UpsertRecipeComposerWithHttpInfo(UpsertRecipeComposerRequest upsertRecipeComposerRequest);
         #endregion Synchronous Operations
     }
 
@@ -57,6 +149,58 @@ namespace Lusid.Sdk.Api
     public interface IRecipeComposerApiAsync : IApiAccessor
     {
         #region Asynchronous Operations
+        /// <summary>
+        /// [EXPERIMENTAL] DeleteRecipeComposer: Delete a Recipe Composer, assuming that it is present.
+        /// </summary>
+        /// <remarks>
+        /// Delete the specified Recipe Composer from a single scope.                The response will return either detail of the deleted item, or an explanation (failure) as to why this did not succeed.                It is important to always check for any unsuccessful response.
+        /// </remarks>
+        /// <exception cref="Lusid.Sdk.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="scope">The scope of the Recipe Composer to delete.</param>
+        /// <param name="code">The Recipe Composer to delete.</param>
+        /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
+        /// <returns>Task of AnnulSingleStructuredDataResponse</returns>
+        System.Threading.Tasks.Task<AnnulSingleStructuredDataResponse> DeleteRecipeComposerAsync(string scope, string code, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+
+        /// <summary>
+        /// [EXPERIMENTAL] DeleteRecipeComposer: Delete a Recipe Composer, assuming that it is present.
+        /// </summary>
+        /// <remarks>
+        /// Delete the specified Recipe Composer from a single scope.                The response will return either detail of the deleted item, or an explanation (failure) as to why this did not succeed.                It is important to always check for any unsuccessful response.
+        /// </remarks>
+        /// <exception cref="Lusid.Sdk.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="scope">The scope of the Recipe Composer to delete.</param>
+        /// <param name="code">The Recipe Composer to delete.</param>
+        /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
+        /// <returns>Task of ApiResponse (AnnulSingleStructuredDataResponse)</returns>
+        System.Threading.Tasks.Task<ApiResponse<AnnulSingleStructuredDataResponse>> DeleteRecipeComposerWithHttpInfoAsync(string scope, string code, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+        /// <summary>
+        /// [EXPERIMENTAL] GetRecipeComposer: Get Recipe Composer
+        /// </summary>
+        /// <remarks>
+        /// Get a Recipe Composer from a single scope.                The response will return either the recipe composer that has been stored, or a failure explaining why the request was unsuccessful.                It is important to always check for any unsuccessful requests (failures).
+        /// </remarks>
+        /// <exception cref="Lusid.Sdk.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="scope">The scope of the Recipe Composer to retrieve.</param>
+        /// <param name="code">The name of the Recipe Composer to retrieve the data for.</param>
+        /// <param name="asAt">The asAt datetime at which to retrieve the Recipe Composer. Defaults to return the latest version if not specified. (optional)</param>
+        /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
+        /// <returns>Task of GetRecipeComposerResponse</returns>
+        System.Threading.Tasks.Task<GetRecipeComposerResponse> GetRecipeComposerAsync(string scope, string code, DateTimeOffset? asAt = default(DateTimeOffset?), System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+
+        /// <summary>
+        /// [EXPERIMENTAL] GetRecipeComposer: Get Recipe Composer
+        /// </summary>
+        /// <remarks>
+        /// Get a Recipe Composer from a single scope.                The response will return either the recipe composer that has been stored, or a failure explaining why the request was unsuccessful.                It is important to always check for any unsuccessful requests (failures).
+        /// </remarks>
+        /// <exception cref="Lusid.Sdk.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="scope">The scope of the Recipe Composer to retrieve.</param>
+        /// <param name="code">The name of the Recipe Composer to retrieve the data for.</param>
+        /// <param name="asAt">The asAt datetime at which to retrieve the Recipe Composer. Defaults to return the latest version if not specified. (optional)</param>
+        /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
+        /// <returns>Task of ApiResponse (GetRecipeComposerResponse)</returns>
+        System.Threading.Tasks.Task<ApiResponse<GetRecipeComposerResponse>> GetRecipeComposerWithHttpInfoAsync(string scope, string code, DateTimeOffset? asAt = default(DateTimeOffset?), System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
         /// <summary>
         /// [EXPERIMENTAL] GetRecipeComposerResolvedInline: Given a Recipe Composer, this endpoint shows what configuration recipe it would resolve to, able to access the already upserted configuration recipes as well as plain inline string inputs.
         /// </summary>
@@ -80,6 +224,54 @@ namespace Lusid.Sdk.Api
         /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
         /// <returns>Task of ApiResponse (GetRecipeResponse)</returns>
         System.Threading.Tasks.Task<ApiResponse<GetRecipeResponse>> GetRecipeComposerResolvedInlineWithHttpInfoAsync(UpsertRecipeComposerRequest upsertRecipeComposerRequest, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+        /// <summary>
+        /// [EXPERIMENTAL] ListRecipeComposers: List the set of Recipe Composers
+        /// </summary>
+        /// <remarks>
+        /// List the set of Recipe Composers at the specified date/time and scope
+        /// </remarks>
+        /// <exception cref="Lusid.Sdk.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="asAt">The asAt datetime at which to list the Recipes Composers. Defaults to latest if not specified. (optional)</param>
+        /// <param name="filter">Expression to filter the result set. Read more about filtering results from LUSID here:              https://support.lusid.com/filtering-results-from-lusid. (optional)</param>
+        /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
+        /// <returns>Task of ResourceListOfGetRecipeComposerResponse</returns>
+        System.Threading.Tasks.Task<ResourceListOfGetRecipeComposerResponse> ListRecipeComposersAsync(DateTimeOffset? asAt = default(DateTimeOffset?), string filter = default(string), System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+
+        /// <summary>
+        /// [EXPERIMENTAL] ListRecipeComposers: List the set of Recipe Composers
+        /// </summary>
+        /// <remarks>
+        /// List the set of Recipe Composers at the specified date/time and scope
+        /// </remarks>
+        /// <exception cref="Lusid.Sdk.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="asAt">The asAt datetime at which to list the Recipes Composers. Defaults to latest if not specified. (optional)</param>
+        /// <param name="filter">Expression to filter the result set. Read more about filtering results from LUSID here:              https://support.lusid.com/filtering-results-from-lusid. (optional)</param>
+        /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
+        /// <returns>Task of ApiResponse (ResourceListOfGetRecipeComposerResponse)</returns>
+        System.Threading.Tasks.Task<ApiResponse<ResourceListOfGetRecipeComposerResponse>> ListRecipeComposersWithHttpInfoAsync(DateTimeOffset? asAt = default(DateTimeOffset?), string filter = default(string), System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+        /// <summary>
+        /// [EXPERIMENTAL] UpsertRecipeComposer: Upsert a Recipe Composer. This creates or updates the data in Lusid.
+        /// </summary>
+        /// <remarks>
+        /// Update or insert one Recipe Composer in a single scope. An item will be updated if it already exists  and inserted if it does not.                The response will return the successfully updated or inserted Recipe Composer or failure message if unsuccessful                It is important to always check to verify success (or failure).
+        /// </remarks>
+        /// <exception cref="Lusid.Sdk.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="upsertRecipeComposerRequest">The Recipe Composer to update or insert</param>
+        /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
+        /// <returns>Task of UpsertSingleStructuredDataResponse</returns>
+        System.Threading.Tasks.Task<UpsertSingleStructuredDataResponse> UpsertRecipeComposerAsync(UpsertRecipeComposerRequest upsertRecipeComposerRequest, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+
+        /// <summary>
+        /// [EXPERIMENTAL] UpsertRecipeComposer: Upsert a Recipe Composer. This creates or updates the data in Lusid.
+        /// </summary>
+        /// <remarks>
+        /// Update or insert one Recipe Composer in a single scope. An item will be updated if it already exists  and inserted if it does not.                The response will return the successfully updated or inserted Recipe Composer or failure message if unsuccessful                It is important to always check to verify success (or failure).
+        /// </remarks>
+        /// <exception cref="Lusid.Sdk.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="upsertRecipeComposerRequest">The Recipe Composer to update or insert</param>
+        /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
+        /// <returns>Task of ApiResponse (UpsertSingleStructuredDataResponse)</returns>
+        System.Threading.Tasks.Task<ApiResponse<UpsertSingleStructuredDataResponse>> UpsertRecipeComposerWithHttpInfoAsync(UpsertRecipeComposerRequest upsertRecipeComposerRequest, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
         #endregion Asynchronous Operations
     }
 
@@ -195,6 +387,324 @@ namespace Lusid.Sdk.Api
                 return _exceptionFactory;
             }
             set { _exceptionFactory = value; }
+        }
+
+        /// <summary>
+        /// [EXPERIMENTAL] DeleteRecipeComposer: Delete a Recipe Composer, assuming that it is present. Delete the specified Recipe Composer from a single scope.                The response will return either detail of the deleted item, or an explanation (failure) as to why this did not succeed.                It is important to always check for any unsuccessful response.
+        /// </summary>
+        /// <exception cref="Lusid.Sdk.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="scope">The scope of the Recipe Composer to delete.</param>
+        /// <param name="code">The Recipe Composer to delete.</param>
+        /// <returns>AnnulSingleStructuredDataResponse</returns>
+        public AnnulSingleStructuredDataResponse DeleteRecipeComposer(string scope, string code)
+        {
+            Lusid.Sdk.Client.ApiResponse<AnnulSingleStructuredDataResponse> localVarResponse = DeleteRecipeComposerWithHttpInfo(scope, code);
+            return localVarResponse.Data;
+        }
+
+        /// <summary>
+        /// [EXPERIMENTAL] DeleteRecipeComposer: Delete a Recipe Composer, assuming that it is present. Delete the specified Recipe Composer from a single scope.                The response will return either detail of the deleted item, or an explanation (failure) as to why this did not succeed.                It is important to always check for any unsuccessful response.
+        /// </summary>
+        /// <exception cref="Lusid.Sdk.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="scope">The scope of the Recipe Composer to delete.</param>
+        /// <param name="code">The Recipe Composer to delete.</param>
+        /// <returns>ApiResponse of AnnulSingleStructuredDataResponse</returns>
+        public Lusid.Sdk.Client.ApiResponse<AnnulSingleStructuredDataResponse> DeleteRecipeComposerWithHttpInfo(string scope, string code)
+        {
+            // verify the required parameter 'scope' is set
+            if (scope == null)
+                throw new Lusid.Sdk.Client.ApiException(400, "Missing required parameter 'scope' when calling RecipeComposerApi->DeleteRecipeComposer");
+
+            // verify the required parameter 'code' is set
+            if (code == null)
+                throw new Lusid.Sdk.Client.ApiException(400, "Missing required parameter 'code' when calling RecipeComposerApi->DeleteRecipeComposer");
+
+            Lusid.Sdk.Client.RequestOptions localVarRequestOptions = new Lusid.Sdk.Client.RequestOptions();
+
+            String[] _contentTypes = new String[] {
+            };
+
+            // to determine the Accept header
+            String[] _accepts = new String[] {
+                "text/plain",
+                "application/json",
+                "text/json"
+            };
+
+            var localVarContentType = Lusid.Sdk.Client.ClientUtils.SelectHeaderContentType(_contentTypes);
+            if (localVarContentType != null) localVarRequestOptions.HeaderParameters.Add("Content-Type", localVarContentType);
+
+            var localVarAccept = Lusid.Sdk.Client.ClientUtils.SelectHeaderAccept(_accepts);
+            if (localVarAccept != null) localVarRequestOptions.HeaderParameters.Add("Accept", localVarAccept);
+
+            localVarRequestOptions.PathParameters.Add("scope", Lusid.Sdk.Client.ClientUtils.ParameterToString(scope)); // path parameter
+            localVarRequestOptions.PathParameters.Add("code", Lusid.Sdk.Client.ClientUtils.ParameterToString(code)); // path parameter
+
+            // authentication (oauth2) required
+            // oauth required
+            if (!String.IsNullOrEmpty(this.Configuration.AccessToken))
+            {
+                localVarRequestOptions.HeaderParameters.Add("Authorization", "Bearer " + this.Configuration.AccessToken);
+            }
+
+            //  set the LUSID header
+            localVarRequestOptions.HeaderParameters.Add("X-LUSID-Sdk-Language", "C#");
+            localVarRequestOptions.HeaderParameters.Add("X-LUSID-Sdk-Version", "1.1.221");
+
+            // make the HTTP request
+            var localVarResponse = this.Client.Delete<AnnulSingleStructuredDataResponse>("/api/recipecomposers/{scope}/{code}", localVarRequestOptions, this.Configuration);
+
+            if (this.ExceptionFactory != null)
+            {
+                Exception _exception = this.ExceptionFactory("DeleteRecipeComposer", localVarResponse);
+                if (_exception != null) throw _exception;
+            }
+
+            return localVarResponse;
+        }
+
+        /// <summary>
+        /// [EXPERIMENTAL] DeleteRecipeComposer: Delete a Recipe Composer, assuming that it is present. Delete the specified Recipe Composer from a single scope.                The response will return either detail of the deleted item, or an explanation (failure) as to why this did not succeed.                It is important to always check for any unsuccessful response.
+        /// </summary>
+        /// <exception cref="Lusid.Sdk.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="scope">The scope of the Recipe Composer to delete.</param>
+        /// <param name="code">The Recipe Composer to delete.</param>
+        /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
+        /// <returns>Task of AnnulSingleStructuredDataResponse</returns>
+        public async System.Threading.Tasks.Task<AnnulSingleStructuredDataResponse> DeleteRecipeComposerAsync(string scope, string code, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
+        {
+            Lusid.Sdk.Client.ApiResponse<AnnulSingleStructuredDataResponse> localVarResponse = await DeleteRecipeComposerWithHttpInfoAsync(scope, code, cancellationToken).ConfigureAwait(false);
+            return localVarResponse.Data;
+        }
+
+        /// <summary>
+        /// [EXPERIMENTAL] DeleteRecipeComposer: Delete a Recipe Composer, assuming that it is present. Delete the specified Recipe Composer from a single scope.                The response will return either detail of the deleted item, or an explanation (failure) as to why this did not succeed.                It is important to always check for any unsuccessful response.
+        /// </summary>
+        /// <exception cref="Lusid.Sdk.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="scope">The scope of the Recipe Composer to delete.</param>
+        /// <param name="code">The Recipe Composer to delete.</param>
+        /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
+        /// <returns>Task of ApiResponse (AnnulSingleStructuredDataResponse)</returns>
+        public async System.Threading.Tasks.Task<Lusid.Sdk.Client.ApiResponse<AnnulSingleStructuredDataResponse>> DeleteRecipeComposerWithHttpInfoAsync(string scope, string code, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
+        {
+            // verify the required parameter 'scope' is set
+            if (scope == null)
+                throw new Lusid.Sdk.Client.ApiException(400, "Missing required parameter 'scope' when calling RecipeComposerApi->DeleteRecipeComposer");
+
+            // verify the required parameter 'code' is set
+            if (code == null)
+                throw new Lusid.Sdk.Client.ApiException(400, "Missing required parameter 'code' when calling RecipeComposerApi->DeleteRecipeComposer");
+
+
+            Lusid.Sdk.Client.RequestOptions localVarRequestOptions = new Lusid.Sdk.Client.RequestOptions();
+
+            String[] _contentTypes = new String[] {
+            };
+
+            // to determine the Accept header
+            String[] _accepts = new String[] {
+                "text/plain",
+                "application/json",
+                "text/json"
+            };
+
+
+            var localVarContentType = Lusid.Sdk.Client.ClientUtils.SelectHeaderContentType(_contentTypes);
+            if (localVarContentType != null) localVarRequestOptions.HeaderParameters.Add("Content-Type", localVarContentType);
+
+            var localVarAccept = Lusid.Sdk.Client.ClientUtils.SelectHeaderAccept(_accepts);
+            if (localVarAccept != null) localVarRequestOptions.HeaderParameters.Add("Accept", localVarAccept);
+
+            localVarRequestOptions.PathParameters.Add("scope", Lusid.Sdk.Client.ClientUtils.ParameterToString(scope)); // path parameter
+            localVarRequestOptions.PathParameters.Add("code", Lusid.Sdk.Client.ClientUtils.ParameterToString(code)); // path parameter
+
+            // authentication (oauth2) required
+            // oauth required
+            if (!String.IsNullOrEmpty(this.Configuration.AccessToken))
+            {
+                localVarRequestOptions.HeaderParameters.Add("Authorization", "Bearer " + this.Configuration.AccessToken);
+            }
+
+            //  set the LUSID header
+            localVarRequestOptions.HeaderParameters.Add("X-LUSID-Sdk-Language", "C#");
+            localVarRequestOptions.HeaderParameters.Add("X-LUSID-Sdk-Version", "1.1.221");
+
+            // make the HTTP request
+
+            var localVarResponse = await this.AsynchronousClient.DeleteAsync<AnnulSingleStructuredDataResponse>("/api/recipecomposers/{scope}/{code}", localVarRequestOptions, this.Configuration, cancellationToken).ConfigureAwait(false);
+
+            if (this.ExceptionFactory != null)
+            {
+                Exception _exception = this.ExceptionFactory("DeleteRecipeComposer", localVarResponse);
+                if (_exception != null) throw _exception;
+            }
+
+            return localVarResponse;
+        }
+
+        /// <summary>
+        /// [EXPERIMENTAL] GetRecipeComposer: Get Recipe Composer Get a Recipe Composer from a single scope.                The response will return either the recipe composer that has been stored, or a failure explaining why the request was unsuccessful.                It is important to always check for any unsuccessful requests (failures).
+        /// </summary>
+        /// <exception cref="Lusid.Sdk.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="scope">The scope of the Recipe Composer to retrieve.</param>
+        /// <param name="code">The name of the Recipe Composer to retrieve the data for.</param>
+        /// <param name="asAt">The asAt datetime at which to retrieve the Recipe Composer. Defaults to return the latest version if not specified. (optional)</param>
+        /// <returns>GetRecipeComposerResponse</returns>
+        public GetRecipeComposerResponse GetRecipeComposer(string scope, string code, DateTimeOffset? asAt = default(DateTimeOffset?))
+        {
+            Lusid.Sdk.Client.ApiResponse<GetRecipeComposerResponse> localVarResponse = GetRecipeComposerWithHttpInfo(scope, code, asAt);
+            return localVarResponse.Data;
+        }
+
+        /// <summary>
+        /// [EXPERIMENTAL] GetRecipeComposer: Get Recipe Composer Get a Recipe Composer from a single scope.                The response will return either the recipe composer that has been stored, or a failure explaining why the request was unsuccessful.                It is important to always check for any unsuccessful requests (failures).
+        /// </summary>
+        /// <exception cref="Lusid.Sdk.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="scope">The scope of the Recipe Composer to retrieve.</param>
+        /// <param name="code">The name of the Recipe Composer to retrieve the data for.</param>
+        /// <param name="asAt">The asAt datetime at which to retrieve the Recipe Composer. Defaults to return the latest version if not specified. (optional)</param>
+        /// <returns>ApiResponse of GetRecipeComposerResponse</returns>
+        public Lusid.Sdk.Client.ApiResponse<GetRecipeComposerResponse> GetRecipeComposerWithHttpInfo(string scope, string code, DateTimeOffset? asAt = default(DateTimeOffset?))
+        {
+            // verify the required parameter 'scope' is set
+            if (scope == null)
+                throw new Lusid.Sdk.Client.ApiException(400, "Missing required parameter 'scope' when calling RecipeComposerApi->GetRecipeComposer");
+
+            // verify the required parameter 'code' is set
+            if (code == null)
+                throw new Lusid.Sdk.Client.ApiException(400, "Missing required parameter 'code' when calling RecipeComposerApi->GetRecipeComposer");
+
+            Lusid.Sdk.Client.RequestOptions localVarRequestOptions = new Lusid.Sdk.Client.RequestOptions();
+
+            String[] _contentTypes = new String[] {
+            };
+
+            // to determine the Accept header
+            String[] _accepts = new String[] {
+                "text/plain",
+                "application/json",
+                "text/json"
+            };
+
+            var localVarContentType = Lusid.Sdk.Client.ClientUtils.SelectHeaderContentType(_contentTypes);
+            if (localVarContentType != null) localVarRequestOptions.HeaderParameters.Add("Content-Type", localVarContentType);
+
+            var localVarAccept = Lusid.Sdk.Client.ClientUtils.SelectHeaderAccept(_accepts);
+            if (localVarAccept != null) localVarRequestOptions.HeaderParameters.Add("Accept", localVarAccept);
+
+            localVarRequestOptions.PathParameters.Add("scope", Lusid.Sdk.Client.ClientUtils.ParameterToString(scope)); // path parameter
+            localVarRequestOptions.PathParameters.Add("code", Lusid.Sdk.Client.ClientUtils.ParameterToString(code)); // path parameter
+            if (asAt != null)
+            {
+                localVarRequestOptions.QueryParameters.Add(Lusid.Sdk.Client.ClientUtils.ParameterToMultiMap("", "asAt", asAt));
+            }
+
+            // authentication (oauth2) required
+            // oauth required
+            if (!String.IsNullOrEmpty(this.Configuration.AccessToken))
+            {
+                localVarRequestOptions.HeaderParameters.Add("Authorization", "Bearer " + this.Configuration.AccessToken);
+            }
+
+            //  set the LUSID header
+            localVarRequestOptions.HeaderParameters.Add("X-LUSID-Sdk-Language", "C#");
+            localVarRequestOptions.HeaderParameters.Add("X-LUSID-Sdk-Version", "1.1.221");
+
+            // make the HTTP request
+            var localVarResponse = this.Client.Get<GetRecipeComposerResponse>("/api/recipecomposers/{scope}/{code}", localVarRequestOptions, this.Configuration);
+
+            if (this.ExceptionFactory != null)
+            {
+                Exception _exception = this.ExceptionFactory("GetRecipeComposer", localVarResponse);
+                if (_exception != null) throw _exception;
+            }
+
+            return localVarResponse;
+        }
+
+        /// <summary>
+        /// [EXPERIMENTAL] GetRecipeComposer: Get Recipe Composer Get a Recipe Composer from a single scope.                The response will return either the recipe composer that has been stored, or a failure explaining why the request was unsuccessful.                It is important to always check for any unsuccessful requests (failures).
+        /// </summary>
+        /// <exception cref="Lusid.Sdk.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="scope">The scope of the Recipe Composer to retrieve.</param>
+        /// <param name="code">The name of the Recipe Composer to retrieve the data for.</param>
+        /// <param name="asAt">The asAt datetime at which to retrieve the Recipe Composer. Defaults to return the latest version if not specified. (optional)</param>
+        /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
+        /// <returns>Task of GetRecipeComposerResponse</returns>
+        public async System.Threading.Tasks.Task<GetRecipeComposerResponse> GetRecipeComposerAsync(string scope, string code, DateTimeOffset? asAt = default(DateTimeOffset?), System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
+        {
+            Lusid.Sdk.Client.ApiResponse<GetRecipeComposerResponse> localVarResponse = await GetRecipeComposerWithHttpInfoAsync(scope, code, asAt, cancellationToken).ConfigureAwait(false);
+            return localVarResponse.Data;
+        }
+
+        /// <summary>
+        /// [EXPERIMENTAL] GetRecipeComposer: Get Recipe Composer Get a Recipe Composer from a single scope.                The response will return either the recipe composer that has been stored, or a failure explaining why the request was unsuccessful.                It is important to always check for any unsuccessful requests (failures).
+        /// </summary>
+        /// <exception cref="Lusid.Sdk.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="scope">The scope of the Recipe Composer to retrieve.</param>
+        /// <param name="code">The name of the Recipe Composer to retrieve the data for.</param>
+        /// <param name="asAt">The asAt datetime at which to retrieve the Recipe Composer. Defaults to return the latest version if not specified. (optional)</param>
+        /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
+        /// <returns>Task of ApiResponse (GetRecipeComposerResponse)</returns>
+        public async System.Threading.Tasks.Task<Lusid.Sdk.Client.ApiResponse<GetRecipeComposerResponse>> GetRecipeComposerWithHttpInfoAsync(string scope, string code, DateTimeOffset? asAt = default(DateTimeOffset?), System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
+        {
+            // verify the required parameter 'scope' is set
+            if (scope == null)
+                throw new Lusid.Sdk.Client.ApiException(400, "Missing required parameter 'scope' when calling RecipeComposerApi->GetRecipeComposer");
+
+            // verify the required parameter 'code' is set
+            if (code == null)
+                throw new Lusid.Sdk.Client.ApiException(400, "Missing required parameter 'code' when calling RecipeComposerApi->GetRecipeComposer");
+
+
+            Lusid.Sdk.Client.RequestOptions localVarRequestOptions = new Lusid.Sdk.Client.RequestOptions();
+
+            String[] _contentTypes = new String[] {
+            };
+
+            // to determine the Accept header
+            String[] _accepts = new String[] {
+                "text/plain",
+                "application/json",
+                "text/json"
+            };
+
+
+            var localVarContentType = Lusid.Sdk.Client.ClientUtils.SelectHeaderContentType(_contentTypes);
+            if (localVarContentType != null) localVarRequestOptions.HeaderParameters.Add("Content-Type", localVarContentType);
+
+            var localVarAccept = Lusid.Sdk.Client.ClientUtils.SelectHeaderAccept(_accepts);
+            if (localVarAccept != null) localVarRequestOptions.HeaderParameters.Add("Accept", localVarAccept);
+
+            localVarRequestOptions.PathParameters.Add("scope", Lusid.Sdk.Client.ClientUtils.ParameterToString(scope)); // path parameter
+            localVarRequestOptions.PathParameters.Add("code", Lusid.Sdk.Client.ClientUtils.ParameterToString(code)); // path parameter
+            if (asAt != null)
+            {
+                localVarRequestOptions.QueryParameters.Add(Lusid.Sdk.Client.ClientUtils.ParameterToMultiMap("", "asAt", asAt));
+            }
+
+            // authentication (oauth2) required
+            // oauth required
+            if (!String.IsNullOrEmpty(this.Configuration.AccessToken))
+            {
+                localVarRequestOptions.HeaderParameters.Add("Authorization", "Bearer " + this.Configuration.AccessToken);
+            }
+
+            //  set the LUSID header
+            localVarRequestOptions.HeaderParameters.Add("X-LUSID-Sdk-Language", "C#");
+            localVarRequestOptions.HeaderParameters.Add("X-LUSID-Sdk-Version", "1.1.221");
+
+            // make the HTTP request
+
+            var localVarResponse = await this.AsynchronousClient.GetAsync<GetRecipeComposerResponse>("/api/recipecomposers/{scope}/{code}", localVarRequestOptions, this.Configuration, cancellationToken).ConfigureAwait(false);
+
+            if (this.ExceptionFactory != null)
+            {
+                Exception _exception = this.ExceptionFactory("GetRecipeComposer", localVarResponse);
+                if (_exception != null) throw _exception;
+            }
+
+            return localVarResponse;
         }
 
         /// <summary>
@@ -338,6 +848,302 @@ namespace Lusid.Sdk.Api
             if (this.ExceptionFactory != null)
             {
                 Exception _exception = this.ExceptionFactory("GetRecipeComposerResolvedInline", localVarResponse);
+                if (_exception != null) throw _exception;
+            }
+
+            return localVarResponse;
+        }
+
+        /// <summary>
+        /// [EXPERIMENTAL] ListRecipeComposers: List the set of Recipe Composers List the set of Recipe Composers at the specified date/time and scope
+        /// </summary>
+        /// <exception cref="Lusid.Sdk.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="asAt">The asAt datetime at which to list the Recipes Composers. Defaults to latest if not specified. (optional)</param>
+        /// <param name="filter">Expression to filter the result set. Read more about filtering results from LUSID here:              https://support.lusid.com/filtering-results-from-lusid. (optional)</param>
+        /// <returns>ResourceListOfGetRecipeComposerResponse</returns>
+        public ResourceListOfGetRecipeComposerResponse ListRecipeComposers(DateTimeOffset? asAt = default(DateTimeOffset?), string filter = default(string))
+        {
+            Lusid.Sdk.Client.ApiResponse<ResourceListOfGetRecipeComposerResponse> localVarResponse = ListRecipeComposersWithHttpInfo(asAt, filter);
+            return localVarResponse.Data;
+        }
+
+        /// <summary>
+        /// [EXPERIMENTAL] ListRecipeComposers: List the set of Recipe Composers List the set of Recipe Composers at the specified date/time and scope
+        /// </summary>
+        /// <exception cref="Lusid.Sdk.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="asAt">The asAt datetime at which to list the Recipes Composers. Defaults to latest if not specified. (optional)</param>
+        /// <param name="filter">Expression to filter the result set. Read more about filtering results from LUSID here:              https://support.lusid.com/filtering-results-from-lusid. (optional)</param>
+        /// <returns>ApiResponse of ResourceListOfGetRecipeComposerResponse</returns>
+        public Lusid.Sdk.Client.ApiResponse<ResourceListOfGetRecipeComposerResponse> ListRecipeComposersWithHttpInfo(DateTimeOffset? asAt = default(DateTimeOffset?), string filter = default(string))
+        {
+            Lusid.Sdk.Client.RequestOptions localVarRequestOptions = new Lusid.Sdk.Client.RequestOptions();
+
+            String[] _contentTypes = new String[] {
+            };
+
+            // to determine the Accept header
+            String[] _accepts = new String[] {
+                "text/plain",
+                "application/json",
+                "text/json"
+            };
+
+            var localVarContentType = Lusid.Sdk.Client.ClientUtils.SelectHeaderContentType(_contentTypes);
+            if (localVarContentType != null) localVarRequestOptions.HeaderParameters.Add("Content-Type", localVarContentType);
+
+            var localVarAccept = Lusid.Sdk.Client.ClientUtils.SelectHeaderAccept(_accepts);
+            if (localVarAccept != null) localVarRequestOptions.HeaderParameters.Add("Accept", localVarAccept);
+
+            if (asAt != null)
+            {
+                localVarRequestOptions.QueryParameters.Add(Lusid.Sdk.Client.ClientUtils.ParameterToMultiMap("", "asAt", asAt));
+            }
+            if (filter != null)
+            {
+                localVarRequestOptions.QueryParameters.Add(Lusid.Sdk.Client.ClientUtils.ParameterToMultiMap("", "filter", filter));
+            }
+
+            // authentication (oauth2) required
+            // oauth required
+            if (!String.IsNullOrEmpty(this.Configuration.AccessToken))
+            {
+                localVarRequestOptions.HeaderParameters.Add("Authorization", "Bearer " + this.Configuration.AccessToken);
+            }
+
+            //  set the LUSID header
+            localVarRequestOptions.HeaderParameters.Add("X-LUSID-Sdk-Language", "C#");
+            localVarRequestOptions.HeaderParameters.Add("X-LUSID-Sdk-Version", "1.1.221");
+
+            // make the HTTP request
+            var localVarResponse = this.Client.Get<ResourceListOfGetRecipeComposerResponse>("/api/recipecomposers", localVarRequestOptions, this.Configuration);
+
+            if (this.ExceptionFactory != null)
+            {
+                Exception _exception = this.ExceptionFactory("ListRecipeComposers", localVarResponse);
+                if (_exception != null) throw _exception;
+            }
+
+            return localVarResponse;
+        }
+
+        /// <summary>
+        /// [EXPERIMENTAL] ListRecipeComposers: List the set of Recipe Composers List the set of Recipe Composers at the specified date/time and scope
+        /// </summary>
+        /// <exception cref="Lusid.Sdk.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="asAt">The asAt datetime at which to list the Recipes Composers. Defaults to latest if not specified. (optional)</param>
+        /// <param name="filter">Expression to filter the result set. Read more about filtering results from LUSID here:              https://support.lusid.com/filtering-results-from-lusid. (optional)</param>
+        /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
+        /// <returns>Task of ResourceListOfGetRecipeComposerResponse</returns>
+        public async System.Threading.Tasks.Task<ResourceListOfGetRecipeComposerResponse> ListRecipeComposersAsync(DateTimeOffset? asAt = default(DateTimeOffset?), string filter = default(string), System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
+        {
+            Lusid.Sdk.Client.ApiResponse<ResourceListOfGetRecipeComposerResponse> localVarResponse = await ListRecipeComposersWithHttpInfoAsync(asAt, filter, cancellationToken).ConfigureAwait(false);
+            return localVarResponse.Data;
+        }
+
+        /// <summary>
+        /// [EXPERIMENTAL] ListRecipeComposers: List the set of Recipe Composers List the set of Recipe Composers at the specified date/time and scope
+        /// </summary>
+        /// <exception cref="Lusid.Sdk.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="asAt">The asAt datetime at which to list the Recipes Composers. Defaults to latest if not specified. (optional)</param>
+        /// <param name="filter">Expression to filter the result set. Read more about filtering results from LUSID here:              https://support.lusid.com/filtering-results-from-lusid. (optional)</param>
+        /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
+        /// <returns>Task of ApiResponse (ResourceListOfGetRecipeComposerResponse)</returns>
+        public async System.Threading.Tasks.Task<Lusid.Sdk.Client.ApiResponse<ResourceListOfGetRecipeComposerResponse>> ListRecipeComposersWithHttpInfoAsync(DateTimeOffset? asAt = default(DateTimeOffset?), string filter = default(string), System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
+        {
+
+            Lusid.Sdk.Client.RequestOptions localVarRequestOptions = new Lusid.Sdk.Client.RequestOptions();
+
+            String[] _contentTypes = new String[] {
+            };
+
+            // to determine the Accept header
+            String[] _accepts = new String[] {
+                "text/plain",
+                "application/json",
+                "text/json"
+            };
+
+
+            var localVarContentType = Lusid.Sdk.Client.ClientUtils.SelectHeaderContentType(_contentTypes);
+            if (localVarContentType != null) localVarRequestOptions.HeaderParameters.Add("Content-Type", localVarContentType);
+
+            var localVarAccept = Lusid.Sdk.Client.ClientUtils.SelectHeaderAccept(_accepts);
+            if (localVarAccept != null) localVarRequestOptions.HeaderParameters.Add("Accept", localVarAccept);
+
+            if (asAt != null)
+            {
+                localVarRequestOptions.QueryParameters.Add(Lusid.Sdk.Client.ClientUtils.ParameterToMultiMap("", "asAt", asAt));
+            }
+            if (filter != null)
+            {
+                localVarRequestOptions.QueryParameters.Add(Lusid.Sdk.Client.ClientUtils.ParameterToMultiMap("", "filter", filter));
+            }
+
+            // authentication (oauth2) required
+            // oauth required
+            if (!String.IsNullOrEmpty(this.Configuration.AccessToken))
+            {
+                localVarRequestOptions.HeaderParameters.Add("Authorization", "Bearer " + this.Configuration.AccessToken);
+            }
+
+            //  set the LUSID header
+            localVarRequestOptions.HeaderParameters.Add("X-LUSID-Sdk-Language", "C#");
+            localVarRequestOptions.HeaderParameters.Add("X-LUSID-Sdk-Version", "1.1.221");
+
+            // make the HTTP request
+
+            var localVarResponse = await this.AsynchronousClient.GetAsync<ResourceListOfGetRecipeComposerResponse>("/api/recipecomposers", localVarRequestOptions, this.Configuration, cancellationToken).ConfigureAwait(false);
+
+            if (this.ExceptionFactory != null)
+            {
+                Exception _exception = this.ExceptionFactory("ListRecipeComposers", localVarResponse);
+                if (_exception != null) throw _exception;
+            }
+
+            return localVarResponse;
+        }
+
+        /// <summary>
+        /// [EXPERIMENTAL] UpsertRecipeComposer: Upsert a Recipe Composer. This creates or updates the data in Lusid. Update or insert one Recipe Composer in a single scope. An item will be updated if it already exists  and inserted if it does not.                The response will return the successfully updated or inserted Recipe Composer or failure message if unsuccessful                It is important to always check to verify success (or failure).
+        /// </summary>
+        /// <exception cref="Lusid.Sdk.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="upsertRecipeComposerRequest">The Recipe Composer to update or insert</param>
+        /// <returns>UpsertSingleStructuredDataResponse</returns>
+        public UpsertSingleStructuredDataResponse UpsertRecipeComposer(UpsertRecipeComposerRequest upsertRecipeComposerRequest)
+        {
+            Lusid.Sdk.Client.ApiResponse<UpsertSingleStructuredDataResponse> localVarResponse = UpsertRecipeComposerWithHttpInfo(upsertRecipeComposerRequest);
+            return localVarResponse.Data;
+        }
+
+        /// <summary>
+        /// [EXPERIMENTAL] UpsertRecipeComposer: Upsert a Recipe Composer. This creates or updates the data in Lusid. Update or insert one Recipe Composer in a single scope. An item will be updated if it already exists  and inserted if it does not.                The response will return the successfully updated or inserted Recipe Composer or failure message if unsuccessful                It is important to always check to verify success (or failure).
+        /// </summary>
+        /// <exception cref="Lusid.Sdk.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="upsertRecipeComposerRequest">The Recipe Composer to update or insert</param>
+        /// <returns>ApiResponse of UpsertSingleStructuredDataResponse</returns>
+        public Lusid.Sdk.Client.ApiResponse<UpsertSingleStructuredDataResponse> UpsertRecipeComposerWithHttpInfo(UpsertRecipeComposerRequest upsertRecipeComposerRequest)
+        {
+            // verify the required parameter 'upsertRecipeComposerRequest' is set
+            if (upsertRecipeComposerRequest == null)
+                throw new Lusid.Sdk.Client.ApiException(400, "Missing required parameter 'upsertRecipeComposerRequest' when calling RecipeComposerApi->UpsertRecipeComposer");
+
+            Lusid.Sdk.Client.RequestOptions localVarRequestOptions = new Lusid.Sdk.Client.RequestOptions();
+
+            String[] _contentTypes = new String[] {
+                "application/json-patch+json",
+                "application/json",
+                "text/json",
+                "application/_*+json"
+            };
+
+            // to determine the Accept header
+            String[] _accepts = new String[] {
+                "text/plain",
+                "application/json",
+                "text/json"
+            };
+
+            var localVarContentType = Lusid.Sdk.Client.ClientUtils.SelectHeaderContentType(_contentTypes);
+            if (localVarContentType != null) localVarRequestOptions.HeaderParameters.Add("Content-Type", localVarContentType);
+
+            var localVarAccept = Lusid.Sdk.Client.ClientUtils.SelectHeaderAccept(_accepts);
+            if (localVarAccept != null) localVarRequestOptions.HeaderParameters.Add("Accept", localVarAccept);
+
+            localVarRequestOptions.Data = upsertRecipeComposerRequest;
+
+            // authentication (oauth2) required
+            // oauth required
+            if (!String.IsNullOrEmpty(this.Configuration.AccessToken))
+            {
+                localVarRequestOptions.HeaderParameters.Add("Authorization", "Bearer " + this.Configuration.AccessToken);
+            }
+
+            //  set the LUSID header
+            localVarRequestOptions.HeaderParameters.Add("X-LUSID-Sdk-Language", "C#");
+            localVarRequestOptions.HeaderParameters.Add("X-LUSID-Sdk-Version", "1.1.221");
+
+            // make the HTTP request
+            var localVarResponse = this.Client.Post<UpsertSingleStructuredDataResponse>("/api/recipecomposers", localVarRequestOptions, this.Configuration);
+
+            if (this.ExceptionFactory != null)
+            {
+                Exception _exception = this.ExceptionFactory("UpsertRecipeComposer", localVarResponse);
+                if (_exception != null) throw _exception;
+            }
+
+            return localVarResponse;
+        }
+
+        /// <summary>
+        /// [EXPERIMENTAL] UpsertRecipeComposer: Upsert a Recipe Composer. This creates or updates the data in Lusid. Update or insert one Recipe Composer in a single scope. An item will be updated if it already exists  and inserted if it does not.                The response will return the successfully updated or inserted Recipe Composer or failure message if unsuccessful                It is important to always check to verify success (or failure).
+        /// </summary>
+        /// <exception cref="Lusid.Sdk.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="upsertRecipeComposerRequest">The Recipe Composer to update or insert</param>
+        /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
+        /// <returns>Task of UpsertSingleStructuredDataResponse</returns>
+        public async System.Threading.Tasks.Task<UpsertSingleStructuredDataResponse> UpsertRecipeComposerAsync(UpsertRecipeComposerRequest upsertRecipeComposerRequest, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
+        {
+            Lusid.Sdk.Client.ApiResponse<UpsertSingleStructuredDataResponse> localVarResponse = await UpsertRecipeComposerWithHttpInfoAsync(upsertRecipeComposerRequest, cancellationToken).ConfigureAwait(false);
+            return localVarResponse.Data;
+        }
+
+        /// <summary>
+        /// [EXPERIMENTAL] UpsertRecipeComposer: Upsert a Recipe Composer. This creates or updates the data in Lusid. Update or insert one Recipe Composer in a single scope. An item will be updated if it already exists  and inserted if it does not.                The response will return the successfully updated or inserted Recipe Composer or failure message if unsuccessful                It is important to always check to verify success (or failure).
+        /// </summary>
+        /// <exception cref="Lusid.Sdk.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="upsertRecipeComposerRequest">The Recipe Composer to update or insert</param>
+        /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
+        /// <returns>Task of ApiResponse (UpsertSingleStructuredDataResponse)</returns>
+        public async System.Threading.Tasks.Task<Lusid.Sdk.Client.ApiResponse<UpsertSingleStructuredDataResponse>> UpsertRecipeComposerWithHttpInfoAsync(UpsertRecipeComposerRequest upsertRecipeComposerRequest, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
+        {
+            // verify the required parameter 'upsertRecipeComposerRequest' is set
+            if (upsertRecipeComposerRequest == null)
+                throw new Lusid.Sdk.Client.ApiException(400, "Missing required parameter 'upsertRecipeComposerRequest' when calling RecipeComposerApi->UpsertRecipeComposer");
+
+
+            Lusid.Sdk.Client.RequestOptions localVarRequestOptions = new Lusid.Sdk.Client.RequestOptions();
+
+            String[] _contentTypes = new String[] {
+                "application/json-patch+json", 
+                "application/json", 
+                "text/json", 
+                "application/_*+json"
+            };
+
+            // to determine the Accept header
+            String[] _accepts = new String[] {
+                "text/plain",
+                "application/json",
+                "text/json"
+            };
+
+
+            var localVarContentType = Lusid.Sdk.Client.ClientUtils.SelectHeaderContentType(_contentTypes);
+            if (localVarContentType != null) localVarRequestOptions.HeaderParameters.Add("Content-Type", localVarContentType);
+
+            var localVarAccept = Lusid.Sdk.Client.ClientUtils.SelectHeaderAccept(_accepts);
+            if (localVarAccept != null) localVarRequestOptions.HeaderParameters.Add("Accept", localVarAccept);
+
+            localVarRequestOptions.Data = upsertRecipeComposerRequest;
+
+            // authentication (oauth2) required
+            // oauth required
+            if (!String.IsNullOrEmpty(this.Configuration.AccessToken))
+            {
+                localVarRequestOptions.HeaderParameters.Add("Authorization", "Bearer " + this.Configuration.AccessToken);
+            }
+
+            //  set the LUSID header
+            localVarRequestOptions.HeaderParameters.Add("X-LUSID-Sdk-Language", "C#");
+            localVarRequestOptions.HeaderParameters.Add("X-LUSID-Sdk-Version", "1.1.221");
+
+            // make the HTTP request
+
+            var localVarResponse = await this.AsynchronousClient.PostAsync<UpsertSingleStructuredDataResponse>("/api/recipecomposers", localVarRequestOptions, this.Configuration, cancellationToken).ConfigureAwait(false);
+
+            if (this.ExceptionFactory != null)
+            {
+                Exception _exception = this.ExceptionFactory("UpsertRecipeComposer", localVarResponse);
                 if (_exception != null) throw _exception;
             }
 

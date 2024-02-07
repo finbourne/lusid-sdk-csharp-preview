@@ -40,24 +40,17 @@ namespace Lusid.Sdk.Model
         /// <summary>
         /// Initializes a new instance of the <see cref="RecipeComposer" /> class.
         /// </summary>
-        /// <param name="code">User given string name (code) to identify the recipe. (required).</param>
         /// <param name="scope">The scope used when updating or inserting the Recipe Composer. (required).</param>
+        /// <param name="code">User given string name (code) to identify the recipe. (required).</param>
         /// <param name="operations">Atomic operations used to compose a Configuration Recipe..</param>
-        public RecipeComposer(string code = default(string), string scope = default(string), List<RecipeBlock> operations = default(List<RecipeBlock>))
+        public RecipeComposer(string scope = default(string), string code = default(string), List<RecipeBlock> operations = default(List<RecipeBlock>))
         {
-            // to ensure "code" is required (not null)
-            this.Code = code ?? throw new ArgumentNullException("code is a required property for RecipeComposer and cannot be null");
             // to ensure "scope" is required (not null)
             this.Scope = scope ?? throw new ArgumentNullException("scope is a required property for RecipeComposer and cannot be null");
+            // to ensure "code" is required (not null)
+            this.Code = code ?? throw new ArgumentNullException("code is a required property for RecipeComposer and cannot be null");
             this.Operations = operations;
         }
-
-        /// <summary>
-        /// User given string name (code) to identify the recipe.
-        /// </summary>
-        /// <value>User given string name (code) to identify the recipe.</value>
-        [DataMember(Name = "code", IsRequired = true, EmitDefaultValue = false)]
-        public string Code { get; set; }
 
         /// <summary>
         /// The scope used when updating or inserting the Recipe Composer.
@@ -65,6 +58,13 @@ namespace Lusid.Sdk.Model
         /// <value>The scope used when updating or inserting the Recipe Composer.</value>
         [DataMember(Name = "scope", IsRequired = true, EmitDefaultValue = false)]
         public string Scope { get; set; }
+
+        /// <summary>
+        /// User given string name (code) to identify the recipe.
+        /// </summary>
+        /// <value>User given string name (code) to identify the recipe.</value>
+        [DataMember(Name = "code", IsRequired = true, EmitDefaultValue = false)]
+        public string Code { get; set; }
 
         /// <summary>
         /// Atomic operations used to compose a Configuration Recipe.
@@ -81,8 +81,8 @@ namespace Lusid.Sdk.Model
         {
             var sb = new StringBuilder();
             sb.Append("class RecipeComposer {\n");
-            sb.Append("  Code: ").Append(Code).Append("\n");
             sb.Append("  Scope: ").Append(Scope).Append("\n");
+            sb.Append("  Code: ").Append(Code).Append("\n");
             sb.Append("  Operations: ").Append(Operations).Append("\n");
             sb.Append("}\n");
             return sb.ToString();
@@ -119,14 +119,14 @@ namespace Lusid.Sdk.Model
 
             return 
                 (
-                    this.Code == input.Code ||
-                    (this.Code != null &&
-                    this.Code.Equals(input.Code))
-                ) && 
-                (
                     this.Scope == input.Scope ||
                     (this.Scope != null &&
                     this.Scope.Equals(input.Scope))
+                ) && 
+                (
+                    this.Code == input.Code ||
+                    (this.Code != null &&
+                    this.Code.Equals(input.Code))
                 ) && 
                 (
                     this.Operations == input.Operations ||
@@ -145,10 +145,10 @@ namespace Lusid.Sdk.Model
             unchecked // Overflow is fine, just wrap
             {
                 int hashCode = 41;
-                if (this.Code != null)
-                    hashCode = hashCode * 59 + this.Code.GetHashCode();
                 if (this.Scope != null)
                     hashCode = hashCode * 59 + this.Scope.GetHashCode();
+                if (this.Code != null)
+                    hashCode = hashCode * 59 + this.Code.GetHashCode();
                 if (this.Operations != null)
                     hashCode = hashCode * 59 + this.Operations.GetHashCode();
                 return hashCode;

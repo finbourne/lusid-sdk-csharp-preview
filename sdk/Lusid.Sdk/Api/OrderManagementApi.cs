@@ -51,26 +51,26 @@ namespace Lusid.Sdk.Api
         /// <returns>ApiResponse of BookTransactionsResponse</returns>
         ApiResponse<BookTransactionsResponse> BookTransactionsWithHttpInfo(List<ResourceId> resourceId, bool? applyFeesAndCommission = default(bool?));
         /// <summary>
-        /// [EARLY ACCESS] CreateOrders: Create Block and Order pairs
+        /// [EARLY ACCESS] CreateOrders: Upsert a Block and associated orders
         /// </summary>
         /// <remarks>
-        /// Create new block and order pairs.
+        /// Upsert a Block and create associated orders.  This will fail if the block exists and already references orders with differing fields to the upsert request.
         /// </remarks>
         /// <exception cref="Lusid.Sdk.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="blockAndOrderCreateRequest">The collection of block and order requests.</param>
-        /// <returns>ResourceListOfBlockAndOrder</returns>
-        ResourceListOfBlockAndOrder CreateOrders(BlockAndOrderCreateRequest blockAndOrderCreateRequest);
+        /// <param name="blockAndOrdersCreateRequest">The collection of block and orders requests.</param>
+        /// <returns>ResourceListOfBlockAndOrders</returns>
+        ResourceListOfBlockAndOrders CreateOrders(BlockAndOrdersCreateRequest blockAndOrdersCreateRequest);
 
         /// <summary>
-        /// [EARLY ACCESS] CreateOrders: Create Block and Order pairs
+        /// [EARLY ACCESS] CreateOrders: Upsert a Block and associated orders
         /// </summary>
         /// <remarks>
-        /// Create new block and order pairs.
+        /// Upsert a Block and create associated orders.  This will fail if the block exists and already references orders with differing fields to the upsert request.
         /// </remarks>
         /// <exception cref="Lusid.Sdk.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="blockAndOrderCreateRequest">The collection of block and order requests.</param>
-        /// <returns>ApiResponse of ResourceListOfBlockAndOrder</returns>
-        ApiResponse<ResourceListOfBlockAndOrder> CreateOrdersWithHttpInfo(BlockAndOrderCreateRequest blockAndOrderCreateRequest);
+        /// <param name="blockAndOrdersCreateRequest">The collection of block and orders requests.</param>
+        /// <returns>ApiResponse of ResourceListOfBlockAndOrders</returns>
+        ApiResponse<ResourceListOfBlockAndOrders> CreateOrdersWithHttpInfo(BlockAndOrdersCreateRequest blockAndOrdersCreateRequest);
         /// <summary>
         /// [EARLY ACCESS] PlaceBlocks: Places blocks for a given list of placement requests.
         /// </summary>
@@ -150,28 +150,28 @@ namespace Lusid.Sdk.Api
         /// <returns>Task of ApiResponse (BookTransactionsResponse)</returns>
         System.Threading.Tasks.Task<ApiResponse<BookTransactionsResponse>> BookTransactionsWithHttpInfoAsync(List<ResourceId> resourceId, bool? applyFeesAndCommission = default(bool?), System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
         /// <summary>
-        /// [EARLY ACCESS] CreateOrders: Create Block and Order pairs
+        /// [EARLY ACCESS] CreateOrders: Upsert a Block and associated orders
         /// </summary>
         /// <remarks>
-        /// Create new block and order pairs.
+        /// Upsert a Block and create associated orders.  This will fail if the block exists and already references orders with differing fields to the upsert request.
         /// </remarks>
         /// <exception cref="Lusid.Sdk.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="blockAndOrderCreateRequest">The collection of block and order requests.</param>
+        /// <param name="blockAndOrdersCreateRequest">The collection of block and orders requests.</param>
         /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
-        /// <returns>Task of ResourceListOfBlockAndOrder</returns>
-        System.Threading.Tasks.Task<ResourceListOfBlockAndOrder> CreateOrdersAsync(BlockAndOrderCreateRequest blockAndOrderCreateRequest, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+        /// <returns>Task of ResourceListOfBlockAndOrders</returns>
+        System.Threading.Tasks.Task<ResourceListOfBlockAndOrders> CreateOrdersAsync(BlockAndOrdersCreateRequest blockAndOrdersCreateRequest, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
 
         /// <summary>
-        /// [EARLY ACCESS] CreateOrders: Create Block and Order pairs
+        /// [EARLY ACCESS] CreateOrders: Upsert a Block and associated orders
         /// </summary>
         /// <remarks>
-        /// Create new block and order pairs.
+        /// Upsert a Block and create associated orders.  This will fail if the block exists and already references orders with differing fields to the upsert request.
         /// </remarks>
         /// <exception cref="Lusid.Sdk.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="blockAndOrderCreateRequest">The collection of block and order requests.</param>
+        /// <param name="blockAndOrdersCreateRequest">The collection of block and orders requests.</param>
         /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
-        /// <returns>Task of ApiResponse (ResourceListOfBlockAndOrder)</returns>
-        System.Threading.Tasks.Task<ApiResponse<ResourceListOfBlockAndOrder>> CreateOrdersWithHttpInfoAsync(BlockAndOrderCreateRequest blockAndOrderCreateRequest, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+        /// <returns>Task of ApiResponse (ResourceListOfBlockAndOrders)</returns>
+        System.Threading.Tasks.Task<ApiResponse<ResourceListOfBlockAndOrders>> CreateOrdersWithHttpInfoAsync(BlockAndOrdersCreateRequest blockAndOrdersCreateRequest, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
         /// <summary>
         /// [EARLY ACCESS] PlaceBlocks: Places blocks for a given list of placement requests.
         /// </summary>
@@ -497,28 +497,28 @@ namespace Lusid.Sdk.Api
         }
 
         /// <summary>
-        /// [EARLY ACCESS] CreateOrders: Create Block and Order pairs Create new block and order pairs.
+        /// [EARLY ACCESS] CreateOrders: Upsert a Block and associated orders Upsert a Block and create associated orders.  This will fail if the block exists and already references orders with differing fields to the upsert request.
         /// </summary>
         /// <exception cref="Lusid.Sdk.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="blockAndOrderCreateRequest">The collection of block and order requests.</param>
-        /// <returns>ResourceListOfBlockAndOrder</returns>
-        public ResourceListOfBlockAndOrder CreateOrders(BlockAndOrderCreateRequest blockAndOrderCreateRequest)
+        /// <param name="blockAndOrdersCreateRequest">The collection of block and orders requests.</param>
+        /// <returns>ResourceListOfBlockAndOrders</returns>
+        public ResourceListOfBlockAndOrders CreateOrders(BlockAndOrdersCreateRequest blockAndOrdersCreateRequest)
         {
-            Lusid.Sdk.Client.ApiResponse<ResourceListOfBlockAndOrder> localVarResponse = CreateOrdersWithHttpInfo(blockAndOrderCreateRequest);
+            Lusid.Sdk.Client.ApiResponse<ResourceListOfBlockAndOrders> localVarResponse = CreateOrdersWithHttpInfo(blockAndOrdersCreateRequest);
             return localVarResponse.Data;
         }
 
         /// <summary>
-        /// [EARLY ACCESS] CreateOrders: Create Block and Order pairs Create new block and order pairs.
+        /// [EARLY ACCESS] CreateOrders: Upsert a Block and associated orders Upsert a Block and create associated orders.  This will fail if the block exists and already references orders with differing fields to the upsert request.
         /// </summary>
         /// <exception cref="Lusid.Sdk.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="blockAndOrderCreateRequest">The collection of block and order requests.</param>
-        /// <returns>ApiResponse of ResourceListOfBlockAndOrder</returns>
-        public Lusid.Sdk.Client.ApiResponse<ResourceListOfBlockAndOrder> CreateOrdersWithHttpInfo(BlockAndOrderCreateRequest blockAndOrderCreateRequest)
+        /// <param name="blockAndOrdersCreateRequest">The collection of block and orders requests.</param>
+        /// <returns>ApiResponse of ResourceListOfBlockAndOrders</returns>
+        public Lusid.Sdk.Client.ApiResponse<ResourceListOfBlockAndOrders> CreateOrdersWithHttpInfo(BlockAndOrdersCreateRequest blockAndOrdersCreateRequest)
         {
-            // verify the required parameter 'blockAndOrderCreateRequest' is set
-            if (blockAndOrderCreateRequest == null)
-                throw new Lusid.Sdk.Client.ApiException(400, "Missing required parameter 'blockAndOrderCreateRequest' when calling OrderManagementApi->CreateOrders");
+            // verify the required parameter 'blockAndOrdersCreateRequest' is set
+            if (blockAndOrdersCreateRequest == null)
+                throw new Lusid.Sdk.Client.ApiException(400, "Missing required parameter 'blockAndOrdersCreateRequest' when calling OrderManagementApi->CreateOrders");
 
             Lusid.Sdk.Client.RequestOptions localVarRequestOptions = new Lusid.Sdk.Client.RequestOptions();
 
@@ -542,7 +542,7 @@ namespace Lusid.Sdk.Api
             var localVarAccept = Lusid.Sdk.Client.ClientUtils.SelectHeaderAccept(_accepts);
             if (localVarAccept != null) localVarRequestOptions.HeaderParameters.Add("Accept", localVarAccept);
 
-            localVarRequestOptions.Data = blockAndOrderCreateRequest;
+            localVarRequestOptions.Data = blockAndOrdersCreateRequest;
 
             // authentication (oauth2) required
             // oauth required
@@ -556,7 +556,7 @@ namespace Lusid.Sdk.Api
             localVarRequestOptions.HeaderParameters.Add("X-LUSID-Sdk-Version", "1.1.221");
 
             // make the HTTP request
-            var localVarResponse = this.Client.Post<ResourceListOfBlockAndOrder>("/api/ordermanagement/createorders", localVarRequestOptions, this.Configuration);
+            var localVarResponse = this.Client.Post<ResourceListOfBlockAndOrders>("/api/ordermanagement/createorders", localVarRequestOptions, this.Configuration);
 
             if (this.ExceptionFactory != null)
             {
@@ -568,30 +568,30 @@ namespace Lusid.Sdk.Api
         }
 
         /// <summary>
-        /// [EARLY ACCESS] CreateOrders: Create Block and Order pairs Create new block and order pairs.
+        /// [EARLY ACCESS] CreateOrders: Upsert a Block and associated orders Upsert a Block and create associated orders.  This will fail if the block exists and already references orders with differing fields to the upsert request.
         /// </summary>
         /// <exception cref="Lusid.Sdk.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="blockAndOrderCreateRequest">The collection of block and order requests.</param>
+        /// <param name="blockAndOrdersCreateRequest">The collection of block and orders requests.</param>
         /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
-        /// <returns>Task of ResourceListOfBlockAndOrder</returns>
-        public async System.Threading.Tasks.Task<ResourceListOfBlockAndOrder> CreateOrdersAsync(BlockAndOrderCreateRequest blockAndOrderCreateRequest, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
+        /// <returns>Task of ResourceListOfBlockAndOrders</returns>
+        public async System.Threading.Tasks.Task<ResourceListOfBlockAndOrders> CreateOrdersAsync(BlockAndOrdersCreateRequest blockAndOrdersCreateRequest, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
-            Lusid.Sdk.Client.ApiResponse<ResourceListOfBlockAndOrder> localVarResponse = await CreateOrdersWithHttpInfoAsync(blockAndOrderCreateRequest, cancellationToken).ConfigureAwait(false);
+            Lusid.Sdk.Client.ApiResponse<ResourceListOfBlockAndOrders> localVarResponse = await CreateOrdersWithHttpInfoAsync(blockAndOrdersCreateRequest, cancellationToken).ConfigureAwait(false);
             return localVarResponse.Data;
         }
 
         /// <summary>
-        /// [EARLY ACCESS] CreateOrders: Create Block and Order pairs Create new block and order pairs.
+        /// [EARLY ACCESS] CreateOrders: Upsert a Block and associated orders Upsert a Block and create associated orders.  This will fail if the block exists and already references orders with differing fields to the upsert request.
         /// </summary>
         /// <exception cref="Lusid.Sdk.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="blockAndOrderCreateRequest">The collection of block and order requests.</param>
+        /// <param name="blockAndOrdersCreateRequest">The collection of block and orders requests.</param>
         /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
-        /// <returns>Task of ApiResponse (ResourceListOfBlockAndOrder)</returns>
-        public async System.Threading.Tasks.Task<Lusid.Sdk.Client.ApiResponse<ResourceListOfBlockAndOrder>> CreateOrdersWithHttpInfoAsync(BlockAndOrderCreateRequest blockAndOrderCreateRequest, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
+        /// <returns>Task of ApiResponse (ResourceListOfBlockAndOrders)</returns>
+        public async System.Threading.Tasks.Task<Lusid.Sdk.Client.ApiResponse<ResourceListOfBlockAndOrders>> CreateOrdersWithHttpInfoAsync(BlockAndOrdersCreateRequest blockAndOrdersCreateRequest, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
-            // verify the required parameter 'blockAndOrderCreateRequest' is set
-            if (blockAndOrderCreateRequest == null)
-                throw new Lusid.Sdk.Client.ApiException(400, "Missing required parameter 'blockAndOrderCreateRequest' when calling OrderManagementApi->CreateOrders");
+            // verify the required parameter 'blockAndOrdersCreateRequest' is set
+            if (blockAndOrdersCreateRequest == null)
+                throw new Lusid.Sdk.Client.ApiException(400, "Missing required parameter 'blockAndOrdersCreateRequest' when calling OrderManagementApi->CreateOrders");
 
 
             Lusid.Sdk.Client.RequestOptions localVarRequestOptions = new Lusid.Sdk.Client.RequestOptions();
@@ -617,7 +617,7 @@ namespace Lusid.Sdk.Api
             var localVarAccept = Lusid.Sdk.Client.ClientUtils.SelectHeaderAccept(_accepts);
             if (localVarAccept != null) localVarRequestOptions.HeaderParameters.Add("Accept", localVarAccept);
 
-            localVarRequestOptions.Data = blockAndOrderCreateRequest;
+            localVarRequestOptions.Data = blockAndOrdersCreateRequest;
 
             // authentication (oauth2) required
             // oauth required
@@ -632,7 +632,7 @@ namespace Lusid.Sdk.Api
 
             // make the HTTP request
 
-            var localVarResponse = await this.AsynchronousClient.PostAsync<ResourceListOfBlockAndOrder>("/api/ordermanagement/createorders", localVarRequestOptions, this.Configuration, cancellationToken).ConfigureAwait(false);
+            var localVarResponse = await this.AsynchronousClient.PostAsync<ResourceListOfBlockAndOrders>("/api/ordermanagement/createorders", localVarRequestOptions, this.Configuration, cancellationToken).ConfigureAwait(false);
 
             if (this.ExceptionFactory != null)
             {
