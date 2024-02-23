@@ -12,7 +12,7 @@ Method | HTTP request | Description
 
 <a name="booktransactions"></a>
 # **BookTransactions**
-> BookTransactionsResponse BookTransactions (List<ResourceId> resourceId, bool? applyFeesAndCommission = null)
+> BookTransactionsResponse BookTransactions (BookTransactionsRequest bookTransactionsRequest, bool? applyFeesAndCommission = null)
 
 [EXPERIMENTAL] BookTransactions: Books transactions using specific allocations as a source.
 
@@ -38,13 +38,13 @@ namespace Example
             config.AccessToken = "YOUR_ACCESS_TOKEN";
 
             var apiInstance = new OrderManagementApi(config);
-            var resourceId = new List<ResourceId>(); // List<ResourceId> | The allocations to create transactions for
+            var bookTransactionsRequest = new BookTransactionsRequest(); // BookTransactionsRequest | The allocations to create transactions for
             var applyFeesAndCommission = true;  // bool? | Whether to apply fees and commissions to transactions (default: true) (optional)  (default to true)
 
             try
             {
                 // [EXPERIMENTAL] BookTransactions: Books transactions using specific allocations as a source.
-                BookTransactionsResponse result = apiInstance.BookTransactions(resourceId, applyFeesAndCommission);
+                BookTransactionsResponse result = apiInstance.BookTransactions(bookTransactionsRequest, applyFeesAndCommission);
                 Debug.WriteLine(result);
             }
             catch (ApiException  e)
@@ -62,7 +62,7 @@ namespace Example
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **resourceId** | [**List&lt;ResourceId&gt;**](ResourceId.md)| The allocations to create transactions for | 
+ **bookTransactionsRequest** | [**BookTransactionsRequest**](BookTransactionsRequest.md)| The allocations to create transactions for | 
  **applyFeesAndCommission** | **bool?**| Whether to apply fees and commissions to transactions (default: true) | [optional] [default to true]
 
 ### Return type
