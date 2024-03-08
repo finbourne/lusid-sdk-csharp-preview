@@ -632,7 +632,7 @@ namespace Lusid.Sdk.Api
         /// <param name="limit">When paginating, limit the number of returned results to this many. Defaults to 100 if not specified. (optional)</param>
         /// <param name="page">The pagination token to use to continue listing transactions from a previous call to GetTransactions. (optional)</param>
         /// <param name="showCancelledTransactions">Option to specify whether or not to include cancelled transactions,               including previous versions of transactions which have since been amended.               Defaults to False if not specified. (optional)</param>
-        /// <param name="sortBy">A list of field names or properties to sort by, each suffixed by \&quot; ASC\&quot; or \&quot; DESC\&quot; (optional)</param>
+        /// <param name="sortBy">A list of field names or properties to sort by, each suffixed by \&quot; ASC\&quot; or \&quot; DESC\&quot;. (optional)</param>
         /// <returns>VersionedResourceListOfTransaction</returns>
         VersionedResourceListOfTransaction GetTransactionsForPortfolioGroup(string scope, string code, DateTimeOrCutLabel fromTransactionDate = default(DateTimeOrCutLabel), DateTimeOrCutLabel toTransactionDate = default(DateTimeOrCutLabel), DateTimeOffset? asAt = default(DateTimeOffset?), string filter = default(string), List<string> propertyKeys = default(List<string>), int? limit = default(int?), string page = default(string), bool? showCancelledTransactions = default(bool?), List<string> sortBy = default(List<string>));
 
@@ -653,7 +653,7 @@ namespace Lusid.Sdk.Api
         /// <param name="limit">When paginating, limit the number of returned results to this many. Defaults to 100 if not specified. (optional)</param>
         /// <param name="page">The pagination token to use to continue listing transactions from a previous call to GetTransactions. (optional)</param>
         /// <param name="showCancelledTransactions">Option to specify whether or not to include cancelled transactions,               including previous versions of transactions which have since been amended.               Defaults to False if not specified. (optional)</param>
-        /// <param name="sortBy">A list of field names or properties to sort by, each suffixed by \&quot; ASC\&quot; or \&quot; DESC\&quot; (optional)</param>
+        /// <param name="sortBy">A list of field names or properties to sort by, each suffixed by \&quot; ASC\&quot; or \&quot; DESC\&quot;. (optional)</param>
         /// <returns>ApiResponse of VersionedResourceListOfTransaction</returns>
         ApiResponse<VersionedResourceListOfTransaction> GetTransactionsForPortfolioGroupWithHttpInfo(string scope, string code, DateTimeOrCutLabel fromTransactionDate = default(DateTimeOrCutLabel), DateTimeOrCutLabel toTransactionDate = default(DateTimeOrCutLabel), DateTimeOffset? asAt = default(DateTimeOffset?), string filter = default(string), List<string> propertyKeys = default(List<string>), int? limit = default(int?), string page = default(string), bool? showCancelledTransactions = default(bool?), List<string> sortBy = default(List<string>));
         /// <summary>
@@ -1459,7 +1459,7 @@ namespace Lusid.Sdk.Api
         /// <param name="limit">When paginating, limit the number of returned results to this many. Defaults to 100 if not specified. (optional)</param>
         /// <param name="page">The pagination token to use to continue listing transactions from a previous call to GetTransactions. (optional)</param>
         /// <param name="showCancelledTransactions">Option to specify whether or not to include cancelled transactions,               including previous versions of transactions which have since been amended.               Defaults to False if not specified. (optional)</param>
-        /// <param name="sortBy">A list of field names or properties to sort by, each suffixed by \&quot; ASC\&quot; or \&quot; DESC\&quot; (optional)</param>
+        /// <param name="sortBy">A list of field names or properties to sort by, each suffixed by \&quot; ASC\&quot; or \&quot; DESC\&quot;. (optional)</param>
         /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
         /// <returns>Task of VersionedResourceListOfTransaction</returns>
         System.Threading.Tasks.Task<VersionedResourceListOfTransaction> GetTransactionsForPortfolioGroupAsync(string scope, string code, DateTimeOrCutLabel fromTransactionDate = default(DateTimeOrCutLabel), DateTimeOrCutLabel toTransactionDate = default(DateTimeOrCutLabel), DateTimeOffset? asAt = default(DateTimeOffset?), string filter = default(string), List<string> propertyKeys = default(List<string>), int? limit = default(int?), string page = default(string), bool? showCancelledTransactions = default(bool?), List<string> sortBy = default(List<string>), System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
@@ -1481,7 +1481,7 @@ namespace Lusid.Sdk.Api
         /// <param name="limit">When paginating, limit the number of returned results to this many. Defaults to 100 if not specified. (optional)</param>
         /// <param name="page">The pagination token to use to continue listing transactions from a previous call to GetTransactions. (optional)</param>
         /// <param name="showCancelledTransactions">Option to specify whether or not to include cancelled transactions,               including previous versions of transactions which have since been amended.               Defaults to False if not specified. (optional)</param>
-        /// <param name="sortBy">A list of field names or properties to sort by, each suffixed by \&quot; ASC\&quot; or \&quot; DESC\&quot; (optional)</param>
+        /// <param name="sortBy">A list of field names or properties to sort by, each suffixed by \&quot; ASC\&quot; or \&quot; DESC\&quot;. (optional)</param>
         /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
         /// <returns>Task of ApiResponse (VersionedResourceListOfTransaction)</returns>
         System.Threading.Tasks.Task<ApiResponse<VersionedResourceListOfTransaction>> GetTransactionsForPortfolioGroupWithHttpInfoAsync(string scope, string code, DateTimeOrCutLabel fromTransactionDate = default(DateTimeOrCutLabel), DateTimeOrCutLabel toTransactionDate = default(DateTimeOrCutLabel), DateTimeOffset? asAt = default(DateTimeOffset?), string filter = default(string), List<string> propertyKeys = default(List<string>), int? limit = default(int?), string page = default(string), bool? showCancelledTransactions = default(bool?), List<string> sortBy = default(List<string>), System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
@@ -5645,7 +5645,7 @@ namespace Lusid.Sdk.Api
         /// <param name="limit">When paginating, limit the number of returned results to this many. Defaults to 100 if not specified. (optional)</param>
         /// <param name="page">The pagination token to use to continue listing transactions from a previous call to GetTransactions. (optional)</param>
         /// <param name="showCancelledTransactions">Option to specify whether or not to include cancelled transactions,               including previous versions of transactions which have since been amended.               Defaults to False if not specified. (optional)</param>
-        /// <param name="sortBy">A list of field names or properties to sort by, each suffixed by \&quot; ASC\&quot; or \&quot; DESC\&quot; (optional)</param>
+        /// <param name="sortBy">A list of field names or properties to sort by, each suffixed by \&quot; ASC\&quot; or \&quot; DESC\&quot;. (optional)</param>
         /// <returns>VersionedResourceListOfTransaction</returns>
         public VersionedResourceListOfTransaction GetTransactionsForPortfolioGroup(string scope, string code, DateTimeOrCutLabel fromTransactionDate = default(DateTimeOrCutLabel), DateTimeOrCutLabel toTransactionDate = default(DateTimeOrCutLabel), DateTimeOffset? asAt = default(DateTimeOffset?), string filter = default(string), List<string> propertyKeys = default(List<string>), int? limit = default(int?), string page = default(string), bool? showCancelledTransactions = default(bool?), List<string> sortBy = default(List<string>))
         {
@@ -5667,7 +5667,7 @@ namespace Lusid.Sdk.Api
         /// <param name="limit">When paginating, limit the number of returned results to this many. Defaults to 100 if not specified. (optional)</param>
         /// <param name="page">The pagination token to use to continue listing transactions from a previous call to GetTransactions. (optional)</param>
         /// <param name="showCancelledTransactions">Option to specify whether or not to include cancelled transactions,               including previous versions of transactions which have since been amended.               Defaults to False if not specified. (optional)</param>
-        /// <param name="sortBy">A list of field names or properties to sort by, each suffixed by \&quot; ASC\&quot; or \&quot; DESC\&quot; (optional)</param>
+        /// <param name="sortBy">A list of field names or properties to sort by, each suffixed by \&quot; ASC\&quot; or \&quot; DESC\&quot;. (optional)</param>
         /// <returns>ApiResponse of VersionedResourceListOfTransaction</returns>
         public Lusid.Sdk.Client.ApiResponse<VersionedResourceListOfTransaction> GetTransactionsForPortfolioGroupWithHttpInfo(string scope, string code, DateTimeOrCutLabel fromTransactionDate = default(DateTimeOrCutLabel), DateTimeOrCutLabel toTransactionDate = default(DateTimeOrCutLabel), DateTimeOffset? asAt = default(DateTimeOffset?), string filter = default(string), List<string> propertyKeys = default(List<string>), int? limit = default(int?), string page = default(string), bool? showCancelledTransactions = default(bool?), List<string> sortBy = default(List<string>))
         {
@@ -5773,7 +5773,7 @@ namespace Lusid.Sdk.Api
         /// <param name="limit">When paginating, limit the number of returned results to this many. Defaults to 100 if not specified. (optional)</param>
         /// <param name="page">The pagination token to use to continue listing transactions from a previous call to GetTransactions. (optional)</param>
         /// <param name="showCancelledTransactions">Option to specify whether or not to include cancelled transactions,               including previous versions of transactions which have since been amended.               Defaults to False if not specified. (optional)</param>
-        /// <param name="sortBy">A list of field names or properties to sort by, each suffixed by \&quot; ASC\&quot; or \&quot; DESC\&quot; (optional)</param>
+        /// <param name="sortBy">A list of field names or properties to sort by, each suffixed by \&quot; ASC\&quot; or \&quot; DESC\&quot;. (optional)</param>
         /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
         /// <returns>Task of VersionedResourceListOfTransaction</returns>
         public async System.Threading.Tasks.Task<VersionedResourceListOfTransaction> GetTransactionsForPortfolioGroupAsync(string scope, string code, DateTimeOrCutLabel fromTransactionDate = default(DateTimeOrCutLabel), DateTimeOrCutLabel toTransactionDate = default(DateTimeOrCutLabel), DateTimeOffset? asAt = default(DateTimeOffset?), string filter = default(string), List<string> propertyKeys = default(List<string>), int? limit = default(int?), string page = default(string), bool? showCancelledTransactions = default(bool?), List<string> sortBy = default(List<string>), System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
@@ -5796,7 +5796,7 @@ namespace Lusid.Sdk.Api
         /// <param name="limit">When paginating, limit the number of returned results to this many. Defaults to 100 if not specified. (optional)</param>
         /// <param name="page">The pagination token to use to continue listing transactions from a previous call to GetTransactions. (optional)</param>
         /// <param name="showCancelledTransactions">Option to specify whether or not to include cancelled transactions,               including previous versions of transactions which have since been amended.               Defaults to False if not specified. (optional)</param>
-        /// <param name="sortBy">A list of field names or properties to sort by, each suffixed by \&quot; ASC\&quot; or \&quot; DESC\&quot; (optional)</param>
+        /// <param name="sortBy">A list of field names or properties to sort by, each suffixed by \&quot; ASC\&quot; or \&quot; DESC\&quot;. (optional)</param>
         /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
         /// <returns>Task of ApiResponse (VersionedResourceListOfTransaction)</returns>
         public async System.Threading.Tasks.Task<Lusid.Sdk.Client.ApiResponse<VersionedResourceListOfTransaction>> GetTransactionsForPortfolioGroupWithHttpInfoAsync(string scope, string code, DateTimeOrCutLabel fromTransactionDate = default(DateTimeOrCutLabel), DateTimeOrCutLabel toTransactionDate = default(DateTimeOrCutLabel), DateTimeOffset? asAt = default(DateTimeOffset?), string filter = default(string), List<string> propertyKeys = default(List<string>), int? limit = default(int?), string page = default(string), bool? showCancelledTransactions = default(bool?), List<string> sortBy = default(List<string>), System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
