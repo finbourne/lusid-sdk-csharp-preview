@@ -45,7 +45,8 @@ namespace Lusid.Sdk.Model
         /// <param name="supportedParticipationTypes">supportedParticipationTypes (required).</param>
         /// <param name="supportedElectionTypes">supportedElectionTypes (required).</param>
         /// <param name="supportedTemplateFields">supportedTemplateFields (required).</param>
-        public TransactionTemplateSpecification(string instrumentEventType = default(string), List<string> supportedInstrumentTypes = default(List<string>), List<string> supportedParticipationTypes = default(List<string>), List<ElectionSpecification> supportedElectionTypes = default(List<ElectionSpecification>), List<TemplateField> supportedTemplateFields = default(List<TemplateField>))
+        /// <param name="eligibilityCalculation">eligibilityCalculation (required).</param>
+        public TransactionTemplateSpecification(string instrumentEventType = default(string), List<string> supportedInstrumentTypes = default(List<string>), List<string> supportedParticipationTypes = default(List<string>), List<ElectionSpecification> supportedElectionTypes = default(List<ElectionSpecification>), List<TemplateField> supportedTemplateFields = default(List<TemplateField>), EligibilityCalculation eligibilityCalculation = default(EligibilityCalculation))
         {
             // to ensure "instrumentEventType" is required (not null)
             this.InstrumentEventType = instrumentEventType ?? throw new ArgumentNullException("instrumentEventType is a required property for TransactionTemplateSpecification and cannot be null");
@@ -57,6 +58,8 @@ namespace Lusid.Sdk.Model
             this.SupportedElectionTypes = supportedElectionTypes ?? throw new ArgumentNullException("supportedElectionTypes is a required property for TransactionTemplateSpecification and cannot be null");
             // to ensure "supportedTemplateFields" is required (not null)
             this.SupportedTemplateFields = supportedTemplateFields ?? throw new ArgumentNullException("supportedTemplateFields is a required property for TransactionTemplateSpecification and cannot be null");
+            // to ensure "eligibilityCalculation" is required (not null)
+            this.EligibilityCalculation = eligibilityCalculation ?? throw new ArgumentNullException("eligibilityCalculation is a required property for TransactionTemplateSpecification and cannot be null");
         }
 
         /// <summary>
@@ -90,6 +93,12 @@ namespace Lusid.Sdk.Model
         public List<TemplateField> SupportedTemplateFields { get; set; }
 
         /// <summary>
+        /// Gets or Sets EligibilityCalculation
+        /// </summary>
+        [DataMember(Name = "eligibilityCalculation", IsRequired = true, EmitDefaultValue = false)]
+        public EligibilityCalculation EligibilityCalculation { get; set; }
+
+        /// <summary>
         /// Returns the string presentation of the object
         /// </summary>
         /// <returns>String presentation of the object</returns>
@@ -102,6 +111,7 @@ namespace Lusid.Sdk.Model
             sb.Append("  SupportedParticipationTypes: ").Append(SupportedParticipationTypes).Append("\n");
             sb.Append("  SupportedElectionTypes: ").Append(SupportedElectionTypes).Append("\n");
             sb.Append("  SupportedTemplateFields: ").Append(SupportedTemplateFields).Append("\n");
+            sb.Append("  EligibilityCalculation: ").Append(EligibilityCalculation).Append("\n");
             sb.Append("}\n");
             return sb.ToString();
         }
@@ -164,6 +174,11 @@ namespace Lusid.Sdk.Model
                     this.SupportedTemplateFields != null &&
                     input.SupportedTemplateFields != null &&
                     this.SupportedTemplateFields.SequenceEqual(input.SupportedTemplateFields)
+                ) && 
+                (
+                    this.EligibilityCalculation == input.EligibilityCalculation ||
+                    (this.EligibilityCalculation != null &&
+                    this.EligibilityCalculation.Equals(input.EligibilityCalculation))
                 );
         }
 
@@ -186,6 +201,8 @@ namespace Lusid.Sdk.Model
                     hashCode = hashCode * 59 + this.SupportedElectionTypes.GetHashCode();
                 if (this.SupportedTemplateFields != null)
                     hashCode = hashCode * 59 + this.SupportedTemplateFields.GetHashCode();
+                if (this.EligibilityCalculation != null)
+                    hashCode = hashCode * 59 + this.EligibilityCalculation.GetHashCode();
                 return hashCode;
             }
         }
