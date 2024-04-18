@@ -1766,7 +1766,7 @@ Name | Type | Description  | Notes
 
 <a name="patchportfolio"></a>
 # **PatchPortfolio**
-> ActionResultOfPortfolio PatchPortfolio (string scope, string code, List<Operation> operation)
+> Portfolio PatchPortfolio (string scope, string code, List<Operation> operation)
 
 [EARLY ACCESS] PatchPortfolio: Patch portfolio.
 
@@ -1799,7 +1799,7 @@ namespace Example
             try
             {
                 // [EARLY ACCESS] PatchPortfolio: Patch portfolio.
-                ActionResultOfPortfolio result = apiInstance.PatchPortfolio(scope, code, operation);
+                Portfolio result = apiInstance.PatchPortfolio(scope, code, operation);
                 Debug.WriteLine(result);
             }
             catch (ApiException  e)
@@ -1823,7 +1823,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**ActionResultOfPortfolio**](ActionResultOfPortfolio.md)
+[**Portfolio**](Portfolio.md)
 
 ### Authorization
 
