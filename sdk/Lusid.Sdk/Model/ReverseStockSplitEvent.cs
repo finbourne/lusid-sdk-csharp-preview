@@ -21,243 +21,76 @@ using System.Text.RegularExpressions;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using Newtonsoft.Json.Linq;
+using JsonSubTypes;
 using System.ComponentModel.DataAnnotations;
 using OpenAPIDateConverter = Lusid.Sdk.Client.OpenAPIDateConverter;
 
 namespace Lusid.Sdk.Model
 {
     /// <summary>
-    /// TriggerEventAllOf
+    /// A reverse split in the company&#39;s shares. Shareholders have their number of shares reduced based on the terms of the stock split.
     /// </summary>
-    [DataContract(Name = "TriggerEvent_allOf")]
-    public partial class TriggerEventAllOf : IEquatable<TriggerEventAllOf>
+    [DataContract(Name = "ReverseStockSplitEvent")]
+    [JsonConverter(typeof(JsonSubtypes), "InstrumentEventType")]
+    public partial class ReverseStockSplitEvent : InstrumentEvent, IEquatable<ReverseStockSplitEvent>
     {
         /// <summary>
-        /// The Type of Event. The available values are: TransitionEvent, InformationalEvent, OpenEvent, CloseEvent, StockSplitEvent, BondDefaultEvent, CashDividendEvent, AmortisationEvent, CashFlowEvent, ExerciseEvent, ResetEvent, TriggerEvent, RawVendorEvent, InformationalErrorEvent, BondCouponEvent, DividendReinvestmentEvent, AccumulationEvent, BondPrincipalEvent, DividendOptionEvent, MaturityEvent, FxForwardSettlementEvent, ExpiryEvent, ScripDividendEvent, StockDividendEvent, ReverseStockSplitEvent
-        /// </summary>
-        /// <value>The Type of Event. The available values are: TransitionEvent, InformationalEvent, OpenEvent, CloseEvent, StockSplitEvent, BondDefaultEvent, CashDividendEvent, AmortisationEvent, CashFlowEvent, ExerciseEvent, ResetEvent, TriggerEvent, RawVendorEvent, InformationalErrorEvent, BondCouponEvent, DividendReinvestmentEvent, AccumulationEvent, BondPrincipalEvent, DividendOptionEvent, MaturityEvent, FxForwardSettlementEvent, ExpiryEvent, ScripDividendEvent, StockDividendEvent, ReverseStockSplitEvent</value>
-        [JsonConverter(typeof(StringEnumConverter))]
-        public enum InstrumentEventTypeEnum
-        {
-            /// <summary>
-            /// Enum TransitionEvent for value: TransitionEvent
-            /// </summary>
-            [EnumMember(Value = "TransitionEvent")]
-            TransitionEvent = 1,
-
-            /// <summary>
-            /// Enum InformationalEvent for value: InformationalEvent
-            /// </summary>
-            [EnumMember(Value = "InformationalEvent")]
-            InformationalEvent = 2,
-
-            /// <summary>
-            /// Enum OpenEvent for value: OpenEvent
-            /// </summary>
-            [EnumMember(Value = "OpenEvent")]
-            OpenEvent = 3,
-
-            /// <summary>
-            /// Enum CloseEvent for value: CloseEvent
-            /// </summary>
-            [EnumMember(Value = "CloseEvent")]
-            CloseEvent = 4,
-
-            /// <summary>
-            /// Enum StockSplitEvent for value: StockSplitEvent
-            /// </summary>
-            [EnumMember(Value = "StockSplitEvent")]
-            StockSplitEvent = 5,
-
-            /// <summary>
-            /// Enum BondDefaultEvent for value: BondDefaultEvent
-            /// </summary>
-            [EnumMember(Value = "BondDefaultEvent")]
-            BondDefaultEvent = 6,
-
-            /// <summary>
-            /// Enum CashDividendEvent for value: CashDividendEvent
-            /// </summary>
-            [EnumMember(Value = "CashDividendEvent")]
-            CashDividendEvent = 7,
-
-            /// <summary>
-            /// Enum AmortisationEvent for value: AmortisationEvent
-            /// </summary>
-            [EnumMember(Value = "AmortisationEvent")]
-            AmortisationEvent = 8,
-
-            /// <summary>
-            /// Enum CashFlowEvent for value: CashFlowEvent
-            /// </summary>
-            [EnumMember(Value = "CashFlowEvent")]
-            CashFlowEvent = 9,
-
-            /// <summary>
-            /// Enum ExerciseEvent for value: ExerciseEvent
-            /// </summary>
-            [EnumMember(Value = "ExerciseEvent")]
-            ExerciseEvent = 10,
-
-            /// <summary>
-            /// Enum ResetEvent for value: ResetEvent
-            /// </summary>
-            [EnumMember(Value = "ResetEvent")]
-            ResetEvent = 11,
-
-            /// <summary>
-            /// Enum TriggerEvent for value: TriggerEvent
-            /// </summary>
-            [EnumMember(Value = "TriggerEvent")]
-            TriggerEvent = 12,
-
-            /// <summary>
-            /// Enum RawVendorEvent for value: RawVendorEvent
-            /// </summary>
-            [EnumMember(Value = "RawVendorEvent")]
-            RawVendorEvent = 13,
-
-            /// <summary>
-            /// Enum InformationalErrorEvent for value: InformationalErrorEvent
-            /// </summary>
-            [EnumMember(Value = "InformationalErrorEvent")]
-            InformationalErrorEvent = 14,
-
-            /// <summary>
-            /// Enum BondCouponEvent for value: BondCouponEvent
-            /// </summary>
-            [EnumMember(Value = "BondCouponEvent")]
-            BondCouponEvent = 15,
-
-            /// <summary>
-            /// Enum DividendReinvestmentEvent for value: DividendReinvestmentEvent
-            /// </summary>
-            [EnumMember(Value = "DividendReinvestmentEvent")]
-            DividendReinvestmentEvent = 16,
-
-            /// <summary>
-            /// Enum AccumulationEvent for value: AccumulationEvent
-            /// </summary>
-            [EnumMember(Value = "AccumulationEvent")]
-            AccumulationEvent = 17,
-
-            /// <summary>
-            /// Enum BondPrincipalEvent for value: BondPrincipalEvent
-            /// </summary>
-            [EnumMember(Value = "BondPrincipalEvent")]
-            BondPrincipalEvent = 18,
-
-            /// <summary>
-            /// Enum DividendOptionEvent for value: DividendOptionEvent
-            /// </summary>
-            [EnumMember(Value = "DividendOptionEvent")]
-            DividendOptionEvent = 19,
-
-            /// <summary>
-            /// Enum MaturityEvent for value: MaturityEvent
-            /// </summary>
-            [EnumMember(Value = "MaturityEvent")]
-            MaturityEvent = 20,
-
-            /// <summary>
-            /// Enum FxForwardSettlementEvent for value: FxForwardSettlementEvent
-            /// </summary>
-            [EnumMember(Value = "FxForwardSettlementEvent")]
-            FxForwardSettlementEvent = 21,
-
-            /// <summary>
-            /// Enum ExpiryEvent for value: ExpiryEvent
-            /// </summary>
-            [EnumMember(Value = "ExpiryEvent")]
-            ExpiryEvent = 22,
-
-            /// <summary>
-            /// Enum ScripDividendEvent for value: ScripDividendEvent
-            /// </summary>
-            [EnumMember(Value = "ScripDividendEvent")]
-            ScripDividendEvent = 23,
-
-            /// <summary>
-            /// Enum StockDividendEvent for value: StockDividendEvent
-            /// </summary>
-            [EnumMember(Value = "StockDividendEvent")]
-            StockDividendEvent = 24,
-
-            /// <summary>
-            /// Enum ReverseStockSplitEvent for value: ReverseStockSplitEvent
-            /// </summary>
-            [EnumMember(Value = "ReverseStockSplitEvent")]
-            ReverseStockSplitEvent = 25
-
-        }
-
-
-        /// <summary>
-        /// The Type of Event. The available values are: TransitionEvent, InformationalEvent, OpenEvent, CloseEvent, StockSplitEvent, BondDefaultEvent, CashDividendEvent, AmortisationEvent, CashFlowEvent, ExerciseEvent, ResetEvent, TriggerEvent, RawVendorEvent, InformationalErrorEvent, BondCouponEvent, DividendReinvestmentEvent, AccumulationEvent, BondPrincipalEvent, DividendOptionEvent, MaturityEvent, FxForwardSettlementEvent, ExpiryEvent, ScripDividendEvent, StockDividendEvent, ReverseStockSplitEvent
-        /// </summary>
-        /// <value>The Type of Event. The available values are: TransitionEvent, InformationalEvent, OpenEvent, CloseEvent, StockSplitEvent, BondDefaultEvent, CashDividendEvent, AmortisationEvent, CashFlowEvent, ExerciseEvent, ResetEvent, TriggerEvent, RawVendorEvent, InformationalErrorEvent, BondCouponEvent, DividendReinvestmentEvent, AccumulationEvent, BondPrincipalEvent, DividendOptionEvent, MaturityEvent, FxForwardSettlementEvent, ExpiryEvent, ScripDividendEvent, StockDividendEvent, ReverseStockSplitEvent</value>
-        [DataMember(Name = "instrumentEventType", IsRequired = true, EmitDefaultValue = false)]
-        public InstrumentEventTypeEnum InstrumentEventType { get; set; }
-        /// <summary>
-        /// Initializes a new instance of the <see cref="TriggerEventAllOf" /> class.
+        /// Initializes a new instance of the <see cref="ReverseStockSplitEvent" /> class.
         /// </summary>
         [JsonConstructorAttribute]
-        protected TriggerEventAllOf() { }
+        protected ReverseStockSplitEvent() { }
         /// <summary>
-        /// Initializes a new instance of the <see cref="TriggerEventAllOf" /> class.
+        /// Initializes a new instance of the <see cref="ReverseStockSplitEvent" /> class.
         /// </summary>
-        /// <param name="level">The underlying price level that triggers the event (required).</param>
-        /// <param name="triggerType">The type of the trigger; valid options are Knock-In, Knock-Out, Touch or No-Touch (required).</param>
-        /// <param name="triggerDirection">The direction of the trigger; valid options are Up and Down (required).</param>
-        /// <param name="triggerDate">The date the trigger happens at. (required).</param>
-        /// <param name="maturityDate">The date the trigger takes effect. (required).</param>
-        /// <param name="instrumentEventType">The Type of Event. The available values are: TransitionEvent, InformationalEvent, OpenEvent, CloseEvent, StockSplitEvent, BondDefaultEvent, CashDividendEvent, AmortisationEvent, CashFlowEvent, ExerciseEvent, ResetEvent, TriggerEvent, RawVendorEvent, InformationalErrorEvent, BondCouponEvent, DividendReinvestmentEvent, AccumulationEvent, BondPrincipalEvent, DividendOptionEvent, MaturityEvent, FxForwardSettlementEvent, ExpiryEvent, ScripDividendEvent, StockDividendEvent, ReverseStockSplitEvent (required).</param>
-        public TriggerEventAllOf(decimal level = default(decimal), string triggerType = default(string), string triggerDirection = default(string), DateTimeOffset triggerDate = default(DateTimeOffset), DateTimeOffset maturityDate = default(DateTimeOffset), InstrumentEventTypeEnum instrumentEventType = default(InstrumentEventTypeEnum))
+        /// <param name="paymentDate">Date on which the stock split takes effect. (required).</param>
+        /// <param name="exDate">The first date on which the shares will trade at the post-split price. (required).</param>
+        /// <param name="unitsRatio">unitsRatio (required).</param>
+        /// <param name="recordDate">Date you have to be the holder of record in order to have their shares merged..</param>
+        /// <param name="announcementDate">Date the reverse stock split was announced..</param>
+        /// <param name="instrumentEventType">The Type of Event. The available values are: TransitionEvent, InformationalEvent, OpenEvent, CloseEvent, StockSplitEvent, BondDefaultEvent, CashDividendEvent, AmortisationEvent, CashFlowEvent, ExerciseEvent, ResetEvent, TriggerEvent, RawVendorEvent, InformationalErrorEvent, BondCouponEvent, DividendReinvestmentEvent, AccumulationEvent, BondPrincipalEvent, DividendOptionEvent, MaturityEvent, FxForwardSettlementEvent, ExpiryEvent, ScripDividendEvent, StockDividendEvent, ReverseStockSplitEvent (required) (default to &quot;ReverseStockSplitEvent&quot;).</param>
+        public ReverseStockSplitEvent(DateTimeOffset paymentDate = default(DateTimeOffset), DateTimeOffset exDate = default(DateTimeOffset), UnitsRatio unitsRatio = default(UnitsRatio), DateTimeOffset? recordDate = default(DateTimeOffset?), DateTimeOffset? announcementDate = default(DateTimeOffset?), InstrumentEventTypeEnum instrumentEventType = default(InstrumentEventTypeEnum)) : base(instrumentEventType)
         {
-            this.Level = level;
-            // to ensure "triggerType" is required (not null)
-            this.TriggerType = triggerType ?? throw new ArgumentNullException("triggerType is a required property for TriggerEventAllOf and cannot be null");
-            // to ensure "triggerDirection" is required (not null)
-            this.TriggerDirection = triggerDirection ?? throw new ArgumentNullException("triggerDirection is a required property for TriggerEventAllOf and cannot be null");
-            this.TriggerDate = triggerDate;
-            this.MaturityDate = maturityDate;
-            this.InstrumentEventType = instrumentEventType;
+            this.PaymentDate = paymentDate;
+            this.ExDate = exDate;
+            // to ensure "unitsRatio" is required (not null)
+            this.UnitsRatio = unitsRatio ?? throw new ArgumentNullException("unitsRatio is a required property for ReverseStockSplitEvent and cannot be null");
+            this.RecordDate = recordDate;
+            this.AnnouncementDate = announcementDate;
         }
 
         /// <summary>
-        /// The underlying price level that triggers the event
+        /// Date on which the stock split takes effect.
         /// </summary>
-        /// <value>The underlying price level that triggers the event</value>
-        [DataMember(Name = "level", IsRequired = true, EmitDefaultValue = true)]
-        public decimal Level { get; set; }
+        /// <value>Date on which the stock split takes effect.</value>
+        [DataMember(Name = "paymentDate", IsRequired = true, EmitDefaultValue = false)]
+        public DateTimeOffset PaymentDate { get; set; }
 
         /// <summary>
-        /// The type of the trigger; valid options are Knock-In, Knock-Out, Touch or No-Touch
+        /// The first date on which the shares will trade at the post-split price.
         /// </summary>
-        /// <value>The type of the trigger; valid options are Knock-In, Knock-Out, Touch or No-Touch</value>
-        [DataMember(Name = "triggerType", IsRequired = true, EmitDefaultValue = false)]
-        public string TriggerType { get; set; }
+        /// <value>The first date on which the shares will trade at the post-split price.</value>
+        [DataMember(Name = "exDate", IsRequired = true, EmitDefaultValue = false)]
+        public DateTimeOffset ExDate { get; set; }
 
         /// <summary>
-        /// The direction of the trigger; valid options are Up and Down
+        /// Gets or Sets UnitsRatio
         /// </summary>
-        /// <value>The direction of the trigger; valid options are Up and Down</value>
-        [DataMember(Name = "triggerDirection", IsRequired = true, EmitDefaultValue = false)]
-        public string TriggerDirection { get; set; }
+        [DataMember(Name = "unitsRatio", IsRequired = true, EmitDefaultValue = false)]
+        public UnitsRatio UnitsRatio { get; set; }
 
         /// <summary>
-        /// The date the trigger happens at.
+        /// Date you have to be the holder of record in order to have their shares merged.
         /// </summary>
-        /// <value>The date the trigger happens at.</value>
-        [DataMember(Name = "triggerDate", IsRequired = true, EmitDefaultValue = false)]
-        public DateTimeOffset TriggerDate { get; set; }
+        /// <value>Date you have to be the holder of record in order to have their shares merged.</value>
+        [DataMember(Name = "recordDate", EmitDefaultValue = true)]
+        public DateTimeOffset? RecordDate { get; set; }
 
         /// <summary>
-        /// The date the trigger takes effect.
+        /// Date the reverse stock split was announced.
         /// </summary>
-        /// <value>The date the trigger takes effect.</value>
-        [DataMember(Name = "maturityDate", IsRequired = true, EmitDefaultValue = false)]
-        public DateTimeOffset MaturityDate { get; set; }
+        /// <value>Date the reverse stock split was announced.</value>
+        [DataMember(Name = "announcementDate", EmitDefaultValue = true)]
+        public DateTimeOffset? AnnouncementDate { get; set; }
 
         /// <summary>
         /// Returns the string presentation of the object
@@ -266,13 +99,13 @@ namespace Lusid.Sdk.Model
         public override string ToString()
         {
             var sb = new StringBuilder();
-            sb.Append("class TriggerEventAllOf {\n");
-            sb.Append("  Level: ").Append(Level).Append("\n");
-            sb.Append("  TriggerType: ").Append(TriggerType).Append("\n");
-            sb.Append("  TriggerDirection: ").Append(TriggerDirection).Append("\n");
-            sb.Append("  TriggerDate: ").Append(TriggerDate).Append("\n");
-            sb.Append("  MaturityDate: ").Append(MaturityDate).Append("\n");
-            sb.Append("  InstrumentEventType: ").Append(InstrumentEventType).Append("\n");
+            sb.Append("class ReverseStockSplitEvent {\n");
+            sb.Append("  ").Append(base.ToString().Replace("\n", "\n  ")).Append("\n");
+            sb.Append("  PaymentDate: ").Append(PaymentDate).Append("\n");
+            sb.Append("  ExDate: ").Append(ExDate).Append("\n");
+            sb.Append("  UnitsRatio: ").Append(UnitsRatio).Append("\n");
+            sb.Append("  RecordDate: ").Append(RecordDate).Append("\n");
+            sb.Append("  AnnouncementDate: ").Append(AnnouncementDate).Append("\n");
             sb.Append("}\n");
             return sb.ToString();
         }
@@ -281,7 +114,7 @@ namespace Lusid.Sdk.Model
         /// Returns the JSON string presentation of the object
         /// </summary>
         /// <returns>JSON string presentation of the object</returns>
-        public virtual string ToJson()
+        public override string ToJson()
         {
             return Newtonsoft.Json.JsonConvert.SerializeObject(this, Newtonsoft.Json.Formatting.Indented);
         }
@@ -293,47 +126,44 @@ namespace Lusid.Sdk.Model
         /// <returns>Boolean</returns>
         public override bool Equals(object input)
         {
-            return this.Equals(input as TriggerEventAllOf);
+            return this.Equals(input as ReverseStockSplitEvent);
         }
 
         /// <summary>
-        /// Returns true if TriggerEventAllOf instances are equal
+        /// Returns true if ReverseStockSplitEvent instances are equal
         /// </summary>
-        /// <param name="input">Instance of TriggerEventAllOf to be compared</param>
+        /// <param name="input">Instance of ReverseStockSplitEvent to be compared</param>
         /// <returns>Boolean</returns>
-        public bool Equals(TriggerEventAllOf input)
+        public bool Equals(ReverseStockSplitEvent input)
         {
             if (input == null)
                 return false;
 
-            return 
+            return base.Equals(input) && 
                 (
-                    this.Level == input.Level ||
-                    this.Level.Equals(input.Level)
-                ) && 
+                    this.PaymentDate == input.PaymentDate ||
+                    (this.PaymentDate != null &&
+                    this.PaymentDate.Equals(input.PaymentDate))
+                ) && base.Equals(input) && 
                 (
-                    this.TriggerType == input.TriggerType ||
-                    (this.TriggerType != null &&
-                    this.TriggerType.Equals(input.TriggerType))
-                ) && 
+                    this.ExDate == input.ExDate ||
+                    (this.ExDate != null &&
+                    this.ExDate.Equals(input.ExDate))
+                ) && base.Equals(input) && 
                 (
-                    this.TriggerDirection == input.TriggerDirection ||
-                    (this.TriggerDirection != null &&
-                    this.TriggerDirection.Equals(input.TriggerDirection))
-                ) && 
+                    this.UnitsRatio == input.UnitsRatio ||
+                    (this.UnitsRatio != null &&
+                    this.UnitsRatio.Equals(input.UnitsRatio))
+                ) && base.Equals(input) && 
                 (
-                    this.TriggerDate == input.TriggerDate ||
-                    (this.TriggerDate != null &&
-                    this.TriggerDate.Equals(input.TriggerDate))
-                ) && 
+                    this.RecordDate == input.RecordDate ||
+                    (this.RecordDate != null &&
+                    this.RecordDate.Equals(input.RecordDate))
+                ) && base.Equals(input) && 
                 (
-                    this.MaturityDate == input.MaturityDate ||
-                    (this.MaturityDate != null &&
-                    this.MaturityDate.Equals(input.MaturityDate))
-                ) && 
-                (
-                    this.InstrumentEventType == input.InstrumentEventType ||
-                    this.InstrumentEventType.Equals(input.InstrumentEventType)
+                    this.AnnouncementDate == input.AnnouncementDate ||
+                    (this.AnnouncementDate != null &&
+                    this.AnnouncementDate.Equals(input.AnnouncementDate))
                 );
         }
 
@@ -345,17 +175,17 @@ namespace Lusid.Sdk.Model
         {
             unchecked // Overflow is fine, just wrap
             {
-                int hashCode = 41;
-                hashCode = hashCode * 59 + this.Level.GetHashCode();
-                if (this.TriggerType != null)
-                    hashCode = hashCode * 59 + this.TriggerType.GetHashCode();
-                if (this.TriggerDirection != null)
-                    hashCode = hashCode * 59 + this.TriggerDirection.GetHashCode();
-                if (this.TriggerDate != null)
-                    hashCode = hashCode * 59 + this.TriggerDate.GetHashCode();
-                if (this.MaturityDate != null)
-                    hashCode = hashCode * 59 + this.MaturityDate.GetHashCode();
-                hashCode = hashCode * 59 + this.InstrumentEventType.GetHashCode();
+                int hashCode = base.GetHashCode();
+                if (this.PaymentDate != null)
+                    hashCode = hashCode * 59 + this.PaymentDate.GetHashCode();
+                if (this.ExDate != null)
+                    hashCode = hashCode * 59 + this.ExDate.GetHashCode();
+                if (this.UnitsRatio != null)
+                    hashCode = hashCode * 59 + this.UnitsRatio.GetHashCode();
+                if (this.RecordDate != null)
+                    hashCode = hashCode * 59 + this.RecordDate.GetHashCode();
+                if (this.AnnouncementDate != null)
+                    hashCode = hashCode * 59 + this.AnnouncementDate.GetHashCode();
                 return hashCode;
             }
         }
