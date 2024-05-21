@@ -8,7 +8,7 @@ Name | Type | Description | Notes
 **Id** | [**ResourceId**](ResourceId.md) |  | 
 **DisplayName** | **string** | A user-friendly name. | 
 **Description** | **string** | A description of what this rule set is for. | [optional] 
-**Rules** | [**List&lt;AmortisationRule&gt;**](AmortisationRule.md) | The rules of this rule set. | 
+**RulesInterval** | [**RulesInterval**](RulesInterval.md) |  | 
 **Version** | [**Version**](Version.md) |  | [optional] 
 **Links** | [**List&lt;Link&gt;**](Link.md) | Collection of links. | [optional] 
 
