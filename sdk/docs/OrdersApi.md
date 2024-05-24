@@ -6,8 +6,8 @@ Method | HTTP request | Description
 ------------- | ------------- | -------------
 [**DeleteOrder**](OrdersApi.md#deleteorder) | **DELETE** /api/orders/{scope}/{code} | [EARLY ACCESS] DeleteOrder: Delete order
 [**GetOrder**](OrdersApi.md#getorder) | **GET** /api/orders/{scope}/{code} | [EARLY ACCESS] GetOrder: Get Order
-[**ListOrders**](OrdersApi.md#listorders) | **GET** /api/orders | [EARLY ACCESS] ListOrders: List Orders
-[**UpsertOrders**](OrdersApi.md#upsertorders) | **POST** /api/orders | [EARLY ACCESS] UpsertOrders: Upsert Order
+[**ListOrders**](OrdersApi.md#listorders) | **GET** /api/orders | ListOrders: List Orders
+[**UpsertOrders**](OrdersApi.md#upsertorders) | **POST** /api/orders | UpsertOrders: Upsert Order
 
 
 <a name="deleteorder"></a>
@@ -174,7 +174,7 @@ Name | Type | Description  | Notes
 # **ListOrders**
 > PagedResourceListOfOrder ListOrders (DateTimeOffset? asAt = null, string page = null, List<string> sortBy = null, int? limit = null, string filter = null, List<string> propertyKeys = null)
 
-[EARLY ACCESS] ListOrders: List Orders
+ListOrders: List Orders
 
 Fetch the last pre-AsAt date version of each order with optional filtering (does not fetch the entire history).
 
@@ -207,7 +207,7 @@ namespace Example
 
             try
             {
-                // [EARLY ACCESS] ListOrders: List Orders
+                // ListOrders: List Orders
                 PagedResourceListOfOrder result = apiInstance.ListOrders(asAt, page, sortBy, limit, filter, propertyKeys);
                 Debug.WriteLine(result);
             }
@@ -260,7 +260,7 @@ Name | Type | Description  | Notes
 # **UpsertOrders**
 > ResourceListOfOrder UpsertOrders (OrderSetRequest orderSetRequest = null)
 
-[EARLY ACCESS] UpsertOrders: Upsert Order
+UpsertOrders: Upsert Order
 
 Upsert; update existing orders with given ids, or create new orders otherwise.
 
@@ -288,7 +288,7 @@ namespace Example
 
             try
             {
-                // [EARLY ACCESS] UpsertOrders: Upsert Order
+                // UpsertOrders: Upsert Order
                 ResourceListOfOrder result = apiInstance.UpsertOrders(orderSetRequest);
                 Debug.WriteLine(result);
             }

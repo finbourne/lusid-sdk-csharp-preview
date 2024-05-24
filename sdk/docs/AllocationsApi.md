@@ -7,7 +7,7 @@ Method | HTTP request | Description
 [**DeleteAllocation**](AllocationsApi.md#deleteallocation) | **DELETE** /api/allocations/{scope}/{code} | [EARLY ACCESS] DeleteAllocation: Delete allocation
 [**GetAllocation**](AllocationsApi.md#getallocation) | **GET** /api/allocations/{scope}/{code} | [EARLY ACCESS] GetAllocation: Get Allocation
 [**ListAllocations**](AllocationsApi.md#listallocations) | **GET** /api/allocations | [EARLY ACCESS] ListAllocations: List Allocations
-[**UpsertAllocations**](AllocationsApi.md#upsertallocations) | **POST** /api/allocations | [EARLY ACCESS] UpsertAllocations: Upsert Allocations
+[**UpsertAllocations**](AllocationsApi.md#upsertallocations) | **POST** /api/allocations | UpsertAllocations: Upsert Allocations
 
 
 <a name="deleteallocation"></a>
@@ -260,7 +260,7 @@ Name | Type | Description  | Notes
 # **UpsertAllocations**
 > ResourceListOfAllocation UpsertAllocations (AllocationSetRequest allocationSetRequest = null)
 
-[EARLY ACCESS] UpsertAllocations: Upsert Allocations
+UpsertAllocations: Upsert Allocations
 
 Upsert; update existing allocations with given ids, or create new allocations otherwise.
 
@@ -288,7 +288,7 @@ namespace Example
 
             try
             {
-                // [EARLY ACCESS] UpsertAllocations: Upsert Allocations
+                // UpsertAllocations: Upsert Allocations
                 ResourceListOfAllocation result = apiInstance.UpsertAllocations(allocationSetRequest);
                 Debug.WriteLine(result);
             }

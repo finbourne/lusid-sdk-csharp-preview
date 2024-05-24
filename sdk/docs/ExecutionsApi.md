@@ -6,8 +6,8 @@ Method | HTTP request | Description
 ------------- | ------------- | -------------
 [**DeleteExecution**](ExecutionsApi.md#deleteexecution) | **DELETE** /api/executions/{scope}/{code} | [EARLY ACCESS] DeleteExecution: Delete execution
 [**GetExecution**](ExecutionsApi.md#getexecution) | **GET** /api/executions/{scope}/{code} | [EARLY ACCESS] GetExecution: Get Execution
-[**ListExecutions**](ExecutionsApi.md#listexecutions) | **GET** /api/executions | [EARLY ACCESS] ListExecutions: List Executions
-[**UpsertExecutions**](ExecutionsApi.md#upsertexecutions) | **POST** /api/executions | [EARLY ACCESS] UpsertExecutions: Upsert Execution
+[**ListExecutions**](ExecutionsApi.md#listexecutions) | **GET** /api/executions | ListExecutions: List Executions
+[**UpsertExecutions**](ExecutionsApi.md#upsertexecutions) | **POST** /api/executions | UpsertExecutions: Upsert Execution
 
 
 <a name="deleteexecution"></a>
@@ -174,7 +174,7 @@ Name | Type | Description  | Notes
 # **ListExecutions**
 > PagedResourceListOfExecution ListExecutions (DateTimeOffset? asAt = null, string page = null, List<string> sortBy = null, int? limit = null, string filter = null, List<string> propertyKeys = null)
 
-[EARLY ACCESS] ListExecutions: List Executions
+ListExecutions: List Executions
 
 Fetch the last pre-AsAt date version of each execution in scope (does not fetch the entire history).
 
@@ -207,7 +207,7 @@ namespace Example
 
             try
             {
-                // [EARLY ACCESS] ListExecutions: List Executions
+                // ListExecutions: List Executions
                 PagedResourceListOfExecution result = apiInstance.ListExecutions(asAt, page, sortBy, limit, filter, propertyKeys);
                 Debug.WriteLine(result);
             }
@@ -260,7 +260,7 @@ Name | Type | Description  | Notes
 # **UpsertExecutions**
 > ResourceListOfExecution UpsertExecutions (ExecutionSetRequest executionSetRequest = null)
 
-[EARLY ACCESS] UpsertExecutions: Upsert Execution
+UpsertExecutions: Upsert Execution
 
 Upsert; update existing executions with given ids, or create new executions otherwise.
 
@@ -288,7 +288,7 @@ namespace Example
 
             try
             {
-                // [EARLY ACCESS] UpsertExecutions: Upsert Execution
+                // UpsertExecutions: Upsert Execution
                 ResourceListOfExecution result = apiInstance.UpsertExecutions(executionSetRequest);
                 Debug.WriteLine(result);
             }

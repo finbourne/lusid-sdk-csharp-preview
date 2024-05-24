@@ -4,7 +4,7 @@ All URIs are relative to *https://www.lusid.com/api*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
-[**CreateRelationship**](RelationshipsApi.md#createrelationship) | **POST** /api/relationshipdefinitions/{scope}/{code}/relationships | [EARLY ACCESS] CreateRelationship: Create Relationship
+[**CreateRelationship**](RelationshipsApi.md#createrelationship) | **POST** /api/relationshipdefinitions/{scope}/{code}/relationships | CreateRelationship: Create Relationship
 [**DeleteRelationship**](RelationshipsApi.md#deleterelationship) | **POST** /api/relationshipdefinitions/{scope}/{code}/relationships/$delete | [EARLY ACCESS] DeleteRelationship: Delete Relationship
 
 
@@ -12,7 +12,7 @@ Method | HTTP request | Description
 # **CreateRelationship**
 > CompleteRelationship CreateRelationship (string scope, string code, CreateRelationshipRequest createRelationshipRequest)
 
-[EARLY ACCESS] CreateRelationship: Create Relationship
+CreateRelationship: Create Relationship
 
 Create a relationship between two entity objects by their identifiers
 
@@ -42,7 +42,7 @@ namespace Example
 
             try
             {
-                // [EARLY ACCESS] CreateRelationship: Create Relationship
+                // CreateRelationship: Create Relationship
                 CompleteRelationship result = apiInstance.CreateRelationship(scope, code, createRelationshipRequest);
                 Debug.WriteLine(result);
             }

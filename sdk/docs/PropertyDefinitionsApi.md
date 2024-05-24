@@ -14,7 +14,7 @@ Method | HTTP request | Description
 [**ListPropertyDefinitions**](PropertyDefinitionsApi.md#listpropertydefinitions) | **GET** /api/propertydefinitions/$list | ListPropertyDefinitions: List property definitions
 [**UpdateDerivedPropertyDefinition**](PropertyDefinitionsApi.md#updatederivedpropertydefinition) | **PUT** /api/propertydefinitions/derived/{domain}/{scope}/{code} | [EARLY ACCESS] UpdateDerivedPropertyDefinition: Update a pre-existing derived property definition
 [**UpdatePropertyDefinition**](PropertyDefinitionsApi.md#updatepropertydefinition) | **PUT** /api/propertydefinitions/{domain}/{scope}/{code} | UpdatePropertyDefinition: Update property definition
-[**UpsertPropertyDefinitionProperties**](PropertyDefinitionsApi.md#upsertpropertydefinitionproperties) | **POST** /api/propertydefinitions/{domain}/{scope}/{code}/properties | [EARLY ACCESS] UpsertPropertyDefinitionProperties: Upsert properties to a property definition
+[**UpsertPropertyDefinitionProperties**](PropertyDefinitionsApi.md#upsertpropertydefinitionproperties) | **POST** /api/propertydefinitions/{domain}/{scope}/{code}/properties | UpsertPropertyDefinitionProperties: Upsert properties to a property definition
 
 
 <a name="createderivedpropertydefinition"></a>
@@ -845,7 +845,7 @@ Name | Type | Description  | Notes
 # **UpsertPropertyDefinitionProperties**
 > BatchUpsertPropertyDefinitionPropertiesResponse UpsertPropertyDefinitionProperties (string domain, string scope, string code, Dictionary<string, Property> requestBody, string successMode = null)
 
-[EARLY ACCESS] UpsertPropertyDefinitionProperties: Upsert properties to a property definition
+UpsertPropertyDefinitionProperties: Upsert properties to a property definition
 
 Create or update properties for a particular property definition
 
@@ -877,7 +877,7 @@ namespace Example
 
             try
             {
-                // [EARLY ACCESS] UpsertPropertyDefinitionProperties: Upsert properties to a property definition
+                // UpsertPropertyDefinitionProperties: Upsert properties to a property definition
                 BatchUpsertPropertyDefinitionPropertiesResponse result = apiInstance.UpsertPropertyDefinitionProperties(domain, scope, code, requestBody, successMode);
                 Debug.WriteLine(result);
             }
