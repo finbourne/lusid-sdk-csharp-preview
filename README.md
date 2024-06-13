@@ -1,3 +1,5 @@
+![LUSID_by_Finbourne](./resources/Finbourne_Logo_Teal.svg)
+
 # Deprecated
 
 Please note that this repository is deprecated and will be archived early 2024.
@@ -7,8 +9,6 @@ All functionality is now contained, in the [lusid-sdk-csharp](https://github.com
 # LUSID<sup>®</sup> C# Preview SDK
 
 This is the C# Preview SDK for [LUSID by FINBOURNE](https://www.finbourne.com/lusid-technology), a bi-temporal investment management data platform with portfolio accounting capabilities. To use it you'll need a LUSID account. [Sign up for free at lusid.com](https://www.lusid.com/app/signup)
-
-![LUSID_by_Finbourne](https://content.finbourne.com/LUSID_repo.png)
 
 ## Installation
 
