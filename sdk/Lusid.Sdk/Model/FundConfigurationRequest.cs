@@ -44,20 +44,21 @@ namespace Lusid.Sdk.Model
         /// <param name="displayName">The name of the Fund..</param>
         /// <param name="description">A description for the Fund..</param>
         /// <param name="dealingRule">dealingRule (required).</param>
-        /// <param name="fundPnlExclusionRule">fundPnlExclusionRule.</param>
+        /// <param name="fundPnlRule">fundPnlRule (required).</param>
         /// <param name="backOutRule">backOutRule (required).</param>
         /// <param name="properties">A set of properties for the Fund Configuration..</param>
-        public FundConfigurationRequest(string code = default(string), string displayName = default(string), string description = default(string), ComponentRule dealingRule = default(ComponentRule), ComponentRule fundPnlExclusionRule = default(ComponentRule), ComponentRule backOutRule = default(ComponentRule), Dictionary<string, Property> properties = default(Dictionary<string, Property>))
+        public FundConfigurationRequest(string code = default(string), string displayName = default(string), string description = default(string), ComponentRule dealingRule = default(ComponentRule), ComponentRule fundPnlRule = default(ComponentRule), ComponentRule backOutRule = default(ComponentRule), Dictionary<string, Property> properties = default(Dictionary<string, Property>))
         {
             // to ensure "code" is required (not null)
             this.Code = code ?? throw new ArgumentNullException("code is a required property for FundConfigurationRequest and cannot be null");
             // to ensure "dealingRule" is required (not null)
             this.DealingRule = dealingRule ?? throw new ArgumentNullException("dealingRule is a required property for FundConfigurationRequest and cannot be null");
+            // to ensure "fundPnlRule" is required (not null)
+            this.FundPnlRule = fundPnlRule ?? throw new ArgumentNullException("fundPnlRule is a required property for FundConfigurationRequest and cannot be null");
             // to ensure "backOutRule" is required (not null)
             this.BackOutRule = backOutRule ?? throw new ArgumentNullException("backOutRule is a required property for FundConfigurationRequest and cannot be null");
             this.DisplayName = displayName;
             this.Description = description;
-            this.FundPnlExclusionRule = fundPnlExclusionRule;
             this.Properties = properties;
         }
 
@@ -88,10 +89,10 @@ namespace Lusid.Sdk.Model
         public ComponentRule DealingRule { get; set; }
 
         /// <summary>
-        /// Gets or Sets FundPnlExclusionRule
+        /// Gets or Sets FundPnlRule
         /// </summary>
-        [DataMember(Name = "fundPnlExclusionRule", EmitDefaultValue = false)]
-        public ComponentRule FundPnlExclusionRule { get; set; }
+        [DataMember(Name = "fundPnlRule", IsRequired = true, EmitDefaultValue = false)]
+        public ComponentRule FundPnlRule { get; set; }
 
         /// <summary>
         /// Gets or Sets BackOutRule
@@ -118,7 +119,7 @@ namespace Lusid.Sdk.Model
             sb.Append("  DisplayName: ").Append(DisplayName).Append("\n");
             sb.Append("  Description: ").Append(Description).Append("\n");
             sb.Append("  DealingRule: ").Append(DealingRule).Append("\n");
-            sb.Append("  FundPnlExclusionRule: ").Append(FundPnlExclusionRule).Append("\n");
+            sb.Append("  FundPnlRule: ").Append(FundPnlRule).Append("\n");
             sb.Append("  BackOutRule: ").Append(BackOutRule).Append("\n");
             sb.Append("  Properties: ").Append(Properties).Append("\n");
             sb.Append("}\n");
@@ -176,9 +177,9 @@ namespace Lusid.Sdk.Model
                     this.DealingRule.Equals(input.DealingRule))
                 ) && 
                 (
-                    this.FundPnlExclusionRule == input.FundPnlExclusionRule ||
-                    (this.FundPnlExclusionRule != null &&
-                    this.FundPnlExclusionRule.Equals(input.FundPnlExclusionRule))
+                    this.FundPnlRule == input.FundPnlRule ||
+                    (this.FundPnlRule != null &&
+                    this.FundPnlRule.Equals(input.FundPnlRule))
                 ) && 
                 (
                     this.BackOutRule == input.BackOutRule ||
@@ -210,8 +211,8 @@ namespace Lusid.Sdk.Model
                     hashCode = hashCode * 59 + this.Description.GetHashCode();
                 if (this.DealingRule != null)
                     hashCode = hashCode * 59 + this.DealingRule.GetHashCode();
-                if (this.FundPnlExclusionRule != null)
-                    hashCode = hashCode * 59 + this.FundPnlExclusionRule.GetHashCode();
+                if (this.FundPnlRule != null)
+                    hashCode = hashCode * 59 + this.FundPnlRule.GetHashCode();
                 if (this.BackOutRule != null)
                     hashCode = hashCode * 59 + this.BackOutRule.GetHashCode();
                 if (this.Properties != null)
