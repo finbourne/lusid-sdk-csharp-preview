@@ -10,7 +10,7 @@ Method | HTTP request | Description
 
 <a name="listentityscopes"></a>
 # **ListEntityScopes**
-> ResourceListOfScopeDefinition ListEntityScopes (string entityType)
+> ResourceListOfScopeDefinition ListEntityScopes (string entityType, DateTimeOffset? asAt = null, string page = null, int? limit = null)
 
 ListEntityScopes: List Entity Scopes
 
@@ -37,11 +37,14 @@ namespace Example
 
             var apiInstance = new ScopesApi(config);
             var entityType = entityType_example;  // string | The entity type to list scopes for.
+            var asAt = 2013-10-20T19:20:30+01:00;  // DateTimeOffset? | The asAt datetime at which to retrieve scopes. Defaults to latest datetime if not specified. (optional) 
+            var page = page_example;  // string | The pagination token to use to continue listing scopes from a previous call to list scopes.              This value is returned from the previous call. If a pagination token is provided, the limit and asAt fields              must not have changed since the original request. (optional) 
+            var limit = 56;  // int? | When paginating, limit the number of returned results to this number. Defaults to 100 if not specified. (optional) 
 
             try
             {
                 // ListEntityScopes: List Entity Scopes
-                ResourceListOfScopeDefinition result = apiInstance.ListEntityScopes(entityType);
+                ResourceListOfScopeDefinition result = apiInstance.ListEntityScopes(entityType, asAt, page, limit);
                 Debug.WriteLine(result);
             }
             catch (ApiException  e)
@@ -60,6 +63,9 @@ namespace Example
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **entityType** | **string**| The entity type to list scopes for. | 
+ **asAt** | **DateTimeOffset?**| The asAt datetime at which to retrieve scopes. Defaults to latest datetime if not specified. | [optional] 
+ **page** | **string**| The pagination token to use to continue listing scopes from a previous call to list scopes.              This value is returned from the previous call. If a pagination token is provided, the limit and asAt fields              must not have changed since the original request. | [optional] 
+ **limit** | **int?**| When paginating, limit the number of returned results to this number. Defaults to 100 if not specified. | [optional] 
 
 ### Return type
 
