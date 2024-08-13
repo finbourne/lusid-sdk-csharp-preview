@@ -11,6 +11,7 @@ Method | HTTP request | Description
 [**MoveOrders**](OrderManagementApi.md#moveorders) | **POST** /api/ordermanagement/moveorders | [EARLY ACCESS] MoveOrders: Move orders to new or existing block
 [**PlaceBlocks**](OrderManagementApi.md#placeblocks) | **POST** /api/ordermanagement/placeblocks | [EARLY ACCESS] PlaceBlocks: Places blocks for a given list of placement requests.
 [**RunAllocationService**](OrderManagementApi.md#runallocationservice) | **POST** /api/ordermanagement/allocate | [EXPERIMENTAL] RunAllocationService: Runs the Allocation Service
+[**UpdateOrders**](OrderManagementApi.md#updateorders) | **POST** /api/ordermanagement/updateorders | [EARLY ACCESS] UpdateOrders: Update existing orders
 [**UpdatePlacements**](OrderManagementApi.md#updateplacements) | **POST** /api/ordermanagement/$updateplacements | [EARLY ACCESS] UpdatePlacements: Update existing placements
 
 
@@ -545,6 +546,82 @@ Name | Type | Description  | Notes
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
 | **200** | The results from a run of the Allocation Service |  -  |
+| **400** | The details of the input related failure |  -  |
+| **0** | Error response |  -  |
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+<a name="updateorders"></a>
+# **UpdateOrders**
+> UpdateOrdersResponse UpdateOrders (Dictionary<string, OrderUpdateRequest> requestBody)
+
+[EARLY ACCESS] UpdateOrders: Update existing orders
+
+The response returns both the collection of successfully updated orders, as well as those  that failed. For each failure, a reason is provided. It is important to check the failed set for  unsuccessful results.
+
+### Example
+```csharp
+using System.Collections.Generic;
+using System.Diagnostics;
+using Lusid.Sdk.Api;
+using Lusid.Sdk.Client;
+using Lusid.Sdk.Model;
+
+namespace Example
+{
+    public class UpdateOrdersExample
+    {
+        public static void Main()
+        {
+            Configuration config = new Configuration();
+            config.BasePath = "https://www.lusid.com/api";
+            // Configure OAuth2 access token for authorization: oauth2
+            config.AccessToken = "YOUR_ACCESS_TOKEN";
+
+            var apiInstance = new OrderManagementApi(config);
+            var requestBody = new Dictionary<string, OrderUpdateRequest>(); // Dictionary<string, OrderUpdateRequest> | The request containing the orders to be updated.
+
+            try
+            {
+                // [EARLY ACCESS] UpdateOrders: Update existing orders
+                UpdateOrdersResponse result = apiInstance.UpdateOrders(requestBody);
+                Debug.WriteLine(result);
+            }
+            catch (ApiException  e)
+            {
+                Debug.Print("Exception when calling OrderManagementApi.UpdateOrders: " + e.Message );
+                Debug.Print("Status Code: "+ e.ErrorCode);
+                Debug.Print(e.StackTrace);
+            }
+        }
+    }
+}
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **requestBody** | [**Dictionary&lt;string, OrderUpdateRequest&gt;**](OrderUpdateRequest.md)| The request containing the orders to be updated. | 
+
+### Return type
+
+[**UpdateOrdersResponse**](UpdateOrdersResponse.md)
+
+### Authorization
+
+[oauth2](../README.md#oauth2)
+
+### HTTP request headers
+
+ - **Content-Type**: application/json-patch+json, application/json, text/json, application/_*+json
+ - **Accept**: text/plain, application/json, text/json
+
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+| **200** | The successfully updated orders along with any failures |  -  |
 | **400** | The details of the input related failure |  -  |
 | **0** | Error response |  -  |
 
