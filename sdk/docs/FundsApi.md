@@ -26,11 +26,11 @@ Method | HTTP request | Description
 
 <a name="acceptestimatevaluationpoint"></a>
 # **AcceptEstimateValuationPoint**
-> ValuationPointDataResponse AcceptEstimateValuationPoint (string scope, string code, ValuationPointDataRequest valuationPointDataRequest)
+> AcceptEstimateValuationPointResponse AcceptEstimateValuationPoint (string scope, string code, ValuationPointDataRequest valuationPointDataRequest)
 
 [EXPERIMENTAL] AcceptEstimateValuationPoint: Accepts an Estimate Valuation Point.
 
-Accepts the specified estimate Valuation Point. Should the Valuation Point differ since the valuation Point was last run, status will be marked as 'Candidate', otherwise it will be marked as 'Final'
+Accepts the specified estimate Valuation Point.  Should the Valuation Point differ since the Valuation Point was last run, both Valuation Points will be returned and status will be marked as 'Candidate',  otherwise it will be marked as 'Final'.
 
 ### Example
 ```csharp
@@ -59,7 +59,7 @@ namespace Example
             try
             {
                 // [EXPERIMENTAL] AcceptEstimateValuationPoint: Accepts an Estimate Valuation Point.
-                ValuationPointDataResponse result = apiInstance.AcceptEstimateValuationPoint(scope, code, valuationPointDataRequest);
+                AcceptEstimateValuationPointResponse result = apiInstance.AcceptEstimateValuationPoint(scope, code, valuationPointDataRequest);
                 Debug.WriteLine(result);
             }
             catch (ApiException  e)
@@ -83,7 +83,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**ValuationPointDataResponse**](ValuationPointDataResponse.md)
+[**AcceptEstimateValuationPointResponse**](AcceptEstimateValuationPointResponse.md)
 
 ### Authorization
 
