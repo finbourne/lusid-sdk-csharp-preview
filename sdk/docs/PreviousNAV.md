@@ -4,7 +4,7 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**Amount** | [**MultiCurrencyAmounts**](MultiCurrencyAmounts.md) |  | [optional] 
+**Amount** | [**ShareClassAmount**](ShareClassAmount.md) |  | [optional] 
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 
