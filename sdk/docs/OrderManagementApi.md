@@ -324,7 +324,7 @@ Name | Type | Description  | Notes
 
 <a name="getorderhistory"></a>
 # **GetOrderHistory**
-> ResourceListOfEntityChangeItem GetOrderHistory (string scope, string code)
+> ResourceListOfChangeIntervalWithOrderManagementDetail GetOrderHistory (string scope, string code, DateTimeOffset? asAt = null)
 
 [EXPERIMENTAL] GetOrderHistory: Get the history of an order and related entity changes
 
@@ -352,11 +352,12 @@ namespace Example
             var apiInstance = new OrderManagementApi(config);
             var scope = scope_example;  // string | The scope of the order.
             var code = code_example;  // string | The code of the order.
+            var asAt = 2013-10-20T19:20:30+01:00;  // DateTimeOffset? | The asAt datetime at which to retrieve the history of the order and related entities. Defaults              to return the latest version if not specified. (optional) 
 
             try
             {
                 // [EXPERIMENTAL] GetOrderHistory: Get the history of an order and related entity changes
-                ResourceListOfEntityChangeItem result = apiInstance.GetOrderHistory(scope, code);
+                ResourceListOfChangeIntervalWithOrderManagementDetail result = apiInstance.GetOrderHistory(scope, code, asAt);
                 Debug.WriteLine(result);
             }
             catch (ApiException  e)
@@ -376,10 +377,11 @@ Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **scope** | **string**| The scope of the order. | 
  **code** | **string**| The code of the order. | 
+ **asAt** | **DateTimeOffset?**| The asAt datetime at which to retrieve the history of the order and related entities. Defaults              to return the latest version if not specified. | [optional] 
 
 ### Return type
 
-[**ResourceListOfEntityChangeItem**](ResourceListOfEntityChangeItem.md)
+[**ResourceListOfChangeIntervalWithOrderManagementDetail**](ResourceListOfChangeIntervalWithOrderManagementDetail.md)
 
 ### Authorization
 
