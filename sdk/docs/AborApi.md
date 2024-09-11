@@ -4,7 +4,7 @@ All URIs are relative to *https://www.lusid.com/api*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
-[**AddDiaryEntry**](AborApi.md#adddiaryentry) | **POST** /api/abor/{scope}/{code}/accountingdiary/{diaryEntryCode} | [EXPERIMENTAL] AddDiaryEntry: Add a diary entry to the specified Abor.
+[**AddDiaryEntry**](AborApi.md#adddiaryentry) | **POST** /api/abor/{scope}/{code}/accountingdiary | [EXPERIMENTAL] AddDiaryEntry: Add a diary entry to the specified Abor.
 [**ClosePeriod**](AborApi.md#closeperiod) | **POST** /api/abor/{scope}/{code}/accountingdiary/$closeperiod | [EXPERIMENTAL] ClosePeriod: Closes or locks the current period for the given Abor.
 [**CreateAbor**](AborApi.md#createabor) | **POST** /api/abor/{scope} | [EXPERIMENTAL] CreateAbor: Create an Abor.
 [**DeleteAbor**](AborApi.md#deleteabor) | **DELETE** /api/abor/{scope}/{code} | [EXPERIMENTAL] DeleteAbor: Delete an Abor.
@@ -21,7 +21,7 @@ Method | HTTP request | Description
 
 <a name="adddiaryentry"></a>
 # **AddDiaryEntry**
-> DiaryEntry AddDiaryEntry (string scope, string code, string diaryEntryCode, DiaryEntryRequest diaryEntryRequest)
+> DiaryEntry AddDiaryEntry (string scope, string code, DiaryEntryRequest diaryEntryRequest)
 
 [EXPERIMENTAL] AddDiaryEntry: Add a diary entry to the specified Abor.
 
@@ -49,13 +49,12 @@ namespace Example
             var apiInstance = new AborApi(config);
             var scope = scope_example;  // string | The scope of the Abor.
             var code = code_example;  // string | The code of the Abor.
-            var diaryEntryCode = diaryEntryCode_example;  // string | Diary entry code
             var diaryEntryRequest = new DiaryEntryRequest(); // DiaryEntryRequest | The diary entry to add.
 
             try
             {
                 // [EXPERIMENTAL] AddDiaryEntry: Add a diary entry to the specified Abor.
-                DiaryEntry result = apiInstance.AddDiaryEntry(scope, code, diaryEntryCode, diaryEntryRequest);
+                DiaryEntry result = apiInstance.AddDiaryEntry(scope, code, diaryEntryRequest);
                 Debug.WriteLine(result);
             }
             catch (ApiException  e)
@@ -75,7 +74,6 @@ Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **scope** | **string**| The scope of the Abor. | 
  **code** | **string**| The code of the Abor. | 
- **diaryEntryCode** | **string**| Diary entry code | 
  **diaryEntryRequest** | [**DiaryEntryRequest**](DiaryEntryRequest.md)| The diary entry to add. | 
 
 ### Return type
