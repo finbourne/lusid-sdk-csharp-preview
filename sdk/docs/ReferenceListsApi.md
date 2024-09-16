@@ -5,7 +5,7 @@ All URIs are relative to *https://www.lusid.com/api*
 Method | HTTP request | Description
 ------------- | ------------- | -------------
 [**DeleteReferenceList**](ReferenceListsApi.md#deletereferencelist) | **DELETE** /api/referencelists/{scope}/{code} | [EARLY ACCESS] DeleteReferenceList: Delete Reference List
-[**GetReferenceList**](ReferenceListsApi.md#getreferencelist) | **GET** /api/referencelists/{scope}/{code} | [EARLY ACCESS] GetReferenceList: Get Reference List
+[**GetReferenceList**](ReferenceListsApi.md#getreferencelist) | **GET** /api/referencelists/{scope}/{code} | GetReferenceList: Get Reference List
 [**ListReferenceLists**](ReferenceListsApi.md#listreferencelists) | **GET** /api/referencelists | [EARLY ACCESS] ListReferenceLists: List Reference Lists
 [**UpsertReferenceList**](ReferenceListsApi.md#upsertreferencelist) | **POST** /api/referencelists | [EARLY ACCESS] UpsertReferenceList: Upsert Reference List
 
@@ -92,7 +92,7 @@ Name | Type | Description  | Notes
 # **GetReferenceList**
 > ReferenceListResponse GetReferenceList (string scope, string code, DateTimeOffset? asAt = null)
 
-[EARLY ACCESS] GetReferenceList: Get Reference List
+GetReferenceList: Get Reference List
 
 Retrieve a Reference List instance at a point in AsAt time.
 
@@ -122,7 +122,7 @@ namespace Example
 
             try
             {
-                // [EARLY ACCESS] GetReferenceList: Get Reference List
+                // GetReferenceList: Get Reference List
                 ReferenceListResponse result = apiInstance.GetReferenceList(scope, code, asAt);
                 Debug.WriteLine(result);
             }

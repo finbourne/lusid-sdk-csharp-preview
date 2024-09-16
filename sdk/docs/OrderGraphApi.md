@@ -4,16 +4,16 @@ All URIs are relative to *https://www.lusid.com/api*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
-[**ListOrderGraphBlocks**](OrderGraphApi.md#listordergraphblocks) | **GET** /api/ordergraph/blocks | [EARLY ACCESS] ListOrderGraphBlocks: Lists blocks that pass the filter provided, and builds a summary picture of the state of their associated order entities.
+[**ListOrderGraphBlocks**](OrderGraphApi.md#listordergraphblocks) | **GET** /api/ordergraph/blocks | ListOrderGraphBlocks: Lists blocks that pass the filter provided, and builds a summary picture of the state of their associated order entities.
 [**ListOrderGraphPlacementChildren**](OrderGraphApi.md#listordergraphplacementchildren) | **GET** /api/ordergraph/placementchildren/{scope}/{code} | [EARLY ACCESS] ListOrderGraphPlacementChildren: Lists all placements for the parent placement specified by the scope and code, and builds a summary picture of the state of their associated order entities.
-[**ListOrderGraphPlacements**](OrderGraphApi.md#listordergraphplacements) | **GET** /api/ordergraph/placements | [EARLY ACCESS] ListOrderGraphPlacements: Lists placements that pass the filter provided, and builds a summary picture of the state of their associated order entities.
+[**ListOrderGraphPlacements**](OrderGraphApi.md#listordergraphplacements) | **GET** /api/ordergraph/placements | ListOrderGraphPlacements: Lists placements that pass the filter provided, and builds a summary picture of the state of their associated order entities.
 
 
 <a name="listordergraphblocks"></a>
 # **ListOrderGraphBlocks**
 > PagedResourceListOfOrderGraphBlock ListOrderGraphBlocks (DateTimeOffset? asAt = null, string paginationToken = null, List<string> sortBy = null, int? limit = null, string filter = null, List<string> propertyKeys = null, bool? useComplianceV2 = null)
 
-[EARLY ACCESS] ListOrderGraphBlocks: Lists blocks that pass the filter provided, and builds a summary picture of the state of their associated order entities.
+ListOrderGraphBlocks: Lists blocks that pass the filter provided, and builds a summary picture of the state of their associated order entities.
 
 Lists all blocks of orders, subject to the filter, along with the IDs of orders, placements, allocations and  executions in the block, the total quantities of each, and a simple text field describing the overall state.
 
@@ -47,7 +47,7 @@ namespace Example
 
             try
             {
-                // [EARLY ACCESS] ListOrderGraphBlocks: Lists blocks that pass the filter provided, and builds a summary picture of the state of their associated order entities.
+                // ListOrderGraphBlocks: Lists blocks that pass the filter provided, and builds a summary picture of the state of their associated order entities.
                 PagedResourceListOfOrderGraphBlock result = apiInstance.ListOrderGraphBlocks(asAt, paginationToken, sortBy, limit, filter, propertyKeys, useComplianceV2);
                 Debug.WriteLine(result);
             }
@@ -189,7 +189,7 @@ Name | Type | Description  | Notes
 # **ListOrderGraphPlacements**
 > PagedResourceListOfOrderGraphPlacement ListOrderGraphPlacements (DateTimeOffset? asAt = null, string paginationToken = null, List<string> sortBy = null, int? limit = null, string filter = null, List<string> propertyKeys = null)
 
-[EARLY ACCESS] ListOrderGraphPlacements: Lists placements that pass the filter provided, and builds a summary picture of the state of their associated order entities.
+ListOrderGraphPlacements: Lists placements that pass the filter provided, and builds a summary picture of the state of their associated order entities.
 
 Lists all order placements, subject to the filter, along with the IDs of the block and order that the  placement is for, each placement's quantity, the IDs of all allocations and executions in the placement  and the total quantities of those, and a simple text field describing the overall state of the placement.
 
@@ -222,7 +222,7 @@ namespace Example
 
             try
             {
-                // [EARLY ACCESS] ListOrderGraphPlacements: Lists placements that pass the filter provided, and builds a summary picture of the state of their associated order entities.
+                // ListOrderGraphPlacements: Lists placements that pass the filter provided, and builds a summary picture of the state of their associated order entities.
                 PagedResourceListOfOrderGraphPlacement result = apiInstance.ListOrderGraphPlacements(asAt, paginationToken, sortBy, limit, filter, propertyKeys);
                 Debug.WriteLine(result);
             }

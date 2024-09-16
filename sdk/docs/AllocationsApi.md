@@ -6,7 +6,7 @@ Method | HTTP request | Description
 ------------- | ------------- | -------------
 [**DeleteAllocation**](AllocationsApi.md#deleteallocation) | **DELETE** /api/allocations/{scope}/{code} | [EARLY ACCESS] DeleteAllocation: Delete allocation
 [**GetAllocation**](AllocationsApi.md#getallocation) | **GET** /api/allocations/{scope}/{code} | [EARLY ACCESS] GetAllocation: Get Allocation
-[**ListAllocations**](AllocationsApi.md#listallocations) | **GET** /api/allocations | [EARLY ACCESS] ListAllocations: List Allocations
+[**ListAllocations**](AllocationsApi.md#listallocations) | **GET** /api/allocations | ListAllocations: List Allocations
 [**UpsertAllocations**](AllocationsApi.md#upsertallocations) | **POST** /api/allocations | UpsertAllocations: Upsert Allocations
 
 
@@ -174,7 +174,7 @@ Name | Type | Description  | Notes
 # **ListAllocations**
 > PagedResourceListOfAllocation ListAllocations (DateTimeOffset? asAt = null, string page = null, List<string> sortBy = null, int? limit = null, string filter = null, List<string> propertyKeys = null)
 
-[EARLY ACCESS] ListAllocations: List Allocations
+ListAllocations: List Allocations
 
 Fetch the last pre-AsAt date version of each allocation in scope (does not fetch the entire history).
 
@@ -207,7 +207,7 @@ namespace Example
 
             try
             {
-                // [EARLY ACCESS] ListAllocations: List Allocations
+                // ListAllocations: List Allocations
                 PagedResourceListOfAllocation result = apiInstance.ListAllocations(asAt, page, sortBy, limit, filter, propertyKeys);
                 Debug.WriteLine(result);
             }

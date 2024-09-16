@@ -4,7 +4,7 @@ All URIs are relative to *https://www.lusid.com/api*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
-[**DeleteCustomEntity**](CustomEntitiesApi.md#deletecustomentity) | **DELETE** /api/customentities/{entityType}/{identifierType}/{identifierValue} | [EARLY ACCESS] DeleteCustomEntity: Delete a Custom Entity instance.
+[**DeleteCustomEntity**](CustomEntitiesApi.md#deletecustomentity) | **DELETE** /api/customentities/{entityType}/{identifierType}/{identifierValue} | DeleteCustomEntity: Delete a Custom Entity instance.
 [**DeleteCustomEntityAccessMetadata**](CustomEntitiesApi.md#deletecustomentityaccessmetadata) | **DELETE** /api/customentities/{entityType}/{identifierType}/{identifierValue}/metadata/{metadataKey} | [EARLY ACCESS] DeleteCustomEntityAccessMetadata: Delete a Custom Entity Access Metadata entry
 [**GetAllCustomEntityAccessMetadata**](CustomEntitiesApi.md#getallcustomentityaccessmetadata) | **GET** /api/customentities/{entityType}/{identifierType}/{identifierValue}/metadata | [EARLY ACCESS] GetAllCustomEntityAccessMetadata: Get all the Access Metadata rules for a Custom Entity
 [**GetCustomEntity**](CustomEntitiesApi.md#getcustomentity) | **GET** /api/customentities/{entityType}/{identifierType}/{identifierValue} | GetCustomEntity: Get a Custom Entity instance.
@@ -21,7 +21,7 @@ Method | HTTP request | Description
 # **DeleteCustomEntity**
 > DeletedEntityResponse DeleteCustomEntity (string entityType, string identifierType, string identifierValue, string identifierScope)
 
-[EARLY ACCESS] DeleteCustomEntity: Delete a Custom Entity instance.
+DeleteCustomEntity: Delete a Custom Entity instance.
 
 Delete a Custom Entity instance by a specific entity type.
 
@@ -52,7 +52,7 @@ namespace Example
 
             try
             {
-                // [EARLY ACCESS] DeleteCustomEntity: Delete a Custom Entity instance.
+                // DeleteCustomEntity: Delete a Custom Entity instance.
                 DeletedEntityResponse result = apiInstance.DeleteCustomEntity(entityType, identifierType, identifierValue, identifierScope);
                 Debug.WriteLine(result);
             }
