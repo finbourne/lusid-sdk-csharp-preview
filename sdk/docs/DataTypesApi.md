@@ -11,6 +11,7 @@ Method | HTTP request | Description
 [**ListDataTypeSummaries**](DataTypesApi.md#listdatatypesummaries) | **GET** /api/datatypes | [EARLY ACCESS] ListDataTypeSummaries: List all data type summaries, without the reference data
 [**ListDataTypes**](DataTypesApi.md#listdatatypes) | **GET** /api/datatypes/{scope} | ListDataTypes: List data types
 [**UpdateDataType**](DataTypesApi.md#updatedatatype) | **PUT** /api/datatypes/{scope}/{code} | [EARLY ACCESS] UpdateDataType: Update data type definition
+[**UpdateReferenceData**](DataTypesApi.md#updatereferencedata) | **PUT** /api/datatypes/{scope}/{code}/referencedata | [EARLY ACCESS] UpdateReferenceData: Update all reference data on a data type, includes the reference values, the field definitions, field values
 [**UpdateReferenceValues**](DataTypesApi.md#updatereferencevalues) | **PUT** /api/datatypes/{scope}/{code}/referencedatavalues | [EARLY ACCESS] UpdateReferenceValues: Update reference data on a data type
 
 
@@ -558,6 +559,86 @@ Name | Type | Description  | Notes
  **scope** | **string**| The scope of the data type | 
  **code** | **string**| The code of the data type | 
  **updateDataTypeRequest** | [**UpdateDataTypeRequest**](UpdateDataTypeRequest.md)| The updated definition of the data type | 
+
+### Return type
+
+[**DataType**](DataType.md)
+
+### Authorization
+
+[oauth2](../README.md#oauth2)
+
+### HTTP request headers
+
+ - **Content-Type**: application/json-patch+json, application/json, text/json, application/_*+json
+ - **Accept**: text/plain, application/json, text/json
+
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+| **200** | Success |  -  |
+| **400** | The details of the input related failure |  -  |
+| **0** | Error response |  -  |
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+<a name="updatereferencedata"></a>
+# **UpdateReferenceData**
+> DataType UpdateReferenceData (string scope, string code, UpdateReferenceDataRequest updateReferenceDataRequest)
+
+[EARLY ACCESS] UpdateReferenceData: Update all reference data on a data type, includes the reference values, the field definitions, field values
+
+Replaces the whole set of reference data
+
+### Example
+```csharp
+using System.Collections.Generic;
+using System.Diagnostics;
+using Lusid.Sdk.Api;
+using Lusid.Sdk.Client;
+using Lusid.Sdk.Model;
+
+namespace Example
+{
+    public class UpdateReferenceDataExample
+    {
+        public static void Main()
+        {
+            Configuration config = new Configuration();
+            config.BasePath = "https://www.lusid.com/api";
+            // Configure OAuth2 access token for authorization: oauth2
+            config.AccessToken = "YOUR_ACCESS_TOKEN";
+
+            var apiInstance = new DataTypesApi(config);
+            var scope = scope_example;  // string | The scope of the data type
+            var code = code_example;  // string | The code of the data type
+            var updateReferenceDataRequest = new UpdateReferenceDataRequest(); // UpdateReferenceDataRequest | The updated reference data
+
+            try
+            {
+                // [EARLY ACCESS] UpdateReferenceData: Update all reference data on a data type, includes the reference values, the field definitions, field values
+                DataType result = apiInstance.UpdateReferenceData(scope, code, updateReferenceDataRequest);
+                Debug.WriteLine(result);
+            }
+            catch (ApiException  e)
+            {
+                Debug.Print("Exception when calling DataTypesApi.UpdateReferenceData: " + e.Message );
+                Debug.Print("Status Code: "+ e.ErrorCode);
+                Debug.Print(e.StackTrace);
+            }
+        }
+    }
+}
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **scope** | **string**| The scope of the data type | 
+ **code** | **string**| The code of the data type | 
+ **updateReferenceDataRequest** | [**UpdateReferenceDataRequest**](UpdateReferenceDataRequest.md)| The updated reference data | 
 
 ### Return type
 

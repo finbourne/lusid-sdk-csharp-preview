@@ -6,9 +6,11 @@ Method | HTTP request | Description
 ------------- | ------------- | -------------
 [**AddBusinessDaysToDate**](CalendarsApi.md#addbusinessdaystodate) | **POST** /api/calendars/businessday/{scope}/add | [EARLY ACCESS] AddBusinessDaysToDate: Adds the requested number of Business Days to the provided date.
 [**AddDateToCalendar**](CalendarsApi.md#adddatetocalendar) | **PUT** /api/calendars/generic/{scope}/{code}/dates | AddDateToCalendar: Add a date to a calendar
+[**BatchUpsertDatesForCalendar**](CalendarsApi.md#batchupsertdatesforcalendar) | **POST** /api/calendars/generic/{scope}/{code}/dates/$batchUpsert | BatchUpsertDatesForCalendar: Batch upsert dates to a calendar
 [**CreateCalendar**](CalendarsApi.md#createcalendar) | **POST** /api/calendars/generic | [EARLY ACCESS] CreateCalendar: Create a calendar in its generic form
 [**DeleteCalendar**](CalendarsApi.md#deletecalendar) | **DELETE** /api/calendars/generic/{scope}/{code} | [EARLY ACCESS] DeleteCalendar: Delete a calendar
-[**DeleteDateFromCalendar**](CalendarsApi.md#deletedatefromcalendar) | **DELETE** /api/calendars/generic/{scope}/{code}/dates/{dateId} | [EARLY ACCESS] DeleteDateFromCalendar: Remove a date from a calendar
+[**DeleteDateFromCalendar**](CalendarsApi.md#deletedatefromcalendar) | **DELETE** /api/calendars/generic/{scope}/{code}/dates/{dateId} | DeleteDateFromCalendar: Remove a date from a calendar
+[**DeleteDatesFromCalendar**](CalendarsApi.md#deletedatesfromcalendar) | **POST** /api/calendars/generic/{scope}/{code}/dates/$delete | DeleteDatesFromCalendar: Delete dates from a calendar
 [**GenerateSchedule**](CalendarsApi.md#generateschedule) | **POST** /api/calendars/schedule/{scope} | [EARLY ACCESS] GenerateSchedule: Generate an ordered schedule of dates.
 [**GetCalendar**](CalendarsApi.md#getcalendar) | **GET** /api/calendars/generic/{scope}/{code} | GetCalendar: Get a calendar in its generic form
 [**GetDates**](CalendarsApi.md#getdates) | **GET** /api/calendars/generic/{scope}/{code}/dates | [EARLY ACCESS] GetDates: Get dates for a specific calendar
@@ -176,6 +178,88 @@ Name | Type | Description  | Notes
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
+<a name="batchupsertdatesforcalendar"></a>
+# **BatchUpsertDatesForCalendar**
+> BatchUpsertDatesForCalendarResponse BatchUpsertDatesForCalendar (string scope, string code, string successMode, Dictionary<string, CreateDateRequest> requestBody)
+
+BatchUpsertDatesForCalendar: Batch upsert dates to a calendar
+
+Create or update events in the calendar. These Events can be a maximum of 24 hours and must be specified in UTC.  A local date will be calculated by the system and applied to the calendar before processing.
+
+### Example
+```csharp
+using System.Collections.Generic;
+using System.Diagnostics;
+using Lusid.Sdk.Api;
+using Lusid.Sdk.Client;
+using Lusid.Sdk.Model;
+
+namespace Example
+{
+    public class BatchUpsertDatesForCalendarExample
+    {
+        public static void Main()
+        {
+            Configuration config = new Configuration();
+            config.BasePath = "https://www.lusid.com/api";
+            // Configure OAuth2 access token for authorization: oauth2
+            config.AccessToken = "YOUR_ACCESS_TOKEN";
+
+            var apiInstance = new CalendarsApi(config);
+            var scope = scope_example;  // string | Scope of the calendar
+            var code = code_example;  // string | Code of the calendar
+            var successMode = successMode_example;  // string | Whether the batch request should fail Atomically or in a Partial fashion - Allowed Values: Atomic, Partial. (default to "Partial")
+            var requestBody = new Dictionary<string, CreateDateRequest>(); // Dictionary<string, CreateDateRequest> | Create Date Requests of dates to upsert
+
+            try
+            {
+                // BatchUpsertDatesForCalendar: Batch upsert dates to a calendar
+                BatchUpsertDatesForCalendarResponse result = apiInstance.BatchUpsertDatesForCalendar(scope, code, successMode, requestBody);
+                Debug.WriteLine(result);
+            }
+            catch (ApiException  e)
+            {
+                Debug.Print("Exception when calling CalendarsApi.BatchUpsertDatesForCalendar: " + e.Message );
+                Debug.Print("Status Code: "+ e.ErrorCode);
+                Debug.Print(e.StackTrace);
+            }
+        }
+    }
+}
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **scope** | **string**| Scope of the calendar | 
+ **code** | **string**| Code of the calendar | 
+ **successMode** | **string**| Whether the batch request should fail Atomically or in a Partial fashion - Allowed Values: Atomic, Partial. | [default to &quot;Partial&quot;]
+ **requestBody** | [**Dictionary&lt;string, CreateDateRequest&gt;**](CreateDateRequest.md)| Create Date Requests of dates to upsert | 
+
+### Return type
+
+[**BatchUpsertDatesForCalendarResponse**](BatchUpsertDatesForCalendarResponse.md)
+
+### Authorization
+
+[oauth2](../README.md#oauth2)
+
+### HTTP request headers
+
+ - **Content-Type**: application/json-patch+json, application/json, text/json, application/_*+json
+ - **Accept**: text/plain, application/json, text/json
+
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+| **200** | The successfully upserted date requests along with any failures |  -  |
+| **400** | The details of the input related failure |  -  |
+| **0** | Error response |  -  |
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
 <a name="createcalendar"></a>
 # **CreateCalendar**
 > Calendar CreateCalendar (CreateCalendarRequest createCalendarRequest)
@@ -334,7 +418,7 @@ Name | Type | Description  | Notes
 # **DeleteDateFromCalendar**
 > CalendarDate DeleteDateFromCalendar (string scope, string code, string dateId)
 
-[EARLY ACCESS] DeleteDateFromCalendar: Remove a date from a calendar
+DeleteDateFromCalendar: Remove a date from a calendar
 
 Remove a date from a calendar.
 
@@ -364,7 +448,7 @@ namespace Example
 
             try
             {
-                // [EARLY ACCESS] DeleteDateFromCalendar: Remove a date from a calendar
+                // DeleteDateFromCalendar: Remove a date from a calendar
                 CalendarDate result = apiInstance.DeleteDateFromCalendar(scope, code, dateId);
                 Debug.WriteLine(result);
             }
@@ -405,6 +489,86 @@ Name | Type | Description  | Notes
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
 | **200** | The deleted date |  -  |
+| **400** | The details of the input related failure |  -  |
+| **0** | Error response |  -  |
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+<a name="deletedatesfromcalendar"></a>
+# **DeleteDatesFromCalendar**
+> Dictionary&lt;string, CalendarDate&gt; DeleteDatesFromCalendar (string scope, string code, List<string> requestBody)
+
+DeleteDatesFromCalendar: Delete dates from a calendar
+
+Delete dates from a calendar.
+
+### Example
+```csharp
+using System.Collections.Generic;
+using System.Diagnostics;
+using Lusid.Sdk.Api;
+using Lusid.Sdk.Client;
+using Lusid.Sdk.Model;
+
+namespace Example
+{
+    public class DeleteDatesFromCalendarExample
+    {
+        public static void Main()
+        {
+            Configuration config = new Configuration();
+            config.BasePath = "https://www.lusid.com/api";
+            // Configure OAuth2 access token for authorization: oauth2
+            config.AccessToken = "YOUR_ACCESS_TOKEN";
+
+            var apiInstance = new CalendarsApi(config);
+            var scope = scope_example;  // string | Scope of the calendar
+            var code = code_example;  // string | Code of the calendar
+            var requestBody = new List<string>(); // List<string> | Identifiers of the dates to be removed
+
+            try
+            {
+                // DeleteDatesFromCalendar: Delete dates from a calendar
+                Dictionary<string, CalendarDate> result = apiInstance.DeleteDatesFromCalendar(scope, code, requestBody);
+                Debug.WriteLine(result);
+            }
+            catch (ApiException  e)
+            {
+                Debug.Print("Exception when calling CalendarsApi.DeleteDatesFromCalendar: " + e.Message );
+                Debug.Print("Status Code: "+ e.ErrorCode);
+                Debug.Print(e.StackTrace);
+            }
+        }
+    }
+}
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **scope** | **string**| Scope of the calendar | 
+ **code** | **string**| Code of the calendar | 
+ **requestBody** | [**List&lt;string&gt;**](string.md)| Identifiers of the dates to be removed | 
+
+### Return type
+
+[**Dictionary&lt;string, CalendarDate&gt;**](CalendarDate.md)
+
+### Authorization
+
+[oauth2](../README.md#oauth2)
+
+### HTTP request headers
+
+ - **Content-Type**: application/json-patch+json, application/json, text/json, application/_*+json
+ - **Accept**: text/plain, application/json, text/json
+
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+| **200** | The dateIds and details of the dates that were deleted |  -  |
 | **400** | The details of the input related failure |  -  |
 | **0** | Error response |  -  |
 
