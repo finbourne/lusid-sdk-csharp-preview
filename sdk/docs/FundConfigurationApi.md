@@ -8,6 +8,7 @@ Method | HTTP request | Description
 [**DeleteFundConfiguration**](FundConfigurationApi.md#deletefundconfiguration) | **DELETE** /api/fundconfigurations/{scope}/{code} | [EXPERIMENTAL] DeleteFundConfiguration: Delete a FundConfiguration.
 [**GetFundConfiguration**](FundConfigurationApi.md#getfundconfiguration) | **GET** /api/fundconfigurations/{scope}/{code} | [EXPERIMENTAL] GetFundConfiguration: Get FundConfiguration.
 [**ListFundConfigurations**](FundConfigurationApi.md#listfundconfigurations) | **GET** /api/fundconfigurations | [EXPERIMENTAL] ListFundConfigurations: List FundConfiguration.
+[**PatchFundConfiguration**](FundConfigurationApi.md#patchfundconfiguration) | **PATCH** /api/fundconfigurations/{scope}/{code} | [EXPERIMENTAL] PatchFundConfiguration: Patch Fund Configuration.
 [**UpsertFundConfigurationProperties**](FundConfigurationApi.md#upsertfundconfigurationproperties) | **POST** /api/fundconfigurations/{scope}/{code}/properties/$upsert | [EXPERIMENTAL] UpsertFundConfigurationProperties: Upsert FundConfiguration properties
 
 
@@ -334,6 +335,86 @@ Name | Type | Description  | Notes
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
 | **200** | The requested Fund configurations. |  -  |
+| **400** | The details of the input related failure |  -  |
+| **0** | Error response |  -  |
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+<a name="patchfundconfiguration"></a>
+# **PatchFundConfiguration**
+> FundConfiguration PatchFundConfiguration (string scope, string code, List<Operation> operation)
+
+[EXPERIMENTAL] PatchFundConfiguration: Patch Fund Configuration.
+
+Create or update certain fields for a particular FundConfiguration.  The behaviour is defined by the JSON Patch specification.                Currently supported fields are: displayName, description, dealingFilters, pnlFilters, backOutFilters.
+
+### Example
+```csharp
+using System.Collections.Generic;
+using System.Diagnostics;
+using Lusid.Sdk.Api;
+using Lusid.Sdk.Client;
+using Lusid.Sdk.Model;
+
+namespace Example
+{
+    public class PatchFundConfigurationExample
+    {
+        public static void Main()
+        {
+            Configuration config = new Configuration();
+            config.BasePath = "https://www.lusid.com/api";
+            // Configure OAuth2 access token for authorization: oauth2
+            config.AccessToken = "YOUR_ACCESS_TOKEN";
+
+            var apiInstance = new FundConfigurationApi(config);
+            var scope = scope_example;  // string | The scope of the FundConfiguration.
+            var code = code_example;  // string | The code of the FundConfiguration. Together with the               scope this uniquely identifies the FundConfiguration.
+            var operation = new List<Operation>(); // List<Operation> | The json patch document. For more information see: https://datatracker.ietf.org/doc/html/rfc6902.
+
+            try
+            {
+                // [EXPERIMENTAL] PatchFundConfiguration: Patch Fund Configuration.
+                FundConfiguration result = apiInstance.PatchFundConfiguration(scope, code, operation);
+                Debug.WriteLine(result);
+            }
+            catch (ApiException  e)
+            {
+                Debug.Print("Exception when calling FundConfigurationApi.PatchFundConfiguration: " + e.Message );
+                Debug.Print("Status Code: "+ e.ErrorCode);
+                Debug.Print(e.StackTrace);
+            }
+        }
+    }
+}
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **scope** | **string**| The scope of the FundConfiguration. | 
+ **code** | **string**| The code of the FundConfiguration. Together with the               scope this uniquely identifies the FundConfiguration. | 
+ **operation** | [**List&lt;Operation&gt;**](Operation.md)| The json patch document. For more information see: https://datatracker.ietf.org/doc/html/rfc6902. | 
+
+### Return type
+
+[**FundConfiguration**](FundConfiguration.md)
+
+### Authorization
+
+[oauth2](../README.md#oauth2)
+
+### HTTP request headers
+
+ - **Content-Type**: application/json-patch+json, application/json, text/json, application/_*+json
+ - **Accept**: text/plain, application/json, text/json
+
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+| **200** | The newly patched FundConfiguration |  -  |
 | **400** | The details of the input related failure |  -  |
 | **0** | Error response |  -  |
 
