@@ -10,7 +10,7 @@ Name | Type | Description | Notes
 **Variations** | [**List&lt;ComplianceTemplateVariationDto&gt;**](ComplianceTemplateVariationDto.md) | Variation details of a Compliance Template | [optional] 
 **Href** | **string** | The specific Uniform Resource Identifier (URI) for this resource at the requested asAt datetime. | [optional] 
 **Version** | [**Version**](Version.md) |  | [optional] 
-**Links** | [**List&lt;Link&gt;**](Link.md) | Collection of links. | [optional] 
+**Links** | [**List&lt;Link&gt;**](Link.md) |  | [optional] 
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 

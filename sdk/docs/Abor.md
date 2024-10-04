@@ -14,7 +14,7 @@ Name | Type | Description | Notes
 **Properties** | [**Dictionary&lt;string, Property&gt;**](Property.md) | A set of properties for the Abor. | [optional] 
 **Version** | [**Version**](Version.md) |  | [optional] 
 **BaseCurrency** | **string** | The base currency of the abor based on contained portfolio base currencies. | [optional] 
-**Links** | [**List&lt;Link&gt;**](Link.md) | Collection of links. | [optional] 
+**Links** | [**List&lt;Link&gt;**](Link.md) |  | [optional] 
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 

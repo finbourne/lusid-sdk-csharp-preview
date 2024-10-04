@@ -12,7 +12,7 @@ Name | Type | Description | Notes
 **Description** | **string** | A description for the General Ledger Profile | [optional] 
 **GeneralLedgerProfileMappings** | [**List&lt;GeneralLedgerProfileMapping&gt;**](GeneralLedgerProfileMapping.md) | Rules for mapping Account or property values to aggregation pattern definitions | 
 **Version** | [**Version**](Version.md) |  | [optional] 
-**Links** | [**List&lt;Link&gt;**](Link.md) | Collection of links. | [optional] 
+**Links** | [**List&lt;Link&gt;**](Link.md) |  | [optional] 
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 

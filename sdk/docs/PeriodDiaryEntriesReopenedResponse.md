@@ -10,7 +10,7 @@ Name | Type | Description | Notes
 **PeriodDiaryEntriesRemoved** | **int** | Number of Diary Entries removed as a result of reopening periods | 
 **PeriodDiaryEntriesFrom** | **DateTimeOffset** | The start point where periods were removed from | 
 **PeriodDiaryEntriesTo** | **DateTimeOffset** | The end point where periods were removed to | 
-**Links** | [**List&lt;Link&gt;**](Link.md) | Collection of links. | [optional] 
+**Links** | [**List&lt;Link&gt;**](Link.md) |  | [optional] 
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 

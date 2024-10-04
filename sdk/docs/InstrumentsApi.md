@@ -5,6 +5,7 @@ All URIs are relative to *https://www.lusid.com/api*
 Method | HTTP request | Description
 ------------- | ------------- | -------------
 [**BatchUpsertInstrumentProperties**](InstrumentsApi.md#batchupsertinstrumentproperties) | **POST** /api/instruments/$batchupsertproperties | BatchUpsertInstrumentProperties: Batch upsert instruments properties
+[**CalculateSettlementDate**](InstrumentsApi.md#calculatesettlementdate) | **GET** /api/instruments/{identifierType}/{identifier}/settlementdate | [EARLY ACCESS] CalculateSettlementDate: Get the settlement date for an instrument.
 [**DeleteInstrument**](InstrumentsApi.md#deleteinstrument) | **DELETE** /api/instruments/{identifierType}/{identifier} | DeleteInstrument: Soft delete a single instrument
 [**DeleteInstrumentProperties**](InstrumentsApi.md#deleteinstrumentproperties) | **POST** /api/instruments/{identifierType}/{identifier}/properties/$delete | [EARLY ACCESS] DeleteInstrumentProperties: Delete instrument properties
 [**DeleteInstruments**](InstrumentsApi.md#deleteinstruments) | **POST** /api/instruments/$delete | DeleteInstruments: Soft or hard delete multiple instruments
@@ -103,6 +104,90 @@ Name | Type | Description  | Notes
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
 | **201** | The successfully upserted properties along with any failures. |  -  |
+| **400** | The details of the input related failure |  -  |
+| **0** | Error response |  -  |
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+<a name="calculatesettlementdate"></a>
+# **CalculateSettlementDate**
+> AddBusinessDaysToDateResponse CalculateSettlementDate (string identifierType, string identifier, DateTimeOrCutLabel transactionDate = null, string scope = null, DateTimeOffset? asAt = null)
+
+[EARLY ACCESS] CalculateSettlementDate: Get the settlement date for an instrument.
+
+Get the settlement date for a given trade date and instrument. The calculated settlement date will be in UTC.  If a cut label transaction date is provided, the settlement date will be calculated relative to the absolute UTC datetime.
+
+### Example
+```csharp
+using System.Collections.Generic;
+using System.Diagnostics;
+using Lusid.Sdk.Api;
+using Lusid.Sdk.Client;
+using Lusid.Sdk.Model;
+
+namespace Example
+{
+    public class CalculateSettlementDateExample
+    {
+        public static void Main()
+        {
+            Configuration config = new Configuration();
+            config.BasePath = "https://www.lusid.com/api";
+            // Configure OAuth2 access token for authorization: oauth2
+            config.AccessToken = "YOUR_ACCESS_TOKEN";
+
+            var apiInstance = new InstrumentsApi(config);
+            var identifierType = identifierType_example;  // string | An identifier type attached to the Instrument.
+            var identifier = identifier_example;  // string | The identifier value.
+            var transactionDate = transactionDate_example;  // DateTimeOrCutLabel | The transaction date to calculate the settlement date from. This can be a UTC datetime offset or a cut label. (optional) 
+            var scope = scope_example;  // string | The scope in which the instrument lies. When not supplied the scope is 'default'. (optional)  (default to "default")
+            var asAt = 2013-10-20T19:20:30+01:00;  // DateTimeOffset? | The asAt datetime at which to retrieve the related instrument and calendars for calculation. Defaults to              returning the latest version if not specified. (optional) 
+
+            try
+            {
+                // [EARLY ACCESS] CalculateSettlementDate: Get the settlement date for an instrument.
+                AddBusinessDaysToDateResponse result = apiInstance.CalculateSettlementDate(identifierType, identifier, transactionDate, scope, asAt);
+                Debug.WriteLine(result);
+            }
+            catch (ApiException  e)
+            {
+                Debug.Print("Exception when calling InstrumentsApi.CalculateSettlementDate: " + e.Message );
+                Debug.Print("Status Code: "+ e.ErrorCode);
+                Debug.Print(e.StackTrace);
+            }
+        }
+    }
+}
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **identifierType** | **string**| An identifier type attached to the Instrument. | 
+ **identifier** | **string**| The identifier value. | 
+ **transactionDate** | **DateTimeOrCutLabel**| The transaction date to calculate the settlement date from. This can be a UTC datetime offset or a cut label. | [optional] 
+ **scope** | **string**| The scope in which the instrument lies. When not supplied the scope is &#39;default&#39;. | [optional] [default to &quot;default&quot;]
+ **asAt** | **DateTimeOffset?**| The asAt datetime at which to retrieve the related instrument and calendars for calculation. Defaults to              returning the latest version if not specified. | [optional] 
+
+### Return type
+
+[**AddBusinessDaysToDateResponse**](AddBusinessDaysToDateResponse.md)
+
+### Authorization
+
+[oauth2](../README.md#oauth2)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: text/plain, application/json, text/json
+
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+| **200** | The calculated settlement date. |  -  |
 | **400** | The details of the input related failure |  -  |
 | **0** | Error response |  -  |
 

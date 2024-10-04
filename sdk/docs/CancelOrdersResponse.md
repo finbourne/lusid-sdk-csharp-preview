@@ -8,7 +8,7 @@ Name | Type | Description | Notes
 **Values** | [**Dictionary&lt;string, CancelledOrderResult&gt;**](CancelledOrderResult.md) | The orders which have been successfully cancelled. | [optional] 
 **Failed** | [**Dictionary&lt;string, ErrorDetail&gt;**](ErrorDetail.md) | The orders that could not be cancelled, along with a reason for their failure. | [optional] 
 **Metadata** | **Dictionary&lt;string, List&lt;ResponseMetaData&gt;&gt;** | Meta data associated with the cancellation event. | [optional] 
-**Links** | [**List&lt;Link&gt;**](Link.md) | Collection of links. | [optional] 
+**Links** | [**List&lt;Link&gt;**](Link.md) |  | [optional] 
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 

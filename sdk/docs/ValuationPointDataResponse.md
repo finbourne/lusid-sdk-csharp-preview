@@ -20,7 +20,7 @@ Name | Type | Description | Notes
 **ShareClassData** | [**List&lt;ShareClassData&gt;**](ShareClassData.md) | The data for all share classes in fund. Share classes are identified by their short codes. | 
 **ValuationPointCode** | **string** | The code of the valuation point. | [optional] 
 **PreviousValuationPointCode** | **string** | The code of the previous valuation point. | [optional] 
-**Links** | [**List&lt;Link&gt;**](Link.md) | Collection of links. | [optional] 
+**Links** | [**List&lt;Link&gt;**](Link.md) |  | [optional] 
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 
