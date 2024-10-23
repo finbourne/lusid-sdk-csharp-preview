@@ -315,8 +315,8 @@ namespace Lusid.Sdk.Model
         /// <param name="optionType">Type of optionality for the option    Supported string (enumeration) values are: [Call, Put]. (required).</param>
         /// <param name="strike">The strike of the option. (required).</param>
         /// <param name="domCcy">The domestic currency of the instrument. (required).</param>
-        /// <param name="underlyingIdentifier">The market identifier type of the underlying code, e.g RIC.    Supported string (enumeration) values are: [LusidInstrumentId, Isin, Sedol, Cusip, ClientInternal, Figi, RIC, QuotePermId, REDCode, BBGId, ICECode]. (required).</param>
-        /// <param name="code">The identifying code for the equity underlying, e.g. &#39;IBM.N&#39;. (required).</param>
+        /// <param name="underlyingIdentifier">The market identifier type of the underlying code, e.g RIC.    Supported string (enumeration) values are: [LusidInstrumentId, Isin, Sedol, Cusip, ClientInternal, Figi, RIC, QuotePermId, REDCode, BBGId, ICECode].  Optional field, should be used in combination with the Code field.  Not compatible with the Underlying field..</param>
+        /// <param name="code">The identifying code for the equity underlying, e.g. &#39;IBM.N&#39;.  Optional field, should be used in combination with the UnderlyingIdentifier field.  Not compatible with the Underlying field..</param>
         /// <param name="equityOptionType">Equity option types. E.g. Vanilla (default), RightsIssue, Warrant.    Supported string (enumeration) values are: [Vanilla, RightsIssue, Warrant]..</param>
         /// <param name="numberOfShares">The amount of shares to exchange if the option is exercised..</param>
         /// <param name="premium">premium.</param>
@@ -335,11 +335,9 @@ namespace Lusid.Sdk.Model
             this.Strike = strike;
             // to ensure "domCcy" is required (not null)
             this.DomCcy = domCcy ?? throw new ArgumentNullException("domCcy is a required property for EquityOptionAllOf and cannot be null");
-            // to ensure "underlyingIdentifier" is required (not null)
-            this.UnderlyingIdentifier = underlyingIdentifier ?? throw new ArgumentNullException("underlyingIdentifier is a required property for EquityOptionAllOf and cannot be null");
-            // to ensure "code" is required (not null)
-            this.Code = code ?? throw new ArgumentNullException("code is a required property for EquityOptionAllOf and cannot be null");
             this.InstrumentType = instrumentType;
+            this.UnderlyingIdentifier = underlyingIdentifier;
+            this.Code = code;
             this.EquityOptionType = equityOptionType;
             this.NumberOfShares = numberOfShares;
             this.Premium = premium;
@@ -397,17 +395,17 @@ namespace Lusid.Sdk.Model
         public string DomCcy { get; set; }
 
         /// <summary>
-        /// The market identifier type of the underlying code, e.g RIC.    Supported string (enumeration) values are: [LusidInstrumentId, Isin, Sedol, Cusip, ClientInternal, Figi, RIC, QuotePermId, REDCode, BBGId, ICECode].
+        /// The market identifier type of the underlying code, e.g RIC.    Supported string (enumeration) values are: [LusidInstrumentId, Isin, Sedol, Cusip, ClientInternal, Figi, RIC, QuotePermId, REDCode, BBGId, ICECode].  Optional field, should be used in combination with the Code field.  Not compatible with the Underlying field.
         /// </summary>
-        /// <value>The market identifier type of the underlying code, e.g RIC.    Supported string (enumeration) values are: [LusidInstrumentId, Isin, Sedol, Cusip, ClientInternal, Figi, RIC, QuotePermId, REDCode, BBGId, ICECode].</value>
-        [DataMember(Name = "underlyingIdentifier", IsRequired = true, EmitDefaultValue = false)]
+        /// <value>The market identifier type of the underlying code, e.g RIC.    Supported string (enumeration) values are: [LusidInstrumentId, Isin, Sedol, Cusip, ClientInternal, Figi, RIC, QuotePermId, REDCode, BBGId, ICECode].  Optional field, should be used in combination with the Code field.  Not compatible with the Underlying field.</value>
+        [DataMember(Name = "underlyingIdentifier", EmitDefaultValue = true)]
         public string UnderlyingIdentifier { get; set; }
 
         /// <summary>
-        /// The identifying code for the equity underlying, e.g. &#39;IBM.N&#39;.
+        /// The identifying code for the equity underlying, e.g. &#39;IBM.N&#39;.  Optional field, should be used in combination with the UnderlyingIdentifier field.  Not compatible with the Underlying field.
         /// </summary>
-        /// <value>The identifying code for the equity underlying, e.g. &#39;IBM.N&#39;.</value>
-        [DataMember(Name = "code", IsRequired = true, EmitDefaultValue = false)]
+        /// <value>The identifying code for the equity underlying, e.g. &#39;IBM.N&#39;.  Optional field, should be used in combination with the UnderlyingIdentifier field.  Not compatible with the Underlying field.</value>
+        [DataMember(Name = "code", EmitDefaultValue = true)]
         public string Code { get; set; }
 
         /// <summary>
