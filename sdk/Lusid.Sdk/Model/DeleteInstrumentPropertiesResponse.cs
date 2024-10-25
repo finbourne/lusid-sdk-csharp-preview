@@ -41,10 +41,12 @@ namespace Lusid.Sdk.Model
         /// Initializes a new instance of the <see cref="DeleteInstrumentPropertiesResponse" /> class.
         /// </summary>
         /// <param name="asAt">The as-at datetime at which properties were deleted. (required).</param>
+        /// <param name="stagedModifications">stagedModifications.</param>
         /// <param name="links">links.</param>
-        public DeleteInstrumentPropertiesResponse(DateTimeOffset asAt = default(DateTimeOffset), List<Link> links = default(List<Link>))
+        public DeleteInstrumentPropertiesResponse(DateTimeOffset asAt = default(DateTimeOffset), StagedModificationsInfo stagedModifications = default(StagedModificationsInfo), List<Link> links = default(List<Link>))
         {
             this.AsAt = asAt;
+            this.StagedModifications = stagedModifications;
             this.Links = links;
         }
 
@@ -54,6 +56,12 @@ namespace Lusid.Sdk.Model
         /// <value>The as-at datetime at which properties were deleted.</value>
         [DataMember(Name = "asAt", IsRequired = true, EmitDefaultValue = false)]
         public DateTimeOffset AsAt { get; set; }
+
+        /// <summary>
+        /// Gets or Sets StagedModifications
+        /// </summary>
+        [DataMember(Name = "stagedModifications", EmitDefaultValue = false)]
+        public StagedModificationsInfo StagedModifications { get; set; }
 
         /// <summary>
         /// Gets or Sets Links
@@ -70,6 +78,7 @@ namespace Lusid.Sdk.Model
             var sb = new StringBuilder();
             sb.Append("class DeleteInstrumentPropertiesResponse {\n");
             sb.Append("  AsAt: ").Append(AsAt).Append("\n");
+            sb.Append("  StagedModifications: ").Append(StagedModifications).Append("\n");
             sb.Append("  Links: ").Append(Links).Append("\n");
             sb.Append("}\n");
             return sb.ToString();
@@ -111,6 +120,11 @@ namespace Lusid.Sdk.Model
                     this.AsAt.Equals(input.AsAt))
                 ) && 
                 (
+                    this.StagedModifications == input.StagedModifications ||
+                    (this.StagedModifications != null &&
+                    this.StagedModifications.Equals(input.StagedModifications))
+                ) && 
+                (
                     this.Links == input.Links ||
                     this.Links != null &&
                     input.Links != null &&
@@ -129,6 +143,8 @@ namespace Lusid.Sdk.Model
                 int hashCode = 41;
                 if (this.AsAt != null)
                     hashCode = hashCode * 59 + this.AsAt.GetHashCode();
+                if (this.StagedModifications != null)
+                    hashCode = hashCode * 59 + this.StagedModifications.GetHashCode();
                 if (this.Links != null)
                     hashCode = hashCode * 59 + this.Links.GetHashCode();
                 return hashCode;
