@@ -31,7 +31,7 @@ namespace Lusid.Sdk.Api
         /// AdjustHoldings: Adjust holdings
         /// </summary>
         /// <remarks>
-        /// Adjust one or more holdings of the specified transaction portfolio to the provided targets. LUSID will  automatically construct adjustment transactions to ensure that the holdings which have been adjusted are  always set to the provided targets for the specified effective datetime. Read more about the difference between  adjusting and setting holdings here https://support.lusid.com/how-do-i-adjust-my-holdings.
+        /// Adjust one or more holdings of the specified transaction portfolio to the provided targets. LUSID will  automatically construct adjustment transactions to ensure that the holdings which have been adjusted are  always set to the provided targets for the specified effective datetime. Read more about the difference between  adjusting and setting holdings here https://support.lusid.com/docs/how-do-i-manually-adjust-or-set-holdings.
         /// </remarks>
         /// <exception cref="Lusid.Sdk.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="scope">The scope of the transaction portfolio.</param>
@@ -46,7 +46,7 @@ namespace Lusid.Sdk.Api
         /// AdjustHoldings: Adjust holdings
         /// </summary>
         /// <remarks>
-        /// Adjust one or more holdings of the specified transaction portfolio to the provided targets. LUSID will  automatically construct adjustment transactions to ensure that the holdings which have been adjusted are  always set to the provided targets for the specified effective datetime. Read more about the difference between  adjusting and setting holdings here https://support.lusid.com/how-do-i-adjust-my-holdings.
+        /// Adjust one or more holdings of the specified transaction portfolio to the provided targets. LUSID will  automatically construct adjustment transactions to ensure that the holdings which have been adjusted are  always set to the provided targets for the specified effective datetime. Read more about the difference between  adjusting and setting holdings here https://support.lusid.com/docs/how-do-i-manually-adjust-or-set-holdings.
         /// </remarks>
         /// <exception cref="Lusid.Sdk.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="scope">The scope of the transaction portfolio.</param>
@@ -110,6 +110,35 @@ namespace Lusid.Sdk.Api
         /// <param name="lusidTradeTicket">the trade tickets to create</param>
         /// <returns>ApiResponse of CreateTradeTicketsResponse</returns>
         ApiResponse<CreateTradeTicketsResponse> BatchCreateTradeTicketsWithHttpInfo(string scope, string code, List<LusidTradeTicket> lusidTradeTicket);
+        /// <summary>
+        /// [EARLY ACCESS] BatchSetHoldings: Batch set holdings
+        /// </summary>
+        /// <remarks>
+        /// Set the holdings of the specified transaction portfolio to the provided targets. LUSID will automatically  construct adjustment transactions to ensure that the entire set of holdings for the transaction portfolio  are always set to the provided targets for the specified effective datetime. Read more about the difference between  adjusting and setting holdings here https://support.lusid.com/docs/how-do-i-manually-adjust-or-set-holdings.                Each request must be keyed by a unique correlation id. This id is ephemeral and is not stored by LUSID.  It serves only as a way to easily identify each adjustment in the response.    Note: If using partial failure modes, then it is important to check the response body for failures as any failures will still return a 200 status code
+        /// </remarks>
+        /// <exception cref="Lusid.Sdk.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="scope">The scope of the transaction portfolio.</param>
+        /// <param name="code">The code of the transaction portfolio. Together with the scope this uniquely identifies               the transaction portfolio.</param>
+        /// <param name="successMode">Whether the batch request should fail Atomically or in a Partial fashion - Allowed Values: Atomic, Partial</param>
+        /// <param name="requestBody">The selected set of holdings to adjust to the provided targets for the               transaction portfolio.</param>
+        /// <param name="reconciliationMethods">Optional parameter for specifying a reconciliation method: e.g. FxForward. (optional)</param>
+        /// <returns>BatchAdjustHoldingsResponse</returns>
+        BatchAdjustHoldingsResponse BatchSetHoldings(string scope, string code, string successMode, Dictionary<string, AdjustHoldingForDateRequest> requestBody, List<string> reconciliationMethods = default(List<string>));
+
+        /// <summary>
+        /// [EARLY ACCESS] BatchSetHoldings: Batch set holdings
+        /// </summary>
+        /// <remarks>
+        /// Set the holdings of the specified transaction portfolio to the provided targets. LUSID will automatically  construct adjustment transactions to ensure that the entire set of holdings for the transaction portfolio  are always set to the provided targets for the specified effective datetime. Read more about the difference between  adjusting and setting holdings here https://support.lusid.com/docs/how-do-i-manually-adjust-or-set-holdings.                Each request must be keyed by a unique correlation id. This id is ephemeral and is not stored by LUSID.  It serves only as a way to easily identify each adjustment in the response.    Note: If using partial failure modes, then it is important to check the response body for failures as any failures will still return a 200 status code
+        /// </remarks>
+        /// <exception cref="Lusid.Sdk.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="scope">The scope of the transaction portfolio.</param>
+        /// <param name="code">The code of the transaction portfolio. Together with the scope this uniquely identifies               the transaction portfolio.</param>
+        /// <param name="successMode">Whether the batch request should fail Atomically or in a Partial fashion - Allowed Values: Atomic, Partial</param>
+        /// <param name="requestBody">The selected set of holdings to adjust to the provided targets for the               transaction portfolio.</param>
+        /// <param name="reconciliationMethods">Optional parameter for specifying a reconciliation method: e.g. FxForward. (optional)</param>
+        /// <returns>ApiResponse of BatchAdjustHoldingsResponse</returns>
+        ApiResponse<BatchAdjustHoldingsResponse> BatchSetHoldingsWithHttpInfo(string scope, string code, string successMode, Dictionary<string, AdjustHoldingForDateRequest> requestBody, List<string> reconciliationMethods = default(List<string>));
         /// <summary>
         /// [EARLY ACCESS] BatchUpsertTransactions: Batch upsert transactions
         /// </summary>
@@ -1049,7 +1078,7 @@ namespace Lusid.Sdk.Api
         /// SetHoldings: Set holdings
         /// </summary>
         /// <remarks>
-        /// Set the holdings of the specified transaction portfolio to the provided targets. LUSID will automatically  construct adjustment transactions to ensure that the entire set of holdings for the transaction portfolio  are always set to the provided targets for the specified effective datetime. Read more about the difference between  adjusting and setting holdings here https://support.lusid.com/how-do-i-adjust-my-holdings.
+        /// Set the holdings of the specified transaction portfolio to the provided targets. LUSID will automatically  construct adjustment transactions to ensure that the entire set of holdings for the transaction portfolio  are always set to the provided targets for the specified effective datetime. Read more about the difference between  adjusting and setting holdings here https://support.lusid.com/docs/how-do-i-manually-adjust-or-set-holdings.
         /// </remarks>
         /// <exception cref="Lusid.Sdk.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="scope">The scope of the transaction portfolio.</param>
@@ -1064,7 +1093,7 @@ namespace Lusid.Sdk.Api
         /// SetHoldings: Set holdings
         /// </summary>
         /// <remarks>
-        /// Set the holdings of the specified transaction portfolio to the provided targets. LUSID will automatically  construct adjustment transactions to ensure that the entire set of holdings for the transaction portfolio  are always set to the provided targets for the specified effective datetime. Read more about the difference between  adjusting and setting holdings here https://support.lusid.com/how-do-i-adjust-my-holdings.
+        /// Set the holdings of the specified transaction portfolio to the provided targets. LUSID will automatically  construct adjustment transactions to ensure that the entire set of holdings for the transaction portfolio  are always set to the provided targets for the specified effective datetime. Read more about the difference between  adjusting and setting holdings here https://support.lusid.com/docs/how-do-i-manually-adjust-or-set-holdings.
         /// </remarks>
         /// <exception cref="Lusid.Sdk.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="scope">The scope of the transaction portfolio.</param>
@@ -1222,7 +1251,7 @@ namespace Lusid.Sdk.Api
         /// AdjustHoldings: Adjust holdings
         /// </summary>
         /// <remarks>
-        /// Adjust one or more holdings of the specified transaction portfolio to the provided targets. LUSID will  automatically construct adjustment transactions to ensure that the holdings which have been adjusted are  always set to the provided targets for the specified effective datetime. Read more about the difference between  adjusting and setting holdings here https://support.lusid.com/how-do-i-adjust-my-holdings.
+        /// Adjust one or more holdings of the specified transaction portfolio to the provided targets. LUSID will  automatically construct adjustment transactions to ensure that the holdings which have been adjusted are  always set to the provided targets for the specified effective datetime. Read more about the difference between  adjusting and setting holdings here https://support.lusid.com/docs/how-do-i-manually-adjust-or-set-holdings.
         /// </remarks>
         /// <exception cref="Lusid.Sdk.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="scope">The scope of the transaction portfolio.</param>
@@ -1238,7 +1267,7 @@ namespace Lusid.Sdk.Api
         /// AdjustHoldings: Adjust holdings
         /// </summary>
         /// <remarks>
-        /// Adjust one or more holdings of the specified transaction portfolio to the provided targets. LUSID will  automatically construct adjustment transactions to ensure that the holdings which have been adjusted are  always set to the provided targets for the specified effective datetime. Read more about the difference between  adjusting and setting holdings here https://support.lusid.com/how-do-i-adjust-my-holdings.
+        /// Adjust one or more holdings of the specified transaction portfolio to the provided targets. LUSID will  automatically construct adjustment transactions to ensure that the holdings which have been adjusted are  always set to the provided targets for the specified effective datetime. Read more about the difference between  adjusting and setting holdings here https://support.lusid.com/docs/how-do-i-manually-adjust-or-set-holdings.
         /// </remarks>
         /// <exception cref="Lusid.Sdk.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="scope">The scope of the transaction portfolio.</param>
@@ -1307,6 +1336,37 @@ namespace Lusid.Sdk.Api
         /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
         /// <returns>Task of ApiResponse (CreateTradeTicketsResponse)</returns>
         System.Threading.Tasks.Task<ApiResponse<CreateTradeTicketsResponse>> BatchCreateTradeTicketsWithHttpInfoAsync(string scope, string code, List<LusidTradeTicket> lusidTradeTicket, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+        /// <summary>
+        /// [EARLY ACCESS] BatchSetHoldings: Batch set holdings
+        /// </summary>
+        /// <remarks>
+        /// Set the holdings of the specified transaction portfolio to the provided targets. LUSID will automatically  construct adjustment transactions to ensure that the entire set of holdings for the transaction portfolio  are always set to the provided targets for the specified effective datetime. Read more about the difference between  adjusting and setting holdings here https://support.lusid.com/docs/how-do-i-manually-adjust-or-set-holdings.                Each request must be keyed by a unique correlation id. This id is ephemeral and is not stored by LUSID.  It serves only as a way to easily identify each adjustment in the response.    Note: If using partial failure modes, then it is important to check the response body for failures as any failures will still return a 200 status code
+        /// </remarks>
+        /// <exception cref="Lusid.Sdk.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="scope">The scope of the transaction portfolio.</param>
+        /// <param name="code">The code of the transaction portfolio. Together with the scope this uniquely identifies               the transaction portfolio.</param>
+        /// <param name="successMode">Whether the batch request should fail Atomically or in a Partial fashion - Allowed Values: Atomic, Partial</param>
+        /// <param name="requestBody">The selected set of holdings to adjust to the provided targets for the               transaction portfolio.</param>
+        /// <param name="reconciliationMethods">Optional parameter for specifying a reconciliation method: e.g. FxForward. (optional)</param>
+        /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
+        /// <returns>Task of BatchAdjustHoldingsResponse</returns>
+        System.Threading.Tasks.Task<BatchAdjustHoldingsResponse> BatchSetHoldingsAsync(string scope, string code, string successMode, Dictionary<string, AdjustHoldingForDateRequest> requestBody, List<string> reconciliationMethods = default(List<string>), System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+
+        /// <summary>
+        /// [EARLY ACCESS] BatchSetHoldings: Batch set holdings
+        /// </summary>
+        /// <remarks>
+        /// Set the holdings of the specified transaction portfolio to the provided targets. LUSID will automatically  construct adjustment transactions to ensure that the entire set of holdings for the transaction portfolio  are always set to the provided targets for the specified effective datetime. Read more about the difference between  adjusting and setting holdings here https://support.lusid.com/docs/how-do-i-manually-adjust-or-set-holdings.                Each request must be keyed by a unique correlation id. This id is ephemeral and is not stored by LUSID.  It serves only as a way to easily identify each adjustment in the response.    Note: If using partial failure modes, then it is important to check the response body for failures as any failures will still return a 200 status code
+        /// </remarks>
+        /// <exception cref="Lusid.Sdk.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="scope">The scope of the transaction portfolio.</param>
+        /// <param name="code">The code of the transaction portfolio. Together with the scope this uniquely identifies               the transaction portfolio.</param>
+        /// <param name="successMode">Whether the batch request should fail Atomically or in a Partial fashion - Allowed Values: Atomic, Partial</param>
+        /// <param name="requestBody">The selected set of holdings to adjust to the provided targets for the               transaction portfolio.</param>
+        /// <param name="reconciliationMethods">Optional parameter for specifying a reconciliation method: e.g. FxForward. (optional)</param>
+        /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
+        /// <returns>Task of ApiResponse (BatchAdjustHoldingsResponse)</returns>
+        System.Threading.Tasks.Task<ApiResponse<BatchAdjustHoldingsResponse>> BatchSetHoldingsWithHttpInfoAsync(string scope, string code, string successMode, Dictionary<string, AdjustHoldingForDateRequest> requestBody, List<string> reconciliationMethods = default(List<string>), System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
         /// <summary>
         /// [EARLY ACCESS] BatchUpsertTransactions: Batch upsert transactions
         /// </summary>
@@ -2304,7 +2364,7 @@ namespace Lusid.Sdk.Api
         /// SetHoldings: Set holdings
         /// </summary>
         /// <remarks>
-        /// Set the holdings of the specified transaction portfolio to the provided targets. LUSID will automatically  construct adjustment transactions to ensure that the entire set of holdings for the transaction portfolio  are always set to the provided targets for the specified effective datetime. Read more about the difference between  adjusting and setting holdings here https://support.lusid.com/how-do-i-adjust-my-holdings.
+        /// Set the holdings of the specified transaction portfolio to the provided targets. LUSID will automatically  construct adjustment transactions to ensure that the entire set of holdings for the transaction portfolio  are always set to the provided targets for the specified effective datetime. Read more about the difference between  adjusting and setting holdings here https://support.lusid.com/docs/how-do-i-manually-adjust-or-set-holdings.
         /// </remarks>
         /// <exception cref="Lusid.Sdk.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="scope">The scope of the transaction portfolio.</param>
@@ -2320,7 +2380,7 @@ namespace Lusid.Sdk.Api
         /// SetHoldings: Set holdings
         /// </summary>
         /// <remarks>
-        /// Set the holdings of the specified transaction portfolio to the provided targets. LUSID will automatically  construct adjustment transactions to ensure that the entire set of holdings for the transaction portfolio  are always set to the provided targets for the specified effective datetime. Read more about the difference between  adjusting and setting holdings here https://support.lusid.com/how-do-i-adjust-my-holdings.
+        /// Set the holdings of the specified transaction portfolio to the provided targets. LUSID will automatically  construct adjustment transactions to ensure that the entire set of holdings for the transaction portfolio  are always set to the provided targets for the specified effective datetime. Read more about the difference between  adjusting and setting holdings here https://support.lusid.com/docs/how-do-i-manually-adjust-or-set-holdings.
         /// </remarks>
         /// <exception cref="Lusid.Sdk.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="scope">The scope of the transaction portfolio.</param>
@@ -2594,7 +2654,7 @@ namespace Lusid.Sdk.Api
         }
 
         /// <summary>
-        /// AdjustHoldings: Adjust holdings Adjust one or more holdings of the specified transaction portfolio to the provided targets. LUSID will  automatically construct adjustment transactions to ensure that the holdings which have been adjusted are  always set to the provided targets for the specified effective datetime. Read more about the difference between  adjusting and setting holdings here https://support.lusid.com/how-do-i-adjust-my-holdings.
+        /// AdjustHoldings: Adjust holdings Adjust one or more holdings of the specified transaction portfolio to the provided targets. LUSID will  automatically construct adjustment transactions to ensure that the holdings which have been adjusted are  always set to the provided targets for the specified effective datetime. Read more about the difference between  adjusting and setting holdings here https://support.lusid.com/docs/how-do-i-manually-adjust-or-set-holdings.
         /// </summary>
         /// <exception cref="Lusid.Sdk.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="scope">The scope of the transaction portfolio.</param>
@@ -2610,7 +2670,7 @@ namespace Lusid.Sdk.Api
         }
 
         /// <summary>
-        /// AdjustHoldings: Adjust holdings Adjust one or more holdings of the specified transaction portfolio to the provided targets. LUSID will  automatically construct adjustment transactions to ensure that the holdings which have been adjusted are  always set to the provided targets for the specified effective datetime. Read more about the difference between  adjusting and setting holdings here https://support.lusid.com/how-do-i-adjust-my-holdings.
+        /// AdjustHoldings: Adjust holdings Adjust one or more holdings of the specified transaction portfolio to the provided targets. LUSID will  automatically construct adjustment transactions to ensure that the holdings which have been adjusted are  always set to the provided targets for the specified effective datetime. Read more about the difference between  adjusting and setting holdings here https://support.lusid.com/docs/how-do-i-manually-adjust-or-set-holdings.
         /// </summary>
         /// <exception cref="Lusid.Sdk.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="scope">The scope of the transaction portfolio.</param>
@@ -2692,7 +2752,7 @@ namespace Lusid.Sdk.Api
         }
 
         /// <summary>
-        /// AdjustHoldings: Adjust holdings Adjust one or more holdings of the specified transaction portfolio to the provided targets. LUSID will  automatically construct adjustment transactions to ensure that the holdings which have been adjusted are  always set to the provided targets for the specified effective datetime. Read more about the difference between  adjusting and setting holdings here https://support.lusid.com/how-do-i-adjust-my-holdings.
+        /// AdjustHoldings: Adjust holdings Adjust one or more holdings of the specified transaction portfolio to the provided targets. LUSID will  automatically construct adjustment transactions to ensure that the holdings which have been adjusted are  always set to the provided targets for the specified effective datetime. Read more about the difference between  adjusting and setting holdings here https://support.lusid.com/docs/how-do-i-manually-adjust-or-set-holdings.
         /// </summary>
         /// <exception cref="Lusid.Sdk.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="scope">The scope of the transaction portfolio.</param>
@@ -2709,7 +2769,7 @@ namespace Lusid.Sdk.Api
         }
 
         /// <summary>
-        /// AdjustHoldings: Adjust holdings Adjust one or more holdings of the specified transaction portfolio to the provided targets. LUSID will  automatically construct adjustment transactions to ensure that the holdings which have been adjusted are  always set to the provided targets for the specified effective datetime. Read more about the difference between  adjusting and setting holdings here https://support.lusid.com/how-do-i-adjust-my-holdings.
+        /// AdjustHoldings: Adjust holdings Adjust one or more holdings of the specified transaction portfolio to the provided targets. LUSID will  automatically construct adjustment transactions to ensure that the holdings which have been adjusted are  always set to the provided targets for the specified effective datetime. Read more about the difference between  adjusting and setting holdings here https://support.lusid.com/docs/how-do-i-manually-adjust-or-set-holdings.
         /// </summary>
         /// <exception cref="Lusid.Sdk.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="scope">The scope of the transaction portfolio.</param>
@@ -3164,6 +3224,207 @@ namespace Lusid.Sdk.Api
             if (this.ExceptionFactory != null)
             {
                 Exception _exception = this.ExceptionFactory("BatchCreateTradeTickets", localVarResponse);
+                if (_exception != null) throw _exception;
+            }
+
+            return localVarResponse;
+        }
+
+        /// <summary>
+        /// [EARLY ACCESS] BatchSetHoldings: Batch set holdings Set the holdings of the specified transaction portfolio to the provided targets. LUSID will automatically  construct adjustment transactions to ensure that the entire set of holdings for the transaction portfolio  are always set to the provided targets for the specified effective datetime. Read more about the difference between  adjusting and setting holdings here https://support.lusid.com/docs/how-do-i-manually-adjust-or-set-holdings.                Each request must be keyed by a unique correlation id. This id is ephemeral and is not stored by LUSID.  It serves only as a way to easily identify each adjustment in the response.    Note: If using partial failure modes, then it is important to check the response body for failures as any failures will still return a 200 status code
+        /// </summary>
+        /// <exception cref="Lusid.Sdk.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="scope">The scope of the transaction portfolio.</param>
+        /// <param name="code">The code of the transaction portfolio. Together with the scope this uniquely identifies               the transaction portfolio.</param>
+        /// <param name="successMode">Whether the batch request should fail Atomically or in a Partial fashion - Allowed Values: Atomic, Partial</param>
+        /// <param name="requestBody">The selected set of holdings to adjust to the provided targets for the               transaction portfolio.</param>
+        /// <param name="reconciliationMethods">Optional parameter for specifying a reconciliation method: e.g. FxForward. (optional)</param>
+        /// <returns>BatchAdjustHoldingsResponse</returns>
+        public BatchAdjustHoldingsResponse BatchSetHoldings(string scope, string code, string successMode, Dictionary<string, AdjustHoldingForDateRequest> requestBody, List<string> reconciliationMethods = default(List<string>))
+        {
+            Lusid.Sdk.Client.ApiResponse<BatchAdjustHoldingsResponse> localVarResponse = BatchSetHoldingsWithHttpInfo(scope, code, successMode, requestBody, reconciliationMethods);
+            return localVarResponse.Data;
+        }
+
+        /// <summary>
+        /// [EARLY ACCESS] BatchSetHoldings: Batch set holdings Set the holdings of the specified transaction portfolio to the provided targets. LUSID will automatically  construct adjustment transactions to ensure that the entire set of holdings for the transaction portfolio  are always set to the provided targets for the specified effective datetime. Read more about the difference between  adjusting and setting holdings here https://support.lusid.com/docs/how-do-i-manually-adjust-or-set-holdings.                Each request must be keyed by a unique correlation id. This id is ephemeral and is not stored by LUSID.  It serves only as a way to easily identify each adjustment in the response.    Note: If using partial failure modes, then it is important to check the response body for failures as any failures will still return a 200 status code
+        /// </summary>
+        /// <exception cref="Lusid.Sdk.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="scope">The scope of the transaction portfolio.</param>
+        /// <param name="code">The code of the transaction portfolio. Together with the scope this uniquely identifies               the transaction portfolio.</param>
+        /// <param name="successMode">Whether the batch request should fail Atomically or in a Partial fashion - Allowed Values: Atomic, Partial</param>
+        /// <param name="requestBody">The selected set of holdings to adjust to the provided targets for the               transaction portfolio.</param>
+        /// <param name="reconciliationMethods">Optional parameter for specifying a reconciliation method: e.g. FxForward. (optional)</param>
+        /// <returns>ApiResponse of BatchAdjustHoldingsResponse</returns>
+        public Lusid.Sdk.Client.ApiResponse<BatchAdjustHoldingsResponse> BatchSetHoldingsWithHttpInfo(string scope, string code, string successMode, Dictionary<string, AdjustHoldingForDateRequest> requestBody, List<string> reconciliationMethods = default(List<string>))
+        {
+            // verify the required parameter 'scope' is set
+            if (scope == null)
+                throw new Lusid.Sdk.Client.ApiException(400, "Missing required parameter 'scope' when calling TransactionPortfoliosApi->BatchSetHoldings");
+
+            // verify the required parameter 'code' is set
+            if (code == null)
+                throw new Lusid.Sdk.Client.ApiException(400, "Missing required parameter 'code' when calling TransactionPortfoliosApi->BatchSetHoldings");
+
+            // verify the required parameter 'successMode' is set
+            if (successMode == null)
+                throw new Lusid.Sdk.Client.ApiException(400, "Missing required parameter 'successMode' when calling TransactionPortfoliosApi->BatchSetHoldings");
+
+            // verify the required parameter 'requestBody' is set
+            if (requestBody == null)
+                throw new Lusid.Sdk.Client.ApiException(400, "Missing required parameter 'requestBody' when calling TransactionPortfoliosApi->BatchSetHoldings");
+
+            Lusid.Sdk.Client.RequestOptions localVarRequestOptions = new Lusid.Sdk.Client.RequestOptions();
+
+            String[] _contentTypes = new String[] {
+                "application/json-patch+json",
+                "application/json",
+                "text/json",
+                "application/_*+json"
+            };
+
+            // to determine the Accept header
+            String[] _accepts = new String[] {
+                "text/plain",
+                "application/json",
+                "text/json"
+            };
+
+            var localVarContentType = Lusid.Sdk.Client.ClientUtils.SelectHeaderContentType(_contentTypes);
+            if (localVarContentType != null) localVarRequestOptions.HeaderParameters.Add("Content-Type", localVarContentType);
+
+            var localVarAccept = Lusid.Sdk.Client.ClientUtils.SelectHeaderAccept(_accepts);
+            if (localVarAccept != null) localVarRequestOptions.HeaderParameters.Add("Accept", localVarAccept);
+
+            localVarRequestOptions.PathParameters.Add("scope", Lusid.Sdk.Client.ClientUtils.ParameterToString(scope)); // path parameter
+            localVarRequestOptions.PathParameters.Add("code", Lusid.Sdk.Client.ClientUtils.ParameterToString(code)); // path parameter
+            localVarRequestOptions.QueryParameters.Add(Lusid.Sdk.Client.ClientUtils.ParameterToMultiMap("", "successMode", successMode));
+            if (reconciliationMethods != null)
+            {
+                localVarRequestOptions.QueryParameters.Add(Lusid.Sdk.Client.ClientUtils.ParameterToMultiMap("multi", "reconciliationMethods", reconciliationMethods));
+            }
+            localVarRequestOptions.Data = requestBody;
+
+            // authentication (oauth2) required
+            // oauth required
+            if (!String.IsNullOrEmpty(this.Configuration.AccessToken))
+            {
+                localVarRequestOptions.HeaderParameters.Add("Authorization", "Bearer " + this.Configuration.AccessToken);
+            }
+
+            //  set the LUSID header
+            localVarRequestOptions.HeaderParameters.Add("X-LUSID-Sdk-Language", "C#");
+            localVarRequestOptions.HeaderParameters.Add("X-LUSID-Sdk-Version", "1.1.436");
+
+            // make the HTTP request
+            var localVarResponse = this.Client.Post<BatchAdjustHoldingsResponse>("/api/transactionportfolios/{scope}/{code}/holdings/$batchSet", localVarRequestOptions, this.Configuration);
+
+            if (this.ExceptionFactory != null)
+            {
+                Exception _exception = this.ExceptionFactory("BatchSetHoldings", localVarResponse);
+                if (_exception != null) throw _exception;
+            }
+
+            return localVarResponse;
+        }
+
+        /// <summary>
+        /// [EARLY ACCESS] BatchSetHoldings: Batch set holdings Set the holdings of the specified transaction portfolio to the provided targets. LUSID will automatically  construct adjustment transactions to ensure that the entire set of holdings for the transaction portfolio  are always set to the provided targets for the specified effective datetime. Read more about the difference between  adjusting and setting holdings here https://support.lusid.com/docs/how-do-i-manually-adjust-or-set-holdings.                Each request must be keyed by a unique correlation id. This id is ephemeral and is not stored by LUSID.  It serves only as a way to easily identify each adjustment in the response.    Note: If using partial failure modes, then it is important to check the response body for failures as any failures will still return a 200 status code
+        /// </summary>
+        /// <exception cref="Lusid.Sdk.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="scope">The scope of the transaction portfolio.</param>
+        /// <param name="code">The code of the transaction portfolio. Together with the scope this uniquely identifies               the transaction portfolio.</param>
+        /// <param name="successMode">Whether the batch request should fail Atomically or in a Partial fashion - Allowed Values: Atomic, Partial</param>
+        /// <param name="requestBody">The selected set of holdings to adjust to the provided targets for the               transaction portfolio.</param>
+        /// <param name="reconciliationMethods">Optional parameter for specifying a reconciliation method: e.g. FxForward. (optional)</param>
+        /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
+        /// <returns>Task of BatchAdjustHoldingsResponse</returns>
+        public async System.Threading.Tasks.Task<BatchAdjustHoldingsResponse> BatchSetHoldingsAsync(string scope, string code, string successMode, Dictionary<string, AdjustHoldingForDateRequest> requestBody, List<string> reconciliationMethods = default(List<string>), System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
+        {
+            Lusid.Sdk.Client.ApiResponse<BatchAdjustHoldingsResponse> localVarResponse = await BatchSetHoldingsWithHttpInfoAsync(scope, code, successMode, requestBody, reconciliationMethods, cancellationToken).ConfigureAwait(false);
+            return localVarResponse.Data;
+        }
+
+        /// <summary>
+        /// [EARLY ACCESS] BatchSetHoldings: Batch set holdings Set the holdings of the specified transaction portfolio to the provided targets. LUSID will automatically  construct adjustment transactions to ensure that the entire set of holdings for the transaction portfolio  are always set to the provided targets for the specified effective datetime. Read more about the difference between  adjusting and setting holdings here https://support.lusid.com/docs/how-do-i-manually-adjust-or-set-holdings.                Each request must be keyed by a unique correlation id. This id is ephemeral and is not stored by LUSID.  It serves only as a way to easily identify each adjustment in the response.    Note: If using partial failure modes, then it is important to check the response body for failures as any failures will still return a 200 status code
+        /// </summary>
+        /// <exception cref="Lusid.Sdk.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="scope">The scope of the transaction portfolio.</param>
+        /// <param name="code">The code of the transaction portfolio. Together with the scope this uniquely identifies               the transaction portfolio.</param>
+        /// <param name="successMode">Whether the batch request should fail Atomically or in a Partial fashion - Allowed Values: Atomic, Partial</param>
+        /// <param name="requestBody">The selected set of holdings to adjust to the provided targets for the               transaction portfolio.</param>
+        /// <param name="reconciliationMethods">Optional parameter for specifying a reconciliation method: e.g. FxForward. (optional)</param>
+        /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
+        /// <returns>Task of ApiResponse (BatchAdjustHoldingsResponse)</returns>
+        public async System.Threading.Tasks.Task<Lusid.Sdk.Client.ApiResponse<BatchAdjustHoldingsResponse>> BatchSetHoldingsWithHttpInfoAsync(string scope, string code, string successMode, Dictionary<string, AdjustHoldingForDateRequest> requestBody, List<string> reconciliationMethods = default(List<string>), System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
+        {
+            // verify the required parameter 'scope' is set
+            if (scope == null)
+                throw new Lusid.Sdk.Client.ApiException(400, "Missing required parameter 'scope' when calling TransactionPortfoliosApi->BatchSetHoldings");
+
+            // verify the required parameter 'code' is set
+            if (code == null)
+                throw new Lusid.Sdk.Client.ApiException(400, "Missing required parameter 'code' when calling TransactionPortfoliosApi->BatchSetHoldings");
+
+            // verify the required parameter 'successMode' is set
+            if (successMode == null)
+                throw new Lusid.Sdk.Client.ApiException(400, "Missing required parameter 'successMode' when calling TransactionPortfoliosApi->BatchSetHoldings");
+
+            // verify the required parameter 'requestBody' is set
+            if (requestBody == null)
+                throw new Lusid.Sdk.Client.ApiException(400, "Missing required parameter 'requestBody' when calling TransactionPortfoliosApi->BatchSetHoldings");
+
+
+            Lusid.Sdk.Client.RequestOptions localVarRequestOptions = new Lusid.Sdk.Client.RequestOptions();
+
+            String[] _contentTypes = new String[] {
+                "application/json-patch+json", 
+                "application/json", 
+                "text/json", 
+                "application/_*+json"
+            };
+
+            // to determine the Accept header
+            String[] _accepts = new String[] {
+                "text/plain",
+                "application/json",
+                "text/json"
+            };
+
+
+            var localVarContentType = Lusid.Sdk.Client.ClientUtils.SelectHeaderContentType(_contentTypes);
+            if (localVarContentType != null) localVarRequestOptions.HeaderParameters.Add("Content-Type", localVarContentType);
+
+            var localVarAccept = Lusid.Sdk.Client.ClientUtils.SelectHeaderAccept(_accepts);
+            if (localVarAccept != null) localVarRequestOptions.HeaderParameters.Add("Accept", localVarAccept);
+
+            localVarRequestOptions.PathParameters.Add("scope", Lusid.Sdk.Client.ClientUtils.ParameterToString(scope)); // path parameter
+            localVarRequestOptions.PathParameters.Add("code", Lusid.Sdk.Client.ClientUtils.ParameterToString(code)); // path parameter
+            localVarRequestOptions.QueryParameters.Add(Lusid.Sdk.Client.ClientUtils.ParameterToMultiMap("", "successMode", successMode));
+            if (reconciliationMethods != null)
+            {
+                localVarRequestOptions.QueryParameters.Add(Lusid.Sdk.Client.ClientUtils.ParameterToMultiMap("multi", "reconciliationMethods", reconciliationMethods));
+            }
+            localVarRequestOptions.Data = requestBody;
+
+            // authentication (oauth2) required
+            // oauth required
+            if (!String.IsNullOrEmpty(this.Configuration.AccessToken))
+            {
+                localVarRequestOptions.HeaderParameters.Add("Authorization", "Bearer " + this.Configuration.AccessToken);
+            }
+
+            //  set the LUSID header
+            localVarRequestOptions.HeaderParameters.Add("X-LUSID-Sdk-Language", "C#");
+            localVarRequestOptions.HeaderParameters.Add("X-LUSID-Sdk-Version", "1.1.436");
+
+            // make the HTTP request
+
+            var localVarResponse = await this.AsynchronousClient.PostAsync<BatchAdjustHoldingsResponse>("/api/transactionportfolios/{scope}/{code}/holdings/$batchSet", localVarRequestOptions, this.Configuration, cancellationToken).ConfigureAwait(false);
+
+            if (this.ExceptionFactory != null)
+            {
+                Exception _exception = this.ExceptionFactory("BatchSetHoldings", localVarResponse);
                 if (_exception != null) throw _exception;
             }
 
@@ -9324,7 +9585,7 @@ namespace Lusid.Sdk.Api
         }
 
         /// <summary>
-        /// SetHoldings: Set holdings Set the holdings of the specified transaction portfolio to the provided targets. LUSID will automatically  construct adjustment transactions to ensure that the entire set of holdings for the transaction portfolio  are always set to the provided targets for the specified effective datetime. Read more about the difference between  adjusting and setting holdings here https://support.lusid.com/how-do-i-adjust-my-holdings.
+        /// SetHoldings: Set holdings Set the holdings of the specified transaction portfolio to the provided targets. LUSID will automatically  construct adjustment transactions to ensure that the entire set of holdings for the transaction portfolio  are always set to the provided targets for the specified effective datetime. Read more about the difference between  adjusting and setting holdings here https://support.lusid.com/docs/how-do-i-manually-adjust-or-set-holdings.
         /// </summary>
         /// <exception cref="Lusid.Sdk.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="scope">The scope of the transaction portfolio.</param>
@@ -9340,7 +9601,7 @@ namespace Lusid.Sdk.Api
         }
 
         /// <summary>
-        /// SetHoldings: Set holdings Set the holdings of the specified transaction portfolio to the provided targets. LUSID will automatically  construct adjustment transactions to ensure that the entire set of holdings for the transaction portfolio  are always set to the provided targets for the specified effective datetime. Read more about the difference between  adjusting and setting holdings here https://support.lusid.com/how-do-i-adjust-my-holdings.
+        /// SetHoldings: Set holdings Set the holdings of the specified transaction portfolio to the provided targets. LUSID will automatically  construct adjustment transactions to ensure that the entire set of holdings for the transaction portfolio  are always set to the provided targets for the specified effective datetime. Read more about the difference between  adjusting and setting holdings here https://support.lusid.com/docs/how-do-i-manually-adjust-or-set-holdings.
         /// </summary>
         /// <exception cref="Lusid.Sdk.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="scope">The scope of the transaction portfolio.</param>
@@ -9422,7 +9683,7 @@ namespace Lusid.Sdk.Api
         }
 
         /// <summary>
-        /// SetHoldings: Set holdings Set the holdings of the specified transaction portfolio to the provided targets. LUSID will automatically  construct adjustment transactions to ensure that the entire set of holdings for the transaction portfolio  are always set to the provided targets for the specified effective datetime. Read more about the difference between  adjusting and setting holdings here https://support.lusid.com/how-do-i-adjust-my-holdings.
+        /// SetHoldings: Set holdings Set the holdings of the specified transaction portfolio to the provided targets. LUSID will automatically  construct adjustment transactions to ensure that the entire set of holdings for the transaction portfolio  are always set to the provided targets for the specified effective datetime. Read more about the difference between  adjusting and setting holdings here https://support.lusid.com/docs/how-do-i-manually-adjust-or-set-holdings.
         /// </summary>
         /// <exception cref="Lusid.Sdk.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="scope">The scope of the transaction portfolio.</param>
@@ -9439,7 +9700,7 @@ namespace Lusid.Sdk.Api
         }
 
         /// <summary>
-        /// SetHoldings: Set holdings Set the holdings of the specified transaction portfolio to the provided targets. LUSID will automatically  construct adjustment transactions to ensure that the entire set of holdings for the transaction portfolio  are always set to the provided targets for the specified effective datetime. Read more about the difference between  adjusting and setting holdings here https://support.lusid.com/how-do-i-adjust-my-holdings.
+        /// SetHoldings: Set holdings Set the holdings of the specified transaction portfolio to the provided targets. LUSID will automatically  construct adjustment transactions to ensure that the entire set of holdings for the transaction portfolio  are always set to the provided targets for the specified effective datetime. Read more about the difference between  adjusting and setting holdings here https://support.lusid.com/docs/how-do-i-manually-adjust-or-set-holdings.
         /// </summary>
         /// <exception cref="Lusid.Sdk.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="scope">The scope of the transaction portfolio.</param>
