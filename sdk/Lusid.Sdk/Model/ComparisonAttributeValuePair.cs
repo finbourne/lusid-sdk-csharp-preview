@@ -41,13 +41,12 @@ namespace Lusid.Sdk.Model
         /// Initializes a new instance of the <see cref="ComparisonAttributeValuePair" /> class.
         /// </summary>
         /// <param name="attributeName">Comparison rule attribute name. (required).</param>
-        /// <param name="value">Computed value for the comparison rule attribute. (required).</param>
+        /// <param name="value">Computed value for the comparison rule attribute..</param>
         public ComparisonAttributeValuePair(string attributeName = default(string), string value = default(string))
         {
             // to ensure "attributeName" is required (not null)
             this.AttributeName = attributeName ?? throw new ArgumentNullException("attributeName is a required property for ComparisonAttributeValuePair and cannot be null");
-            // to ensure "value" is required (not null)
-            this.Value = value ?? throw new ArgumentNullException("value is a required property for ComparisonAttributeValuePair and cannot be null");
+            this.Value = value;
         }
 
         /// <summary>
@@ -61,7 +60,7 @@ namespace Lusid.Sdk.Model
         /// Computed value for the comparison rule attribute.
         /// </summary>
         /// <value>Computed value for the comparison rule attribute.</value>
-        [DataMember(Name = "value", IsRequired = true, EmitDefaultValue = false)]
+        [DataMember(Name = "value", EmitDefaultValue = true)]
         public string Value { get; set; }
 
         /// <summary>
